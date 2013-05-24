@@ -66,7 +66,7 @@ GitHub API, so contributions are of course [always welcome][].  The calling
 pattern is pretty well established, so adding new methods is relatively
 straightforward.
 
-[this Google spreadhsheet]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
+[this Google spreadsheet]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
 [always welcome]: CONTRIBUTING.md
 
 
