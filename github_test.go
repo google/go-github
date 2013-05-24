@@ -175,8 +175,6 @@ func TestCheckResponse_noBody(t *testing.T) {
 
 	want := &ErrorResponse{
 		Response: res,
-		Message:  "",
-		Errors:   nil,
 	}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
