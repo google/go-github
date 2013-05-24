@@ -39,6 +39,10 @@ again.
   1. Go makes it very simple to ensure properly formatted code, so always run
      `go fmt` on your code before committing it.
 
+  1. Any significant changes should almost always be accompanied by tests.  The
+     project already has good test coverage, so look at some of the existing
+     tests if you're unsure how to go about it.
+
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
      messages are able to be formatted properly by various git tools.

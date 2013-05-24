@@ -38,6 +38,10 @@ capable http.Client:
 	// list all repositories for the authenticated user
 	repos, err := client.Repositories.List(nil)
 
+Note that when using an authenticated Client, all calls made by the client will
+include the specified OAuth token. Therefore, authenticated clients should
+almost never be shared between different users.
+
 The full GitHub API is documented at http://developer.github.com/v3/.
 */
 package github
