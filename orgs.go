@@ -8,6 +8,7 @@ package github
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 	"strconv"
 )
@@ -118,6 +119,88 @@ func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
 	return *members, err
 }
 
+// CheckMembership checks if a user is a member of an organization.
+func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
+	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = s.client.Do(req, nil)
+	if err != nil {
+		if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
+			// The user is not a member of the org. In this one case, we do not pass
+			// the error through.
+			return false, nil
+		} else {
+			// some other real error occurred
+			return false, err
+		}
+	}
+
+	return err == nil, err
+}
+
+// CheckPublicMembership checks if a user is a public member of an organization.
+func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, error) {
+	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = s.client.Do(req, nil)
+	if err != nil {
+		if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
+			// The user is not a member of the org. In this one case, we do not pass
+			// the error through.
+			return false, nil
+		} else {
+			// some other real error occurred
+			return false, err
+		}
+	}
+
+	return true, nil
+}
+
+// RemoveMember removes a user from all teams of an organization.
+func (s *OrganizationsService) RemoveMember(org, user string) error {
+	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
+}
+
+// Publicize a user's membership in an organization.
+func (s *OrganizationsService) PublicizeMembership(org, user string) error {
+	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("PUT", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
+}
+
+// Conceal a user's membership in an organization.
+func (s *OrganizationsService) ConcealMembership(org, user string) error {
+	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
+}
+
 // List the teams for an organization.
 func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 	url_ := fmt.Sprintf("orgs/%v/teams", org)
@@ -146,30 +229,6 @@ func (s *OrganizationsService) AddTeamMember(team int, user string) error {
 // Remove a user from a team.
 func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
 	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = s.client.Do(req, nil)
-	return err
-}
-
-// Publicize a user's membership in an organization.
-func (s *OrganizationsService) PublicizeMembership(org, user string) error {
-	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("PUT", url_, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = s.client.Do(req, nil)
-	return err
-}
-
-// Conceal a user's membership in an organization.
-func (s *OrganizationsService) ConcealMembership(org, user string) error {
-	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", url_, nil)
 	if err != nil {
 		return err

@@ -160,6 +160,152 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_CheckMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+	})
+
+	member, err := client.Organizations.CheckMembership("o", "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckMembership returned error: %v", err)
+	}
+	want := true
+	if member != want {
+		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 404 response is interpreted as "false" and not an error
+func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+		http.Error(w, "", http.StatusNotFound)
+	})
+
+	member, err := client.Organizations.CheckMembership("o", "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckMembership returned error: %v", err)
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404
+func TestOrganizationsService_CheckMembership_error(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+		http.Error(w, "BadRequest", http.StatusBadRequest)
+	})
+
+	member, err := client.Organizations.CheckMembership("o", "u")
+	if err == nil {
+		t.Errorf("Expected HTTP 400 response")
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+	}
+}
+
+func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+	})
+
+	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
+	}
+	want := true
+	if member != want {
+		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 404 response is interpreted as "false" and not an error
+func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+		http.Error(w, "", http.StatusNotFound)
+	})
+
+	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404
+func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+		http.Error(w, "BadRequest", http.StatusBadRequest)
+	})
+
+	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	if err == nil {
+		t.Errorf("Expected HTTP 400 response")
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+	}
+}
+
+func TestOrganizationsService_RemoveMember(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "DELETE" {
+			t.Errorf("Request method = %v, want %v", r.Method, "DELETE")
+		}
+	})
+
+	err := client.Organizations.RemoveMember("o", "u")
+	if err != nil {
+		t.Errorf("Organizations.RemoveMember returned error: %v", err)
+	}
+}
+
 func TestOrganizationsService_ListTeams(t *testing.T) {
 	setup()
 	defer teardown()
