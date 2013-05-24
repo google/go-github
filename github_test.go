@@ -159,6 +159,30 @@ func TestCheckResponse(t *testing.T) {
 	}
 }
 
+// ensure that we properly handle API errors that do not contain a response
+// body
+func TestCheckResponse_noBody(t *testing.T) {
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: 400,
+		Body:       ioutil.NopCloser(strings.NewReader("")),
+	}
+	err := CheckResponse(res).(*ErrorResponse)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	want := &ErrorResponse{
+		Response: res,
+		Message:  "",
+		Errors:   nil,
+	}
+	if !reflect.DeepEqual(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
 func TestErrorResponse_Error(t *testing.T) {
 	res := &http.Response{Request: &http.Request{}}
 	err := ErrorResponse{Message: "m", Response: res}
