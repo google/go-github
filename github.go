@@ -30,7 +30,7 @@ capable http.Client:
 	// see goauth2 library for full usage
 	t := &oauth.Transport{
 		Config: &oauth.Config{},
-		Token: &oauth.Token{AccessToken: "..."}
+		Token: &oauth.Token{AccessToken: "..."},
 	}
 
 	client := github.NewClient(t.Client())
@@ -79,6 +79,13 @@ type Client struct {
 	Organizations *OrganizationsService
 	Repositories  *RepositoriesService
 	Users         *UsersService
+}
+
+// ListOptions specifies the optional parameters to various List methods that
+// support pagination.
+type ListOptions struct {
+	// For paginated result sets, page of results to retrieve.
+	Page int
 }
 
 // NewClient returns a new GitHub API client.  If a nil httpClient is

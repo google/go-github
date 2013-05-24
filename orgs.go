@@ -8,6 +8,8 @@ package github
 
 import (
 	"fmt"
+	"net/url"
+	"strconv"
 )
 
 // OrganizationsService provides access to the organization related functions
@@ -38,13 +40,20 @@ type Team struct {
 
 // List the organizations for a user.  Passing the empty string will list
 // organizations for the authenticated user.
-func (s *OrganizationsService) List(user string) ([]Organization, error) {
+func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organization, error) {
 	var url_ string
 	if user != "" {
 		url_ = fmt.Sprintf("users/%v/orgs", user)
 	} else {
 		url_ = "user/orgs"
 	}
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		url_ += "?" + params.Encode()
+	}
+
 	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err

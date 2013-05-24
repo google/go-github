@@ -17,7 +17,7 @@ client := github.NewClient(nil)
 orgs, err := client.Organizations.List("willnorris", nil)
 ```
 
-Some API methods have optional parameters than can be passed.  For example,
+Some API methods have optional parameters that can be passed.  For example,
 list recently updated repositories for org "github":
 
 ```go
@@ -27,16 +27,16 @@ repos, err := client.Repositories.ListByOrg("github", opt)
 ```
 
 The go-github library does not directly handle authentication.  Instead, when
-creating a new client, pass an `http.Client` than can handle authentication for
+creating a new client, pass an `http.Client` that can handle authentication for
 you.  The easiest, and recommended, way to do this is using the [goauth2][]
 library, but you can of course use any other library that provides an
-`http.Client`.  For example, to use the goauth2 library with an existing OAuth
+`http.Client`.  For example, to use the goauth2 library with an existing OAuth2
 access token:
 
 ```go
 t := &oauth.Transport{
   Config: &oauth.Config{},
-  Token: &oauth.Token{AccessToken: "..."}
+  Token: &oauth.Token{AccessToken: "..."},
 }
 
 client := github.NewClient(t.Client())
