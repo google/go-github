@@ -207,12 +207,11 @@ func CheckResponse(r *http.Response) error {
 	}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil {
-		errorResponse := new(ErrorResponse)
-		err = json.Unmarshal(data, errorResponse)
-		if err == nil && errorResponse != nil {
-			errorResponse.Response = r
-			return errorResponse
+		errorResponse := &ErrorResponse{Response: r}
+		if data != nil {
+			err = json.Unmarshal(data, errorResponse)
 		}
+		return errorResponse
 	}
 	return fmt.Errorf("github: got HTTP response code %d and error reading body: %v",
 		r.StatusCode, err)
