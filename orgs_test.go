@@ -25,7 +25,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	orgs, err := client.Organizations.List("")
+	orgs, err := client.Organizations.List("", nil)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -41,13 +41,18 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
+		var v string
 		if r.Method != "GET" {
 			t.Errorf("Request method = %v, want %v", r.Method, "GET")
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
+		if v = r.FormValue("page"); v != "2" {
+			t.Errorf("Request page parameter = %v, want %v", v, "2")
+		}
 	})
 
-	orgs, err := client.Organizations.List("u")
+	opt := &ListOptions{2}
+	orgs, err := client.Organizations.List("u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
