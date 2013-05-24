@@ -10,6 +10,7 @@ func main() {
 	client := github.NewClient(nil)
 
 	fmt.Println("Recently updated repositories owned by user willnorris:")
+
 	opt := &github.RepositoryListOptions{Type: "owner", Sort: "updated", Direction: "desc"}
 	repos, err := client.Repositories.List("willnorris", opt)
 	if err != nil {
@@ -21,8 +22,7 @@ func main() {
 	rate, err := client.RateLimit()
 	if err != nil {
 		fmt.Printf("Error fetching rate limit: %#v\n\n", err)
-		return
+	} else {
+		fmt.Printf("API Rate Limit: %#v\n\n", rate)
 	}
-
-	fmt.Printf("API Rate Limit: %#v\n\n", rate)
 }
