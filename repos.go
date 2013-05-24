@@ -49,11 +49,11 @@ type RepositoryListOptions struct {
 // List the repositories for a user.  Passing the empty string will list
 // repositories for the authenticated user.
 func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, error) {
-	var urls string
+	var url_ string
 	if user != "" {
-		urls = fmt.Sprintf("users/%v/repos", user)
+		url_ = fmt.Sprintf("users/%v/repos", user)
 	} else {
-		urls = "user/repos"
+		url_ = "user/repos"
 	}
 	if opt != nil {
 		params := url.Values{
@@ -62,10 +62,13 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 			"direction": []string{opt.Direction},
 			"page":      []string{strconv.Itoa(opt.Page)},
 		}
-		urls += "?" + params.Encode()
+		url_ += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", urls, nil)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
 
 	repos := new([]Repository)
 	_, err = s.client.Do(req, repos)
@@ -85,16 +88,16 @@ type RepositoryListByOrgOptions struct {
 
 // List the repositories for an organization.
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, error) {
-	urls := fmt.Sprintf("orgs/%v/repos", org)
+	url_ := fmt.Sprintf("orgs/%v/repos", org)
 	if opt != nil {
 		params := url.Values{
 			"type": []string{opt.Type},
 			"page": []string{strconv.Itoa(opt.Page)},
 		}
-		urls += "?" + params.Encode()
+		url_ += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", urls, nil)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -106,8 +109,8 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 
 // Get fetches a repository.
 func (s *RepositoriesService) Get(owner, repo string) (*Repository, error) {
-	url := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", url, nil)
+	url_ := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}

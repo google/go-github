@@ -39,13 +39,13 @@ type Team struct {
 // List the organizations for a user.  Passing the empty string will list
 // organizations for the authenticated user.
 func (s *OrganizationsService) List(user string) ([]Organization, error) {
-	var url string
+	var url_ string
 	if user != "" {
-		url = fmt.Sprintf("users/%v/orgs", user)
+		url_ = fmt.Sprintf("users/%v/orgs", user)
 	} else {
-		url = "user/orgs"
+		url_ = "user/orgs"
 	}
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -57,8 +57,8 @@ func (s *OrganizationsService) List(user string) ([]Organization, error) {
 
 // Get an organization.
 func (s *OrganizationsService) Get(org string) (*Organization, error) {
-	url := fmt.Sprintf("orgs/%v", org)
-	req, err := s.client.NewRequest("GET", url, nil)
+	url_ := fmt.Sprintf("orgs/%v", org)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +70,8 @@ func (s *OrganizationsService) Get(org string) (*Organization, error) {
 
 // Edit an organization.
 func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, error) {
-	url := fmt.Sprintf("orgs/%v", name)
-	req, err := s.client.NewRequest("PATCH", url, org)
+	url_ := fmt.Sprintf("orgs/%v", name)
+	req, err := s.client.NewRequest("PATCH", url_, org)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +85,8 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 // of the organization, this will return concealed and public members,
 // otherwise it will only return public members.
 func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
-	url := fmt.Sprintf("orgs/%v/members", org)
-	req, err := s.client.NewRequest("GET", url, nil)
+	url_ := fmt.Sprintf("orgs/%v/members", org)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -98,8 +98,8 @@ func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
 
 // List the public members for an organization.
 func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
-	url := fmt.Sprintf("orgs/%v/public_members", org)
-	req, err := s.client.NewRequest("GET", url, nil)
+	url_ := fmt.Sprintf("orgs/%v/public_members", org)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -111,8 +111,8 @@ func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
 
 // List the teams for an organization.
 func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
-	url := fmt.Sprintf("orgs/%v/teams", org)
-	req, err := s.client.NewRequest("GET", url, nil)
+	url_ := fmt.Sprintf("orgs/%v/teams", org)
+	req, err := s.client.NewRequest("GET", url_, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -124,8 +124,8 @@ func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 
 // Add a user to a team.
 func (s *OrganizationsService) AddTeamMember(team int, user string) error {
-	url := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("PUT", url, nil)
+	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("PUT", url_, nil)
 	if err != nil {
 		return err
 	}
@@ -136,8 +136,8 @@ func (s *OrganizationsService) AddTeamMember(team int, user string) error {
 
 // Remove a user from a team.
 func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
-	url := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
 	if err != nil {
 		return err
 	}
@@ -148,8 +148,8 @@ func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
 
 // Publicize a user's membership in an organization.
 func (s *OrganizationsService) PublicizeMembership(org, user string) error {
-	url := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("PUT", url, nil)
+	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("PUT", url_, nil)
 	if err != nil {
 		return err
 	}
@@ -160,8 +160,8 @@ func (s *OrganizationsService) PublicizeMembership(org, user string) error {
 
 // Conceal a user's membership in an organization.
 func (s *OrganizationsService) ConcealMembership(org, user string) error {
-	url := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
 	if err != nil {
 		return err
 	}

@@ -39,7 +39,6 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	opt := &RepositoryListOptions{"owner", "created", "asc", 2}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		var v string
 		if r.Method != "GET" {
@@ -61,6 +60,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
+	opt := &RepositoryListOptions{"owner", "created", "asc", 2}
 	repos, err := client.Repositories.List("u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
@@ -76,7 +76,6 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	setup()
 	defer teardown()
 
-	opt := &RepositoryListByOrgOptions{"forks", 2}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
 			t.Errorf("Request method = %v, want %v", r.Method, "GET")
@@ -92,6 +91,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
+	opt := &RepositoryListByOrgOptions{"forks", 2}
 	repos, err := client.Repositories.ListByOrg("o", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
