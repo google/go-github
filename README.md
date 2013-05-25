@@ -2,7 +2,7 @@
 
 go-github is Go library for accessing the [GitHub API][].
 
-**Documentation:** <http://godoc.org/github.com/google/go-github>  
+**Documentation:** <http://godoc.org/github.com/google/go-github/github>  
 **Build Status:** [![Build Status](https://travis-ci.org/google/go-github.png?branch=master)](https://travis-ci.org/google/go-github)
 
 
