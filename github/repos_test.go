@@ -19,8 +19,8 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
@@ -42,8 +42,8 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		var v string
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if v = r.FormValue("type"); v != "owner" {
 			t.Errorf("Request type parameter = %v, want %v", v, "owner")
@@ -88,10 +88,11 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		var v string
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		v := r.FormValue("type")
+		v = r.FormValue("type")
 		if v != "forks" {
 			t.Errorf("Request type parameter = %v, want %v", v, "forks")
 		}
@@ -129,8 +130,8 @@ func TestRepositoriesService_Get(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"}}`)
 	})
