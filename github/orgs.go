@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 // OrganizationsService provides access to the organization related functions
@@ -22,11 +23,12 @@ type OrganizationsService struct {
 }
 
 type Organization struct {
-	Login     string `json:"login,omitempty"`
-	ID        int    `json:"id,omitempty"`
-	URL       string `json:"url,omitempty"`
-	AvatarURL string `json:"avatar_url,omitempty"`
-	Location  string `json:"location,omitempty"`
+	Login     string     `json:"login,omitempty"`
+	ID        int        `json:"id,omitempty"`
+	URL       string     `json:"url,omitempty"`
+	AvatarURL string     `json:"avatar_url,omitempty"`
+	Location  string     `json:"location,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
 type Team struct {

@@ -100,7 +100,7 @@ func TestUsersService_Edit(t *testing.T) {
 	}
 }
 
-func TestUsersService_List(t *testing.T) {
+func TestUsersService_ListAll(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -116,13 +116,13 @@ func TestUsersService_List(t *testing.T) {
 	})
 
 	opt := &UserListOptions{1}
-	users, err := client.Users.List(opt)
+	users, err := client.Users.ListAll(opt)
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
 	want := []User{User{ID: 2}}
 	if !reflect.DeepEqual(users, want) {
-		t.Errorf("Users.List returned %+v, want %+v", users, want)
+		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
 }

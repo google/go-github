@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 // RepositoriesService handles communication with the repository related
@@ -21,10 +22,13 @@ type RepositoriesService struct {
 }
 
 type Repository struct {
-	ID          int    `json:"id,omitempty"`
-	Owner       *User  `json:"owner,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Description string `json:"description,omitempty"`
+	ID          int        `json:"id,omitempty"`
+	Owner       *User      `json:"owner,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	Description string     `json:"description,omitempty"`
+	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	PushedAt    *time.Time `json:"pushed_at,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 // RepositoryListOptions specifies the optional parameters to the
