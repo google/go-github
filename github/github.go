@@ -200,21 +200,19 @@ func (e *Error) Error() string {
 }
 
 // CheckResponse checks the API response for errors, and returns them if
-// present.
+// present.  API error responses are expected to have either no response body,
+// or a JSON response body that maps to ErrorResponse.  Any other response body
+// will be silently ignored.
 func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
+	errorResponse := &ErrorResponse{Response: r}
 	data, err := ioutil.ReadAll(r.Body)
-	if err == nil {
-		errorResponse := &ErrorResponse{Response: r}
-		if data != nil {
-			err = json.Unmarshal(data, errorResponse)
-		}
-		return errorResponse
+	if err == nil && data != nil {
+		json.Unmarshal(data, errorResponse)
 	}
-	return fmt.Errorf("github: got HTTP response code %d and error reading body: %v",
-		r.StatusCode, err)
+	return errorResponse
 }
 
 // API response wrapper to a rate limit request.
