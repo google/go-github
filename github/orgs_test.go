@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -63,6 +64,16 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_List_invalidUser(t *testing.T) {
+	_, err := client.Organizations.List("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_Get(t *testing.T) {
 	setup()
 	defer teardown()
@@ -82,6 +93,16 @@ func TestOrganizationsService_Get(t *testing.T) {
 	want := &Organization{ID: 1, Login: "l", URL: "u", AvatarURL: "a", Location: "l"}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
+	}
+}
+
+func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.Get("%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 
@@ -116,6 +137,16 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.Edit("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_ListMembers(t *testing.T) {
 	setup()
 	defer teardown()
@@ -138,6 +169,16 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.ListMembers("%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 	setup()
 	defer teardown()
@@ -157,6 +198,16 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 	want := []User{User{ID: 1}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListPublicMembers returned %+v, want %+v", members, want)
+	}
+}
+
+func TestOrganizationsService_ListPublicMembers_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.ListPublicMembers("%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 
@@ -225,6 +276,16 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_CheckMembership_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.CheckMembership("%", "u")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 	setup()
 	defer teardown()
@@ -290,6 +351,16 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_CheckPublicMembership_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.CheckPublicMembership("%", "u")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_RemoveMember(t *testing.T) {
 	setup()
 	defer teardown()
@@ -303,6 +374,16 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 	err := client.Organizations.RemoveMember("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveMember returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
+	err := client.Organizations.RemoveMember("%", "u")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 
@@ -328,6 +409,16 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.ListTeams("%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	setup()
 	defer teardown()
@@ -341,6 +432,16 @@ func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	err := client.Organizations.AddTeamMember(1, "u")
 	if err != nil {
 		t.Errorf("Organizations.AddTeamMember returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_AddTeamMember_invalidUser(t *testing.T) {
+	err := client.Organizations.AddTeamMember(1, "%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 
@@ -360,6 +461,16 @@ func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_RemoveTeamMember_invalidUser(t *testing.T) {
+	err := client.Organizations.RemoveTeamMember(1, "%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 	setup()
 	defer teardown()
@@ -376,6 +487,16 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
+	err := client.Organizations.PublicizeMembership("%", "u")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_ConcealMembership(t *testing.T) {
 	setup()
 	defer teardown()
@@ -389,5 +510,15 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 	err := client.Organizations.ConcealMembership("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.ConcealMembership returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
+	err := client.Organizations.ConcealMembership("%", "u")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }

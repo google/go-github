@@ -9,6 +9,7 @@ package github
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -72,6 +73,16 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_List_invalidUser(t *testing.T) {
+	_, err := client.Repositories.List("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestRepositoriesService_ListByOrg(t *testing.T) {
 	setup()
 	defer teardown()
@@ -103,6 +114,16 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
+	_, err := client.Repositories.ListByOrg("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
@@ -122,5 +143,15 @@ func TestRepositoriesService_Get(t *testing.T) {
 	want := &Repository{ID: 1, Name: "n", Description: "d", Owner: &User{Login: "l"}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.Get("%", "r")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }

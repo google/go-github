@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -55,6 +56,16 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	want := &User{ID: 1}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
+	}
+}
+
+func TestUsersService_Get_invalidUser(t *testing.T) {
+	_, err := client.Users.Get("%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 
