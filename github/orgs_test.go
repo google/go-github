@@ -189,12 +189,12 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 		if r.Method != "GET" {
 			t.Errorf("Request method = %v, want %v", r.Method, "GET")
 		}
-		http.Error(w, "", http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	member, err := client.Organizations.CheckMembership("o", "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckMembership returned error: %v", err)
+		t.Errorf("Organizations.CheckMembership returned error: %+v", err)
 	}
 	want := false
 	if member != want {
@@ -254,7 +254,7 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 		if r.Method != "GET" {
 			t.Errorf("Request method = %v, want %v", r.Method, "GET")
 		}
-		http.Error(w, "", http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	member, err := client.Organizations.CheckPublicMembership("o", "u")
