@@ -8,9 +8,13 @@ go-github is Go library for accessing the [GitHub API][].
 
 ## Usage ##
 
+```go
+import "github.com/google/go-github/github"
+```
+
 Construct a new GitHub client, then use the various services on the client to
-access different parts of the GitHub API.  For example, list all organizations
-for user "willnorris":
+access different parts of the GitHub API.  For example, to list all
+organizations for user "willnorris":
 
 ```go
 client := github.NewClient(nil)
@@ -18,7 +22,8 @@ orgs, err := client.Organizations.List("willnorris", nil)
 ```
 
 Some API methods have optional parameters that can be passed.  For example,
-list recently updated repositories for org "github":
+to list repositories for org "github", sorted by the time they were last
+updated:
 
 ```go
 client := github.NewClient(nil)
@@ -28,15 +33,15 @@ repos, err := client.Repositories.ListByOrg("github", opt)
 
 The go-github library does not directly handle authentication.  Instead, when
 creating a new client, pass an `http.Client` that can handle authentication for
-you.  The easiest, and recommended, way to do this is using the [goauth2][]
-library, but you can of course use any other library that provides an
-`http.Client`.  For example, to use the goauth2 library with an existing OAuth2
-access token:
+you.  The easiest and recommended way to do this is using the [goauth2][]
+library, but you can always use any other library that provides an
+`http.Client`.  If you have an OAuth2 access token (for example, a [personal
+API token][]), you can use it with the goauth2 library like so:
 
 ```go
 t := &oauth.Transport{
   Config: &oauth.Config{},
-  Token: &oauth.Token{AccessToken: "..."},
+  Token: &oauth.Token{AccessToken: "... your access token ..."},
 }
 
 client := github.NewClient(t.Client())
@@ -54,6 +59,7 @@ almost never be shared between different users.
 [GitHub API]: http://developer.github.com/v3/
 [goauth2]: https://code.google.com/p/goauth2/
 [goauth2 docs]: http://godoc.org/code.google.com/p/goauth2/oauth
+[personal API token]: https://github.com/blog/1509-personal-api-tokens
 
 
 ## Roadmap ##
