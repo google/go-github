@@ -21,6 +21,7 @@ type UsersService struct {
 	client *Client
 }
 
+// User represents a GitHub user.
 type User struct {
 	Login       string     `json:"login,omitempty"`
 	ID          int        `json:"id,omitempty"`
@@ -41,6 +42,8 @@ type User struct {
 
 // Get fetches a user.  Passing the empty string will fetch the authenticated
 // user.
+//
+// GitHub API docs: http://developer.github.com/v3/users/#get-a-single-user
 func (s *UsersService) Get(user string) (*User, error) {
 	var url_ string
 	if user != "" {
@@ -59,6 +62,8 @@ func (s *UsersService) Get(user string) (*User, error) {
 }
 
 // Edit the authenticated user.
+//
+// GitHub API docs: http://developer.github.com/v3/users/#update-the-authenticated-user
 func (s *UsersService) Edit(user *User) (*User, error) {
 	url_ := "user"
 	req, err := s.client.NewRequest("PATCH", url_, user)
@@ -71,14 +76,16 @@ func (s *UsersService) Edit(user *User) (*User, error) {
 	return u, err
 }
 
-// UserListOptions specifies optional paramters to the UsersService.List
+// UserListOptions specifies optional parameters to the UsersService.List
 // method.
 type UserListOptions struct {
 	// ID of the last user seen
 	Since int
 }
 
-// List all users.
+// ListAll lists all GitHub users.
+//
+// GitHub API docs: http://developer.github.com/v3/users/#get-all-users
 func (s *UsersService) ListAll(opt *UserListOptions) ([]User, error) {
 	url_ := "users"
 	if opt != nil {

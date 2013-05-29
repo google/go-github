@@ -22,6 +22,7 @@ type OrganizationsService struct {
 	client *Client
 }
 
+// Organization represents a GitHub organization account.
 type Organization struct {
 	Login     string     `json:"login,omitempty"`
 	ID        int        `json:"id,omitempty"`
@@ -31,6 +32,8 @@ type Organization struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
+// Team represents a team within a GitHub organization.  Teams are used to
+// manage access to an organization's repositories.
 type Team struct {
 	ID           int    `json:"id,omitempty"`
 	Name         string `json:"name,omitempty"`
@@ -43,6 +46,8 @@ type Team struct {
 
 // List the organizations for a user.  Passing the empty string will list
 // organizations for the authenticated user.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/#list-user-organizations
 func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organization, error) {
 	var url_ string
 	if user != "" {
@@ -67,7 +72,9 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organizati
 	return *orgs, err
 }
 
-// Get an organization.
+// Get fetches an organization by name.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/#get-an-organization
 func (s *OrganizationsService) Get(org string) (*Organization, error) {
 	url_ := fmt.Sprintf("orgs/%v", org)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -81,6 +88,8 @@ func (s *OrganizationsService) Get(org string) (*Organization, error) {
 }
 
 // Edit an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/#edit-an-organization
 func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, error) {
 	url_ := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", url_, org)
@@ -94,8 +103,10 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 }
 
 // List the members for an organization.  If the authenticated user is an owner
-// of the organization, this will return concealed and public members,
+// of the organization, this will return both concealed and public members,
 // otherwise it will only return public members.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
 func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
 	url_ := fmt.Sprintf("orgs/%v/members", org)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -109,6 +120,8 @@ func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
 }
 
 // List the public members for an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#public-members-list
 func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
 	url_ := fmt.Sprintf("orgs/%v/public_members", org)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -122,6 +135,8 @@ func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
 }
 
 // CheckMembership checks if a user is a member of an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#check-membership
 func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
 	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -145,6 +160,8 @@ func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
 }
 
 // CheckPublicMembership checks if a user is a public member of an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#check-public-membership
 func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, error) {
 	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -168,6 +185,8 @@ func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, er
 }
 
 // RemoveMember removes a user from all teams of an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#remove-a-member
 func (s *OrganizationsService) RemoveMember(org, user string) error {
 	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", url_, nil)
@@ -179,7 +198,9 @@ func (s *OrganizationsService) RemoveMember(org, user string) error {
 	return err
 }
 
-// Publicize a user's membership in an organization.
+// PublicizeMembership publicizes a user's membership in an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#publicize-a-users-membership
 func (s *OrganizationsService) PublicizeMembership(org, user string) error {
 	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("PUT", url_, nil)
@@ -191,7 +212,9 @@ func (s *OrganizationsService) PublicizeMembership(org, user string) error {
 	return err
 }
 
-// Conceal a user's membership in an organization.
+// ConcealMembership conceals a user's membership in an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/members/#conceal-a-users-membership
 func (s *OrganizationsService) ConcealMembership(org, user string) error {
 	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", url_, nil)
@@ -203,7 +226,9 @@ func (s *OrganizationsService) ConcealMembership(org, user string) error {
 	return err
 }
 
-// List the teams for an organization.
+// ListTeams lists all of the teams for an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
 func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 	url_ := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -217,6 +242,8 @@ func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 }
 
 // GetTeam fetches a team by ID.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team
 func (s *OrganizationsService) GetTeam(team int) (*Team, error) {
 	url_ := fmt.Sprintf("teams/%v", team)
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -229,7 +256,9 @@ func (s *OrganizationsService) GetTeam(team int) (*Team, error) {
 	return t, err
 }
 
-// CreateTeam creates a new team.
+// CreateTeam creates a new team within an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#create-team
 func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, error) {
 	url_ := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", url_, team)
@@ -243,6 +272,8 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, error)
 }
 
 // EditTeam edits a team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#edit-team
 func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, error) {
 	url_ := fmt.Sprintf("teams/%v", id)
 	req, err := s.client.NewRequest("PATCH", url_, team)
@@ -256,6 +287,8 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, error) {
 }
 
 // DeleteTeam deletes a team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#delete-team
 func (s *OrganizationsService) DeleteTeam(team int) error {
 	url_ := fmt.Sprintf("teams/%v", team)
 	req, err := s.client.NewRequest("DELETE", url_, nil)
@@ -267,7 +300,9 @@ func (s *OrganizationsService) DeleteTeam(team int) error {
 	return err
 }
 
-// Add a user to a team.
+// AddTeamMember adds a user to a team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-member
 func (s *OrganizationsService) AddTeamMember(team int, user string) error {
 	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
 	req, err := s.client.NewRequest("PUT", url_, nil)
@@ -279,7 +314,9 @@ func (s *OrganizationsService) AddTeamMember(team int, user string) error {
 	return err
 }
 
-// Remove a user from a team.
+// RemoveTeamMember removes a user from a team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#remove-team-member
 func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
 	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
 	req, err := s.client.NewRequest("DELETE", url_, nil)

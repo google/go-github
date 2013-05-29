@@ -21,6 +21,7 @@ type RepositoriesService struct {
 	client *Client
 }
 
+// Repository represents a GitHub repository.
 type Repository struct {
 	ID          int        `json:"id,omitempty"`
 	Owner       *User      `json:"owner,omitempty"`
@@ -52,6 +53,8 @@ type RepositoryListOptions struct {
 
 // List the repositories for a user.  Passing the empty string will list
 // repositories for the authenticated user.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#list-user-repositories
 func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, error) {
 	var url_ string
 	if user != "" {
@@ -90,7 +93,9 @@ type RepositoryListByOrgOptions struct {
 	Page int
 }
 
-// List the repositories for an organization.
+// ListByOrg lists the repositories for an organization.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, error) {
 	url_ := fmt.Sprintf("orgs/%v/repos", org)
 	if opt != nil {
@@ -112,6 +117,8 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 }
 
 // Get fetches a repository.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#get
 func (s *RepositoriesService) Get(owner, repo string) (*Repository, error) {
 	url_ := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", url_, nil)

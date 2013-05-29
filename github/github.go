@@ -90,7 +90,8 @@ type ListOptions struct {
 
 // NewClient returns a new GitHub API client.  If a nil httpClient is
 // provided, http.DefaultClient will be used.  To use API methods which require
-// authentication, provide an http.Client that can handle that.
+// authentication, provide an http.Client that will perform the authentication
+// for you (such as that provided by the goauth2 library).
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
@@ -200,9 +201,10 @@ func (e *Error) Error() string {
 }
 
 // CheckResponse checks the API response for errors, and returns them if
-// present.  API error responses are expected to have either no response body,
-// or a JSON response body that maps to ErrorResponse.  Any other response body
-// will be silently ignored.
+// present.  A response is considered an error if it has a status code outside
+// the 200 range.  API error responses are expected to have either no response
+// body, or a JSON response body that maps to ErrorResponse.  Any other
+// response body will be silently ignored.
 func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
