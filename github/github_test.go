@@ -7,6 +7,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -91,7 +92,21 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 	_, err := c.NewRequest("GET", "/", &T{})
 
 	if err == nil {
-		t.Error("Expected JSON marshalling error.")
+		t.Error("Expected error to be returned.")
+	}
+	if err, ok := err.(*json.UnsupportedTypeError); !ok {
+		t.Errorf("Expected a JSON error; got %#v.", err)
+	}
+}
+
+func TestNewRequest_badURL(t *testing.T) {
+	c := NewClient(nil)
+	_, err := c.NewRequest("GET", ":", nil)
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	if err, ok := err.(*url.Error); !ok || err.Op != "parse" {
+		t.Errorf("Expected a URL parsing error; got %+v.", err)
 	}
 }
 
