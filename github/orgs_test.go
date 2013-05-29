@@ -419,6 +419,116 @@ func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_GetTeam(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		}
+		fmt.Fprint(w, `{"id":1, "name":"n", "url":"u", "slug": "s", "permission":"p"}`)
+	})
+
+	team, err := client.Organizations.GetTeam(1)
+	if err != nil {
+		t.Errorf("Organizations.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: 1, Name: "n", URL: "u", Slug: "s", Permission: "p"}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestOrganizationsService_CreateTeam(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Team{Name: "n"}
+
+	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Team)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if r.Method != "POST" {
+			t.Errorf("Request method = %v, want %v", r.Method, "POST")
+		}
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	team, err := client.Organizations.CreateTeam("o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: 1}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.CreateTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestOrganizationsService_CreateTeam_invalidOrg(t *testing.T) {
+	_, err := client.Organizations.CreateTeam("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestOrganizationsService_EditTeam(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Team{Name: "n"}
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Team)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if r.Method != "PATCH" {
+			t.Errorf("Request method = %v, want %v", r.Method, "PATCH")
+		}
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	team, err := client.Organizations.EditTeam(1, input)
+	if err != nil {
+		t.Errorf("Organizations.EditTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: 1}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.EditTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestOrganizationsService_DeleteTeam(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "DELETE" {
+			t.Errorf("Request method = %v, want %v", r.Method, "DELETE")
+		}
+	})
+
+	err := client.Organizations.DeleteTeam(1)
+	if err != nil {
+		t.Errorf("Organizations.DeleteTeam returned error: %v", err)
+	}
+}
+
 func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	setup()
 	defer teardown()

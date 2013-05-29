@@ -86,9 +86,9 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 		return nil, err
 	}
 
-	updatedOrg := new(Organization)
-	_, err = s.client.Do(req, updatedOrg)
-	return updatedOrg, err
+	o := new(Organization)
+	_, err = s.client.Do(req, o)
+	return o, err
 }
 
 // List the members for an organization.  If the authenticated user is an owner
@@ -212,6 +212,57 @@ func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 	teams := new([]Team)
 	_, err = s.client.Do(req, teams)
 	return *teams, err
+}
+
+// GetTeam fetches a team by ID.
+func (s *OrganizationsService) GetTeam(team int) (*Team, error) {
+	url_ := fmt.Sprintf("teams/%v", team)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	t := new(Team)
+	_, err = s.client.Do(req, t)
+	return t, err
+}
+
+// CreateTeam creates a new team.
+func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, error) {
+	url_ := fmt.Sprintf("orgs/%v/teams", org)
+	req, err := s.client.NewRequest("POST", url_, team)
+	if err != nil {
+		return nil, err
+	}
+
+	t := new(Team)
+	_, err = s.client.Do(req, t)
+	return t, err
+}
+
+// EditTeam edits a team.
+func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, error) {
+	url_ := fmt.Sprintf("teams/%v", id)
+	req, err := s.client.NewRequest("PATCH", url_, team)
+	if err != nil {
+		return nil, err
+	}
+
+	t := new(Team)
+	_, err = s.client.Do(req, t)
+	return t, err
+}
+
+// DeleteTeam deletes a team.
+func (s *OrganizationsService) DeleteTeam(team int) error {
+	url_ := fmt.Sprintf("teams/%v", team)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
 }
 
 // Add a user to a team.
