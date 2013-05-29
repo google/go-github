@@ -218,6 +218,44 @@ func TestCheckResponse_noBody(t *testing.T) {
 	}
 }
 
+func TestParseBooleanResponse_true(t *testing.T) {
+	result, err := parseBoolResponse(nil)
+
+	if err != nil {
+		t.Errorf("parseBoolResponse returned error: %+v", err)
+	}
+
+	if want := true; result != want {
+		t.Errorf("parseBoolResponse returned %+v, want: %+v", result, want)
+	}
+}
+
+func TestParseBooleanResponse_false(t *testing.T) {
+	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound} }
+	result, err := parseBoolResponse(v)
+
+	if err != nil {
+		t.Errorf("parseBoolResponse returned error: %+v", err)
+	}
+
+	if want := false; result != want {
+		t.Errorf("parseBoolResponse returned %+v, want: %+v", result, want)
+	}
+}
+
+func TestParseBooleanResponse_error(t *testing.T) {
+	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusBadRequest} }
+	result, err := parseBoolResponse(v)
+
+	if err == nil {
+		t.Errorf("Expected error to be returned.")
+	}
+
+	if want := false; result != want {
+		t.Errorf("parseBoolResponse returned %+v, want: %+v", result, want)
+	}
+}
+
 func TestErrorResponse_Error(t *testing.T) {
 	res := &http.Response{Request: &http.Request{}}
 	err := ErrorResponse{Message: "m", Response: res}
