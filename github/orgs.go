@@ -8,7 +8,6 @@ package github
 
 import (
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 	"time"
@@ -145,18 +144,7 @@ func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
 	}
 
 	_, err = s.client.Do(req, nil)
-	if err != nil {
-		if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
-			// The user is not a member of the org. In this one case, we do not pass
-			// the error through.
-			return false, nil
-		} else {
-			// some other real error occurred
-			return false, err
-		}
-	}
-
-	return err == nil, err
+	return parseBoolResponse(err)
 }
 
 // CheckPublicMembership checks if a user is a public member of an organization.
@@ -170,18 +158,7 @@ func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, er
 	}
 
 	_, err = s.client.Do(req, nil)
-	if err != nil {
-		if err, ok := err.(*ErrorResponse); ok && err.Response.StatusCode == http.StatusNotFound {
-			// The user is not a member of the org. In this one case, we do not pass
-			// the error through.
-			return false, nil
-		} else {
-			// some other real error occurred
-			return false, err
-		}
-	}
-
-	return true, nil
+	return parseBoolResponse(err)
 }
 
 // RemoveMember removes a user from all teams of an organization.
