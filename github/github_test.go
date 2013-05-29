@@ -231,7 +231,7 @@ func TestParseBooleanResponse_true(t *testing.T) {
 }
 
 func TestParseBooleanResponse_false(t *testing.T) {
-	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound} }
+	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound}}
 	result, err := parseBoolResponse(v)
 
 	if err != nil {
@@ -244,7 +244,7 @@ func TestParseBooleanResponse_false(t *testing.T) {
 }
 
 func TestParseBooleanResponse_error(t *testing.T) {
-	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusBadRequest} }
+	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusBadRequest}}
 	result, err := parseBoolResponse(v)
 
 	if err == nil {

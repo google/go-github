@@ -116,6 +116,58 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 	return *repos, err
 }
 
+// RepositoryListAllOptions specifies the optional parameters to the
+// RepositoriesService.ListAll method.
+type RepositoryListAllOptions struct {
+	// ID of the last repository seen
+	Since int
+}
+
+// ListAll lists all GitHub repositories in the order that they were created.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#list-all-repositories
+func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, error) {
+	url_ := "repositories"
+	if opt != nil {
+		params := url.Values{
+			"since": []string{strconv.Itoa(opt.Since)},
+		}
+		url_ += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	repos := new([]Repository)
+	_, err = s.client.Do(req, repos)
+	return *repos, err
+}
+
+// Create a new repository.  If an organization is specified, the new
+// repository will be created under that org.  If the empty string is
+// specified, it will be created for the authenticated user.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#create
+func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository, error) {
+	var url_ string
+	if org != "" {
+		url_ = fmt.Sprintf("orgs/%v/repos", org)
+	} else {
+		url_ = "user/repos"
+	}
+
+	req, err := s.client.NewRequest("POST", url_, repo)
+	if err != nil {
+		return nil, err
+	}
+
+	r := new(Repository)
+	_, err = s.client.Do(req, r)
+	return r, err
+}
+
 // Get fetches a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#get

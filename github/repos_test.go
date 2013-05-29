@@ -7,6 +7,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -122,6 +123,96 @@ func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 	}
 	if err, ok := err.(*url.Error); !ok {
 		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestRepositoriesService_ListAll(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
+		var v string
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		v = r.FormValue("since")
+		if v != "1" {
+			t.Errorf("Request since parameter = %v, want %v", v, 1)
+		}
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &RepositoryListAllOptions{1}
+	repos, err := client.Repositories.ListAll(opt)
+	if err != nil {
+		t.Errorf("Repositories.ListAll returned error: %v", err)
+	}
+
+	want := []Repository{Repository{ID: 1}}
+	if !reflect.DeepEqual(repos, want) {
+		t.Errorf("Repositories.ListAll returned %+v, want %+v", repos, want)
+	}
+}
+
+func TestRepositoriesService_Create_user(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Repository{Name: "n"}
+
+	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Repository)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	repo, err := client.Repositories.Create("", input)
+	if err != nil {
+		t.Errorf("Repositories.Create returned error: %v", err)
+	}
+
+	want := &Repository{ID: 1}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestRepositoriesService_Create_org(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Repository{Name: "n"}
+
+	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Repository)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	repo, err := client.Repositories.Create("o", input)
+	if err != nil {
+		t.Errorf("Repositories.Create returned error: %v", err)
+	}
+
+	want := &Repository{ID: 1}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
 }
 
