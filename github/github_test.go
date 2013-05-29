@@ -119,8 +119,8 @@ func TestDo(t *testing.T) {
 	}
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"A":"a"}`)
 	})
@@ -176,7 +176,7 @@ func TestDo_redirectLoop(t *testing.T) {
 func TestCheckResponse(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
-		StatusCode: 400,
+		StatusCode: http.StatusBadRequest,
 		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m", 
 			"errors": [{"resource": "r", "field": "f", "code": "c"}]}`)),
 	}
@@ -201,7 +201,7 @@ func TestCheckResponse(t *testing.T) {
 func TestCheckResponse_noBody(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
-		StatusCode: 400,
+		StatusCode: http.StatusBadRequest,
 		Body:       ioutil.NopCloser(strings.NewReader("")),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
@@ -238,8 +238,8 @@ func TestRateLimit(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"rate":{"limit":2,"remaining":1}}`)
 	})

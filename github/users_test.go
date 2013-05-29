@@ -20,8 +20,8 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -42,8 +42,8 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -79,8 +79,8 @@ func TestUsersService_Edit(t *testing.T) {
 		v := new(User)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if r.Method != "PATCH" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "PATCH"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -106,8 +106,8 @@ func TestUsersService_List(t *testing.T) {
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		var v string
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if v = r.FormValue("since"); v != "1" {
 			t.Errorf("Request since parameter = %v, want %v", v, "1")

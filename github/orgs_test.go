@@ -20,8 +20,8 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
@@ -43,8 +43,8 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
 		var v string
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 		if v = r.FormValue("page"); v != "2" {
@@ -79,8 +79,8 @@ func TestOrganizationsService_Get(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
@@ -116,8 +116,8 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		v := new(Organization)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if r.Method != "PATCH" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "PATCH"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -152,8 +152,8 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -184,8 +184,8 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -216,8 +216,8 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -237,8 +237,8 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		w.WriteHeader(http.StatusNotFound)
 	})
@@ -260,8 +260,8 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
@@ -291,8 +291,8 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -312,8 +312,8 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		w.WriteHeader(http.StatusNotFound)
 	})
@@ -335,8 +335,8 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
@@ -366,8 +366,8 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "DELETE" {
-			t.Errorf("Request method = %v, want %v", r.Method, "DELETE")
+		if m := "DELETE"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -392,8 +392,8 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -424,8 +424,8 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `{"id":1, "name":"n", "url":"u", "slug": "s", "permission":"p"}`)
 	})
@@ -451,8 +451,8 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		v := new(Team)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if r.Method != "POST" {
-			t.Errorf("Request method = %v, want %v", r.Method, "POST")
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -492,8 +492,8 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		v := new(Team)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if r.Method != "PATCH" {
-			t.Errorf("Request method = %v, want %v", r.Method, "PATCH")
+		if m := "PATCH"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -518,8 +518,8 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "DELETE" {
-			t.Errorf("Request method = %v, want %v", r.Method, "DELETE")
+		if m := "DELETE"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -534,8 +534,8 @@ func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "PUT" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "PUT"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -560,8 +560,8 @@ func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "DELETE" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "DELETE"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -586,8 +586,8 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "PUT" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "PUT"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
@@ -612,8 +612,8 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "DELETE" {
-			t.Errorf("Request method = %v, want %v", r.Method, "GET")
+		if m := "DELETE"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 	})
 
