@@ -257,3 +257,77 @@ func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
+
+func TestRepositoriesService_ListForks(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
+		var v string
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		if v = r.FormValue("sort"); v != "newest" {
+			t.Errorf("Request type parameter = %v, want %v", v, "newest")
+		}
+		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
+	})
+
+	opt := &RepositoryListForksOptions{Sort: "newest"}
+	repos, err := client.Repositories.ListForks("o", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.ListForks returned error: %v", err)
+	}
+
+	want := []Repository{Repository{ID: 1}, Repository{ID: 2}}
+	if !reflect.DeepEqual(repos, want) {
+		t.Errorf("Repositories.ListForks returned %+v, want %+v", repos, want)
+	}
+}
+
+func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.ListForks("%", "r", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestRepositoriesService_CreateFork(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
+		var v string
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		if v = r.FormValue("organization"); v != "o" {
+			t.Errorf("Request type parameter = %v, want %v", v, "o")
+		}
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	opt := &RepositoryCreateForkOptions{Organization: "o"}
+	repo, err := client.Repositories.CreateFork("o", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.CreateFork returned error: %v", err)
+	}
+
+	want := &Repository{ID: 1}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.CreateFork("%", "r", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
