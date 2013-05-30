@@ -334,3 +334,64 @@ func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
 	_, err = s.client.Do(req, nil)
 	return err
 }
+
+// ListTeamRepos lists the repositories that the specified team has access to.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-repos
+func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, error) {
+	url_ := fmt.Sprintf("teams/%v/repos", team)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	repos := new([]Repository)
+	_, err = s.client.Do(req, repos)
+	return *repos, err
+}
+
+// CheckTeamRepo checks if a team manages the specified repository.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-repo
+func (s *OrganizationsService) CheckTeamRepo(team int, owner string, repo string) (bool, error) {
+	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return parseBoolResponse(err)
+}
+
+// AddTeamRepo adds a repository to be managed by the specified team.  The
+// specified repository must be owned by the organization to which the team
+// belongs, or a direct fork of a repository owned by the organization.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-repo
+func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string) error {
+	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("PUT", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
+}
+
+// RemoveTeamRepo removes a repository from being managed by the specified
+// team.  Note that this does not delete the repository, it just removes it
+// from the team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#remove-team-repo
+func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo string) error {
+	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("DELETE", url_, nil)
+	if err != nil {
+		return err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return err
+}

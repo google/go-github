@@ -729,3 +729,168 @@ func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
 		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
+
+func TestOrganizationsService_ListTeamRepos(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	members, err := client.Organizations.ListTeamRepos(1)
+	if err != nil {
+		t.Errorf("Organizations.ListTeamRepos returned error: %v", err)
+	}
+
+	want := []Repository{Repository{ID: 1}}
+	if !reflect.DeepEqual(members, want) {
+		t.Errorf("Organizations.ListTeamRepos returned %+v, want %+v", members, want)
+	}
+}
+
+func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+	})
+
+	managed, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	if err != nil {
+		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
+	}
+	want := true
+	if managed != want {
+		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+	}
+}
+
+func TestOrganizationsService_CheckTeamRepo_false(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	managed, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	if err != nil {
+		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
+	}
+	want := false
+	if managed != want {
+		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+	}
+}
+
+func TestOrganizationsService_CheckTeamRepo_error(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		http.Error(w, "BadRequest", http.StatusBadRequest)
+	})
+
+	managed, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	if err == nil {
+		t.Errorf("Expected HTTP 400 response")
+	}
+	want := false
+	if managed != want {
+		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+	}
+}
+
+func TestOrganizationsService_CheckTeamRepo_invalidOwner(t *testing.T) {
+	_, err := client.Organizations.CheckTeamRepo(1, "%", "r")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestOrganizationsService_AddTeamRepo(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "PUT"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	err := client.Organizations.AddTeamRepo(1, "o", "r")
+	if err != nil {
+		t.Errorf("Organizations.AddTeamRepo returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "PUT"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		w.WriteHeader(422)
+	})
+
+	err := client.Organizations.AddTeamRepo(1, "o", "r")
+	if err == nil {
+		t.Errorf("Expcted error to be returned")
+	}
+}
+
+func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
+	err := client.Organizations.AddTeamRepo(1, "%", "r")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "DELETE"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	err := client.Organizations.RemoveTeamRepo(1, "o", "r")
+	if err != nil {
+		t.Errorf("Organizations.RemoveTeamRepo returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
+	err := client.Organizations.RemoveTeamRepo(1, "%", "r")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
