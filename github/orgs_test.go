@@ -529,6 +529,103 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_ListTeamMembers(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	members, err := client.Organizations.ListTeamMembers(1)
+	if err != nil {
+		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
+	}
+
+	want := []User{User{ID: 1}}
+	if !reflect.DeepEqual(members, want) {
+		t.Errorf("Organizations.ListTeamMembers returned %+v, want %+v", members, want)
+	}
+}
+
+func TestOrganizationsService_CheckTeamMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+	})
+
+	member, err := client.Organizations.CheckTeamMembership(1, "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckTeamMembership returned error: %v", err)
+	}
+	want := true
+	if member != want {
+		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 404 response is interpreted as "false" and not an error
+func TestOrganizationsService_CheckTeamMembership_notMember(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	member, err := client.Organizations.CheckTeamMembership(1, "u")
+	if err != nil {
+		t.Errorf("Organizations.CheckTeamMembership returned error: %+v", err)
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+	}
+}
+
+// ensure that a 400 response is interpreted as an actual error, and not simply
+// as "false" like the above case of a 404
+func TestOrganizationsService_CheckTeamMembership_error(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		http.Error(w, "BadRequest", http.StatusBadRequest)
+	})
+
+	member, err := client.Organizations.CheckTeamMembership(1, "u")
+	if err == nil {
+		t.Errorf("Expected HTTP 400 response")
+	}
+	want := false
+	if member != want {
+		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+	}
+}
+
+func TestOrganizationsService_CheckMembership_invalidUser(t *testing.T) {
+	_, err := client.Organizations.CheckTeamMembership(1, "%")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	setup()
 	defer teardown()
