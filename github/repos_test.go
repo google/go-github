@@ -216,6 +216,16 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_Create_invalidOrg(t *testing.T) {
+	_, err := client.Repositories.Create("%", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()

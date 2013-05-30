@@ -219,6 +219,7 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	member, err := client.Organizations.CheckMembership("o", "u")
@@ -294,6 +295,7 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	member, err := client.Organizations.CheckPublicMembership("o", "u")
@@ -634,6 +636,7 @@ func TestOrganizationsService_AddTeamMember(t *testing.T) {
 		if m := "PUT"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	err := client.Organizations.AddTeamMember(1, "u")
@@ -660,6 +663,7 @@ func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
 		if m := "DELETE"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	err := client.Organizations.RemoveTeamMember(1, "u")
@@ -686,6 +690,7 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 		if m := "PUT"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	err := client.Organizations.PublicizeMembership("o", "u")
@@ -712,6 +717,7 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 		if m := "DELETE"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	err := client.Organizations.ConcealMembership("o", "u")
@@ -760,6 +766,7 @@ func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	managed, err := client.Organizations.CheckTeamRepo(1, "o", "r")
