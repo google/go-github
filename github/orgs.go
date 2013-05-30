@@ -277,6 +277,36 @@ func (s *OrganizationsService) DeleteTeam(team int) error {
 	return err
 }
 
+// ListTeamMembers lists all of the users who are members of the specified
+// team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-members
+func (s *OrganizationsService) ListTeamMembers(team int) ([]User, error) {
+	url_ := fmt.Sprintf("teams/%v/members", team)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	members := new([]User)
+	_, err = s.client.Do(req, members)
+	return *members, err
+}
+
+// CheckTeamMembership checks if a user is a member of the specified team.
+//
+// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-member
+func (s *OrganizationsService) CheckTeamMembership(team int, user string) (bool, error) {
+	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return false, err
+	}
+
+	_, err = s.client.Do(req, nil)
+	return parseBoolResponse(err)
+}
+
 // AddTeamMember adds a user to a team.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-member
