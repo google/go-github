@@ -42,13 +42,13 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
-		if v = r.FormValue("page"); v != "2" {
-			t.Errorf("Request page parameter = %v, want %v", v, "2")
+		if v, want = r.FormValue("page"), "2"; v != want {
+			t.Errorf("Request page parameter = %v, want %v", v, want)
 		}
 	})
 

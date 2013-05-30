@@ -42,21 +42,21 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		if v = r.FormValue("type"); v != "owner" {
-			t.Errorf("Request type parameter = %v, want %v", v, "owner")
+		if v, want = r.FormValue("type"), "owner"; v != want {
+			t.Errorf("Request type parameter = %v, want %v", v, want)
 		}
-		if v = r.FormValue("sort"); v != "created" {
-			t.Errorf("Request sort parameter = %v, want %v", v, "created")
+		if v, want = r.FormValue("sort"), "created"; v != want {
+			t.Errorf("Request sort parameter = %v, want %v", v, want)
 		}
-		if v = r.FormValue("direction"); v != "asc" {
-			t.Errorf("Request direction parameter = %v, want %v", v, "created")
+		if v, want = r.FormValue("direction"), "asc"; v != want {
+			t.Errorf("Request direction parameter = %v, want %v", v, want)
 		}
-		if v = r.FormValue("page"); v != "2" {
-			t.Errorf("Request page parameter = %v, want %v", v, "2")
+		if v, want = r.FormValue("page"), "2"; v != want {
+			t.Errorf("Request page parameter = %v, want %v", v, want)
 		}
 
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -89,17 +89,15 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		v = r.FormValue("type")
-		if v != "forks" {
-			t.Errorf("Request type parameter = %v, want %v", v, "forks")
+		if v, want = r.FormValue("type"), "forks"; v != want {
+			t.Errorf("Request type parameter = %v, want %v", v, want)
 		}
-		v = r.FormValue("page")
-		if v != "2" {
-			t.Errorf("Request page parameter = %v, want %v", v, "2")
+		if v, want = r.FormValue("page"), "2"; v != want {
+			t.Errorf("Request page parameter = %v, want %v", v, want)
 		}
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -131,13 +129,12 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		v = r.FormValue("since")
-		if v != "1" {
-			t.Errorf("Request since parameter = %v, want %v", v, 1)
+		if v, want = r.FormValue("since"), "1"; v != want {
+			t.Errorf("Request since parameter = %v, want %v", v, want)
 		}
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -263,12 +260,12 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		if v = r.FormValue("sort"); v != "newest" {
-			t.Errorf("Request type parameter = %v, want %v", v, "newest")
+		if v, want = r.FormValue("sort"), "newest"; v != want {
+			t.Errorf("Request type parameter = %v, want %v", v, want)
 		}
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
@@ -300,12 +297,12 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "POST"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		if v = r.FormValue("organization"); v != "o" {
-			t.Errorf("Request type parameter = %v, want %v", v, "o")
+		if v, want = r.FormValue("organization"), "o"; v != want {
+			t.Errorf("Request type parameter = %v, want %v", v, want)
 		}
 		fmt.Fprint(w, `{"id":1}`)
 	})

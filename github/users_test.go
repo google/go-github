@@ -105,12 +105,12 @@ func TestUsersService_ListAll(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		var v string
+		var v, want string
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		if v = r.FormValue("since"); v != "1" {
-			t.Errorf("Request since parameter = %v, want %v", v, "1")
+		if v, want = r.FormValue("since"), "1"; v != want {
+			t.Errorf("Request since parameter = %v, want %v", v, want)
 		}
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
