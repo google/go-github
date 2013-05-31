@@ -328,3 +328,75 @@ func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
+
+func TestRepositoriesService_ListStatuses(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	statuses, err := client.Repositories.ListStatuses("o", "r", "r")
+	if err != nil {
+		t.Errorf("Repositories.ListStatuses returned error: %v", err)
+	}
+
+	want := []RepoStatus{RepoStatus{ID: 1}}
+	if !reflect.DeepEqual(statuses, want) {
+		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
+	}
+}
+
+func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.ListStatuses("%", "r", "r")
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
+func TestRepositoriesService_CreateStatus(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &RepoStatus{State: "s", TargetURL: "t", Description: "d"}
+
+	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RepoStatus)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	status, err := client.Repositories.CreateStatus("o", "r", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.CreateStatus returned error: %v", err)
+	}
+
+	want := &RepoStatus{ID: 1}
+	if !reflect.DeepEqual(status, want) {
+		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
+	}
+}
+
+func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.CreateStatus("%", "r", "r", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
