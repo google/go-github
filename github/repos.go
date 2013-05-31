@@ -240,3 +240,55 @@ func (s *RepositoriesService) CreateFork(owner, repo string, opt *RepositoryCrea
 	_, err = s.client.Do(req, fork)
 	return fork, err
 }
+
+// RepoStatus represents the status of a repository at a particular reference.
+type RepoStatus struct {
+	ID int `json:"id,omitempty"`
+
+	// State is the current state of the repository.  Possible values are:
+	// pending, success, error, or failure.
+	State string `json:"state,omitempty"`
+
+	// TargetURL is the URL of the page representing this status.  It will be
+	// linked from the GitHub UI to allow users to see the source of the status.
+	TargetURL string `json:"target_url,omitempty"`
+
+	// Description is a short high level summary of the status.
+	Description string `json:"description,omitempty"`
+
+	Creator   *User      `json:"creator,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
+// ListStatuses lists the statuses of a repository at the specified
+// reference.  ref can be a SHA, a branch name, or a tag name.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
+func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatus, error) {
+	url_ := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	req, err := s.client.NewRequest("GET", url_, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	statuses := new([]RepoStatus)
+	_, err = s.client.Do(req, statuses)
+	return *statuses, err
+}
+
+// CreateStatus creates a new status for a repository at the specified
+// reference.  Ref can be a SHA, a branch name, or a tag name.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/statuses/#create-a-status
+func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *RepoStatus) (*RepoStatus, error) {
+	url_ := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	req, err := s.client.NewRequest("POST", url_, status)
+	if err != nil {
+		return nil, err
+	}
+
+	statuses := new(RepoStatus)
+	_, err = s.client.Do(req, statuses)
+	return statuses, err
+}
