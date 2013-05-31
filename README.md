@@ -36,7 +36,7 @@ creating a new client, pass an `http.Client` that can handle authentication for
 you.  The easiest and recommended way to do this is using the [goauth2][]
 library, but you can always use any other library that provides an
 `http.Client`.  If you have an OAuth2 access token (for example, a [personal
-API token][]), you can use it with the goauth2 library like so:
+API token][]), you can use it with the goauth2 library like the following:
 
 ```go
 t := &oauth.Transport{
@@ -47,7 +47,7 @@ t := &oauth.Transport{
 client := github.NewClient(t.Client())
 
 // list all repositories for the authenticated user
-repos, err := client.Repositories.List(nil)
+repos, err := client.Repositories.List("", nil)
 ```
 
 See the [goauth2 docs][] for complete instructions on using that library.
