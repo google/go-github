@@ -49,6 +49,7 @@ package github
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -262,4 +263,80 @@ func (c *Client) RateLimit() (*Rate, error) {
 	response := new(rateResponse)
 	_, err = c.Do(req, response)
 	return response.Rate, err
+}
+
+/*
+
+If you need to make unauthenticated calls but need to use a higher rate limit
+associated with your OAuth application, you can use
+UnauthenticatedRateLimitedTransport:
+
+	t := &github.UnauthenticatedRateLimitedTransport{
+		ClientID:     "your app's client ID",
+		ClientSecret: "your app's client secret",
+	}
+	client := github.NewClient(t.Client())
+
+This will append the querystring params client_id=xxx&client_secret=yyy to all
+requests.
+
+See http://developer.github.com/v3/#unauthenticated-rate-limited-requests for
+more information.
+*/
+type UnauthenticatedRateLimitedTransport struct {
+	// Your application's Github OAuth2 client ID and secret, which can be
+	// found by browsing to your app from
+	// https://github.com/settings/applications.
+	ClientID, ClientSecret string
+
+	// Transport is the underlying HTTP transport to use when making requests.
+	// It will default to http.DefaultTransport if nil.
+	Transport http.RoundTripper
+}
+
+func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if t.ClientID == "" {
+		return nil, errors.New("ClientID is empty")
+	}
+	if t.ClientSecret == "" {
+		return nil, errors.New("ClientSecret is empty")
+	}
+
+	// To set extra querystring params, we must make a copy of the Request so
+	// that we don't modify the Request we were given. This is required by the
+	// specification of http.RoundTripper.
+	req = cloneRequest(req)
+	q := req.URL.Query()
+	q.Set("client_id", t.ClientID)
+	q.Set("client_secret", t.ClientSecret)
+	req.URL.RawQuery = q.Encode()
+
+	// Make the HTTP request.
+	return t.transport().RoundTrip(req)
+}
+
+// Client returns an *http.Client that makes OAuth-authenticated requests.
+func (t *UnauthenticatedRateLimitedTransport) Client() *http.Client {
+	return &http.Client{Transport: t}
+}
+
+func (t *UnauthenticatedRateLimitedTransport) transport() http.RoundTripper {
+	if t.Transport != nil {
+		return t.Transport
+	}
+	return http.DefaultTransport
+}
+
+// cloneRequest returns a clone of the provided *http.Request. The clone is a
+// shallow copy of the struct and its Header map.
+func cloneRequest(r *http.Request) *http.Request {
+	// shallow copy of the struct
+	r2 := new(http.Request)
+	*r2 = *r
+	// deep copy of the Header
+	r2.Header = make(http.Header)
+	for k, s := range r.Header {
+		r2.Header[k] = s
+	}
+	return r2
 }
