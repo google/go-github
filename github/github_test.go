@@ -292,3 +292,28 @@ func TestRateLimit(t *testing.T) {
 		t.Errorf("RateLimit returned %+v, want %+v", rate, want)
 	}
 }
+
+func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		var v, want string
+		q := r.URL.Query()
+		if v, want = q.Get("client_id"), "id"; v != want {
+			t.Errorf("OAuth Client ID = %v, want %v", v, want)
+		}
+		if v, want = q.Get("client_secret"), "secret"; v != want {
+			t.Errorf("OAuth Client Secret = %v, want %v", v, want)
+		}
+	})
+
+	tp := &UnauthenticatedRateLimitedTransport{
+		ClientID:     "id",
+		ClientSecret: "secret",
+	}
+	unauthedClient := NewClient(tp.Client())
+	unauthedClient.BaseURL = client.BaseURL
+	req, _ := unauthedClient.NewRequest("GET", "/", nil)
+	unauthedClient.Do(req, nil)
+}
