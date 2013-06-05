@@ -29,7 +29,6 @@ capable http.Client:
 	// simple OAuth transport if you already have an access token;
 	// see goauth2 library for full usage
 	t := &oauth.Transport{
-		Config: &oauth.Config{},
 		Token: &oauth.Token{AccessToken: "..."},
 	}
 
