@@ -40,7 +40,6 @@ API token][]), you can use it with the goauth2 library like the following:
 
 ```go
 t := &oauth.Transport{
-  Config: &oauth.Config{},
   Token: &oauth.Token{AccessToken: "... your access token ..."},
 }
 
