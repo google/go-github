@@ -41,7 +41,9 @@ again.
 
   1. Any significant changes should almost always be accompanied by tests.  The
      project already has good test coverage, so look at some of the existing
-     tests if you're unsure how to go about it.
+     tests if you're unsure how to go about it.  [gocov][] and [gocov-html][]
+     are invaluable tools for seeing which parts of your code aren't being
+     exercised by your tests.
 
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
@@ -56,6 +58,8 @@ again.
   1. Finally, push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
+[gocov]: https://github.com/axw/gocov
+[gocov-html]: https://github.com/matm/gocov-html
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [squash]: http://git-scm.com/book/en/Git-Tools-Rewriting-History#Squashing-Commits
 [pull request]: https://help.github.com/articles/creating-a-pull-request
