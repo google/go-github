@@ -1,10 +1,10 @@
-# How to contribute
+# How to contribute #
 
 We'd love to accept your patches and contributions to this project.  There are
 a just a few small guidelines you need to follow.
 
 
-## Contributor License Agreement
+## Contributor License Agreement ##
 
 Contributions to any Google project must be accompanied by a Contributor
 License Agreement.  This simply gives Google permission to use and redistribute
@@ -25,7 +25,7 @@ again.
 [corporate CLA]: https://developers.google.com/open-source/cla/corporate
 
 
-## Submitting a patch
+## Submitting a patch ##
 
   1. It's generally best to start by opening a new issue describing the bug or
      feature you're intending to fix.  Even if you think it's relatively minor,
@@ -47,8 +47,25 @@ again.
      This provides consistency throughout the project, and ensures that commit
      messages are able to be formatted properly by various git tools.
 
+  1. If you made lots of small commits in the process of developing your patch,
+     it's often helpful to [squash them into a single commit][squash].  For
+     larger patches, multiple commits may actually be clearer.  Just use your
+     best judgement, but be aware that the reviewer may ask you to squash them,
+     or just squash them herself before pushing your patch.
+
   1. Finally, push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[squash]: http://git-scm.com/book/en/Git-Tools-Rewriting-History#Squashing-Commits
 [pull request]: https://help.github.com/articles/creating-a-pull-request
+
+
+## Other notes on code organization ##
+
+Currently, everything is defined in the main `github` package, with API methods
+broken into separate service objects.  These services map directly to how
+the [GitHub API documentation][] is organized, so use that as your guide for
+where to put new methods.
+
+[GitHub API documentation]: http://developer.github.com/v3/
