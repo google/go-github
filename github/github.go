@@ -266,10 +266,8 @@ func (c *Client) RateLimit() (*Rate, error) {
 }
 
 /*
-
-If you need to make unauthenticated calls but need to use a higher rate limit
-associated with your OAuth application, you can use
-UnauthenticatedRateLimitedTransport:
+UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
+that need to use a higher rate limit associated with your OAuth application.
 
 	t := &github.UnauthenticatedRateLimitedTransport{
 		ClientID:     "your app's client ID",
@@ -284,10 +282,14 @@ See http://developer.github.com/v3/#unauthenticated-rate-limited-requests for
 more information.
 */
 type UnauthenticatedRateLimitedTransport struct {
-	// Your application's Github OAuth2 client ID and secret, which can be
-	// found by browsing to your app from
+	// ClientID is the GitHub OAuth client ID of the current application, which
+	// can be found by selecting its entry in the list at
 	// https://github.com/settings/applications.
-	ClientID, ClientSecret string
+	ClientID string
+
+	// ClientSecret is the GitHub OAuth client secret of the current
+	// application.
+	ClientSecret string
 
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
@@ -315,7 +317,8 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 	return t.transport().RoundTrip(req)
 }
 
-// Client returns an *http.Client that makes OAuth-authenticated requests.
+// Client returns an *http.Client that makes requests which are subject to the
+// rate limit of your OAuth application.
 func (t *UnauthenticatedRateLimitedTransport) Client() *http.Client {
 	return &http.Client{Transport: t}
 }
