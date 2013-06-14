@@ -101,9 +101,9 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 	return o, err
 }
 
-// List the members for an organization.  If the authenticated user is an owner
-// of the organization, this will return both concealed and public members,
-// otherwise it will only return public members.
+// ListMembers lists the members for an organization.  If the authenticated
+// user is an owner of the organization, this will return both concealed and
+// public members, otherwise it will only return public members.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
 func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
@@ -118,7 +118,7 @@ func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
 	return *members, err
 }
 
-// List the public members for an organization.
+// ListPublicMembers lists the public members for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#public-members-list
 func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
