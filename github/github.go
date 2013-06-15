@@ -87,6 +87,7 @@ type Client struct {
 
 	// Services used for talking to different parts of the API
 
+	Events        *EventsService
 	Issues        *IssuesService
 	Organizations *OrganizationsService
 	PullRequests  *PullRequestsService
@@ -114,6 +115,7 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
+	c.Events = &EventsService{client: c}
 	c.Issues = &IssuesService{client: c}
 	c.Organizations = &OrganizationsService{client: c}
 	c.PullRequests = &PullRequestsService{client: c}
