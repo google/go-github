@@ -56,11 +56,11 @@ type RepositoryListOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-user-repositories
 func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, error) {
-	var url_ string
+	var u string
 	if user != "" {
-		url_ = fmt.Sprintf("users/%v/repos", user)
+		u = fmt.Sprintf("users/%v/repos", user)
 	} else {
-		url_ = "user/repos"
+		u = "user/repos"
 	}
 	if opt != nil {
 		params := url.Values{
@@ -69,10 +69,10 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 			"direction": []string{opt.Direction},
 			"page":      []string{strconv.Itoa(opt.Page)},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", url_, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -97,16 +97,16 @@ type RepositoryListByOrgOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, error) {
-	url_ := fmt.Sprintf("orgs/%v/repos", org)
+	u := fmt.Sprintf("orgs/%v/repos", org)
 	if opt != nil {
 		params := url.Values{
 			"type": []string{opt.Type},
 			"page": []string{strconv.Itoa(opt.Page)},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", url_, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -127,15 +127,15 @@ type RepositoryListAllOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-all-repositories
 func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, error) {
-	url_ := "repositories"
+	u := "repositories"
 	if opt != nil {
 		params := url.Values{
 			"since": []string{strconv.Itoa(opt.Since)},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", url_, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -151,14 +151,14 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Reposito
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#create
 func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository, error) {
-	var url_ string
+	var u string
 	if org != "" {
-		url_ = fmt.Sprintf("orgs/%v/repos", org)
+		u = fmt.Sprintf("orgs/%v/repos", org)
 	} else {
-		url_ = "user/repos"
+		u = "user/repos"
 	}
 
-	req, err := s.client.NewRequest("POST", url_, repo)
+	req, err := s.client.NewRequest("POST", u, repo)
 	if err != nil {
 		return nil, err
 	}
@@ -172,8 +172,8 @@ func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository,
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#get
 func (s *RepositoriesService) Get(owner, repo string) (*Repository, error) {
-	url_ := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -194,15 +194,15 @@ type RepositoryListForksOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/forks/#list-forks
 func (s *RepositoriesService) ListForks(owner, repo string, opt *RepositoryListForksOptions) ([]Repository, error) {
-	url_ := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
 	if opt != nil {
 		params := url.Values{
 			"sort": []string{opt.Sort},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", url_, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -223,15 +223,15 @@ type RepositoryCreateForkOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/forks/#list-forks
 func (s *RepositoriesService) CreateFork(owner, repo string, opt *RepositoryCreateForkOptions) (*Repository, error) {
-	url_ := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
 	if opt != nil {
 		params := url.Values{
 			"organization": []string{opt.Organization},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("POST", url_, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -266,8 +266,8 @@ type RepoStatus struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatus, error) {
-	url_ := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -282,8 +282,8 @@ func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatu
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#create-a-status
 func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *RepoStatus) (*RepoStatus, error) {
-	url_ := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
-	req, err := s.client.NewRequest("POST", url_, status)
+	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	req, err := s.client.NewRequest("POST", u, status)
 	if err != nil {
 		return nil, err
 	}

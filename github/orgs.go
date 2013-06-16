@@ -48,20 +48,20 @@ type Team struct {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#list-user-organizations
 func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organization, error) {
-	var url_ string
+	var u string
 	if user != "" {
-		url_ = fmt.Sprintf("users/%v/orgs", user)
+		u = fmt.Sprintf("users/%v/orgs", user)
 	} else {
-		url_ = "user/orgs"
+		u = "user/orgs"
 	}
 	if opt != nil {
 		params := url.Values{
 			"page": []string{strconv.Itoa(opt.Page)},
 		}
-		url_ += "?" + params.Encode()
+		u += "?" + params.Encode()
 	}
 
-	req, err := s.client.NewRequest("GET", url_, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -75,8 +75,8 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organizati
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#get-an-organization
 func (s *OrganizationsService) Get(org string) (*Organization, error) {
-	url_ := fmt.Sprintf("orgs/%v", org)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v", org)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +90,8 @@ func (s *OrganizationsService) Get(org string) (*Organization, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#edit-an-organization
 func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, error) {
-	url_ := fmt.Sprintf("orgs/%v", name)
-	req, err := s.client.NewRequest("PATCH", url_, org)
+	u := fmt.Sprintf("orgs/%v", name)
+	req, err := s.client.NewRequest("PATCH", u, org)
 	if err != nil {
 		return nil, err
 	}
@@ -107,8 +107,8 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
 func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
-	url_ := fmt.Sprintf("orgs/%v/members", org)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v/members", org)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -122,8 +122,8 @@ func (s *OrganizationsService) ListMembers(org string) ([]User, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#public-members-list
 func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
-	url_ := fmt.Sprintf("orgs/%v/public_members", org)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v/public_members", org)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -137,8 +137,8 @@ func (s *OrganizationsService) ListPublicMembers(org string) ([]User, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#check-membership
 func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
-	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, err
 	}
@@ -151,8 +151,8 @@ func (s *OrganizationsService) CheckMembership(org, user string) (bool, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#check-public-membership
 func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, error) {
-	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, err
 	}
@@ -165,8 +165,8 @@ func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, er
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#remove-a-member
 func (s *OrganizationsService) RemoveMember(org, user string) error {
-	url_ := fmt.Sprintf("orgs/%v/members/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
+	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
@@ -179,8 +179,8 @@ func (s *OrganizationsService) RemoveMember(org, user string) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#publicize-a-users-membership
 func (s *OrganizationsService) PublicizeMembership(org, user string) error {
-	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("PUT", url_, nil)
+	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return err
 	}
@@ -193,8 +193,8 @@ func (s *OrganizationsService) PublicizeMembership(org, user string) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#conceal-a-users-membership
 func (s *OrganizationsService) ConcealMembership(org, user string) error {
-	url_ := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
+	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
@@ -207,8 +207,8 @@ func (s *OrganizationsService) ConcealMembership(org, user string) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
 func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
-	url_ := fmt.Sprintf("orgs/%v/teams", org)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("orgs/%v/teams", org)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -222,8 +222,8 @@ func (s *OrganizationsService) ListTeams(org string) ([]Team, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team
 func (s *OrganizationsService) GetTeam(team int) (*Team, error) {
-	url_ := fmt.Sprintf("teams/%v", team)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("teams/%v", team)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -237,8 +237,8 @@ func (s *OrganizationsService) GetTeam(team int) (*Team, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#create-team
 func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, error) {
-	url_ := fmt.Sprintf("orgs/%v/teams", org)
-	req, err := s.client.NewRequest("POST", url_, team)
+	u := fmt.Sprintf("orgs/%v/teams", org)
+	req, err := s.client.NewRequest("POST", u, team)
 	if err != nil {
 		return nil, err
 	}
@@ -252,8 +252,8 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, error)
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#edit-team
 func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, error) {
-	url_ := fmt.Sprintf("teams/%v", id)
-	req, err := s.client.NewRequest("PATCH", url_, team)
+	u := fmt.Sprintf("teams/%v", id)
+	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +267,8 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#delete-team
 func (s *OrganizationsService) DeleteTeam(team int) error {
-	url_ := fmt.Sprintf("teams/%v", team)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
+	u := fmt.Sprintf("teams/%v", team)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
@@ -282,8 +282,8 @@ func (s *OrganizationsService) DeleteTeam(team int) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-members
 func (s *OrganizationsService) ListTeamMembers(team int) ([]User, error) {
-	url_ := fmt.Sprintf("teams/%v/members", team)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("teams/%v/members", team)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -297,8 +297,8 @@ func (s *OrganizationsService) ListTeamMembers(team int) ([]User, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-member
 func (s *OrganizationsService) CheckTeamMembership(team int, user string) (bool, error) {
-	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, err
 	}
@@ -311,8 +311,8 @@ func (s *OrganizationsService) CheckTeamMembership(team int, user string) (bool,
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-member
 func (s *OrganizationsService) AddTeamMember(team int, user string) error {
-	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("PUT", url_, nil)
+	u := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return err
 	}
@@ -325,8 +325,8 @@ func (s *OrganizationsService) AddTeamMember(team int, user string) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#remove-team-member
 func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
-	url_ := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
+	u := fmt.Sprintf("teams/%v/members/%v", team, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
@@ -339,8 +339,8 @@ func (s *OrganizationsService) RemoveTeamMember(team int, user string) error {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-repos
 func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, error) {
-	url_ := fmt.Sprintf("teams/%v/repos", team)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("teams/%v/repos", team)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -354,8 +354,8 @@ func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, error) {
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-repo
 func (s *OrganizationsService) CheckTeamRepo(team int, owner string, repo string) (bool, error) {
-	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
-	req, err := s.client.NewRequest("GET", url_, nil)
+	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return false, err
 	}
@@ -370,8 +370,8 @@ func (s *OrganizationsService) CheckTeamRepo(team int, owner string, repo string
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-repo
 func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string) error {
-	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
-	req, err := s.client.NewRequest("PUT", url_, nil)
+	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return err
 	}
@@ -386,8 +386,8 @@ func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string) 
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#remove-team-repo
 func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo string) error {
-	url_ := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
-	req, err := s.client.NewRequest("DELETE", url_, nil)
+	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return err
 	}
