@@ -317,3 +317,44 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	req, _ := unauthedClient.NewRequest("GET", "/", nil)
 	unauthedClient.Do(req, nil)
 }
+
+func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
+	// missing ClientID
+	tp := &UnauthenticatedRateLimitedTransport{
+		ClientSecret: "secret",
+	}
+	_, err := tp.RoundTrip(nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+
+	// missing ClientSecret
+	tp = &UnauthenticatedRateLimitedTransport{
+		ClientID: "id",
+	}
+	_, err = tp.RoundTrip(nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+}
+
+func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
+	// default transport
+	tp := &UnauthenticatedRateLimitedTransport{
+		ClientID:     "id",
+		ClientSecret: "secret",
+	}
+	if tp.transport() != http.DefaultTransport {
+		t.Errorf("Expected http.DefaultTransport to be used.")
+	}
+
+	// custom transport
+	tp = &UnauthenticatedRateLimitedTransport{
+		ClientID:     "id",
+		ClientSecret: "secret",
+		Transport: &http.Transport{},
+	}
+	if tp.transport() == http.DefaultTransport {
+		t.Errorf("Expected custom transport to be used.")
+	}
+}
