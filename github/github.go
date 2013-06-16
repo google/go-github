@@ -105,18 +105,18 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
-// NewRequest creates an API request. A relative URL can be provided in urls,
+// NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash.  If
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
-func (c *Client) NewRequest(method, urls string, body interface{}) (*http.Request, error) {
-	rel, err := url.Parse(urls)
+func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
+	rel, err := url.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
 
-	url_ := c.BaseURL.ResolveReference(rel)
+	u := c.BaseURL.ResolveReference(rel)
 
 	buf := new(bytes.Buffer)
 	if body != nil {
@@ -126,7 +126,7 @@ func (c *Client) NewRequest(method, urls string, body interface{}) (*http.Reques
 		}
 	}
 
-	req, err := http.NewRequest(method, url_.String(), buf)
+	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
