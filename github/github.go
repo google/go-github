@@ -295,6 +295,7 @@ type UnauthenticatedRateLimitedTransport struct {
 	Transport http.RoundTripper
 }
 
+// RoundTrip implements the RoundTripper interface.
 func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.ClientID == "" {
 		return nil, errors.New("ClientID is empty")
