@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
 	"testing"
 )
@@ -20,9 +19,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -42,14 +39,9 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
-		if v, want = r.FormValue("page"), "2"; v != want {
-			t.Errorf("Request page parameter = %v, want %v", v, want)
-		}
 	})
 
 	opt := &ListOptions{2}
@@ -66,12 +58,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
 	_, err := client.Organizations.List("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_Get(t *testing.T) {
@@ -79,9 +66,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
@@ -98,12 +83,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.Get("%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_Edit(t *testing.T) {
@@ -116,9 +96,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		v := new(Organization)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "PATCH"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -139,12 +117,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.Edit("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListMembers(t *testing.T) {
@@ -152,9 +125,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -171,12 +142,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.ListMembers("%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListPublicMembers(t *testing.T) {
@@ -184,9 +150,7 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -203,12 +167,7 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 
 func TestOrganizationsService_ListPublicMembers_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.ListPublicMembers("%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_CheckMembership(t *testing.T) {
@@ -216,9 +175,7 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -226,8 +183,7 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckMembership returned error: %v", err)
 	}
-	want := true
-	if member != want {
+	if want := true; member != want {
 		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -238,9 +194,7 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -248,8 +202,7 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckMembership returned error: %+v", err)
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -261,9 +214,7 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
@@ -271,20 +222,14 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
 	}
 }
 
 func TestOrganizationsService_CheckMembership_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.CheckMembership("%", "u")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
@@ -292,9 +237,7 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -302,8 +245,7 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
 	}
-	want := true
-	if member != want {
+	if want := true; member != want {
 		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -314,9 +256,7 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -324,8 +264,7 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -337,9 +276,7 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
@@ -347,20 +284,14 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
 	}
 }
 
 func TestOrganizationsService_CheckPublicMembership_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.CheckPublicMembership("%", "u")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_RemoveMember(t *testing.T) {
@@ -368,9 +299,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "DELETE"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "DELETE")
 	})
 
 	err := client.Organizations.RemoveMember("o", "u")
@@ -381,12 +310,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 
 func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 	err := client.Organizations.RemoveMember("%", "u")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListTeams(t *testing.T) {
@@ -394,9 +318,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -413,12 +335,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 
 func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.ListTeams("%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetTeam(t *testing.T) {
@@ -426,9 +343,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1, "name":"n", "url":"u", "slug": "s", "permission":"p"}`)
 	})
 
@@ -453,9 +368,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		v := new(Team)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -476,12 +389,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 
 func TestOrganizationsService_CreateTeam_invalidOrg(t *testing.T) {
 	_, err := client.Organizations.CreateTeam("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_EditTeam(t *testing.T) {
@@ -494,9 +402,7 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		v := new(Team)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "PATCH"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -520,9 +426,7 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		if m := "DELETE"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "DELETE")
 	})
 
 	err := client.Organizations.DeleteTeam(1)
@@ -536,9 +440,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -558,17 +460,14 @@ func TestOrganizationsService_CheckTeamMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 	})
 
 	member, err := client.Organizations.CheckTeamMembership(1, "u")
 	if err != nil {
 		t.Errorf("Organizations.CheckTeamMembership returned error: %v", err)
 	}
-	want := true
-	if member != want {
+	if want := true; member != want {
 		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -579,9 +478,7 @@ func TestOrganizationsService_CheckTeamMembership_notMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -589,8 +486,7 @@ func TestOrganizationsService_CheckTeamMembership_notMember(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckTeamMembership returned error: %+v", err)
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
 	}
 }
@@ -602,9 +498,7 @@ func TestOrganizationsService_CheckTeamMembership_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
@@ -612,20 +506,14 @@ func TestOrganizationsService_CheckTeamMembership_error(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-	want := false
-	if member != want {
+	if want := false; member != want {
 		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
 	}
 }
 
 func TestOrganizationsService_CheckMembership_invalidUser(t *testing.T) {
 	_, err := client.Organizations.CheckTeamMembership(1, "%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_AddTeamMember(t *testing.T) {
@@ -633,9 +521,7 @@ func TestOrganizationsService_AddTeamMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "PUT"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -647,12 +533,7 @@ func TestOrganizationsService_AddTeamMember(t *testing.T) {
 
 func TestOrganizationsService_AddTeamMember_invalidUser(t *testing.T) {
 	err := client.Organizations.AddTeamMember(1, "%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
@@ -660,9 +541,7 @@ func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "DELETE"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -674,12 +553,7 @@ func TestOrganizationsService_RemoveTeamMember(t *testing.T) {
 
 func TestOrganizationsService_RemoveTeamMember_invalidUser(t *testing.T) {
 	err := client.Organizations.RemoveTeamMember(1, "%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_PublicizeMembership(t *testing.T) {
@@ -687,9 +561,7 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "PUT"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -701,12 +573,7 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 
 func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
 	err := client.Organizations.PublicizeMembership("%", "u")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ConcealMembership(t *testing.T) {
@@ -714,9 +581,7 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "DELETE"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -728,12 +593,7 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 
 func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
 	err := client.Organizations.ConcealMembership("%", "u")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListTeamRepos(t *testing.T) {
@@ -741,9 +601,7 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -763,9 +621,7 @@ func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -773,8 +629,7 @@ func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
 	}
-	want := true
-	if managed != want {
+	if want := true; managed != want {
 		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
@@ -784,9 +639,7 @@ func TestOrganizationsService_CheckTeamRepo_false(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -794,8 +647,7 @@ func TestOrganizationsService_CheckTeamRepo_false(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
 	}
-	want := false
-	if managed != want {
+	if want := false; managed != want {
 		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
@@ -805,9 +657,7 @@ func TestOrganizationsService_CheckTeamRepo_error(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
@@ -815,20 +665,14 @@ func TestOrganizationsService_CheckTeamRepo_error(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-	want := false
-	if managed != want {
+	if want := false; managed != want {
 		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
 
 func TestOrganizationsService_CheckTeamRepo_invalidOwner(t *testing.T) {
 	_, err := client.Organizations.CheckTeamRepo(1, "%", "r")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_AddTeamRepo(t *testing.T) {
@@ -836,9 +680,7 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "PUT"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -853,9 +695,7 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "PUT"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PUT")
 		w.WriteHeader(422)
 	})
 
@@ -867,12 +707,7 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 
 func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
 	err := client.Organizations.AddTeamRepo(1, "%", "r")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
@@ -880,9 +715,7 @@ func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "DELETE"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -894,10 +727,5 @@ func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
 
 func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
 	err := client.Organizations.RemoveTeamRepo(1, "%", "r")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
