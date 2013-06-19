@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
 	"testing"
 )
@@ -20,9 +19,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -42,22 +39,13 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("type"), "owner"; v != want {
-			t.Errorf("Request type parameter = %v, want %v", v, want)
-		}
-		if v, want = r.FormValue("sort"), "created"; v != want {
-			t.Errorf("Request sort parameter = %v, want %v", v, want)
-		}
-		if v, want = r.FormValue("direction"), "asc"; v != want {
-			t.Errorf("Request direction parameter = %v, want %v", v, want)
-		}
-		if v, want = r.FormValue("page"), "2"; v != want {
-			t.Errorf("Request page parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"type":      "owner",
+			"sort":      "created",
+			"direction": "asc",
+			"page":      "2",
+		})
 
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -76,12 +64,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 
 func TestRepositoriesService_List_invalidUser(t *testing.T) {
 	_, err := client.Repositories.List("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_ListByOrg(t *testing.T) {
@@ -89,16 +72,11 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("type"), "forks"; v != want {
-			t.Errorf("Request type parameter = %v, want %v", v, want)
-		}
-		if v, want = r.FormValue("page"), "2"; v != want {
-			t.Errorf("Request page parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"type": "forks",
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -116,12 +94,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 
 func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 	_, err := client.Repositories.ListByOrg("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_ListAll(t *testing.T) {
@@ -129,13 +102,8 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("since"), "1"; v != want {
-			t.Errorf("Request since parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"since": "1"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -161,9 +129,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		v := new(Repository)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -192,9 +158,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		v := new(Repository)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -215,12 +179,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 
 func TestRepositoriesService_Create_invalidOrg(t *testing.T) {
 	_, err := client.Repositories.Create("%", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_Get(t *testing.T) {
@@ -228,9 +187,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"}}`)
 	})
 
@@ -247,12 +204,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.Get("%", "r")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_ListForks(t *testing.T) {
@@ -260,13 +212,8 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("sort"), "newest"; v != want {
-			t.Errorf("Request type parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"sort": "newest"})
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -284,12 +231,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 
 func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.ListForks("%", "r", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_CreateFork(t *testing.T) {
@@ -297,13 +239,8 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("organization"), "o"; v != want {
-			t.Errorf("Request type parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "POST")
+		testFormValues(t, r, values{"organization": "o"})
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -321,12 +258,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.CreateFork("%", "r", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_ListStatuses(t *testing.T) {
@@ -334,9 +266,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -353,12 +283,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.ListStatuses("%", "r", "r")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_CreateStatus(t *testing.T) {
@@ -371,9 +296,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		v := new(RepoStatus)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -393,10 +316,5 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.CreateStatus("%", "r", "r", nil)
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }

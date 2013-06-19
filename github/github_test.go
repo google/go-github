@@ -47,6 +47,31 @@ func teardown() {
 	server.Close()
 }
 
+func testMethod(t *testing.T, r *http.Request, want string) {
+	if want != r.Method {
+		t.Errorf("Request method = %v, want %v", r.Method, want)
+	}
+}
+
+type values map[string]string
+
+func testFormValues(t *testing.T, r *http.Request, values values) {
+	for key, want := range values {
+		if v := r.FormValue(key); v != want {
+			t.Errorf("Request parameter %v = %v, want %v", key, v, want)
+		}
+	}
+}
+
+func testURLParseError(t *testing.T, err error) {
+	if err == nil {
+		t.Errorf("Expected error to be returned")
+	}
+	if err, ok := err.(*url.Error); !ok || err.Op != "parse" {
+		t.Errorf("Expected URL parse error, got %+v", err)
+	}
+}
+
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 
@@ -102,12 +127,7 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 func TestNewRequest_badURL(t *testing.T) {
 	c := NewClient(nil)
 	_, err := c.NewRequest("GET", ":", nil)
-	if err == nil {
-		t.Error("Expected error to be returned.")
-	}
-	if err, ok := err.(*url.Error); !ok || err.Op != "parse" {
-		t.Errorf("Expected a URL parsing error; got %+v.", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestDo(t *testing.T) {
@@ -352,7 +372,7 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	tp = &UnauthenticatedRateLimitedTransport{
 		ClientID:     "id",
 		ClientSecret: "secret",
-		Transport: &http.Transport{},
+		Transport:    &http.Transport{},
 	}
 	if tp.transport() == http.DefaultTransport {
 		t.Errorf("Expected custom transport to be used.")

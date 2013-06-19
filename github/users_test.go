@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
 	"testing"
 )
@@ -20,9 +19,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -42,9 +39,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -61,12 +56,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
 	_, err := client.Users.Get("%")
-	if err == nil {
-		t.Errorf("Expected error to be returned")
-	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected URL parse error, got %+v", err)
-	}
+	testURLParseError(t, err)
 }
 
 func TestUsersService_Edit(t *testing.T) {
@@ -79,9 +69,7 @@ func TestUsersService_Edit(t *testing.T) {
 		v := new(User)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "PATCH"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -105,13 +93,8 @@ func TestUsersService_ListAll(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		if v, want = r.FormValue("since"), "1"; v != want {
-			t.Errorf("Request since parameter = %v, want %v", v, want)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"since": "1"})
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
