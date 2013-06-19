@@ -455,7 +455,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 	}
 }
 
-func TestOrganizationsService_CheckTeamMembership(t *testing.T) {
+func TestOrganizationsService_CheckTeamMembership_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -473,7 +473,7 @@ func TestOrganizationsService_CheckTeamMembership(t *testing.T) {
 }
 
 // ensure that a 404 response is interpreted as "false" and not an error
-func TestOrganizationsService_CheckTeamMembership_notMember(t *testing.T) {
+func TestOrganizationsService_CheckTeamMembership_false(t *testing.T) {
 	setup()
 	defer teardown()
 
