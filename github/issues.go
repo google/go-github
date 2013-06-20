@@ -49,11 +49,26 @@ type IssueComment struct {
 // IssueListOptions specifies the optional parameters to the IssuesService.List
 // and IssuesService.ListByOrg methods.
 type IssueListOptions struct {
+	// Filter specifies which issues to list.  Possible values are: assigned,
+	// created, mentioned, subscribed, all.  Default is "assigned".
 	Filter    string
+
+	// State filters issues based on their state.  Possible values are: open,
+	// closed.  Default is "open".
 	State     string
+
+	// Labels filters issues based on their label.
 	Labels    []string
+
+	// Sort specifies how to sort issues.  Possible values are: created, updated,
+	// and comments.  Default value is "assigned".
 	Sort      string
+
+	// Direction in which to sort issues.  Possible values are: asc, desc.
+	// Default is "asc".
 	Direction string
+
+	// Since filters issues by time.
 	Since     time.Time
 }
 
@@ -108,16 +123,40 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, er
 }
 
 // IssueListByRepoOptions specifies the optional parameters to the
-// IssuesService.List and IssuesService.ListByOrg methods.
+// IssuesService.ListByRepo method.
 type IssueListByRepoOptions struct {
+	// Milestone limits issues for the specified milestone.  Possible values are
+	// a milestone number, "none" for issues with no milestone, "*" for issues
+	// with any milestone.
 	Milestone string
+
+	// State filters issues based on their state.  Possible values are: open,
+	// closed.  Default is "open".
 	State     string
+
+	// Assignee filters issues based on their assignee.  Possible values are a
+	// user name, "none" for issues that are not assigned, "*" for issues with
+	// any assigned user.
 	Assignee  string
+
+	// Assignee filters issues based on their creator.
 	Creator   string
+
+	// Assignee filters issues to those mentioned a specific user.
 	Mentioned string
+
+	// Labels filters issues based on their label.
 	Labels    []string
+
+	// Sort specifies how to sort issues.  Possible values are: created, updated,
+	// and comments.  Default value is "assigned".
 	Sort      string
+
+	// Direction in which to sort issues.  Possible values are: asc, desc.
+	// Default is "asc".
 	Direction string
+
+	// Since filters issues by time.
 	Since     time.Time
 }
 
