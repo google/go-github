@@ -315,10 +315,18 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"sort":      "updated",
+			"direction": "desc",
+			"since":     "2002-02-10T15:30:00Z",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	comments, err := client.Issues.ListComments("o", "r", 0)
+	opt := &IssueListCommentsOptions{"updated", "desc",
+		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+	}
+	comments, err := client.Issues.ListComments("o", "r", 0, opt)
 	if err != nil {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
@@ -338,7 +346,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	comments, err := client.Issues.ListComments("o", "r", 1)
+	comments, err := client.Issues.ListComments("o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
@@ -350,7 +358,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 }
 
 func TestIssuesService_ListComments_invalidOwner(t *testing.T) {
-	_, err := client.Issues.ListComments("%", "r", 1)
+	_, err := client.Issues.ListComments("%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
