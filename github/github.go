@@ -78,6 +78,7 @@ type Client struct {
 
 	Issues        *IssuesService
 	Organizations *OrganizationsService
+	PullRequests  *PullRequestsService
 	Repositories  *RepositoriesService
 	Users         *UsersService
 }
@@ -102,6 +103,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
 	c.Issues = &IssuesService{client: c}
 	c.Organizations = &OrganizationsService{client: c}
+	c.PullRequests = &PullRequestsService{client: c}
 	c.Repositories = &RepositoriesService{client: c}
 	c.Users = &UsersService{client: c}
 	return c

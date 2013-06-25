@@ -51,25 +51,25 @@ type IssueComment struct {
 type IssueListOptions struct {
 	// Filter specifies which issues to list.  Possible values are: assigned,
 	// created, mentioned, subscribed, all.  Default is "assigned".
-	Filter    string
+	Filter string
 
 	// State filters issues based on their state.  Possible values are: open,
 	// closed.  Default is "open".
-	State     string
+	State string
 
 	// Labels filters issues based on their label.
-	Labels    []string
+	Labels []string
 
 	// Sort specifies how to sort issues.  Possible values are: created, updated,
 	// and comments.  Default value is "assigned".
-	Sort      string
+	Sort string
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
 	// Default is "asc".
 	Direction string
 
 	// Since filters issues by time.
-	Since     time.Time
+	Since time.Time
 }
 
 // List the issues for the authenticated user.  If all is true, list issues
@@ -132,32 +132,32 @@ type IssueListByRepoOptions struct {
 
 	// State filters issues based on their state.  Possible values are: open,
 	// closed.  Default is "open".
-	State     string
+	State string
 
 	// Assignee filters issues based on their assignee.  Possible values are a
 	// user name, "none" for issues that are not assigned, "*" for issues with
 	// any assigned user.
-	Assignee  string
+	Assignee string
 
 	// Assignee filters issues based on their creator.
-	Creator   string
+	Creator string
 
 	// Assignee filters issues to those mentioned a specific user.
 	Mentioned string
 
 	// Labels filters issues based on their label.
-	Labels    []string
+	Labels []string
 
 	// Sort specifies how to sort issues.  Possible values are: created, updated,
 	// and comments.  Default value is "assigned".
-	Sort      string
+	Sort string
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
 	// Default is "asc".
 	Direction string
 
 	// Since filters issues by time.
-	Since     time.Time
+	Since time.Time
 }
 
 // ListByRepo lists the issues for the specified repository.
@@ -262,16 +262,40 @@ func (s *IssuesService) CheckAssignee(owner string, repo string, user string) (b
 	return parseBoolResponse(err)
 }
 
+// IssueListCommentsOptions specifies the optional parameters to the
+// IssuesService.ListComments method.
+type IssueListCommentsOptions struct {
+	// Sort specifies how to sort comments.  Possible values are: created, updated.
+	Sort string
+
+	// Direction in which to sort comments.  Possible values are: asc, desc.
+	Direction string
+
+	// Since filters comments by time.
+	Since time.Time
+}
+
 // ListComments lists all comments on the specified issue.  Specifying an issue
 // number of 0 will return all comments on all issues for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
-func (s *IssuesService) ListComments(owner string, repo string, number int) ([]IssueComment, error) {
+func (s *IssuesService) ListComments(owner string, repo string, number int, opt *IssueListCommentsOptions) ([]IssueComment, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
+	}
+
+	if opt != nil {
+		params := url.Values{
+			"sort":      {opt.Sort},
+			"direction": {opt.Direction},
+		}
+		if !opt.Since.IsZero() {
+			params.Add("since", opt.Since.Format(time.RFC3339))
+		}
+		u += "?" + params.Encode()
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -326,7 +350,7 @@ func (s *IssuesService) EditComment(owner string, repo string, id int, comment *
 	return c, err
 }
 
-// DeleteComment updates an issue comment.
+// DeleteComment deletes an issue comment.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#delete-a-comment
 func (s *IssuesService) DeleteComment(owner string, repo string, id int) error {
@@ -335,7 +359,6 @@ func (s *IssuesService) DeleteComment(owner string, repo string, id int) error {
 	if err != nil {
 		return err
 	}
-
 	_, err = s.client.Do(req, nil)
 	return err
 }
