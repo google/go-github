@@ -40,7 +40,7 @@ type Issue struct {
 // IssueComment represents a comment left on an issue.
 type IssueComment struct {
 	ID        int        `json:"id,omitempty"`
-	Body      string     `json:"body:omitempty"`
+	Body      string     `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
