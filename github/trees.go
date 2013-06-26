@@ -21,8 +21,8 @@ type TreesService struct {
 }
 
 type Tree struct {
-	SHA   string `json:"sha,omitempty"`
-	URL   string `json:"url,omitempty"`
+	SHA   string    `json:"sha,omitempty"`
+	URL   string    `json:"url,omitempty"`
 	Trees []GitTree `json:"tree,omitempty"`
 }
 
@@ -87,7 +87,7 @@ func (s *TreesService) List(user string, repo string, sha string, opt *TreeListO
 }
 
 type CreateTree struct {
-	BaseTree string `json:base_tree`
+	BaseTree string    `json:base_tree`
 	Tree     []GitTree `json:tree`
 }
 
