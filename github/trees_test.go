@@ -52,11 +52,11 @@ func TestTreesService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Trees.List returned error: %v", err)
 	}
 
-	want := TreeResponse{
+	want := Tree{
 		SHA: `9fb037999f264ba9a7fc6274d15fa3ae2ab98312`,
 		URL: `https://api.github.com/repos/octocat/Hello-World/trees/9fb037999f264ba9a7fc6274d15fa3ae2ab98312`,
-		Trees: []Tree{
-			Tree{
+		Trees: []GitTree{
+			GitTree{
 				Path: "file.rb",
 				Mode: "100644",
 				Type: "blob",
@@ -64,7 +64,7 @@ func TestTreesService_List_authenticatedUser(t *testing.T) {
 				SHA:  "44b4fc6d56897b048c772eb4087f854f46256132",
 				URL:  "https://api.github.com/repos/octocat/Hello-World/git/blobs/44b4fc6d56897b048c772eb4087f854f46256132",
 			},
-			Tree{
+			GitTree{
 				Path: "subdir",
 				Mode: "040000",
 				Type: "tree",
@@ -86,8 +86,8 @@ func TestTreesService_Create_authenticatedUser(t *testing.T) {
 
 	input := &CreateTree{
 		BaseTree: "9fb037999f264ba9a7fc6274d15fa3ae2ab98312",
-		Tree: []Tree{
-			Tree{
+		Tree: []GitTree{
+			GitTree{
 				Path: "file.rb",
 				Mode: "100644",
 				Type: "blob",
@@ -129,10 +129,10 @@ func TestTreesService_Create_authenticatedUser(t *testing.T) {
 		t.Errorf("Trees.Create returned error: %v", err)
 	}
 
-	want := TreeResponse{
+	want := Tree{
 		SHA: "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
 		URL: "https://api.github.com/repo/octocat/Hello-World/trees/cd8274d15fa3ae2ab983129fb037999f264ba9a7",
-		Trees: []Tree{
+		Trees: []GitTree{
 			{
 				Path: "file.rb",
 				Mode: "100644",

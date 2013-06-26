@@ -20,20 +20,20 @@ type TreesService struct {
 	client *Client
 }
 
-type TreeResponse struct {
+type Tree struct {
 	SHA   string `json:"sha,omitempty"`
 	URL   string `json:"url,omitempty"`
-	Trees []Tree `json:"tree,omitempty"`
+	Trees []GitTree `json:"tree,omitempty"`
 }
 
 // Tree represents a Git tree.
-type Tree struct {
+type GitTree struct {
+	SHA  string `json:"sha,omitempty"`
+	URL  string `json:"url,omitempty"`
 	Path string `json:"path,omitempty"`
 	Mode string `json:"mode,omitempty"`
 	Type string `json:"type,omitempty"`
 	Size int    `json:"size,omitempty"`
-	SHA  string `json:"sha,omitempty"`
-	URL  string `json:"url,omitempty"`
 }
 
 // TreeListOptions specifies the optional parameters to the
@@ -63,7 +63,7 @@ type TreeListOptions struct {
 // Get the Tree object for a given sha hash from a users repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
-func (s *TreesService) List(user string, repo string, sha string, opt *TreeListOptions) (*TreeResponse, error) {
+func (s *TreesService) List(user string, repo string, sha string, opt *TreeListOptions) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
 	if opt != nil {
@@ -81,14 +81,14 @@ func (s *TreesService) List(user string, repo string, sha string, opt *TreeListO
 		return nil, err
 	}
 
-	var response TreeResponse
+	var response Tree
 	_, err = s.client.Do(req, &response)
 	return &response, err
 }
 
 type CreateTree struct {
 	BaseTree string `json:base_tree`
-	Tree     []Tree `json:tree`
+	Tree     []GitTree `json:tree`
 }
 
 // Create a new Tree.  If an organization is specified, the new
@@ -96,7 +96,7 @@ type CreateTree struct {
 // specified, it will be created for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#create
-func (s *TreesService) Create(user string, repo string, sha string, create *CreateTree) (*TreeResponse, error) {
+func (s *TreesService) Create(user string, repo string, sha string, create *CreateTree) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
 	req, err := s.client.NewRequest("POST", url_, create)
@@ -104,7 +104,7 @@ func (s *TreesService) Create(user string, repo string, sha string, create *Crea
 		return nil, err
 	}
 
-	r := new(TreeResponse)
+	r := new(Tree)
 	_, err = s.client.Do(req, r)
 	return r, err
 }
