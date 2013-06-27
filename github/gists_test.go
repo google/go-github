@@ -72,7 +72,7 @@ func TestGistsService_ListAll(t *testing.T) {
 		testFormValues(t, r, values{
 			"since": since,
 		})
-		fmt.Fprint(w, `[{"url": "https://api.github.com/gists/1", "id": "1"}]`)
+		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
 	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
@@ -99,7 +99,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 		testFormValues(t, r, values{
 			"since": since,
 		})
-		fmt.Fprint(w, `[{"url": "https://api.github.com/gists/1", "id": "1"}]`)
+		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
 	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
