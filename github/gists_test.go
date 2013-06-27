@@ -26,7 +26,7 @@ func TestGistsService_List(t *testing.T) {
 		testFormValues(t, r, values{
 			"since": since.Format(time.RFC3339),
 		})
-		fmt.Fprint(w, `[{"url": "https://api.github.com/gists/1", "id": "1"}]`)
+		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
 	opt := &GistListOptions{since}
@@ -36,7 +36,7 @@ func TestGistsService_List(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []Gist{Gist{URL: "https://api.github.com/gists/1", ID: "1"}}
+	want := []Gist{Gist{ID: "1"}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -63,7 +63,7 @@ func TestGistsService_ListAll(t *testing.T) {
 		t.Errorf("Gists.ListAll returned error: %v", err)
 	}
 
-	want := []Gist{Gist{URL: "https://api.github.com/gists/1", ID: "1"}}
+	want := []Gist{Gist{ID: "1"}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
@@ -90,7 +90,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 		t.Errorf("Gists.ListStarred returned error: %v", err)
 	}
 
-	want := []Gist{Gist{URL: "https://api.github.com/gists/1", ID: "1"}}
+	want := []Gist{Gist{ID: "1"}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}
@@ -102,7 +102,7 @@ func TestGistsService_Get(t *testing.T) {
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"url": "https://api.github.com/gists/1", "id": "1"}`)
+		fmt.Fprint(w, `{"id": "1"}`)
 	})
 
 	gist, err := client.Gists.Get("1")
@@ -111,7 +111,7 @@ func TestGistsService_Get(t *testing.T) {
 		t.Errorf("Gists.Get returned error: %v", err)
 	}
 
-	want := &Gist{URL: "https://api.github.com/gists/1", ID: "1"}
+	want := &Gist{ID: "1"}
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
@@ -141,7 +141,6 @@ func TestGistsService_Create(t *testing.T) {
 		fmt.Fprint(w,
 			`
 			{
-				"url": "https://api.github.com/gists/1",
 				"id": "1",
 				"description": "Gist description",
 				"public": false,
@@ -159,7 +158,6 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	want := &Gist{
-		URL: "https://api.github.com/gists/1",
 		ID: "1",
 		Description: "Gist description",
 		Public: false,
@@ -195,7 +193,6 @@ func TestGistsService_Edit(t *testing.T) {
 		fmt.Fprint(w,
 			`
 			{
-				"url": "https://api.github.com/gists/1",
 				"id": "1",
 				"description": "new description",
 				"public": false,
@@ -216,7 +213,6 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 
 	want := &Gist{
-		URL: "https://api.github.com/gists/1",
 		ID: "1",
 		Description: "new description",
 		Public: false,
@@ -314,7 +310,7 @@ func TestGistsService_Fork(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"url": "https://api.github.com/gists/2", "id": "2"}`)
+		fmt.Fprint(w, `{"id": "2"}`)
 	})
 
 	gist, err := client.Gists.Fork("1")
@@ -323,7 +319,7 @@ func TestGistsService_Fork(t *testing.T) {
 		t.Errorf("Gists.Fork returned error: %v", err)
 	}
 
-	want := &Gist{URL: "https://api.github.com/gists/2", ID: "2"}
+	want := &Gist{ID: "2"}
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}

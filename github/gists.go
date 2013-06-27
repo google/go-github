@@ -22,14 +22,12 @@ type GistsService struct {
 
 // Gist represents a GitHub's gist.
 type Gist struct {
-	URL         string                    `json:"url,omitempty"`
 	ID          string                    `json:"id,omitempty"`
 	Description string                    `json:"description,omitempty"`
 	Public      bool                      `json:"public,omitempty"`
 	User        User                      `json:"user,omitempty"`
 	Files       map[GistFilename]GistFile `json:"files,omitempty"`
 	Comments    int                       `json:"comments,omitempty"`
-	CommentsURL string                    `json:"comments_url,omitempty"`
 	HTMLURL     string                    `json:"html_url,omitempty"`
 	GitPullURL  string                    `json:"git_pull_url,omitempty"`
 	GitPushURL  string                    `json:"git_push_url,omitempty"`
