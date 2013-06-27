@@ -18,17 +18,17 @@ func TestGistsService_List(t *testing.T) {
 	setup()
 	defer teardown()
 
-	since := time.Now()
+	since := "2013-01-01T00:00:00Z"
 
 	mux.HandleFunc("/users/u/gists", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since.Format(time.RFC3339),
+			"since": since,
 		})
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
-	opt := &GistListOptions{since}
+	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	gists, err := client.Gists.List("u", opt)
 
 	if err != nil {
@@ -65,17 +65,17 @@ func TestGistsService_ListAll(t *testing.T) {
 	setup()
 	defer teardown()
 
-	since := time.Now()
+	since := "2013-01-01T00:00:00Z"
 
 	mux.HandleFunc("/gists/public", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since.Format(time.RFC3339),
+			"since": since,
 		})
 		fmt.Fprint(w, `[{"url": "https://api.github.com/gists/1", "id": "1"}]`)
 	})
 
-	opt := &GistListOptions{since}
+	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	gists, err := client.Gists.ListAll(opt)
 
 	if err != nil {
@@ -92,17 +92,17 @@ func TestGistsService_ListStarred(t *testing.T) {
 	setup()
 	defer teardown()
 
-	since := time.Now()
+	since := "2013-01-01T00:00:00Z"
 
 	mux.HandleFunc("/gists/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since.Format(time.RFC3339),
+			"since": since,
 		})
 		fmt.Fprint(w, `[{"url": "https://api.github.com/gists/1", "id": "1"}]`)
 	})
 
-	opt := &GistListOptions{since}
+	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	gists, err := client.Gists.ListStarred(opt)
 
 	if err != nil {
