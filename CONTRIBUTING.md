@@ -52,12 +52,6 @@ again.
      This provides consistency throughout the project, and ensures that commit
      messages are able to be formatted properly by various git tools.
 
-  1. If you made lots of small commits in the process of developing your patch,
-     it's often helpful to [squash them into a single commit][squash].  For
-     larger patches, multiple commits may actually be clearer.  Just use your
-     best judgement, but be aware that the reviewer may ask you to squash them,
-     or just squash them herself before pushing your patch.
-
   1. Finally, push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
