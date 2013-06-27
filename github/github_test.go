@@ -193,6 +193,58 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
+func TestDo_rateLimit(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add(headerRateLimit, "60")
+		w.Header().Add(headerRateRemaining, "59")
+	})
+
+	var want int
+
+	if want = 0; client.Rate.Limit != want {
+		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	}
+	if want = 0; client.Rate.Limit != want {
+		t.Errorf("Client rate remaining, got %v", client.Rate.Remaining, want)
+	}
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	client.Do(req, nil)
+
+	if want = 60; client.Rate.Limit != want {
+		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	}
+	if want = 59; client.Rate.Remaining != want {
+		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
+	}
+}
+
+func TestDo_rateLimit_errorResponse(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add(headerRateLimit, "60")
+		w.Header().Add(headerRateRemaining, "59")
+		http.Error(w, "Bad Request", 400)
+	})
+
+	var want int
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	client.Do(req, nil)
+
+	if want = 60; client.Rate.Limit != want {
+		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	}
+	if want = 59; client.Rate.Remaining != want {
+		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
+	}
+}
+
 func TestCheckResponse(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
