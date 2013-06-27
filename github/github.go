@@ -53,12 +53,16 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 const (
 	libraryVersion = "0.1"
 	defaultBaseURL = "https://api.github.com/"
 	userAgent      = "go-github/" + libraryVersion
+
+	headerRateLimit     = "X-RateLimit-Limit"
+	headerRateRemaining = "X-RateLimit-Remaining"
 )
 
 // A Client manages communication with the GitHub API.
@@ -73,6 +77,12 @@ type Client struct {
 
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
+
+	// Rate specifies the current rate limit for the client as determined by the
+	// most recent API call.  If the client is used in a multi-user application,
+	// this rate may not always be up-to-date.  Call RateLimit() to check the
+	// current rate.
+	Rate Rate
 
 	// Services used for talking to different parts of the API
 
@@ -149,6 +159,14 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 	}
 
 	defer resp.Body.Close()
+
+	// update rate limit
+	if limit := resp.Header.Get(headerRateLimit); limit != "" {
+		c.Rate.Limit, _ = strconv.Atoi(limit)
+	}
+	if remaining := resp.Header.Get(headerRateRemaining); remaining != "" {
+		c.Rate.Remaining, _ = strconv.Atoi(remaining)
+	}
 
 	err = CheckResponse(resp)
 	if err != nil {
