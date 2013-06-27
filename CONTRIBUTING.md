@@ -37,7 +37,10 @@ again.
      commits related to that bug or feature.
 
   1. Go makes it very simple to ensure properly formatted code, so always run
-     `go fmt` on your code before committing it.
+     `go fmt` on your code before committing it.  You should also run
+     [golint][] over your code.  As noted in the golint readme, it's not
+     strictly necessary that your code be completely "lint-free", but this will
+     help you find common style issues.
 
   1. Any significant changes should almost always be accompanied by tests.  The
      project already has good test coverage, so look at some of the existing
@@ -58,6 +61,7 @@ again.
   1. Finally, push the commits to your fork and submit a [pull request][].
 
 [forking]: https://help.github.com/articles/fork-a-repo
+[golint]: https://github.com/golang/lint
 [gocov]: https://github.com/axw/gocov
 [gocov-html]: https://github.com/matm/gocov-html
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
