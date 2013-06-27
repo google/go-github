@@ -52,7 +52,9 @@ type GistListOptions struct {
 }
 
 // List gists for a user. Passing the empty string will list
-// all public gists.
+// all public gists if called anonymously. However, if the call
+// is authenticated, it will returns all gists for the authenticated
+// user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
 func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, error) {
