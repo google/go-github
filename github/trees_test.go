@@ -54,7 +54,6 @@ func TestTreesService_List_authenticatedUser(t *testing.T) {
 
 	want := Tree{
 		SHA: `9fb037999f264ba9a7fc6274d15fa3ae2ab98312`,
-		URL: `https://api.github.com/repos/octocat/Hello-World/trees/9fb037999f264ba9a7fc6274d15fa3ae2ab98312`,
 		Trees: []GitTree{
 			GitTree{
 				Path: "file.rb",
@@ -62,14 +61,12 @@ func TestTreesService_List_authenticatedUser(t *testing.T) {
 				Type: "blob",
 				Size: 30,
 				SHA:  "44b4fc6d56897b048c772eb4087f854f46256132",
-				URL:  "https://api.github.com/repos/octocat/Hello-World/git/blobs/44b4fc6d56897b048c772eb4087f854f46256132",
 			},
 			GitTree{
 				Path: "subdir",
 				Mode: "040000",
 				Type: "tree",
 				SHA:  "f484d249c660418515fb01c2b9662073663c242e",
-				URL:  "https://api.github.com/repos/octocat/Hello-World/git/blobs/f484d249c660418515fb01c2b9662073663c242e",
 			},
 		},
 	}
@@ -131,7 +128,6 @@ func TestTreesService_Create_authenticatedUser(t *testing.T) {
 
 	want := Tree{
 		SHA: "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
-		URL: "https://api.github.com/repo/octocat/Hello-World/trees/cd8274d15fa3ae2ab983129fb037999f264ba9a7",
 		Trees: []GitTree{
 			{
 				Path: "file.rb",
@@ -139,7 +135,6 @@ func TestTreesService_Create_authenticatedUser(t *testing.T) {
 				Type: "blob",
 				Size: 132,
 				SHA:  "7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b",
-				URL:  "https://api.github.com/octocat/Hello-World/git/blobs/7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b",
 			},
 		},
 	}

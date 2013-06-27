@@ -22,14 +22,12 @@ type TreesService struct {
 
 type Tree struct {
 	SHA   string    `json:"sha,omitempty"`
-	URL   string    `json:"url,omitempty"`
 	Trees []GitTree `json:"tree,omitempty"`
 }
 
 // Tree represents a Git tree.
 type GitTree struct {
 	SHA  string `json:"sha,omitempty"`
-	URL  string `json:"url,omitempty"`
 	Path string `json:"path,omitempty"`
 	Mode string `json:"mode,omitempty"`
 	Type string `json:"type,omitempty"`
