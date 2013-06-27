@@ -41,6 +41,26 @@ func TestGistsService_List(t *testing.T) {
 	}
 }
 
+func TestGistsService_List_withEmptyUser(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id": "1"}]`)
+	})
+
+	gists, err := client.Gists.List("", nil)
+	if err != nil {
+		t.Errorf("Gists.List returned error: %v", err)
+	}
+
+	want := []Gist{Gist{ID: "1"}}
+	if !reflect.DeepEqual(gists, want) {
+		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
+	}
+}
+
 func TestGistsService_ListAll(t *testing.T) {
 	setup()
 	defer teardown()
