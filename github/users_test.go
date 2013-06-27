@@ -134,15 +134,15 @@ func TestUsersService_AddEmails(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &[]UserEmail{"new@example.com"}
+	input := []UserEmail{"new@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := &[]UserEmail{}
+		v := new([]UserEmail)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		if !reflect.DeepEqual(*v, input) {
+			t.Errorf("Request body = %+v, want %+v", *v, input)
 		}
 
 		fmt.Fprint(w, `["old@example.com", "new@example.com"]`)
@@ -153,7 +153,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
 
-	want := &[]UserEmail{"old@example.com", "new@example.com"}
+	want := []UserEmail{"old@example.com", "new@example.com"}
 	if !reflect.DeepEqual(emails, want) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
 	}
@@ -163,15 +163,15 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &[]UserEmail{"user@example.com"}
+	input := []UserEmail{"user@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := &[]UserEmail{}
+		v := new([]UserEmail)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "DELETE")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		if !reflect.DeepEqual(*v, input) {
+			t.Errorf("Request body = %+v, want %+v", *v, input)
 		}
 	})
 

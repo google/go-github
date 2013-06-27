@@ -126,7 +126,7 @@ func (s *UsersService) ListEmails() ([]UserEmail, error) {
 // AddEmails adds email addresses of authenticated user
 //
 // GitHub API docs: http://developer.github.com/v3/users/emails/#add-email-addresses
-func (s *UsersService) AddEmails(emails *[]UserEmail) (*[]UserEmail, error) {
+func (s *UsersService) AddEmails(emails []UserEmail) ([]UserEmail, error) {
 	u := "user/emails"
 	req, err := s.client.NewRequest("POST", u, emails)
 	if err != nil {
@@ -135,13 +135,13 @@ func (s *UsersService) AddEmails(emails *[]UserEmail) (*[]UserEmail, error) {
 
 	e := new([]UserEmail)
 	_, err = s.client.Do(req, e)
-	return e, err
+	return *e, err
 }
 
 // DeleteEmails deletes email addresses from authenticated user
 //
 // GitHub API docs: http://developer.github.com/v3/users/emails/#delete-email-addresses
-func (s *UsersService) DeleteEmails(emails *[]UserEmail) error {
+func (s *UsersService) DeleteEmails(emails []UserEmail) error {
 	u := "user/emails"
 	req, err := s.client.NewRequest("DELETE", u, emails)
 	if err != nil {
