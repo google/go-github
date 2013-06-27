@@ -1,0 +1,15 @@
+# People who have agreed to one of the CLAs and can contribute patches.
+# The AUTHORS file lists the copyright holders; this file
+# lists people.  For example, Google employees are listed here
+# but not in AUTHORS, because Google holds the copyright.
+#
+# https://developers.google.com/open-source/cla/individual
+# https://developers.google.com/open-source/cla/corporate
+#
+# Note that the CLA isn't a copyright _assigment_ but rather a
+# copyright _license_.  You retain the copyright on your
+# contributions.
+
+Akeda Bagus <akeda@x-team.com>
+Quinn Slack <qslack@qslack.com>
+Will Norris <willnorris@google.com> <will@willnorris.com>
