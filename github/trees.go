@@ -6,11 +6,7 @@
 
 package github
 
-import (
-	"fmt"
-	"net/url"
-	"strconv"
-)
+import "fmt"
 
 // TreesService handles communication with the tree related
 // methods of the GitHub API.
@@ -32,30 +28,6 @@ type GitTree struct {
 	Mode string `json:"mode,omitempty"`
 	Type string `json:"type,omitempty"`
 	Size int    `json:"size,omitempty"`
-}
-
-// TreeListOptions specifies the optional parameters to the
-// TreesService.List method.
-type TreeListOptions struct {
-	// Type of repositories to list.  Possible values are: all, owner, public,
-	// private, member.  Default is "all".
-	Type string
-
-	// How to sort the Tree list.  Possible values are: created, updated,
-	// pushed, full_name.  Default is "full_name".
-	Sort string
-
-	// Direction in which to sort repositories.  Possible values are: asc, desc.
-	// Default is "asc" when sort is "full_name", otherwise default is "desc".
-	Direction string
-
-	// For paginated result sets, page of results to retrieve.
-	Page int
-
-	// For fetching trees recursively
-	//
-	// GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree-recursively
-	Recursive int
 }
 
 // Get the Tree object for a given sha hash from a users repository.
