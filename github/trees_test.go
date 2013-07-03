@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestTreesService_List_authenticatedUser(t *testing.T) {
+func TestTreesService_Get_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -47,7 +47,7 @@ func TestTreesService_List_authenticatedUser(t *testing.T) {
 			}`)
 	})
 
-	trees, err := client.Trees.List("user", "repo", "coffebabecoffebabecoffebabe", nil)
+	trees, err := client.Trees.Get("user", "repo", "coffebabecoffebabecoffebabe", true)
 	if err != nil {
 		t.Errorf("Trees.List returned error: %v", err)
 	}
