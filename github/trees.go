@@ -55,13 +55,13 @@ func (s *TreesService) Get(user string, repo string, sha string, recursive bool)
 	return &response, err
 }
 
-// Create a new Tree.  If an organization is specified, the new
-// Tree will be created under that org.  If the empty string is
-// specified, it will be created for the authenticated user.
+// The tree creation API will take nested entries as well.
+// If both a tree and a nested path modifying that tree are specified,
+// it will overwrite the contents of that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
-func (s *TreesService) Create(user string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
-	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
+func (s *TreesService) Create(owner string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
+	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
 
 	req, err := s.client.NewRequest("POST", url_, createTree{
 		baseTree: baseTreeSha,
