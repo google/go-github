@@ -53,6 +53,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 const (
@@ -62,6 +63,7 @@ const (
 
 	headerRateLimit     = "X-RateLimit-Limit"
 	headerRateRemaining = "X-RateLimit-Remaining"
+	headerRateReset     = "X-RateLimit-Reset"
 )
 
 // A Client manages communication with the GitHub API.
@@ -168,6 +170,11 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 	if remaining := resp.Header.Get(headerRateRemaining); remaining != "" {
 		c.Rate.Remaining, _ = strconv.Atoi(remaining)
 	}
+	if reset := resp.Header.Get(headerRateReset); reset != "" {
+		if v, _ := strconv.ParseInt(reset, 10, 64); v != 0 {
+			c.Rate.Reset = time.Unix(v, 0)
+		}
+	}
 
 	err = CheckResponse(resp)
 	if err != nil {
@@ -261,7 +268,11 @@ func parseBoolResponse(err error) (bool, error) {
 
 // API response wrapper to a rate limit request.
 type rateResponse struct {
-	Rate *Rate `json:rate`
+	Rate struct {
+		Limit     int   `json:limit`
+		Remaining int   `json:remaining`
+		Reset     int64 `json:reset`
+	} `json:rate`
 }
 
 // Rate represents the rate limit for the current client.  Unauthenticated
@@ -269,10 +280,13 @@ type rateResponse struct {
 // 5,000 per hour.
 type Rate struct {
 	// The number of requests per hour the client is currently limited to.
-	Limit int `json:limit`
+	Limit int
 
 	// The number of remaining requests the client can make this hour.
-	Remaining int `json:remaining`
+	Remaining int
+
+	// The time at which the current rate limit will reset.
+	Reset time.Time
 }
 
 // RateLimit returns the rate limit for the current client.
@@ -284,7 +298,16 @@ func (c *Client) RateLimit() (*Rate, error) {
 
 	response := new(rateResponse)
 	_, err = c.Do(req, response)
-	return response.Rate, err
+	if err != nil {
+		return nil, err
+	}
+
+	rate := &Rate{
+		Limit:     response.Rate.Limit,
+		Remaining: response.Rate.Remaining,
+		Reset:     time.Unix(response.Rate.Reset, 0),
+	}
+	return rate, err
 }
 
 /*

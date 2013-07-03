@@ -15,6 +15,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 )
 
 var (
@@ -199,6 +200,7 @@ func TestDo_rateLimit(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add(headerRateLimit, "60")
 		w.Header().Add(headerRateRemaining, "59")
+		w.Header().Add(headerRateReset, "1372700873")
 	})
 
 	var want int
@@ -207,7 +209,10 @@ func TestDo_rateLimit(t *testing.T) {
 		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
 	}
 	if want = 0; client.Rate.Limit != want {
-		t.Errorf("Client rate remaining, got %v", client.Rate.Remaining, want)
+		t.Errorf("Client rate remaining = %v, got %v", client.Rate.Remaining, want)
+	}
+	if !client.Rate.Reset.IsZero() {
+		t.Errorf("Client rate reset not initialized to zero value")
 	}
 
 	req, _ := client.NewRequest("GET", "/", nil)
@@ -219,6 +224,10 @@ func TestDo_rateLimit(t *testing.T) {
 	if want = 59; client.Rate.Remaining != want {
 		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
 	}
+	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	if client.Rate.Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", client.Rate.Reset, reset)
+	}
 }
 
 func TestDo_rateLimit_errorResponse(t *testing.T) {
@@ -228,6 +237,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add(headerRateLimit, "60")
 		w.Header().Add(headerRateRemaining, "59")
+		w.Header().Add(headerRateReset, "1372700873")
 		http.Error(w, "Bad Request", 400)
 	})
 
@@ -241,6 +251,10 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	}
 	if want = 59; client.Rate.Remaining != want {
 		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
+	}
+	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	if client.Rate.Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", client.Rate.Reset, reset)
 	}
 }
 
@@ -350,7 +364,7 @@ func TestRateLimit(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		fmt.Fprint(w, `{"rate":{"limit":2,"remaining":1}}`)
+		fmt.Fprint(w, `{"rate":{"limit":2,"remaining":1,"reset":1372700873}}`)
 	})
 
 	rate, err := client.RateLimit()
@@ -358,7 +372,11 @@ func TestRateLimit(t *testing.T) {
 		t.Errorf("Rate limit returned error: %v", err)
 	}
 
-	want := &Rate{Limit: 2, Remaining: 1}
+	want := &Rate{
+		Limit:     2,
+		Remaining: 1,
+		Reset:     time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local(),
+	}
 	if !reflect.DeepEqual(rate, want) {
 		t.Errorf("RateLimit returned %+v, want %+v", rate, want)
 	}
