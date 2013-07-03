@@ -142,7 +142,7 @@ func TestGistsService_Create(t *testing.T) {
 
 	input := &Gist{
 		Description: "Gist description",
-		Public: false,
+		Public:      false,
 		Files: map[GistFilename]GistFile{
 			"test.txt": GistFile{Content: "Gist file content"},
 		},
@@ -177,9 +177,9 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID: "1",
+		ID:          "1",
 		Description: "Gist description",
-		Public: false,
+		Public:      false,
 		Files: map[GistFilename]GistFile{
 			"test.txt": GistFile{Filename: "test.txt"},
 		},
@@ -232,12 +232,12 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID: "1",
+		ID:          "1",
 		Description: "new description",
-		Public: false,
+		Public:      false,
 		Files: map[GistFilename]GistFile{
 			"test.txt": GistFile{Filename: "test.txt"},
-			"new.txt": GistFile{Filename: "new.txt"},
+			"new.txt":  GistFile{Filename: "new.txt"},
 		},
 	}
 	if !reflect.DeepEqual(gist, want) {
