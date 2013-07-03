@@ -30,6 +30,11 @@ type GitTree struct {
 	Size int    `json:"size,omitempty"`
 }
 
+type createTree struct {
+	baseTree string    `json:base_tree`
+	trees    []GitTree `json:tree`
+}
+
 // Get the Tree object for a given sha hash from a users repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
@@ -58,12 +63,9 @@ func (s *TreesService) Get(user string, repo string, sha string, recursive bool)
 func (s *TreesService) Create(user string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
-	req, err := s.client.NewRequest("POST", url_, struct {
-		BaseTree string    `json:base_tree`
-		Trees    []GitTree `json:tree`
-	}{
-		baseTreeSha,
-		trees,
+	req, err := s.client.NewRequest("POST", url_, createTree{
+		baseTree: baseTreeSha,
+		trees:    trees,
 	})
 	if err != nil {
 		return nil, err
