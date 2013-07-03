@@ -33,17 +33,11 @@ type GitTree struct {
 // Get the Tree object for a given sha hash from a users repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
-func (s *TreesService) List(user string, repo string, sha string, opt *TreeListOptions) (*Tree, error) {
+func (s *TreesService) Get(user string, repo string, sha string, recursive bool) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
-	if opt != nil {
-		params := url.Values{
-			"type":      []string{opt.Type},
-			"sort":      []string{opt.Sort},
-			"direction": []string{opt.Direction},
-			"page":      []string{strconv.Itoa(opt.Page)},
-		}
-		url_ += "?" + params.Encode()
+	if recursive {
+		url_ += "?recursive=1"
 	}
 
 	req, err := s.client.NewRequest("GET", url_, nil)
@@ -56,20 +50,21 @@ func (s *TreesService) List(user string, repo string, sha string, opt *TreeListO
 	return &response, err
 }
 
-type CreateTree struct {
-	BaseTree string    `json:base_tree`
-	Tree     []GitTree `json:tree`
-}
-
 // Create a new Tree.  If an organization is specified, the new
 // Tree will be created under that org.  If the empty string is
 // specified, it will be created for the authenticated user.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#create
-func (s *TreesService) Create(user string, repo string, sha string, create *CreateTree) (*Tree, error) {
+// GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
+func (s *TreesService) Create(user string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
-	req, err := s.client.NewRequest("POST", url_, create)
+	req, err := s.client.NewRequest("POST", url_, struct {
+		BaseTree string    `json:base_tree`
+		Trees    []GitTree `json:tree`
+	}{
+		baseTreeSha,
+		trees,
+	})
 	if err != nil {
 		return nil, err
 	}
