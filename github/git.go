@@ -8,11 +8,11 @@ package github
 
 import "fmt"
 
-// TreesService handles communication with the tree related
+// GitService handles communication with the tree related
 // methods of the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/trees/
-type TreesService struct {
+// GitHub API docs: http://developer.github.com/v3/git/
+type GitService struct {
 	client *Client
 }
 
@@ -38,7 +38,7 @@ type createTree struct {
 // Get the Tree object for a given sha hash from a users repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
-func (s *TreesService) Get(user string, repo string, sha string, recursive bool) (*Tree, error) {
+func (s *GitService) Get(user string, repo string, sha string, recursive bool) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
 
 	if recursive {
@@ -60,7 +60,7 @@ func (s *TreesService) Get(user string, repo string, sha string, recursive bool)
 // it will overwrite the contents of that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
-func (s *TreesService) Create(owner string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
+func (s *GitService) Create(owner string, repo string, sha string, baseTreeSha string, trees []GitTree) (*Tree, error) {
 	url_ := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
 
 	req, err := s.client.NewRequest("POST", url_, createTree{

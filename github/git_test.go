@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestTreesService_Get_authenticatedUser(t *testing.T) {
+func TestGitService_Get_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -75,7 +75,7 @@ func TestTreesService_Get_authenticatedUser(t *testing.T) {
 	}
 }
 
-func TestTreesService_Create_authenticatedUser(t *testing.T) {
+func TestGitService_Create_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
