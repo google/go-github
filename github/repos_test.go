@@ -201,10 +201,45 @@ func TestRepositoriesService_Get(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_Edit(t *testing.T) {
+	setup()
+	defer teardown()
+
+	i := true
+	input := &Repository{HasIssues: &i}
+
+	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Repository)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	repo, err := client.Repositories.Edit("o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.Edit returned error: %v", err)
+	}
+
+	want := &Repository{ID: 1}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.Edit returned %+v, want %+v", repo, want)
+	}
+}
+
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.Get("%", "r")
 	testURLParseError(t, err)
 }
+
+func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.Edit("%", "r", nil)
+	testURLParseError(t, err)
+}
+
 
 func TestRepositoriesService_ListForks(t *testing.T) {
 	setup()
