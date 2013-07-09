@@ -29,6 +29,10 @@ type Repository struct {
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	PushedAt    *Timestamp `json:"pushed_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+
+	// Additional mutable fields when creating and editing a repository
+	HasIssues *bool `json:"has_issues"`
+	HasWiki   *bool `json:"has_wiki"`
 }
 
 // RepositoryListOptions specifies the optional parameters to the
@@ -179,6 +183,20 @@ func (s *RepositoriesService) Get(owner, repo string) (*Repository, error) {
 	repository := new(Repository)
 	_, err = s.client.Do(req, repository)
 	return repository, err
+}
+
+// Edit updates a repository.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#edit
+func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (*Repository, error) {
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("PATCH", u, repository)
+	if err != nil {
+		return nil, err
+	}
+	r := new(Repository)
+	_, err = s.client.Do(req, r)
+	return r, err
 }
 
 // RepositoryListForksOptions specifies the optional parameters to the
