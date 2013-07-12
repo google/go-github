@@ -7,13 +7,20 @@ package github
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 	"time"
 )
 
+const (
+	referenceStr     = `"2006-01-02T15:04:05Z"`
+	emptyStr         = `"0001-01-01T00:00:00Z"`
+	referenceUnixStr = `1136214245`
+)
+
 var (
-	referenceTime = time.Unix(1136239445, 0)
-	unixOrigin    = time.Unix(0, 0)
+	referenceTime = time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)
+	unixOrigin    = time.Unix(0, 0).In(time.UTC)
 )
 
 func TestMarshal(t *testing.T) {
@@ -24,9 +31,9 @@ func TestMarshal(t *testing.T) {
 		wantErr bool
 		equal   bool
 	}{
-		{"Reference", TimeStamp{referenceTime}, `"2006-01-02T17:04:05-05:00"`, false, true},
-		{"Empty", TimeStamp{}, `"0001-01-01T00:00:00Z"`, false, true},
-		{"Mismatch", TimeStamp{}, `"2006-01-02T17:04:05-05:00"`, false, false},
+		{"Reference", TimeStamp{referenceTime}, referenceStr, false, true},
+		{"Empty", TimeStamp{}, emptyStr, false, true},
+		{"Mismatch", TimeStamp{}, referenceStr, false, false},
 	}
 	for _, tc := range testCases {
 		out, err := json.Marshal(tc.data)
@@ -36,7 +43,7 @@ func TestMarshal(t *testing.T) {
 		got := string(out)
 		equal := got == tc.want
 		if (got == tc.want) != tc.equal {
-			t.Errorf("%s: got=%s, want=%s, equal=%v", tc.desc, got, tc.want, equal)
+			t.Errorf("%s: got=%s, want=%s, equal=%v, want=%v", tc.desc, got, tc.want, equal, tc.equal)
 		}
 	}
 }
@@ -49,11 +56,11 @@ func TestUnmarshal(t *testing.T) {
 		wantErr bool
 		equal   bool
 	}{
-		{"Reference", `"2006-01-02T17:04:05-05:00"`, TimeStamp{referenceTime}, false, true},
-		{"ReferenceUnix", `1136239445`, TimeStamp{referenceTime}, false, true},
-		{"Empty", `"0001-01-01T00:00:00Z"`, TimeStamp{}, false, true},
-		{"EmptyUnix", `0`, TimeStamp{unixOrigin}, false, true},
-		{"Mismatch", `"2006-01-02T17:04:05-05:00"`, TimeStamp{}, false, false},
+		{"Reference", referenceStr, TimeStamp{referenceTime}, false, true},
+		{"ReferenceUnix", `1136214245`, TimeStamp{referenceTime}, false, true},
+		{"Empty", emptyStr, TimeStamp{}, false, true},
+		{"UnixStart", `0`, TimeStamp{unixOrigin}, false, true},
+		{"Mismatch", referenceStr, TimeStamp{}, false, false},
 		{"MismatchUnix", `0`, TimeStamp{}, false, false},
 		{"Invalid", `"asdf"`, TimeStamp{referenceTime}, true, false},
 	}
@@ -66,7 +73,7 @@ func TestUnmarshal(t *testing.T) {
 		}
 		equal := got.Equal(tc.want)
 		if equal != tc.equal {
-			t.Errorf("%s: got=%#v, want=%#v, equal=%v", tc.desc, got, tc.want, equal)
+			t.Errorf("%s: got=%#v, want=%#v, equal=%v, want=%v", tc.desc, got, tc.want, equal, tc.equal)
 		}
 	}
 }
@@ -105,9 +112,9 @@ func TestWrappedMarshal(t *testing.T) {
 		wantErr bool
 		equal   bool
 	}{
-		{"Reference", WrappedTimeStamp{0, TimeStamp{referenceTime}}, `{"A":0,"Time":"2006-01-02T17:04:05-05:00"}`, false, true},
-		{"Empty", WrappedTimeStamp{}, `{"A":0,"Time":"0001-01-01T00:00:00Z"}`, false, true},
-		{"Mismatch", WrappedTimeStamp{}, `{"A":0,"Time":"2006-01-02T17:04:05-05:00"}`, false, false},
+		{"Reference", WrappedTimeStamp{0, TimeStamp{referenceTime}}, fmt.Sprintf(`{"A":0,"Time":%s}`, referenceStr), false, true},
+		{"Empty", WrappedTimeStamp{}, fmt.Sprintf(`{"A":0,"Time":%s}`, emptyStr), false, true},
+		{"Mismatch", WrappedTimeStamp{}, fmt.Sprintf(`{"A":0,"Time":%s}`, referenceStr), false, false},
 	}
 	for _, tc := range testCases {
 		out, err := json.Marshal(tc.data)
@@ -117,7 +124,7 @@ func TestWrappedMarshal(t *testing.T) {
 		got := string(out)
 		equal := got == tc.want
 		if equal != tc.equal {
-			t.Errorf("%s: got=%s, want=%s, equal=%v", tc.desc, got, tc.want, equal)
+			t.Errorf("%s: got=%s, want=%s, equal=%v, want=%v", tc.desc, got, tc.want, equal, tc.equal)
 		}
 	}
 }
@@ -130,11 +137,11 @@ func TestWrappedUnmarshal(t *testing.T) {
 		wantErr bool
 		equal   bool
 	}{
-		{"Reference", `"2006-01-02T17:04:05-05:00"`, WrappedTimeStamp{0, TimeStamp{referenceTime}}, false, true},
-		{"ReferenceUnix", `1136239445`, WrappedTimeStamp{0, TimeStamp{referenceTime}}, false, true},
-		{"Empty", `"0001-01-01T00:00:00Z"`, WrappedTimeStamp{0, TimeStamp{}}, false, true},
-		{"EmptyUnix", `0`, WrappedTimeStamp{0, TimeStamp{unixOrigin}}, false, true},
-		{"Mismatch", `"2006-01-02T17:04:05-05:00"`, WrappedTimeStamp{0, TimeStamp{}}, false, false},
+		{"Reference", referenceStr, WrappedTimeStamp{0, TimeStamp{referenceTime}}, false, true},
+		{"ReferenceUnix", referenceUnixStr, WrappedTimeStamp{0, TimeStamp{referenceTime}}, false, true},
+		{"Empty", emptyStr, WrappedTimeStamp{0, TimeStamp{}}, false, true},
+		{"UnixStart", `0`, WrappedTimeStamp{0, TimeStamp{unixOrigin}}, false, true},
+		{"Mismatch", referenceStr, WrappedTimeStamp{0, TimeStamp{}}, false, false},
 		{"MismatchUnix", `0`, WrappedTimeStamp{0, TimeStamp{}}, false, false},
 		{"Invalid", `"asdf"`, WrappedTimeStamp{0, TimeStamp{referenceTime}}, true, false},
 	}
@@ -147,7 +154,7 @@ func TestWrappedUnmarshal(t *testing.T) {
 		}
 		equal := got.Time.Equal(tc.want.Time.Time)
 		if equal != tc.equal {
-			t.Errorf("%s: got=%#v, want=%#v, equal=%v", tc.desc, got, tc.want, equal)
+			t.Errorf("%s: got=%#v, want=%#v, equal=%v, want=%v", tc.desc, got, tc.want, equal, tc.equal)
 		}
 	}
 }
