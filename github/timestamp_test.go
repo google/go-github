@@ -16,7 +16,7 @@ var (
 	unixOrigin    = time.Unix(0, 0)
 )
 
-func TestSimpleMarshal(t *testing.T) {
+func TestMarshal(t *testing.T) {
 	testCases := []struct {
 		desc    string
 		data    TimeStamp
