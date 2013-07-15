@@ -80,5 +80,5 @@ straightforward.
 
 ## License ##
 
-This library is distributed under the BSD-style license found in the LICENSE
+This library is distributed under the BSD-style license found in the [LICENSE](./LICENSE)
 file.
