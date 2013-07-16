@@ -240,7 +240,6 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-
 func TestRepositoriesService_ListForks(t *testing.T) {
 	setup()
 	defer teardown()
@@ -351,4 +350,24 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.CreateStatus("%", "r", "r", nil)
 	testURLParseError(t, err)
+}
+
+func TestRepositoriesService_ListLanguages(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/u/r/languages", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"go":1}`)
+	})
+
+	languages, err := client.Repositories.ListLanguages("u", "r")
+	if err != nil {
+		t.Errorf("Repositories.ListLanguages returned error: %v", err)
+	}
+
+	want := map[string]int{"go": 1}
+	if !reflect.DeepEqual(languages, want) {
+		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
+	}
 }

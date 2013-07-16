@@ -309,3 +309,25 @@ func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *Repo
 	_, err = s.client.Do(req, statuses)
 	return statuses, err
 }
+
+// ListLanguages lists languages for the specified repository. The returned map
+// specifies the languages and the number of bytes of code written in that
+// language. For example:
+//
+//     {
+//       "C": 78769,
+//       "Python": 7769
+//     }
+//
+// GitHub API Docs: http://developer.github.com/v3/repos/#list-languages
+func (s *RepositoriesService) ListLanguages(owner string, repository string) (map[string]int, error) {
+	u := fmt.Sprintf("/repos/%v/%v/languages", owner, repository)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	languages := make(map[string]int)
+	_, err = s.client.Do(req, &languages)
+	return languages, err
+}
