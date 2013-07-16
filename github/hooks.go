@@ -5,7 +5,10 @@
 
 package github
 
-// PostReceiveHook represents the data that is received from github
+import (
+	"time"
+)
+// PostReceiveHook represents the data that is received from GitHub
 // when a hook is triggered.
 type PostReceiveHook struct {
 	After      string     `json:"after,omitempty"`
@@ -19,4 +22,16 @@ type PostReceiveHook struct {
 	Pusher     User       `json:"pusher,omitempty"`
 	Ref        string     `json:"ref,omitempty"`
 	Repo       Repository `json:"repository,omitempty"`
+}
+
+// HookCommit represents the commit variant we receive from GitHub in a
+// Post-Receive Hook payload.
+type HookCommit struct {
+	Commit
+	Added     []string   `json:"added,omitempty"`
+	Distinct  bool       `json:"distinct,omitempty"`
+	ID        string     `json:"id,omitempty"`
+	Modified  []string   `json:"modified,omitempty"`
+	Removed   []string   `json:"removed,omitempty"`
+	Timestamp *time.Time `json:"timestamp,omitempty"`
 }

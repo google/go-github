@@ -11,14 +11,17 @@ import (
 
 // Commit represents a GitHub commit
 type Commit struct {
-	Added     []string   `json:"added,omitempty"`
-	Author    User       `json:"author,omitempty"`
-	Committer User       `json:"commiter,omitempty"`
-	Distinct  bool       `json:"distinct,omitempty"`
-	ID        string     `json:"id,omitempty"`
+	Author    Author     `json:"author,omitempty"`
+	Committer Author     `json:"commiter,omitempty"`
 	Message   string     `json:"message,omitempty"`
-	Modified  []string   `json:"modified,omitempty"`
-	Removed   []string   `json:"removed,omitempty"`
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	SHA       string     `json:"sha,omitempty"`
 	URL       string     `json:"url,omitempty"`
+}
+
+// Author represents someone who made a commit. This does not necessarily
+// represent a GitHub User.
+type Author struct {
+	Date  *time.Time `json:"date,omitempty"`
+	Name  string     `json:"name,omitempty"`
+	email string     `json:"email,omitempty"`
 }
