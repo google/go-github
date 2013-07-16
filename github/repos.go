@@ -26,9 +26,9 @@ type Repository struct {
 	Owner       *User      `json:"owner,omitempty"`
 	Name        string     `json:"name,omitempty"`
 	Description string     `json:"description,omitempty"`
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	PushedAt    *time.Time `json:"pushed_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt   *TimeStamp `json:"created_at,omitempty"`
+	PushedAt    *TimeStamp `json:"pushed_at,omitempty"`
+	UpdatedAt   *TimeStamp `json:"updated_at,omitempty"`
 }
 
 // RepositoryListOptions specifies the optional parameters to the
