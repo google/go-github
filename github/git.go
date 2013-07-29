@@ -32,17 +32,11 @@ type TreeEntry struct {
 	Size int    `json:"size,omitempty"`
 }
 
-// createTree represents the body of a CreateTree request.
-type createTree struct {
-	BaseTree string      `json:base_tree`
-	Entries  []TreeEntry `json:tree`
-}
-
-// GetTree fetches the Tree object for a given sha hash from a users repository.
+// GetTree fetches the Tree object for a given sha hash from a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
-func (s *GitService) GetTree(user string, repo string, sha string, recursive bool) (*Tree, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", user, repo, sha)
+func (s *GitService) GetTree(owner string, repo string, sha string, recursive bool) (*Tree, error) {
+	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
 	if recursive {
 		u += "?recursive=1"
 	}
@@ -57,13 +51,19 @@ func (s *GitService) GetTree(user string, repo string, sha string, recursive boo
 	return t, err
 }
 
+// createTree represents the body of a CreateTree request.
+type createTree struct {
+	BaseTree string      `json:base_tree`
+	Entries  []TreeEntry `json:tree`
+}
+
 // CreateTree creates a new tree in a repository.  If both a tree and a nested
 // path modifying that tree are specified, it will overwrite the contents of
 // that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
-func (s *GitService) CreateTree(owner string, repo string, sha string, baseTree string, entries []TreeEntry) (*Tree, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
+func (s *GitService) CreateTree(owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, error) {
+	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
 	body := &createTree{
 		BaseTree: baseTree,
