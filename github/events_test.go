@@ -18,13 +18,15 @@ func TestEventsService_ListPerformedByUser_all(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	events, err := client.Events.ListPerformedByUser("u", false, nil)
+	opt := &ListOptions{Page: 2}
+	events, err := client.Events.ListPerformedByUser("u", false, opt)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
@@ -40,9 +42,7 @@ func TestEventsService_ListPerformedByUser_publicOnly(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/public", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
