@@ -17,7 +17,7 @@ func TestGitService_GetTree(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/u/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
@@ -27,7 +27,7 @@ func TestGitService_GetTree(t *testing.T) {
 			}`)
 	})
 
-	tree, err := client.Git.GetTree("u", "r", "s", true)
+	tree, err := client.Git.GetTree("o", "r", "s", true)
 	if err != nil {
 		t.Errorf("Git.GetTree returned error: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		},
 	}
 
-	mux.HandleFunc("/repos/u/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createTree)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -88,7 +88,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		}`)
 	})
 
-	tree, err := client.Git.CreateTree("u", "r", "s", "b", input)
+	tree, err := client.Git.CreateTree("o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
 	}
