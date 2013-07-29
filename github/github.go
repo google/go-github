@@ -200,8 +200,8 @@ GitHub API docs: http://developer.github.com/v3/#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response // HTTP response that caused this error
-	Message  string         `json:message` // error message
-	Errors   []Error        `json:errors`  // more detail on individual errors
+	Message  string         `json:"message"` // error message
+	Errors   []Error        `json:"errors"`  // more detail on individual errors
 }
 
 func (r *ErrorResponse) Error() string {
@@ -226,9 +226,9 @@ These are the possible validation error codes:
 GitHub API docs: http://developer.github.com/v3/#client-errors
 */
 type Error struct {
-	Resource string `json:resource` // resource on which the error occurred
-	Field    string `json:field`    // field on which the error occurred
-	Code     string `json:code`     // validation error code
+	Resource string `json:"resource"` // resource on which the error occurred
+	Field    string `json:"field"`    // field on which the error occurred
+	Code     string `json:"code"`     // validation error code
 }
 
 func (e *Error) Error() string {
@@ -275,10 +275,10 @@ func parseBoolResponse(err error) (bool, error) {
 // API response wrapper to a rate limit request.
 type rateResponse struct {
 	Rate struct {
-		Limit     int   `json:limit`
-		Remaining int   `json:remaining`
-		Reset     int64 `json:reset`
-	} `json:rate`
+		Limit     int   `json:"limit"`
+		Remaining int   `json:"remaining"`
+		Reset     int64 `json:"reset"`
+	} `json:"rate"`
 }
 
 // Rate represents the rate limit for the current client.  Unauthenticated

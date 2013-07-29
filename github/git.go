@@ -109,8 +109,8 @@ func (s *GitService) GetTree(owner string, repo string, sha string, recursive bo
 
 // createTree represents the body of a CreateTree request.
 type createTree struct {
-	BaseTree string      `json:base_tree`
-	Entries  []TreeEntry `json:tree`
+	BaseTree string      `json:"base_tree"`
+	Entries  []TreeEntry `json:"tree"`
 }
 
 // CreateTree creates a new tree in a repository.  If both a tree and a nested
