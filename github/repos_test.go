@@ -352,3 +352,23 @@ func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.CreateStatus("%", "r", "r", nil)
 	testURLParseError(t, err)
 }
+
+func TestActivitiesService_ListLanguages_specifiedUserAndRepo(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/u/r/languages", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"go":1}`)
+	})
+
+	repositoryLanguages, err := client.Repositories.ListLanguages("u", "r")
+	if err != nil {
+		t.Errorf("Repositories.List returned error: %v", err)
+	}
+
+	want := map[string]int{"go": 1}
+	if !reflect.DeepEqual(repositoryLanguages, want) {
+		t.Errorf("Repositories.List returned %+v, want %+v", repositoryLanguages, want)
+	}
+}
