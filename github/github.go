@@ -53,6 +53,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -156,10 +157,96 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	return req, nil
 }
 
+// Response is a GitHub API response.  This wraps the standard http.Response
+// returned from GitHub and provides convenient access to things like
+// pagination links.
+type Response struct {
+	*http.Response
+
+	// These fields provide the page values for paginating through a set of
+	// results.  Any or all of these may be set to the zero value for
+	// responses that are not part of a paginated set, or for which there
+	// are no additional pages.
+
+	NextPage  int
+	PrevPage  int
+	FirstPage int
+	LastPage  int
+
+	Rate
+}
+
+// newResponse creats a new Response for the provided http.Response.
+func newResponse(r *http.Response) *Response {
+	response := &Response{Response: r}
+	response.populatePageValues()
+	response.populateRate()
+	return response
+}
+
+// populatePageValues parses the HTTP Link response headers and populates the
+// various pagination link values in the Reponse.
+func (r *Response) populatePageValues() {
+	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
+		for _, link := range strings.Split(links[0], ",") {
+			segments := strings.Split(link, ";")
+
+			// link must at least have href and rel
+			if len(segments) < 2 {
+				continue
+			}
+
+			// ensure href is properly formatted
+			if !strings.HasPrefix(segments[0], "<") || !strings.HasSuffix(segments[0], ">") {
+				continue
+			}
+
+			// try to pull out page parameter
+			url, err := url.Parse(segments[0][1 : len(segments[0])-1])
+			if err != nil {
+				continue
+			}
+			page := url.Query().Get("page")
+			if page == "" {
+				continue
+			}
+
+			for _, segment := range segments[1:] {
+				switch strings.TrimSpace(segment) {
+				case `rel="next"`:
+					r.NextPage, _ = strconv.Atoi(page)
+				case `rel="prev"`:
+					r.PrevPage, _ = strconv.Atoi(page)
+				case `rel="first"`:
+					r.FirstPage, _ = strconv.Atoi(page)
+				case `rel="last"`:
+					r.LastPage, _ = strconv.Atoi(page)
+				}
+
+			}
+		}
+	}
+}
+
+// populateRate parses the rate related headers and populates the response Rate.
+func (r *Response) populateRate() {
+	if limit := r.Header.Get(headerRateLimit); limit != "" {
+		r.Rate.Limit, _ = strconv.Atoi(limit)
+	}
+	if remaining := r.Header.Get(headerRateRemaining); remaining != "" {
+		r.Rate.Remaining, _ = strconv.Atoi(remaining)
+	}
+	if reset := r.Header.Get(headerRateReset); reset != "" {
+		if v, _ := strconv.ParseInt(reset, 10, 64); v != 0 {
+			r.Rate.Reset = time.Unix(v, 0)
+		}
+	}
+}
+
 // Do sends an API request and returns the API response.  The API response is
 // decoded and stored in the value pointed to by v, or returned as an error if
 // an API error has occurred.
-func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
+func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -167,28 +254,21 @@ func (c *Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
 
 	defer resp.Body.Close()
 
-	// update rate limit
-	if limit := resp.Header.Get(headerRateLimit); limit != "" {
-		c.Rate.Limit, _ = strconv.Atoi(limit)
-	}
-	if remaining := resp.Header.Get(headerRateRemaining); remaining != "" {
-		c.Rate.Remaining, _ = strconv.Atoi(remaining)
-	}
-	if reset := resp.Header.Get(headerRateReset); reset != "" {
-		if v, _ := strconv.ParseInt(reset, 10, 64); v != 0 {
-			c.Rate.Reset = time.Unix(v, 0)
-		}
-	}
+	response := newResponse(resp)
+
+	c.Rate = response.Rate
 
 	err = CheckResponse(resp)
 	if err != nil {
-		return resp, err
+		// even though there was an error, we still return the response
+		// in case the caller wants to inspect it further
+		return response, err
 	}
 
 	if v != nil {
 		err = json.NewDecoder(resp.Body).Decode(v)
 	}
-	return resp, err
+	return response, err
 }
 
 /*

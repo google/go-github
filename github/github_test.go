@@ -130,6 +130,59 @@ func TestNewRequest_badURL(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestResponse_populatePageValues(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
+				`<https://api.github.com/?page=2>; rel="prev",` +
+				`<https://api.github.com/?page=4>; rel="next",` +
+				`<https://api.github.com/?page=5>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if want, got := 1, response.FirstPage; want != got {
+		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	}
+	if want, got := 2, response.PrevPage; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", want, got)
+	}
+	if want, got := 4, response.NextPage; want != got {
+		t.Errorf("response.NextPage: %v, want %v", want, got)
+	}
+	if want, got := 5, response.LastPage; want != got {
+		t.Errorf("response.LastPage: %v, want %v", want, got)
+	}
+}
+
+func TestResponse_populatePageValues_invalid(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?page=1>,` +
+				`<https://api.github.com/?page=abc>; rel="first",` +
+				`https://api.github.com/?page=2; rel="prev",` +
+				`<https://api.github.com/>; rel="next",` +
+				`<https://api.github.com/?page=>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if want, got := 0, response.FirstPage; want != got {
+		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	}
+	if want, got := 0, response.PrevPage; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", want, got)
+	}
+	if want, got := 0, response.NextPage; want != got {
+		t.Errorf("response.NextPage: %v, want %v", want, got)
+	}
+	if want, got := 0, response.LastPage; want != got {
+		t.Errorf("response.LastPage: %v, want %v", want, got)
+	}
+}
+
 func TestDo(t *testing.T) {
 	setup()
 	defer teardown()
