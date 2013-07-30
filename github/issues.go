@@ -6,6 +6,7 @@
 package github
 
 import (
+	"strconv"
 	"fmt"
 	"net/url"
 	"strings"
@@ -107,6 +108,7 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, er
 			"labels":    {strings.Join(opt.Labels, ",")},
 			"sort":      {opt.Sort},
 			"direction": {opt.Direction},
+			"page":      []string{strconv.Itoa(opt.Page)},
 		}
 		if !opt.Since.IsZero() {
 			params.Add("since", opt.Since.Format(time.RFC3339))
