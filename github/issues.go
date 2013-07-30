@@ -69,6 +69,9 @@ type IssueListOptions struct {
 
 	// Since filters issues by time.
 	Since time.Time
+
+	// For paginated result sets, page of results to retrieve.
+	Page int
 }
 
 // List the issues for the authenticated user.  If all is true, list issues
