@@ -340,7 +340,7 @@ type Hook struct {
 	Events    []string               `json:"events,omitempty"`
 	Active    bool                   `json:"active"`
 	Config    map[string]interface{} `json:"config,omitempty"`
-	Id        int                    `json:"id,omitempty"`
+	ID        int                    `json:"id,omitempty"`
 }
 
 // CreateHook creates a Hook for the specified repository.
@@ -358,7 +358,7 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 	return h, err
 }
 
-// ListHook lists all Hooks for the specified repository.
+// ListHooks lists all Hooks for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#list
 func (s *RepositoriesService) ListHooks(owner, repo string) ([]Hook, error) {

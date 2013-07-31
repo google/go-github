@@ -395,7 +395,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 		t.Errorf("Repositories.CreateHook returned error: %v", err)
 	}
 
-	want := &Hook{Id: 1}
+	want := &Hook{ID: 1}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Repositories.CreateHook returned %+v, want %+v", hook, want)
 	}
@@ -415,7 +415,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []Hook{Hook{Id: 1}, Hook{Id: 2}}
+	want := []Hook{Hook{ID: 1}, Hook{ID: 2}}
 	if !reflect.DeepEqual(hooks, want) {
 		t.Errorf("Repositories.ListHooks returned %+v, want %+v", hooks, want)
 	}
@@ -435,7 +435,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{Id: 1}
+	want := &Hook{ID: 1}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Repositories.GetHook returned %+v, want %+v", hook, want)
 	}
@@ -464,7 +464,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 		t.Errorf("Repositories.EditHook returned error: %v", err)
 	}
 
-	want := &Hook{Id: 1}
+	want := &Hook{ID: 1}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Repositories.EditHook returned %+v, want %+v", hook, want)
 	}
