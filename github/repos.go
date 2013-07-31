@@ -334,13 +334,13 @@ func (s *RepositoriesService) ListLanguages(owner string, repository string) (ma
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
-	CreatedAt *time.Time        `json:"created_at,omitempty"`
-	UpdatedAt *time.Time        `json:"updated_at,omitempty"`
-	Name      string            `json:"name"`
-	Events    []string          `json:"events,omitempty"`
-	Active    bool              `json:"active"`
-	Config    map[string]string `json:"config,omitempty"`
-	Id        int               `json:"id,omitempty"`
+	CreatedAt *time.Time             `json:"created_at,omitempty"`
+	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
+	Name      string                 `json:"name"`
+	Events    []string               `json:"events,omitempty"`
+	Active    bool                   `json:"active"`
+	Config    map[string]interface{} `json:"config,omitempty"`
+	Id        int                    `json:"id,omitempty"`
 }
 
 // CreateHook creates a Hook for the specified repository.
