@@ -63,6 +63,12 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 	}
 }
 
+func testHeader(t *testing.T, r *http.Request, header string, want string) {
+	if value := r.Header.Get(header); want != value {
+		t.Errorf("Header %s = %s, want: %s", header, value, want)
+	}
+}
+
 func testURLParseError(t *testing.T, err error) {
 	if err == nil {
 		t.Errorf("Expected error to be returned")
