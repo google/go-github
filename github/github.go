@@ -96,6 +96,7 @@ type Client struct {
 	Users         *UsersService
 	Gists         *GistsService
 	Activity      *ActivityService
+	Search        *SearchService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -125,6 +126,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Users = &UsersService{client: c}
 	c.Gists = &GistsService{client: c}
 	c.Activity = &ActivityService{client: c}
+	c.Search = &SearchService{client: c}
 	return c
 }
 
