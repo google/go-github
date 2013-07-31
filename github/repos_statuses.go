@@ -34,30 +34,30 @@ type RepoStatus struct {
 // reference.  ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
-func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatus, error) {
+func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	statuses := new([]RepoStatus)
-	_, err = s.client.Do(req, statuses)
-	return *statuses, err
+	resp, err := s.client.Do(req, statuses)
+	return *statuses, resp, err
 }
 
 // CreateStatus creates a new status for a repository at the specified
 // reference.  Ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#create-a-status
-func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *RepoStatus) (*RepoStatus, error) {
+func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("POST", u, status)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	statuses := new(RepoStatus)
-	_, err = s.client.Do(req, statuses)
-	return statuses, err
+	resp, err := s.client.Do(req, statuses)
+	return statuses, resp, err
 }

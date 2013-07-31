@@ -5,9 +5,7 @@
 
 package github
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Tree represents a GitHub tree.
 type Tree struct {
@@ -29,7 +27,7 @@ type TreeEntry struct {
 // GetTree fetches the Tree object for a given sha hash from a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
-func (s *GitService) GetTree(owner string, repo string, sha string, recursive bool) (*Tree, error) {
+func (s *GitService) GetTree(owner string, repo string, sha string, recursive bool) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
 	if recursive {
 		u += "?recursive=1"
@@ -37,12 +35,12 @@ func (s *GitService) GetTree(owner string, repo string, sha string, recursive bo
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	t := new(Tree)
-	_, err = s.client.Do(req, t)
-	return t, err
+	resp, err := s.client.Do(req, t)
+	return t, resp, err
 }
 
 // createTree represents the body of a CreateTree request.
@@ -56,7 +54,7 @@ type createTree struct {
 // that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
-func (s *GitService) CreateTree(owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, error) {
+func (s *GitService) CreateTree(owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
 	body := &createTree{
@@ -65,10 +63,10 @@ func (s *GitService) CreateTree(owner string, repo string, baseTree string, entr
 	}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	t := new(Tree)
-	_, err = s.client.Do(req, t)
-	return t, err
+	resp, err := s.client.Do(req, t)
+	return t, resp, err
 }

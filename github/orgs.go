@@ -34,7 +34,7 @@ type Organization struct {
 // organizations for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#list-user-organizations
-func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organization, error) {
+func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organization, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/orgs", user)
@@ -50,40 +50,40 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organizati
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	orgs := new([]Organization)
-	_, err = s.client.Do(req, orgs)
-	return *orgs, err
+	resp, err := s.client.Do(req, orgs)
+	return *orgs, resp, err
 }
 
 // Get fetches an organization by name.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#get-an-organization
-func (s *OrganizationsService) Get(org string) (*Organization, error) {
+func (s *OrganizationsService) Get(org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	organization := new(Organization)
-	_, err = s.client.Do(req, organization)
-	return organization, err
+	resp, err := s.client.Do(req, organization)
+	return organization, resp, err
 }
 
 // Edit an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#edit-an-organization
-func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, error) {
+func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", u, org)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	o := new(Organization)
-	_, err = s.client.Do(req, o)
-	return o, err
+	resp, err := s.client.Do(req, o)
+	return o, resp, err
 }

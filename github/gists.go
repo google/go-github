@@ -57,7 +57,7 @@ type GistListOptions struct {
 // user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, error) {
+func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/gists", user)
@@ -74,18 +74,18 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, error) {
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	gists := new([]Gist)
-	_, err = s.client.Do(req, gists)
-	return *gists, err
+	resp, err := s.client.Do(req, gists)
+	return *gists, resp, err
 }
 
 // ListAll lists all public gists.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, error) {
+func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) {
 	u := "gists/public"
 	if opt != nil {
 		params := url.Values{}
@@ -97,18 +97,18 @@ func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, error) {
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	gists := new([]Gist)
-	_, err = s.client.Do(req, gists)
-	return *gists, err
+	resp, err := s.client.Do(req, gists)
+	return *gists, resp, err
 }
 
 // ListStarred lists starred gists of authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, error) {
+func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, *Response, error) {
 	u := "gists/starred"
 	if opt != nil {
 		params := url.Values{}
@@ -120,118 +120,116 @@ func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, error) {
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	gists := new([]Gist)
-	_, err = s.client.Do(req, gists)
-	return *gists, err
+	resp, err := s.client.Do(req, gists)
+	return *gists, resp, err
 }
 
 // Get a single gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#get-a-single-gist
-func (s *GistsService) Get(id string) (*Gist, error) {
+func (s *GistsService) Get(id string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	gist := new(Gist)
-	_, err = s.client.Do(req, gist)
-	return gist, err
+	resp, err := s.client.Do(req, gist)
+	return gist, resp, err
 }
 
 // Create a gist for authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#create-a-gist
-func (s *GistsService) Create(gist *Gist) (*Gist, error) {
+func (s *GistsService) Create(gist *Gist) (*Gist, *Response, error) {
 	u := "gists"
 	req, err := s.client.NewRequest("POST", u, gist)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	g := new(Gist)
-	_, err = s.client.Do(req, g)
-	return g, err
+	resp, err := s.client.Do(req, g)
+	return g, resp, err
 }
 
 // Edit a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#edit-a-gist
-func (s *GistsService) Edit(id string, gist *Gist) (*Gist, error) {
+func (s *GistsService) Edit(id string, gist *Gist) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, gist)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	g := new(Gist)
-	_, err = s.client.Do(req, g)
-	return g, err
+	resp, err := s.client.Do(req, g)
+	return g, resp, err
 }
 
 // Delete a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#delete-a-gist
-func (s *GistsService) Delete(id string) error {
+func (s *GistsService) Delete(id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }
 
 // Star a gist on behalf of authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#star-a-gist
-func (s *GistsService) Star(id string) error {
+func (s *GistsService) Star(id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }
 
 // Unstar a gist on a behalf of authenticated user.
 //
 // Github API docs: http://developer.github.com/v3/gists/#unstar-a-gist
-func (s *GistsService) Unstar(id string) error {
+func (s *GistsService) Unstar(id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }
 
 // Starred checks if a gist is starred by authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#check-if-a-gist-is-starred
-func (s *GistsService) Starred(id string) (bool, error) {
+func (s *GistsService) Starred(id string) (bool, *Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return parseBoolResponse(err)
+	resp, err := s.client.Do(req, nil)
+	starred, err := parseBoolResponse(err)
+	return starred, resp, err
 }
 
 // Fork a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#fork-a-gist
-func (s *GistsService) Fork(id string) (*Gist, error) {
+func (s *GistsService) Fork(id string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v/forks", id)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	g := new(Gist)
-	_, err = s.client.Do(req, g)
-	return g, err
+	resp, err := s.client.Do(req, g)
+	return g, resp, err
 }

@@ -21,7 +21,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	assignees, err := client.Issues.ListAssignees("o", "r")
+	assignees, _, err := client.Issues.ListAssignees("o", "r")
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
@@ -33,7 +33,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 }
 
 func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
-	_, err := client.Issues.ListAssignees("%", "r")
+	_, _, err := client.Issues.ListAssignees("%", "r")
 	testURLParseError(t, err)
 }
 
@@ -45,7 +45,7 @@ func TestIssuesService_CheckAssignee_true(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	assignee, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
 	if err != nil {
 		t.Errorf("Issues.CheckAssignee returned error: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestIssuesService_CheckAssignee_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	assignee, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
 	if err != nil {
 		t.Errorf("Issues.CheckAssignee returned error: %v", err)
 	}
@@ -81,7 +81,7 @@ func TestIssuesService_CheckAssignee_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	assignee, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -91,6 +91,6 @@ func TestIssuesService_CheckAssignee_error(t *testing.T) {
 }
 
 func TestIssuesService_CheckAssignee_invalidOwner(t *testing.T) {
-	_, err := client.Issues.CheckAssignee("%", "r", "u")
+	_, _, err := client.Issues.CheckAssignee("%", "r", "u")
 	testURLParseError(t, err)
 }

@@ -378,16 +378,16 @@ type Rate struct {
 }
 
 // RateLimit returns the rate limit for the current client.
-func (c *Client) RateLimit() (*Rate, error) {
+func (c *Client) RateLimit() (*Rate, *Response, error) {
 	req, err := c.NewRequest("GET", "rate_limit", nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	response := new(rateResponse)
-	_, err = c.Do(req, response)
+	resp, err := c.Do(req, response)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	rate := &Rate{
@@ -395,7 +395,7 @@ func (c *Client) RateLimit() (*Rate, error) {
 		Remaining: response.Rate.Remaining,
 		Reset:     time.Unix(response.Rate.Reset, 0),
 	}
-	return rate, err
+	return rate, resp, err
 }
 
 /*

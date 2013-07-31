@@ -41,7 +41,7 @@ type PullRequestListCommentsOptions struct {
 // the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
-func (s *PullRequestsService) ListComments(owner string, repo string, number int, opt *PullRequestListCommentsOptions) ([]PullRequestComment, error) {
+func (s *PullRequestsService) ListComments(owner string, repo string, number int, opt *PullRequestListCommentsOptions) ([]PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/pulls/comments", owner, repo)
@@ -62,64 +62,63 @@ func (s *PullRequestsService) ListComments(owner string, repo string, number int
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	comments := new([]PullRequestComment)
-	_, err = s.client.Do(req, comments)
-	return *comments, err
+	resp, err := s.client.Do(req, comments)
+	return *comments, resp, err
 }
 
 // GetComment fetches the specified pull request comment.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#get-a-single-comment
-func (s *PullRequestsService) GetComment(owner string, repo string, number int) (*PullRequestComment, error) {
+func (s *PullRequestsService) GetComment(owner string, repo string, number int) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	comment := new(PullRequestComment)
-	_, err = s.client.Do(req, comment)
-	return comment, err
+	resp, err := s.client.Do(req, comment)
+	return comment, resp, err
 }
 
 // CreateComment creates a new comment on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#get-a-single-comment
-func (s *PullRequestsService) CreateComment(owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, error) {
+func (s *PullRequestsService) CreateComment(owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	c := new(PullRequestComment)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }
 
 // EditComment updates a pull request comment.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#edit-a-comment
-func (s *PullRequestsService) EditComment(owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, error) {
+func (s *PullRequestsService) EditComment(owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	c := new(PullRequestComment)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }
 
 // DeleteComment deletes a pull request comment.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#delete-a-comment
-func (s *PullRequestsService) DeleteComment(owner string, repo string, number int) error {
+func (s *PullRequestsService) DeleteComment(owner string, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }
