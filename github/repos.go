@@ -336,9 +336,9 @@ func (s *RepositoriesService) ListLanguages(owner string, repository string) (ma
 type Hook struct {
 	CreatedAt *time.Time             `json:"created_at,omitempty"`
 	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
-	Name      string                 `json:"name"`
+	Name      string                 `json:"name,omitempty"`
 	Events    []string               `json:"events,omitempty"`
-	Active    bool                   `json:"active"`
+	Active    bool                   `json:"active,omitempty"`
 	Config    map[string]interface{} `json:"config,omitempty"`
 	ID        int                    `json:"id,omitempty"`
 }
