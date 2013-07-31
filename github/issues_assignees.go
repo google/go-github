@@ -5,34 +5,33 @@
 
 package github
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // ListAssignees fetches all available assignees (owners and collaborators) to
 // which issues may be assigned.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/assignees/#list-assignees
-func (s *IssuesService) ListAssignees(owner string, repo string) ([]User, error) {
+func (s *IssuesService) ListAssignees(owner string, repo string) ([]User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	assignees := new([]User)
-	_, err = s.client.Do(req, assignees)
-	return *assignees, err
+	resp, err := s.client.Do(req, assignees)
+	return *assignees, resp, err
 }
 
 // CheckAssignee checks if a user is an assignee for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/assignees/#check-assignee
-func (s *IssuesService) CheckAssignee(owner string, repo string, user string) (bool, error) {
+func (s *IssuesService) CheckAssignee(owner string, repo string, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return parseBoolResponse(err)
+	resp, err := s.client.Do(req, nil)
+	assignee, err := parseBoolResponse(err)
+	return assignee, resp, err
 }

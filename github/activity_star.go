@@ -30,7 +30,7 @@ type ActivityListStarredOptions struct {
 // will list the starred repositories for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/starring/#list-repositories-being-starred
-func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptions) ([]Repository, error) {
+func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptions) ([]Repository, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/starred", user)
@@ -47,10 +47,10 @@ func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptio
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	repos := new([]Repository)
-	_, err = s.client.Do(req, repos)
-	return *repos, err
+	resp, err := s.client.Do(req, repos)
+	return *repos, resp, err
 }

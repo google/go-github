@@ -22,7 +22,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s","message":"m","author":{"name":"n"}}`)
 	})
 
-	commit, err := client.Git.GetCommit("o", "r", "s")
+	commit, _, err := client.Git.GetCommit("o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
@@ -50,7 +50,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
-	commit, err := client.Git.CreateCommit("o", "r", input)
+	commit, _, err := client.Git.CreateCommit("o", "r", input)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}

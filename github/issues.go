@@ -72,7 +72,7 @@ type IssueListOptions struct {
 // repositories.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]Issue, error) {
+func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]Issue, *Response, error) {
 	var u string
 	if all {
 		u = "issues"
@@ -86,12 +86,12 @@ func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]Issue, error) {
 // authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]Issue, error) {
+func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
 	return s.listIssues(u, opt)
 }
 
-func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, error) {
+func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, *Response, error) {
 	if opt != nil {
 		params := url.Values{
 			"filter":    {opt.Filter},
@@ -109,12 +109,12 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, er
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	issues := new([]Issue)
-	_, err = s.client.Do(req, issues)
-	return *issues, err
+	resp, err := s.client.Do(req, issues)
+	return *issues, resp, err
 }
 
 // IssueListByRepoOptions specifies the optional parameters to the
@@ -158,7 +158,7 @@ type IssueListByRepoOptions struct {
 // ListByRepo lists the issues for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues-for-a-repository
-func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]Issue, error) {
+func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	if opt != nil {
 		params := url.Values{
@@ -179,52 +179,52 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	issues := new([]Issue)
-	_, err = s.client.Do(req, issues)
-	return *issues, err
+	resp, err := s.client.Do(req, issues)
+	return *issues, resp, err
 }
 
 // Get a single issue.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#get-a-single-issue
-func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, error) {
+func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	issue := new(Issue)
-	_, err = s.client.Do(req, issue)
-	return issue, err
+	resp, err := s.client.Do(req, issue)
+	return issue, resp, err
 }
 
 // Create a new issue on the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#create-an-issue
-func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue, error) {
+func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	i := new(Issue)
-	_, err = s.client.Do(req, i)
-	return i, err
+	resp, err := s.client.Do(req, i)
+	return i, resp, err
 }
 
 // Edit an issue.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#edit-an-issue
-func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue) (*Issue, error) {
+func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	i := new(Issue)
-	_, err = s.client.Do(req, i)
-	return i, err
+	resp, err := s.client.Do(req, i)
+	return i, resp, err
 }

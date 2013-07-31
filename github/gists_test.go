@@ -29,7 +29,7 @@ func TestGistsService_List(t *testing.T) {
 	})
 
 	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
-	gists, err := client.Gists.List("u", opt)
+	gists, _, err := client.Gists.List("u", opt)
 
 	if err != nil {
 		t.Errorf("Gists.List returned error: %v", err)
@@ -50,7 +50,7 @@ func TestGistsService_List_withEmptyUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
-	gists, err := client.Gists.List("", nil)
+	gists, _, err := client.Gists.List("", nil)
 	if err != nil {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
@@ -76,7 +76,7 @@ func TestGistsService_ListAll(t *testing.T) {
 	})
 
 	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
-	gists, err := client.Gists.ListAll(opt)
+	gists, _, err := client.Gists.ListAll(opt)
 
 	if err != nil {
 		t.Errorf("Gists.ListAll returned error: %v", err)
@@ -103,7 +103,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 	})
 
 	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
-	gists, err := client.Gists.ListStarred(opt)
+	gists, _, err := client.Gists.ListStarred(opt)
 
 	if err != nil {
 		t.Errorf("Gists.ListStarred returned error: %v", err)
@@ -124,7 +124,7 @@ func TestGistsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id": "1"}`)
 	})
 
-	gist, err := client.Gists.Get("1")
+	gist, _, err := client.Gists.Get("1")
 
 	if err != nil {
 		t.Errorf("Gists.Get returned error: %v", err)
@@ -171,7 +171,7 @@ func TestGistsService_Create(t *testing.T) {
 			}`)
 	})
 
-	gist, err := client.Gists.Create(input)
+	gist, _, err := client.Gists.Create(input)
 	if err != nil {
 		t.Errorf("Gists.Create returned error: %v", err)
 	}
@@ -226,7 +226,7 @@ func TestGistsService_Edit(t *testing.T) {
 			}`)
 	})
 
-	gist, err := client.Gists.Edit("1", input)
+	gist, _, err := client.Gists.Edit("1", input)
 	if err != nil {
 		t.Errorf("Gists.Edit returned error: %v", err)
 	}
@@ -253,7 +253,7 @@ func TestGistsService_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	err := client.Gists.Delete("1")
+	_, err := client.Gists.Delete("1")
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
@@ -267,7 +267,7 @@ func TestGistsService_Star(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	err := client.Gists.Star("1")
+	_, err := client.Gists.Star("1")
 	if err != nil {
 		t.Errorf("Gists.Star returned error: %v", err)
 	}
@@ -281,7 +281,7 @@ func TestGistsService_Unstar(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	err := client.Gists.Unstar("1")
+	_, err := client.Gists.Unstar("1")
 	if err != nil {
 		t.Errorf("Gists.Unstar returned error: %v", err)
 	}
@@ -296,7 +296,7 @@ func TestGistsService_Starred_hasStar(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	star, err := client.Gists.Starred("1")
+	star, _, err := client.Gists.Starred("1")
 	if err != nil {
 		t.Errorf("Gists.Starred returned error: %v", err)
 	}
@@ -314,7 +314,7 @@ func TestGistsService_Starred_noStar(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	star, err := client.Gists.Starred("1")
+	star, _, err := client.Gists.Starred("1")
 	if err != nil {
 		t.Errorf("Gists.Starred returned error: %v", err)
 	}
@@ -332,7 +332,7 @@ func TestGistsService_Fork(t *testing.T) {
 		fmt.Fprint(w, `{"id": "2"}`)
 	})
 
-	gist, err := client.Gists.Fork("1")
+	gist, _, err := client.Gists.Fork("1")
 
 	if err != nil {
 		t.Errorf("Gists.Fork returned error: %v", err)

@@ -31,16 +31,16 @@ type CommitAuthor struct {
 // GetCommit fetchs the Commit object for a given SHA.
 //
 // GitHub API docs: http://developer.github.com/v3/git/commits/#get-a-commit
-func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, error) {
+func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	c := new(Commit)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }
 
 // CreateCommit creates a new commit in a repository.
@@ -50,14 +50,14 @@ func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, 
 // the authenticated user’s information and the current date.
 //
 // GitHub API docs: http://developer.github.com/v3/git/commits/#create-a-commit
-func (s *GitService) CreateCommit(owner string, repo string, commit *Commit) (*Commit, error) {
+func (s *GitService) CreateCommit(owner string, repo string, commit *Commit) (*Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/commits", owner, repo)
 	req, err := s.client.NewRequest("POST", u, commit)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	c := new(Commit)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }

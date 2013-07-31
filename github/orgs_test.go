@@ -22,7 +22,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	orgs, err := client.Organizations.List("", nil)
+	orgs, _, err := client.Organizations.List("", nil)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -44,7 +44,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{2}
-	orgs, err := client.Organizations.List("u", opt)
+	orgs, _, err := client.Organizations.List("u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -56,7 +56,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
-	_, err := client.Organizations.List("%", nil)
+	_, _, err := client.Organizations.List("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -69,7 +69,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	org, err := client.Organizations.Get("o")
+	org, _, err := client.Organizations.Get("o")
 	if err != nil {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
@@ -81,7 +81,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.Get("%")
+	_, _, err := client.Organizations.Get("%")
 	testURLParseError(t, err)
 }
 
@@ -103,7 +103,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	org, err := client.Organizations.Edit("o", input)
+	org, _, err := client.Organizations.Edit("o", input)
 	if err != nil {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
@@ -115,6 +115,6 @@ func TestOrganizationsService_Edit(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.Edit("%", nil)
+	_, _, err := client.Organizations.Edit("%", nil)
 	testURLParseError(t, err)
 }
