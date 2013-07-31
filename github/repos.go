@@ -361,12 +361,21 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 // ListHooks lists all Hooks for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#list
-func (s *RepositoriesService) ListHooks(owner, repo string) ([]Hook, error) {
+func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([]Hook, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
+
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	hooks := new([]Hook)
 	_, err = s.client.Do(req, hooks)
 	return *hooks, err

@@ -407,10 +407,13 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	hooks, err := client.Repositories.ListHooks("o", "r")
+	opt := &ListOptions{2}
+
+	hooks, err := client.Repositories.ListHooks("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
