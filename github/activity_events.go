@@ -62,7 +62,7 @@ type PushEventCommit struct {
 // true, only public events will be returned.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-events-performed-by-a-user
-func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool, opt *ListOptions) ([]Event, error) {
+func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool, opt *ListOptions) ([]Event, *Response, error) {
 	var u string
 	if publicOnly {
 		u = fmt.Sprintf("users/%v/events/public", user)
@@ -79,10 +79,10 @@ func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	events := new([]Event)
-	_, err = s.client.Do(req, events)
-	return *events, err
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
 }

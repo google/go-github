@@ -420,7 +420,7 @@ func TestRateLimit(t *testing.T) {
 		fmt.Fprint(w, `{"rate":{"limit":2,"remaining":1,"reset":1372700873}}`)
 	})
 
-	rate, err := client.RateLimit()
+	rate, _, err := client.RateLimit()
 	if err != nil {
 		t.Errorf("Rate limit returned error: %v", err)
 	}

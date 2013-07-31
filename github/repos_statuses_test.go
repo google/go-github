@@ -22,7 +22,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	statuses, err := client.Repositories.ListStatuses("o", "r", "r")
+	statuses, _, err := client.Repositories.ListStatuses("o", "r", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
@@ -34,7 +34,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.ListStatuses("%", "r", "r")
+	_, _, err := client.Repositories.ListStatuses("%", "r", "r")
 	testURLParseError(t, err)
 }
 
@@ -55,7 +55,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	status, err := client.Repositories.CreateStatus("o", "r", "r", input)
+	status, _, err := client.Repositories.CreateStatus("o", "r", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateStatus returned error: %v", err)
 	}
@@ -67,6 +67,6 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.CreateStatus("%", "r", "r", nil)
+	_, _, err := client.Repositories.CreateStatus("%", "r", "r", nil)
 	testURLParseError(t, err)
 }

@@ -22,7 +22,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 		fmt.Fprint(w, `["user@example.com"]`)
 	})
 
-	emails, err := client.Users.ListEmails()
+	emails, _, err := client.Users.ListEmails()
 	if err != nil {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
@@ -51,7 +51,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		fmt.Fprint(w, `["old@example.com", "new@example.com"]`)
 	})
 
-	emails, err := client.Users.AddEmails(input)
+	emails, _, err := client.Users.AddEmails(input)
 	if err != nil {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
@@ -78,7 +78,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 		}
 	})
 
-	err := client.Users.DeleteEmails(input)
+	_, err := client.Users.DeleteEmails(input)
 	if err != nil {
 		t.Errorf("Users.DeleteEmails returned error: %v", err)
 	}

@@ -37,7 +37,7 @@ func TestIssuesService_List_all(t *testing.T) {
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		1,
 	}
-	issues, err := client.Issues.List(true, opt)
+	issues, _, err := client.Issues.List(true, opt)
 
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
@@ -58,7 +58,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	issues, err := client.Issues.List(false, nil)
+	issues, _, err := client.Issues.List(false, nil)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
@@ -78,7 +78,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	issues, err := client.Issues.ListByOrg("o", nil)
+	issues, _, err := client.Issues.ListByOrg("o", nil)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
@@ -90,7 +90,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
-	_, err := client.Issues.ListByOrg("%", nil)
+	_, _, err := client.Issues.ListByOrg("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -118,7 +118,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 	}
-	issues, err := client.Issues.ListByRepo("o", "r", opt)
+	issues, _, err := client.Issues.ListByRepo("o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
@@ -130,7 +130,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
-	_, err := client.Issues.ListByRepo("%", "r", nil)
+	_, _, err := client.Issues.ListByRepo("%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -143,7 +143,7 @@ func TestIssuesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	issue, err := client.Issues.Get("o", "r", 1)
+	issue, _, err := client.Issues.Get("o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.Get returned error: %v", err)
 	}
@@ -155,7 +155,7 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
-	_, err := client.Issues.Get("%", "r", 1)
+	_, _, err := client.Issues.Get("%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -177,7 +177,7 @@ func TestIssuesService_Create(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	issue, err := client.Issues.Create("o", "r", input)
+	issue, _, err := client.Issues.Create("o", "r", input)
 	if err != nil {
 		t.Errorf("Issues.Create returned error: %v", err)
 	}
@@ -189,7 +189,7 @@ func TestIssuesService_Create(t *testing.T) {
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
-	_, err := client.Issues.Create("%", "r", nil)
+	_, _, err := client.Issues.Create("%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -211,7 +211,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	issue, err := client.Issues.Edit("o", "r", 1, input)
+	issue, _, err := client.Issues.Edit("o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.Edit returned error: %v", err)
 	}
@@ -223,6 +223,6 @@ func TestIssuesService_Edit(t *testing.T) {
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
-	_, err := client.Issues.Edit("%", "r", 1, nil)
+	_, _, err := client.Issues.Edit("%", "r", 1, nil)
 	testURLParseError(t, err)
 }

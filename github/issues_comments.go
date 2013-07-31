@@ -37,7 +37,7 @@ type IssueListCommentsOptions struct {
 // number of 0 will return all comments on all issues for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
-func (s *IssuesService) ListComments(owner string, repo string, number int, opt *IssueListCommentsOptions) ([]IssueComment, error) {
+func (s *IssuesService) ListComments(owner string, repo string, number int, opt *IssueListCommentsOptions) ([]IssueComment, *Response, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
@@ -58,65 +58,64 @@ func (s *IssuesService) ListComments(owner string, repo string, number int, opt 
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	comments := new([]IssueComment)
-	_, err = s.client.Do(req, comments)
-	return *comments, err
+	resp, err := s.client.Do(req, comments)
+	return *comments, resp, err
 }
 
 // GetComment fetches the specified issue comment.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#get-a-single-comment
-func (s *IssuesService) GetComment(owner string, repo string, id int) (*IssueComment, error) {
+func (s *IssuesService) GetComment(owner string, repo string, id int) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	comment := new(IssueComment)
-	_, err = s.client.Do(req, comment)
-	return comment, err
+	resp, err := s.client.Do(req, comment)
+	return comment, resp, err
 }
 
 // CreateComment creates a new comment on the specified issue.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#create-a-comment
-func (s *IssuesService) CreateComment(owner string, repo string, number int, comment *IssueComment) (*IssueComment, error) {
+func (s *IssuesService) CreateComment(owner string, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	c := new(IssueComment)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }
 
 // EditComment updates an issue comment.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#edit-a-comment
-func (s *IssuesService) EditComment(owner string, repo string, id int, comment *IssueComment) (*IssueComment, error) {
+func (s *IssuesService) EditComment(owner string, repo string, id int, comment *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	c := new(IssueComment)
-	_, err = s.client.Do(req, c)
-	return c, err
+	resp, err := s.client.Do(req, c)
+	return c, resp, err
 }
 
 // DeleteComment deletes an issue comment.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#delete-a-comment
-func (s *IssuesService) DeleteComment(owner string, repo string, id int) error {
+func (s *IssuesService) DeleteComment(owner string, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }

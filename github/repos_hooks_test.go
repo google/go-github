@@ -31,7 +31,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, err := client.Repositories.CreateHook("o", "r", input)
+	hook, _, err := client.Repositories.CreateHook("o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateHook returned error: %v", err)
 	}
@@ -54,7 +54,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 
 	opt := &ListOptions{2}
 
-	hooks, err := client.Repositories.ListHooks("o", "r", opt)
+	hooks, _, err := client.Repositories.ListHooks("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
@@ -74,7 +74,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, err := client.Repositories.GetHook("o", "r", 1)
+	hook, _, err := client.Repositories.GetHook("o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
@@ -103,7 +103,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, err := client.Repositories.EditHook("o", "r", 1, input)
+	hook, _, err := client.Repositories.EditHook("o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.EditHook returned error: %v", err)
 	}
@@ -122,7 +122,7 @@ func TestRepositoriesService_DeleteHook(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	err := client.Repositories.DeleteHook("o", "r", 1)
+	_, err := client.Repositories.DeleteHook("o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteHook returned error: %v", err)
 	}
@@ -136,7 +136,7 @@ func TestRepositoriesService_TestHook(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	err := client.Repositories.TestHook("o", "r", 1)
+	_, err := client.Repositories.TestHook("o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.TestHook returned error: %v", err)
 	}

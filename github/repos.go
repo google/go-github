@@ -57,7 +57,7 @@ type RepositoryListOptions struct {
 // repositories for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-user-repositories
-func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, error) {
+func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/repos", user)
@@ -76,12 +76,12 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	repos := new([]Repository)
-	_, err = s.client.Do(req, repos)
-	return *repos, err
+	resp, err := s.client.Do(req, repos)
+	return *repos, resp, err
 }
 
 // RepositoryListByOrgOptions specifies the optional parameters to the
@@ -98,7 +98,7 @@ type RepositoryListByOrgOptions struct {
 // ListByOrg lists the repositories for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
-func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, error) {
+func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
 	if opt != nil {
 		params := url.Values{
@@ -110,12 +110,12 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	repos := new([]Repository)
-	_, err = s.client.Do(req, repos)
-	return *repos, err
+	resp, err := s.client.Do(req, repos)
+	return *repos, resp, err
 }
 
 // RepositoryListAllOptions specifies the optional parameters to the
@@ -128,7 +128,7 @@ type RepositoryListAllOptions struct {
 // ListAll lists all GitHub repositories in the order that they were created.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-all-repositories
-func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, error) {
+func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, *Response, error) {
 	u := "repositories"
 	if opt != nil {
 		params := url.Values{
@@ -139,12 +139,12 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Reposito
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	repos := new([]Repository)
-	_, err = s.client.Do(req, repos)
-	return *repos, err
+	resp, err := s.client.Do(req, repos)
+	return *repos, resp, err
 }
 
 // Create a new repository.  If an organization is specified, the new
@@ -152,7 +152,7 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Reposito
 // specified, it will be created for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#create
-func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository, error) {
+func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
 		u = fmt.Sprintf("orgs/%v/repos", org)
@@ -162,40 +162,40 @@ func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository,
 
 	req, err := s.client.NewRequest("POST", u, repo)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	r := new(Repository)
-	_, err = s.client.Do(req, r)
-	return r, err
+	resp, err := s.client.Do(req, r)
+	return r, resp, err
 }
 
 // Get fetches a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#get
-func (s *RepositoriesService) Get(owner, repo string) (*Repository, error) {
+func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	repository := new(Repository)
-	_, err = s.client.Do(req, repository)
-	return repository, err
+	resp, err := s.client.Do(req, repository)
+	return repository, resp, err
 }
 
 // Edit updates a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#edit
-func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (*Repository, error) {
+func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, repository)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	r := new(Repository)
-	_, err = s.client.Do(req, r)
-	return r, err
+	resp, err := s.client.Do(req, r)
+	return r, resp, err
 }
 
 // ListLanguages lists languages for the specified repository. The returned map
@@ -208,14 +208,14 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 //     }
 //
 // GitHub API Docs: http://developer.github.com/v3/repos/#list-languages
-func (s *RepositoriesService) ListLanguages(owner string, repository string) (map[string]int, error) {
+func (s *RepositoriesService) ListLanguages(owner string, repository string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("/repos/%v/%v/languages", owner, repository)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	languages := make(map[string]int)
-	_, err = s.client.Do(req, &languages)
-	return languages, err
+	resp, err := s.client.Do(req, &languages)
+	return languages, resp, err
 }

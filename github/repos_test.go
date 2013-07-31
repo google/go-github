@@ -22,7 +22,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	repos, err := client.Repositories.List("", nil)
+	repos, _, err := client.Repositories.List("", nil)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
@@ -50,7 +50,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	})
 
 	opt := &RepositoryListOptions{"owner", "created", "asc", 2}
-	repos, err := client.Repositories.List("u", opt)
+	repos, _, err := client.Repositories.List("u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
@@ -62,7 +62,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 }
 
 func TestRepositoriesService_List_invalidUser(t *testing.T) {
-	_, err := client.Repositories.List("%", nil)
+	_, _, err := client.Repositories.List("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -80,7 +80,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	})
 
 	opt := &RepositoryListByOrgOptions{"forks", 2}
-	repos, err := client.Repositories.ListByOrg("o", opt)
+	repos, _, err := client.Repositories.ListByOrg("o", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
 	}
@@ -92,7 +92,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 }
 
 func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
-	_, err := client.Repositories.ListByOrg("%", nil)
+	_, _, err := client.Repositories.ListByOrg("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -107,7 +107,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 	})
 
 	opt := &RepositoryListAllOptions{1}
-	repos, err := client.Repositories.ListAll(opt)
+	repos, _, err := client.Repositories.ListAll(opt)
 	if err != nil {
 		t.Errorf("Repositories.ListAll returned error: %v", err)
 	}
@@ -136,7 +136,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, err := client.Repositories.Create("", input)
+	repo, _, err := client.Repositories.Create("", input)
 	if err != nil {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
@@ -165,7 +165,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, err := client.Repositories.Create("o", input)
+	repo, _, err := client.Repositories.Create("o", input)
 	if err != nil {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
@@ -177,7 +177,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 }
 
 func TestRepositoriesService_Create_invalidOrg(t *testing.T) {
-	_, err := client.Repositories.Create("%", nil)
+	_, _, err := client.Repositories.Create("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -190,7 +190,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"}}`)
 	})
 
-	repo, err := client.Repositories.Get("o", "r")
+	repo, _, err := client.Repositories.Get("o", "r")
 	if err != nil {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
@@ -219,7 +219,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, err := client.Repositories.Edit("o", "r", input)
+	repo, _, err := client.Repositories.Edit("o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Edit returned error: %v", err)
 	}
@@ -231,12 +231,12 @@ func TestRepositoriesService_Edit(t *testing.T) {
 }
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.Get("%", "r")
+	_, _, err := client.Repositories.Get("%", "r")
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.Edit("%", "r", nil)
+	_, _, err := client.Repositories.Edit("%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -249,7 +249,7 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 		fmt.Fprint(w, `{"go":1}`)
 	})
 
-	languages, err := client.Repositories.ListLanguages("u", "r")
+	languages, _, err := client.Repositories.ListLanguages("u", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListLanguages returned error: %v", err)
 	}

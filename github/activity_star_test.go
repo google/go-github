@@ -21,7 +21,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	repos, err := client.Activity.ListStarred("", nil)
+	repos, _, err := client.Activity.ListStarred("", nil)
 	if err != nil {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
@@ -47,7 +47,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ActivityListStarredOptions{"created", "asc", 2}
-	repos, err := client.Activity.ListStarred("u", opt)
+	repos, _, err := client.Activity.ListStarred("u", opt)
 	if err != nil {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}

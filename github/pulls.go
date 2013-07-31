@@ -60,7 +60,7 @@ type PullRequestListOptions struct {
 // List the pull requests for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/pulls/#list-pull-requests
-func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]PullRequest, error) {
+func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	if opt != nil {
 		params := url.Values{
@@ -73,52 +73,52 @@ func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestLi
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	pulls := new([]PullRequest)
-	_, err = s.client.Do(req, pulls)
-	return *pulls, err
+	resp, err := s.client.Do(req, pulls)
+	return *pulls, resp, err
 }
 
 // Get a single pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#get-a-single-pull-request
-func (s *PullRequestsService) Get(owner string, repo string, number int) (*PullRequest, error) {
+func (s *PullRequestsService) Get(owner string, repo string, number int) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	pull := new(PullRequest)
-	_, err = s.client.Do(req, pull)
-	return pull, err
+	resp, err := s.client.Do(req, pull)
+	return pull, resp, err
 }
 
 // Create a new pull request on the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#create-a-pull-request
-func (s *PullRequestsService) Create(owner string, repo string, pull *PullRequest) (*PullRequest, error) {
+func (s *PullRequestsService) Create(owner string, repo string, pull *PullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	req, err := s.client.NewRequest("POST", u, pull)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	p := new(PullRequest)
-	_, err = s.client.Do(req, p)
-	return p, err
+	resp, err := s.client.Do(req, p)
+	return p, resp, err
 }
 
 // Edit a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request
-func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *PullRequest) (*PullRequest, error) {
+func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, pull)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	p := new(PullRequest)
-	_, err = s.client.Do(req, p)
-	return p, err
+	resp, err := s.client.Do(req, p)
+	return p, resp, err
 }

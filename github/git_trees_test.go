@@ -27,7 +27,7 @@ func TestGitService_GetTree(t *testing.T) {
 			}`)
 	})
 
-	tree, err := client.Git.GetTree("o", "r", "s", true)
+	tree, _, err := client.Git.GetTree("o", "r", "s", true)
 	if err != nil {
 		t.Errorf("Git.GetTree returned error: %v", err)
 	}
@@ -88,7 +88,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		}`)
 	})
 
-	tree, err := client.Git.CreateTree("o", "r", "b", input)
+	tree, _, err := client.Git.CreateTree("o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
 	}

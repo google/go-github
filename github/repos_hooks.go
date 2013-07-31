@@ -70,21 +70,21 @@ type Hook struct {
 // Name and Config are required fields.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#create-a-hook
-func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook, error) {
+func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 	req, err := s.client.NewRequest("POST", u, hook)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	h := new(Hook)
-	_, err = s.client.Do(req, h)
-	return h, err
+	resp, err := s.client.Do(req, h)
+	return h, resp, err
 }
 
 // ListHooks lists all Hooks for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#list
-func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([]Hook, error) {
+func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([]Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 
 	if opt != nil {
@@ -96,64 +96,62 @@ func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	hooks := new([]Hook)
-	_, err = s.client.Do(req, hooks)
-	return *hooks, err
+	resp, err := s.client.Do(req, hooks)
+	return *hooks, resp, err
 }
 
 // GetHook returns a single specified Hook.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#get-single-hook
-func (s *RepositoriesService) GetHook(owner, repo string, id int) (*Hook, error) {
+func (s *RepositoriesService) GetHook(owner, repo string, id int) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	hook := new(Hook)
-	_, err = s.client.Do(req, hook)
-	return hook, err
+	resp, err := s.client.Do(req, hook)
+	return hook, resp, err
 }
 
 // EditHook updates a specified Hook.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#edit-a-hook
-func (s *RepositoriesService) EditHook(owner, repo string, id int, hook *Hook) (*Hook, error) {
+func (s *RepositoriesService) EditHook(owner, repo string, id int, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, hook)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	h := new(Hook)
-	_, err = s.client.Do(req, h)
-	return h, err
+	resp, err := s.client.Do(req, h)
+	return h, resp, err
 }
 
 // DeleteHook deletes a specified Hook.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#delete-a-hook
-func (s *RepositoriesService) DeleteHook(owner, repo string, id int) error {
+func (s *RepositoriesService) DeleteHook(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }
 
 // TestHook triggers a test Hook by github.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#test-a-push-hook
-func (s *RepositoriesService) TestHook(owner, repo string, id int) error {
+func (s *RepositoriesService) TestHook(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d/tests", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	_, err = s.client.Do(req, nil)
-	return err
+	return s.client.Do(req, nil)
 }

@@ -28,7 +28,7 @@ func TestPullRequestsService_List(t *testing.T) {
 	})
 
 	opt := &PullRequestListOptions{"closed", "h", "b"}
-	pulls, err := client.PullRequests.List("o", "r", opt)
+	pulls, _, err := client.PullRequests.List("o", "r", opt)
 
 	if err != nil {
 		t.Errorf("PullRequests.List returned error: %v", err)
@@ -41,7 +41,7 @@ func TestPullRequestsService_List(t *testing.T) {
 }
 
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
-	_, err := client.PullRequests.List("%", "r", nil)
+	_, _, err := client.PullRequests.List("%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -54,7 +54,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	pull, err := client.PullRequests.Get("o", "r", 1)
+	pull, _, err := client.PullRequests.Get("o", "r", 1)
 
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
@@ -67,7 +67,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
-	_, err := client.PullRequests.Get("%", "r", 1)
+	_, _, err := client.PullRequests.Get("%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -89,7 +89,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	pull, err := client.PullRequests.Create("o", "r", input)
+	pull, _, err := client.PullRequests.Create("o", "r", input)
 	if err != nil {
 		t.Errorf("PullRequests.Create returned error: %v", err)
 	}
@@ -101,7 +101,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 }
 
 func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
-	_, err := client.PullRequests.Create("%", "r", nil)
+	_, _, err := client.PullRequests.Create("%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -123,7 +123,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	pull, err := client.PullRequests.Edit("o", "r", 1, input)
+	pull, _, err := client.PullRequests.Edit("o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.Edit returned error: %v", err)
 	}
@@ -135,6 +135,6 @@ func TestPullRequestsService_Edit(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
-	_, err := client.PullRequests.Edit("%", "r", 1, nil)
+	_, _, err := client.PullRequests.Edit("%", "r", 1, nil)
 	testURLParseError(t, err)
 }

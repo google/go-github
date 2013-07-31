@@ -22,7 +22,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	user, err := client.Users.Get("")
+	user, _, err := client.Users.Get("")
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
@@ -42,7 +42,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	user, err := client.Users.Get("u")
+	user, _, err := client.Users.Get("u")
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
@@ -54,7 +54,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
-	_, err := client.Users.Get("%")
+	_, _, err := client.Users.Get("%")
 	testURLParseError(t, err)
 }
 
@@ -76,7 +76,7 @@ func TestUsersService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	user, err := client.Users.Edit(input)
+	user, _, err := client.Users.Edit(input)
 	if err != nil {
 		t.Errorf("Users.Edit returned error: %v", err)
 	}
@@ -98,7 +98,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	})
 
 	opt := &UserListOptions{1}
-	users, err := client.Users.ListAll(opt)
+	users, _, err := client.Users.ListAll(opt)
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
 	}

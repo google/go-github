@@ -43,7 +43,7 @@ type User struct {
 // user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-a-single-user
-func (s *UsersService) Get(user string) (*User, error) {
+func (s *UsersService) Get(user string) (*User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v", user)
@@ -52,27 +52,27 @@ func (s *UsersService) Get(user string) (*User, error) {
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	uResp := new(User)
-	_, err = s.client.Do(req, uResp)
-	return uResp, err
+	resp, err := s.client.Do(req, uResp)
+	return uResp, resp, err
 }
 
 // Edit the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/#update-the-authenticated-user
-func (s *UsersService) Edit(user *User) (*User, error) {
+func (s *UsersService) Edit(user *User) (*User, *Response, error) {
 	u := "user"
 	req, err := s.client.NewRequest("PATCH", u, user)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	uResp := new(User)
-	_, err = s.client.Do(req, uResp)
-	return uResp, err
+	resp, err := s.client.Do(req, uResp)
+	return uResp, resp, err
 }
 
 // UserListOptions specifies optional parameters to the UsersService.List
@@ -85,7 +85,7 @@ type UserListOptions struct {
 // ListAll lists all GitHub users.
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-all-users
-func (s *UsersService) ListAll(opt *UserListOptions) ([]User, error) {
+func (s *UsersService) ListAll(opt *UserListOptions) ([]User, *Response, error) {
 	u := "users"
 	if opt != nil {
 		params := url.Values{
@@ -96,10 +96,10 @@ func (s *UsersService) ListAll(opt *UserListOptions) ([]User, error) {
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	users := new([]User)
-	_, err = s.client.Do(req, users)
-	return *users, err
+	resp, err := s.client.Do(req, users)
+	return *users, resp, err
 }

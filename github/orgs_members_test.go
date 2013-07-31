@@ -21,7 +21,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, err := client.Organizations.ListMembers("o")
+	members, _, err := client.Organizations.ListMembers("o")
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
@@ -33,7 +33,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.ListMembers("%")
+	_, _, err := client.Organizations.ListMembers("%")
 	testURLParseError(t, err)
 }
 
@@ -46,7 +46,7 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, err := client.Organizations.ListPublicMembers("o")
+	members, _, err := client.Organizations.ListPublicMembers("o")
 	if err != nil {
 		t.Errorf("Organizations.ListPublicMembers returned error: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPublicMembers_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.ListPublicMembers("%")
+	_, _, err := client.Organizations.ListPublicMembers("%")
 	testURLParseError(t, err)
 }
 
@@ -71,7 +71,7 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.CheckMembership("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.CheckMembership returned error: %v", err)
 	}
@@ -90,7 +90,7 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.CheckMembership("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.CheckMembership returned error: %+v", err)
 	}
@@ -110,7 +110,7 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.CheckMembership("o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -120,7 +120,7 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 }
 
 func TestOrganizationsService_CheckMembership_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.CheckMembership("%", "u")
+	_, _, err := client.Organizations.CheckMembership("%", "u")
 	testURLParseError(t, err)
 }
 
@@ -133,7 +133,7 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
 	}
@@ -152,7 +152,7 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
 	}
@@ -172,7 +172,7 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -182,7 +182,7 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 }
 
 func TestOrganizationsService_CheckPublicMembership_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.CheckPublicMembership("%", "u")
+	_, _, err := client.Organizations.CheckPublicMembership("%", "u")
 	testURLParseError(t, err)
 }
 
@@ -194,13 +194,13 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	err := client.Organizations.RemoveMember("o", "u")
+	_, err := client.Organizations.RemoveMember("o", "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveMember returned error: %v", err)
 	}
 }
 
 func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
-	err := client.Organizations.RemoveMember("%", "u")
+	_, err := client.Organizations.RemoveMember("%", "u")
 	testURLParseError(t, err)
 }

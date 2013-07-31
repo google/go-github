@@ -26,7 +26,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	events, err := client.Activity.ListEventsPerformedByUser("u", false, opt)
+	events, _, err := client.Activity.ListEventsPerformedByUser("u", false, opt)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
@@ -46,7 +46,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	events, err := client.Activity.ListEventsPerformedByUser("u", true, nil)
+	events, _, err := client.Activity.ListEventsPerformedByUser("u", true, nil)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
