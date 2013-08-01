@@ -6,9 +6,9 @@
 package github
 
 import (
-	"strconv"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
