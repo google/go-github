@@ -6,8 +6,8 @@
 package github
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
 // Commit represents a GitHub commit.
