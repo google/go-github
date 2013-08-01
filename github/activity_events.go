@@ -13,14 +13,6 @@ import (
 	"time"
 )
 
-// EventsService provides access to the event related functions
-// in the GitHub API.
-//
-// GitHub API docs: http://developer.github.com/v3/activity/events/
-type EventsService struct {
-	client *Client
-}
-
 // Event represents a GitHub event.
 type Event struct {
 	Type       string          `json:"type,omitempty"`
@@ -66,11 +58,11 @@ type PushEventCommit struct {
 	Distinct bool          `json:"distinct"`
 }
 
-// ListPerformedByUser lists the events performed by a user. If publicOnly is
+// ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-events-performed-by-a-user
-func (s *EventsService) ListPerformedByUser(user string, publicOnly bool, opt *ListOptions) ([]Event, error) {
+func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool, opt *ListOptions) ([]Event, error) {
 	var u string
 	if publicOnly {
 		u = fmt.Sprintf("users/%v/events/public", user)
