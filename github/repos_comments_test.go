@@ -27,7 +27,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
 	}
 
-	want := []RepositoryComment{{ID: 1}, {ID: 2}}
+	want := []RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -47,7 +47,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
 	}
 
-	want := []RepositoryComment{{ID: 1}, {ID: 2}}
+	want := []RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
@@ -57,7 +57,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &RepositoryComment{Body: "asdf"}
+	input := &RepositoryComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepositoryComment)
@@ -76,7 +76,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 		t.Errorf("Repositories.CreateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: 1}
+	want := &RepositoryComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -96,7 +96,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 		t.Errorf("Repositories.GetComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: 1}
+	want := &RepositoryComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -106,7 +106,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &RepositoryComment{Body: "asdf"}
+	input := &RepositoryComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepositoryComment)
@@ -120,12 +120,12 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	comment, _, err := client.Repositories.UpdateComment("o", "r", 1, "asdf")
+	comment, _, err := client.Repositories.UpdateComment("o", "r", 1, "b")
 	if err != nil {
 		t.Errorf("Repositories.UpdateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: 1}
+	want := &RepositoryComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.UpdateComment returned %+v, want %+v", comment, want)
 	}

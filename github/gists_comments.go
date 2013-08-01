@@ -12,9 +12,9 @@ import (
 
 // GistComment represents a Gist comment.
 type GistComment struct {
-	ID        int        `json:"id,omitempty"`
-	URL       string     `json:"url,omitempty"`
-	Body      string     `json:"body,omitempty"`
+	ID        *int       `json:"id,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+	Body      *string    `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }

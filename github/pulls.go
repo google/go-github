@@ -21,23 +21,23 @@ type PullRequestsService struct {
 
 // PullRequest represents a GitHub pull request on a repository.
 type PullRequest struct {
-	Number       int        `json:"number,omitempty"`
-	State        string     `json:"state,omitempty"`
-	Title        string     `json:"title,omitempty"`
-	Body         string     `json:"body,omitempty"`
+	Number       *int       `json:"number,omitempty"`
+	State        *string    `json:"state,omitempty"`
+	Title        *string    `json:"title,omitempty"`
+	Body         *string    `json:"body,omitempty"`
 	CreatedAt    *time.Time `json:"created_at,omitempty"`
 	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
 	ClosedAt     *time.Time `json:"closed_at,omitempty"`
 	MergedAt     *time.Time `json:"merged_at,omitempty"`
 	User         *User      `json:"user,omitempty"`
-	Merged       bool       `json:"merged,omitempty"`
-	Mergeable    bool       `json:"mergeable,omitempty"`
+	Merged       *bool      `json:"merged,omitempty"`
+	Mergeable    *bool      `json:"mergeable,omitempty"`
 	MergedBy     *User      `json:"merged_by,omitempty"`
-	Comments     int        `json:"comments,omitempty"`
-	Commits      int        `json:"commits,omitempty"`
-	Additions    int        `json:"additions,omitempty"`
-	Deletions    int        `json:"deletions,omitempty"`
-	ChangedFiles int        `json:"changed_files,omitempty"`
+	Comments     *int       `json:"comments,omitempty"`
+	Commits      *int       `json:"commits,omitempty"`
+	Additions    *int       `json:"additions,omitempty"`
+	Deletions    *int       `json:"deletions,omitempty"`
+	ChangedFiles *int       `json:"changed_files,omitempty"`
 
 	// TODO(willnorris): add head and base once we have a Commit struct defined somewhere
 }

@@ -20,50 +20,50 @@ import (
 //
 // GitHub API docs: https://help.github.com/articles/post-receive-hooks
 type WebHookPayload struct {
-	After      string          `json:"after,omitempty"`
-	Before     string          `json:"before,omitempty"`
+	After      *string         `json:"after,omitempty"`
+	Before     *string         `json:"before,omitempty"`
 	Commits    []WebHookCommit `json:"commits,omitempty"`
-	Compare    string          `json:"compare,omitempty"`
-	Created    bool            `json:"created,omitempty"`
-	Deleted    bool            `json:"deleted,omitempty"`
-	Forced     bool            `json:"forced,omitempty"`
+	Compare    *string         `json:"compare,omitempty"`
+	Created    *bool           `json:"created,omitempty"`
+	Deleted    *bool           `json:"deleted,omitempty"`
+	Forced     *bool           `json:"forced,omitempty"`
 	HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
 	Pusher     *User           `json:"pusher,omitempty"`
-	Ref        string          `json:"ref,omitempty"`
+	Ref        *string         `json:"ref,omitempty"`
 	Repo       *Repository     `json:"repository,omitempty"`
 }
 
 // WebHookCommit represents the commit variant we receive from GitHub in a
 // WebHookPayload.
 type WebHookCommit struct {
-	Added     []string      `json:"added,omitempty"`
-	Author    WebHookAuthor `json:"author,omitempty"`
-	Committer WebHookAuthor `json:"committer,omitempty"`
-	Distinct  bool          `json:"distinct,omitempty"`
-	ID        string        `json:"id,omitempty"`
-	Message   string        `json:"message,omitempty"`
-	Modified  []string      `json:"modified,omitempty"`
-	Removed   []string      `json:"removed,omitempty"`
-	Timestamp *time.Time    `json:"timestamp,omitempty"`
+	Added     []string       `json:"added,omitempty"`
+	Author    *WebHookAuthor `json:"author,omitempty"`
+	Committer *WebHookAuthor `json:"committer,omitempty"`
+	Distinct  *bool          `json:"distinct,omitempty"`
+	ID        *string        `json:"id,omitempty"`
+	Message   *string        `json:"message,omitempty"`
+	Modified  []string       `json:"modified,omitempty"`
+	Removed   []string       `json:"removed,omitempty"`
+	Timestamp *time.Time     `json:"timestamp,omitempty"`
 }
 
 // WebHookAuthor represents the author or committer of a commit, as specified
 // in a WebHookCommit.  The commit author may not correspond to a GitHub User.
 type WebHookAuthor struct {
-	Email    string `json:"email,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Username string `json:"username,omitempty"`
+	Email    *string `json:"email,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Username *string `json:"username,omitempty"`
 }
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
 	CreatedAt *time.Time             `json:"created_at,omitempty"`
 	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
-	Name      string                 `json:"name,omitempty"`
+	Name      *string                `json:"name,omitempty"`
 	Events    []string               `json:"events,omitempty"`
-	Active    bool                   `json:"active,omitempty"`
+	Active    *bool                  `json:"active,omitempty"`
 	Config    map[string]interface{} `json:"config,omitempty"`
-	ID        int                    `json:"id,omitempty"`
+	ID        *int                   `json:"id,omitempty"`
 }
 
 // CreateHook creates a Hook for the specified repository.

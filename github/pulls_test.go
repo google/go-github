@@ -34,7 +34,7 @@ func TestPullRequestsService_List(t *testing.T) {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
 
-	want := []PullRequest{{Number: 1}}
+	want := []PullRequest{{Number: Int(1)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.List returned %+v, want %+v", pulls, want)
 	}
@@ -60,7 +60,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: 1}
+	want := &PullRequest{Number: Int(1)}
 	if !reflect.DeepEqual(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
@@ -75,7 +75,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequest{Title: "t"}
+	input := &PullRequest{Title: String("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequest)
@@ -94,7 +94,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 		t.Errorf("PullRequests.Create returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: 1}
+	want := &PullRequest{Number: Int(1)}
 	if !reflect.DeepEqual(pull, want) {
 		t.Errorf("PullRequests.Create returned %+v, want %+v", pull, want)
 	}
@@ -109,7 +109,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequest{Title: "t"}
+	input := &PullRequest{Title: String("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequest)
@@ -128,7 +128,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		t.Errorf("PullRequests.Edit returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: 1}
+	want := &PullRequest{Number: Int(1)}
 	if !reflect.DeepEqual(pull, want) {
 		t.Errorf("PullRequests.Edit returned %+v, want %+v", pull, want)
 	}

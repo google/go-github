@@ -9,9 +9,9 @@ import "fmt"
 
 // Label represents a GitHib label on an Issue
 type Label struct {
-	URL   string `json:"url,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Color string `json:"color,omitempty"`
+	URL   *string `json:"url,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Color *string `json:"color,omitempty"`
 }
 
 func (label Label) String() string {

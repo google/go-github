@@ -36,7 +36,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []IssueComment{{ID: 1}}
+	want := []IssueComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -56,7 +56,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []IssueComment{{ID: 1}}
+	want := []IssueComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -81,7 +81,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 		t.Errorf("Issues.GetComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: 1}
+	want := &IssueComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Issues.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -96,7 +96,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &IssueComment{Body: "b"}
+	input := &IssueComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/issues/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueComment)
@@ -115,7 +115,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		t.Errorf("Issues.CreateComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: 1}
+	want := &IssueComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Issues.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -130,7 +130,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &IssueComment{Body: "b"}
+	input := &IssueComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(IssueComment)
@@ -149,7 +149,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 		t.Errorf("Issues.EditComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: 1}
+	want := &IssueComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Issues.EditComment returned %+v, want %+v", comment, want)
 	}

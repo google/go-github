@@ -9,7 +9,7 @@ import "fmt"
 
 // Tree represents a GitHub tree.
 type Tree struct {
-	SHA     string      `json:"sha,omitempty"`
+	SHA     *string     `json:"sha,omitempty"`
 	Entries []TreeEntry `json:"tree,omitempty"`
 }
 
@@ -17,11 +17,11 @@ type Tree struct {
 // represent either a blob, a commit (in the case of a submodule), or another
 // tree.
 type TreeEntry struct {
-	SHA  string `json:"sha,omitempty"`
-	Path string `json:"path,omitempty"`
-	Mode string `json:"mode,omitempty"`
-	Type string `json:"type,omitempty"`
-	Size int    `json:"size,omitempty"`
+	SHA  *string `json:"sha,omitempty"`
+	Path *string `json:"path,omitempty"`
+	Mode *string `json:"mode,omitempty"`
+	Type *string `json:"type,omitempty"`
+	Size *int    `json:"size,omitempty"`
 }
 
 // GetTree fetches the Tree object for a given sha hash from a repository.

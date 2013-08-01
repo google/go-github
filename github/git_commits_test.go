@@ -27,7 +27,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: "s", Message: "m", Author: &CommitAuthor{Name: "n"}}
+	want := &Commit{SHA: String("s"), Message: String("m"), Author: &CommitAuthor{Name: String("n")}}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
@@ -37,7 +37,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Commit{Message: "m", Tree: &Tree{SHA: "t"}}
+	input := &Commit{Message: String("m"), Tree: &Tree{SHA: String("t")}}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Commit)
@@ -55,7 +55,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: "s"}
+	want := &Commit{SHA: String("s")}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}

@@ -23,14 +23,14 @@ type IssuesService struct {
 
 // Issue represents a GitHub issue on a repository.
 type Issue struct {
-	Number    int        `json:"number,omitempty"`
-	State     string     `json:"state,omitempty"`
-	Title     string     `json:"title,omitempty"`
-	Body      string     `json:"body,omitempty"`
+	Number    *int       `json:"number,omitempty"`
+	State     *string    `json:"state,omitempty"`
+	Title     *string    `json:"title,omitempty"`
+	Body      *string    `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	Labels    []Label    `json:"labels,omitempty"`
 	Assignee  *User      `json:"assignee,omitempty"`
-	Comments  int        `json:"comments,omitempty"`
+	Comments  *int       `json:"comments,omitempty"`
 	ClosedAt  *time.Time `json:"closed_at,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`

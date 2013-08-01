@@ -27,7 +27,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []Organization{{ID: 1}, {ID: 2}}
+	want := []Organization{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -49,7 +49,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []Organization{{ID: 1}, {ID: 2}}
+	want := []Organization{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -74,7 +74,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
 
-	want := &Organization{ID: 1, Login: "l", URL: "u", AvatarURL: "a", Location: "l"}
+	want := &Organization{ID: Int(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
@@ -89,7 +89,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Organization{Login: "l"}
+	input := &Organization{Login: String("l")}
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Organization)
@@ -108,7 +108,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
 
-	want := &Organization{ID: 1}
+	want := &Organization{ID: Int(1)}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}

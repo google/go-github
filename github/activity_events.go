@@ -15,24 +15,24 @@ import (
 
 // Event represents a GitHub event.
 type Event struct {
-	Type       string          `json:"type,omitempty"`
-	Public     bool            `json:"public"`
-	RawPayload json.RawMessage `json:"payload,omitempty"`
-	Repo       *Repository     `json:"repo,omitempty"`
-	Actor      *User           `json:"actor,omitempty"`
-	Org        *Organization   `json:"org,omitempty"`
-	CreatedAt  *time.Time      `json:"created_at,omitempty"`
-	ID         string          `json:"id,omitempty"`
+	Type       *string          `json:"type,omitempty"`
+	Public     *bool            `json:"public"`
+	RawPayload *json.RawMessage `json:"payload,omitempty"`
+	Repo       *Repository      `json:"repo,omitempty"`
+	Actor      *User            `json:"actor,omitempty"`
+	Org        *Organization    `json:"org,omitempty"`
+	CreatedAt  *time.Time       `json:"created_at,omitempty"`
+	ID         *string          `json:"id,omitempty"`
 }
 
 // Payload returns the parsed event payload. For recognized event types
 // (PushEvent), a value of the corresponding struct type will be returned.
 func (e *Event) Payload() (payload interface{}) {
-	switch e.Type {
+	switch *e.Type {
 	case "PushEvent":
 		payload = &PushEvent{}
 	}
-	if err := json.Unmarshal(e.RawPayload, &payload); err != nil {
+	if err := json.Unmarshal(*e.RawPayload, &payload); err != nil {
 		panic(err.Error())
 	}
 	return payload
@@ -42,20 +42,20 @@ func (e *Event) Payload() (payload interface{}) {
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID  int               `json:"push_id,omitempty"`
-	Head    string            `json:"head,omitempty"`
-	Ref     string            `json:"ref,omitempty"`
-	Size    int               `json:"ref,omitempty"`
+	PushID  *int              `json:"push_id,omitempty"`
+	Head    *string           `json:"head,omitempty"`
+	Ref     *string           `json:"ref,omitempty"`
+	Size    *int              `json:"ref,omitempty"`
 	Commits []PushEventCommit `json:"commits,omitempty"`
 }
 
 // PushEventCommit represents a git commit in a GitHub PushEvent.
 type PushEventCommit struct {
-	SHA      string        `json:"sha,omitempty"`
-	Message  string        `json:"message,omitempty"`
+	SHA      *string       `json:"sha,omitempty"`
+	Message  *string       `json:"message,omitempty"`
 	Author   *CommitAuthor `json:"author,omitempty"`
-	URL      string        `json:"url,omitempty"`
-	Distinct bool          `json:"distinct"`
+	URL      *string       `json:"url,omitempty"`
+	Distinct *bool         `json:"distinct"`
 }
 
 // List public events.

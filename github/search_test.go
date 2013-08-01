@@ -33,8 +33,8 @@ func TestSearchService_Repositories(t *testing.T) {
 	}
 
 	want := &RepositoriesSearchResult{
-		Total:        4,
-		Repositories: []Repository{{ID: 1}, {ID: 2}},
+		Total:        Int(4),
+		Repositories: []Repository{{ID: Int(1)}, {ID: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -66,8 +66,8 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:  4,
-		Issues: []Issue{{Number: 1}, {Number: 2}},
+		Total:  Int(4),
+		Issues: []Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -99,8 +99,8 @@ func TestSearchService_Users(t *testing.T) {
 	}
 
 	want := &UsersSearchResult{
-		Total: 4,
-		Users: []User{{ID: 1}, {ID: 2}},
+		Total: Int(4),
+		Users: []User{{ID: Int(1)}, {ID: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
@@ -132,8 +132,8 @@ func TestSearchService_Code(t *testing.T) {
 	}
 
 	want := &CodeSearchResult{
-		Total:       4,
-		CodeResults: []CodeResult{{Name: "1"}, {Name: "2"}},
+		Total:       Int(4),
+		CodeResults: []CodeResult{{Name: String("1")}, {Name: String("2")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)

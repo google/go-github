@@ -35,7 +35,7 @@ func TestGistsService_List(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []Gist{{ID: "1"}}
+	want := []Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -55,7 +55,7 @@ func TestGistsService_List_withEmptyUser(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []Gist{{ID: "1"}}
+	want := []Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -82,7 +82,7 @@ func TestGistsService_ListAll(t *testing.T) {
 		t.Errorf("Gists.ListAll returned error: %v", err)
 	}
 
-	want := []Gist{{ID: "1"}}
+	want := []Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
@@ -109,7 +109,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 		t.Errorf("Gists.ListStarred returned error: %v", err)
 	}
 
-	want := []Gist{{ID: "1"}}
+	want := []Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}
@@ -130,7 +130,7 @@ func TestGistsService_Get(t *testing.T) {
 		t.Errorf("Gists.Get returned error: %v", err)
 	}
 
-	want := &Gist{ID: "1"}
+	want := &Gist{ID: String("1")}
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
@@ -141,10 +141,10 @@ func TestGistsService_Create(t *testing.T) {
 	defer teardown()
 
 	input := &Gist{
-		Description: "Gist description",
-		Public:      false,
+		Description: String("Gist description"),
+		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Content: "Gist file content"},
+			"test.txt": GistFile{Content: String("Gist file content")},
 		},
 	}
 
@@ -177,11 +177,11 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID:          "1",
-		Description: "Gist description",
-		Public:      false,
+		ID:          String("1"),
+		Description: String("Gist description"),
+		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Filename: "test.txt"},
+			"test.txt": GistFile{Filename: String("test.txt")},
 		},
 	}
 	if !reflect.DeepEqual(gist, want) {
@@ -194,9 +194,9 @@ func TestGistsService_Edit(t *testing.T) {
 	defer teardown()
 
 	input := &Gist{
-		Description: "New description",
+		Description: String("New description"),
 		Files: map[GistFilename]GistFile{
-			"new.txt": GistFile{Content: "new file content"},
+			"new.txt": GistFile{Content: String("new file content")},
 		},
 	}
 
@@ -232,12 +232,12 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID:          "1",
-		Description: "new description",
-		Public:      false,
+		ID:          String("1"),
+		Description: String("new description"),
+		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Filename: "test.txt"},
-			"new.txt":  GistFile{Filename: "new.txt"},
+			"test.txt": GistFile{Filename: String("test.txt")},
+			"new.txt":  GistFile{Filename: String("new.txt")},
 		},
 	}
 	if !reflect.DeepEqual(gist, want) {
@@ -338,7 +338,7 @@ func TestGistsService_Fork(t *testing.T) {
 		t.Errorf("Gists.Fork returned error: %v", err)
 	}
 
-	want := &Gist{ID: "2"}
+	want := &Gist{ID: String("2")}
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}
