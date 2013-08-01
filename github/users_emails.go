@@ -5,6 +5,9 @@
 
 package github
 
+// UserEmail represents user's email address
+type UserEmail string
+
 // ListEmails lists all authenticated user email addresses
 //
 // GitHub API docs: http://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user

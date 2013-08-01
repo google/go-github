@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestEventsService_ListEventsPerformedByUser_all(t *testing.T) {
+func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	setup()
 	defer teardown()
 
