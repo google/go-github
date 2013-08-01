@@ -57,13 +57,13 @@ type WebHookAuthor struct {
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
-  CreatedAt *time.Time             `json:"created_at,omitempty"`
-  UpdatedAt *time.Time             `json:"updated_at,omitempty"`
-  Name      string                 `json:"name,omitempty"`
-  Events    []string               `json:"events,omitempty"`
-  Active    bool                   `json:"active,omitempty"`
-  Config    map[string]interface{} `json:"config,omitempty"`
-  ID        int                    `json:"id,omitempty"`
+	CreatedAt *time.Time             `json:"created_at,omitempty"`
+	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
+	Name      string                 `json:"name,omitempty"`
+	Events    []string               `json:"events,omitempty"`
+	Active    bool                   `json:"active,omitempty"`
+	Config    map[string]interface{} `json:"config,omitempty"`
+	ID        int                    `json:"id,omitempty"`
 }
 
 // CreateHook creates a Hook for the specified repository.

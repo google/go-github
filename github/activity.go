@@ -10,5 +10,5 @@ package github
 //
 // GitHub API docs: http://developer.github.com/v3/users/
 type ActivityService struct {
-    client *Client
+	client *Client
 }
