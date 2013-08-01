@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestEventsService_ListPerformedByUser_all(t *testing.T) {
+func TestEventsService_ListEventsPerformedByUser_all(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -26,7 +26,7 @@ func TestEventsService_ListPerformedByUser_all(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	events, err := client.Events.ListPerformedByUser("u", false, opt)
+	events, err := client.Activity.ListEventsPerformedByUser("u", false, opt)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
@@ -37,7 +37,7 @@ func TestEventsService_ListPerformedByUser_all(t *testing.T) {
 	}
 }
 
-func TestEventsService_ListPerformedByUser_publicOnly(t *testing.T) {
+func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -46,7 +46,7 @@ func TestEventsService_ListPerformedByUser_publicOnly(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	events, err := client.Events.ListPerformedByUser("u", true, nil)
+	events, err := client.Activity.ListEventsPerformedByUser("u", true, nil)
 	if err != nil {
 		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestEventsService_ListPerformedByUser_publicOnly(t *testing.T) {
 	}
 }
 
-func TestEvent_Payload_typed(t *testing.T) {
+func TestActivity_EventPayload_typed(t *testing.T) {
 	raw := []byte(`{"type": "PushEvent","payload":{"push_id": 1}}`)
 	var event *Event
 	if err := json.Unmarshal(raw, &event); err != nil {
@@ -73,7 +73,7 @@ func TestEvent_Payload_typed(t *testing.T) {
 // TestEvent_Payload_untyped checks that unrecognized events are parsed to an
 // interface{} value (instead of being discarded or throwing an error), for
 // forward compatibility with new event types.
-func TestEvent_Payload_untyped(t *testing.T) {
+func TestActivity_EventPayload_untyped(t *testing.T) {
 	raw := []byte(`{"type": "UnrecognizedEvent","payload":{"field": "val"}}`)
 	var event *Event
 	if err := json.Unmarshal(raw, &event); err != nil {
