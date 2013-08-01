@@ -39,9 +39,6 @@ type User struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 }
 
-// UserEmail represents user's email address
-type UserEmail string
-
 // Get fetches a user.  Passing the empty string will fetch the authenticated
 // user.
 //

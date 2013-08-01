@@ -75,8 +75,8 @@ the [GitHub API documentation][] is organized, so use that as your guide for
 where to put new methods.
 
 Sub-service (e.g. [Repo Hooks][]) implementations are split into separate files
-based on the APIs they provide. These files are named service_api.go (e.g. 
-repos_hooks.go) to describe the API to service mappings. 
+based on the APIs they provide. These files are named service_api.go (e.g.
+repos_hooks.go) to describe the API to service mappings.
 
 [GitHub API documentation]: http://developer.github.com/v3/
 [Repo Hooks]: http://developer.github.com/v3/repos/hooks/
