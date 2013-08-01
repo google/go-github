@@ -10,13 +10,13 @@ import "fmt"
 // Team represents a team within a GitHub organization.  Teams are used to
 // manage access to an organization's repositories.
 type Team struct {
-	ID           int    `json:"id,omitempty"`
-	Name         string `json:"name,omitempty"`
-	URL          string `json:"url,omitempty"`
-	Slug         string `json:"slug,omitempty"`
-	Permission   string `json:"permission,omitempty"`
-	MembersCount int    `json:"members_count,omitempty"`
-	ReposCount   int    `json:"repos_count,omitempty"`
+	ID           *int    `json:"id,omitempty"`
+	Name         *string `json:"name,omitempty"`
+	URL          *string `json:"url,omitempty"`
+	Slug         *string `json:"slug,omitempty"`
+	Permission   *string `json:"permission,omitempty"`
+	MembersCount *int    `json:"members_count,omitempty"`
+	ReposCount   *int    `json:"repos_count,omitempty"`
 }
 
 // ListTeams lists all of the teams for an organization.

@@ -12,10 +12,10 @@ import (
 
 // Commit represents a GitHub commit.
 type Commit struct {
-	SHA       string        `json:"sha,omitempty"`
+	SHA       *string       `json:"sha,omitempty"`
 	Author    *CommitAuthor `json:"author,omitempty"`
 	Committer *CommitAuthor `json:"committer,omitempty"`
-	Message   string        `json:"message,omitempty"`
+	Message   *string       `json:"message,omitempty"`
 	Tree      *Tree         `json:"tree,omitempty"`
 	Parents   []Commit      `json:"parents,omitempty"`
 }
@@ -24,8 +24,8 @@ type Commit struct {
 // author may not correspond to a GitHub User.
 type CommitAuthor struct {
 	Date  *time.Time `json:"date,omitempty"`
-	Name  string     `json:"name,omitempty"`
-	Email string     `json:"email,omitempty"`
+	Name  *string    `json:"name,omitempty"`
+	Email *string    `json:"email,omitempty"`
 }
 
 // GetCommit fetchs the Commit object for a given SHA.

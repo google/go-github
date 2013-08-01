@@ -33,10 +33,10 @@ func TestGitService_GetTree(t *testing.T) {
 	}
 
 	want := Tree{
-		SHA: "s",
+		SHA: String("s"),
 		Entries: []TreeEntry{
 			TreeEntry{
-				Type: "blob",
+				Type: String("blob"),
 			},
 		},
 	}
@@ -51,10 +51,10 @@ func TestGitService_CreateTree(t *testing.T) {
 
 	input := []TreeEntry{
 		TreeEntry{
-			Path: "file.rb",
-			Mode: "100644",
-			Type: "blob",
-			SHA:  "7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b",
+			Path: String("file.rb"),
+			Mode: String("100644"),
+			Type: String("blob"),
+			SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 		},
 	}
 
@@ -94,14 +94,14 @@ func TestGitService_CreateTree(t *testing.T) {
 	}
 
 	want := Tree{
-		"cd8274d15fa3ae2ab983129fb037999f264ba9a7",
+		String("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
 		[]TreeEntry{
 			TreeEntry{
-				Path: "file.rb",
-				Mode: "100644",
-				Type: "blob",
-				Size: 132,
-				SHA:  "7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b",
+				Path: String("file.rb"),
+				Mode: String("100644"),
+				Type: String("blob"),
+				Size: Int(132),
+				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 			},
 		},
 	}

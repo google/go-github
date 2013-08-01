@@ -27,7 +27,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
 
-	want := []RepoStatus{{ID: 1}}
+	want := []RepoStatus{{ID: Int(1)}}
 	if !reflect.DeepEqual(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
@@ -42,7 +42,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &RepoStatus{State: "s", TargetURL: "t", Description: "d"}
+	input := &RepoStatus{State: String("s"), TargetURL: String("t"), Description: String("d")}
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepoStatus)
@@ -60,7 +60,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateStatus returned error: %v", err)
 	}
 
-	want := &RepoStatus{ID: 1}
+	want := &RepoStatus{ID: Int(1)}
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}

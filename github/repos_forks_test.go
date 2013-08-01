@@ -28,7 +28,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 		t.Errorf("Repositories.ListForks returned error: %v", err)
 	}
 
-	want := []Repository{{ID: 1}, {ID: 2}}
+	want := []Repository{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.ListForks returned %+v, want %+v", repos, want)
 	}
@@ -55,7 +55,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 		t.Errorf("Repositories.CreateFork returned error: %v", err)
 	}
 
-	want := &Repository{ID: 1}
+	want := &Repository{ID: Int(1)}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}

@@ -44,7 +44,7 @@ type SearchOptions struct {
 
 // RepositoriesSearchResult represents the result of a repositories search.
 type RepositoriesSearchResult struct {
-	Total        int          `json:"total_count,omitempty"`
+	Total        *int         `json:"total_count,omitempty"`
 	Repositories []Repository `json:"items,omitempty"`
 }
 
@@ -59,7 +59,7 @@ func (s *SearchService) Repositories(query string, opt *SearchOptions) (*Reposit
 
 // IssuesSearchResult represents the result of an issues search.
 type IssuesSearchResult struct {
-	Total  int     `json:"total_count,omitempty"`
+	Total  *int    `json:"total_count,omitempty"`
 	Issues []Issue `json:"items,omitempty"`
 }
 
@@ -74,7 +74,7 @@ func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchR
 
 // UsersSearchResult represents the result of an issues search.
 type UsersSearchResult struct {
-	Total int    `json:"total_count,omitempty"`
+	Total *int   `json:"total_count,omitempty"`
 	Users []User `json:"items,omitempty"`
 }
 
@@ -89,16 +89,16 @@ func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchRes
 
 // CodeSearchResult represents the result of an code search.
 type CodeSearchResult struct {
-	Total       int          `json:"total_count,omitempty"`
+	Total       *int         `json:"total_count,omitempty"`
 	CodeResults []CodeResult `json:"items,omitempty"`
 }
 
 // CodeResult represents a single search result.
 type CodeResult struct {
-	Name       string      `json:"name,omitempty"`
-	Path       string      `json:"path,omitempty"`
-	SHA        string      `json:"sha,omitempty"`
-	HTMLURL    string      `json:"html_url,omitempty"`
+	Name       *string     `json:"name,omitempty"`
+	Path       *string     `json:"path,omitempty"`
+	SHA        *string     `json:"sha,omitempty"`
+	HTMLURL    *string     `json:"html_url,omitempty"`
 	Repository *Repository `json:"repository,omitempty"`
 }
 

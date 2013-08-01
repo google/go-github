@@ -12,18 +12,18 @@ import (
 
 // RepoStatus represents the status of a repository at a particular reference.
 type RepoStatus struct {
-	ID int `json:"id,omitempty"`
+	ID *int `json:"id,omitempty"`
 
 	// State is the current state of the repository.  Possible values are:
 	// pending, success, error, or failure.
-	State string `json:"state,omitempty"`
+	State *string `json:"state,omitempty"`
 
 	// TargetURL is the URL of the page representing this status.  It will be
 	// linked from the GitHub UI to allow users to see the source of the status.
-	TargetURL string `json:"target_url,omitempty"`
+	TargetURL *string `json:"target_url,omitempty"`
 
 	// Description is a short high level summary of the status.
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 
 	Creator   *User      `json:"creator,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`

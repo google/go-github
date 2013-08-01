@@ -37,7 +37,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []PullRequestComment{{ID: 1}}
+	want := []PullRequestComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
@@ -58,7 +58,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []PullRequestComment{{ID: 1}}
+	want := []PullRequestComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
@@ -84,7 +84,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 		t.Errorf("PullRequests.GetComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: 1}
+	want := &PullRequestComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -99,7 +99,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequestComment{Body: "b"}
+	input := &PullRequestComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
@@ -119,7 +119,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		t.Errorf("PullRequests.CreateComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: 1}
+	want := &PullRequestComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -134,7 +134,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequestComment{Body: "b"}
+	input := &PullRequestComment{Body: String("b")}
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
@@ -154,7 +154,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 		t.Errorf("PullRequests.EditComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: 1}
+	want := &PullRequestComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.EditComment returned %+v, want %+v", comment, want)
 	}

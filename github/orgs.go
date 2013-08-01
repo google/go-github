@@ -22,11 +22,11 @@ type OrganizationsService struct {
 
 // Organization represents a GitHub organization account.
 type Organization struct {
-	Login     string     `json:"login,omitempty"`
-	ID        int        `json:"id,omitempty"`
-	URL       string     `json:"url,omitempty"`
-	AvatarURL string     `json:"avatar_url,omitempty"`
-	Location  string     `json:"location,omitempty"`
+	Login     *string    `json:"login,omitempty"`
+	ID        *int       `json:"id,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+	AvatarURL *string    `json:"avatar_url,omitempty"`
+	Location  *string    `json:"location,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 

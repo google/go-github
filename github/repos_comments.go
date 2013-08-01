@@ -12,18 +12,18 @@ import (
 
 // RepositoryComment represents a comment for a commit, file, or line in a repository.
 type RepositoryComment struct {
-	HTMLURL   string     `json:"html_url,omitempty"`
-	URL       string     `json:"url,omitempty"`
-	ID        int        `json:"id,omitempty"`
-	CommitID  string     `json:"commit_id,omitempty"`
-	User      User       `json:"user,omitempty"`
+	HTMLURL   *string    `json:"html_url,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+	ID        *int       `json:"id,omitempty"`
+	CommitID  *string    `json:"commit_id,omitempty"`
+	User      *User      `json:"user,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 
 	// User-mutable fields
-	Body     string `json:"body"`
-	Path     string `json:"path,omitempty"`
-	Position int    `json:"position,omitempty"`
+	Body     *string `json:"body"`
+	Path     *string `json:"path,omitempty"`
+	Position *int    `json:"position,omitempty"`
 }
 
 // ListComments lists all the comments for the repository.
@@ -88,7 +88,7 @@ func (s *RepositoriesService) GetComment(owner, repo string, id int) (*Repositor
 // GitHub API docs: http://developer.github.com/v3/repos/comments/#update-a-commit-comment
 func (s *RepositoriesService) UpdateComment(owner, repo string, id int, body string) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
-	comment := RepositoryComment{Body: body}
+	comment := RepositoryComment{Body: String(body)}
 	req, err := s.client.NewRequest("PATCH", u, &comment)
 	if err != nil {
 		return nil, nil, err

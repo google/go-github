@@ -21,10 +21,10 @@ type RepositoriesService struct {
 
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID          int        `json:"id,omitempty"`
+	ID          *int       `json:"id,omitempty"`
 	Owner       *User      `json:"owner,omitempty"`
-	Name        string     `json:"name,omitempty"`
-	Description string     `json:"description,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	PushedAt    *Timestamp `json:"pushed_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`

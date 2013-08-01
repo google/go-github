@@ -21,15 +21,15 @@ type GistsService struct {
 
 // Gist represents a GitHub's gist.
 type Gist struct {
-	ID          string                    `json:"id,omitempty"`
-	Description string                    `json:"description,omitempty"`
-	Public      bool                      `json:"public,omitempty"`
+	ID          *string                   `json:"id,omitempty"`
+	Description *string                   `json:"description,omitempty"`
+	Public      *bool                     `json:"public,omitempty"`
 	User        *User                     `json:"user,omitempty"`
 	Files       map[GistFilename]GistFile `json:"files,omitempty"`
-	Comments    int                       `json:"comments,omitempty"`
-	HTMLURL     string                    `json:"html_url,omitempty"`
-	GitPullURL  string                    `json:"git_pull_url,omitempty"`
-	GitPushURL  string                    `json:"git_push_url,omitempty"`
+	Comments    *int                      `json:"comments,omitempty"`
+	HTMLURL     *string                   `json:"html_url,omitempty"`
+	GitPullURL  *string                   `json:"git_pull_url,omitempty"`
+	GitPushURL  *string                   `json:"git_push_url,omitempty"`
 	CreatedAt   *time.Time                `json:"created_at,omitempty"`
 }
 
@@ -38,10 +38,10 @@ type GistFilename string
 
 // GistFile represents a file on a gist.
 type GistFile struct {
-	Size     int          `json:"size,omitempty"`
-	Filename GistFilename `json:"filename,omitempty"`
-	RawURL   string       `json:"raw_url,omitempty"`
-	Content  string       `json:"content,omitempty"`
+	Size     *int    `json:"size,omitempty"`
+	Filename *string `json:"filename,omitempty"`
+	RawURL   *string `json:"raw_url,omitempty"`
+	Content  *string `json:"content,omitempty"`
 }
 
 // GistListOptions specifies the optional parameters to the

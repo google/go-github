@@ -28,7 +28,7 @@ func TestGistsService_ListComments(t *testing.T) {
 		t.Errorf("Gists.Comments returned error: %v", err)
 	}
 
-	want := []GistComment{{ID: 1}}
+	want := []GistComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -49,7 +49,7 @@ func TestGistsService_GetComment(t *testing.T) {
 		t.Errorf("Gists.GetComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: 1}
+	want := &GistComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -59,10 +59,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &GistComment{
-		ID:   1,
-		Body: "This is the comment body.",
-	}
+	input := &GistComment{ID: Int(1), Body: String("b")}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GistComment)
@@ -73,7 +70,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{"id":1, "body":"b", "url":"u", "user":{"id":2}}`)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	comment, _, err := client.Gists.CreateComment("1", input)
@@ -81,7 +78,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 		t.Errorf("Gists.CreateComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: 1, Body: "b", URL: "u", User: &User{ID: 2}}
+	want := &GistComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -91,10 +88,7 @@ func TestGistsService_EditComment(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &GistComment{
-		ID:   1,
-		Body: "New comment.",
-	}
+	input := &GistComment{ID: Int(1), Body: String("b")}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		v := new(GistComment)
@@ -105,7 +99,7 @@ func TestGistsService_EditComment(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{"id":1, "body":"b", "url":"u", "user":{"id":2}}`)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	comment, _, err := client.Gists.EditComment("1", 2, input)
@@ -113,7 +107,7 @@ func TestGistsService_EditComment(t *testing.T) {
 		t.Errorf("Gists.EditComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: 1, Body: "b", URL: "u", User: &User{ID: 2}}
+	want := &GistComment{ID: Int(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
 	}

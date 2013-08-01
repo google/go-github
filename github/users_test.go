@@ -27,7 +27,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: 1}
+	want := &User{ID: Int(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -47,7 +47,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: 1}
+	want := &User{ID: Int(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -62,7 +62,7 @@ func TestUsersService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &User{Name: "n"}
+	input := &User{Name: String("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		v := new(User)
@@ -81,7 +81,7 @@ func TestUsersService_Edit(t *testing.T) {
 		t.Errorf("Users.Edit returned error: %v", err)
 	}
 
-	want := &User{ID: 1}
+	want := &User{ID: Int(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
 	}
@@ -103,7 +103,7 @@ func TestUsersService_ListAll(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := []User{{ID: 2}}
+	want := []User{{ID: Int(2)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
