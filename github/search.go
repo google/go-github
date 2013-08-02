@@ -77,14 +77,12 @@ func (s *SearchService) Repositories(query string, opt *RepositorySearchOptions)
 	return result, nil
 }
 
-var experimentalAccept = "application/vnd.github.preview"
-
 // This is necessary until the new GitHub search API is officially
 // released, at which point this function can be deleted
 func enableGithubExperimental(req *http.Request, textMatch bool) {
 	if textMatch {
-		req.Header.Add("Accept", fmt.Sprintf("%s.text-match+json", experimentalAccept))
+		req.Header.Add("Accept", fmt.Sprintf("%s.text-match+json", mimePreview))
 	} else {
-		req.Header.Add("Accept", experimentalAccept)
+		req.Header.Add("Accept", mimePreview)
 	}
 }

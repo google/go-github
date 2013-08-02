@@ -112,7 +112,7 @@ func searchOptsFromQueryString(queryString string) (query string, sort string, o
 }
 
 func testHeaderExperimental(t *testing.T, r *http.Request) {
-	if !strings.Contains(r.Header.Get("Accept"), experimentalAccept) {
-		t.Errorf("Header does not contain Accept:%s", experimentalAccept)
+	if !strings.Contains(r.Header.Get("Accept"), mimePreview) {
+		t.Errorf("Header does not contain Accept:%s", mimePreview)
 	}
 }
