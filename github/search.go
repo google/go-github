@@ -45,13 +45,18 @@ type SearchOptions struct {
 
 // Constants for special search terms
 const (
-	SortOrder_Desc = "desc"
-	SortOrder_Asc  = "asc"
+	Search_Repositories = "repositories"
+	Search_Code         = "code"
+	Search_Issues       = "issues"
+	Search_Users        = "users"
+
+	Order_Desc = "desc"
+	Order_Asc  = "asc"
 )
 
 // RepositoriesSearchResult represents the result of a repositories search.
 type RepositoriesSearchResult struct {
-	TotalCount int          `json:"total_count,omitempty"`
+	Total int          `json:"total_count,omitempty"`
 	Repos      []Repository `json:"items,omitempty"`
 }
 
@@ -60,7 +65,7 @@ type RepositoriesSearchResult struct {
 // GitHub API docs: http://developer.github.com/v3/search/#search-repositories
 func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, error) {
 	result := new(RepositoriesSearchResult)
-	err := s.search("repositories", query, opt, result)
+	err := s.search(Search_Repositories, query, opt, result)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +83,7 @@ type IssuesSearchResult struct {
 // GitHub API docs: http://developer.github.com/v3/search/#search-issues
 func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchResult, error) {
 	result := new(IssuesSearchResult)
-	err := s.search("issues", query, opt, result)
+	err := s.search(Search_Issues, query, opt, result)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +101,7 @@ type UsersSearchResult struct {
 // GitHub API docs: http://developer.github.com/v3/search/#search-users
 func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchResult, error) {
 	result := new(UsersSearchResult)
-	err := s.search("users", query, opt, result)
+	err := s.search(Search_Users, query, opt, result)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +128,7 @@ type CodeResult struct {
 // GitHub API docs: http://developer.github.com/v3/search/#search-code
 func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResult, error) {
 	result := new(CodeSearchResult)
-	err := s.search("code", query, opt, result)
+	err := s.search(Search_Code, query, opt, result)
 	if err != nil {
 		return nil, err
 	}
