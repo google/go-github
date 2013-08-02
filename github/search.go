@@ -41,9 +41,6 @@ type SearchOptions struct {
 	// Number of results to show per page.  This can be up to 100
 	// according to GitHub.
 	PerPage int
-
-	// Whether to include text match metadata.
-	TextMatch bool
 }
 
 // Constants for special search terms
@@ -56,7 +53,6 @@ const (
 type RepositoriesSearchResult struct {
 	TotalCount int          `json:"total_count,omitempty"`
 	Repos      []Repository `json:"items,omitempty"`
-	// TextMatches 					// TODO(beyang)
 }
 
 // Repositories searches repositories via various criteria.
@@ -137,10 +133,8 @@ func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResul
 // Helper function that executes search queries against different
 // GitHub search types (repositories, code, issues, users)
 func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (err error) {
-	textMatch := false
 	params := url.Values{"q": []string{query}}
 	if opt != nil {
-		textMatch = opt.TextMatch
 		if opt.Sort != "" {
 			params.Add("sort", opt.Sort)
 		}
@@ -160,7 +154,7 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	if err != nil {
 		return
 	}
-	modSearchHeader(req, textMatch)
+	modSearchHeader(req)
 
 	_, err = s.client.Do(req, result)
 	if err != nil {
@@ -170,15 +164,7 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 }
 
 // Adds special GitHub media type to HTTP request header.
-//
-// This serves the dual purpose of enabling access to the experimental
-// search API and specifying whether you want the text match metadata
-//
-// GitHub API docs: http://developer.github.com/v3/search/#text-match-metadata
-func modSearchHeader(req *http.Request, textMatch bool) {
-	if textMatch {
-		req.Header.Add("Accept", fmt.Sprintf("%s.text-match+json", mimePreview))
-	} else {
-		req.Header.Add("Accept", mimePreview)
-	}
+// This enables access to the experimental search API.
+func modSearchHeader(req *http.Request) {
+	req.Header.Add("Accept", mimePreview)
 }
