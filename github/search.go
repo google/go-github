@@ -107,6 +107,33 @@ func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchRes
 	return result, nil
 }
 
+type CodeSearchResult struct {
+	Total       int          `json:"total_count,omitempty"`
+	CodeResults []CodeResult `json:"items,omitempty"`
+}
+
+type CodeResult struct {
+	Name       string      `json:"name,omitempty"`
+	Path       string      `json:"path,omitempty"`
+	SHA        string      `json:"sha,omitempty"`
+	URL        string      `json:"url,omitempty"`
+	GitURL     string      `json:"git_url,omitempty"`
+	HTMLURL    string      `json:'html_url,omitempty"`
+	Repository *Repository `json: 'repository,omitempty"`
+}
+
+// Code searches code via various criteria.
+//
+// GitHub API docs: http://developer.github.com/v3/search/#search-code
+func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResult, error) {
+	result := new(CodeSearchResult)
+	err := s.search("code", query, opt, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
 // Helper function that executes search queries against different
 // GitHub search types (repositories, code, issues, users)
 func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (err error) {
