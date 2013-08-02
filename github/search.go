@@ -130,14 +130,8 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	if err != nil {
 		return nil, err
 	}
-	modSearchHeader(req)
+	req.Header.Add("Accept", mimePreview)
 
 	resp, err := s.client.Do(req, result)
 	return resp, err
-}
-
-// Adds special GitHub media type to HTTP request header.
-// This enables access to the experimental search API.
-func modSearchHeader(req *http.Request) {
-	req.Header.Add("Accept", mimePreview)
 }
