@@ -101,8 +101,8 @@ type CodeResult struct {
 	SHA        string      `json:"sha,omitempty"`
 	URL        string      `json:"url,omitempty"`
 	GitURL     string      `json:"git_url,omitempty"`
-	HTMLURL    string      `json:'html_url,omitempty"`
-	Repository *Repository `json: 'repository,omitempty"`
+	HTMLURL    string      `json:"html_url,omitempty"`
+	Repository *Repository `json:"repository,omitempty"`
 }
 
 // Code searches code via various criteria.
