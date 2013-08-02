@@ -25,7 +25,7 @@ func TestRepositories(t *testing.T) {
 			Query: "blah",
 			Opts: SearchOptions{
 				Sort:    "forks",
-				Order:   Order_Desc,
+				Order:   "desc",
 				Page:    2,
 				PerPage: 1,
 			},
@@ -45,7 +45,7 @@ func TestRepositories(t *testing.T) {
 			Query: "bar",
 			Opts: SearchOptions{
 				Sort:  "stars",
-				Order: Order_Asc,
+				Order: "asc",
 			},
 			Result: &RepositoriesSearchResult{
 				Total: 1,
@@ -68,7 +68,7 @@ func TestRepositories(t *testing.T) {
 		result, err := client.Search.Repositories(query, opts)
 		return result, err
 	}
-	testSearchOnType(t, Search_Repositories, searcher, testCases)
+	testSearchOnType(t, "repositories", searcher, testCases)
 }
 
 func TestIssues(t *testing.T) {
@@ -77,7 +77,7 @@ func TestIssues(t *testing.T) {
 			Query: "blah",
 			Opts: SearchOptions{
 				Sort:    "forks",
-				Order:   Order_Desc,
+				Order:   "desc",
 				Page:    2,
 				PerPage: 1,
 			},
@@ -97,7 +97,7 @@ func TestIssues(t *testing.T) {
 			Query: "bar",
 			Opts: SearchOptions{
 				Sort:  "stars",
-				Order: Order_Asc,
+				Order: "asc",
 			},
 			Result: &IssuesSearchResult{
 				Total:  1,
@@ -120,7 +120,7 @@ func TestIssues(t *testing.T) {
 		result, err := client.Search.Issues(query, opts)
 		return result, err
 	}
-	testSearchOnType(t, Search_Issues, searcher, testCases)
+	testSearchOnType(t, "issues", searcher, testCases)
 }
 
 func TestUsers(t *testing.T) {
@@ -129,7 +129,7 @@ func TestUsers(t *testing.T) {
 			Query: "blah",
 			Opts: SearchOptions{
 				Sort:    "forks",
-				Order:   Order_Desc,
+				Order:   "desc",
 				Page:    2,
 				PerPage: 1,
 			},
@@ -149,7 +149,7 @@ func TestUsers(t *testing.T) {
 			Query: "bar",
 			Opts: SearchOptions{
 				Sort:  "stars",
-				Order: Order_Asc,
+				Order: "asc",
 			},
 			Result: &UsersSearchResult{
 				Total: 1,
@@ -172,7 +172,7 @@ func TestUsers(t *testing.T) {
 		result, err := client.Search.Users(query, opts)
 		return result, err
 	}
-	testSearchOnType(t, Search_Users, searcher, testCases)
+	testSearchOnType(t, "users", searcher, testCases)
 }
 
 func TestCode(t *testing.T) {
@@ -181,7 +181,7 @@ func TestCode(t *testing.T) {
 			Query: "blah",
 			Opts: SearchOptions{
 				Sort:    "forks",
-				Order:   Order_Desc,
+				Order:   "desc",
 				Page:    2,
 				PerPage: 1,
 			},
@@ -201,7 +201,7 @@ func TestCode(t *testing.T) {
 			Query: "bar",
 			Opts: SearchOptions{
 				Sort:  "stars",
-				Order: Order_Asc,
+				Order: "asc",
 			},
 			Result: &CodeSearchResult{
 				Total:       1,
@@ -224,7 +224,7 @@ func TestCode(t *testing.T) {
 		result, err := client.Search.Code(query, opts)
 		return result, err
 	}
-	testSearchOnType(t, Search_Code, searcher, testCases)
+	testSearchOnType(t, "code", searcher, testCases)
 }
 
 // Helper function that runs test cases against GitHub search API for
