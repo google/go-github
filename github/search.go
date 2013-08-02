@@ -88,11 +88,13 @@ func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchRes
 	return result, resp, err
 }
 
+// CodeSearchResult represents the result of an code search.
 type CodeSearchResult struct {
 	Total       int          `json:"total_count,omitempty"`
 	CodeResults []CodeResult `json:"items,omitempty"`
 }
 
+// CodeResult represents a single search result.
 type CodeResult struct {
 	Name       string      `json:"name,omitempty"`
 	Path       string      `json:"path,omitempty"`
@@ -117,18 +119,10 @@ func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResul
 func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (*Response, error) {
 	params := url.Values{"q": []string{query}}
 	if opt != nil {
-		if opt.Sort != "" {
-			params.Add("sort", opt.Sort)
-		}
-		if string(opt.Order) != "" {
-			params.Add("order", opt.Order)
-		}
-		if opt.Page > 0 {
-			params.Add("page", strconv.Itoa(opt.Page))
-		}
-		if opt.PerPage > 0 {
-			params.Add("per_page", strconv.Itoa(opt.PerPage))
-		}
+		params.Add("sort", opt.Sort)
+		params.Add("order", opt.Order)
+		params.Add("page", strconv.Itoa(opt.Page))
+		params.Add("per_page", strconv.Itoa(opt.PerPage))
 	}
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 
