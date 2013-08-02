@@ -54,7 +54,7 @@ func TestRepositories(t *testing.T) {
 	}
 
 	// test case 2
-	result, err = client.Search.Repositories("bar", &RepositorySearchOptions{Sort: "stars", Order: SortOrder_Asc})
+	result, err = client.Search.Repositories("bar", &SearchOptions{Sort: "stars", Order: SortOrder_Asc})
 	if err != nil {
 		t.Errorf("Repositories search returned error: %v", err)
 	}
@@ -67,7 +67,7 @@ func TestRepositories(t *testing.T) {
 	}
 
 	// test case 3
-	result, err = client.Search.Repositories("baz", &RepositorySearchOptions{Page: 2, PerPage: 1})
+	result, err = client.Search.Repositories("baz", &SearchOptions{Page: 2, PerPage: 1})
 	if err != nil {
 		t.Errorf("Repositories search returned error: %v", err)
 	}
@@ -80,7 +80,7 @@ func TestRepositories(t *testing.T) {
 	}
 }
 
-func searchOptsFromQueryString(queryString string) (query string, sort string, order SortOrder, page int, perPage int, err error) {
+func searchOptsFromQueryString(queryString string) (query string, sort string, order string, page int, perPage int, err error) {
 	values, err := url.ParseQuery(queryString)
 	if err != nil {
 		return
@@ -93,7 +93,7 @@ func searchOptsFromQueryString(queryString string) (query string, sort string, o
 		sort = ss[0]
 	}
 	if os, in := values["order"]; in && len(os) == 1 {
-		order = SortOrder(os[0])
+		order = os[0]
 	}
 	if ps, in := values["page"]; in && len(ps) == 1 {
 		page, err = strconv.Atoi(ps[0])

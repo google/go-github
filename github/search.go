@@ -12,74 +12,143 @@ import (
 	"strconv"
 )
 
-// SearchService handles communication with the GitHub Search API
-// (http://developer.github.com/v3/search/)
+// SearchService provides access to the search related functions
+// in the GitHub API.
+//
+// GitHub API docs: http://developer.github.com/v3/search/
 type SearchService struct {
 	client *Client
 }
 
-type SortOrder string
+// SearchOptions specifies optional parameters to the SearchService methods.
+type SearchOptions struct {
+	// How to sort the search results.  Possible values are:
+	//   - for repositories: stars, fork, updated
+	//   - for code: indexed
+	//   - for issues: comments, created, updated
+	//   - for users: followers, repositories, joined
+	//
+	// Default is to sort by best match.
+	Sort string
 
-const (
-	SortOrder_Desc SortOrder = "desc"
-	SortOrder_Asc            = "asc"
-)
+	// Sort order if sort parameter is provided. Possible values are: asc,
+	// desc. Default is desc.
+	Order string
 
-type RepositorySearchOptions struct {
-	Sort      string
-	Order     SortOrder
+	// Page of results to retrieve.
+	Page int
+
+	// Number of results to show per page.  This can be up to 100
+	// according to GitHub.
+	PerPage int
+
+	// Whether to include text match metadata.
 	TextMatch bool
-	Page      int
-	PerPage   int // up to 100 results per page according to GitHub
 }
 
+// Constants for special search terms
+const (
+	SortOrder_Desc = "desc"
+	SortOrder_Asc  = "asc"
+)
+
+// RepositorySearchResults represents the result of a repositories search.
 type RepositorySearchResults struct {
 	TotalCount int          `json:"total_count"`
 	Items      []Repository `json:"items"`
+	// TextMatches 					// TODO(beyang)
 }
 
-func (s *SearchService) Repositories(query string, opt *RepositorySearchOptions) (*RepositorySearchResults, error) {
-	path := "search/repositories?"
-	param := url.Values{"q": []string{query}}
-	path += param.Encode()
-	textMatch := false
-	if opt != nil {
-		textMatch = opt.TextMatch
-		auxParams := url.Values{}
-		if opt.Sort != "" {
-			auxParams["sort"] = []string{opt.Sort}
-		}
-		if string(opt.Order) != "" {
-			auxParams["order"] = []string{string(opt.Order)}
-		}
-		if opt.Page > 0 {
-			auxParams["page"] = []string{strconv.Itoa(opt.Page)}
-		}
-		if opt.PerPage > 0 {
-			auxParams["per_page"] = []string{strconv.Itoa(opt.PerPage)}
-		}
-		if len(auxParams) > 0 {
-			path += "&" + auxParams.Encode()
-		}
-	}
-
-	req, err := s.client.NewRequest("GET", path, nil)
-	if err != nil {
-		return nil, err
-	}
-	enableGithubExperimental(req, textMatch)
-
+// Repositories searches repositories via various criteria.
+//
+// GitHub API docs: http://developer.github.com/v3/search/#search-repositories
+func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositorySearchResults, error) {
 	result := new(RepositorySearchResults)
-	_, err = s.client.Do(req, result)
+	err := s.search("repositories", query, opt, result)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// This is necessary until the new GitHub search API is officially
-// released, at which point this function can be deleted
-func enableGithubExperimental(req *http.Request, textMatch bool) {
+// IssuesSearchResult represents the result of an issues search.
+type IssuesSearchResult struct {
+	Total  int     `json:"total_count,omitempty"`
+	Issues []Issue `json:"items,omitempty"`
+}
+
+// Issues searches issues via various criteria.
+//
+// GitHub API docs: http://developer.github.com/v3/search/#search-issues
+func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchResult, error) {
+	result := new(IssuesSearchResult)
+	err := s.search("issues", query, opt, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// UsersSearchResult represents the result of an issues search.
+type UsersSearchResult struct {
+	Total int    `json:"total_count,omitempty"`
+	Users []User `json:"items,omitempty"`
+}
+
+// Users searches users via various criteria.
+//
+// GitHub API docs: http://developer.github.com/v3/search/#search-users
+func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchResult, error) {
+	result := new(UsersSearchResult)
+	err := s.search("users", query, opt, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// Helper function that executes search queries against different
+// GitHub search types (repositories, code, issues, users)
+func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (err error) {
+	textMatch := false
+	params := url.Values{"q": []string{query}}
+	if opt != nil {
+		textMatch = opt.TextMatch
+		if opt.Sort != "" {
+			params.Add("sort", opt.Sort)
+		}
+		if string(opt.Order) != "" {
+			params.Add("order", opt.Order)
+		}
+		if opt.Page > 0 {
+			params.Add("page", strconv.Itoa(opt.Page))
+		}
+		if opt.PerPage > 0 {
+			params.Add("per_page", strconv.Itoa(opt.PerPage))
+		}
+	}
+	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return
+	}
+	modSearchHeader(req, textMatch)
+
+	_, err = s.client.Do(req, result)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// Adds special GitHub media type to HTTP request header.
+//
+// This serves the dual purpose of enabling access to the experimental
+// search API and specifying whether you want the text match metadata
+//
+// GitHub API docs: http://developer.github.com/v3/search/#text-match-metadata
+func modSearchHeader(req *http.Request, textMatch bool) {
 	if textMatch {
 		req.Header.Add("Accept", fmt.Sprintf("%s.text-match+json", mimePreview))
 	} else {
