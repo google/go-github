@@ -65,7 +65,7 @@ func TestRepositories(t *testing.T) {
 		},
 	}
 	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, err := client.Search.Repositories(query, opts)
+		result, _, err := client.Search.Repositories(query, opts)
 		return result, err
 	}
 	testSearchOnType(t, "repositories", searcher, testCases)
@@ -117,7 +117,7 @@ func TestIssues(t *testing.T) {
 		},
 	}
 	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, err := client.Search.Issues(query, opts)
+		result, _, err := client.Search.Issues(query, opts)
 		return result, err
 	}
 	testSearchOnType(t, "issues", searcher, testCases)
@@ -169,7 +169,7 @@ func TestUsers(t *testing.T) {
 		},
 	}
 	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, err := client.Search.Users(query, opts)
+		result, _, err := client.Search.Users(query, opts)
 		return result, err
 	}
 	testSearchOnType(t, "users", searcher, testCases)
@@ -221,7 +221,7 @@ func TestCode(t *testing.T) {
 		},
 	}
 	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, err := client.Search.Code(query, opts)
+		result, _, err := client.Search.Code(query, opts)
 		return result, err
 	}
 	testSearchOnType(t, "code", searcher, testCases)

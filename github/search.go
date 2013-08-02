@@ -52,13 +52,10 @@ type RepositoriesSearchResult struct {
 // Repositories searches repositories via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-repositories
-func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, error) {
+func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
-	err := s.search("repositories", query, opt, result)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	resp, err := s.search("repositories", query, opt, result)
+	return result, resp, err
 }
 
 // IssuesSearchResult represents the result of an issues search.
@@ -70,13 +67,10 @@ type IssuesSearchResult struct {
 // Issues searches issues via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-issues
-func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchResult, error) {
+func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
-	err := s.search("issues", query, opt, result)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	resp, err := s.search("issues", query, opt, result)
+	return result, resp, err
 }
 
 // UsersSearchResult represents the result of an issues search.
@@ -88,13 +82,10 @@ type UsersSearchResult struct {
 // Users searches users via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-users
-func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchResult, error) {
+func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchResult, *Response, error) {
 	result := new(UsersSearchResult)
-	err := s.search("users", query, opt, result)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	resp, err := s.search("users", query, opt, result)
+	return result, resp, err
 }
 
 type CodeSearchResult struct {
@@ -115,18 +106,15 @@ type CodeResult struct {
 // Code searches code via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-code
-func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResult, error) {
+func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResult, *Response, error) {
 	result := new(CodeSearchResult)
-	err := s.search("code", query, opt, result)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	resp, err := s.search("code", query, opt, result)
+	return result, resp, err
 }
 
 // Helper function that executes search queries against different
 // GitHub search types (repositories, code, issues, users)
-func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (err error) {
+func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (*Response, error) {
 	params := url.Values{"q": []string{query}}
 	if opt != nil {
 		if opt.Sort != "" {
@@ -146,15 +134,12 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return
+		return nil, err
 	}
 	modSearchHeader(req)
 
-	_, err = s.client.Do(req, result)
-	if err != nil {
-		return
-	}
-	return
+	resp, err := s.client.Do(req, result)
+	return resp, err
 }
 
 // Adds special GitHub media type to HTTP request header.
