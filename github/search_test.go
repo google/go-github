@@ -47,7 +47,7 @@ func TestRepositories(t *testing.T) {
 	}
 	want := &RepositoriesSearchResult{
 		TotalCount: 1,
-		Items:      []Repository{{ID: 1}},
+		Repos:      []Repository{{ID: 1}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repoitories returned %+v, want %+v", result, want)
@@ -60,7 +60,7 @@ func TestRepositories(t *testing.T) {
 	}
 	want = &RepositoriesSearchResult{
 		TotalCount: 2,
-		Items:      []Repository{{ID: 1}, {ID: 2}},
+		Repos:      []Repository{{ID: 1}, {ID: 2}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repoitories returned %+v, want %+v", result, want)
@@ -73,7 +73,7 @@ func TestRepositories(t *testing.T) {
 	}
 	want = &RepositoriesSearchResult{
 		TotalCount: 10,
-		Items:      []Repository{{ID: 2}},
+		Repos:      []Repository{{ID: 2}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)

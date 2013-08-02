@@ -54,8 +54,8 @@ const (
 
 // RepositoriesSearchResult represents the result of a repositories search.
 type RepositoriesSearchResult struct {
-	TotalCount int          `json:"total_count"`
-	Items      []Repository `json:"items"`
+	TotalCount int          `json:"total_count,omitempty"`
+	Repos      []Repository `json:"items,omitempty"`
 	// TextMatches 					// TODO(beyang)
 }
 
