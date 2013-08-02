@@ -18,21 +18,21 @@ func TestRepositories(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeaderExperimental(t, r)
 
-		query, sort, order, page, perPage, err := searchOptsFromQueryString(r.URL.RawQuery)
+		query, opts, err := searchOptsFromQueryString(r.URL.RawQuery)
 		if err != nil {
 			t.Errorf("Could not parse query string: %v", err)
 		}
-		if query == "foo" && sort == "" && order == "" {
+		if query == "foo" && opts.Sort == "" && opts.Order == "" {
 			fmt.Fprint(w, `{
 "total_count": 1,
 "items": [{ "id": 1 }]
 }`)
-		} else if query == "bar" && sort == "stars" && order == "asc" {
+		} else if query == "bar" && opts.Sort == "stars" && opts.Order == "asc" {
 			fmt.Fprintf(w, `{
 "total_count": 2,
 "items": [{ "id": 1 }, { "id": 2}]
 }`)
-		} else if query == "baz" && page == 2 && perPage == 1 {
+		} else if query == "baz" && opts.Page == 2 && opts.PerPage == 1 {
 			fmt.Fprintf(w, `{
 "total_count": 10,
 "items": [{ "id": 2}]
@@ -80,29 +80,31 @@ func TestRepositories(t *testing.T) {
 	}
 }
 
-func searchOptsFromQueryString(queryString string) (query string, sort string, order string, page int, perPage int, err error) {
+func searchOptsFromQueryString(queryString string) (query string, opts *SearchOptions, err error) {
 	values, err := url.ParseQuery(queryString)
 	if err != nil {
 		return
 	}
 
-	if qs, in := values["q"]; in && len(qs) == 1 {
-		query = qs[0]
+	if q, in := values["q"]; in && len(q) == 1 {
+		query = q[0]
 	}
-	if ss, in := values["sort"]; in && len(ss) == 1 {
-		sort = ss[0]
+
+	opts = new(SearchOptions)
+	if sort, in := values["sort"]; in && len(sort) == 1 {
+		opts.Sort = sort[0]
 	}
-	if os, in := values["order"]; in && len(os) == 1 {
-		order = os[0]
+	if order, in := values["order"]; in && len(order) == 1 {
+		opts.Order = order[0]
 	}
-	if ps, in := values["page"]; in && len(ps) == 1 {
-		page, err = strconv.Atoi(ps[0])
+	if page, in := values["page"]; in && len(page) == 1 {
+		opts.Page, err = strconv.Atoi(page[0])
 		if err != nil {
 			return
 		}
 	}
-	if pps, in := values["per_page"]; in && len(pps) == 1 {
-		perPage, err = strconv.Atoi(pps[0])
+	if perPage, in := values["per_page"]; in && len(perPage) == 1 {
+		opts.PerPage, err = strconv.Atoi(perPage[0])
 		if err != nil {
 			return
 		}
