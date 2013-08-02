@@ -52,8 +52,8 @@ const (
 	SortOrder_Asc  = "asc"
 )
 
-// RepositorySearchResults represents the result of a repositories search.
-type RepositorySearchResults struct {
+// RepositoriesSearchResult represents the result of a repositories search.
+type RepositoriesSearchResult struct {
 	TotalCount int          `json:"total_count"`
 	Items      []Repository `json:"items"`
 	// TextMatches 					// TODO(beyang)
@@ -62,8 +62,8 @@ type RepositorySearchResults struct {
 // Repositories searches repositories via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-repositories
-func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositorySearchResults, error) {
-	result := new(RepositorySearchResults)
+func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, error) {
+	result := new(RepositoriesSearchResult)
 	err := s.search("repositories", query, opt, result)
 	if err != nil {
 		return nil, err

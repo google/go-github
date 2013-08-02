@@ -45,7 +45,7 @@ func TestRepositories(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories search returned error: %v", err)
 	}
-	want := &RepositorySearchResults{
+	want := &RepositoriesSearchResult{
 		TotalCount: 1,
 		Items:      []Repository{{ID: 1}},
 	}
@@ -58,7 +58,7 @@ func TestRepositories(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories search returned error: %v", err)
 	}
-	want = &RepositorySearchResults{
+	want = &RepositoriesSearchResult{
 		TotalCount: 2,
 		Items:      []Repository{{ID: 1}, {ID: 2}},
 	}
@@ -71,7 +71,7 @@ func TestRepositories(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories search returned error: %v", err)
 	}
-	want = &RepositorySearchResults{
+	want = &RepositoriesSearchResult{
 		TotalCount: 10,
 		Items:      []Repository{{ID: 2}},
 	}
