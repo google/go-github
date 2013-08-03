@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 )

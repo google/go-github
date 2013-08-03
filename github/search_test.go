@@ -1,305 +1,259 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 )
 
-type searchTestCase struct {
-	Query  string
-	Opts   SearchOptions
-	Result interface{}
-}
-
-type searchFunc func(query string, opt *SearchOptions) (interface{}, error)
-
-func TestRepositories(t *testing.T) {
-	testCases := []searchTestCase{
-		{
-			Query: "blah",
-			Opts: SearchOptions{
-				Sort:    "forks",
-				Order:   "desc",
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &RepositoriesSearchResult{
-				Total: 2,
-				Repos: []Repository{{ID: 0}, {ID: 1}},
-			},
-		},
-		{
-			Query: "foo",
-			Result: &RepositoriesSearchResult{
-				Total: 1,
-				Repos: []Repository{{ID: 1}},
-			},
-		},
-		{
-			Query: "bar",
-			Opts: SearchOptions{
-				Sort:  "stars",
-				Order: "asc",
-			},
-			Result: &RepositoriesSearchResult{
-				Total: 1,
-				Repos: []Repository{{ID: 1}, {ID: 2}},
-			},
-		},
-		{
-			Query: "baz",
-			Opts: SearchOptions{
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &RepositoriesSearchResult{
-				Total: 10,
-				Repos: []Repository{{ID: 2}},
-			},
-		},
-	}
-	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, _, err := client.Search.Repositories(query, opts)
-		return result, err
-	}
-	testSearchOnType(t, "repositories", searcher, testCases)
-}
-
-func TestIssues(t *testing.T) {
-	testCases := []searchTestCase{
-		{
-			Query: "blah",
-			Opts: SearchOptions{
-				Sort:    "forks",
-				Order:   "desc",
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &IssuesSearchResult{
-				Total:  2,
-				Issues: []Issue{{Number: 0}, {Number: 1}},
-			},
-		},
-		{
-			Query: "foo",
-			Result: &IssuesSearchResult{
-				Total:  1,
-				Issues: []Issue{{Number: 1}},
-			},
-		},
-		{
-			Query: "bar",
-			Opts: SearchOptions{
-				Sort:  "stars",
-				Order: "asc",
-			},
-			Result: &IssuesSearchResult{
-				Total:  1,
-				Issues: []Issue{{Number: 1}, {Number: 2}},
-			},
-		},
-		{
-			Query: "baz",
-			Opts: SearchOptions{
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &IssuesSearchResult{
-				Total:  10,
-				Issues: []Issue{{Number: 2}},
-			},
-		},
-	}
-	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, _, err := client.Search.Issues(query, opts)
-		return result, err
-	}
-	testSearchOnType(t, "issues", searcher, testCases)
-}
-
-func TestUsers(t *testing.T) {
-	testCases := []searchTestCase{
-		{
-			Query: "blah",
-			Opts: SearchOptions{
-				Sort:    "forks",
-				Order:   "desc",
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &UsersSearchResult{
-				Total: 2,
-				Users: []User{{ID: 0}, {ID: 1}},
-			},
-		},
-		{
-			Query: "foo",
-			Result: &UsersSearchResult{
-				Total: 1,
-				Users: []User{{ID: 1}},
-			},
-		},
-		{
-			Query: "bar",
-			Opts: SearchOptions{
-				Sort:  "stars",
-				Order: "asc",
-			},
-			Result: &UsersSearchResult{
-				Total: 1,
-				Users: []User{{ID: 1}, {ID: 2}},
-			},
-		},
-		{
-			Query: "baz",
-			Opts: SearchOptions{
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &UsersSearchResult{
-				Total: 10,
-				Users: []User{{ID: 2}},
-			},
-		},
-	}
-	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, _, err := client.Search.Users(query, opts)
-		return result, err
-	}
-	testSearchOnType(t, "users", searcher, testCases)
-}
-
-func TestCode(t *testing.T) {
-	testCases := []searchTestCase{
-		{
-			Query: "blah",
-			Opts: SearchOptions{
-				Sort:    "forks",
-				Order:   "desc",
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &CodeSearchResult{
-				Total:       2,
-				CodeResults: []CodeResult{{Name: "0"}, {Name: "1"}},
-			},
-		},
-		{
-			Query: "foo",
-			Result: &CodeSearchResult{
-				Total:       1,
-				CodeResults: []CodeResult{{Name: "1"}},
-			},
-		},
-		{
-			Query: "bar",
-			Opts: SearchOptions{
-				Sort:  "stars",
-				Order: "asc",
-			},
-			Result: &CodeSearchResult{
-				Total:       1,
-				CodeResults: []CodeResult{{Name: "1"}, {Name: "2"}},
-			},
-		},
-		{
-			Query: "baz",
-			Opts: SearchOptions{
-				Page:    2,
-				PerPage: 1,
-			},
-			Result: &CodeSearchResult{
-				Total:       10,
-				CodeResults: []CodeResult{{Name: "2"}},
-			},
-		},
-	}
-	searcher := func(query string, opts *SearchOptions) (interface{}, error) {
-		result, _, err := client.Search.Code(query, opts)
-		return result, err
-	}
-	testSearchOnType(t, "code", searcher, testCases)
-}
-
-// Helper function that runs test cases against GitHub search API for
-// a specific type
-func testSearchOnType(t *testing.T, searchType string, searcher searchFunc, testCases []searchTestCase) {
+func TestSearch_Repositories_opts(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/search/%s", searchType), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeaderExperimental(t, r)
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q":        "blah",
+			"sort":     "forks",
+			"order":    "desc",
+			"page":     "2",
+			"per_page": "2",
+		})
 
-		query, opts, err := searchOptsFromQueryString(r.URL.RawQuery)
-		if err != nil {
-			t.Errorf("Could not parse query string: %v", err)
-		}
-
-		for _, testCase := range testCases {
-			if testCase.Query == query && reflect.DeepEqual(&testCase.Opts, opts) {
-				json.NewEncoder(w).Encode(testCase.Result)
-				return
-			}
-		}
-
-		t.Errorf(`Search %s with query "%s" and opts %+v expected to return result, but none found`, searchType, query, *opts)
+		fmt.Fprint(w, `{"total_count": 4, "items": [{"id":1},{"id":2}]}`)
 	})
 
-	for _, testCase := range testCases {
-		result, err := searcher(testCase.Query, &testCase.Opts)
-		if err != nil {
-			t.Errorf(`Search %s with query "%s" and opts %+v returned error: %v`, searchType, testCase.Query, testCase.Opts, err)
-		}
-		if !reflect.DeepEqual(testCase.Result, result) {
-			t.Errorf(`Search %s with query "%s" and options %+v returned %+v, but expected %+v`,
-				searchType, testCase.Query, testCase.Opts, result, testCase.Result)
-		}
-	}
-}
-
-// Parses search options from query string
-func searchOptsFromQueryString(queryString string) (query string, opts *SearchOptions, err error) {
-	values, err := url.ParseQuery(queryString)
+	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	result, _, err := client.Search.Repositories("blah", opts)
 	if err != nil {
-		return
+		t.Errorf("Search.Repositories returned error: %v", err)
 	}
 
-	if q, in := values["q"]; in && len(q) == 1 {
-		query = q[0]
+	want := &RepositoriesSearchResult{
+		Total: 4,
+		Repos: []Repository{{ID: 1}, {ID: 2}},
 	}
-
-	opts = new(SearchOptions)
-	if sort, in := values["sort"]; in && len(sort) == 1 {
-		opts.Sort = sort[0]
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
 	}
-	if order, in := values["order"]; in && len(order) == 1 {
-		opts.Order = order[0]
-	}
-	if page, in := values["page"]; in && len(page) == 1 {
-		opts.Page, err = strconv.Atoi(page[0])
-		if err != nil {
-			return
-		}
-	}
-	if perPage, in := values["per_page"]; in && len(perPage) == 1 {
-		opts.PerPage, err = strconv.Atoi(perPage[0])
-		if err != nil {
-			return
-		}
-	}
-
-	return
 }
 
-// Checks that HTTP request contains GitHub experimental media accept header
-func testHeaderExperimental(t *testing.T, r *http.Request) {
+func TestSearch_Repositories_noOptsNoResults(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q": "blah",
+		})
+
+		fmt.Fprint(w, `{"total_count": 0, "items": []}`)
+	})
+
+	result, _, err := client.Search.Repositories("blah", nil)
+	if err != nil {
+		t.Errorf("Search.Repositories returned error: %v", err)
+	}
+
+	want := &RepositoriesSearchResult{
+		Total: 0,
+		Repos: []Repository{},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Issues_opts(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q":        "blah",
+			"sort":     "forks",
+			"order":    "desc",
+			"page":     "2",
+			"per_page": "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "items": [{"number":1},{"number":2}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	result, _, err := client.Search.Issues("blah", opts)
+	if err != nil {
+		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	want := &IssuesSearchResult{
+		Total:  4,
+		Issues: []Issue{{Number: 1}, {Number: 2}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Issues_noOptsNoResults(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q": "blah",
+		})
+
+		fmt.Fprint(w, `{"total_count": 0, "items": []}`)
+	})
+
+	result, _, err := client.Search.Issues("blah", nil)
+	if err != nil {
+		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	want := &IssuesSearchResult{
+		Total:  0,
+		Issues: []Issue{},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Users_opts(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q":        "blah",
+			"sort":     "forks",
+			"order":    "desc",
+			"page":     "2",
+			"per_page": "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "items": [{"id":1},{"id":2}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	result, _, err := client.Search.Users("blah", opts)
+	if err != nil {
+		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	want := &UsersSearchResult{
+		Total: 4,
+		Users: []User{{ID: 1}, {ID: 2}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Users returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Users_noOptsNoResults(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q": "blah",
+		})
+
+		fmt.Fprint(w, `{"total_count": 0, "items": []}`)
+	})
+
+	result, _, err := client.Search.Users("blah", nil)
+	if err != nil {
+		t.Errorf("Search.Users returned error: %v", err)
+	}
+
+	want := &UsersSearchResult{
+		Total: 0,
+		Users: []User{},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Users returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Code_opts(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q":        "blah",
+			"sort":     "forks",
+			"order":    "desc",
+			"page":     "2",
+			"per_page": "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "items": [{"name":"1"},{"name":"2"}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	result, _, err := client.Search.Code("blah", opts)
+	if err != nil {
+		t.Errorf("Search.Code returned error: %v", err)
+	}
+
+	want := &CodeSearchResult{
+		Total:       4,
+		CodeResults: []CodeResult{{Name: "1"}, {Name: "2"}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Code returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearch_Code_noOptsNoResults(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeaderPreview(t, r)
+		testFormValues(t, r, values{
+			"q": "blah",
+		})
+
+		fmt.Fprint(w, `{"total_count": 0, "items": []}`)
+	})
+
+	result, _, err := client.Search.Code("blah", nil)
+	if err != nil {
+		t.Errorf("Search.Code returned error: %v", err)
+	}
+
+	want := &CodeSearchResult{
+		Total:       0,
+		CodeResults: []CodeResult{},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Code returned %+v, want %+v", result, want)
+	}
+}
+
+// Checks that HTTP request contains GitHub preview accept header
+func testHeaderPreview(t *testing.T, r *http.Request) {
 	if !strings.Contains(r.Header.Get("Accept"), mimePreview) {
 		t.Errorf("Header does not contain Accept:%s", mimePreview)
 	}
