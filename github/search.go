@@ -99,8 +99,6 @@ type CodeResult struct {
 	Name       string      `json:"name,omitempty"`
 	Path       string      `json:"path,omitempty"`
 	SHA        string      `json:"sha,omitempty"`
-	URL        string      `json:"url,omitempty"`
-	GitURL     string      `json:"git_url,omitempty"`
 	HTMLURL    string      `json:"html_url,omitempty"`
 	Repository *Repository `json:"repository,omitempty"`
 }
