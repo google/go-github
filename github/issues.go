@@ -21,6 +21,17 @@ type IssuesService struct {
 	client *Client
 }
 
+// Label represents a GitHib label on an Issue
+type Label struct {
+	URL   string `json:"url,omitempty"`
+	Name  string `json:"name,omitempty"`
+	Color string `json:"color,omitempty"`
+}
+
+func (label Label) String() string {
+	return fmt.Sprintf(label.Name)
+}
+
 // Issue represents a GitHub issue on a repository.
 type Issue struct {
 	Number    int        `json:"number,omitempty"`
@@ -28,13 +39,14 @@ type Issue struct {
 	Title     string     `json:"title,omitempty"`
 	Body      string     `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
+	Labels    []*Label   `json:"labels,omitempty"`
 	Assignee  *User      `json:"assignee,omitempty"`
 	Comments  int        `json:"comments,omitempty"`
 	ClosedAt  *time.Time `json:"closed_at,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 
-	// TODO(willnorris): labels and milestone
+	// TODO(willnorris): milestone
 }
 
 // IssueListOptions specifies the optional parameters to the IssuesService.List
