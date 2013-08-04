@@ -189,7 +189,7 @@ func newResponse(r *http.Response) *Response {
 func (r *Response) populatePageValues() {
 	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
 		for _, link := range strings.Split(links[0], ",") {
-			segments := strings.Split(link, ";")
+			segments := strings.Split(strings.TrimSpace(link), ";")
 
 			// link must at least have href and rel
 			if len(segments) < 2 {
