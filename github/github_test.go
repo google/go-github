@@ -134,9 +134,9 @@ func TestResponse_populatePageValues(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
-				`<https://api.github.com/?page=2>; rel="prev",` +
-				`<https://api.github.com/?page=4>; rel="next",` +
-				`<https://api.github.com/?page=5>; rel="last"`,
+				` <https://api.github.com/?page=2>; rel="prev",` +
+				` <https://api.github.com/?page=4>; rel="next",` +
+				` <https://api.github.com/?page=5>; rel="last"`,
 			},
 		},
 	}
