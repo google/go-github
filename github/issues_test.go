@@ -69,26 +69,6 @@ func TestIssuesService_List_owned(t *testing.T) {
 	}
 }
 
-func TestIssueService_List_label(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{"number":1, "labels": [{"url": "https://api.github.com/repos/octocat/Hello-World/labels/bug", "name": "bug", "color": "f29513"}]}]`)
-	})
-
-	issues, _, err := client.Issues.List(false, nil)
-	if err != nil {
-		t.Errorf("Issues.List returned error: %v", err)
-	}
-
-	want := []Issue{Issue{Number: 1, Labels: []Label{Label{URL: "https://api.github.com/repos/octocat/Hello-World/labels/bug", Name: "bug", Color: "f29513"}}}}
-	if !reflect.DeepEqual(issues, want) {
-		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
-	}
-}
-
 func TestIssuesService_ListByOrg(t *testing.T) {
 	setup()
 	defer teardown()
@@ -160,7 +140,7 @@ func TestIssuesService_Get(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"number":1}`)
+		fmt.Fprint(w, `{"number":1, "labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
 	issue, _, err := client.Issues.Get("o", "r", 1)
@@ -168,7 +148,7 @@ func TestIssuesService_Get(t *testing.T) {
 		t.Errorf("Issues.Get returned error: %v", err)
 	}
 
-	want := &Issue{Number: 1}
+	want := &Issue{Number: 1, Labels: []Label{Label{URL: "u", Name: "n", Color: "c"}}}
 	if !reflect.DeepEqual(issue, want) {
 		t.Errorf("Issues.Get returned %+v, want %+v", issue, want)
 	}
