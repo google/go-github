@@ -61,8 +61,8 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 	})
 
 	isCollab, _, err := client.Repositories.IsCollaborator("o", "r", "u")
-	if err == nil {
-		t.Errorf("Repositories.IsCollaborator did not return error.")
+	if err != nil {
+		t.Errorf("Repositories.IsCollaborator returned error: %v", err)
 	}
 
 	if isCollab {

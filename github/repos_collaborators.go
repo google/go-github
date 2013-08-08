@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/http"
 )
 
 // ListCollaborators lists the Github users that have access to the repository.
@@ -27,6 +26,8 @@ func (s *RepositoriesService) ListCollaborators(owner, repo string) ([]User, *Re
 
 // IsCollaborator checks whether the specified Github user has collaborator
 // access to the given repo.
+// Note: This will return false if the user is not a collaborator OR the user
+// is not a GitHub user.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/collaborators/#get
 func (s *RepositoriesService) IsCollaborator(owner, repo, user string) (bool, *Response, error) {
@@ -36,10 +37,8 @@ func (s *RepositoriesService) IsCollaborator(owner, repo, user string) (bool, *R
 		return false, nil, err
 	}
 	resp, err := s.client.Do(req, nil)
-	if resp.StatusCode == http.StatusNoContent {
-		return true, resp, err
-	}
-	return false, resp, err
+	isCollab, err := parseBoolResponse(err)
+	return isCollab, resp, err
 }
 
 // AddCollaborator adds the specified Github user as collaborator to the given repo.
