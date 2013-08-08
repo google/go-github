@@ -7,6 +7,7 @@ package github
 
 import (
 	"fmt"
+	"net/http"
 )
 
 // ListCollaborators lists the Github users that have access to the repository.
@@ -35,7 +36,7 @@ func (s *RepositoriesService) IsCollaborator(owner, repo, user string) (bool, *R
 		return false, nil, err
 	}
 	resp, err := s.client.Do(req, nil)
-	if resp.StatusCode == 204 {
+	if resp.StatusCode == http.StatusNoContent {
 		return true, resp, err
 	}
 	return false, resp, err

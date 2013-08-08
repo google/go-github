@@ -38,7 +38,7 @@ func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(204)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	isCollab, _, err := client.Repositories.IsCollaborator("o", "r", "u")
@@ -57,7 +57,7 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(404)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	isCollab, _, err := client.Repositories.IsCollaborator("o", "r", "u")
@@ -76,7 +76,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		w.WriteHeader(204)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	_, err := client.Repositories.AddCollaborator("o", "r", "u")
@@ -91,11 +91,11 @@ func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		w.WriteHeader(204)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	_, err := client.Repositories.RemoveCollaborator("o", "r", "u")
 	if err != nil {
-		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
+		t.Errorf("Repositories.RemoveCollaborator returned error: %v", err)
 	}
 }
