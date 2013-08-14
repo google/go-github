@@ -37,7 +37,7 @@ func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestIssuesService_CheckAssignee_true(t *testing.T) {
+func TestIssuesService_IsAssignee_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -45,16 +45,16 @@ func TestIssuesService_CheckAssignee_true(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.IsAssignee("o", "r", "u")
 	if err != nil {
-		t.Errorf("Issues.CheckAssignee returned error: %v", err)
+		t.Errorf("Issues.IsAssignee returned error: %v", err)
 	}
 	if want := true; assignee != want {
-		t.Errorf("Issues.CheckAssignee returned %+v, want %+v", assignee, want)
+		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
 }
 
-func TestIssuesService_CheckAssignee_false(t *testing.T) {
+func TestIssuesService_IsAssignee_false(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -63,16 +63,16 @@ func TestIssuesService_CheckAssignee_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.IsAssignee("o", "r", "u")
 	if err != nil {
-		t.Errorf("Issues.CheckAssignee returned error: %v", err)
+		t.Errorf("Issues.IsAssignee returned error: %v", err)
 	}
 	if want := false; assignee != want {
-		t.Errorf("Issues.CheckAssignee returned %+v, want %+v", assignee, want)
+		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
 }
 
-func TestIssuesService_CheckAssignee_error(t *testing.T) {
+func TestIssuesService_IsAssignee_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -81,16 +81,16 @@ func TestIssuesService_CheckAssignee_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	assignee, _, err := client.Issues.CheckAssignee("o", "r", "u")
+	assignee, _, err := client.Issues.IsAssignee("o", "r", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if want := false; assignee != want {
-		t.Errorf("Issues.CheckAssignee returned %+v, want %+v", assignee, want)
+		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
 }
 
-func TestIssuesService_CheckAssignee_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.CheckAssignee("%", "r", "u")
+func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.IsAssignee("%", "r", "u")
 	testURLParseError(t, err)
 }

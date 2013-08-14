@@ -62,7 +62,7 @@ func TestOrganizationsService_ListPublicMembers_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestOrganizationsService_CheckMembership(t *testing.T) {
+func TestOrganizationsService_IsMember(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -71,17 +71,17 @@ func TestOrganizationsService_CheckMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, _, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.IsMember("o", "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckMembership returned error: %v", err)
+		t.Errorf("Organizations.IsMember returned error: %v", err)
 	}
 	if want := true; member != want {
-		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 404 response is interpreted as "false" and not an error
-func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
+func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -90,18 +90,18 @@ func TestOrganizationsService_CheckMembership_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.IsMember("o", "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckMembership returned error: %+v", err)
+		t.Errorf("Organizations.IsMember returned error: %+v", err)
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
-func TestOrganizationsService_CheckMembership_error(t *testing.T) {
+func TestOrganizationsService_IsMember_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -110,21 +110,21 @@ func TestOrganizationsService_CheckMembership_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.CheckMembership("o", "u")
+	member, _, err := client.Organizations.IsMember("o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
 	}
 }
 
-func TestOrganizationsService_CheckMembership_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.CheckMembership("%", "u")
+func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
+	_, _, err := client.Organizations.IsMember("%", "u")
 	testURLParseError(t, err)
 }
 
-func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
+func TestOrganizationsService_IsPublicMember(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -133,17 +133,17 @@ func TestOrganizationsService_CheckPublicMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.IsPublicMember("o", "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
+		t.Errorf("Organizations.IsPublicMember returned error: %v", err)
 	}
 	if want := true; member != want {
-		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 404 response is interpreted as "false" and not an error
-func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
+func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -152,18 +152,18 @@ func TestOrganizationsService_CheckPublicMembership_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.IsPublicMember("o", "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckPublicMembership returned error: %v", err)
+		t.Errorf("Organizations.IsPublicMember returned error: %v", err)
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
-func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
+func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -172,17 +172,17 @@ func TestOrganizationsService_CheckPublicMembership_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.CheckPublicMembership("o", "u")
+	member, _, err := client.Organizations.IsPublicMember("o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckPublicMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)
 	}
 }
 
-func TestOrganizationsService_CheckPublicMembership_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.CheckPublicMembership("%", "u")
+func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
+	_, _, err := client.Organizations.IsPublicMember("%", "u")
 	testURLParseError(t, err)
 }
 

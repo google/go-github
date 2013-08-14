@@ -287,7 +287,7 @@ func TestGistsService_Unstar(t *testing.T) {
 	}
 }
 
-func TestGistsService_Starred_hasStar(t *testing.T) {
+func TestGistsService_IsStarred_hasStar(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -296,7 +296,7 @@ func TestGistsService_Starred_hasStar(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	star, _, err := client.Gists.Starred("1")
+	star, _, err := client.Gists.IsStarred("1")
 	if err != nil {
 		t.Errorf("Gists.Starred returned error: %v", err)
 	}
@@ -305,7 +305,7 @@ func TestGistsService_Starred_hasStar(t *testing.T) {
 	}
 }
 
-func TestGistsService_Starred_noStar(t *testing.T) {
+func TestGistsService_IsStarred_noStar(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -314,7 +314,7 @@ func TestGistsService_Starred_noStar(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	star, _, err := client.Gists.Starred("1")
+	star, _, err := client.Gists.IsStarred("1")
 	if err != nil {
 		t.Errorf("Gists.Starred returned error: %v", err)
 	}

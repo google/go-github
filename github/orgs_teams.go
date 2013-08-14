@@ -108,10 +108,10 @@ func (s *OrganizationsService) ListTeamMembers(team int) ([]User, *Response, err
 	return *members, resp, err
 }
 
-// CheckTeamMembership checks if a user is a member of the specified team.
+// IsTeamMember checks if a user is a member of the specified team.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-member
-func (s *OrganizationsService) CheckTeamMembership(team int, user string) (bool, *Response, error) {
+func (s *OrganizationsService) IsTeamMember(team int, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members/%v", team, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -164,10 +164,10 @@ func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, *Response,
 	return *repos, resp, err
 }
 
-// CheckTeamRepo checks if a team manages the specified repository.
+// IsTeamRepo checks if a team manages the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-repo
-func (s *OrganizationsService) CheckTeamRepo(team int, owner string, repo string) (bool, *Response, error) {
+func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (bool, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

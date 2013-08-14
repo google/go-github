@@ -22,10 +22,10 @@ func (s *IssuesService) ListAssignees(owner string, repo string) ([]User, *Respo
 	return *assignees, resp, err
 }
 
-// CheckAssignee checks if a user is an assignee for the specified repository.
+// IsAssignee checks if a user is an assignee for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/assignees/#check-assignee
-func (s *IssuesService) CheckAssignee(owner string, repo string, user string) (bool, *Response, error) {
+func (s *IssuesService) IsAssignee(owner string, repo string, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

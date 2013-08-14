@@ -39,10 +39,10 @@ func (s *OrganizationsService) ListPublicMembers(org string) ([]User, *Response,
 	return *members, resp, err
 }
 
-// CheckMembership checks if a user is a member of an organization.
+// IsMember checks if a user is a member of an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#check-membership
-func (s *OrganizationsService) CheckMembership(org, user string) (bool, *Response, error) {
+func (s *OrganizationsService) IsMember(org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -54,10 +54,10 @@ func (s *OrganizationsService) CheckMembership(org, user string) (bool, *Respons
 	return member, resp, err
 }
 
-// CheckPublicMembership checks if a user is a public member of an organization.
+// IsPublicMember checks if a user is a public member of an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#check-public-membership
-func (s *OrganizationsService) CheckPublicMembership(org, user string) (bool, *Response, error) {
+func (s *OrganizationsService) IsPublicMember(org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
