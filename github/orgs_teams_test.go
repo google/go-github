@@ -155,7 +155,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 	}
 }
 
-func TestOrganizationsService_CheckTeamMembership_true(t *testing.T) {
+func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -163,17 +163,17 @@ func TestOrganizationsService_CheckTeamMembership_true(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	member, _, err := client.Organizations.CheckTeamMembership(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(1, "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckTeamMembership returned error: %v", err)
+		t.Errorf("Organizations.IsTeamMember returned error: %v", err)
 	}
 	if want := true; member != want {
-		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsTeamMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 404 response is interpreted as "false" and not an error
-func TestOrganizationsService_CheckTeamMembership_false(t *testing.T) {
+func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -182,18 +182,18 @@ func TestOrganizationsService_CheckTeamMembership_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.CheckTeamMembership(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(1, "u")
 	if err != nil {
-		t.Errorf("Organizations.CheckTeamMembership returned error: %+v", err)
+		t.Errorf("Organizations.IsTeamMember returned error: %+v", err)
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsTeamMember returned %+v, want %+v", member, want)
 	}
 }
 
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
-func TestOrganizationsService_CheckTeamMembership_error(t *testing.T) {
+func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -202,17 +202,17 @@ func TestOrganizationsService_CheckTeamMembership_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.CheckTeamMembership(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(1, "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if want := false; member != want {
-		t.Errorf("Organizations.CheckTeamMembership returned %+v, want %+v", member, want)
+		t.Errorf("Organizations.IsTeamMember returned %+v, want %+v", member, want)
 	}
 }
 
-func TestOrganizationsService_CheckMembership_invalidUser(t *testing.T) {
-	_, _, err := client.Organizations.CheckTeamMembership(1, "%")
+func TestOrganizationsService_IsTeamMember_invalidUser(t *testing.T) {
+	_, _, err := client.Organizations.IsTeamMember(1, "%")
 	testURLParseError(t, err)
 }
 
@@ -316,7 +316,7 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 	}
 }
 
-func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
+func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -325,16 +325,16 @@ func TestOrganizationsService_CheckTeamRepo_true(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	managed, _, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
 	if err != nil {
-		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
+		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
 	}
 	if want := true; managed != want {
-		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
 
-func TestOrganizationsService_CheckTeamRepo_false(t *testing.T) {
+func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -343,16 +343,16 @@ func TestOrganizationsService_CheckTeamRepo_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	managed, _, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
 	if err != nil {
-		t.Errorf("Organizations.CheckTeamRepo returned error: %v", err)
+		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
 	}
 	if want := false; managed != want {
-		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
 
-func TestOrganizationsService_CheckTeamRepo_error(t *testing.T) {
+func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -361,17 +361,17 @@ func TestOrganizationsService_CheckTeamRepo_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	managed, _, err := client.Organizations.CheckTeamRepo(1, "o", "r")
+	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if want := false; managed != want {
-		t.Errorf("Organizations.CheckTeamRepo returned %+v, want %+v", managed, want)
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
 	}
 }
 
-func TestOrganizationsService_CheckTeamRepo_invalidOwner(t *testing.T) {
-	_, _, err := client.Organizations.CheckTeamRepo(1, "%", "r")
+func TestOrganizationsService_IsTeamRepo_invalidOwner(t *testing.T) {
+	_, _, err := client.Organizations.IsTeamRepo(1, "%", "r")
 	testURLParseError(t, err)
 }
 
