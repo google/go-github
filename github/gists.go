@@ -206,10 +206,10 @@ func (s *GistsService) Unstar(id string) (*Response, error) {
 	return s.client.Do(req, nil)
 }
 
-// Starred checks if a gist is starred by authenticated user.
+// IsStarred checks if a gist is starred by authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#check-if-a-gist-is-starred
-func (s *GistsService) Starred(id string) (bool, *Response, error) {
+func (s *GistsService) IsStarred(id string) (bool, *Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
