@@ -34,7 +34,7 @@ func TestPullRequestsService_List(t *testing.T) {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
 
-	want := []PullRequest{PullRequest{Number: 1}}
+	want := []PullRequest{{Number: 1}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.List returned %+v, want %+v", pulls, want)
 	}
