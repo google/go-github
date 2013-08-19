@@ -36,7 +36,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []IssueComment{IssueComment{ID: 1}}
+	want := []IssueComment{{ID: 1}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -56,7 +56,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []IssueComment{IssueComment{ID: 1}}
+	want := []IssueComment{{ID: 1}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}

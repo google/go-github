@@ -43,7 +43,7 @@ func TestIssuesService_List_all(t *testing.T) {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
 
-	want := []Issue{Issue{Number: 1}}
+	want := []Issue{{Number: 1}}
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -63,7 +63,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
 
-	want := []Issue{Issue{Number: 1}}
+	want := []Issue{{Number: 1}}
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -83,7 +83,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
-	want := []Issue{Issue{Number: 1}}
+	want := []Issue{{Number: 1}}
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -123,7 +123,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
-	want := []Issue{Issue{Number: 1}}
+	want := []Issue{{Number: 1}}
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
@@ -148,7 +148,7 @@ func TestIssuesService_Get(t *testing.T) {
 		t.Errorf("Issues.Get returned error: %v", err)
 	}
 
-	want := &Issue{Number: 1, Labels: []Label{Label{URL: "u", Name: "n", Color: "c"}}}
+	want := &Issue{Number: 1, Labels: []Label{{URL: "u", Name: "n", Color: "c"}}}
 	if !reflect.DeepEqual(issue, want) {
 		t.Errorf("Issues.Get returned %+v, want %+v", issue, want)
 	}

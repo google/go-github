@@ -333,7 +333,7 @@ func TestCheckResponse(t *testing.T) {
 	want := &ErrorResponse{
 		Response: res,
 		Message:  "m",
-		Errors:   []Error{Error{Resource: "r", Field: "f", Code: "c"}},
+		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 	}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)

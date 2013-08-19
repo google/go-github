@@ -27,7 +27,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
 
-	want := []RepoStatus{RepoStatus{ID: 1}}
+	want := []RepoStatus{{ID: 1}}
 	if !reflect.DeepEqual(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
