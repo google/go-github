@@ -112,12 +112,12 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 
 	events, _, err := client.Activity.ListEventsForOrganization("o", "u", nil)
 	if err != nil {
-		t.Errorf("Events.ListForOrganization returned error: %v", err)
+		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
 	}
 
-	want := []Event{Event{ID: "1"}, Event{ID: "2"}}
+	want := []Event{{ID: "1"}, {ID: "2"}}
 	if !reflect.DeepEqual(events, want) {
-		t.Errorf("Events.ListForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
 }
 
