@@ -86,3 +86,32 @@ func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool
 	resp, err := s.client.Do(req, events)
 	return *events, resp, err
 }
+
+// ListEventsRecievedByUser lists the events recieved by a user. If publicOnly is
+// true, only public events will be returned.
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-events-that-a-user-has-received
+func (s *ActivityService) ListEventsRecievedByUser(user string, publicOnly bool, opt *ListOptions) ([]Event, *Response, error) {
+	var u string
+	if publicOnly {
+		u = fmt.Sprintf("users/%v/received_events/public", user)
+	} else {
+		u = fmt.Sprintf("users/%v/received_events", user)
+	}
+
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
