@@ -19,6 +19,10 @@ type Team struct {
 	ReposCount   *int    `json:"repos_count,omitempty"`
 }
 
+func (t *Team) String() string {
+	return Stringify(t)
+}
+
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams

@@ -23,6 +23,10 @@ type PullRequestComment struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
+func (p *PullRequestComment) String() string {
+	return Stringify(p)
+}
+
 // PullRequestListCommentsOptions specifies the optional parameters to the
 // PullRequestsService.ListComments method.
 type PullRequestListCommentsOptions struct {

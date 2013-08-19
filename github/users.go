@@ -39,6 +39,10 @@ type User struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 }
 
+func (u *User) String() string {
+	return Stringify(u)
+}
+
 // Get fetches a user.  Passing the empty string will fetch the authenticated
 // user.
 //

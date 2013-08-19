@@ -14,8 +14,8 @@ type Label struct {
 	Color *string `json:"color,omitempty"`
 }
 
-func (label Label) String() string {
-	return fmt.Sprint(label.Name)
+func (l Label) String() string {
+	return fmt.Sprint(*l.Name)
 }
 
 // ListLabels lists all labels for a repository.

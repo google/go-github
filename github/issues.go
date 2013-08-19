@@ -38,6 +38,10 @@ type Issue struct {
 	// TODO(willnorris): milestone
 }
 
+func (i *Issue) String() string {
+	return Stringify(i)
+}
+
 // IssueListOptions specifies the optional parameters to the IssuesService.List
 // and IssuesService.ListByOrg methods.
 type IssueListOptions struct {

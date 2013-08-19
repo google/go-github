@@ -102,6 +102,10 @@ type CodeResult struct {
 	Repository *Repository `json:"repository,omitempty"`
 }
 
+func (c *CodeResult) String() string {
+	return Stringify(c)
+}
+
 // Code searches code via various criteria.
 //
 // GitHub API docs: http://developer.github.com/v3/search/#search-code

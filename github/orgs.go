@@ -30,6 +30,10 @@ type Organization struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
+func (o *Organization) String() string {
+	return Stringify(o)
+}
+
 // List the organizations for a user.  Passing the empty string will list
 // organizations for the authenticated user.
 //
