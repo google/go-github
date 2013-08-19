@@ -1,0 +1,134 @@
+// Copyright 2013 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package github
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"reflect"
+	"testing"
+)
+
+func TestGistsService_ListComments(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id": 1}]`)
+	})
+
+	comments, _, err := client.Gists.ListComments("1")
+
+	if err != nil {
+		t.Errorf("Gists.Comments returned error: %v", err)
+	}
+
+	want := []GistComment{{ID: 1}}
+	if !reflect.DeepEqual(comments, want) {
+		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
+	}
+}
+
+func TestGistsService_GetComment(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id": 1}`)
+	})
+
+	comment, _, err := client.Gists.GetComment("1", 2)
+
+	if err != nil {
+		t.Errorf("Gists.GetComment returned error: %v", err)
+	}
+
+	want := &GistComment{ID: 1}
+	if !reflect.DeepEqual(comment, want) {
+		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
+	}
+}
+
+func TestGistsService_CreateComment(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &GistComment{
+		ID:   1,
+		Body: "This is the comment body.",
+	}
+
+	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GistComment)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1, "body":"b", "url":"u", "user":{"id":2}}`)
+	})
+
+	comment, _, err := client.Gists.CreateComment("1", input)
+	if err != nil {
+		t.Errorf("Gists.CreateComment returned error: %v", err)
+	}
+
+	want := &GistComment{ID: 1, Body: "b", URL: "u", User: &User{ID: 2}}
+	if !reflect.DeepEqual(comment, want) {
+		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
+	}
+}
+
+func TestGistsService_EditComment(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &GistComment{
+		ID:   1,
+		Body: "New comment.",
+	}
+
+	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
+		v := new(GistComment)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1, "body":"b", "url":"u", "user":{"id":2}}`)
+	})
+
+	comment, _, err := client.Gists.EditComment("1", 2, input)
+	if err != nil {
+		t.Errorf("Gists.EditComment returned error: %v", err)
+	}
+
+	want := &GistComment{ID: 1, Body: "b", URL: "u", User: &User{ID: 2}}
+	if !reflect.DeepEqual(comment, want) {
+		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
+	}
+}
+
+func TestGistsService_DeleteComment(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Gists.DeleteComment("1", 2)
+	if err != nil {
+		t.Errorf("Gists.Delete returned error: %v", err)
+	}
+}
