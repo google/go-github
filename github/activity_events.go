@@ -115,3 +115,25 @@ func (s *ActivityService) ListEventsRecievedByUser(user string, publicOnly bool,
 	resp, err := s.client.Do(req, events)
 	return *events, resp, err
 }
+
+// ListEventsForOrganization lists the events recieved by an organization. You must be
+// authenticated as the user to view this.
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-events-for-an-organization
+func(s *ActivityService) ListEventsForOrganization(org, user string, opt *ListOptions) ([]Event, *Response, error) {
+	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
