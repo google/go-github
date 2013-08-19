@@ -57,6 +57,50 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListEventsRecievedByUser_all(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/received_events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListEventsRecievedByUser("u", false, opt)
+	if err != nil {
+		t.Errorf("Events.ListRecievedByUser returned error: %v", err)
+	}
+
+	want := []Event{Event{ID: "1"}, Event{ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Events.ListRecievedUser returned %+v, want %+v", events, want)
+	}
+}
+
+func TestActivityService_ListEventsRecievedByUser_publicOnly(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/received_events/public", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	events, _, err := client.Activity.ListEventsRecievedByUser("u", true, nil)
+	if err != nil {
+		t.Errorf("Events.ListRecievedByUser returned error: %v", err)
+	}
+
+	want := []Event{Event{ID: "1"}, Event{ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Events.ListRecievedByUser returned %+v, want %+v", events, want)
+	}
+}
+
 func TestActivity_EventPayload_typed(t *testing.T) {
 	raw := []byte(`{"type": "PushEvent","payload":{"push_id": 1}}`)
 	var event *Event
