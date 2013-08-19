@@ -34,6 +34,10 @@ type Repository struct {
 	HasWiki   *bool `json:"has_wiki"`
 }
 
+func (r *Repository) String() string {
+	return Stringify(r)
+}
+
 // RepositoryListOptions specifies the optional parameters to the
 // RepositoriesService.List method.
 type RepositoryListOptions struct {

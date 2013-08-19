@@ -26,6 +26,10 @@ type RepositoryComment struct {
 	Position *int    `json:"position,omitempty"`
 }
 
+func (r *RepositoryComment) String() string {
+	return Stringify(r)
+}
+
 // ListComments lists all the comments for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository

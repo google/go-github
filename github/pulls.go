@@ -42,6 +42,10 @@ type PullRequest struct {
 	// TODO(willnorris): add head and base once we have a Commit struct defined somewhere
 }
 
+func (p *PullRequest) String() string {
+	return Stringify(p)
+}
+
 // PullRequestListOptions specifies the optional parameters to the
 // PullRequestsService.List method.
 type PullRequestListOptions struct {

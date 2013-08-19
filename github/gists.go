@@ -33,6 +33,10 @@ type Gist struct {
 	CreatedAt   *time.Time                `json:"created_at,omitempty"`
 }
 
+func (g *Gist) String() string {
+	return Stringify(g)
+}
+
 // GistFilename represents filename on a gist.
 type GistFilename string
 
@@ -42,6 +46,10 @@ type GistFile struct {
 	Filename *string `json:"filename,omitempty"`
 	RawURL   *string `json:"raw_url,omitempty"`
 	Content  *string `json:"content,omitempty"`
+}
+
+func (g *GistFile) String() string {
+	return Stringify(g)
 }
 
 // GistListOptions specifies the optional parameters to the

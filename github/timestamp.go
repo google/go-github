@@ -18,6 +18,10 @@ type Timestamp struct {
 	time.Time
 }
 
+func (t *Timestamp) String() string {
+	return t.Time.String()
+}
+
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // Time is expected in RFC3339 or Unix format.
 func (t *Timestamp) UnmarshalJSON(data []byte) (err error) {

@@ -19,6 +19,10 @@ type GistComment struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
+func (g *GistComment) String() string {
+	return Stringify(g)
+}
+
 // ListComments lists all comments for a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/comments/#list-comments-on-a-gist

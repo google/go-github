@@ -30,6 +30,10 @@ type RepoStatus struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
+func (r *RepoStatus) String() string {
+	return Stringify(r)
+}
+
 // ListStatuses lists the statuses of a repository at the specified
 // reference.  ref can be a SHA, a branch name, or a tag name.
 //

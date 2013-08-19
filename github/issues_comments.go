@@ -20,6 +20,10 @@ type IssueComment struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
+func (i *IssueComment) String() string {
+	return Stringify(i)
+}
+
 // IssueListCommentsOptions specifies the optional parameters to the
 // IssuesService.ListComments method.
 type IssueListCommentsOptions struct {

@@ -20,12 +20,20 @@ type Commit struct {
 	Parents   []Commit      `json:"parents,omitempty"`
 }
 
+func (c *Commit) String() string {
+	return Stringify(c)
+}
+
 // CommitAuthor represents the author or committer of a commit.  The commit
 // author may not correspond to a GitHub User.
 type CommitAuthor struct {
 	Date  *time.Time `json:"date,omitempty"`
 	Name  *string    `json:"name,omitempty"`
 	Email *string    `json:"email,omitempty"`
+}
+
+func (c *CommitAuthor) String() string {
+	return Stringify(c)
 }
 
 // GetCommit fetchs the Commit object for a given SHA.

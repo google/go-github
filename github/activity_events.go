@@ -25,6 +25,10 @@ type Event struct {
 	ID         *string          `json:"id,omitempty"`
 }
 
+func (e *Event) String() string {
+	return Stringify(e)
+}
+
 // Payload returns the parsed event payload. For recognized event types
 // (PushEvent), a value of the corresponding struct type will be returned.
 func (e *Event) Payload() (payload interface{}) {
@@ -49,6 +53,10 @@ type PushEvent struct {
 	Commits []PushEventCommit `json:"commits,omitempty"`
 }
 
+func (p *PushEvent) String() string {
+	return Stringify(p)
+}
+
 // PushEventCommit represents a git commit in a GitHub PushEvent.
 type PushEventCommit struct {
 	SHA      *string       `json:"sha,omitempty"`
@@ -56,6 +64,10 @@ type PushEventCommit struct {
 	Author   *CommitAuthor `json:"author,omitempty"`
 	URL      *string       `json:"url,omitempty"`
 	Distinct *bool         `json:"distinct"`
+}
+
+func (p *PushEventCommit) String() string {
+	return Stringify(p)
 }
 
 // List public events.

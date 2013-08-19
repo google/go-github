@@ -33,6 +33,10 @@ type WebHookPayload struct {
 	Repo       *Repository     `json:"repository,omitempty"`
 }
 
+func (w *WebHookPayload) String() string {
+	return Stringify(w)
+}
+
 // WebHookCommit represents the commit variant we receive from GitHub in a
 // WebHookPayload.
 type WebHookCommit struct {
@@ -47,12 +51,20 @@ type WebHookCommit struct {
 	Timestamp *time.Time     `json:"timestamp,omitempty"`
 }
 
+func (w *WebHookCommit) String() string {
+	return Stringify(w)
+}
+
 // WebHookAuthor represents the author or committer of a commit, as specified
 // in a WebHookCommit.  The commit author may not correspond to a GitHub User.
 type WebHookAuthor struct {
 	Email    *string `json:"email,omitempty"`
 	Name     *string `json:"name,omitempty"`
 	Username *string `json:"username,omitempty"`
+}
+
+func (w *WebHookAuthor) String() string {
+	return Stringify(w)
 }
 
 // Hook represents a GitHub (web and service) hook for a repository.
@@ -64,6 +76,10 @@ type Hook struct {
 	Active    *bool                  `json:"active,omitempty"`
 	Config    map[string]interface{} `json:"config,omitempty"`
 	ID        *int                   `json:"id,omitempty"`
+}
+
+func (h *Hook) String() string {
+	return Stringify(h)
 }
 
 // CreateHook creates a Hook for the specified repository.

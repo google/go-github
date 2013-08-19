@@ -13,6 +13,10 @@ type Tree struct {
 	Entries []TreeEntry `json:"tree,omitempty"`
 }
 
+func (t *Tree) String() string {
+	return Stringify(t)
+}
+
 // TreeEntry represents the contents of a tree structure.  TreeEntry can
 // represent either a blob, a commit (in the case of a submodule), or another
 // tree.
@@ -22,6 +26,10 @@ type TreeEntry struct {
 	Mode *string `json:"mode,omitempty"`
 	Type *string `json:"type,omitempty"`
 	Size *int    `json:"size,omitempty"`
+}
+
+func (t *TreeEntry) String() string {
+	return Stringify(t)
 }
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
