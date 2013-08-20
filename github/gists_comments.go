@@ -12,7 +12,7 @@ import (
 
 // GistComment represents a Gist comment.
 type GistComment struct {
-	ID        string     `json:"id,omitempty"`
+	ID        int        `json:"id,omitempty"`
 	URL       string     `json:"url,omitempty"`
 	Body      string     `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
@@ -37,7 +37,7 @@ func (s *GistsService) ListComments(gistID string) ([]GistComment, *Response, er
 // GetComment retrieves a single comment from a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/comments/#get-a-single-comment
-func (s *GistsService) GetComment(gistID string, commentID string) (*GistComment, *Response, error) {
+func (s *GistsService) GetComment(gistID string, commentID int) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func (s *GistsService) CreateComment(gistID string, comment *GistComment) (*Gist
 // EditComment edits an existing gist comment.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/comments/#edit-a-comment
-func (s *GistsService) EditComment(gistID string, commentID string, comment *GistComment) (*GistComment, *Response, error) {
+func (s *GistsService) EditComment(gistID string, commentID int, comment *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *GistsService) EditComment(gistID string, commentID string, comment *Gis
 // DeleteComment deletes a gist comment.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/comments/#delete-a-comment
-func (s *GistsService) DeleteComment(gistID string, commentID string) (*Response, error) {
+func (s *GistsService) DeleteComment(gistID string, commentID int) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
