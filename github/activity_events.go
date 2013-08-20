@@ -149,7 +149,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *List
 // List public events for an organization
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
-func (s *ActivityService) ListEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
+func (s *ActivityService) ListPublicEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	if opt != nil {
 		params := url.Values{
