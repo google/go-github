@@ -24,9 +24,6 @@ type RepositoryComment struct {
 	Body     string `json:"body"`
 	Path     string `json:"path,omitempty"`
 	Position int    `json:"position,omitempty"`
-
-	// Depricated fields
-	Line int `json:"line,omitempty"`
 }
 
 // ListComments lists all the comments for the repository.
