@@ -70,10 +70,10 @@ func (p *PushEventCommit) String() string {
 	return Stringify(p)
 }
 
-// ListPublicEvents drinks from the firehose of all public events across GitHub.
+// ListEvents drinks from the firehose of all public events across GitHub.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
-func (s *ActivityService) ListPublicEvents(opt *ListOptions) ([]Event, *Response, error) {
+func (s *ActivityService) ListEvents(opt *ListOptions) ([]Event, *Response, error) {
 	u := "events"
 	if opt != nil {
 		params := url.Values{
@@ -158,10 +158,10 @@ func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *List
 	return *events, resp, err
 }
 
-// ListPublicEventsForOrganization lists public events for an organization.
+// ListEventsForOrganization lists public events for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
-func (s *ActivityService) ListPublicEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
+func (s *ActivityService) ListEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	if opt != nil {
 		params := url.Values{

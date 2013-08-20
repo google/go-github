@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestActivityService_ListPublicEvents(t *testing.T) {
+func TestActivityService_ListEvents(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -26,14 +26,14 @@ func TestActivityService_ListPublicEvents(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	events, _, err := client.Activity.ListPublicEvents(opt)
+	events, _, err := client.Activity.ListEvents(opt)
 	if err != nil {
-		t.Errorf("Activities.ListPublicEvents returned error: %v", err)
+		t.Errorf("Activities.ListEvents returned error: %v", err)
 	}
 
 	want := []Event{{ID: String("1")}, {ID: String("2")}}
 	if !reflect.DeepEqual(events, want) {
-		t.Errorf("Activities.ListPublicEvents returned %+v, want %+v", events, want)
+		t.Errorf("Activities.ListEvents returned %+v, want %+v", events, want)
 	}
 }
 
@@ -109,7 +109,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	}
 }
 
-func TestActivityService_ListPublicEventsForOrganization(t *testing.T) {
+func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -122,14 +122,14 @@ func TestActivityService_ListPublicEventsForOrganization(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	events, _, err := client.Activity.ListPublicEventsForOrganization("o", opt)
+	events, _, err := client.Activity.ListEventsForOrganization("o", opt)
 	if err != nil {
-		t.Errorf("Activities.ListPublicEventsForOrganization returned error: %v", err)
+		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
 	}
 
 	want := []Event{{ID: String("1")}, {ID: String("2")}}
 	if !reflect.DeepEqual(events, want) {
-		t.Errorf("Activities.ListPublicEventsForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
 }
 

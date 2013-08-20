@@ -12,23 +12,14 @@ import "fmt"
 // public members, otherwise it will only return public members.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
-func (s *OrganizationsService) ListMembers(org string) ([]User, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/members", org)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
+func (s *OrganizationsService) ListMembers(org string, publicOnly bool) ([]User, *Response, error) {
+	var u string
+	if publicOnly {
+		u = fmt.Sprintf("orgs/%v/public_members", org)
+	} else {
+		u = fmt.Sprintf("orgs/%v/members", org)
 	}
 
-	members := new([]User)
-	resp, err := s.client.Do(req, members)
-	return *members, resp, err
-}
-
-// ListPublicMembers lists the public members for an organization.
-//
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#public-members-list
-func (s *OrganizationsService) ListPublicMembers(org string) ([]User, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/public_members", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
