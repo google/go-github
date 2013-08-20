@@ -58,6 +58,116 @@ type PushEventCommit struct {
 	Distinct bool          `json:"distinct"`
 }
 
+// List public events.
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
+func (s *ActivityService) ListPublicEvents(opt *ListOptions) ([]Event, *Response, error) {
+	u := "events"
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
+
+// List repository events.
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-repository-events
+func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
+
+// List issue events for a repository.
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-issue-events-for-a-repository
+func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
+
+// List public events for a network of repositories
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-a-network-of-repositories
+func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
+	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
+
+// List public events for an organization
+//
+// GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
+func (s *ActivityService) ListEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/events", org)
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	events := new([]Event)
+	resp, err := s.client.Do(req, events)
+	return *events, resp, err
+}
+
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
