@@ -21,7 +21,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListMembers("o")
+	members, _, err := client.Organizations.ListMembers("o", false)
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
@@ -33,11 +33,11 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListMembers("%")
+	_, _, err := client.Organizations.ListMembers("%", false)
 	testURLParseError(t, err)
 }
 
-func TestOrganizationsService_ListPublicMembers(t *testing.T) {
+func TestOrganizationsService_ListMembers_public(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -46,20 +46,15 @@ func TestOrganizationsService_ListPublicMembers(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListPublicMembers("o")
+	members, _, err := client.Organizations.ListMembers("o", true)
 	if err != nil {
-		t.Errorf("Organizations.ListPublicMembers returned error: %v", err)
+		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
 
 	want := []User{{ID: Int(1)}}
 	if !reflect.DeepEqual(members, want) {
-		t.Errorf("Organizations.ListPublicMembers returned %+v, want %+v", members, want)
+		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
-}
-
-func TestOrganizationsService_ListPublicMembers_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListPublicMembers("%")
-	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_IsMember(t *testing.T) {
