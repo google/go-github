@@ -13,6 +13,126 @@ import (
 	"testing"
 )
 
+func TestActivityService_ListPublicEvents(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListPublicEvents(opt)
+	if err != nil {
+		t.Errorf("Activities.ListPublicEvents returned error: %v", err)
+	}
+
+	want := []Event{{ID: "1"}, {ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Activities.ListPublicEvents returned %+v, want %+v", events, want)
+	}
+}
+
+func TestActivityService_ListRepositoryEvents(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListRepositoryEvents("o", "r", opt)
+	if err != nil {
+		t.Errorf("Activities.ListRepositoryEvents returned error: %v", err)
+	}
+
+	want := []Event{{ID: "1"}, {ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Activities.ListRepositoryEvents returned %+v, want %+v", events, want)
+	}
+}
+
+func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListIssueEventsForRepository("o", "r", opt)
+	if err != nil {
+		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
+	}
+
+	want := []Event{{ID: "1"}, {ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
+	}
+}
+
+func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/networks/o/r/events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListEventsForRepoNetwork("o", "r", opt)
+	if err != nil {
+		t.Errorf("Activities.ListEventsForRepoNetwork returned error: %v", err)
+	}
+
+	want := []Event{{ID: "1"}, {ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Activities.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
+	}
+}
+
+func TestActivityService_ListPublicEventsForOrganization(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/events", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListPublicEventsForOrganization("o", opt)
+	if err != nil {
+		t.Errorf("Activities.ListPublicEventsForOrganization returned error: %v", err)
+	}
+
+	want := []Event{{ID: "1"}, {ID: "2"}}
+	if !reflect.DeepEqual(events, want) {
+		t.Errorf("Activities.ListPublicEventsForOrganization returned %+v, want %+v", events, want)
+	}
+}
+
 func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	setup()
 	defer teardown()
@@ -101,7 +221,7 @@ func TestActivityService_ListEventsRecievedByUser_publicOnly(t *testing.T) {
 	}
 }
 
-func TestActivityService_ListEventsForOrganization(t *testing.T) {
+func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -110,14 +230,14 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	events, _, err := client.Activity.ListEventsForOrganization("o", "u", nil)
+	events, _, err := client.Activity.ListUserEventsForOrganization("o", "u", nil)
 	if err != nil {
-		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
+		t.Errorf("Activities.ListUserEventsForOrganization returned error: %v", err)
 	}
 
 	want := []Event{{ID: "1"}, {ID: "2"}}
 	if !reflect.DeepEqual(events, want) {
-		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activities.ListUserEventsForOrganization returned %+v, want %+v", events, want)
 	}
 }
 
