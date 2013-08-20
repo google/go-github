@@ -109,7 +109,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	}
 }
 
-func TestActivityService_ListEventsForOrganization(t *testing.T) {
+func TestActivityService_ListPublicEventsForOrganization(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -122,14 +122,14 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	events, _, err := client.Activity.ListEventsForOrganization("o", opt)
+	events, _, err := client.Activity.ListPublicEventsForOrganization("o", opt)
 	if err != nil {
-		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
+		t.Errorf("Activities.ListPublicEventsForOrganization returned error: %v", err)
 	}
 
 	want := []Event{{ID: "1"}, {ID: "2"}}
 	if !reflect.DeepEqual(events, want) {
-		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activities.ListPublicEventsForOrganization returned %+v, want %+v", events, want)
 	}
 }
 
