@@ -70,7 +70,7 @@ func (p *PushEventCommit) String() string {
 	return Stringify(p)
 }
 
-// List public events.
+// ListPublicEvents drinks from the firehose of all public events across GitHub.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
 func (s *ActivityService) ListPublicEvents(opt *ListOptions) ([]Event, *Response, error) {
@@ -92,7 +92,7 @@ func (s *ActivityService) ListPublicEvents(opt *ListOptions) ([]Event, *Response
 	return *events, resp, err
 }
 
-// List repository events.
+// ListRepositoryEvents lists events for a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
@@ -114,7 +114,7 @@ func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOpti
 	return *events, resp, err
 }
 
-// List issue events for a repository.
+// ListIssueEventsForRepository lists issue events for a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-issue-events-for-a-repository
 func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
@@ -136,7 +136,7 @@ func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *
 	return *events, resp, err
 }
 
-// List public events for a network of repositories
+// ListEventsForRepoNetwork lists public events for a network of repositories.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
@@ -158,7 +158,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *List
 	return *events, resp, err
 }
 
-// List public events for an organization
+// ListPublicEventsForOrganization lists public events for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
 func (s *ActivityService) ListPublicEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
