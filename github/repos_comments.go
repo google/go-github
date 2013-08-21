@@ -21,7 +21,8 @@ type RepositoryComment struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 
 	// User-mutable fields
-	Body     *string `json:"body"`
+	Body *string `json:"body"`
+	// User-initialized fields
 	Path     *string `json:"path,omitempty"`
 	Position *int    `json:"position,omitempty"`
 }
@@ -90,10 +91,9 @@ func (s *RepositoriesService) GetComment(owner, repo string, id int) (*Repositor
 // UpdateComment updates the body of a single comment.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/comments/#update-a-commit-comment
-func (s *RepositoriesService) UpdateComment(owner, repo string, id int, body string) (*RepositoryComment, *Response, error) {
+func (s *RepositoriesService) UpdateComment(owner, repo string, id int, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
-	comment := RepositoryComment{Body: String(body)}
-	req, err := s.client.NewRequest("PATCH", u, &comment)
+	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
