@@ -120,7 +120,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	comment, _, err := client.Repositories.UpdateComment("o", "r", 1, "b")
+	comment, _, err := client.Repositories.UpdateComment("o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateComment returned error: %v", err)
 	}
