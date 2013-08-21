@@ -57,6 +57,10 @@ func TestStringify(t *testing.T) {
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
+			&Timestamp{time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)},
+			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
+		},
+		{
 			User{ID: Int(123), Name: String("n")},
 			`github.User{ID:123, Name:"n"}`,
 		},

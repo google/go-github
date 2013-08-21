@@ -20,7 +20,7 @@ type Commit struct {
 	Parents   []Commit      `json:"parents,omitempty"`
 }
 
-func (c *Commit) String() string {
+func (c Commit) String() string {
 	return Stringify(c)
 }
 
@@ -32,7 +32,7 @@ type CommitAuthor struct {
 	Email *string    `json:"email,omitempty"`
 }
 
-func (c *CommitAuthor) String() string {
+func (c CommitAuthor) String() string {
 	return Stringify(c)
 }
 

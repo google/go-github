@@ -13,7 +13,7 @@ type Tree struct {
 	Entries []TreeEntry `json:"tree,omitempty"`
 }
 
-func (t *Tree) String() string {
+func (t Tree) String() string {
 	return Stringify(t)
 }
 
@@ -28,7 +28,7 @@ type TreeEntry struct {
 	Size *int    `json:"size,omitempty"`
 }
 
-func (t *TreeEntry) String() string {
+func (t TreeEntry) String() string {
 	return Stringify(t)
 }
 

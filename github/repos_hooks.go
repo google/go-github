@@ -33,7 +33,7 @@ type WebHookPayload struct {
 	Repo       *Repository     `json:"repository,omitempty"`
 }
 
-func (w *WebHookPayload) String() string {
+func (w WebHookPayload) String() string {
 	return Stringify(w)
 }
 
@@ -51,7 +51,7 @@ type WebHookCommit struct {
 	Timestamp *time.Time     `json:"timestamp,omitempty"`
 }
 
-func (w *WebHookCommit) String() string {
+func (w WebHookCommit) String() string {
 	return Stringify(w)
 }
 
@@ -63,7 +63,7 @@ type WebHookAuthor struct {
 	Username *string `json:"username,omitempty"`
 }
 
-func (w *WebHookAuthor) String() string {
+func (w WebHookAuthor) String() string {
 	return Stringify(w)
 }
 
@@ -78,7 +78,7 @@ type Hook struct {
 	ID        *int                   `json:"id,omitempty"`
 }
 
-func (h *Hook) String() string {
+func (h Hook) String() string {
 	return Stringify(h)
 }
 

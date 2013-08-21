@@ -19,7 +19,7 @@ type GistComment struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
-func (g *GistComment) String() string {
+func (g GistComment) String() string {
 	return Stringify(g)
 }
 

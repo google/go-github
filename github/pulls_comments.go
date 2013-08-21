@@ -23,7 +23,7 @@ type PullRequestComment struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-func (p *PullRequestComment) String() string {
+func (p PullRequestComment) String() string {
 	return Stringify(p)
 }
 

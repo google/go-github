@@ -19,7 +19,7 @@ type Team struct {
 	ReposCount   *int    `json:"repos_count,omitempty"`
 }
 
-func (t *Team) String() string {
+func (t Team) String() string {
 	return Stringify(t)
 }
 

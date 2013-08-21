@@ -39,7 +39,7 @@ type User struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 }
 
-func (u *User) String() string {
+func (u User) String() string {
 	return Stringify(u)
 }
 

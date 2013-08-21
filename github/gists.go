@@ -33,7 +33,7 @@ type Gist struct {
 	CreatedAt   *time.Time                `json:"created_at,omitempty"`
 }
 
-func (g *Gist) String() string {
+func (g Gist) String() string {
 	return Stringify(g)
 }
 
@@ -48,7 +48,7 @@ type GistFile struct {
 	Content  *string `json:"content,omitempty"`
 }
 
-func (g *GistFile) String() string {
+func (g GistFile) String() string {
 	return Stringify(g)
 }
 
