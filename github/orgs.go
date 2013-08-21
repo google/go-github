@@ -30,7 +30,7 @@ type Organization struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
-func (o *Organization) String() string {
+func (o Organization) String() string {
 	return Stringify(o)
 }
 

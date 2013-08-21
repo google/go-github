@@ -27,7 +27,7 @@ type RepositoryComment struct {
 	Position *int    `json:"position,omitempty"`
 }
 
-func (r *RepositoryComment) String() string {
+func (r RepositoryComment) String() string {
 	return Stringify(r)
 }
 

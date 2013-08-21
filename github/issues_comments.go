@@ -20,7 +20,7 @@ type IssueComment struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-func (i *IssueComment) String() string {
+func (i IssueComment) String() string {
 	return Stringify(i)
 }
 

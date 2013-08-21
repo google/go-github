@@ -42,7 +42,7 @@ type PullRequest struct {
 	// TODO(willnorris): add head and base once we have a Commit struct defined somewhere
 }
 
-func (p *PullRequest) String() string {
+func (p PullRequest) String() string {
 	return Stringify(p)
 }
 

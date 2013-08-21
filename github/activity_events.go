@@ -25,7 +25,7 @@ type Event struct {
 	ID         *string          `json:"id,omitempty"`
 }
 
-func (e *Event) String() string {
+func (e Event) String() string {
 	return Stringify(e)
 }
 
@@ -53,7 +53,7 @@ type PushEvent struct {
 	Commits []PushEventCommit `json:"commits,omitempty"`
 }
 
-func (p *PushEvent) String() string {
+func (p PushEvent) String() string {
 	return Stringify(p)
 }
 
@@ -66,7 +66,7 @@ type PushEventCommit struct {
 	Distinct *bool         `json:"distinct"`
 }
 
-func (p *PushEventCommit) String() string {
+func (p PushEventCommit) String() string {
 	return Stringify(p)
 }
 

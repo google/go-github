@@ -102,7 +102,7 @@ type CodeResult struct {
 	Repository *Repository `json:"repository,omitempty"`
 }
 
-func (c *CodeResult) String() string {
+func (c CodeResult) String() string {
 	return Stringify(c)
 }
 

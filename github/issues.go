@@ -38,7 +38,7 @@ type Issue struct {
 	// TODO(willnorris): milestone
 }
 
-func (i *Issue) String() string {
+func (i Issue) String() string {
 	return Stringify(i)
 }
 

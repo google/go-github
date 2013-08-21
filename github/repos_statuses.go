@@ -30,7 +30,7 @@ type RepoStatus struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-func (r *RepoStatus) String() string {
+func (r RepoStatus) String() string {
 	return Stringify(r)
 }
 
