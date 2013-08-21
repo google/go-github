@@ -3,7 +3,8 @@
 go-github is Go library for accessing the [GitHub API][].
 
 **Documentation:** <http://godoc.org/github.com/google/go-github/github>  
-**Build Status:** [![Build Status](https://travis-ci.org/google/go-github.png?branch=master)](https://travis-ci.org/google/go-github)
+**Build Status:** [![Build Status](https://travis-ci.org/google/go-github.png?branch=master)](https://travis-ci.org/google/go-github)  
+**Test Coverage:** [![Test Coverage](https://coveralls.io/repos/google/go-github/badge.png?branch=master)](https://coveralls.io/r/google/go-github?branch=master)
 
 go-github requires Go version 1.1.
 
