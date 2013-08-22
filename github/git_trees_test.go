@@ -45,6 +45,11 @@ func TestGitService_GetTree(t *testing.T) {
 	}
 }
 
+func TestGitService_GetTree_invalidOwner(t *testing.T) {
+	_, _, err := client.Git.GetTree("%", "%", "%", false)
+	testURLParseError(t, err)
+}
+
 func TestGitService_CreateTree(t *testing.T) {
 	setup()
 	defer teardown()
@@ -109,4 +114,9 @@ func TestGitService_CreateTree(t *testing.T) {
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
+}
+
+func TestGitService_CreateTree_invalidOwner(t *testing.T) {
+	_, _, err := client.Git.CreateTree("%", "%", "", nil)
+	testURLParseError(t, err)
 }

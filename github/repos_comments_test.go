@@ -33,6 +33,11 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.ListComments("%", "%")
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_ListCommitComments(t *testing.T) {
 	setup()
 	defer teardown()
@@ -51,6 +56,11 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
+}
+
+func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.ListCommitComments("%", "%", "%")
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_CreateComment(t *testing.T) {
@@ -82,6 +92,11 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.CreateComment("%", "%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_GetComment(t *testing.T) {
 	setup()
 	defer teardown()
@@ -100,6 +115,11 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
+}
+
+func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.GetComment("%", "%", 1)
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_UpdateComment(t *testing.T) {
@@ -131,6 +151,11 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.UpdateComment("%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_DeleteComment(t *testing.T) {
 	setup()
 	defer teardown()
@@ -143,4 +168,9 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteComment returned error: %v", err)
 	}
+}
+
+func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.DeleteComment("%", "%", 1)
+	testURLParseError(t, err)
 }

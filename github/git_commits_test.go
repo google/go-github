@@ -33,6 +33,11 @@ func TestGitService_GetCommit(t *testing.T) {
 	}
 }
 
+func TestGitService_GetCommit_invalidOwner(t *testing.T) {
+	_, _, err := client.Git.GetCommit("%", "%", "%")
+	testURLParseError(t, err)
+}
+
 func TestGitService_CreateCommit(t *testing.T) {
 	setup()
 	defer teardown()
@@ -59,4 +64,9 @@ func TestGitService_CreateCommit(t *testing.T) {
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
+}
+
+func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
+	_, _, err := client.Git.CreateCommit("%", "%", nil)
+	testURLParseError(t, err)
 }

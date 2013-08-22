@@ -244,12 +244,12 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/u/r/languages", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/languages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"go":1}`)
 	})
 
-	languages, _, err := client.Repositories.ListLanguages("u", "r")
+	languages, _, err := client.Repositories.ListLanguages("o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListLanguages returned error: %v", err)
 	}
@@ -258,4 +258,9 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	if !reflect.DeepEqual(languages, want) {
 		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
 	}
+}
+
+func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.ListLanguages("%", "%")
+	testURLParseError(t, err)
 }

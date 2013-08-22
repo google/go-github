@@ -58,6 +58,11 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.GetKey("%", "%", 1)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_CreateKey(t *testing.T) {
 	setup()
 	defer teardown()
@@ -85,6 +90,11 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
+}
+
+func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.CreateKey("%", "%", nil)
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_EditKey(t *testing.T) {
@@ -116,6 +126,11 @@ func TestRepositoriesService_EditKey(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_EditKey_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.EditKey("%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_DeleteKey(t *testing.T) {
 	setup()
 	defer teardown()
@@ -128,4 +143,9 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteKey returned error: %v", err)
 	}
+}
+
+func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.DeleteKey("%", "%", 1)
+	testURLParseError(t, err)
 }

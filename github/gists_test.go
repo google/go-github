@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func TestGistsService_List(t *testing.T) {
+func TestGistsService_List_specifiedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -41,7 +41,7 @@ func TestGistsService_List(t *testing.T) {
 	}
 }
 
-func TestGistsService_List_withEmptyUser(t *testing.T) {
+func TestGistsService_List_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -59,6 +59,11 @@ func TestGistsService_List_withEmptyUser(t *testing.T) {
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
+}
+
+func TestGistsService_List_invalidUser(t *testing.T) {
+	_, _, err := client.Gists.List("%", nil)
+	testURLParseError(t, err)
 }
 
 func TestGistsService_ListAll(t *testing.T) {
@@ -134,6 +139,11 @@ func TestGistsService_Get(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
+}
+
+func TestGistsService_Get_invalidID(t *testing.T) {
+	_, _, err := client.Gists.Get("%")
+	testURLParseError(t, err)
 }
 
 func TestGistsService_Create(t *testing.T) {
@@ -245,6 +255,11 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 }
 
+func TestGistsService_Edit_invalidID(t *testing.T) {
+	_, _, err := client.Gists.Edit("%", nil)
+	testURLParseError(t, err)
+}
+
 func TestGistsService_Delete(t *testing.T) {
 	setup()
 	defer teardown()
@@ -257,6 +272,11 @@ func TestGistsService_Delete(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
+}
+
+func TestGistsService_Delete_invalidID(t *testing.T) {
+	_, err := client.Gists.Delete("%")
+	testURLParseError(t, err)
 }
 
 func TestGistsService_Star(t *testing.T) {
@@ -273,6 +293,11 @@ func TestGistsService_Star(t *testing.T) {
 	}
 }
 
+func TestGistsService_Star_invalidID(t *testing.T) {
+	_, err := client.Gists.Star("%")
+	testURLParseError(t, err)
+}
+
 func TestGistsService_Unstar(t *testing.T) {
 	setup()
 	defer teardown()
@@ -285,6 +310,11 @@ func TestGistsService_Unstar(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Unstar returned error: %v", err)
 	}
+}
+
+func TestGistsService_Unstar_invalidID(t *testing.T) {
+	_, err := client.Gists.Unstar("%")
+	testURLParseError(t, err)
 }
 
 func TestGistsService_IsStarred_hasStar(t *testing.T) {
@@ -323,6 +353,11 @@ func TestGistsService_IsStarred_noStar(t *testing.T) {
 	}
 }
 
+func TestGistsService_IsStarred_invalidID(t *testing.T) {
+	_, _, err := client.Gists.IsStarred("%")
+	testURLParseError(t, err)
+}
+
 func TestGistsService_Fork(t *testing.T) {
 	setup()
 	defer teardown()
@@ -342,4 +377,9 @@ func TestGistsService_Fork(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}
+}
+
+func TestGistsService_Fork_invalidID(t *testing.T) {
+	_, _, err := client.Gists.Fork("%")
+	testURLParseError(t, err)
 }

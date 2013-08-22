@@ -42,6 +42,11 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CreateHook_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.CreateHook("%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_ListHooks(t *testing.T) {
 	setup()
 	defer teardown()
@@ -65,6 +70,11 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListHooks_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.ListHooks("%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_GetHook(t *testing.T) {
 	setup()
 	defer teardown()
@@ -83,6 +93,11 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Repositories.GetHook returned %+v, want %+v", hook, want)
 	}
+}
+
+func TestRepositoriesService_GetHook_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.GetHook("%", "%", 1)
+	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_EditHook(t *testing.T) {
@@ -114,6 +129,11 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_EditHook_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.EditHook("%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_DeleteHook(t *testing.T) {
 	setup()
 	defer teardown()
@@ -128,6 +148,11 @@ func TestRepositoriesService_DeleteHook(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DeleteHook_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.DeleteHook("%", "%", 1)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_TestHook(t *testing.T) {
 	setup()
 	defer teardown()
@@ -140,4 +165,9 @@ func TestRepositoriesService_TestHook(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.TestHook returned error: %v", err)
 	}
+}
+
+func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
+	_, err := client.Repositories.TestHook("%", "%", 1)
+	testURLParseError(t, err)
 }

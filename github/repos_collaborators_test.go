@@ -32,6 +32,11 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
+	_, _, err := client.Repositories.ListCollaborators("%", "%")
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 	setup()
 	defer teardown()
@@ -70,6 +75,11 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
+	_, _, err := client.Repositories.IsCollaborator("%", "%", "%")
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	setup()
 	defer teardown()
@@ -85,6 +95,11 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
+	_, err := client.Repositories.AddCollaborator("%", "%", "%")
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 	setup()
 	defer teardown()
@@ -98,4 +113,9 @@ func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.RemoveCollaborator returned error: %v", err)
 	}
+}
+
+func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
+	_, err := client.Repositories.RemoveCollaborator("%", "%", "%")
+	testURLParseError(t, err)
 }

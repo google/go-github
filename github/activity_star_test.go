@@ -57,3 +57,8 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
 }
+
+func TestActivityService_ListStarred_invalidUser(t *testing.T) {
+	_, _, err := client.Activity.ListStarred("%", nil)
+	testURLParseError(t, err)
+}

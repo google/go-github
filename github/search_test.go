@@ -139,3 +139,8 @@ func TestSearchService_Code(t *testing.T) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
 }
+
+func TestSearchService_invalidQuery(t *testing.T) {
+	_, err := client.Search.search("%", "", nil, nil)
+	testURLParseError(t, err)
+}
