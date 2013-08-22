@@ -34,6 +34,11 @@ func TestGistsService_ListComments(t *testing.T) {
 	}
 }
 
+func TestGistsService_ListComments_invalidID(t *testing.T) {
+	_, _, err := client.Gists.ListComments("%")
+	testURLParseError(t, err)
+}
+
 func TestGistsService_GetComment(t *testing.T) {
 	setup()
 	defer teardown()
@@ -53,6 +58,11 @@ func TestGistsService_GetComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
 	}
+}
+
+func TestGistsService_GetComment_invalidID(t *testing.T) {
+	_, _, err := client.Gists.GetComment("%", 1)
+	testURLParseError(t, err)
 }
 
 func TestGistsService_CreateComment(t *testing.T) {
@@ -84,6 +94,11 @@ func TestGistsService_CreateComment(t *testing.T) {
 	}
 }
 
+func TestGistsService_CreateComment_invalidID(t *testing.T) {
+	_, _, err := client.Gists.CreateComment("%", nil)
+	testURLParseError(t, err)
+}
+
 func TestGistsService_EditComment(t *testing.T) {
 	setup()
 	defer teardown()
@@ -113,6 +128,11 @@ func TestGistsService_EditComment(t *testing.T) {
 	}
 }
 
+func TestGistsService_EditComment_invalidID(t *testing.T) {
+	_, _, err := client.Gists.EditComment("%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestGistsService_DeleteComment(t *testing.T) {
 	setup()
 	defer teardown()
@@ -125,4 +145,9 @@ func TestGistsService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
+}
+
+func TestGistsService_DeleteComment_invalidID(t *testing.T) {
+	_, err := client.Gists.DeleteComment("%", 1)
+	testURLParseError(t, err)
 }

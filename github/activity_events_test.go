@@ -61,6 +61,11 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
+	_, _, err := client.Activity.ListRepositoryEvents("%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 	setup()
 	defer teardown()
@@ -83,6 +88,11 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
+}
+
+func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T) {
+	_, _, err := client.Activity.ListIssueEventsForRepository("%", "%", nil)
+	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
@@ -109,6 +119,11 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
+	_, _, err := client.Activity.ListEventsForRepoNetwork("%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	setup()
 	defer teardown()
@@ -131,6 +146,11 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
+}
+
+func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
+	_, _, err := client.Activity.ListEventsForOrganization("%", nil)
+	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
@@ -177,6 +197,11 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
+	_, _, err := client.Activity.ListEventsPerformedByUser("%", false, nil)
+	testURLParseError(t, err)
+}
+
 func TestActivityService_ListEventsRecievedByUser_all(t *testing.T) {
 	setup()
 	defer teardown()
@@ -221,16 +246,25 @@ func TestActivityService_ListEventsRecievedByUser_publicOnly(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListEventsRecievedByUser_invalidUser(t *testing.T) {
+	_, _, err := client.Activity.ListEventsRecievedByUser("%", false, nil)
+	testURLParseError(t, err)
+}
+
 func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
-	events, _, err := client.Activity.ListUserEventsForOrganization("o", "u", nil)
+	opt := &ListOptions{Page: 2}
+	events, _, err := client.Activity.ListUserEventsForOrganization("o", "u", opt)
 	if err != nil {
 		t.Errorf("Activities.ListUserEventsForOrganization returned error: %v", err)
 	}

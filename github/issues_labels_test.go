@@ -33,6 +33,11 @@ func TestIssuesService_ListLabels(t *testing.T) {
 	}
 }
 
+func TestIssuesService_ListLabels_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.ListLabels("%", "%")
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_GetLabel(t *testing.T) {
 	setup()
 	defer teardown()
@@ -51,6 +56,11 @@ func TestIssuesService_GetLabel(t *testing.T) {
 	if !reflect.DeepEqual(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}
+}
+
+func TestIssuesService_GetLabel_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.GetLabel("%", "%", "%")
+	testURLParseError(t, err)
 }
 
 func TestIssuesService_CreateLabel(t *testing.T) {
@@ -82,6 +92,11 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	}
 }
 
+func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.CreateLabel("%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_EditLabel(t *testing.T) {
 	setup()
 	defer teardown()
@@ -111,6 +126,11 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	}
 }
 
+func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.EditLabel("%", "%", "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_DeleteLabel(t *testing.T) {
 	setup()
 	defer teardown()
@@ -123,6 +143,11 @@ func TestIssuesService_DeleteLabel(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.DeleteLabel returned error: %v", err)
 	}
+}
+
+func TestIssuesService_DeleteLabel_invalidOwner(t *testing.T) {
+	_, err := client.Issues.DeleteLabel("%", "%", "%")
+	testURLParseError(t, err)
 }
 
 func TestIssuesService_ListLabelsByIssue(t *testing.T) {
@@ -143,6 +168,11 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
 	}
+}
+
+func TestIssuesService_ListLabelsByIssue_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.ListLabelsByIssue("%", "%", 1)
+	testURLParseError(t, err)
 }
 
 func TestIssuesService_AddLabelsToIssue(t *testing.T) {
@@ -174,6 +204,11 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 	}
 }
 
+func TestIssuesService_AddLabelsToIssue_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.AddLabelsToIssue("%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
 	setup()
 	defer teardown()
@@ -186,6 +221,11 @@ func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.RemoveLabelForIssue returned error: %v", err)
 	}
+}
+
+func TestIssuesService_RemoveLabelForIssue_invalidOwner(t *testing.T) {
+	_, err := client.Issues.RemoveLabelForIssue("%", "%", 1, "%")
+	testURLParseError(t, err)
 }
 
 func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
@@ -217,6 +257,11 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 	}
 }
 
+func TestIssuesService_ReplaceLabelsForIssue_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.ReplaceLabelsForIssue("%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
 	setup()
 	defer teardown()
@@ -229,6 +274,11 @@ func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.RemoveLabelsForIssue returned error: %v", err)
 	}
+}
+
+func TestIssuesService_RemoveLabelsForIssue_invalidOwner(t *testing.T) {
+	_, err := client.Issues.RemoveLabelsForIssue("%", "%", 1)
+	testURLParseError(t, err)
 }
 
 func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
@@ -249,4 +299,9 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsForMilestone returned %+v, want %+v", labels, want)
 	}
+}
+
+func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.ListLabelsForMilestone("%", "%", 1)
+	testURLParseError(t, err)
 }

@@ -187,6 +187,18 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	if want, got := 0, response.LastPage; want != got {
 		t.Errorf("response.LastPage: %v, want %v", want, got)
 	}
+
+	// more invalid URLs
+	r = http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/%?page=2>; rel="first"`},
+		},
+	}
+
+	response = newResponse(&r)
+	if want, got := 0, response.FirstPage; want != got {
+		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	}
 }
 
 func TestDo(t *testing.T) {
