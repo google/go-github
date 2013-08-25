@@ -402,7 +402,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 	sha := String("6dcb09b5b57875f334f61aebed695e2e4193db5e")
 
-	want := &CommitsComparation{
+	want := &CommitsComparison{
 		Status:       String("behind"),
 		AheadBy:      Int(1),
 		BehindBy:     Int(2),

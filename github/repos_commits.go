@@ -66,9 +66,9 @@ type CommitFile struct {
 	Patch     *string `json:"patch,omitempty"`
 }
 
-// CommitsComparation is the result of comparing two commits.
+// CommitsComparison is the result of comparing two commits.
 // See CompareCommits for details.
-type CommitsComparation struct {
+type CommitsComparison struct {
 	BaseCommit *BaseComparedCommit `json:"base_commit,omitempty"`
 
 	// Head can be 'behind' or 'ahead'
@@ -139,7 +139,7 @@ func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCom
 // todo: support media formats - https://github.com/google/go-github/issues/6
 //
 // GitHub API docs: http://developer.github.com/v3/repos/commits/index.html#compare-two-commits
-func (s *RepositoriesService) CompareCommits(owner, repo string, base, head string) (*CommitsComparation, *Response, error) { // todo I'm sure I missspelled this
+func (s *RepositoriesService) CompareCommits(owner, repo string, base, head string) (*CommitsComparison, *Response, error) { // todo I'm sure I missspelled this
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, base, head)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -147,7 +147,7 @@ func (s *RepositoriesService) CompareCommits(owner, repo string, base, head stri
 		return nil, nil, err
 	}
 
-	comp := new(CommitsComparation)
+	comp := new(CommitsComparison)
 	resp, err := s.client.Do(req, comp)
 	return comp, resp, err
 }
