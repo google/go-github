@@ -13,7 +13,7 @@ import (
 // RepositoryComment represents a comment for a commit, file, or line in a repository.
 type RepositoryComment struct {
 	HTMLURL   *string    `json:"html_url,omitempty"`
-	URL       *string    `json:"url,omitempty"` // todo: I thought we're skipping urls? - ktoso
+	URL       *string    `json:"url,omitempty"`
 	ID        *int       `json:"id,omitempty"`
 	CommitID  *string    `json:"commit_id,omitempty"`
 	User      *User      `json:"user,omitempty"`

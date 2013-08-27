@@ -7,6 +7,8 @@ package github
 
 import (
 	"fmt"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -14,25 +16,16 @@ import (
 // Note that it's wrapping a Commit, so author/committer information is in two places,
 // but contain different details about them: in RepositoryCommit "github details", in Commit - "git details".
 type RepositoryCommit struct {
-	SHA       *string                 `json:"sha,omitempty"`
-	Commit    *Commit                 `json:"commit,omitempty"`
-	Author    *RepositoryCommitAuthor `json:"author,omitempty"`
-	Committer *RepositoryCommitAuthor `json:"committer,omitempty"`
-	Parents   []Commit                `json:"parents,omitempty"`
+	SHA       *string  `json:"sha,omitempty"`
+	Commit    *Commit  `json:"commit,omitempty"`
+	Author    *User    `json:"author,omitempty"`
+	Committer *User    `json:"committer,omitempty"`
+	Parents   []Commit `json:"parents,omitempty"`
 
 	// Details about how many changes were made in this commit. Only filled in during GetCommit!
 	Stats *CommitStats `json:"stats,omitempty"`
 	// Details about which files, and how this commit touched. Only filled in during GetCommit!
 	Files []CommitFile `json:"files,omitempty"`
-}
-
-// RepositoryCommitAuthor represents the author or committer of a commit.
-// It should correspond to a GitHub user, unlike CommitAuthor.
-type RepositoryCommitAuthor struct {
-	Login      *string `json:"login,omitempty"`
-	Id         *int    `json:"id,omitempty"`
-	AvatarUrl  *string `json:"avatar_url,omitempty"`
-	GravatarId *string `json:"gravatar_id,omitempty"`
 }
 
 // CommitsListOptions specifies the optional parameters to the
@@ -82,15 +75,15 @@ type CommitsComparison struct {
 	Files []CommitFile `json:"files,omitempty"`
 }
 
-// just like a Commit
+// Like Commit but wraps around it, provifing additional author/committer User information.
 type BaseComparedCommit struct {
-	SHA       *string                 `json:"sha,omitempty"`
-	Commit    *Commit                 `json:"commit,omitempty"`
-	Author    *RepositoryCommitAuthor `json:"author,omitempty"`
-	Committer *RepositoryCommitAuthor `json:"committer,omitempty"`
-	Message   *string                 `json:"message,omitempty"`
-	Tree      *Tree                   `json:"tree,omitempty"`
-	Parents   []Commit                `json:"parents,omitempty"`
+	SHA       *string  `json:"sha,omitempty"`
+	Commit    *Commit  `json:"commit,omitempty"`
+	Author    *User    `json:"author,omitempty"`
+	Committer *User    `json:"committer,omitempty"`
+	Message   *string  `json:"message,omitempty"`
+	Tree      *Tree    `json:"tree,omitempty"`
+	Parents   []Commit `json:"parents,omitempty"`
 }
 
 // ListCommits lists the commits of a repository.
@@ -98,15 +91,22 @@ type BaseComparedCommit struct {
 // GitHub API docs: http://developer.github.com/v3/repos/commits/#list
 func (s *RepositoriesService) ListCommits(owner, repo string, opts *CommitsListOptions) ([]RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
+
 	if opts != nil {
-		u = withOptionalParameter(u, "sha", opts.SHA)
-		u = withOptionalParameter(u, "path", opts.Path)
-		u = withOptionalParameter(u, "author", opts.Author)
-		u = withOptionalTimeParameter(u, "since", *opts.Since)
-		u = withOptionalTimeParameter(u, "until", *opts.Until) // todo think if this is nice or not hm hm -- ktoso
+		params := url.Values{}
+		params.Add("sha", *opts.SHA)
+		params.Add("path", *opts.Path)
+		params.Add("author", *opts.Author)
+		if !opts.Since.IsZero() {
+			params.Add("since", opts.Since.Format(time.RFC3339))
+		}
+		if !opts.Until.IsZero() {
+			params.Add("until", opts.Until.Format(time.RFC3339))
+		}
+
+		u = appendUrlParams(u, params)
 	}
 
-	// todo test if we really call the API I think we are..... ;-)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -150,4 +150,11 @@ func (s *RepositoriesService) CompareCommits(owner, repo string, base, head stri
 	comp := new(CommitsComparison)
 	resp, err := s.client.Do(req, comp)
 	return comp, resp, err
+}
+
+func appendUrlParams(baseUrl string, params url.Values) string {
+	if strings.Contains(baseUrl, "?") {
+		return baseUrl + "&" + params.Encode()
+	}
+	return baseUrl + "?" + params.Encode()
 }
