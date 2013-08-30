@@ -22,7 +22,7 @@ organizations for user "willnorris":
 
 ```go
 client := github.NewClient(nil)
-orgs, err := client.Organizations.List("willnorris", nil)
+orgs, _, err := client.Organizations.List("willnorris", nil)
 ```
 
 Some API methods have optional parameters that can be passed.  For example,
@@ -32,7 +32,7 @@ updated:
 ```go
 client := github.NewClient(nil)
 opt := &github.RepositoryListByOrgOptions{Sort: "updated"}
-repos, err := client.Repositories.ListByOrg("github", opt)
+repos, _, err := client.Repositories.ListByOrg("github", opt)
 ```
 
 The go-github library does not directly handle authentication.  Instead, when
@@ -50,7 +50,7 @@ t := &oauth.Transport{
 client := github.NewClient(t.Client())
 
 // list all repositories for the authenticated user
-repos, err := client.Repositories.List("", nil)
+repos, _, err := client.Repositories.List("", nil)
 ```
 
 See the [goauth2 docs][] for complete instructions on using that library.
