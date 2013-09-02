@@ -6,6 +6,8 @@
 package github
 
 import "fmt"
+import "net/url"
+import "strconv"
 
 // ListFollowers lists the followers for a user.  Passing the empty string will
 // fetch followers for the authenticated user.
@@ -29,16 +31,30 @@ func (s *UsersService) ListFollowers(user string) ([]User, *Response, error) {
 	return *users, resp, err
 }
 
+// ListFollowingOptions specifies optional parameters to the
+// UserService.ListFollowing method.
+type ListFollowingOptions struct {
+	// For paginated result sets, page of results to retrieve
+	Page int
+}
+
 // ListFollowing lists the people that a user is following.  Passing the empty
 // string will list people the authenticated user is following.
 //
 // GitHub API docs: http://developer.github.com/v3/users/followers/#list-users-followed-by-another-user
-func (s *UsersService) ListFollowing(user string) ([]User, *Response, error) {
+func (s *UsersService) ListFollowing(user string, opt *ListFollowingOptions) ([]User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/following", user)
 	} else {
 		u = "user/following"
+	}
+
+	if opt != nil {
+		params := url.Values{
+			"page": []string{strconv.Itoa(opt.Page)},
+		}
+		u += "?" + params.Encode()
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
