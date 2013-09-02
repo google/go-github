@@ -63,10 +63,12 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing("")
+	opts := &ListOptions{2}
+	users, _, err := client.Users.ListFollowing("", opts)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -86,7 +88,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing("u")
+	users, _, err := client.Users.ListFollowing("u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -98,7 +100,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
-	_, _, err := client.Users.ListFollowing("%")
+	_, _, err := client.Users.ListFollowing("%", nil)
 	testURLParseError(t, err)
 }
 
