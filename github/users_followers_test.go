@@ -87,7 +87,7 @@ func TestUsersService_ListFollowing_options(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	_, _, err := client.Users.ListFollowing("", &ListFollowingOptions{2})
+	_, _, err := client.Users.ListFollowing("", &ListOptions{2})
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
