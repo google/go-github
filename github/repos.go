@@ -5,11 +5,7 @@
 
 package github
 
-import (
-	"fmt"
-	"net/url"
-	"strconv"
-)
+import "fmt"
 
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
@@ -59,18 +55,17 @@ func (r Repository) String() string {
 type RepositoryListOptions struct {
 	// Type of repositories to list.  Possible values are: all, owner, public,
 	// private, member.  Default is "all".
-	Type string
+	Type string `url:"type"`
 
 	// How to sort the repository list.  Possible values are: created, updated,
 	// pushed, full_name.  Default is "full_name".
-	Sort string
+	Sort string `url:"sort"`
 
 	// Direction in which to sort repositories.  Possible values are: asc, desc.
 	// Default is "asc" when sort is "full_name", otherwise default is "desc".
-	Direction string
+	Direction string `url:"direction"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int
+	ListOptions
 }
 
 // List the repositories for a user.  Passing the empty string will list
@@ -84,14 +79,9 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 	} else {
 		u = "user/repos"
 	}
-	if opt != nil {
-		params := url.Values{
-			"type":      []string{opt.Type},
-			"sort":      []string{opt.Sort},
-			"direction": []string{opt.Direction},
-			"page":      []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := AddOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -109,10 +99,9 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 type RepositoryListByOrgOptions struct {
 	// Type of repositories to list.  Possible values are: all, public, private,
 	// forks, sources, member.  Default is "all".
-	Type string
+	Type string `url:"type"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int
+	ListOptions
 }
 
 // ListByOrg lists the repositories for an organization.
@@ -120,12 +109,9 @@ type RepositoryListByOrgOptions struct {
 // GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
-	if opt != nil {
-		params := url.Values{
-			"type": []string{opt.Type},
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := AddOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -142,19 +128,18 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 // RepositoriesService.ListAll method.
 type RepositoryListAllOptions struct {
 	// ID of the last repository seen
-	Since int
+	Since int `url:"since"`
+
+	ListOptions
 }
 
 // ListAll lists all GitHub repositories in the order that they were created.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-all-repositories
+// GitHub API docs: http://developer.github.com/v3/repos/#list-all-public-repositories
 func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, *Response, error) {
-	u := "repositories"
-	if opt != nil {
-		params := url.Values{
-			"since": []string{strconv.Itoa(opt.Since)},
-		}
-		u += "?" + params.Encode()
+	u, err := AddOptions("repositories", opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

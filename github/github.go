@@ -16,6 +16,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/google/go-querystring/query"
 )
 
 const (
@@ -65,10 +67,27 @@ type Client struct {
 // support pagination.
 type ListOptions struct {
 	// For paginated result sets, page of results to retrieve.
-	Page int
+	Page int `url:"page,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage int
+	PerPage int `url:"per_page,omitempty"`
+}
+
+// AddOptions adds the parameters in opt as URL query parameters to s.  Opt
+// must be a struct whose fields may contain "url" tags.
+func AddOptions(s string, opt interface{}) (string, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return s, err
+	}
+
+	qs, err := query.Values(opt)
+	if err != nil {
+		return s, err
+	}
+
+	u.RawQuery = qs.Encode()
+	return u.String(), nil
 }
 
 // NewClient returns a new GitHub API client.  If a nil httpClient is
