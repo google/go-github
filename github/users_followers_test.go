@@ -66,7 +66,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing("")
+	users, _, err := client.Users.ListFollowing("", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -74,6 +74,22 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 	want := []User{{ID: Int(1)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
+	}
+}
+
+func TestUsersService_ListFollowing_options(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/following", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, map[string]string{"page": "2"})
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	_, _, err := client.Users.ListFollowing("", &ListOptions{2})
+	if err != nil {
+		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
 }
 
@@ -86,7 +102,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing("u")
+	users, _, err := client.Users.ListFollowing("u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -98,7 +114,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
-	_, _, err := client.Users.ListFollowing("%")
+	_, _, err := client.Users.ListFollowing("%", nil)
 	testURLParseError(t, err)
 }
 
