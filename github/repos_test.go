@@ -49,7 +49,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListOptions{"owner", "created", "asc", 2}
+	opt := &RepositoryListOptions{"owner", "created", "asc", ListOptions{Page: 2}}
 	repos, _, err := client.Repositories.List("u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
@@ -79,7 +79,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListByOrgOptions{"forks", 2}
+	opt := &RepositoryListByOrgOptions{"forks", ListOptions{Page: 2}}
 	repos, _, err := client.Repositories.ListByOrg("o", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
@@ -102,11 +102,15 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"since": "1"})
+		testFormValues(t, r, values{
+			"since":    "1",
+			"page":     "2",
+			"per_page": "3",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListAllOptions{1}
+	opt := &RepositoryListAllOptions{1, ListOptions{2, 3}}
 	repos, _, err := client.Repositories.ListAll(opt)
 	if err != nil {
 		t.Errorf("Repositories.ListAll returned error: %v", err)

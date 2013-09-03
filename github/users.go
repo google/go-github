@@ -7,8 +7,7 @@ package github
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
+
 	"time"
 )
 
@@ -83,19 +82,16 @@ func (s *UsersService) Edit(user *User) (*User, *Response, error) {
 // method.
 type UserListOptions struct {
 	// ID of the last user seen
-	Since int
+	Since int `url:"since,omitempty"`
 }
 
 // ListAll lists all GitHub users.
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-all-users
 func (s *UsersService) ListAll(opt *UserListOptions) ([]User, *Response, error) {
-	u := "users"
-	if opt != nil {
-		params := url.Values{
-			"since": []string{strconv.Itoa(opt.Since)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions("users", opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
