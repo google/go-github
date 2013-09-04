@@ -8,11 +8,10 @@ package github
 import (
 	"fmt"
 	"net/url"
-	"strings"
 	"time"
 )
 
-// Commit represents a commit in a repo.
+// RepositoryCommit represents a commit in a repo.
 // Note that it's wrapping a Commit, so author/committer information is in two places,
 // but contain different details about them: in RepositoryCommit "github details", in Commit - "git details".
 type RepositoryCommit struct {
@@ -44,6 +43,7 @@ type CommitsListOptions struct {
 	Until *time.Time
 }
 
+// CommitStats represents the number of additions / deletions from a file in a given RepositoryCommit.
 type CommitStats struct {
 	Additions *int `json:"additions,omitempty"`
 	Deletions *int `json:"deletions,omitempty"`
@@ -94,7 +94,7 @@ func (s *RepositoriesService) ListCommits(owner, repo string, opts *CommitsListO
 			params.Add("until", opts.Until.Format(time.RFC3339))
 		}
 
-		u = appendUrlParams(u, params)
+		u = u + "?" + params.Encode()
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -125,7 +125,7 @@ func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCom
 	return commit, resp, err
 }
 
-// Compare a range of commits with each other.
+// CompareCommits compares a range of commits with each other.
 // todo: support media formats - https://github.com/google/go-github/issues/6
 //
 // GitHub API docs: http://developer.github.com/v3/repos/commits/index.html#compare-two-commits
@@ -140,11 +140,4 @@ func (s *RepositoriesService) CompareCommits(owner, repo string, base, head stri
 	comp := new(CommitsComparison)
 	resp, err := s.client.Do(req, comp)
 	return comp, resp, err
-}
-
-func appendUrlParams(baseUrl string, params url.Values) string {
-	if strings.Contains(baseUrl, "?") {
-		return baseUrl + "&" + params.Encode()
-	}
-	return baseUrl + "?" + params.Encode()
 }
