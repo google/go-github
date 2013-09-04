@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
@@ -19,6 +20,15 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 	// given
 	mux.HandleFunc("/repos/o/r/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r,
+			values{
+				"sha":    "s",
+				"path":   "p",
+				"author": "a",
+				"since":  "2013-08-01T00:00:00Z",
+				"until":  "2013-09-03T00:00:00Z",
+			})
+
 		fmt.Fprintf(w, `[
 		  {
 		    "sha": "s",
@@ -52,9 +62,11 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 
 	// when
 	commits, _, err := client.Repositories.ListCommits("o", "r", &CommitsListOptions{
-		SHA: "s",
-		Path: "p",
+		SHA:    "s",
+		Path:   "p",
 		Author: "a",
+		Since:  time.Date(2013, time.August, 1, 0, 0, 0, 0, time.UTC),
+		Until:  time.Date(2013, time.September, 3, 0, 0, 0, 0, time.UTC),
 	})
 
 	// then
