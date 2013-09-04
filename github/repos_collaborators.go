@@ -36,6 +36,7 @@ func (s *RepositoriesService) IsCollaborator(owner, repo, user string) (bool, *R
 	if err != nil {
 		return false, nil, err
 	}
+
 	resp, err := s.client.Do(req, nil)
 	isCollab, err := parseBoolResponse(err)
 	return isCollab, resp, err
