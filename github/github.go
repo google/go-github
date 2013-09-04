@@ -49,17 +49,16 @@ type Client struct {
 	// current rate.
 	Rate Rate
 
-	// Services used for talking to different parts of the API
-
+	// Services used for talking to different parts of the GitHub API.
+	Activity      *ActivityService
+	Gists         *GistsService
+	Git           *GitService
 	Issues        *IssuesService
 	Organizations *OrganizationsService
 	PullRequests  *PullRequestsService
 	Repositories  *RepositoriesService
-	Git           *GitService
-	Users         *UsersService
-	Gists         *GistsService
-	Activity      *ActivityService
 	Search        *SearchService
+	Users         *UsersService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -80,15 +79,15 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
+	c.Activity = &ActivityService{client: c}
+	c.Gists = &GistsService{client: c}
+	c.Git = &GitService{client: c}
 	c.Issues = &IssuesService{client: c}
 	c.Organizations = &OrganizationsService{client: c}
 	c.PullRequests = &PullRequestsService{client: c}
 	c.Repositories = &RepositoriesService{client: c}
-	c.Git = &GitService{client: c}
-	c.Users = &UsersService{client: c}
-	c.Gists = &GistsService{client: c}
-	c.Activity = &ActivityService{client: c}
 	c.Search = &SearchService{client: c}
+	c.Users = &UsersService{client: c}
 	return c
 }
 
