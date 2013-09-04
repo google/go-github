@@ -21,6 +21,7 @@ type RepositoryCommit struct {
 	Author    *User    `json:"author,omitempty"`
 	Committer *User    `json:"committer,omitempty"`
 	Parents   []Commit `json:"parents,omitempty"`
+	Message   *string  `json:"message,omitempty"`
 
 	// Details about how many changes were made in this commit. Only filled in during GetCommit!
 	Stats *CommitStats `json:"stats,omitempty"`
@@ -62,7 +63,7 @@ type CommitFile struct {
 // CommitsComparison is the result of comparing two commits.
 // See CompareCommits for details.
 type CommitsComparison struct {
-	BaseCommit *BaseComparedCommit `json:"base_commit,omitempty"`
+	BaseCommit *RepositoryCommit `json:"base_commit,omitempty"`
 
 	// Head can be 'behind' or 'ahead'
 	Status       *string `json:"status,omitempty"`
@@ -73,17 +74,6 @@ type CommitsComparison struct {
 	Commits []RepositoryCommit `json:"commits,omitempty"`
 
 	Files []CommitFile `json:"files,omitempty"`
-}
-
-// Like Commit but wraps around it, provifing additional author/committer User information.
-type BaseComparedCommit struct {
-	SHA       *string  `json:"sha,omitempty"`
-	Commit    *Commit  `json:"commit,omitempty"`
-	Author    *User    `json:"author,omitempty"`
-	Committer *User    `json:"committer,omitempty"`
-	Message   *string  `json:"message,omitempty"`
-	Tree      *Tree    `json:"tree,omitempty"`
-	Parents   []Commit `json:"parents,omitempty"`
 }
 
 // ListCommits lists the commits of a repository.

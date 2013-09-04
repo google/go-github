@@ -151,7 +151,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprintf(w, `{
 		  "base_commit": {
-		    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+		    "sha": "s",
 		    "commit": {
 		      "author": { "name": "n" },
 		      "committer": { "name": "n" },
@@ -192,13 +192,13 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		AheadBy:      Int(1),
 		BehindBy:     Int(2),
 		TotalCommits: Int(1),
-		BaseCommit: &BaseComparedCommit{
+		BaseCommit: &RepositoryCommit{
 			Commit: &Commit{
 				Author: wantAuthor,
 			},
 			Author:    wantUser,
 			Committer: wantUser,
-			Message:   String("Fix all the bugs"),
+			Message:   String("m"),
 		},
 		Commits: []RepositoryCommit{
 			{
