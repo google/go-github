@@ -31,16 +31,16 @@ type RepositoryCommit struct {
 // CommitsListOptions specifies the optional parameters to the
 // RepositoriesService.RepositoriesList method.
 type CommitsListOptions struct {
-	// Sha or branch to start listing commits from.
-	SHA *string
-	// Only commits containing this file path will be returned.
-	Path *string
-	// GitHub login, name, or email by which to filter by commit author
-	Author *string
-	// Only commits after this date will be returned
-	Since *time.Time
-	// Only commits before this date will be returned
-	Until *time.Time
+	// SHA or branch to start listing Commits from.
+	SHA string
+	// Path that should be touched by the returned Commits.
+	Path string
+	// Author of by which to filter Commits.
+	Author string
+	// Since when should Commits be included in the response.
+	Since time.Time
+	// Until when should Commits be included in the response.
+	Until time.Time
 }
 
 // CommitStats represents the number of additions / deletions from a file in a given RepositoryCommit.
@@ -84,9 +84,9 @@ func (s *RepositoriesService) ListCommits(owner, repo string, opts *CommitsListO
 
 	if opts != nil {
 		params := url.Values{}
-		params.Add("sha", *opts.SHA)
-		params.Add("path", *opts.Path)
-		params.Add("author", *opts.Author)
+		params.Add("sha", opts.SHA)
+		params.Add("path", opts.Path)
+		params.Add("author", opts.Author)
 		if !opts.Since.IsZero() {
 			params.Add("since", opts.Since.Format(time.RFC3339))
 		}

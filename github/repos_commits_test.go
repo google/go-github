@@ -51,7 +51,11 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 	}
 
 	// when
-	commits, _, err := client.Repositories.ListCommits("o", "r", nil)
+	commits, _, err := client.Repositories.ListCommits("o", "r", &CommitsListOptions{
+		SHA: "s",
+		Path: "p",
+		Author: "a",
+	})
 
 	// then
 	if err != nil {
