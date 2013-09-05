@@ -13,6 +13,46 @@ import (
 	"testing"
 )
 
+func TestUser_marshall(t *testing.T) {
+	testJSONMarshal(t, &User{}, "{}")
+
+	u := &User{
+		Login:       String("l"),
+		ID:          Int(1),
+		URL:         String("u"),
+		AvatarURL:   String("a"),
+		GravatarID:  String("g"),
+		Name:        String("n"),
+		Company:     String("c"),
+		Blog:        String("b"),
+		Location:    String("l"),
+		Email:       String("e"),
+		Hireable:    Bool(true),
+		PublicRepos: Int(1),
+		Followers:   Int(1),
+		Following:   Int(1),
+		CreatedAt:   &referenceTime,
+	}
+	want := `{
+		"login": "l",
+		"id": 1,
+		"url": "u",
+		"avatar_url": "a",
+		"gravatar_id": "g",
+		"name": "n",
+		"company": "c",
+		"blog": "b",
+		"location": "l",
+		"email": "e",
+		"hireable": true,
+		"public_repos": 1,
+		"followers": 1,
+		"following": 1,
+		"created_at": ` + referenceTimeStr + `
+	}`
+	testJSONMarshal(t, u, want)
+}
+
 func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
