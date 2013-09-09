@@ -67,7 +67,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opts := &ListOptions{2}
+	opts := &ListOptions{Page: 2}
 	users, _, err := client.Users.ListFollowing("", opts)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
