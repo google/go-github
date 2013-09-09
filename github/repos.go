@@ -55,15 +55,15 @@ func (r Repository) String() string {
 type RepositoryListOptions struct {
 	// Type of repositories to list.  Possible values are: all, owner, public,
 	// private, member.  Default is "all".
-	Type string `url:"type"`
+	Type string `url:"type,omitempty"`
 
 	// How to sort the repository list.  Possible values are: created, updated,
 	// pushed, full_name.  Default is "full_name".
-	Sort string `url:"sort"`
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort repositories.  Possible values are: asc, desc.
 	// Default is "asc" when sort is "full_name", otherwise default is "desc".
-	Direction string `url:"direction"`
+	Direction string `url:"direction,omitempty"`
 
 	ListOptions
 }
@@ -99,7 +99,7 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 type RepositoryListByOrgOptions struct {
 	// Type of repositories to list.  Possible values are: all, public, private,
 	// forks, sources, member.  Default is "all".
-	Type string `url:"type"`
+	Type string `url:"type,omitempty"`
 
 	ListOptions
 }
@@ -128,7 +128,7 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 // RepositoriesService.ListAll method.
 type RepositoryListAllOptions struct {
 	// ID of the last repository seen
-	Since int `url:"since"`
+	Since int `url:"since,omitempty"`
 
 	ListOptions
 }
