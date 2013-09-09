@@ -79,7 +79,7 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 	} else {
 		u = "user/repos"
 	}
-	u, err := AddOptions(u, opt)
+	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,7 +109,7 @@ type RepositoryListByOrgOptions struct {
 // GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
-	u, err := AddOptions(u, opt)
+	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -137,7 +137,7 @@ type RepositoryListAllOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-all-public-repositories
 func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, *Response, error) {
-	u, err := AddOptions("repositories", opt)
+	u, err := addOptions("repositories", opt)
 	if err != nil {
 		return nil, nil, err
 	}

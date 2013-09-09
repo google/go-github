@@ -73,9 +73,9 @@ type ListOptions struct {
 	PerPage int `url:"per_page,omitempty"`
 }
 
-// AddOptions adds the parameters in opt as URL query parameters to s.  Opt
+// addOptions adds the parameters in opt as URL query parameters to s.  opt
 // must be a struct whose fields may contain "url" tags.
-func AddOptions(s string, opt interface{}) (string, error) {
+func addOptions(s string, opt interface{}) (string, error) {
 	u, err := url.Parse(s)
 	if err != nil {
 		return s, err

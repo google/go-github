@@ -89,7 +89,7 @@ type UserListOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-all-users
 func (s *UsersService) ListAll(opt *UserListOptions) ([]User, *Response, error) {
-	u, err := AddOptions("users", opt)
+	u, err := addOptions("users", opt)
 	if err != nil {
 		return nil, nil, err
 	}
