@@ -66,6 +66,9 @@ type Client struct {
 type ListOptions struct {
 	// For paginated result sets, page of results to retrieve.
 	Page int
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage int
 }
 
 // NewClient returns a new GitHub API client.  If a nil httpClient is

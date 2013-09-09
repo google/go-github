@@ -43,7 +43,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	opt := &ListOptions{2}
+	opt := &ListOptions{Page: 2}
 	orgs, _, err := client.Organizations.List("u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)

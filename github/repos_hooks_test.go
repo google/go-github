@@ -57,7 +57,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	opt := &ListOptions{2}
+	opt := &ListOptions{Page: 2}
 
 	hooks, _, err := client.Repositories.ListHooks("o", "r", opt)
 	if err != nil {
