@@ -9,8 +9,8 @@ import (
 	"fmt"
 )
 
-// Object represents a git object.
-type Object struct {
+// GitObject represents a git object.
+type GitObject struct {
 	Type string `json:"type,omitempty"`
 	SHA  string `json:"sha,omitempty"`
 	URL  string `json:"url,omitempty"`
@@ -23,7 +23,7 @@ type Tag struct {
 	URL     string        `json:"url,omitempty"`
 	Message string        `json:"message,omitempty"`
 	Tagger  *CommitAuthor `json:"tagger,omitempty"`
-	Object  *Object       `json:"object,omitempty"`
+	Object  *GitObject    `json:"object,omitempty"`
 }
 
 // GetTag fetchs a tag from a repo given a SHA.
