@@ -117,6 +117,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	opt := &IssueListByRepoOptions{
 		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		ListOptions{0, 0},
 	}
 	issues, _, err := client.Issues.ListByRepo("o", "r", opt)
 	if err != nil {

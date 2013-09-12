@@ -128,36 +128,38 @@ type IssueListByRepoOptions struct {
 	// Milestone limits issues for the specified milestone.  Possible values are
 	// a milestone number, "none" for issues with no milestone, "*" for issues
 	// with any milestone.
-	Milestone string
+	Milestone string `url:"milestone,omitempty"`
 
 	// State filters issues based on their state.  Possible values are: open,
 	// closed.  Default is "open".
-	State string
+	State string `url:"state,omitempty"`
 
 	// Assignee filters issues based on their assignee.  Possible values are a
 	// user name, "none" for issues that are not assigned, "*" for issues with
 	// any assigned user.
-	Assignee string
+	Assignee string `url:"assignee,omitempty"`
 
 	// Assignee filters issues based on their creator.
-	Creator string
+	Creator string `url:"creator,omitempty"`
 
 	// Assignee filters issues to those mentioned a specific user.
-	Mentioned string
+	Mentioned string `url:"mentioned,omitempty"`
 
 	// Labels filters issues based on their label.
-	Labels []string
+	Labels []string `url:"labels,omitempty,comma"`
 
 	// Sort specifies how to sort issues.  Possible values are: created, updated,
 	// and comments.  Default value is "assigned".
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
 	// Default is "asc".
-	Direction string
+	Direction string `url:"direction,omitempty"`
 
 	// Since filters issues by time.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
+
+	ListOptions
 }
 
 // ListByRepo lists the issues for the specified repository.
@@ -165,23 +167,10 @@ type IssueListByRepoOptions struct {
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues-for-a-repository
 func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"milestone": {opt.Milestone},
-			"state":     {opt.State},
-			"assignee":  {opt.Assignee},
-			"creator":   {opt.Creator},
-			"mentioned": {opt.Mentioned},
-			"labels":    {strings.Join(opt.Labels, ",")},
-			"sort":      {opt.Sort},
-			"direction": {opt.Direction},
-		}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
