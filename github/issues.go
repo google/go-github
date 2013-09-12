@@ -159,11 +159,7 @@ type IssueListByRepoOptions struct {
 	// Since filters issues by time.
 	Since time.Time `url:"since,omitempty"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int `url:"page,omitempty"`
-
-	// For paginated result sets, number of results per page to retrieve.
-	PerPage int `url:"per_page,omitempty"`
+	ListOptions
 }
 
 // ListByRepo lists the issues for the specified repository.
