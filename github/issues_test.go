@@ -151,7 +151,7 @@ func TestIssuesService_Get(t *testing.T) {
 
 	want := &Issue{
 		Number: Int(1),
-		Labels: []Label{Label{
+		Labels: []Label{{
 			URL:   String("u"),
 			Name:  String("n"),
 			Color: String("c"),
