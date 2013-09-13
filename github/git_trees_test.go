@@ -35,7 +35,7 @@ func TestGitService_GetTree(t *testing.T) {
 	want := Tree{
 		SHA: String("s"),
 		Entries: []TreeEntry{
-			TreeEntry{
+			{
 				Type: String("blob"),
 			},
 		},
@@ -55,7 +55,7 @@ func TestGitService_CreateTree(t *testing.T) {
 	defer teardown()
 
 	input := []TreeEntry{
-		TreeEntry{
+		{
 			Path: String("file.rb"),
 			Mode: String("100644"),
 			Type: String("blob"),
@@ -101,7 +101,7 @@ func TestGitService_CreateTree(t *testing.T) {
 	want := Tree{
 		String("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
 		[]TreeEntry{
-			TreeEntry{
+			{
 				Path: String("file.rb"),
 				Mode: String("100644"),
 				Type: String("blob"),

@@ -154,7 +154,7 @@ func TestGistsService_Create(t *testing.T) {
 		Description: String("Gist description"),
 		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Content: String("Gist file content")},
+			"test.txt": {Content: String("Gist file content")},
 		},
 	}
 
@@ -191,7 +191,7 @@ func TestGistsService_Create(t *testing.T) {
 		Description: String("Gist description"),
 		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Filename: String("test.txt")},
+			"test.txt": {Filename: String("test.txt")},
 		},
 	}
 	if !reflect.DeepEqual(gist, want) {
@@ -206,7 +206,7 @@ func TestGistsService_Edit(t *testing.T) {
 	input := &Gist{
 		Description: String("New description"),
 		Files: map[GistFilename]GistFile{
-			"new.txt": GistFile{Content: String("new file content")},
+			"new.txt": {Content: String("new file content")},
 		},
 	}
 
@@ -246,8 +246,8 @@ func TestGistsService_Edit(t *testing.T) {
 		Description: String("new description"),
 		Public:      Bool(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": GistFile{Filename: String("test.txt")},
-			"new.txt":  GistFile{Filename: String("new.txt")},
+			"test.txt": {Filename: String("test.txt")},
+			"new.txt":  {Filename: String("new.txt")},
 		},
 	}
 	if !reflect.DeepEqual(gist, want) {
