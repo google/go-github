@@ -22,16 +22,43 @@ type OrganizationsService struct {
 
 // Organization represents a GitHub organization account.
 type Organization struct {
-	Login     *string    `json:"login,omitempty"`
-	ID        *int       `json:"id,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-	AvatarURL *string    `json:"avatar_url,omitempty"`
-	Location  *string    `json:"location,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Login             *string    `json:"login,omitempty"`
+	ID                *int       `json:"id,omitempty"`
+	URL               *string    `json:"url,omitempty"`
+	AvatarURL         *string    `json:"avatar_url,omitempty"`
+	Name              *string    `json:"name,omitempty"`
+	Blog              *string    `json:"blog,omitempty"`
+	Location          *string    `json:"location,omitempty"`
+	Email             *string    `json:"email,omitempty"`
+	PublicRepos       *int       `json:"public_repos,omitempty"`
+	PublicGists       *int       `json:"public_gists,omitempty"`
+	Followers         *int       `json:"followers,omitempty"`
+	Following         *int       `json:"following,omitempty"`
+	CreatedAt         *time.Time `json:"created_at,omitempty"`
+	UpdatedAt         *time.Time `json:"updated_at,omitempty"`
+	TotalPrivateRepos *int       `json:"total_private_repos,omitempty"`
+	OwnedPrivateRepos *int       `json:"owned_private_repos,omitempty"`
+	PrivateGists      *int       `json:"private_gists,omitempty"`
+	DiskUsage         *int       `json:"disk_usage,omitempty"`
+	Collaborators     *int       `json:"collaborators,omitempty"`
+	BillingEmail      *string    `json:"billing_email,omitempty"`
+	Plan              *Plan      `json:"plan,omitempty"`
 }
 
 func (o Organization) String() string {
 	return Stringify(o)
+}
+
+// Plan represents the payment plan for an account.  See plans at https://github.com/plans.
+type Plan struct {
+	Name          *string `json:"name,omitempty"`
+	Space         *int    `json:"space,omitempty"`
+	Collaborators *int    `json:"collaborators,omitempty"`
+	PrivateRepos  *int    `json:"private_repos,omitempty"`
+}
+
+func (p Plan) String() string {
+	return Stringify(p)
 }
 
 // List the organizations for a user.  Passing the empty string will list
