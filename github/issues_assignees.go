@@ -19,6 +19,10 @@ func (s *IssuesService) ListAssignees(owner string, repo string) ([]User, *Respo
 	}
 	assignees := new([]User)
 	resp, err := s.client.Do(req, assignees)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *assignees, resp, err
 }
 

@@ -119,6 +119,10 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, *R
 
 	issues := new([]Issue)
 	resp, err := s.client.Do(req, issues)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *issues, resp, err
 }
 
@@ -178,6 +182,10 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 
 	issues := new([]Issue)
 	resp, err := s.client.Do(req, issues)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *issues, resp, err
 }
 
@@ -192,6 +200,10 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 	}
 	issue := new(Issue)
 	resp, err := s.client.Do(req, issue)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return issue, resp, err
 }
 
@@ -206,6 +218,10 @@ func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue,
 	}
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return i, resp, err
 }
 
@@ -220,5 +236,9 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 	}
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return i, resp, err
 }

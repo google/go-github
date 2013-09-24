@@ -38,6 +38,10 @@ func (s *UsersService) ListKeys(user string) ([]Key, *Response, error) {
 
 	keys := new([]Key)
 	resp, err := s.client.Do(req, keys)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *keys, resp, err
 }
 
@@ -54,6 +58,10 @@ func (s *UsersService) GetKey(id int) (*Key, *Response, error) {
 
 	key := new(Key)
 	resp, err := s.client.Do(req, key)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return key, resp, err
 }
 
@@ -70,6 +78,10 @@ func (s *UsersService) CreateKey(key *Key) (*Key, *Response, error) {
 
 	k := new(Key)
 	resp, err := s.client.Do(req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return k, resp, err
 }
 
@@ -86,6 +98,10 @@ func (s *UsersService) EditKey(id int, key *Key) (*Key, *Response, error) {
 
 	k := new(Key)
 	resp, err := s.client.Do(req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return k, resp, err
 }
 

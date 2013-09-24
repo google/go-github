@@ -92,8 +92,13 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	h := new(Hook)
 	resp, err := s.client.Do(req, h)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return h, resp, err
 }
 
@@ -117,6 +122,10 @@ func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([
 
 	hooks := new([]Hook)
 	resp, err := s.client.Do(req, hooks)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *hooks, resp, err
 }
 

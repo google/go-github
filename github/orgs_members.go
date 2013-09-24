@@ -27,6 +27,10 @@ func (s *OrganizationsService) ListMembers(org string, publicOnly bool) ([]User,
 
 	members := new([]User)
 	resp, err := s.client.Do(req, members)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *members, resp, err
 }
 

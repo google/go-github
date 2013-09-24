@@ -48,6 +48,10 @@ func (s *GitService) GetTree(owner string, repo string, sha string, recursive bo
 
 	t := new(Tree)
 	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return t, resp, err
 }
 
@@ -76,5 +80,9 @@ func (s *GitService) CreateTree(owner string, repo string, baseTree string, entr
 
 	t := new(Tree)
 	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return t, resp, err
 }

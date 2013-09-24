@@ -86,6 +86,10 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organizati
 
 	orgs := new([]Organization)
 	resp, err := s.client.Do(req, orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *orgs, resp, err
 }
 
@@ -101,6 +105,10 @@ func (s *OrganizationsService) Get(org string) (*Organization, *Response, error)
 
 	organization := new(Organization)
 	resp, err := s.client.Do(req, organization)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return organization, resp, err
 }
 
@@ -116,5 +124,9 @@ func (s *OrganizationsService) Edit(name string, org *Organization) (*Organizati
 
 	o := new(Organization)
 	resp, err := s.client.Do(req, o)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return o, resp, err
 }

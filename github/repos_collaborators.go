@@ -5,9 +5,7 @@
 
 package github
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // ListCollaborators lists the Github users that have access to the repository.
 //
@@ -21,6 +19,10 @@ func (s *RepositoriesService) ListCollaborators(owner, repo string) ([]User, *Re
 
 	users := new([]User)
 	resp, err := s.client.Do(req, users)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *users, resp, err
 }
 
@@ -51,8 +53,7 @@ func (s *RepositoriesService) AddCollaborator(owner, repo, user string) (*Respon
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(req, nil)
-	return resp, err
+	return s.client.Do(req, nil)
 }
 
 // RemoveCollaborator removes the specified Github user as collaborator from the given repo.
@@ -65,6 +66,5 @@ func (s *RepositoriesService) RemoveCollaborator(owner, repo, user string) (*Res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(req, nil)
-	return resp, err
+	return s.client.Do(req, nil)
 }

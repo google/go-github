@@ -66,6 +66,10 @@ func (s *IssuesService) ListComments(owner string, repo string, number int, opt 
 	}
 	comments := new([]IssueComment)
 	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *comments, resp, err
 }
 
@@ -81,6 +85,10 @@ func (s *IssuesService) GetComment(owner string, repo string, id int) (*IssueCom
 	}
 	comment := new(IssueComment)
 	resp, err := s.client.Do(req, comment)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return comment, resp, err
 }
 
@@ -95,6 +103,10 @@ func (s *IssuesService) CreateComment(owner string, repo string, number int, com
 	}
 	c := new(IssueComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -109,6 +121,10 @@ func (s *IssuesService) EditComment(owner string, repo string, id int, comment *
 	}
 	c := new(IssueComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 

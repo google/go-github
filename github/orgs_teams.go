@@ -35,6 +35,10 @@ func (s *OrganizationsService) ListTeams(org string) ([]Team, *Response, error) 
 
 	teams := new([]Team)
 	resp, err := s.client.Do(req, teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *teams, resp, err
 }
 
@@ -50,6 +54,10 @@ func (s *OrganizationsService) GetTeam(team int) (*Team, *Response, error) {
 
 	t := new(Team)
 	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return t, resp, err
 }
 
@@ -65,6 +73,10 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Respo
 
 	t := new(Team)
 	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return t, resp, err
 }
 
@@ -80,6 +92,10 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, e
 
 	t := new(Team)
 	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return t, resp, err
 }
 
@@ -109,6 +125,10 @@ func (s *OrganizationsService) ListTeamMembers(team int) ([]User, *Response, err
 
 	members := new([]User)
 	resp, err := s.client.Do(req, members)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *members, resp, err
 }
 
@@ -165,6 +185,10 @@ func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, *Response,
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }
 

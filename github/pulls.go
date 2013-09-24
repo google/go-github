@@ -82,6 +82,10 @@ func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestLi
 
 	pulls := new([]PullRequest)
 	resp, err := s.client.Do(req, pulls)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *pulls, resp, err
 }
 
@@ -94,8 +98,13 @@ func (s *PullRequestsService) Get(owner string, repo string, number int) (*PullR
 	if err != nil {
 		return nil, nil, err
 	}
+
 	pull := new(PullRequest)
 	resp, err := s.client.Do(req, pull)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return pull, resp, err
 }
 
@@ -108,8 +117,13 @@ func (s *PullRequestsService) Create(owner string, repo string, pull *PullReques
 	if err != nil {
 		return nil, nil, err
 	}
+
 	p := new(PullRequest)
 	resp, err := s.client.Do(req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return p, resp, err
 }
 
@@ -122,7 +136,12 @@ func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *
 	if err != nil {
 		return nil, nil, err
 	}
+
 	p := new(PullRequest)
 	resp, err := s.client.Do(req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return p, resp, err
 }

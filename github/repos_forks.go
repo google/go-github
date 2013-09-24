@@ -37,6 +37,10 @@ func (s *RepositoriesService) ListForks(owner, repo string, opt *RepositoryListF
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }
 
@@ -66,5 +70,9 @@ func (s *RepositoriesService) CreateFork(owner, repo string, opt *RepositoryCrea
 
 	fork := new(Repository)
 	resp, err := s.client.Do(req, fork)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return fork, resp, err
 }

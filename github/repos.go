@@ -91,6 +91,10 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }
 
@@ -121,6 +125,10 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }
 
@@ -149,6 +157,10 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Reposito
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }
 
@@ -172,6 +184,10 @@ func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository,
 
 	r := new(Repository)
 	resp, err := s.client.Do(req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return r, resp, err
 }
 
@@ -184,8 +200,13 @@ func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, e
 	if err != nil {
 		return nil, nil, err
 	}
+
 	repository := new(Repository)
 	resp, err := s.client.Do(req, repository)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return repository, resp, err
 }
 
@@ -198,8 +219,13 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 	if err != nil {
 		return nil, nil, err
 	}
+
 	r := new(Repository)
 	resp, err := s.client.Do(req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return r, resp, err
 }
 
@@ -222,5 +248,9 @@ func (s *RepositoriesService) ListLanguages(owner string, repository string) (ma
 
 	languages := make(map[string]int)
 	resp, err := s.client.Do(req, &languages)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return languages, resp, err
 }

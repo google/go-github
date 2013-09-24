@@ -40,8 +40,13 @@ func (s *RepositoriesService) ListComments(owner, repo string) ([]RepositoryComm
 	if err != nil {
 		return nil, nil, err
 	}
+
 	comments := new([]RepositoryComment)
 	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *comments, resp, err
 }
 
@@ -54,8 +59,13 @@ func (s *RepositoriesService) ListCommitComments(owner, repo, sha string) ([]Rep
 	if err != nil {
 		return nil, nil, err
 	}
+
 	comments := new([]RepositoryComment)
 	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *comments, resp, err
 }
 
@@ -69,8 +79,13 @@ func (s *RepositoriesService) CreateComment(owner, repo, sha string, comment *Re
 	if err != nil {
 		return nil, nil, err
 	}
+
 	c := new(RepositoryComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -83,8 +98,13 @@ func (s *RepositoriesService) GetComment(owner, repo string, id int) (*Repositor
 	if err != nil {
 		return nil, nil, err
 	}
+
 	c := new(RepositoryComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -97,8 +117,13 @@ func (s *RepositoriesService) UpdateComment(owner, repo string, id int, comment 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	c := new(RepositoryComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -111,6 +136,5 @@ func (s *RepositoriesService) DeleteComment(owner, repo string, id int) (*Respon
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(req, nil)
-	return resp, err
+	return s.client.Do(req, nil)
 }

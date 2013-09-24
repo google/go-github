@@ -89,6 +89,10 @@ func (s *ActivityService) ListEvents(opt *ListOptions) ([]Event, *Response, erro
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -111,6 +115,10 @@ func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOpti
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -133,6 +141,10 @@ func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -155,6 +167,10 @@ func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *List
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -177,6 +193,10 @@ func (s *ActivityService) ListEventsForOrganization(org string, opt *ListOptions
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -206,6 +226,10 @@ func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -235,6 +259,10 @@ func (s *ActivityService) ListEventsRecievedByUser(user string, publicOnly bool,
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }
 
@@ -257,5 +285,9 @@ func (s *ActivityService) ListUserEventsForOrganization(org, user string, opt *L
 
 	events := new([]Event)
 	resp, err := s.client.Do(req, events)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *events, resp, err
 }

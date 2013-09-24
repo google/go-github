@@ -27,8 +27,13 @@ func (s *IssuesService) ListLabels(owner string, repo string) ([]Label, *Respons
 	if err != nil {
 		return nil, nil, err
 	}
+
 	labels := new([]Label)
 	resp, err := s.client.Do(req, labels)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *labels, resp, err
 }
 
@@ -41,8 +46,13 @@ func (s *IssuesService) GetLabel(owner string, repo string, name string) (*Label
 	if err != nil {
 		return nil, nil, err
 	}
+
 	label := new(Label)
 	resp, err := s.client.Do(req, label)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return label, resp, err
 }
 
@@ -55,8 +65,13 @@ func (s *IssuesService) CreateLabel(owner string, repo string, label *Label) (*L
 	if err != nil {
 		return nil, nil, err
 	}
+
 	l := new(Label)
 	resp, err := s.client.Do(req, l)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return l, resp, err
 }
 
@@ -69,8 +84,13 @@ func (s *IssuesService) EditLabel(owner string, repo string, name string, label 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	l := new(Label)
 	resp, err := s.client.Do(req, l)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return l, resp, err
 }
 
@@ -95,8 +115,13 @@ func (s *IssuesService) ListLabelsByIssue(owner string, repo string, number int)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	labels := new([]Label)
 	resp, err := s.client.Do(req, labels)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *labels, resp, err
 }
 
@@ -109,8 +134,13 @@ func (s *IssuesService) AddLabelsToIssue(owner string, repo string, number int, 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	l := new([]Label)
 	resp, err := s.client.Do(req, l)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *l, resp, err
 }
 
@@ -135,8 +165,13 @@ func (s *IssuesService) ReplaceLabelsForIssue(owner string, repo string, number 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	l := new([]Label)
 	resp, err := s.client.Do(req, l)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *l, resp, err
 }
 
@@ -161,7 +196,12 @@ func (s *IssuesService) ListLabelsForMilestone(owner string, repo string, number
 	if err != nil {
 		return nil, nil, err
 	}
+
 	labels := new([]Label)
 	resp, err := s.client.Do(req, labels)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *labels, resp, err
 }

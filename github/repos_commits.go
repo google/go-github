@@ -122,6 +122,10 @@ func (s *RepositoriesService) ListCommits(owner, repo string, opts *CommitsListO
 
 	commits := new([]RepositoryCommit)
 	resp, err := s.client.Do(req, commits)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *commits, resp, err
 }
 
@@ -140,6 +144,10 @@ func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCom
 
 	commit := new(RepositoryCommit)
 	resp, err := s.client.Do(req, commit)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return commit, resp, err
 }
 
@@ -157,5 +165,9 @@ func (s *RepositoriesService) CompareCommits(owner, repo string, base, head stri
 
 	comp := new(CommitsComparison)
 	resp, err := s.client.Do(req, comp)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return comp, resp, err
 }

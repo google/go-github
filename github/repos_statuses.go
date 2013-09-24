@@ -47,6 +47,10 @@ func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatu
 
 	statuses := new([]RepoStatus)
 	resp, err := s.client.Do(req, statuses)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *statuses, resp, err
 }
 
@@ -63,5 +67,9 @@ func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *Repo
 
 	statuses := new(RepoStatus)
 	resp, err := s.client.Do(req, statuses)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return statuses, resp, err
 }

@@ -20,6 +20,10 @@ func (s *UsersService) ListEmails() ([]UserEmail, *Response, error) {
 
 	emails := new([]UserEmail)
 	resp, err := s.client.Do(req, emails)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *emails, resp, err
 }
 
@@ -35,6 +39,10 @@ func (s *UsersService) AddEmails(emails []UserEmail) ([]UserEmail, *Response, er
 
 	e := new([]UserEmail)
 	resp, err := s.client.Do(req, e)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *e, resp, err
 }
 
