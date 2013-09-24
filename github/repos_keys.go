@@ -22,6 +22,10 @@ func (s *RepositoriesService) ListKeys(owner string, repo string) ([]Key, *Respo
 
 	keys := new([]Key)
 	resp, err := s.client.Do(req, keys)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *keys, resp, err
 }
 
@@ -38,6 +42,10 @@ func (s *RepositoriesService) GetKey(owner string, repo string, id int) (*Key, *
 
 	key := new(Key)
 	resp, err := s.client.Do(req, key)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return key, resp, err
 }
 
@@ -54,6 +62,10 @@ func (s *RepositoriesService) CreateKey(owner string, repo string, key *Key) (*K
 
 	k := new(Key)
 	resp, err := s.client.Do(req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return k, resp, err
 }
 
@@ -70,6 +82,10 @@ func (s *RepositoriesService) EditKey(owner string, repo string, id int, key *Ke
 
 	k := new(Key)
 	resp, err := s.client.Do(req, k)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return k, resp, err
 }
 

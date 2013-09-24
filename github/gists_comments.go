@@ -35,6 +35,10 @@ func (s *GistsService) ListComments(gistID string) ([]GistComment, *Response, er
 
 	comments := new([]GistComment)
 	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *comments, resp, err
 }
 
@@ -50,6 +54,10 @@ func (s *GistsService) GetComment(gistID string, commentID int) (*GistComment, *
 
 	c := new(GistComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -65,6 +73,10 @@ func (s *GistsService) CreateComment(gistID string, comment *GistComment) (*Gist
 
 	c := new(GistComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -80,6 +92,10 @@ func (s *GistsService) EditComment(gistID string, commentID int, comment *GistCo
 
 	c := new(GistComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 

@@ -28,6 +28,10 @@ func (s *UsersService) ListFollowers(user string) ([]User, *Response, error) {
 
 	users := new([]User)
 	resp, err := s.client.Do(req, users)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *users, resp, err
 }
 
@@ -57,6 +61,10 @@ func (s *UsersService) ListFollowing(user string, opt *ListOptions) ([]User, *Re
 
 	users := new([]User)
 	resp, err := s.client.Do(req, users)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *users, resp, err
 }
 

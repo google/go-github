@@ -52,5 +52,9 @@ func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptio
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *repos, resp, err
 }

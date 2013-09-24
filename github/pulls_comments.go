@@ -68,8 +68,13 @@ func (s *PullRequestsService) ListComments(owner string, repo string, number int
 	if err != nil {
 		return nil, nil, err
 	}
+
 	comments := new([]PullRequestComment)
 	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *comments, resp, err
 }
 
@@ -82,8 +87,13 @@ func (s *PullRequestsService) GetComment(owner string, repo string, number int) 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	comment := new(PullRequestComment)
 	resp, err := s.client.Do(req, comment)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return comment, resp, err
 }
 
@@ -96,8 +106,13 @@ func (s *PullRequestsService) CreateComment(owner string, repo string, number in
 	if err != nil {
 		return nil, nil, err
 	}
+
 	c := new(PullRequestComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -110,8 +125,13 @@ func (s *PullRequestsService) EditComment(owner string, repo string, number int,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	c := new(PullRequestComment)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 

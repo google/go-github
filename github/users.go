@@ -60,6 +60,10 @@ func (s *UsersService) Get(user string) (*User, *Response, error) {
 
 	uResp := new(User)
 	resp, err := s.client.Do(req, uResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return uResp, resp, err
 }
 
@@ -75,6 +79,10 @@ func (s *UsersService) Edit(user *User) (*User, *Response, error) {
 
 	uResp := new(User)
 	resp, err := s.client.Do(req, uResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return uResp, resp, err
 }
 
@@ -101,5 +109,9 @@ func (s *UsersService) ListAll(opt *UserListOptions) ([]User, *Response, error) 
 
 	users := new([]User)
 	resp, err := s.client.Do(req, users)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *users, resp, err
 }

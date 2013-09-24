@@ -49,6 +49,10 @@ func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, 
 
 	c := new(Commit)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }
 
@@ -68,5 +72,9 @@ func (s *GitService) CreateCommit(owner string, repo string, commit *Commit) (*C
 
 	c := new(Commit)
 	resp, err := s.client.Do(req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return c, resp, err
 }

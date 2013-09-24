@@ -87,6 +87,10 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Respons
 
 	gists := new([]Gist)
 	resp, err := s.client.Do(req, gists)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *gists, resp, err
 }
 
@@ -110,6 +114,10 @@ func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) 
 
 	gists := new([]Gist)
 	resp, err := s.client.Do(req, gists)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *gists, resp, err
 }
 
@@ -133,6 +141,10 @@ func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, *Response, err
 
 	gists := new([]Gist)
 	resp, err := s.client.Do(req, gists)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return *gists, resp, err
 }
 
@@ -147,6 +159,10 @@ func (s *GistsService) Get(id string) (*Gist, *Response, error) {
 	}
 	gist := new(Gist)
 	resp, err := s.client.Do(req, gist)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return gist, resp, err
 }
 
@@ -161,6 +177,10 @@ func (s *GistsService) Create(gist *Gist) (*Gist, *Response, error) {
 	}
 	g := new(Gist)
 	resp, err := s.client.Do(req, g)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return g, resp, err
 }
 
@@ -175,6 +195,10 @@ func (s *GistsService) Edit(id string, gist *Gist) (*Gist, *Response, error) {
 	}
 	g := new(Gist)
 	resp, err := s.client.Do(req, g)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return g, resp, err
 }
 
@@ -237,7 +261,12 @@ func (s *GistsService) Fork(id string) (*Gist, *Response, error) {
 	if err != nil {
 		return nil, nil, err
 	}
+
 	g := new(Gist)
 	resp, err := s.client.Do(req, g)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return g, resp, err
 }
