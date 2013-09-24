@@ -7,8 +7,8 @@ package github
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
+
+	qs "github.com/google/go-querystring/query"
 )
 
 // SearchService provides access to the search related functions
@@ -28,18 +28,13 @@ type SearchOptions struct {
 	//   - for users: followers, repositories, joined
 	//
 	// Default is to sort by best match.
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Sort order if sort parameter is provided. Possible values are: asc,
 	// desc. Default is desc.
-	Order string
+	Order string `url:"order,omitempty"`
 
-	// Page of results to retrieve.
-	Page int
-
-	// Number of results to show per page.  This can be up to 100
-	// according to GitHub.
-	PerPage int
+	ListOptions
 }
 
 // RepositoriesSearchResult represents the result of a repositories search.
@@ -118,13 +113,11 @@ func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResul
 // Helper function that executes search queries against different
 // GitHub search types (repositories, code, issues, users)
 func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (*Response, error) {
-	params := url.Values{"q": []string{query}}
-	if opt != nil {
-		params.Add("sort", opt.Sort)
-		params.Add("order", opt.Order)
-		params.Add("page", strconv.Itoa(opt.Page))
-		params.Add("per_page", strconv.Itoa(opt.PerPage))
+	params, err := qs.Values(opt)
+	if err != nil {
+		return nil, err
 	}
+	params.Add("q", query)
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -7,9 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -47,28 +44,27 @@ func (i Issue) String() string {
 type IssueListOptions struct {
 	// Filter specifies which issues to list.  Possible values are: assigned,
 	// created, mentioned, subscribed, all.  Default is "assigned".
-	Filter string
+	Filter string `url:"filter,omitempty"`
 
 	// State filters issues based on their state.  Possible values are: open,
 	// closed.  Default is "open".
-	State string
+	State string `url:"state,omitempty"`
 
 	// Labels filters issues based on their label.
-	Labels []string
+	Labels []string `url:"labels,comma,omitempty"`
 
 	// Sort specifies how to sort issues.  Possible values are: created, updated,
 	// and comments.  Default value is "assigned".
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
 	// Default is "asc".
-	Direction string
+	Direction string `url:"direction,omitempty"`
 
 	// Since filters issues by time.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int
+	ListOptions
 }
 
 // List the issues for the authenticated user.  If all is true, list issues
@@ -97,19 +93,9 @@ func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]Issue, *
 }
 
 func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, *Response, error) {
-	if opt != nil {
-		params := url.Values{
-			"filter":    {opt.Filter},
-			"state":     {opt.State},
-			"labels":    {strings.Join(opt.Labels, ",")},
-			"sort":      {opt.Sort},
-			"direction": {opt.Direction},
-			"page":      []string{strconv.Itoa(opt.Page)},
-		}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -175,6 +161,7 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -198,6 +185,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 	if err != nil {
 		return nil, nil, err
 	}
+
 	issue := new(Issue)
 	resp, err := s.client.Do(req, issue)
 	if err != nil {
@@ -216,6 +204,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
 	if err != nil {
@@ -234,6 +223,7 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 	if err != nil {
 		return nil, nil, err
 	}
+
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
 	if err != nil {

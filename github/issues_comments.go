@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -28,13 +27,13 @@ func (i IssueComment) String() string {
 // IssuesService.ListComments method.
 type IssueListCommentsOptions struct {
 	// Sort specifies how to sort comments.  Possible values are: created, updated.
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort comments.  Possible values are: asc, desc.
-	Direction string
+	Direction string `url:"direction,omitempty"`
 
 	// Since filters comments by time.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
 }
 
 // ListComments lists all comments on the specified issue.  Specifying an issue
@@ -48,16 +47,9 @@ func (s *IssuesService) ListComments(owner string, repo string, number int, opt 
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	}
-
-	if opt != nil {
-		params := url.Values{
-			"sort":      {opt.Sort},
-			"direction": {opt.Direction},
-		}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

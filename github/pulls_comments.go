@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -31,13 +30,13 @@ func (p PullRequestComment) String() string {
 // PullRequestsService.ListComments method.
 type PullRequestListCommentsOptions struct {
 	// Sort specifies how to sort comments.  Possible values are: created, updated.
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort comments.  Possible values are: asc, desc.
-	Direction string
+	Direction string `url:"direction,omitempty"`
 
 	// Since filters comments by time.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
 }
 
 // ListComments lists all comments on the specified pull request.  Specifying a
@@ -52,16 +51,9 @@ func (s *PullRequestsService) ListComments(owner string, repo string, number int
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
 	}
-
-	if opt != nil {
-		params := url.Values{
-			"sort":      {opt.Sort},
-			"direction": {opt.Direction},
-		}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -46,7 +46,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
-	opt := &ActivityListStarredOptions{"created", "asc", 2}
+	opt := &ActivityListStarredOptions{"created", "asc", ListOptions{Page: 2}}
 	repos, _, err := client.Activity.ListStarred("u", opt)
 	if err != nil {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
