@@ -5,25 +5,20 @@
 
 package github
 
-import (
-	"fmt"
-	"net/url"
-	"strconv"
-)
+import "fmt"
 
 // ActivityListStarredOptions specifies the optional parameters to the
 // ActivityService.ListStarred method.
 type ActivityListStarredOptions struct {
 	// How to sort the repository list.  Possible values are: created, updated,
 	// pushed, full_name.  Default is "full_name".
-	Sort string
+	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort repositories.  Possible values are: asc, desc.
 	// Default is "asc" when sort is "full_name", otherwise default is "desc".
-	Direction string
+	Direction string `url:"direction,omitempty"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int
+	ListOptions
 }
 
 // ListStarred lists all the repos starred by a user.  Passing the empty string
@@ -37,14 +32,11 @@ func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptio
 	} else {
 		u = "user/starred"
 	}
-	if opt != nil {
-		params := url.Values{
-			"sort":      []string{opt.Sort},
-			"direction": []string{opt.Direction},
-			"page":      []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

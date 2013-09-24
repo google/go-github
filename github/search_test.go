@@ -26,7 +26,7 @@ func TestSearchService_Repositories(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "items": [{"id":1},{"id":2}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	result, _, err := client.Search.Repositories("blah", opts)
 	if err != nil {
 		t.Errorf("Search.Repositories returned error: %v", err)
@@ -59,7 +59,7 @@ func TestSearchService_Issues(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "items": [{"number":1},{"number":2}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	result, _, err := client.Search.Issues("blah", opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
@@ -92,7 +92,7 @@ func TestSearchService_Users(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "items": [{"id":1},{"id":2}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	result, _, err := client.Search.Users("blah", opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
@@ -125,7 +125,7 @@ func TestSearchService_Code(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "items": [{"name":"1"},{"name":"2"}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", Page: 2, PerPage: 2}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	result, _, err := client.Search.Code("blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
@@ -138,9 +138,4 @@ func TestSearchService_Code(t *testing.T) {
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
-}
-
-func TestSearchService_invalidQuery(t *testing.T) {
-	_, err := client.Search.search("%", "", nil, nil)
-	testURLParseError(t, err)
 }

@@ -6,8 +6,6 @@
 package github
 
 import "fmt"
-import "net/url"
-import "strconv"
 
 // ListFollowers lists the followers for a user.  Passing the empty string will
 // fetch followers for the authenticated user.
@@ -46,12 +44,9 @@ func (s *UsersService) ListFollowing(user string, opt *ListOptions) ([]User, *Re
 	} else {
 		u = "user/following"
 	}
-
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

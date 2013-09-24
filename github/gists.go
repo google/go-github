@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -56,7 +55,7 @@ func (g GistFile) String() string {
 // GistsService.List, GistsService.ListAll, and GistsService.ListStarred methods.
 type GistListOptions struct {
 	// Since filters Gists by time.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
 }
 
 // List gists for a user. Passing the empty string will list
@@ -72,12 +71,9 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Respons
 	} else {
 		u = "gists"
 	}
-	if opt != nil {
-		params := url.Values{}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -98,13 +94,9 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Respons
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
 func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) {
-	u := "gists/public"
-	if opt != nil {
-		params := url.Values{}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions("gists/public", opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -125,13 +117,9 @@ func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) 
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
 func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, *Response, error) {
-	u := "gists/starred"
-	if opt != nil {
-		params := url.Values{}
-		if !opt.Since.IsZero() {
-			params.Add("since", opt.Since.Format(time.RFC3339))
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions("gists/starred", opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

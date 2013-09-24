@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -82,37 +81,29 @@ func (c CommitsComparison) String() string {
 // RepositoriesService.ListCommits method.
 type CommitsListOptions struct {
 	// SHA or branch to start listing Commits from.
-	SHA string
+	SHA string `url:"sha,omitempty"`
+
 	// Path that should be touched by the returned Commits.
-	Path string
+	Path string `url:"path,omitempty"`
+
 	// Author of by which to filter Commits.
-	Author string
+	Author string `url:"author,omitempty"`
+
 	// Since when should Commits be included in the response.
-	Since time.Time
+	Since time.Time `url:"since,omitempty"`
+
 	// Until when should Commits be included in the response.
-	Until time.Time
+	Until time.Time `url:"until,omitempty"`
 }
 
 // ListCommits lists the commits of a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/commits/#list
-func (s *RepositoriesService) ListCommits(owner, repo string, opts *CommitsListOptions) ([]RepositoryCommit, *Response, error) {
+func (s *RepositoriesService) ListCommits(owner, repo string, opt *CommitsListOptions) ([]RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
-
-	if opts != nil {
-		params := url.Values{
-			"sha":    {opts.SHA},
-			"path":   {opts.Path},
-			"author": {opts.Author},
-		}
-		if !opts.Since.IsZero() {
-			params.Add("since", opts.Since.Format(time.RFC3339))
-		}
-		if !opts.Until.IsZero() {
-			params.Add("until", opts.Until.Format(time.RFC3339))
-		}
-
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

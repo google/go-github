@@ -7,7 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -51,14 +50,14 @@ func (p PullRequest) String() string {
 type PullRequestListOptions struct {
 	// State filters pull requests based on their state.  Possible values are:
 	// open, closed.  Default is "open".
-	State string
+	State string `url:"state,omitempty"`
 
 	// Head filters pull requests by head user and branch name in the format of:
 	// "user:ref-name".
-	Head string
+	Head string `url:"head,omitempty"`
 
 	// Base filters pull requests by base branch name.
-	Base string
+	Base string `url:"base,omitempty"`
 }
 
 // List the pull requests for the specified repository.
@@ -66,13 +65,9 @@ type PullRequestListOptions struct {
 // GitHub API docs: http://developer.github.com/v3/pulls/#list-pull-requests
 func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"state": {opt.State},
-			"head":  {opt.Head},
-			"base":  {opt.Base},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -7,8 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -72,11 +70,9 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]Organizati
 	} else {
 		u = "user/orgs"
 	}
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

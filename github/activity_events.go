@@ -8,8 +8,6 @@ package github
 import (
 	"encoding/json"
 	"fmt"
-	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -74,12 +72,9 @@ func (p PushEventCommit) String() string {
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
 func (s *ActivityService) ListEvents(opt *ListOptions) ([]Event, *Response, error) {
-	u := "events"
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions("events", opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -101,11 +96,9 @@ func (s *ActivityService) ListEvents(opt *ListOptions) ([]Event, *Response, erro
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -127,11 +120,9 @@ func (s *ActivityService) ListRepositoryEvents(owner, repo string, opt *ListOpti
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-issue-events-for-a-repository
 func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -153,11 +144,9 @@ func (s *ActivityService) ListIssueEventsForRepository(owner, repo string, opt *
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -179,11 +168,9 @@ func (s *ActivityService) ListEventsForRepoNetwork(owner, repo string, opt *List
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
 func (s *ActivityService) ListEventsForOrganization(org string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -211,12 +198,9 @@ func (s *ActivityService) ListEventsPerformedByUser(user string, publicOnly bool
 	} else {
 		u = fmt.Sprintf("users/%v/events", user)
 	}
-
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -244,12 +228,9 @@ func (s *ActivityService) ListEventsRecievedByUser(user string, publicOnly bool,
 	} else {
 		u = fmt.Sprintf("users/%v/received_events", user)
 	}
-
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -272,12 +253,11 @@ func (s *ActivityService) ListEventsRecievedByUser(user string, publicOnly bool,
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-events-for-an-organization
 func (s *ActivityService) ListUserEventsForOrganization(org, user string, opt *ListOptions) ([]Event, *Response, error) {
 	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

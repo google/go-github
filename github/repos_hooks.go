@@ -7,8 +7,6 @@ package github
 
 import (
 	"fmt"
-	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -107,12 +105,9 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 // GitHub API docs: http://developer.github.com/v3/repos/hooks/#list
 func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([]Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
-
-	if opt != nil {
-		params := url.Values{
-			"page": []string{strconv.Itoa(opt.Page)},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -5,17 +5,14 @@
 
 package github
 
-import (
-	"fmt"
-	"net/url"
-)
+import "fmt"
 
 // RepositoryListForksOptions specifies the optional parameters to the
 // RepositoriesService.ListForks method.
 type RepositoryListForksOptions struct {
 	// How to sort the forks list.  Possible values are: newest, oldest,
 	// watchers.  Default is "newest".
-	Sort string
+	Sort string `url:"sort,omitempty"`
 }
 
 // ListForks lists the forks of the specified repository.
@@ -23,11 +20,9 @@ type RepositoryListForksOptions struct {
 // GitHub API docs: http://developer.github.com/v3/repos/forks/#list-forks
 func (s *RepositoriesService) ListForks(owner, repo string, opt *RepositoryListForksOptions) ([]Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"sort": []string{opt.Sort},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -48,7 +43,7 @@ func (s *RepositoriesService) ListForks(owner, repo string, opt *RepositoryListF
 // RepositoriesService.CreateFork method.
 type RepositoryCreateForkOptions struct {
 	// The organization to fork the repository into.
-	Organization string
+	Organization string `url:"organization,omitempty"`
 }
 
 // CreateFork creates a fork of the specified repository.
@@ -56,11 +51,9 @@ type RepositoryCreateForkOptions struct {
 // GitHub API docs: http://developer.github.com/v3/repos/forks/#list-forks
 func (s *RepositoriesService) CreateFork(owner, repo string, opt *RepositoryCreateForkOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	if opt != nil {
-		params := url.Values{
-			"organization": []string{opt.Organization},
-		}
-		u += "?" + params.Encode()
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("POST", u, nil)
