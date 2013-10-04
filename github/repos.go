@@ -31,6 +31,7 @@ type Repository struct {
 	HTMLURL         *string    `json:"html_url,omitempty"`
 	CloneURL        *string    `json:"clone_url,omitempty"`
 	GitURL          *string    `json:"git_url,omitempty"`
+	MirrorURL       *string    `json:"mirror_url,omitempty"`
 	SSHURL          *string    `json:"ssh_url,omitempty"`
 	SVNURL          *string    `json:"svn_url,omitempty"`
 	Language        *string    `json:"language,omitempty"`
