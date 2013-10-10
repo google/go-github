@@ -37,6 +37,7 @@ type PullRequest struct {
 	Additions    *int       `json:"additions,omitempty"`
 	Deletions    *int       `json:"deletions,omitempty"`
 	ChangedFiles *int       `json:"changed_files,omitempty"`
+	HTMLURL      *string    `json:"html_url,omitempty"`
 
 	// TODO(willnorris): add head and base once we have a Commit struct defined somewhere
 }
