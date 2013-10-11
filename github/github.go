@@ -30,7 +30,8 @@ const (
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
 
-	mimePreview = "application/vnd.github.preview"
+	mimePreview        = "application/vnd.github.preview"
+	mimeReleasePreview = "application/vnd.github.manifold-preview"
 )
 
 // A Client manages communication with the GitHub API.
