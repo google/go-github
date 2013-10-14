@@ -5,14 +5,18 @@
 
 package github
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/
 type RepositoriesService struct {
-	client *Client
+	client               *Client
+	noRedirectHTTPClient *http.Client
 }
 
 // Repository represents a GitHub repository.
