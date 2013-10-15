@@ -120,6 +120,8 @@ func TestString(t *testing.T) {
 		{WebHookAuthor{Name: String("n")}, `github.WebHookAuthor{Name:"n"}`},
 		{WebHookCommit{ID: String("1")}, `github.WebHookCommit{ID:"1"}`},
 		{WebHookPayload{Ref: String("r")}, `github.WebHookPayload{Ref:"r"}`},
+		{RepositoryRelease{ID: Int(1)}, `github.RepositoryRelease{ID:1}`},
+		{ReleaseAsset{ID: Int(1)},`github.ReleaseAsset{ID:1}`},
 	}
 
 	for i, tt := range tests {
