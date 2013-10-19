@@ -5,7 +5,7 @@ import "fmt"
 // Lists watchers of a particular repo
 // GitHub API Docs: http://developer.github.com/v3/activity/watching/#list-watchers
 func (s *ActivityService) ListWatchers(owner, repo string) ([]User, *Response, error) {
-	url := fmt.Sprintf("/repos/%s/%s/subscribers/", owner, repo)
+	url := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
 
 	req, err := s.client.NewRequest("GET", url, nil)
 	watchers := new([]User)
