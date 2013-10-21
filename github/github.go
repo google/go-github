@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -24,13 +25,15 @@ import (
 const (
 	libraryVersion = "0.1"
 	defaultBaseURL = "https://api.github.com/"
+	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github/" + libraryVersion
 
 	headerRateLimit     = "X-RateLimit-Limit"
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
 
-	mimePreview = "application/vnd.github.preview"
+	mimePreview        = "application/vnd.github.preview"
+	mimeReleasePreview = "application/vnd.github.manifold-preview"
 )
 
 // A Client manages communication with the GitHub API.
@@ -42,6 +45,9 @@ type Client struct {
 	// set to a domain endpoint to use with GitHub Enterprise.  BaseURL should
 	// always be specified with a trailing slash.
 	BaseURL *url.URL
+
+	// Base URL for uploading files.
+	UploadURL *url.URL
 
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
@@ -72,6 +78,11 @@ type ListOptions struct {
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
+}
+
+// UploadOptions specifies the parameters to methods that support uploads.
+type UploadOptions struct {
+	Name string `url:"name,omitempty"`
 }
 
 // addOptions adds the parameters in opt as URL query parameters to s.  opt
@@ -105,8 +116,9 @@ func NewClient(httpClient *http.Client) *Client {
 		httpClient = http.DefaultClient
 	}
 	baseURL, _ := url.Parse(defaultBaseURL)
+	uploadURL, _ := url.Parse(uploadBaseURL)
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
+	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
 	c.Activity = &ActivityService{client: c}
 	c.Gists = &GistsService{client: c}
 	c.Git = &GitService{client: c}
@@ -145,6 +157,26 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
+	req.Header.Add("User-Agent", c.UserAgent)
+	return req, nil
+}
+
+// NewUploadRequest creates an upload request. A relative URL can be provided in 
+// urlStr, in which case it is resolved relative to the UploadURL of the Client.
+// Relative URLs should always be specified without a preceding slash.
+func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, contentType string) (*http.Request, error) {
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	u := c.UploadURL.ResolveReference(rel)
+	req, err := http.NewRequest("POST", u.String(), reader)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 	req.Header.Add("User-Agent", c.UserAgent)
 	return req, nil
 }
