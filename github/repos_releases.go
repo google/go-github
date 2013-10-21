@@ -6,8 +6,8 @@
 package github
 
 import (
-	"io"
 	"fmt"
+	"io"
 )
 
 // RepositoryRelease represents a GitHub release in a repository.
@@ -23,7 +23,7 @@ type RepositoryRelease struct {
 	PublishedAt     *Timestamp `json:"published_at,omitempty"`
 	URL             *string    `json:"url,omitempty"`
 	HTMLURL         *string    `json:"html_url,omitempty"`
-	AssertsURL      *string    `json:"assets_url,omitempty"`
+	AssetsURL       *string    `json:"assets_url,omitempty"`
 	UploadURL       *string    `json:"upload_url,omitempty"`
 }
 
