@@ -56,6 +56,7 @@ type Client struct {
 	Activity      *ActivityService
 	Gists         *GistsService
 	Git           *GitService
+	Gitignores    *GitignoresService
 	Issues        *IssuesService
 	Organizations *OrganizationsService
 	PullRequests  *PullRequestsService
@@ -110,6 +111,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Activity = &ActivityService{client: c}
 	c.Gists = &GistsService{client: c}
 	c.Git = &GitService{client: c}
+	c.Gitignores = &GitignoresService{client: c}
 	c.Issues = &IssuesService{client: c}
 	c.Organizations = &OrganizationsService{client: c}
 	c.PullRequests = &PullRequestsService{client: c}
