@@ -25,6 +25,7 @@ type User struct {
 	ID          *int       `json:"id,omitempty"`
 	URL         *string    `json:"url,omitempty"`
 	AvatarURL   *string    `json:"avatar_url,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
 	GravatarID  *string    `json:"gravatar_id,omitempty"`
 	Name        *string    `json:"name,omitempty"`
 	Company     *string    `json:"company,omitempty"`
