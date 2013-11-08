@@ -85,6 +85,18 @@ func testURLParseError(t *testing.T, err error) {
 	}
 }
 
+func testBody(t *testing.T, r *http.Request, want string){
+b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("Unable to read body")
+		}
+		str := string(b)
+		if want != str {
+			t.Errorf("Body = %s, want: %s", str, want)
+		}
+	}
+
+
 // Helper function to test that a value is marshalled to JSON as expected.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	j, err := json.Marshal(v)
