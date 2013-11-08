@@ -9,8 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
-	"strings"
 	"testing"
 )
 
@@ -207,15 +207,20 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/zip")
+		testHeader(t, r, "Content-Type", "text/plain; charset=utf-8")
+		testHeader(t, r, "Content-Length", "12")
 		testFormValues(t, r, values{"name": "n"})
+		testBody(t, r, "Upload me !\n")
 
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 
 	opt := &UploadOptions{Name: "n"}
-	data := strings.NewReader("data")
-	asset, _, err := client.Repositories.UploadReleaseAsset("o", "r", 1, opt, data, "application/zip")
+	file, err := os.Open("testdata/upload.txt")
+	if err != nil {
+		t.Errorf("Unable to open file testdata/upload.txt")
+	}
+	asset, _, err := client.Repositories.UploadReleaseAsset("o", "r", 1, opt, file)
 	if err != nil {
 		t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
 	}
