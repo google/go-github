@@ -32,8 +32,7 @@ const (
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
 
-	mimePreview        = "application/vnd.github.preview"
-	mimeReleasePreview = "application/vnd.github.manifold-preview"
+	mediaTypeV3 = "application/vnd.github.v3+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -159,11 +158,12 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
+	req.Header.Add("Accept", mediaTypeV3)
 	req.Header.Add("User-Agent", c.UserAgent)
 	return req, nil
 }
 
-// NewUploadRequest creates an upload request. A relative URL can be provided in 
+// NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, contentType string) (*http.Request, error) {
@@ -178,6 +178,7 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, contentType s
 		return nil, err
 	}
 
+	req.Header.Add("Accept", mediaTypeV3)
 	req.Header.Add("Content-Type", contentType)
 	req.Header.Add("User-Agent", c.UserAgent)
 	return req, nil
