@@ -14,7 +14,6 @@ func TestSearchService_Repositories(t *testing.T) {
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mimePreview)
 		testFormValues(t, r, values{
 			"q":        "blah",
 			"sort":     "forks",
@@ -47,7 +46,6 @@ func TestSearchService_Issues(t *testing.T) {
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mimePreview)
 		testFormValues(t, r, values{
 			"q":        "blah",
 			"sort":     "forks",
@@ -80,7 +78,6 @@ func TestSearchService_Users(t *testing.T) {
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mimePreview)
 		testFormValues(t, r, values{
 			"q":        "blah",
 			"sort":     "forks",
@@ -113,7 +110,6 @@ func TestSearchService_Code(t *testing.T) {
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mimePreview)
 		testFormValues(t, r, values{
 			"q":        "blah",
 			"sort":     "forks",
