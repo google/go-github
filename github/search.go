@@ -124,7 +124,6 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept", mimePreview)
 
 	return s.client.Do(req, result)
 }
