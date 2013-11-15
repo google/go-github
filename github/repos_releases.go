@@ -59,7 +59,6 @@ func (s *RepositoriesService) ListReleases(owner, repo string) ([]RepositoryRele
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	releases := new([]RepositoryRelease)
 	resp, err := s.client.Do(req, releases)
@@ -79,7 +78,6 @@ func (s *RepositoriesService) GetRelease(owner, repo string, id int) (*Repositor
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	release := new(RepositoryRelease)
 	resp, err := s.client.Do(req, release)
@@ -99,7 +97,6 @@ func (s *RepositoriesService) CreateRelease(owner, repo string, release *Reposit
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	r := new(RepositoryRelease)
 	resp, err := s.client.Do(req, r)
@@ -119,7 +116,6 @@ func (s *RepositoriesService) EditRelease(owner, repo string, id int, release *R
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	r := new(RepositoryRelease)
 	resp, err := s.client.Do(req, r)
@@ -139,7 +135,6 @@ func (s *RepositoriesService) DeleteRelease(owner, repo string, id int) (*Respon
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 	return s.client.Do(req, nil)
 }
 
@@ -153,7 +148,6 @@ func (s *RepositoriesService) ListReleaseAssets(owner, repo string, id int) ([]R
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	assets := new([]ReleaseAsset)
 	resp, err := s.client.Do(req, assets)
@@ -173,7 +167,6 @@ func (s *RepositoriesService) GetReleaseAsset(owner, repo string, id int) (*Rele
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	asset := new(ReleaseAsset)
 	resp, err := s.client.Do(req, asset)
@@ -193,7 +186,6 @@ func (s *RepositoriesService) EditReleaseAsset(owner, repo string, id int, relea
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	asset := new(ReleaseAsset)
 	resp, err := s.client.Do(req, asset)
@@ -213,7 +205,6 @@ func (s *RepositoriesService) DeleteReleaseAsset(owner, repo string, id int) (*R
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 	return s.client.Do(req, nil)
 }
 
@@ -231,7 +222,6 @@ func (s *RepositoriesService) UploadReleaseAsset(owner, repo string, id int, opt
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Add("Accept", mimeReleasePreview)
 
 	asset := new(ReleaseAsset)
 	resp, err := s.client.Do(req, asset)
