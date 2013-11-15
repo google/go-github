@@ -6,8 +6,11 @@
 package github
 
 import (
+	"errors"
 	"fmt"
-	"io"
+	"mime"
+	"os"
+	"path/filepath"
 )
 
 // RepositoryRelease represents a GitHub release in a repository.
@@ -220,14 +223,26 @@ func (s *RepositoriesService) DeleteReleaseAsset(owner, repo string, id int) (*R
 // UploadReleaseAsset creates an asset by uploading a file into a release repository.
 //
 // GitHub API docs : http://developer.github.com/v3/repos/releases/#upload-a-release-asset
-func (s *RepositoriesService) UploadReleaseAsset(owner, repo string, id int, opt *UploadOptions, reader io.Reader, contentType string) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) UploadReleaseAsset(owner, repo string, id int, opt *UploadOptions, filePath string) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req, err := s.client.NewUploadRequest(u, reader, contentType)
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer file.Close()
+	stat, err := file.Stat()
+	if err != nil {
+		return nil, nil, err
+	}
+	if stat.IsDir() {
+		return nil, nil, errors.New("The asset to upload can't be a directory")
+	}
+	mediaType := mime.TypeByExtension(filepath.Ext(filePath))
+	req, err := s.client.NewUploadRequest(u, file, stat.Size(), mediaType)
 	if err != nil {
 		return nil, nil, err
 	}
