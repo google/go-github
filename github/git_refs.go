@@ -31,14 +31,14 @@ func (o GitObject) String() string {
 	return Stringify(o)
 }
 
-// refCreatePayload represents the payload for creating a reference.
-type refCreatePayload struct {
+// refCreateArgs represents the payload for creating a reference.
+type refCreateArgs struct {
 	Ref *string `json:"ref"`
 	SHA *string `json:"sha"`
 }
 
-// refUpdatePayload represents the payload for updating a reference.
-type refUpdatePayload struct {
+// refUpdateArgs represents the payload for updating a reference.
+type refUpdateArgs struct {
 	SHA   *string `json:"sha"`
 	Force *bool   `json:"force"`
 }
@@ -84,11 +84,11 @@ func (s *GitService) ListRefs(owner string, repo string) ([]*Reference, *Respons
 // CreateRef creates a new ref in a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/refs/#create-a-reference
-func (s *GitService) CreateRef(owner string, repo string, ref string, sha string) (*Reference, *Response, error) {
+func (s *GitService) CreateRef(owner string, repo string, ref *Reference) (*Reference, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, &refCreatePayload{
-		Ref: &ref,
-		SHA: &sha,
+	req, err := s.client.NewRequest("POST", u, &refCreateArgs{
+		Ref: String("refs/" + *ref.Ref),
+		SHA: ref.Object.SHA,
 	})
 	if err != nil {
 		return nil, nil, err
@@ -106,10 +106,10 @@ func (s *GitService) CreateRef(owner string, repo string, ref string, sha string
 // UpdateRef creates a new ref in a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/git/refs/#update-a-reference
-func (s *GitService) UpdateRef(owner string, repo string, ref string, sha string, force bool) (*Reference, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
-	req, err := s.client.NewRequest("PATCH", u, &refUpdatePayload{
-		SHA:   &sha,
+func (s *GitService) UpdateRef(owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, *ref.Ref)
+	req, err := s.client.NewRequest("PATCH", u, &refUpdateArgs{
+		SHA:   ref.Object.SHA,
 		Force: &force,
 	})
 	if err != nil {
