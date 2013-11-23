@@ -113,13 +113,13 @@ func TestGitService_CreateRef(t *testing.T) {
 	setup()
 	defer teardown()
 
-	args := &refCreateArgs{
+	args := &createRefRequest{
 		Ref: String("refs/heads/b"),
 		SHA: String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(refCreateArgs)
+		v := new(createRefRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -166,13 +166,13 @@ func TestGitService_UpdateRef(t *testing.T) {
 	setup()
 	defer teardown()
 
-	args := &refUpdateArgs{
+	args := &updateRefRequest{
 		SHA:   String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		Force: Bool(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
-		v := new(refUpdateArgs)
+		v := new(updateRefRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")

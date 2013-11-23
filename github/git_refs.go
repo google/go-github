@@ -31,14 +31,14 @@ func (o GitObject) String() string {
 	return Stringify(o)
 }
 
-// refCreateArgs represents the payload for creating a reference.
-type refCreateArgs struct {
+// createRefRequest represents the payload for creating a reference.
+type createRefRequest struct {
 	Ref *string `json:"ref"`
 	SHA *string `json:"sha"`
 }
 
-// refUpdateArgs represents the payload for updating a reference.
-type refUpdateArgs struct {
+// updateRefRequest represents the payload for updating a reference.
+type updateRefRequest struct {
 	SHA   *string `json:"sha"`
 	Force *bool   `json:"force"`
 }
@@ -86,7 +86,7 @@ func (s *GitService) ListRefs(owner string, repo string) ([]*Reference, *Respons
 // GitHub API docs: http://developer.github.com/v3/git/refs/#create-a-reference
 func (s *GitService) CreateRef(owner string, repo string, ref *Reference) (*Reference, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, &refCreateArgs{
+	req, err := s.client.NewRequest("POST", u, &createRefRequest{
 		Ref: String("refs/" + *ref.Ref),
 		SHA: ref.Object.SHA,
 	})
@@ -108,7 +108,7 @@ func (s *GitService) CreateRef(owner string, repo string, ref *Reference) (*Refe
 // GitHub API docs: http://developer.github.com/v3/git/refs/#update-a-reference
 func (s *GitService) UpdateRef(owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, *ref.Ref)
-	req, err := s.client.NewRequest("PATCH", u, &refUpdateArgs{
+	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{
 		SHA:   ref.Object.SHA,
 		Force: &force,
 	})
