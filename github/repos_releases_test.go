@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -225,7 +226,11 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	})
 
 	opt := &UploadOptions{Name: "n"}
-	asset, _, err := client.Repositories.UploadReleaseAsset("o", "r", 1, opt, "testdata/upload.txt")
+	file, err := os.Open("testdata/upload.txt")
+	if err != nil {
+		t.Errorf("Unable to open file testdata/upload.txt")
+	}
+	asset, _, err := client.Repositories.UploadReleaseAsset("o", "r", 1, opt, file)
 	if err != nil {
 		t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
 	}

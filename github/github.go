@@ -10,10 +10,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -167,19 +169,27 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
-func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error) {
+func (c *Client) NewUploadRequest(urlStr string, file *os.File) (*http.Request, error) {
 	rel, err := url.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
-
-	u := c.UploadURL.ResolveReference(rel)
-	req, err := http.NewRequest("POST", u.String(), reader)
+	stat, err := file.Stat()
 	if err != nil {
 		return nil, err
 	}
-	req.ContentLength = size
+	if stat.IsDir() {
+		return nil, errors.New("The asset to upload can't be a directory")
+	}
 
+	u := c.UploadURL.ResolveReference(rel)
+	req, err := http.NewRequest("POST", u.String(), file)
+	if err != nil {
+		return nil, err
+	}
+	req.ContentLength = stat.Size()
+
+	mediaType := mime.TypeByExtension(filepath.Ext(stat.Name()))
 	if len(mediaType) == 0 {
 		mediaType = defaultMediaType
 	}
