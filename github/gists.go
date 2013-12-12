@@ -56,6 +56,8 @@ func (g GistFile) String() string {
 type GistListOptions struct {
 	// Since filters Gists by time.
 	Since time.Time `url:"since,omitempty"`
+
+	ListOptions
 }
 
 // List gists for a user. Passing the empty string will list
