@@ -172,10 +172,15 @@ func TestIssuesService_Create(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Issue{Title: String("t")}
+	input := &IssueRequest{
+		Title:    String("t"),
+		Body:     String("b"),
+		Assignee: String("a"),
+		Labels:   []string{"l1", "l2"},
+	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Issue)
+		v := new(IssueRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -206,10 +211,10 @@ func TestIssuesService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Issue{Title: String("t")}
+	input := &IssueRequest{Title: String("t")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Issue)
+		v := new(IssueRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
