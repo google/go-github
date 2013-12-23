@@ -39,6 +39,18 @@ func (i Issue) String() string {
 	return Stringify(i)
 }
 
+// IssueRequest represents a request to create/edit an issue.
+// It is separate from Issue above because otherwise Labels
+// and Assignee fail to serialize to the correct JSON.
+type IssueRequest struct {
+	Title    *string  `json:"title,omitempty"`
+	Body     *string  `json:"body,omitempty"`
+	Labels   []string `json:"labels,omitempty"`
+	Assignee *string  `json:"assignee,omitempty"`
+
+	// TODO(willnorris): milestone here too!
+}
+
 // IssueListOptions specifies the optional parameters to the IssuesService.List
 // and IssuesService.ListByOrg methods.
 type IssueListOptions struct {
@@ -198,7 +210,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 // Create a new issue on the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#create-an-issue
-func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue, *Response, error) {
+func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
@@ -217,7 +229,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *Issue) (*Issue,
 // Edit an issue.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#edit-an-issue
-func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue) (*Issue, *Response, error) {
+func (s *IssuesService) Edit(owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)
 	if err != nil {
