@@ -116,6 +116,12 @@ func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
+	noRedirectHTTPClient := &http.Client{
+		Transport:     httpClient.Transport,
+		CheckRedirect: noRedirect,
+		Jar:           httpClient.Jar,
+	}
+
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
 
@@ -127,10 +133,14 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Issues = &IssuesService{client: c}
 	c.Organizations = &OrganizationsService{client: c}
 	c.PullRequests = &PullRequestsService{client: c}
-	c.Repositories = &RepositoriesService{client: c}
+	c.Repositories = &RepositoriesService{client: c, noRedirectHTTPClient: noRedirectHTTPClient}
 	c.Search = &SearchService{client: c}
 	c.Users = &UsersService{client: c}
 	return c
+}
+
+func noRedirect(r *http.Request, via []*http.Request) error {
+	return errors.New("stopped")
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
@@ -275,13 +285,26 @@ func (r *Response) populateRate() {
 	}
 }
 
-// Do sends an API request and returns the API response.  The API response is
+// Do sends an API request and returns the API response. The API response is
 // decoded and stored in the value pointed to by v, or returned as an error if
 // an API error has occurred.
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
+	resp, _, err := c.PolymorphicDo(req, v)
+	return resp, err
+}
+
+// PolymorphicDo sends an API request and returns the API response. It also
+// attempts to decode the response into one of the values in vs. If successful
+// the index of the value it was decoded into is returned, otherwise the index
+// is -1. A error is returned if there was an API or decoding error.
+//
+// Important note: if vs contains multiple struct types and the json type
+// is a map, the json decoder will use the first struct, and silently
+// discard all json fields that do not have a corresponding field in the struct.
+func (c *Client) PolymorphicDo(req *http.Request, vs ...interface{}) (*Response, int, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, -1, err
 	}
 
 	defer resp.Body.Close()
@@ -294,13 +317,27 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	if err != nil {
 		// even though there was an error, we still return the response
 		// in case the caller wants to inspect it further
-		return response, err
+		return response, -1, err
 	}
 
-	if v != nil {
-		err = json.NewDecoder(resp.Body).Decode(v)
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(resp.Body)
+	if err != nil {
+		return response, -1, err
 	}
-	return response, err
+
+	respReader := bytes.NewReader(buf.Bytes())
+
+	for i, v := range vs {
+		if v != nil {
+			respReader.Seek(0, 0)
+			err = json.NewDecoder(respReader).Decode(v)
+			if err == nil {
+				return response, i, nil
+			}
+		}
+	}
+	return response, -1, err
 }
 
 /*

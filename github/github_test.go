@@ -376,11 +376,87 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	}
 }
 
+func TestPolymorphicDo(t *testing.T) {
+	setup()
+	defer teardown()
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `[{"A":"a"}]`)
+	})
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	fooBody := &foo{}
+	fooLstBody := &[]foo{}
+
+	_, i, _ := client.PolymorphicDo(req, fooBody, fooLstBody)
+
+	wantFoo := &foo{}
+	if !reflect.DeepEqual(fooBody, wantFoo) {
+		t.Errorf("Response body = %v, want %v", fooBody, wantFoo)
+	}
+
+	wantFooLst := &[]foo{{"a"}}
+	if !reflect.DeepEqual(fooLstBody, wantFooLst) {
+		t.Errorf("Response body = %v, want %v", fooLstBody, wantFooLst)
+	}
+
+	if i != 1 {
+		t.Errorf("Index of decoded match = %v, want %v", i, 1)
+	}
+}
+
+func TestPolymorphicDo_noMatch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	type foo struct {
+		A string
+	}
+
+	type bar struct {
+		B string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `1`)
+	})
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	fooBody := new(foo)
+	fooLstBody := []foo{}
+
+	_, i, _ := client.PolymorphicDo(req, fooBody, fooLstBody)
+
+	wantFoo := &foo{}
+	if !reflect.DeepEqual(fooBody, wantFoo) {
+		t.Errorf("Response body = %v, want %v", fooBody, wantFoo)
+	}
+
+	wantFooList := []foo{}
+	if !reflect.DeepEqual(fooLstBody, wantFooList) {
+		t.Errorf("Response body = %v, want %v", fooLstBody, wantFooList)
+	}
+
+	if i != -1 {
+		t.Errorf("Index of decoded match = %v, want %v", i, -1)
+	}
+}
+
 func TestCheckResponse(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
-		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m", 
+		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
 			"errors": [{"resource": "r", "field": "f", "code": "c"}]}`)),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
