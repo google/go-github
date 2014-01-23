@@ -31,3 +31,27 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 		t.Errorf("Repositories.GetReadme returned %+v, want %+v", readme, want)
 	}
 }
+
+func TestDecodeBadEncoding(t *testing.T) {
+	setup()
+	defer teardown()
+	r := RepositoryContent{Encoding: String("bad")}
+	_, err := r.Decode()
+	if err == nil {
+		t.Errorf("Should fail to decode non-base64")
+	}
+}
+
+func TestDecode(t *testing.T) {
+	setup()
+	defer teardown()
+	r := RepositoryContent{Encoding: String("base64"), Content: String("aGVsbG8=")}
+	o, err := r.Decode()
+	if err != nil {
+		t.Errorf("Failed to decode content.")
+	}
+	want := "hello"
+	if string(o) != want {
+		t.Errorf("RepositoryContent.Decode returned %+v, want %+v", string(o), want)
+	}
+}

@@ -9,6 +9,8 @@
 package github
 
 import (
+	"encoding/base64"
+	"errors"
 	"fmt"
 )
 
@@ -24,6 +26,18 @@ type RepositoryContent struct {
 	URL      *string `json:"url,omitempty"`
 	GitURL   *string `json:"giturl,omitempty"`
 	HTMLURL  *string `json:"htmlurl,omitempty"`
+}
+
+// Decode decodes the file content if it is base64 encoded.
+func (c *RepositoryContent) Decode() ([]byte, error) {
+	if *c.Encoding != "base64" {
+		return nil, errors.New("Cannot decode non-base64")
+	}
+	o, err := base64.StdEncoding.DecodeString(*c.Content)
+	if err != nil {
+		return nil, err
+	}
+	return o, nil
 }
 
 // GetReadme gets the Readme file for the repository.
