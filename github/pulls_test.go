@@ -138,3 +138,169 @@ func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
 	_, _, err := client.PullRequests.Edit("%", "r", 1, nil)
 	testURLParseError(t, err)
 }
+
+func TestPullRequestsService_ListCommits(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/commits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		fmt.Fprint(w, `
+			[
+			  {
+			    "sha": "3",
+			    "parents": [
+			      {
+			        "sha": "2"
+			      }
+			    ]
+			  },
+  			  {
+			    "sha": "2",
+			    "parents": [
+			      {
+			        "sha": "1"
+			      }
+			    ]
+			  }
+			]`)
+	})
+
+	commits, _, err := client.PullRequests.ListCommits("o", "r", 1)
+	if err != nil {
+		t.Errorf("PullRequests.ListCommits returned error: %v", err)
+	}
+
+	want := &[]Commit{
+		Commit{
+			SHA: String("3"),
+			Parents: []Commit{
+				Commit{
+					SHA: String("2"),
+				},
+			},
+		},
+		Commit{
+			SHA: String("2"),
+			Parents: []Commit{
+				Commit{
+					SHA: String("1"),
+				},
+			},
+		},
+	}
+	if !reflect.DeepEqual(commits, want) {
+		t.Errorf("PullRequests.ListCommits returned %+v, want %+v", commits, want)
+	}
+}
+
+func TestPullRequestsService_ListFiles(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		fmt.Fprint(w, `
+			[
+			  {
+			    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+			    "filename": "file1.txt",
+			    "status": "added",
+			    "additions": 103,
+			    "deletions": 21,
+			    "changes": 124,
+			    "patch": "@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"
+			  },
+			  {
+			    "sha": "f61aebed695e2e4193db5e6dcb09b5b57875f334",
+			    "filename": "file2.txt",
+			    "status": "modified",
+			    "additions": 5,
+			    "deletions": 3,
+			    "changes": 103,
+			    "patch": "@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"
+			  }
+			]`)
+	})
+
+	commitFiles, _, err := client.PullRequests.ListFiles("o", "r", 1)
+	if err != nil {
+		t.Errorf("PullRequests.ListFiles returned error: %v", err)
+	}
+
+	want := &[]CommitFile{
+		CommitFile{
+			SHA:       String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			Filename:  String("file1.txt"),
+			Additions: Int(103),
+			Deletions: Int(21),
+			Changes:   Int(124),
+			Status:    String("added"),
+			Patch:     String("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+		},
+		CommitFile{
+			SHA:       String("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
+			Filename:  String("file2.txt"),
+			Additions: Int(5),
+			Deletions: Int(3),
+			Changes:   Int(103),
+			Status:    String("modified"),
+			Patch:     String("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+		},
+	}
+
+	if !reflect.DeepEqual(commitFiles, want) {
+		t.Errorf("PullRequests.ListFiles returned %+v, want %+v", commitFiles, want)
+	}
+}
+
+func TestPullRequestsService_IsMerged(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	isMerged, _, err := client.PullRequests.IsMerged("o", "r", 1)
+	if err != nil {
+		t.Errorf("PullRequests.IsMerged returned error: %v", err)
+	}
+
+	want := true
+	if !reflect.DeepEqual(isMerged, want) {
+		t.Errorf("PullRequests.IsMerged returned %+v, want %+v", isMerged, want)
+	}
+}
+
+func TestPullRequestsService_Merge(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `
+			{
+			  "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+			  "merged": true,
+			  "message": "Pull Request successfully merged"
+			}`)
+	})
+
+	merge, _, err := client.PullRequests.Merge("o", "r", 1, "merging pull request")
+	if err != nil {
+		t.Errorf("PullRequests.Merge returned error: %v", err)
+	}
+
+	want := &PullRequestMergeResult{
+		SHA:     String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		Merged:  Bool(true),
+		Message: String("Pull Request successfully merged"),
+	}
+	if !reflect.DeepEqual(merge, want) {
+		t.Errorf("PullRequests.Merge returned %+v, want %+v", merge, want)
+	}
+}
