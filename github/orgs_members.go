@@ -7,17 +7,33 @@ package github
 
 import "fmt"
 
+// ListMembersOptions specifies optional parameters to the
+// OrganizationsService.ListMembers method.
+type ListMembersOptions struct {
+	// If true (or if the authenticated user is not an owner of the
+	// organization), list only publicly visible members.
+	PublicOnly bool `url:"-"`
+
+	// Filter members returned in the list.  Possible values are:
+	// 2fa_disabled, all.  Default is "all".
+	Filter string `url:"filter,omitempty"`
+}
+
 // ListMembers lists the members for an organization.  If the authenticated
 // user is an owner of the organization, this will return both concealed and
 // public members, otherwise it will only return public members.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
-func (s *OrganizationsService) ListMembers(org string, publicOnly bool) ([]User, *Response, error) {
+func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) ([]User, *Response, error) {
 	var u string
-	if publicOnly {
+	if opt != nil && opt.PublicOnly {
 		u = fmt.Sprintf("orgs/%v/public_members", org)
 	} else {
 		u = fmt.Sprintf("orgs/%v/members", org)
+	}
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
