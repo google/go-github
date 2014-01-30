@@ -47,6 +47,7 @@ type IssueRequest struct {
 	Body     *string  `json:"body,omitempty"`
 	Labels   []string `json:"labels,omitempty"`
 	Assignee *string  `json:"assignee,omitempty"`
+	State    *string  `json:"state,omitempty"`
 
 	// TODO(willnorris): milestone here too!
 }
