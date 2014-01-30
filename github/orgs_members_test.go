@@ -18,10 +18,12 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"filter": "2fa_disabled"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListMembers("o", false)
+	opt := &ListMembersOptions{PublicOnly: false, Filter: "2fa_disabled"}
+	members, _, err := client.Organizations.ListMembers("o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
@@ -33,7 +35,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListMembers("%", false)
+	_, _, err := client.Organizations.ListMembers("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -46,7 +48,8 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListMembers("o", true)
+	opt := &ListMembersOptions{PublicOnly: true}
+	members, _, err := client.Organizations.ListMembers("o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
