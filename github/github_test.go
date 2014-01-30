@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
+	"path"
 	"reflect"
 	"strings"
 	"testing"
@@ -50,6 +52,33 @@ func teardown() {
 	server.Close()
 }
 
+// openTestFile creates a new file with the given name and content for testing.
+// In order to ensure the exact file name, this function will create a new temp
+// directory, and create the file in that directory.  It is the caller's
+// responsibility to remove the directy and its contents when no longer needed.
+func openTestFile(name, content string) (file *os.File, dir string, err error) {
+	dir, err = ioutil.TempDir("", "go-github")
+	if err != nil {
+		return nil, dir, err
+	}
+
+	file, err = os.OpenFile(path.Join(dir, name), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	if err != nil {
+		return nil, dir, err
+	}
+
+	fmt.Fprint(file, content)
+
+	// close and re-open the file to keep file.Stat() happy
+	file.Close()
+	file, err = os.Open(file.Name())
+	if err != nil {
+		return nil, dir, err
+	}
+
+	return file, dir, err
+}
+
 func testMethod(t *testing.T, r *http.Request, want string) {
 	if want != r.Method {
 		t.Errorf("Request method = %v, want %v", r.Method, want)
@@ -85,17 +114,16 @@ func testURLParseError(t *testing.T, err error) {
 	}
 }
 
-func testBody(t *testing.T, r *http.Request, want string){
-b, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("Unable to read body")
-		}
-		str := string(b)
-		if want != str {
-			t.Errorf("Body = %s, want: %s", str, want)
-		}
+func testBody(t *testing.T, r *http.Request, want string) {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Unable to read body")
 	}
-
+	str := string(b)
+	if want != str {
+		t.Errorf("Body = %s, want: %s", str, want)
+	}
+}
 
 // Helper function to test that a value is marshalled to JSON as expected.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
