@@ -215,11 +215,13 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 
-	opt := &UploadOptions{Name: "n"}
-	file, err := os.Open("testdata/upload.txt")
+	file, dir, err := openTestFile("upload.txt", "Upload me !\n")
 	if err != nil {
-		t.Errorf("Unable to open file testdata/upload.txt")
+		t.Fatalf("Unable to create temp file: %v", err)
 	}
+	defer os.RemoveAll(dir)
+
+	opt := &UploadOptions{Name: "n"}
 	asset, _, err := client.Repositories.UploadReleaseAsset("o", "r", 1, opt, file)
 	if err != nil {
 		t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
