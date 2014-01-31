@@ -17,6 +17,8 @@ type ListMembersOptions struct {
 	// Filter members returned in the list.  Possible values are:
 	// 2fa_disabled, all.  Default is "all".
 	Filter string `url:"filter,omitempty"`
+
+	ListOptions
 }
 
 // ListMembers lists the members for an organization.  If the authenticated
