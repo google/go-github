@@ -51,6 +51,34 @@ func (r Repository) String() string {
 	return Stringify(r)
 }
 
+// RepositorySpec specifies a repository.
+type RepositorySpec interface {
+	Path() string
+}
+
+// RepositoryName identifies a repository by its owner and name.
+type RepositoryName struct {
+	// Owner is the user login of the repository's owner.
+	Owner string
+
+	// Name is the repository's name (not including the owner).
+	Name string
+}
+
+// Path implements RepositorySpec.
+func (r RepositoryName) Path() string {
+	return fmt.Sprintf("repos/%v/%v", r.Owner, r.Name)
+}
+
+// RepositoryID is a numeric ID for a repository. GitHub repository IDs remain
+// unchanged even if the repository is renamed.
+type RepositoryID int64
+
+// Path implements RepositorySpec.
+func (r RepositoryID) Path() string {
+	return fmt.Sprintf("repositories/%d", r)
+}
+
 // RepositoryListOptions specifies the optional parameters to the
 // RepositoriesService.List method.
 type RepositoryListOptions struct {
@@ -195,9 +223,8 @@ func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository,
 // Get fetches a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#get
-func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+func (s *RepositoriesService) Get(spec RepositorySpec) (*Repository, *Response, error) {
+	req, err := s.client.NewRequest("GET", spec.Path(), nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -214,9 +241,8 @@ func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, e
 // Edit updates a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#edit
-func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (*Repository, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, repository)
+func (s *RepositoriesService) Edit(spec RepositorySpec, repository *Repository) (*Repository, *Response, error) {
+	req, err := s.client.NewRequest("PATCH", spec.Path(), repository)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -240,8 +266,8 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 //     }
 //
 // GitHub API Docs: http://developer.github.com/v3/repos/#list-languages
-func (s *RepositoriesService) ListLanguages(owner string, repository string) (map[string]int, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/languages", owner, repository)
+func (s *RepositoriesService) ListLanguages(spec RepositorySpec) (map[string]int, *Response, error) {
+	u := spec.Path() + "/languages"
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

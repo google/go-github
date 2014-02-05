@@ -189,17 +189,27 @@ func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	h := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"}}`)
-	})
+	}
+	mux.HandleFunc("/repos/o/r", h)
+	mux.HandleFunc("/repositories/1", h)
 
-	repo, _, err := client.Repositories.Get("o", "r")
+	repo, _, err := client.Repositories.Get(RepositoryName{"o", "r"})
 	if err != nil {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
+	}
+
+	repo, _, err = client.Repositories.Get(RepositoryID(1))
+	if err != nil {
+		t.Errorf("Repositories.Get returned error: %v", err)
+	}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
 	}
@@ -212,7 +222,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	i := true
 	input := &Repository{HasIssues: &i}
 
-	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	h := func(w http.ResponseWriter, r *http.Request) {
 		v := new(Repository)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -221,9 +231,11 @@ func TestRepositoriesService_Edit(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"id":1}`)
-	})
+	}
+	mux.HandleFunc("/repos/o/r", h)
+	mux.HandleFunc("/repositories/1", h)
 
-	repo, _, err := client.Repositories.Edit("o", "r", input)
+	repo, _, err := client.Repositories.Edit(RepositoryName{"o", "r"}, input)
 	if err != nil {
 		t.Errorf("Repositories.Edit returned error: %v", err)
 	}
@@ -232,15 +244,23 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Edit returned %+v, want %+v", repo, want)
 	}
+
+	repo, _, err = client.Repositories.Edit(RepositoryID(1), input)
+	if err != nil {
+		t.Errorf("Repositories.Edit returned error: %v", err)
+	}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.Edit returned %+v, want %+v", repo, want)
+	}
 }
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.Get("%", "r")
+	_, _, err := client.Repositories.Get(RepositoryName{"%", "r"})
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.Edit("%", "r", nil)
+	_, _, err := client.Repositories.Edit(RepositoryName{"%", "r"}, nil)
 	testURLParseError(t, err)
 }
 
@@ -248,12 +268,14 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/languages", func(w http.ResponseWriter, r *http.Request) {
+	h := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"go":1}`)
-	})
+	}
+	mux.HandleFunc("/repos/o/r/languages", h)
+	mux.HandleFunc("/repositories/1/languages", h)
 
-	languages, _, err := client.Repositories.ListLanguages("o", "r")
+	languages, _, err := client.Repositories.ListLanguages(RepositoryName{"o", "r"})
 	if err != nil {
 		t.Errorf("Repositories.ListLanguages returned error: %v", err)
 	}
@@ -262,9 +284,17 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	if !reflect.DeepEqual(languages, want) {
 		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
 	}
+
+	languages, _, err = client.Repositories.ListLanguages(RepositoryID(1))
+	if err != nil {
+		t.Errorf("Repositories.ListLanguages returned error: %v", err)
+	}
+	if !reflect.DeepEqual(languages, want) {
+		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
+	}
 }
 
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListLanguages("%", "%")
+	_, _, err := client.Repositories.ListLanguages(RepositoryName{"%", "%"})
 	testURLParseError(t, err)
 }
