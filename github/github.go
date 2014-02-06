@@ -284,8 +284,6 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
-
 	response := newResponse(resp)
 
 	c.Rate = response.Rate
@@ -294,11 +292,13 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	if err != nil {
 		// even though there was an error, we still return the response
 		// in case the caller wants to inspect it further
+    resp.Body.Close()
 		return response, err
 	}
 
 	if v != nil {
 		err = json.NewDecoder(resp.Body).Decode(v)
+    resp.Body.Close()
 	}
 	return response, err
 }
