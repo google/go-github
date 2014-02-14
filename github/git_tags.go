@@ -26,6 +26,14 @@ type Tag struct {
 	Object  *GitObject    `json:"object,omitempty"`
 }
 
+type TagRequest struct {
+	Tag string
+	Message string
+	Object string
+	Type string
+	Tagger *CommitAuthor
+}
+
 // GetTag fetchs a tag from a repo given a SHA.
 //
 // GitHub API docs: http://developer.github.com/v3/git/tags/#get-a-tag
@@ -44,9 +52,9 @@ func (s *GitService) GetTag(owner string, repo string, sha string) (*Tag, *Respo
 // CreateTag creates a tag object.
 //
 // GitHub API docs: http://developer.github.com/v3/git/tags/#create-a-tag-object
-func (s *GitService) CreateTag(owner string, repo string, tag *Tag) (*Tag, *Response, error) {
+func (s *GitService) CreateTag(owner string, repo string, tagRequest *TagRequest) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags", owner, repo)
-	req, err := s.client.NewRequest("POST", u, tag)
+	req, err := s.client.NewRequest("POST", u, tagRequest)
 	if err != nil {
 		return nil, nil, err
 	}

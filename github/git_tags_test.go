@@ -39,10 +39,10 @@ func TestGitService_CreateTag(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Tag{Tag: "t", SHA: "s"}
+	input := &TagRequest{Tag: "t", Object: "s"}
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Tag)
+		v := new(TagRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
