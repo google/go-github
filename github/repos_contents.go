@@ -100,7 +100,7 @@ func (s *RepositoriesService) GetReadme(owner, repo string, opt *RefOption) (*Re
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RefOption) (fileContent *RepositoryContent,
 	directoryContent []*RepositoryContent, resp *Response, err error) {
-	u := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	u, err = addOptions(u, opt)
 	if err != nil {
 		return nil, nil, nil, err
@@ -130,7 +130,7 @@ func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RefOpti
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#create-a-file
 func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
-	u := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -148,7 +148,7 @@ func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *Reposito
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#update-a-file
 func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
-	u := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -166,7 +166,7 @@ func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *Reposito
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#delete-a-file
 func (s *RepositoriesService) DeleteFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
-	u := fmt.Sprintf("/repos/%s/%s/contents/%s", owner, repo, path)
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -193,7 +193,7 @@ const (
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-archive-link
 func (s *RepositoriesService) GetArchiveLink(owner, repo string, archiveformat archiveFormat, opt *RefOption) (*url.URL, *Response, error) {
-	u := fmt.Sprintf("/repos/%s/%s/%s", owner, repo, archiveformat)
+	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
 		u += fmt.Sprintf("/%s", opt.Ref)
 	}
