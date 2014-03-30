@@ -230,6 +230,60 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 	return r, resp, err
 }
 
+// Contributor represents a repository contributor
+type Contributor struct {
+	Login             *string `json:"login,omitempty"`
+	ID                *int    `json:"id,omitempty"`
+	AvatarURL         *string `json:"avatar_url,omitempty"`
+	GravatarID        *string `json:"gravatar_id,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
+	FollowersURL      *string `json:"followers_url,omitempty"`
+	FollowingURL      *string `json:"following_url,omitempty"`
+	GistsURL          *string `json:"gists_url,omitempty"`
+	StarredURL        *string `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  *string `json:"organizations_url,omitempty"`
+	ReposURL          *string `json:"repos_url,omitempty"`
+	EventsURL         *string `json:"events_url,omitempty"`
+	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	SiteAdmin         *bool   `json:"site_admin"`
+	Contributions     *int    `json:"contributions,omitempty"`
+}
+
+// ListContributorsOptions specifies the optional parameters to the
+// RepositoriesService.ListContributors method.
+type ListContributorsOptions struct {
+	// Include anonymous contributors in results or not
+	Anon string `url:"anon,omitempty"`
+}
+
+// ListContributors lists contributors for a repository.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#list-contributors
+func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]Contributor, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/contributors", owner, repository)
+
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	contributor := new([]Contributor)
+	resp, err := s.client.Do(req, contributor)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return *contributor, resp, err
+}
+
 // ListLanguages lists languages for the specified repository. The returned map
 // specifies the languages and the number of bytes of code written in that
 // language. For example:
