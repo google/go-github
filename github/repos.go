@@ -255,3 +255,28 @@ func (s *RepositoriesService) ListLanguages(owner string, repository string) (ma
 
 	return languages, resp, err
 }
+
+// Branch represents a repository branch
+type Branch struct {
+	Name   *string `json:"name,omitempty"`
+	Commit *Commit
+}
+
+// ListBranches lists branches for the specified repository.
+//
+// GitHub API docs: http://developer.github.com/v3/repos/#list-branches
+func (s *RepositoriesService) ListBranches(owner string, repository string) ([]Branch, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/branches", owner, repository)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	branches := new([]Branch)
+	resp, err := s.client.Do(req, branches)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *branches, resp, err
+}
