@@ -286,6 +286,26 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListBranches(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"name":"master", "commit" : {"sha" : "a57781", "url" : "https://api.github.com/repos/o/r/commits/a57781"}}]`)
+	})
+
+	branches, _, err := client.Repositories.ListBranches("o", "r")
+	if err != nil {
+		t.Errorf("Repositories.ListBranches returned error: %v", err)
+	}
+
+	want := []Branch{{Name: String("master"), Commit: &Commit{SHA: String("a57781"), URL: String("https://api.github.com/repos/o/r/commits/a57781")}}}
+	if !reflect.DeepEqual(branches, want) {
+		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
+	}
+}
+
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 	_, _, err := client.Repositories.ListLanguages("%", "%")
 	testURLParseError(t, err)
