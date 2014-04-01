@@ -276,8 +276,10 @@ func (r *Response) populateRate() {
 }
 
 // Do sends an API request and returns the API response.  The API response is
-// decoded and stored in the value pointed to by v, or returned as an error if
-// an API error has occurred.
+// JSON decoded and stored in the value pointed to by v, or returned as an
+// error if an API error has occurred.  If v implements the io.Writer
+// interface, the raw response body will be written to v, without attempting to
+// first decode it.
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -298,7 +300,11 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	}
 
 	if v != nil {
-		err = json.NewDecoder(resp.Body).Decode(v)
+		if w, ok := v.(io.Writer); ok {
+			io.Copy(w, resp.Body)
+		} else {
+			err = json.NewDecoder(resp.Body).Decode(v)
+		}
 	}
 	return response, err
 }
