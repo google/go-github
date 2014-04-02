@@ -138,3 +138,24 @@ func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
 	_, _, err := client.PullRequests.Edit("%", "r", 1, nil)
 	testURLParseError(t, err)
 }
+
+func TestPullRequestsService_ListFiles(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"sha" : "a2ccc", "filename" : "test.go", "additions" : 63, "deletions" : 0, "changes" : 63, "status" : "added", "patch" : "@@ -0,0 +1,63 @@", "blob_url" : "https://github.com/owner/repo/blob/6b6e14", "raw_url" : "https://github.com/owner/repo/raw/6b6e14","contents_url" : "https://github.com/owner/repo/comtents/6b6e14"}]`)
+	})
+
+	files, _, err := client.PullRequests.ListFiles("o", "r", 1)
+	if err != nil {
+		t.Errorf("PullRequestsService.ListFiles returned error: %v", err)
+	}
+
+	want := []PullRequestFile{{CommitFile: &CommitFile{SHA: String("a2ccc"), Filename: String("test.go"), Additions: Int(63), Deletions: Int(0), Changes: Int(63), Status: String("added"), Patch: String("@@ -0,0 +1,63 @@")}, BlobURL: String("https://github.com/owner/repo/blob/6b6e14"), RawURL: String("https://github.com/owner/repo/raw/6b6e14"), ContentsURL: String("https://github.com/owner/repo/comtents/6b6e14")}}
+
+	if !reflect.DeepEqual(files, want) {
+		t.Errorf("PullRequestsService.ListFiles returned %+v, want %+v", files, want)
+	}
+}

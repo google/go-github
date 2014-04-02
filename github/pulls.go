@@ -141,3 +141,30 @@ func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *
 
 	return p, resp, err
 }
+
+// PullRequestFile represents a GitHub pull request file on a repository.
+type PullRequestFile struct {
+	*CommitFile
+	BlobURL     *string `json:"blob_url,omitempty"`
+	RawURL      *string `json:"raw_url,omitempty"`
+	ContentsURL *string `json:"contents_url,omitempty"`
+}
+
+// ListFiles returns the files for a pull request
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/#list-pull-requests-files
+func (s *PullRequestsService) ListFiles(owner string, repo string, number int) ([]PullRequestFile, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := new([]PullRequestFile)
+	resp, err := s.client.Do(req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *p, resp, err
+}
