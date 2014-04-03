@@ -75,7 +75,7 @@ Helper functions have been provided to easily create these pointers for string,
 bool, and int values.  For example:
 
 	// create a new private repository named "foo"
-	repo := &github.Repo{
+	repo := &github.Repository{
 		Name:    github.String("foo"),
 		Private: github.Bool(true),
 	}
