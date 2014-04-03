@@ -28,8 +28,8 @@ type RepositoryContent struct {
 	HTMLURL  *string `json:"htmlurl,omitempty"`
 }
 
-func (r RepositoryContent) String() string {
-	return Stringify(r)
+func (c RepositoryContent) String() string {
+	return Stringify(c)
 }
 
 // Decode decodes the file content if it is base64 encoded.
@@ -59,4 +59,32 @@ func (s *RepositoriesService) GetReadme(owner, repo string) (*RepositoryContent,
 		return nil, resp, err
 	}
 	return readme, resp, err
+}
+
+// GetContents returns the contents of a file or directory in a repository.
+//
+// ref argument is optional and can be left empty.
+// See the API docs for the exact behaviour description.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#get-contents
+func (s *RepositoriesService) GetContents(owner, repo, path, ref string) (*RepositoryContent, *Response, error) {
+	var u string
+	if ref == "" {
+		u = fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
+	} else {
+		u = fmt.Sprintf("repos/%v/%v/contents/%v?ref=%v", owner, repo, path, ref)
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	content := new(RepositoryContent)
+	resp, err := s.client.Do(req, content)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return content, resp, err
 }
