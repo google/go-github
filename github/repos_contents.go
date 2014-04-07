@@ -1,4 +1,4 @@
-// Copyright 2014 The go-github AUTHORS. All rights reserved.
+// Copyright 2013 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -32,13 +32,13 @@ type RepositoryContent struct {
 }
 
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
-type RepositoryContentsResponse struct {
+type RepositoryContentResponse struct {
 	Content *RepositoryContent `json:"content,omitempty"`
 	Commit  `json:"commit,omitempty"`
 }
 
-// RepositoryContentOptions specifies optional parameters for GetContents
-type RepositoryContentsOptions struct {
+// RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.
+type RepositoryContentFileOptions struct {
 	Message   *string       `json:"message,omitempty"`
 	Content   *[]byte       `json:"content,omitempty"`
 	SHA       *string       `json:"sha,omitempty"`
@@ -47,9 +47,9 @@ type RepositoryContentsOptions struct {
 	Committer *CommitAuthor `json:"committer,omitempty"`
 }
 
-// RefOption represents an optional ref parameter, which can be a SHA,
+// RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
 // branch, or tag
-type RefOption struct {
+type RepositoryContentGetOptions struct {
 	Ref string `url:"ref,omitempty"`
 }
 
@@ -72,7 +72,7 @@ func (c *RepositoryContent) Decode() ([]byte, error) {
 // GetReadme gets the Readme file for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-the-readme
-func (s *RepositoriesService) GetReadme(owner, repo string, opt *RefOption) (*RepositoryContent, *Response, error) {
+func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -98,7 +98,7 @@ func (s *RepositoriesService) GetReadme(owner, repo string, opt *RefOption) (*Re
 // contain a value and the other will be 'nil'.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
-func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RefOption) (fileContent *RepositoryContent,
+func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent,
 	directoryContent []*RepositoryContent, resp *Response, err error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	u, err = addOptions(u, opt)
@@ -129,13 +129,13 @@ func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RefOpti
 // the commit and file metadata.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#create-a-file
-func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
+func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
-	createResponse := new(RepositoryContentsResponse)
+	createResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(req, createResponse)
 	if err != nil {
 		return nil, resp, err
@@ -147,13 +147,13 @@ func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *Reposito
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#update-a-file
-func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
+func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
-	updateResponse := new(RepositoryContentsResponse)
+	updateResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(req, updateResponse)
 	if err != nil {
 		return nil, resp, err
@@ -165,13 +165,13 @@ func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *Reposito
 // Requires the blob SHA of the to be deleted.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#delete-a-file
-func (s *RepositoriesService) DeleteFile(owner, repo, path string, opt *RepositoryContentsOptions) (*RepositoryContentsResponse, *Response, error) {
+func (s *RepositoriesService) DeleteFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
-	deleteResponse := new(RepositoryContentsResponse)
+	deleteResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(req, deleteResponse)
 	if err != nil {
 		return nil, resp, err
@@ -192,7 +192,7 @@ const (
 // or github.ZIPBALL constant.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(owner, repo string, archiveformat archiveFormat, opt *RefOption) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
 		u += fmt.Sprintf("/%s", opt.Ref)

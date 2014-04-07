@@ -44,7 +44,7 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 		  "path": "README.md"
 		}`)
 	})
-	readme, _, err := client.Repositories.GetReadme("o", "r", &RefOption{})
+	readme, _, err := client.Repositories.GetReadme("o", "r", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetReadme returned error: %v", err)
 	}
@@ -67,7 +67,7 @@ func TestRepositoriesService_GetContent_File(t *testing.T) {
 		  "path": "LICENSE"
 		}`)
 	})
-	fileContents, _, _, err := client.Repositories.GetContents("o", "r", "p", &RefOption{})
+	fileContents, _, _, err := client.Repositories.GetContents("o", "r", "p", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetContents_File returned error: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestRepositoriesService_GetContent_Directory(t *testing.T) {
 		  "path": "LICENSE"
 		}]`)
 	})
-	_, directoryContents, _, err := client.Repositories.GetContents("o", "r", "p", &RefOption{})
+	_, directoryContents, _, err := client.Repositories.GetContents("o", "r", "p", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetContents_Directory returned error: %v", err)
 	}
@@ -122,7 +122,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 	})
 	message := "m"
 	content := []byte("c")
-	repositoryContentsOptions := &RepositoryContentsOptions{
+	repositoryContentsOptions := &RepositoryContentFileOptions{
 		Message:   &message,
 		Content:   &content,
 		Committer: &CommitAuthor{Name: String("n"), Email: String("e")},
@@ -131,7 +131,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.CreateFile returned error: %v", err)
 	}
-	want := &RepositoryContentsResponse{
+	want := &RepositoryContentResponse{
 		Content: &RepositoryContent{Name: String("p")},
 		Commit: Commit{
 			Message: String("m"),
@@ -161,7 +161,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 	message := "m"
 	content := []byte("c")
 	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
-	repositoryContentsOptions := &RepositoryContentsOptions{
+	repositoryContentsOptions := &RepositoryContentFileOptions{
 		Message:   &message,
 		Content:   &content,
 		SHA:       &sha,
@@ -171,7 +171,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.UpdateFile returned error: %v", err)
 	}
-	want := &RepositoryContentsResponse{
+	want := &RepositoryContentResponse{
 		Content: &RepositoryContent{Name: String("p")},
 		Commit: Commit{
 			Message: String("m"),
@@ -198,7 +198,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	})
 	message := "m"
 	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
-	repositoryContentsOptions := &RepositoryContentsOptions{
+	repositoryContentsOptions := &RepositoryContentFileOptions{
 		Message:   &message,
 		SHA:       &sha,
 		Committer: &CommitAuthor{Name: String("n"), Email: String("e")},
@@ -207,7 +207,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteFile returned error: %v", err)
 	}
-	want := &RepositoryContentsResponse{
+	want := &RepositoryContentResponse{
 		Content: nil,
 		Commit: Commit{
 			Message: String("m"),
@@ -226,7 +226,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
-	url, resp, err := client.Repositories.GetArchiveLink("o", "r", TARBALL, &RefOption{})
+	url, resp, err := client.Repositories.GetArchiveLink("o", "r", TARBALL, &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
