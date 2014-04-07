@@ -142,7 +142,7 @@ func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *
 	return p, resp, err
 }
 
-// List commits on a pull request
+// ListCommits in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
 func (s *PullRequestsService) ListCommits(owner string, repo string, number int) (*[]Commit, *Response, error) {
@@ -161,7 +161,7 @@ func (s *PullRequestsService) ListCommits(owner string, repo string, number int)
 	return commits, resp, err
 }
 
-// List pull requests files
+// ListFiles lists files in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-pull-requests-files
 func (s *PullRequestsService) ListFiles(owner string, repo string, number int) (*[]CommitFile, *Response, error) {
@@ -180,7 +180,7 @@ func (s *PullRequestsService) ListFiles(owner string, repo string, number int) (
 	return commitFiles, resp, err
 }
 
-// Get if a pull request has been merged
+// IsMerged checks if a pull request has been merged.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#get-if-a-pull-request-has-been-merged
 func (s *PullRequestsService) IsMerged(owner string, repo string, number int) (bool, *Response, error) {
@@ -195,23 +195,24 @@ func (s *PullRequestsService) IsMerged(owner string, repo string, number int) (b
 	return merged, resp, err
 }
 
+// PullRequestMergeResult represents the result of merging a pull request.
 type PullRequestMergeResult struct {
 	SHA     *string `json:"sha,omitempty"`
 	Merged  *bool   `json:"merged,omitempty"`
 	Message *string `json:"message,omitempty"`
 }
 
-type PullRequestMergeCommitMessage struct {
+type pullRequestMergeRequest struct {
 	CommitMessage *string `json:"commit_message"`
 }
 
-// Merge a pull request (Merge Button™)
+// Merge a pull request (Merge Button™).
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-buttontrade
 func (s *PullRequestsService) Merge(owner string, repo string, number int, commitMessage string) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	req, err := s.client.NewRequest("PUT", u, &PullRequestMergeCommitMessage{
+	req, err := s.client.NewRequest("PUT", u, &pullRequestMergeRequest{
 		CommitMessage: &commitMessage,
 	})
 
