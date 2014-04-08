@@ -88,3 +88,22 @@ func (s *IssuesService) GetMilestone(owner string, repo string, number int) (*Mi
 	return milestone, resp, err
 }
 
+// CreateMilestone creates a new milestone on the specified repository.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#create-a-milestone
+func (s *IssuesService) CreateMilestone(owner string, repo string, milestone *Milestone) (*Milestone, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/milestones", owner, repo)
+	req, err := s.client.NewRequest("POST", u, milestone)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	m := new(Milestone)
+	resp, err := s.client.Do(req, m)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return m, resp, err
+}
+

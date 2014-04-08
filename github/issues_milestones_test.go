@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -67,5 +68,39 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 
 func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.GetMilestone("%", "r", 1)
+	testURLParseError(t, err)
+}
+
+func TestIssuesService_CreateMilestone(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Milestone{Title: String("t")}
+
+	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Milestone)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	milestone, _, err := client.Issues.CreateMilestone("o", "r", input)
+	if err != nil {
+		t.Errorf("IssuesService.CreateMilestone returned error: %v", err)
+	}
+
+	want := &Milestone{Number: Int(1)}
+	if !reflect.DeepEqual(milestone, want) {
+		t.Errorf("IssuesService.CreateMilestone returned %+v, want %+v", milestone, want)
+	}
+}
+
+func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.CreateMilestone("%", "r", nil)
 	testURLParseError(t, err)
 }
