@@ -25,6 +25,9 @@ type RepoStatus struct {
 	// Description is a short high level summary of the status.
 	Description *string `json:"description,omitempty"`
 
+	// A string label to differentiate this status from the statuses of other systems.
+	Context *string `json:"context,omitempty"`
+
 	Creator   *User      `json:"creator,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
