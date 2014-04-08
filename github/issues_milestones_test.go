@@ -44,3 +44,28 @@ func TestIssuesService_ListMilestones_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestIssuesService_GetMilestone(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	milestone, _, err := client.Issues.GetMilestone("o", "r", 1)
+
+	if err != nil {
+		t.Errorf("IssuesService.GetMilestone returned error: %v", err)
+	}
+
+	want := &Milestone{Number: Int(1)}
+	if !reflect.DeepEqual(milestone, want) {
+		t.Errorf("IssuesService.GetMilestone returned %+v, want %+v", milestone, want)
+	}
+}
+
+func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.GetMilestone("%", "r", 1)
+	testURLParseError(t, err)
+}

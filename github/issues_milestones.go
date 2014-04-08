@@ -69,3 +69,22 @@ func (s *IssuesService) ListMilestones(owner string, repo string, opt *Milestone
 	return *milestones, resp, err
 }
 
+// GetMilestone gets a single milestone.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
+func (s *IssuesService) GetMilestone(owner string, repo string, number int) (*Milestone, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/milestones/%d", owner, repo, number)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	milestone := new(Milestone)
+	resp, err := s.client.Do(req, milestone)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return milestone, resp, err
+}
+
