@@ -104,3 +104,37 @@ func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.CreateMilestone("%", "r", nil)
 	testURLParseError(t, err)
 }
+
+func TestIssuesService_EditMilestone(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Milestone{Title: String("t")}
+
+	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Milestone)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	milestone, _, err := client.Issues.EditMilestone("o", "r", 1, input)
+	if err != nil {
+		t.Errorf("IssuesService.EditMilestone returned error: %v", err)
+	}
+
+	want := &Milestone{Number: Int(1)}
+	if !reflect.DeepEqual(milestone, want) {
+		t.Errorf("IssuesService.EditMilestone returned %+v, want %+v", milestone, want)
+	}
+}
+
+func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
+	_, _, err := client.Issues.EditMilestone("%", "r", 1, nil)
+	testURLParseError(t, err)
+}

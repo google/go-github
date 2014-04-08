@@ -107,3 +107,22 @@ func (s *IssuesService) CreateMilestone(owner string, repo string, milestone *Mi
 	return m, resp, err
 }
 
+// EditMilestone edits a milestone.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#update-a-milestone
+func (s *IssuesService) EditMilestone(owner string, repo string, number int, milestone *Milestone) (*Milestone, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	req, err := s.client.NewRequest("PATCH", u, milestone)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	m := new(Milestone)
+	resp, err := s.client.Do(req, m)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return m, resp, err
+}
+
