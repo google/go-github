@@ -138,3 +138,22 @@ func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.EditMilestone("%", "r", 1, nil)
 	testURLParseError(t, err)
 }
+
+func TestIssuesService_DeleteMilestone(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Issues.DeleteMilestone("o", "r", 1)
+	if err != nil {
+		t.Errorf("IssuesService.DeleteMilestone returned error: %v", err)
+	}
+}
+
+func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
+	_, err := client.Issues.DeleteMilestone("%", "r", 1)
+	testURLParseError(t, err)
+}

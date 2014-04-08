@@ -126,3 +126,15 @@ func (s *IssuesService) EditMilestone(owner string, repo string, number int, mil
 	return m, resp, err
 }
 
+// DeleteMilestone deletes a milestone.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#delete-a-milestone
+func (s *IssuesService) DeleteMilestone(owner string, repo string, number int) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
