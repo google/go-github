@@ -33,8 +33,7 @@ type Issue struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	URL       *string    `json:"url,omitempty"`
 	HTMLURL   *string    `json:"html_url,omitempty"`
-
-	// TODO(willnorris): milestone
+	Milestone *Milestone `json:"milestone,omitempty"`
 }
 
 func (i Issue) String() string {
@@ -45,13 +44,12 @@ func (i Issue) String() string {
 // It is separate from Issue above because otherwise Labels
 // and Assignee fail to serialize to the correct JSON.
 type IssueRequest struct {
-	Title    *string  `json:"title,omitempty"`
-	Body     *string  `json:"body,omitempty"`
-	Labels   []string `json:"labels,omitempty"`
-	Assignee *string  `json:"assignee,omitempty"`
-	State    *string  `json:"state,omitempty"`
-
-	// TODO(willnorris): milestone here too!
+	Title     *string  `json:"title,omitempty"`
+	Body      *string  `json:"body,omitempty"`
+	Labels    []string `json:"labels,omitempty"`
+	Assignee  *string  `json:"assignee,omitempty"`
+	State     *string  `json:"state,omitempty"`
+	Milestone *int     `json:"milestone,omitempty"`
 }
 
 // IssueListOptions specifies the optional parameters to the IssuesService.List
