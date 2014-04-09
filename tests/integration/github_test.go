@@ -11,9 +11,10 @@
 package tests
 
 import (
+	"fmt"
 	"os"
-	"code.google.com/p/goauth2/oauth"
 
+	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
 )
 
@@ -37,4 +38,11 @@ func init() {
 		client = github.NewClient(t.Client())
 		auth = true
 	}
+}
+
+func checkAuth(name string) bool {
+	if !auth {
+		fmt.Printf("No auth - skipping portions of %v\n", name)
+	}
+	return auth
 }

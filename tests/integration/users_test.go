@@ -5,7 +5,10 @@
 
 package tests
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestUsers_List(t *testing.T) {
 	u, _, err := client.Users.ListAll(nil)
@@ -26,7 +29,7 @@ func TestUsers_List(t *testing.T) {
 func TestUsers_Get(t *testing.T) {
 	u, _, err := client.Users.Get("octocat")
 	if err != nil {
-		t.Fatalf("Users.Get returned error: %v", err)
+		t.Fatalf("Users.Get('octocat') returned error: %v", err)
 	}
 
 	if want := "octocat"; want != *u.Login {
@@ -34,5 +37,16 @@ func TestUsers_Get(t *testing.T) {
 	}
 	if want := "The Octocat"; want != *u.Name {
 		t.Errorf("user.Name was %q, wanted %q", *u.Name, want)
+	}
+
+	if checkAuth("TestUsers_Get") {
+		u, _, err := client.Users.Get("")
+		if err != nil {
+			t.Fatalf("Users.Get('') returned error: %v", err)
+		}
+
+		if *u.Login == "" {
+			t.Errorf("wanted non-empty values for user.Login")
+		}
 	}
 }
