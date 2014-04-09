@@ -30,3 +30,23 @@ be run using a dedicated test account.
 Run tests using:
 
     GITHUB_AUTH_TOKEN=XXX go test -v ./integration
+
+
+fields
+------
+
+This will identify the fields being returned by the live GitHub API that are
+not currently being mapped into the relevant Go data type.  Sometimes fields
+are deliberately not mapped, so the results of this tool should just be taken
+as a hint.
+
+This test sends real network traffic to the GitHub API and will exhaust the
+default unregistered rate limit (60 requests per hour) very quickly.
+Additionally, some data is only returned for authenticated API calls.  Unlike
+the integration tests above, these tests only read data, so it's less
+imperitive that these be run using a dedicated test account (though you still
+really should).
+
+Run the fields tool using:
+
+    GITHUB_AUTH_TOKEN=XXX go run ./fields/fields.go
