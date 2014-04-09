@@ -5,10 +5,7 @@
 
 package tests
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
 func TestUsers_List(t *testing.T) {
 	u, _, err := client.Users.ListAll(nil)
@@ -48,5 +45,16 @@ func TestUsers_Get(t *testing.T) {
 		if *u.Login == "" {
 			t.Errorf("wanted non-empty values for user.Login")
 		}
+	}
+}
+
+func TestUsers_Emails(t *testing.T) {
+	if !checkAuth("TestUsers_Emails") {
+		return
+	}
+
+	emails, _, err := client.Users.ListEmails()
+	if err != nil {
+		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
 }

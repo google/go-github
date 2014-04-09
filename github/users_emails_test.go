@@ -19,7 +19,11 @@ func TestUsersService_ListEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `["user@example.com"]`)
+		fmt.Fprint(w, `[{
+			"email": "user@example.com",
+			"verified": false,
+			"primary": true
+		}]`)
 	})
 
 	emails, _, err := client.Users.ListEmails()
@@ -27,7 +31,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
 
-	want := []UserEmail{"user@example.com"}
+	want := []UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true)}}
 	if !reflect.DeepEqual(emails, want) {
 		t.Errorf("Users.ListEmails returned %+v, want %+v", emails, want)
 	}
@@ -37,10 +41,10 @@ func TestUsersService_AddEmails(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := []UserEmail{"new@example.com"}
+	input := []string{"new@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]UserEmail)
+		v := new([]string)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -56,7 +60,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
 
-	want := []UserEmail{"old@example.com", "new@example.com"}
+	want := []string{"old@example.com", "new@example.com"}
 	if !reflect.DeepEqual(emails, want) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
 	}
@@ -66,10 +70,10 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := []UserEmail{"user@example.com"}
+	input := []string{"user@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]UserEmail)
+		v := new([]string)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "DELETE")
