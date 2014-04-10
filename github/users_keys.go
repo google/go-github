@@ -85,26 +85,6 @@ func (s *UsersService) CreateKey(key *Key) (*Key, *Response, error) {
 	return k, resp, err
 }
 
-// EditKey edits a public key.
-//
-// GitHub API docs: http://developer.github.com/v3/users/keys/#update-a-public-key
-func (s *UsersService) EditKey(id int, key *Key) (*Key, *Response, error) {
-	u := fmt.Sprintf("user/keys/%v", id)
-
-	req, err := s.client.NewRequest("PATCH", u, key)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	k := new(Key)
-	resp, err := s.client.Do(req, k)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return k, resp, err
-}
-
 // DeleteKey deletes a public key.
 //
 // GitHub API docs: http://developer.github.com/v3/users/keys/#delete-a-public-key
