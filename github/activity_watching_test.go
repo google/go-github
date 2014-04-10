@@ -32,7 +32,7 @@ func TestActivityService_ListWatchers(t *testing.T) {
 	}
 }
 
-func TestActivityService_ListWatchedRepositories_authenticatedUser(t *testing.T) {
+func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -41,18 +41,18 @@ func TestActivityService_ListWatchedRepositories_authenticatedUser(t *testing.T)
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatchedRepositories("")
+	watched, _, err := client.Activity.ListWatched("")
 	if err != nil {
-		t.Errorf("Activity.ListWatchedRepositories returned error: %v", err)
+		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
 	want := []Repository{{ID: Int(1)}}
 	if !reflect.DeepEqual(watched, want) {
-		t.Errorf("Activity.ListWatchedRepositories returned %+v, want %+v", watched, want)
+		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 }
 
-func TestActivityService_ListWatchedRepositories_specifiedUser(t *testing.T) {
+func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -61,18 +61,18 @@ func TestActivityService_ListWatchedRepositories_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatchedRepositories("u")
+	watched, _, err := client.Activity.ListWatched("u")
 	if err != nil {
-		t.Errorf("Activity.ListWatchedRepositories returned error: %v", err)
+		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
 	want := []Repository{{ID: Int(1)}}
 	if !reflect.DeepEqual(watched, want) {
-		t.Errorf("Activity.ListWatchedRepositories returned %+v, want %+v", watched, want)
+		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 }
 
-func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
+func TestActivityService_GetSubscription_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -81,18 +81,18 @@ func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 		fmt.Fprint(w, `{"subscribed":true}`)
 	})
 
-	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	sub, _, err := client.Activity.GetSubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
+		t.Errorf("Activity.GetSubscription returned error: %v", err)
 	}
 
-	want := &RepositorySubscription{Subscribed: Bool(true)}
+	want := &Subscription{Subscribed: Bool(true)}
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.GetSubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
+func TestActivityService_GetSubscription_false(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -101,18 +101,18 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	sub, _, err := client.Activity.GetSubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
+		t.Errorf("Activity.GetSubscription returned error: %v", err)
 	}
 
-	var want *RepositorySubscription
+	var want *Subscription
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.GetSubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
+func TestActivityService_GetSubscription_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -121,20 +121,20 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 		w.WriteHeader(http.StatusBadRequest)
 	})
 
-	_, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	_, _, err := client.Activity.GetSubscription("o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 }
 
-func TestActivityService_SetRepositorySubscription(t *testing.T) {
+func TestActivityService_SetSubscription(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &RepositorySubscription{Subscribed: Bool(true)}
+	input := &Subscription{Subscribed: Bool(true)}
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositorySubscription)
+		v := new(Subscription)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
@@ -145,18 +145,18 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
-	sub, _, err := client.Activity.SetRepositorySubscription("o", "r", input)
+	sub, _, err := client.Activity.SetSubscription("o", "r", input)
 	if err != nil {
-		t.Errorf("Activity.SetRepositorySubscription returned error: %v", err)
+		t.Errorf("Activity.SetSubscription returned error: %v", err)
 	}
 
-	want := &RepositorySubscription{Ignored: Bool(true)}
+	want := &Subscription{Ignored: Bool(true)}
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.SetRepositorySubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.SetSubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
+func TestActivityService_DeleteSubscription(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -164,8 +164,8 @@ func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Activity.DeleteRepositorySubscription("o", "r")
+	_, err := client.Activity.DeleteSubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.DeleteRepositorySubscription returned error: %v", err)
+		t.Errorf("Activity.DeleteSubscription returned error: %v", err)
 	}
 }
