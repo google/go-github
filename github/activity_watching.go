@@ -15,8 +15,12 @@ type RepositorySubscription struct {
 // ListWatchers lists watchers of a particular repo.
 //
 // GitHub API Docs: http://developer.github.com/v3/activity/watching/#list-watchers
-func (s *ActivityService) ListWatchers(owner, repo string) ([]User, *Response, error) {
+func (s *ActivityService) ListWatchers(owner, repo string, opt *ListOptions) ([]User, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
