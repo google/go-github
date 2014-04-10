@@ -14,10 +14,14 @@ func TestActivityService_ListWatchers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/subscribers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watchers, _, err := client.Activity.ListWatchers("o", "r")
+	watchers, _, err := client.Activity.ListWatchers("o", "r", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatchers returned error: %v", err)
 	}
