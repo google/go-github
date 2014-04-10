@@ -52,7 +52,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", *v, input)
 		}
 
-		fmt.Fprint(w, `["old@example.com", "new@example.com"]`)
+		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
 	})
 
 	emails, _, err := client.Users.AddEmails(input)
@@ -60,7 +60,10 @@ func TestUsersService_AddEmails(t *testing.T) {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
 
-	want := []string{"old@example.com", "new@example.com"}
+	want := []UserEmail{
+		{Email: String("old@example.com")},
+		{Email: String("new@example.com")},
+	}
 	if !reflect.DeepEqual(emails, want) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
 	}

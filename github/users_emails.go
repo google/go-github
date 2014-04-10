@@ -34,14 +34,14 @@ func (s *UsersService) ListEmails() ([]UserEmail, *Response, error) {
 // AddEmails adds email addresses of the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/emails/#add-email-addresses
-func (s *UsersService) AddEmails(emails []string) ([]string, *Response, error) {
+func (s *UsersService) AddEmails(emails []string) ([]UserEmail, *Response, error) {
 	u := "user/emails"
 	req, err := s.client.NewRequest("POST", u, emails)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	e := new([]string)
+	e := new([]UserEmail)
 	resp, err := s.client.Do(req, e)
 	if err != nil {
 		return nil, resp, err
