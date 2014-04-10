@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+
+	"github.com/google/go-github/github"
 )
 
 func TestUsers_List(t *testing.T) {
@@ -114,6 +116,80 @@ EmailLoop:
 	for _, e := range emails {
 		if e.Email != nil && *e.Email == email {
 			t.Fatalf("Users.ListEmails() still contains address %v after removing it", email)
+		}
+	}
+}
+
+func TestUsers_Keys(t *testing.T) {
+	keys, _, err := client.Users.ListKeys("willnorris")
+	if err != nil {
+		t.Fatalf("Users.ListKeys('willnorris') returned error: %v", err)
+	}
+
+	if len(keys) == 0 {
+		t.Errorf("Users.ListKeys('willnorris') returned no keys")
+	}
+
+	// the rest of the tests requires auth
+	if !checkAuth("TestUsers_Keys") {
+		return
+	}
+
+	keys, _, err = client.Users.ListKeys("")
+	if err != nil {
+		t.Fatalf("Users.ListKeys('') returned error: %v", err)
+	}
+
+	// ssh public key for testing (fingerprint: 04:11:3a:3d:65:ed:f5:c8:29:90:2d:9c:9f:25:ca:7a)
+	key := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAYQDThS/Tvat+hiKTsZ0fuaSkd/o8cMMufy70BXE2/UPZhUx/M4/XBGGiHGXwEbxcRpSTmEsAyN5vGt7nnZrHsjq/WhZmCjVcNlyfnEMGD0UgfsjwVDTT3Y4BYN62bhW4LfM="
+	for _, k := range keys {
+		if k.Key != nil && *k.Key == key {
+			t.Fatalf("Test key already exists for user.  Please manually remove it first.")
+		}
+	}
+
+	// Add new key
+	_, _, err = client.Users.CreateKey(&github.Key{
+		Title: github.String("go-github test key"),
+		Key:   github.String(key),
+	})
+	if err != nil {
+		t.Fatalf("Users.CreateKey() returned error: %v", err)
+	}
+
+	// List keys again and verify new key is present
+	keys, _, err = client.Users.ListKeys("")
+	if err != nil {
+		t.Fatalf("Users.ListKeys('') returned error: %v", err)
+	}
+
+	var id int
+	for _, k := range keys {
+		if k.Key != nil && *k.Key == key {
+			id = *k.ID
+			break
+		}
+	}
+
+	if id == 0 {
+		t.Fatalf("Users.ListKeys('') does not contain added test key")
+	}
+
+	// Remove test key
+	_, err = client.Users.DeleteKey(id)
+	if err != nil {
+		t.Fatalf("Users.DeleteKey(%d) returned error: %v", id, err)
+	}
+
+	// List keys again and verify test key was removed
+	keys, _, err = client.Users.ListKeys("")
+	if err != nil {
+		t.Fatalf("Users.ListKeys('') returned error: %v", err)
+	}
+
+	for _, k := range keys {
+		if k.Key != nil && *k.Key == key {
+			t.Fatalf("Users.ListKeys('') still contains test key after removing it")
 		}
 	}
 }
