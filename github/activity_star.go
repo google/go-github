@@ -7,6 +7,30 @@ package github
 
 import "fmt"
 
+// ListStargazers lists people who have starred the specified repo.
+//
+// GitHub API Docs: https://developer.github.com/v3/activity/starring/#list-stargazers
+func (s *ActivityService) ListStargazers(owner, repo string, opt *ListOptions) ([]User, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	stargazers := new([]User)
+	resp, err := s.client.Do(req, stargazers)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *stargazers, resp, err
+}
+
 // ActivityListStarredOptions specifies the optional parameters to the
 // ActivityService.ListStarred method.
 type ActivityListStarredOptions struct {
@@ -49,4 +73,42 @@ func (s *ActivityService) ListStarred(user string, opt *ActivityListStarredOptio
 	}
 
 	return *repos, resp, err
+}
+
+// IsStarred checks if a repository is starred by authenticated user.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/starring/#check-if-you-are-starring-a-repository
+func (s *ActivityService) IsStarred(owner, repo string) (bool, *Response, error) {
+	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return false, nil, err
+	}
+	resp, err := s.client.Do(req, nil)
+	starred, err := parseBoolResponse(err)
+	return starred, resp, err
+}
+
+// Star a repository as the authenticated user.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/starring/#star-a-repository
+func (s *ActivityService) Star(owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(req, nil)
+}
+
+// Unstar a repository as the authenticated user.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/starring/#unstar-a-repository
+func (s *ActivityService) Unstar(owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(req, nil)
 }
