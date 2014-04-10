@@ -64,11 +64,12 @@ func TestUsers_Emails(t *testing.T) {
 
 	// create random address not currently in user's emails
 	var email string
+EmailLoop:
 	for {
 		email = fmt.Sprintf("test-%d@example.com", rand.Int())
 		for _, e := range emails {
 			if e.Email != nil && *e.Email == email {
-				continue
+				continue EmailLoop
 			}
 		}
 		break
