@@ -13,23 +13,23 @@ import (
 	"github.com/google/go-github/github"
 )
 
-func TestUsers_List(t *testing.T) {
-	u, _, err := client.Users.ListAll(nil)
+func TestUsers_Get(t *testing.T) {
+	// list all users
+	users, _, err := client.Users.ListAll(nil)
 	if err != nil {
 		t.Fatalf("Users.ListAll returned error: %v", err)
 	}
 
-	if len(u) == 0 {
+	if len(users) == 0 {
 		t.Errorf("Users.ListAll returned no users")
 	}
 
 	// mojombo is user #1
-	if want := "mojombo"; want != *u[0].Login {
-		t.Errorf("user[0].Login was %q, wanted %q", *u[0].Login, want)
+	if want := "mojombo"; want != *users[0].Login {
+		t.Errorf("user[0].Login was %q, wanted %q", *users[0].Login, want)
 	}
-}
 
-func TestUsers_Get(t *testing.T) {
+	// get individual user
 	u, _, err := client.Users.Get("octocat")
 	if err != nil {
 		t.Fatalf("Users.Get('octocat') returned error: %v", err)
@@ -41,17 +41,50 @@ func TestUsers_Get(t *testing.T) {
 	if want := "The Octocat"; want != *u.Name {
 		t.Errorf("user.Name was %q, wanted %q", *u.Name, want)
 	}
+}
 
-	if checkAuth("TestUsers_Get") {
-		u, _, err := client.Users.Get("")
-		if err != nil {
-			t.Fatalf("Users.Get('') returned error: %v", err)
-		}
-
-		if *u.Login == "" {
-			t.Errorf("wanted non-empty values for user.Login")
-		}
+func TestUsers_Update(t *testing.T) {
+	if !checkAuth("TestUsers_Get") {
+		return
 	}
+
+	u, _, err := client.Users.Get("")
+	if err != nil {
+		t.Fatalf("Users.Get('') returned error: %v", err)
+	}
+
+	if *u.Login == "" {
+		t.Errorf("wanted non-empty values for user.Login")
+	}
+
+	// save original location
+	var location string
+	if u.Location != nil {
+		location = *u.Location
+	}
+
+	// update location to test value
+	testLoc := fmt.Sprintf("test-%d", rand.Int())
+	u.Location = &testLoc
+
+	_, _, err = client.Users.Edit(u)
+	if err != nil {
+		t.Fatalf("Users.Update returned error: %v", err)
+	}
+
+	// refetch user and check location value
+	u, _, err = client.Users.Get("")
+	if err != nil {
+		t.Fatalf("Users.Get('') returned error: %v", err)
+	}
+
+	if testLoc != *u.Location {
+		t.Errorf("Users.Get('') has location: %v, want: %v", *u.Location, testLoc)
+	}
+
+	// set location back to the original value
+	u.Location = &location
+	_, _, err = client.Users.Edit(u)
 }
 
 func TestUsers_Emails(t *testing.T) {
@@ -173,6 +206,15 @@ func TestUsers_Keys(t *testing.T) {
 
 	if id == 0 {
 		t.Fatalf("Users.ListKeys('') does not contain added test key")
+	}
+
+	// Verify that fetching individual key works
+	k, _, err := client.Users.GetKey(id)
+	if err != nil {
+		t.Fatalf("Users.GetKey(%q) returned error: %v", id, err)
+	}
+	if *k.Key != key {
+		t.Fatalf("Users.GetKey(%q) returned key %v, want %v", id, *k.Key, key)
 	}
 
 	// Remove test key
