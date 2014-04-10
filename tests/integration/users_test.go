@@ -5,7 +5,11 @@
 
 package tests
 
-import "testing"
+import (
+	"fmt"
+	"math/rand"
+	"testing"
+)
 
 func TestUsers_List(t *testing.T) {
 	u, _, err := client.Users.ListAll(nil)
@@ -56,5 +60,59 @@ func TestUsers_Emails(t *testing.T) {
 	emails, _, err := client.Users.ListEmails()
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
+	}
+
+	// create random address not currently in user's emails
+	var email string
+	for {
+		email = fmt.Sprintf("test-%d@example.com", rand.Int())
+		for _, e := range emails {
+			if e.Email != nil && *e.Email == email {
+				continue
+			}
+		}
+		break
+	}
+
+	// Add new address
+	_, _, err = client.Users.AddEmails([]string{email})
+	if err != nil {
+		t.Fatalf("Users.AddEmails() returned error: %v", err)
+	}
+
+	// List emails again and verify new email is present
+	emails, _, err = client.Users.ListEmails()
+	if err != nil {
+		t.Fatalf("Users.ListEmails() returned error: %v", err)
+	}
+
+	var found bool
+	for _, e := range emails {
+		if e.Email != nil && *e.Email == email {
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		t.Fatalf("Users.ListEmails() does not contain new addres: %v", email)
+	}
+
+	// Remove new address
+	_, err = client.Users.DeleteEmails([]string{email})
+	if err != nil {
+		t.Fatalf("Users.DeleteEmails() returned error: %v", err)
+	}
+
+	// List emails again and verify new email was removed
+	emails, _, err = client.Users.ListEmails()
+	if err != nil {
+		t.Fatalf("Users.ListEmails() returned error: %v", err)
+	}
+
+	for _, e := range emails {
+		if e.Email != nil && *e.Email == email {
+			t.Fatalf("Users.ListEmails() still contains address %v after removing it", email)
+		}
 	}
 }
