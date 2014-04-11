@@ -65,3 +65,27 @@ func TestListEmojis(t *testing.T) {
 		t.Errorf("ListEmojis returned %+v, want %+v", emoji, want)
 	}
 }
+
+func TestAPIMeta(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "verifiable_password_authentication": true}`)
+	})
+
+	meta, _, err := client.APIMeta()
+	if err != nil {
+		t.Errorf("APIMeta returned error: %v", err)
+	}
+
+	want := &APIMeta{
+		Hooks: []string{"h"},
+		Git:   []string{"g"},
+		VerifiablePasswordAuthentication: Bool(true),
+	}
+	if !reflect.DeepEqual(want, meta) {
+		t.Errorf("APIMeta returned %+v, want %+v", meta, want)
+	}
+}
