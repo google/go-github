@@ -230,6 +230,19 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 	return r, resp, err
 }
 
+// Delete a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#delete-a-repository
+func (s *RepositoriesService) Delete(owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // Contributor represents a repository contributor
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
@@ -263,7 +276,7 @@ type ListContributorsOptions struct {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-contributors
 func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]Contributor, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/contributors", owner, repository)
+	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -294,8 +307,8 @@ func (s *RepositoriesService) ListContributors(owner string, repository string, 
 //     }
 //
 // GitHub API Docs: http://developer.github.com/v3/repos/#list-languages
-func (s *RepositoriesService) ListLanguages(owner string, repository string) (map[string]int, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/languages", owner, repository)
+func (s *RepositoriesService) ListLanguages(owner string, repo string) (map[string]int, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -310,17 +323,63 @@ func (s *RepositoriesService) ListLanguages(owner string, repository string) (ma
 	return languages, resp, err
 }
 
+// ListTeams lists the teams for the specified repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#list-teams
+func (s *RepositoriesService) ListTeams(owner string, repo string) ([]Team, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	teams := new([]Team)
+	resp, err := s.client.Do(req, teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *teams, resp, err
+}
+
+// RepositoryTag represents a repository tag.
+type RepositoryTag struct {
+	Name       *string `json:"name,omitempty"`
+	Commit     *Commit `json:"commit,omitempty"`
+	ZipballURL *string `json:"zipball_url,omitempty"`
+	TarballURL *string `json:"tarball_url,omitempty"`
+}
+
+// ListTags lists tags for the specified repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#list-tags
+func (s *RepositoriesService) ListTags(owner string, repo string) ([]RepositoryTag, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	tags := new([]RepositoryTag)
+	resp, err := s.client.Do(req, tags)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *tags, resp, err
+}
+
 // Branch represents a repository branch
 type Branch struct {
 	Name   *string `json:"name,omitempty"`
-	Commit *Commit
+	Commit *Commit `json:"commit,omitempty"`
 }
 
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-branches
-func (s *RepositoriesService) ListBranches(owner string, repository string) ([]Branch, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches", owner, repository)
+func (s *RepositoriesService) ListBranches(owner string, repo string) ([]Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -333,4 +392,23 @@ func (s *RepositoriesService) ListBranches(owner string, repository string) ([]B
 	}
 
 	return *branches, resp, err
+}
+
+// GetBranch gets the specified branch for a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#get-branch
+func (s *RepositoriesService) GetBranch(owner, repo, branch string) (*Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	b := new(Branch)
+	resp, err := s.client.Do(req, b)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return b, resp, err
 }
