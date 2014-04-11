@@ -62,29 +62,29 @@ func TestGitService_ListRefs(t *testing.T) {
 		      "ref": "refs/heads/branchA",
 		      "url": "https://api.github.com/repos/o/r/git/refs/heads/branchA",
 		      "object": {
-		        "type": "commit",
-		        "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		        "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+			"type": "commit",
+			"sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			"url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
 		      }
 		    },
 		    {
 		      "ref": "refs/heads/branchB",
 		      "url": "https://api.github.com/repos/o/r/git/refs/heads/branchB",
 		      "object": {
-		        "type": "commit",
-		        "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		        "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+			"type": "commit",
+			"sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			"url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
 		      }
 		    }
 		  ]`)
 	})
 
-	refs, _, err := client.Git.ListRefs("o", "r")
+	refs, _, err := client.Git.ListRefs("o", "r", nil)
 	if err != nil {
 		t.Errorf("Git.ListRefs returned error: %v", err)
 	}
 
-	want := []*Reference{
+	want := []Reference{
 		{
 			Ref: String("refs/heads/branchA"),
 			URL: String("https://api.github.com/repos/o/r/git/refs/heads/branchA"),
@@ -104,6 +104,27 @@ func TestGitService_ListRefs(t *testing.T) {
 			},
 		},
 	}
+	if !reflect.DeepEqual(refs, want) {
+		t.Errorf("Git.ListRefs returned %+v, want %+v", refs, want)
+	}
+}
+
+func TestGitService_ListRefs_options(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/t", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"ref": "r"}]`)
+	})
+
+	opt := &ReferenceListOptions{Type: "t"}
+	refs, _, err := client.Git.ListRefs("o", "r", opt)
+	if err != nil {
+		t.Errorf("Git.ListRefs returned error: %v", err)
+	}
+
+	want := []Reference{{Ref: String("r")}}
 	if !reflect.DeepEqual(refs, want) {
 		t.Errorf("Git.ListRefs returned %+v, want %+v", refs, want)
 	}
