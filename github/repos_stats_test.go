@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestRepositoriesService_ListContributorsStats(t *testing.T) {
@@ -44,15 +45,15 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 		t.Errorf("RepositoriesService.ListContributorsStats returned error: %v", err)
 	}
 
-	want := &[]ContributorStats{
+	want := []ContributorStats{
 		ContributorStats{
 			Author: &Contributor{
 				ID: Int(1),
 			},
 			Total: Int(135),
-			Weeks: []WeeklyHash{
-				WeeklyHash{
-					Week:      Int(1367712000),
+			Weeks: []WeeklyStats{
+				{
+					Week:      &Timestamp{time.Date(2013, 05, 05, 00, 00, 00, 0, time.UTC).Local()},
 					Additions: Int(6898),
 					Deletions: Int(77),
 					Commits:   Int(10),
@@ -89,11 +90,11 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 		t.Errorf("RepositoriesService.ListCommitActivity returned error: %v", err)
 	}
 
-	want := &[]WeeklyCommitActivity{
-		WeeklyCommitActivity{
+	want := []WeeklyCommitActivity{
+		{
 			Days:  []int{0, 3, 26, 20, 39, 1, 0},
 			Total: Int(89),
-			Week:  Int(1336280400),
+			Week:  &Timestamp{time.Date(2012, 05, 06, 05, 00, 00, 0, time.UTC).Local()},
 		},
 	}
 
