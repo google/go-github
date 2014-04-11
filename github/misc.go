@@ -79,3 +79,41 @@ func (c *Client) ListEmojis() (map[string]string, *Response, error) {
 
 	return emoji, resp, nil
 }
+
+// APIMeta represents metadata about the GitHub API.
+type APIMeta struct {
+	// An Array of IP addresses in CIDR format specifying the addresses
+	// that incoming service hooks will originate from on GitHub.com.
+	Hooks []string `json:"hooks,omitempty"`
+
+	// An Array of IP addresses in CIDR format specifying the Git servers
+	// for GitHub.com.
+	Git []string `json:"git,omitempty"`
+
+	// Whether authentication with username and password is supported.
+	// (GitHub Enterprise instances using CAS or OAuth for authentication
+	// will return false. Features like Basic Authentication with a
+	// username and password, sudo mode, and two-factor authentication are
+	// not supported on these servers.)
+	VerifiablePasswordAuthentication *bool `json:"verifiable_password_authentication,omitempty"`
+}
+
+// APIMeta returns information about GitHub.com, the service. Or, if you access
+// this endpoint on your organization’s GitHub Enterprise installation, this
+// endpoint provides information about that installation.
+//
+// GitHub API docs: https://developer.github.com/v3/meta/
+func (c *Client) APIMeta() (*APIMeta, *Response, error) {
+	req, err := c.NewRequest("GET", "/meta", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	meta := new(APIMeta)
+	resp, err := c.Do(req, meta)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return meta, resp, nil
+}
