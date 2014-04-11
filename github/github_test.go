@@ -521,7 +521,7 @@ func TestRateLimit(t *testing.T) {
 	want := &Rate{
 		Limit:     2,
 		Remaining: 1,
-		Reset:     time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local(),
+		Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local()},
 	}
 	if !reflect.DeepEqual(rate, want) {
 		t.Errorf("RateLimit returned %+v, want %+v", rate, want)
