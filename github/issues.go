@@ -31,8 +31,7 @@ type Issue struct {
 	ClosedAt  *time.Time `json:"closed_at,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-
-	// TODO(willnorris): milestone
+	Milestone *Milestone `json:"milestone,omitempty"`
 }
 
 func (i Issue) String() string {
