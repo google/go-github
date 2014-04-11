@@ -15,6 +15,10 @@ import (
 )
 
 func TestRepositories_CRUD(t *testing.T) {
+	if !checkAuth("TestRepositories_CRUD") {
+		return
+	}
+
 	// get authenticated user
 	me, _, err := client.Users.Get("")
 	if err != nil {
