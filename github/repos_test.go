@@ -234,6 +234,20 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_Delete(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Repositories.Delete("o", "r")
+	if err != nil {
+		t.Errorf("Repositories.Delete returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 	_, _, err := client.Repositories.Get("%", "r")
 	testURLParseError(t, err)
@@ -286,6 +300,56 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	teams, _, err := client.Repositories.ListTeams("o", "r")
+	if err != nil {
+		t.Errorf("Repositories.ListTeams returned error: %v", err)
+	}
+
+	want := []Team{{ID: Int(1)}}
+	if !reflect.DeepEqual(teams, want) {
+		t.Errorf("Repositories.ListTeams returned %+v, want %+v", teams, want)
+	}
+}
+
+func TestRepositoriesService_ListTags(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/tags", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"name":"n", "commit" : {"sha" : "s", "url" : "u"}, "zipball_url": "z", "tarball_url": "t"}]`)
+	})
+
+	tags, _, err := client.Repositories.ListTags("o", "r")
+	if err != nil {
+		t.Errorf("Repositories.ListTags returned error: %v", err)
+	}
+
+	want := []RepositoryTag{
+		{
+			Name: String("n"),
+			Commit: &Commit{
+				SHA: String("s"),
+				URL: String("u"),
+			},
+			ZipballURL: String("z"),
+			TarballURL: String("t"),
+		},
+	}
+	if !reflect.DeepEqual(tags, want) {
+		t.Errorf("Repositories.ListTags returned %+v, want %+v", tags, want)
+	}
+}
+
 func TestRepositoriesService_ListBranches(t *testing.T) {
 	setup()
 	defer teardown()
@@ -303,6 +367,26 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 	want := []Branch{{Name: String("master"), Commit: &Commit{SHA: String("a57781"), URL: String("https://api.github.com/repos/o/r/commits/a57781")}}}
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
+	}
+}
+
+func TestRepositoriesService_GetBranch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}}`)
+	})
+
+	branch, _, err := client.Repositories.GetBranch("o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetBranch returned error: %v", err)
+	}
+
+	want := &Branch{Name: String("n"), Commit: &Commit{SHA: String("s")}}
+	if !reflect.DeepEqual(branch, want) {
+		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
 	}
 }
 
