@@ -1,3 +1,8 @@
+// Copyright 2014 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -72,7 +77,7 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	}
 }
 
-func TestActivityService_GetSubscription_true(t *testing.T) {
+func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -81,18 +86,18 @@ func TestActivityService_GetSubscription_true(t *testing.T) {
 		fmt.Fprint(w, `{"subscribed":true}`)
 	})
 
-	sub, _, err := client.Activity.GetSubscription("o", "r")
+	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.GetSubscription returned error: %v", err)
+		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
 
 	want := &Subscription{Subscribed: Bool(true)}
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.GetSubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_GetSubscription_false(t *testing.T) {
+func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -101,18 +106,18 @@ func TestActivityService_GetSubscription_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	sub, _, err := client.Activity.GetSubscription("o", "r")
+	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.GetSubscription returned error: %v", err)
+		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
 
 	var want *Subscription
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.GetSubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_GetSubscription_error(t *testing.T) {
+func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -121,13 +126,13 @@ func TestActivityService_GetSubscription_error(t *testing.T) {
 		w.WriteHeader(http.StatusBadRequest)
 	})
 
-	_, _, err := client.Activity.GetSubscription("o", "r")
+	_, _, err := client.Activity.GetRepositorySubscription("o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 }
 
-func TestActivityService_SetSubscription(t *testing.T) {
+func TestActivityService_SetRepositorySubscription(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -145,27 +150,28 @@ func TestActivityService_SetSubscription(t *testing.T) {
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
-	sub, _, err := client.Activity.SetSubscription("o", "r", input)
+	sub, _, err := client.Activity.SetRepositorySubscription("o", "r", input)
 	if err != nil {
-		t.Errorf("Activity.SetSubscription returned error: %v", err)
+		t.Errorf("Activity.SetRepositorySubscription returned error: %v", err)
 	}
 
 	want := &Subscription{Ignored: Bool(true)}
 	if !reflect.DeepEqual(sub, want) {
-		t.Errorf("Activity.SetSubscription returned %+v, want %+v", sub, want)
+		t.Errorf("Activity.SetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 }
 
-func TestActivityService_DeleteSubscription(t *testing.T) {
+func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 	setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Activity.DeleteSubscription("o", "r")
+	_, err := client.Activity.DeleteRepositorySubscription("o", "r")
 	if err != nil {
-		t.Errorf("Activity.DeleteSubscription returned error: %v", err)
+		t.Errorf("Activity.DeleteRepositorySubscription returned error: %v", err)
 	}
 }

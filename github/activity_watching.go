@@ -1,15 +1,25 @@
+// Copyright 2014 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import "fmt"
 
-// Subscription identifies a repository subscription.
+// Subscription identifies a repository or thread subscription.
 type Subscription struct {
-	Subscribed    *bool      `json:"subscribed,omitempty"`
-	Ignored       *bool      `json:"ignored,omitempty"`
-	Reason        *string    `json:"reason,omitempty"`
-	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	URL           *string    `json:"url,omitempty"`
-	RepositoryURL *string    `json:"repository_url,omitempty"`
+	Subscribed *bool      `json:"subscribed,omitempty"`
+	Ignored    *bool      `json:"ignored,omitempty"`
+	Reason     *string    `json:"reason,omitempty"`
+	CreatedAt  *Timestamp `json:"created_at,omitempty"`
+	URL        *string    `json:"url,omitempty"`
+
+	// only populated for repository subscriptions
+	RepositoryURL *string `json:"repository_url,omitempty"`
+
+	// only populated for thread subscriptions
+	ThreadURL *string `json:"thread_url,omitempty"`
 }
 
 // ListWatchers lists watchers of a particular repo.
@@ -61,12 +71,12 @@ func (s *ActivityService) ListWatched(user string) ([]Repository, *Response, err
 	return *watched, resp, err
 }
 
-// GetSubscription returns the subscription for the specified repository for
-// the authenticated user.  If the authenticated user is not watching the
-// repository, a nil Subscription is returned.
+// GetRepositorySubscription returns the subscription for the specified
+// repository for the authenticated user.  If the authenticated user is not
+// watching the repository, a nil Subscription is returned.
 //
 // GitHub API Docs: https://developer.github.com/v3/activity/watching/#get-a-repository-subscription
-func (s *ActivityService) GetSubscription(owner, repo string) (*Subscription, *Response, error) {
+func (s *ActivityService) GetRepositorySubscription(owner, repo string) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -85,11 +95,11 @@ func (s *ActivityService) GetSubscription(owner, repo string) (*Subscription, *R
 	return sub, resp, err
 }
 
-// SetSubscription sets the subscription for the specified repository for the
-// authenticated user.
+// SetRepositorySubscription sets the subscription for the specified repository
+// for the authenticated user.
 //
 // GitHub API Docs: https://developer.github.com/v3/activity/watching/#set-a-repository-subscription
-func (s *ActivityService) SetSubscription(owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
+func (s *ActivityService) SetRepositorySubscription(owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 
 	req, err := s.client.NewRequest("PUT", u, subscription)
@@ -106,11 +116,11 @@ func (s *ActivityService) SetSubscription(owner, repo string, subscription *Subs
 	return sub, resp, err
 }
 
-// DeleteSubscription deletes the subscription for the specified repository for
-// the authenticated user.
+// DeleteRepositorySubscription deletes the subscription for the specified
+// repository for the authenticated user.
 //
 // GitHub API Docs: https://developer.github.com/v3/activity/watching/#delete-a-repository-subscription
-func (s *ActivityService) DeleteSubscription(owner, repo string) (*Response, error) {
+func (s *ActivityService) DeleteRepositorySubscription(owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
