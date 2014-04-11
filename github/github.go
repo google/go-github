@@ -388,14 +388,7 @@ func parseBoolResponse(err error) (bool, error) {
 	return false, err
 }
 
-// API response wrapper to a rate limit request.
-type rateResponse struct {
-	*Rate `json:"rate"`
-}
-
-// Rate represents the rate limit for the current client.  Unauthenticated
-// requests are limited to 60 per hour.  Authenticated requests are limited to
-// 5,000 per hour.
+// Rate represents the rate limit for the current client.
 type Rate struct {
 	// The number of requests per hour the client is currently limited to.
 	Limit int `json:"limit"`
@@ -407,20 +400,55 @@ type Rate struct {
 	Reset Timestamp `json:"reset"`
 }
 
-// RateLimit returns the rate limit for the current client.
+func (r Rate) String() string {
+	return Stringify(r)
+}
+
+// RateLimits represents the rate limits for the current client.
+type RateLimits struct {
+	// The rate limit for non-search API requests.  Unauthenticated
+	// requests are limited to 60 per hour.  Authenticated requests are
+	// limited to 5,000 per hour.
+	Core *Rate `json:"core"`
+
+	// The rate limit for search API requests.  Unauthenticated requests
+	// are limited to 5 requests per minutes.  Authenticated requests are
+	// limited to 20 per minute.
+	//
+	// GitHub API docs: https://developer.github.com/v3/search/#rate-limit
+	Search *Rate `json:"search"`
+}
+
+func (r RateLimits) String() string {
+	return Stringify(r)
+}
+
+// RateLimit is deprecated.  Use RateLimits instead.
 func (c *Client) RateLimit() (*Rate, *Response, error) {
+	limits, resp, err := c.RateLimits()
+	if limits == nil {
+		return nil, nil, err
+	}
+
+	return limits.Core, resp, err
+}
+
+// RateLimits returns the rate limits for the current client.
+func (c *Client) RateLimits() (*RateLimits, *Response, error) {
 	req, err := c.NewRequest("GET", "rate_limit", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := new(rateResponse)
+	response := new(struct {
+		Resources *RateLimits `json:"resources"`
+	})
 	resp, err := c.Do(req, response)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return response.Rate, resp, err
+	return response.Resources, resp, err
 }
 
 /*
