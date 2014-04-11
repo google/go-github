@@ -56,8 +56,26 @@ func (c *Client) Markdown(text string, opt *MarkdownOptions) (string, *Response,
 	buf := new(bytes.Buffer)
 	resp, err := c.Do(req, buf)
 	if err != nil {
-		return "", resp, nil
+		return "", resp, err
 	}
 
 	return buf.String(), resp, nil
+}
+
+// ListEmojis returns the emojis available to use on GitHub.
+//
+// GitHub API docs: https://developer.github.com/v3/emojis/
+func (c *Client) ListEmojis() (map[string]string, *Response, error) {
+	req, err := c.NewRequest("GET", "/emojis", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var emoji map[string]string
+	resp, err := c.Do(req, &emoji)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return emoji, resp, nil
 }

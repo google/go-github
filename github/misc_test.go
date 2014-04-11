@@ -45,3 +45,23 @@ func TestMarkdown(t *testing.T) {
 		t.Errorf("Markdown returned %+v, want %+v", md, want)
 	}
 }
+
+func TestListEmojis(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/emojis", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"+1": "+1.png"}`)
+	})
+
+	emoji, _, err := client.ListEmojis()
+	if err != nil {
+		t.Errorf("ListEmojis returned error: %v", err)
+	}
+
+	want := map[string]string{"+1": "+1.png"}
+	if !reflect.DeepEqual(want, emoji) {
+		t.Errorf("ListEmojis returned %+v, want %+v", emoji, want)
+	}
+}
