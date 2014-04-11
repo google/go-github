@@ -95,3 +95,14 @@ func TestRepositories_BranchesTags(t *testing.T) {
 		t.Fatalf("Repositories.ListTags('git', 'git') returned no tags")
 	}
 }
+
+func TestRepositories_ServiceHooks(t *testing.T) {
+	hooks, _, err := client.Repositories.ListServiceHooks()
+	if err != nil {
+		t.Fatalf("Repositories.ListServiceHooks() returned error: %v", err)
+	}
+
+	if len(hooks) == 0 {
+		t.Fatalf("Repositories.ListServiceHooks() returned no hooks")
+	}
+}
