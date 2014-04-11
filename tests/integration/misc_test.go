@@ -5,7 +5,10 @@
 
 package tests
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestEmojis(t *testing.T) {
 	emoji, _, err := client.ListEmojis()
@@ -38,5 +41,25 @@ func TestAPIMeta(t *testing.T) {
 
 	if !*meta.VerifiablePasswordAuthentication {
 		t.Errorf("APIMeta VerifiablePasswordAuthentication is false")
+	}
+}
+
+func TestRateLimits(t *testing.T) {
+	limits, _, err := client.RateLimits()
+	if err != nil {
+		t.Fatalf("RateLimits returned error: %v", err)
+	}
+
+	// do some sanity checks
+	if limits.Core.Limit == 0 {
+		t.Errorf("RateLimits returned 0 core limit")
+	}
+
+	if limits.Core.Limit < limits.Core.Remaining {
+		t.Errorf("Core.Limits is less than Core.Remaining.")
+	}
+
+	if limits.Core.Reset.Time.Before(time.Now().Add(-1 * time.Minute)) {
+		t.Errorf("Core.Reset is more than 1 minute in the past; that doesn't seem right.")
 	}
 }

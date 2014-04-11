@@ -510,7 +510,11 @@ func TestRateLimit(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
-		fmt.Fprint(w, `{"rate":{"limit":2,"remaining":1,"reset":1372700873}}`)
+		//fmt.Fprint(w, `{"resources":{"core": {"limit":2,"remaining":1,"reset":1372700873}}}`)
+		fmt.Fprint(w, `{"resources":{
+			"core": {"limit":2,"remaining":1,"reset":1372700873},
+			"search": {"limit":3,"remaining":2,"reset":1372700874}
+		}}`)
 	})
 
 	rate, _, err := client.RateLimit()
@@ -525,6 +529,42 @@ func TestRateLimit(t *testing.T) {
 	}
 	if !reflect.DeepEqual(rate, want) {
 		t.Errorf("RateLimit returned %+v, want %+v", rate, want)
+	}
+}
+
+func TestRateLimits(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+		if m := "GET"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+		fmt.Fprint(w, `{"resources":{
+			"core": {"limit":2,"remaining":1,"reset":1372700873},
+			"search": {"limit":3,"remaining":2,"reset":1372700874}
+		}}`)
+	})
+
+	rate, _, err := client.RateLimits()
+	if err != nil {
+		t.Errorf("RateLimits returned error: %v", err)
+	}
+
+	want := &RateLimits{
+		Core: &Rate{
+			Limit:     2,
+			Remaining: 1,
+			Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local()},
+		},
+		Search: &Rate{
+			Limit:     3,
+			Remaining: 2,
+			Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 54, 0, time.UTC).Local()},
+		},
+	}
+	if !reflect.DeepEqual(rate, want) {
+		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 }
 
