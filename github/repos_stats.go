@@ -5,7 +5,10 @@
 
 package github
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // ContributorStats represents a contributor to a repository and their
 // weekly contributions to a given repo.
@@ -41,7 +44,7 @@ func (w WeeklyStats) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/statistics/#contributors
+// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#contributors
 func (s *RepositoriesService) ListContributorsStats(owner, repo string) ([]ContributorStats, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/contributors", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -80,7 +83,7 @@ func (w WeeklyCommitActivity) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/statistics/#commit-activity
+// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#commit-activity
 func (s *RepositoriesService) ListCommitActivity(owner, repo string) ([]WeeklyCommitActivity, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/commit_activity", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -95,6 +98,38 @@ func (s *RepositoriesService) ListCommitActivity(owner, repo string) ([]WeeklyCo
 	}
 
 	return weeklyCommitActivity, resp, err
+}
+
+// ListCodeFrequency returns a weekly aggregate of the number of additions and
+// deletions pushed to a repository.  Returned WeeklyStats will contain
+// additiona and deletions, but not total commits.
+//
+// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#code-frequency
+func (s *RepositoriesService) ListCodeFrequency(owner, repo string) ([]WeeklyStats, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/stats/code_frequency", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var weeks [][]int
+	resp, err := s.client.Do(req, &weeks)
+
+	// convert int slices into WeeklyStats
+	stats := make([]WeeklyStats, 0)
+	for _, week := range weeks {
+		if len(week) != 3 {
+			continue
+		}
+		stat := WeeklyStats{
+			Week:      &Timestamp{time.Unix(int64(week[0]), 0)},
+			Additions: Int(week[1]),
+			Deletions: Int(week[2]),
+		}
+		stats = append(stats, stat)
+	}
+
+	return stats, resp, err
 }
 
 // RepositoryParticipation is the number of commits by everyone
@@ -138,4 +173,42 @@ func (s *RepositoriesService) ListParticipation(owner, repo string) (*Repository
 	}
 
 	return participation, resp, err
+}
+
+// PunchCard respresents the number of commits made during a given hour of a
+// day of thew eek.
+type PunchCard struct {
+	Day     *int // Day of the week (0-6: =Sunday - Saturday).
+	Hour    *int // Hour of day (0-23).
+	Commits *int // Number of commits.
+}
+
+// ListPunchCard returns the number of commits per hour in each day.
+//
+// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#punch-card
+func (s *RepositoriesService) ListPunchCard(owner, repo string) ([]PunchCard, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/stats/punch_card", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var results [][]int
+	resp, err := s.client.Do(req, &results)
+
+	// convert int slices into Punchcards
+	cards := make([]PunchCard, 0)
+	for _, result := range results {
+		if len(result) != 3 {
+			continue
+		}
+		card := PunchCard{
+			Day:     Int(result[0]),
+			Hour:    Int(result[1]),
+			Commits: Int(result[2]),
+		}
+		cards = append(cards, card)
+	}
+
+	return cards, resp, err
 }

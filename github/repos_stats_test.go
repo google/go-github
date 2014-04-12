@@ -103,6 +103,32 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/stats/code_frequency", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		fmt.Fprint(w, `[[1302998400, 1124, -435]]`)
+	})
+
+	code, _, err := client.Repositories.ListCodeFrequency("o", "r")
+	if err != nil {
+		t.Errorf("RepositoriesService.ListCodeFrequency returned error: %v", err)
+	}
+
+	want := []WeeklyStats{{
+		Week:      &Timestamp{time.Date(2011, 04, 17, 00, 00, 00, 0, time.UTC).Local()},
+		Additions: Int(1124),
+		Deletions: Int(-435),
+	}}
+
+	if !reflect.DeepEqual(code, want) {
+		t.Errorf("RepositoriesService.ListCodeFrequency returned %+v, want %+v", code, want)
+	}
+}
+
 func TestRepositoriesService_Participation(t *testing.T) {
 	setup()
 	defer teardown()
@@ -150,5 +176,35 @@ func TestRepositoriesService_Participation(t *testing.T) {
 
 	if !reflect.DeepEqual(participation, want) {
 		t.Errorf("RepositoriesService.ListParticipation returned %+v, want %+v", participation, want)
+	}
+}
+
+func TestRepositoriesService_ListPunchCard(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/stats/punch_card", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		fmt.Fprint(w, `[
+		  [0, 0, 5],
+		  [0, 1, 43],
+		  [0, 2, 21]
+		]`)
+	})
+
+	card, _, err := client.Repositories.ListPunchCard("o", "r")
+	if err != nil {
+		t.Errorf("RepositoriesService.ListPunchCard returned error: %v", err)
+	}
+
+	want := []PunchCard{
+		{Day: Int(0), Hour: Int(0), Commits: Int(5)},
+		{Day: Int(0), Hour: Int(1), Commits: Int(43)},
+		{Day: Int(0), Hour: Int(2), Commits: Int(21)},
+	}
+
+	if !reflect.DeepEqual(card, want) {
+		t.Errorf("RepositoriesService.ListPunchCard returned %+v, want %+v", card, want)
 	}
 }
