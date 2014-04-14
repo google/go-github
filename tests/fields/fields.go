@@ -53,17 +53,10 @@ func main() {
 		auth = true
 	}
 
-	testType("rate_limit", github.Rate{})
-	testType("users/octocat", github.User{})
-	testType("orgs/google", github.Organization{})
-	testType("repos/google/go-github", github.Repository{})
-}
-
-func checkAuth(name string) bool {
-	if !auth {
-		fmt.Printf("No auth - skipping portions of %v\n", name)
-	}
-	return auth
+	//testType("rate_limit", &github.RateLimits{})
+	testType("users/octocat", &github.User{})
+	testType("orgs/google", &github.Organization{})
+	testType("repos/google/go-github", &github.Repository{})
 }
 
 // testType fetches the JSON resource at urlStr and compares its keys to the
@@ -79,62 +72,46 @@ func testType(urlStr string, typ interface{}) error {
 		return err
 	}
 
-	// I'm thinking we might want to unmarshall the response both as a
-	// map[string]interface{} as well as typ, though I'm not 100% sure.
-	// That's why we unmarshal to json.RawMessage first here.
+	// start with a json.RawMessage so we can decode multiple ways below
 	raw := new(json.RawMessage)
 	_, err = client.Do(req, raw)
 	if err != nil {
 		return err
 	}
 
-	var m map[string]interface{}
-	err = json.Unmarshal(*raw, &m)
+	// unmarshall directly to a map
+	var m1 map[string]interface{}
+	err = json.Unmarshal(*raw, &m1)
 	if err != nil {
 		return err
 	}
 
-	fields := jsonFields(typ)
+	// unarmshall to typ first, then re-marshall and unmarshall to a map
+	err = json.Unmarshal(*raw, typ)
+	if err != nil {
+		return err
+	}
 
-	for k, v := range m {
+	byt, err := json.Marshal(typ)
+	if err != nil {
+		return err
+	}
+
+	var m2 map[string]interface{}
+	err = json.Unmarshal(byt, &m2)
+	if err != nil {
+		return err
+	}
+
+	// now compare the two maps
+	for k, v := range m1 {
 		if *skipURLs && strings.HasSuffix(k, "_url") {
 			continue
 		}
-		if _, ok := fields[k]; !ok {
+		if _, ok := m2[k]; !ok {
 			fmt.Printf("%v missing field for key: %v (example value: %v)\n", reflect.TypeOf(typ), k, v)
 		}
 	}
 
 	return nil
-}
-
-// parseTag splits a struct field's url tag into its name and comma-separated
-// options.
-func parseTag(tag string) (string, []string) {
-	s := strings.Split(tag, ",")
-	return s[0], s[1:]
-}
-
-// jsonFields returns a map of JSON fields that have an explicit mapping to a
-// field in v.  The fields will be in the returned map's keys; the map values
-// for those keys is currently undefined.
-func jsonFields(v interface{}) map[string]interface{} {
-	fields := make(map[string]interface{})
-
-	typ := reflect.TypeOf(v)
-	for i := 0; i < typ.NumField(); i++ {
-		sf := typ.Field(i)
-		if sf.PkgPath != "" { // unexported
-			continue
-		}
-
-		tag := sf.Tag.Get("json")
-		if tag == "-" {
-			continue
-		}
-
-		name, opts := parseTag(tag)
-		fields[name] = opts
-	}
-	return fields
 }
