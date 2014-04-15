@@ -53,10 +53,21 @@ func main() {
 		auth = true
 	}
 
-	//testType("rate_limit", &github.RateLimits{})
-	testType("users/octocat", &github.User{})
-	testType("orgs/google", &github.Organization{})
-	testType("repos/google/go-github", &github.Repository{})
+	for _, tt := range []struct {
+		url string
+		typ interface{}
+	}{
+		//{"rate_limit", &github.RateLimits{}},
+		{"users/octocat", &github.User{}},
+		{"users/willnorris/keys", &[]github.Key{}},
+		{"orgs/google", &github.Organization{}},
+		{"repos/google/go-github", &github.Repository{}},
+	} {
+		err := testType(tt.url, tt.typ)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+	}
 }
 
 // testType fetches the JSON resource at urlStr and compares its keys to the
@@ -67,6 +78,8 @@ func main() {
 // should just take the first object in the array, and use that.  In that case,
 // should typ also be specified as a slice?
 func testType(urlStr string, typ interface{}) error {
+	slice := reflect.Indirect(reflect.ValueOf(typ)).Kind() == reflect.Slice
+
 	req, err := client.NewRequest("GET", urlStr, nil)
 	if err != nil {
 		return err
@@ -79,22 +92,41 @@ func testType(urlStr string, typ interface{}) error {
 		return err
 	}
 
-	// unmarshall directly to a map
+	// unmarshal directly to a map
 	var m1 map[string]interface{}
-	err = json.Unmarshal(*raw, &m1)
-	if err != nil {
-		return err
+	if slice {
+		var s []map[string]interface{}
+		err = json.Unmarshal(*raw, &s)
+		if err != nil {
+			return err
+		}
+		m1 = s[0]
+	} else {
+		err = json.Unmarshal(*raw, &m1)
+		if err != nil {
+			return err
+		}
 	}
 
-	// unarmshall to typ first, then re-marshall and unmarshall to a map
+	// unmarshal to typ first, then re-marshal and unmarshal to a map
 	err = json.Unmarshal(*raw, typ)
 	if err != nil {
 		return err
 	}
 
-	byt, err := json.Marshal(typ)
-	if err != nil {
-		return err
+	var byt []byte
+	if slice {
+		// use first item in slice
+		v := reflect.Indirect(reflect.ValueOf(typ))
+		byt, err = json.Marshal(v.Index(0).Interface())
+		if err != nil {
+			return err
+		}
+	} else {
+		byt, err = json.Marshal(typ)
+		if err != nil {
+			return err
+		}
 	}
 
 	var m2 map[string]interface{}
