@@ -66,6 +66,8 @@ func (s *GitService) GetRef(owner string, repo string, ref string) (*Reference, 
 // GitService.ListRefs method.
 type ReferenceListOptions struct {
 	Type string `url:"-"`
+
+	ListOptions
 }
 
 // ListRefs lists all refs in a repository.
@@ -78,6 +80,11 @@ func (s *GitService) ListRefs(owner, repo string, opt *ReferenceListOptions) ([]
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
 	}
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

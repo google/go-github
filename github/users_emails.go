@@ -15,8 +15,13 @@ type UserEmail struct {
 // ListEmails lists all email addresses for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user
-func (s *UsersService) ListEmails() ([]UserEmail, *Response, error) {
+func (s *UsersService) ListEmails(opt *ListOptions) ([]UserEmail, *Response, error) {
 	u := "user/emails"
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

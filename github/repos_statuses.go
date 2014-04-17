@@ -41,8 +41,13 @@ func (r RepoStatus) String() string {
 // reference.  ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
-func (s *RepositoriesService) ListStatuses(owner, repo, ref string) ([]RepoStatus, *Response, error) {
+func (s *RepositoriesService) ListStatuses(owner, repo, ref string, opt *ListOptions) ([]RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

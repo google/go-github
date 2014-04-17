@@ -21,8 +21,13 @@ func (l Label) String() string {
 // ListLabels lists all labels for a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-func (s *IssuesService) ListLabels(owner string, repo string) ([]Label, *Response, error) {
+func (s *IssuesService) ListLabels(owner string, repo string, opt *ListOptions) ([]Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -109,8 +114,13 @@ func (s *IssuesService) DeleteLabel(owner string, repo string, name string) (*Re
 // ListLabelsByIssue lists all labels for an issue.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-func (s *IssuesService) ListLabelsByIssue(owner string, repo string, number int) ([]Label, *Response, error) {
+func (s *IssuesService) ListLabelsByIssue(owner string, repo string, number int, opt *ListOptions) ([]Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -190,8 +200,13 @@ func (s *IssuesService) RemoveLabelsForIssue(owner string, repo string, number i
 // ListLabelsForMilestone lists labels for every issue in a milestone.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone
-func (s *IssuesService) ListLabelsForMilestone(owner string, repo string, number int) ([]Label, *Response, error) {
+func (s *IssuesService) ListLabelsForMilestone(owner string, repo string, number int, opt *ListOptions) ([]Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%d/labels", owner, repo, number)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

@@ -60,6 +60,8 @@ type PullRequestListOptions struct {
 
 	// Base filters pull requests by base branch name.
 	Base string `url:"base,omitempty"`
+
+	ListOptions
 }
 
 // List the pull requests for the specified repository.
@@ -146,8 +148,13 @@ func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *
 // ListCommits lists the commits in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
-func (s *PullRequestsService) ListCommits(owner string, repo string, number int) (*[]Commit, *Response, error) {
+func (s *PullRequestsService) ListCommits(owner string, repo string, number int, opt *ListOptions) (*[]Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/commits", owner, repo, number)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -165,8 +172,13 @@ func (s *PullRequestsService) ListCommits(owner string, repo string, number int)
 // ListFiles lists the files in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-pull-requests-files
-func (s *PullRequestsService) ListFiles(owner string, repo string, number int) (*[]CommitFile, *Response, error) {
+func (s *PullRequestsService) ListFiles(owner string, repo string, number int, opt *ListOptions) (*[]CommitFile, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

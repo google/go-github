@@ -19,10 +19,12 @@ func TestIssuesService_ListLabels(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
 	})
 
-	labels, _, err := client.Issues.ListLabels("o", "r")
+	opt := &ListOptions{Page: 2}
+	labels, _, err := client.Issues.ListLabels("o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.ListLabels returned error: %v", err)
 	}
@@ -34,7 +36,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 }
 
 func TestIssuesService_ListLabels_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.ListLabels("%", "%")
+	_, _, err := client.Issues.ListLabels("%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -156,10 +158,12 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
 	})
 
-	labels, _, err := client.Issues.ListLabelsByIssue("o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	labels, _, err := client.Issues.ListLabelsByIssue("o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Issues.ListLabelsByIssue returned error: %v", err)
 	}
@@ -171,7 +175,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsByIssue_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.ListLabelsByIssue("%", "%", 1)
+	_, _, err := client.Issues.ListLabelsByIssue("%", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -287,10 +291,12 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/milestones/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
 	})
 
-	labels, _, err := client.Issues.ListLabelsForMilestone("o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	labels, _, err := client.Issues.ListLabelsForMilestone("o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Issues.ListLabelsForMilestone returned error: %v", err)
 	}
@@ -302,6 +308,6 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.ListLabelsForMilestone("%", "%", 1)
+	_, _, err := client.Issues.ListLabelsForMilestone("%", "%", 1, nil)
 	testURLParseError(t, err)
 }

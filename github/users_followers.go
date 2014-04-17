@@ -11,12 +11,16 @@ import "fmt"
 // fetch followers for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/followers/#list-followers-of-a-user
-func (s *UsersService) ListFollowers(user string) ([]User, *Response, error) {
+func (s *UsersService) ListFollowers(user string, opt *ListOptions) ([]User, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/followers", user)
 	} else {
 		u = "user/followers"
+	}
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

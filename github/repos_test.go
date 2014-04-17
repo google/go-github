@@ -264,10 +264,14 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/contributors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"anon": "true",
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"contributions":42}]`)
 	})
 
-	opts := &ListContributorsOptions{Anon: "true"}
+	opts := &ListContributorsOptions{Anon: "true", ListOptions: ListOptions{Page: 2}}
 	contributors, _, err := client.Repositories.ListContributors("o", "r", opts)
 
 	if err != nil {
@@ -306,10 +310,12 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	teams, _, err := client.Repositories.ListTeams("o", "r")
+	opt := &ListOptions{Page: 2}
+	teams, _, err := client.Repositories.ListTeams("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListTeams returned error: %v", err)
 	}
@@ -326,10 +332,12 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/tags", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name":"n", "commit" : {"sha" : "s", "url" : "u"}, "zipball_url": "z", "tarball_url": "t"}]`)
 	})
 
-	tags, _, err := client.Repositories.ListTags("o", "r")
+	opt := &ListOptions{Page: 2}
+	tags, _, err := client.Repositories.ListTags("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListTags returned error: %v", err)
 	}
@@ -356,10 +364,12 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name":"master", "commit" : {"sha" : "a57781", "url" : "https://api.github.com/repos/o/r/commits/a57781"}}]`)
 	})
 
-	branches, _, err := client.Repositories.ListBranches("o", "r")
+	opt := &ListOptions{Page: 2}
+	branches, _, err := client.Repositories.ListBranches("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListBranches returned error: %v", err)
 	}

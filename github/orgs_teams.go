@@ -26,8 +26,13 @@ func (t Team) String() string {
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
-func (s *OrganizationsService) ListTeams(org string) ([]Team, *Response, error) {
+func (s *OrganizationsService) ListTeams(org string, opt *ListOptions) ([]Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -116,8 +121,13 @@ func (s *OrganizationsService) DeleteTeam(team int) (*Response, error) {
 // team.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-members
-func (s *OrganizationsService) ListTeamMembers(team int) ([]User, *Response, error) {
+func (s *OrganizationsService) ListTeamMembers(team int, opt *ListOptions) ([]User, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members", team)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -176,8 +186,13 @@ func (s *OrganizationsService) RemoveTeamMember(team int, user string) (*Respons
 // ListTeamRepos lists the repositories that the specified team has access to.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-repos
-func (s *OrganizationsService) ListTeamRepos(team int) ([]Repository, *Response, error) {
+func (s *OrganizationsService) ListTeamRepos(team int, opt *ListOptions) ([]Repository, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos", team)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

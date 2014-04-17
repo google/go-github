@@ -19,10 +19,12 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	comments, _, err := client.Repositories.ListComments("o", "r")
+	opt := &ListOptions{Page: 2}
+	comments, _, err := client.Repositories.ListComments("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
 	}
@@ -34,7 +36,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListComments("%", "%")
+	_, _, err := client.Repositories.ListComments("%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -44,10 +46,12 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	comments, _, err := client.Repositories.ListCommitComments("o", "r", "s")
+	opt := &ListOptions{Page: 2}
+	comments, _, err := client.Repositories.ListCommitComments("o", "r", "s", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
 	}
@@ -59,7 +63,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListCommitComments("%", "%", "%")
+	_, _, err := client.Repositories.ListCommitComments("%", "%", "%", nil)
 	testURLParseError(t, err)
 }
 

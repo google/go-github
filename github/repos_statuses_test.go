@@ -19,10 +19,12 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	statuses, _, err := client.Repositories.ListStatuses("o", "r", "r")
+	opt := &ListOptions{Page: 2}
+	statuses, _, err := client.Repositories.ListStatuses("o", "r", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
@@ -34,7 +36,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListStatuses("%", "r", "r")
+	_, _, err := client.Repositories.ListStatuses("%", "r", "r", nil)
 	testURLParseError(t, err)
 }
 

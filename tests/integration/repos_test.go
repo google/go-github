@@ -71,7 +71,7 @@ func TestRepositories_CRUD(t *testing.T) {
 
 func TestRepositories_BranchesTags(t *testing.T) {
 	// branches
-	branches, _, err := client.Repositories.ListBranches("git", "git")
+	branches, _, err := client.Repositories.ListBranches("git", "git", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListBranches() returned error: %v", err)
 	}
@@ -86,7 +86,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 	}
 
 	// tags
-	tags, _, err := client.Repositories.ListTags("git", "git")
+	tags, _, err := client.Repositories.ListTags("git", "git", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListTags() returned error: %v", err)
 	}

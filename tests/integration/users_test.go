@@ -92,7 +92,7 @@ func TestUsers_Emails(t *testing.T) {
 		return
 	}
 
-	emails, _, err := client.Users.ListEmails()
+	emails, _, err := client.Users.ListEmails(nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -117,7 +117,7 @@ EmailLoop:
 	}
 
 	// List emails again and verify new email is present
-	emails, _, err = client.Users.ListEmails()
+	emails, _, err = client.Users.ListEmails(nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -141,7 +141,7 @@ EmailLoop:
 	}
 
 	// List emails again and verify new email was removed
-	emails, _, err = client.Users.ListEmails()
+	emails, _, err = client.Users.ListEmails(nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -154,7 +154,7 @@ EmailLoop:
 }
 
 func TestUsers_Keys(t *testing.T) {
-	keys, _, err := client.Users.ListKeys("willnorris")
+	keys, _, err := client.Users.ListKeys("willnorris", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('willnorris') returned error: %v", err)
 	}
@@ -168,7 +168,7 @@ func TestUsers_Keys(t *testing.T) {
 		return
 	}
 
-	keys, _, err = client.Users.ListKeys("")
+	keys, _, err = client.Users.ListKeys("", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
@@ -191,7 +191,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// List keys again and verify new key is present
-	keys, _, err = client.Users.ListKeys("")
+	keys, _, err = client.Users.ListKeys("", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
@@ -224,7 +224,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// List keys again and verify test key was removed
-	keys, _, err = client.Users.ListKeys("")
+	keys, _, err = client.Users.ListKeys("", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}

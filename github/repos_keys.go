@@ -12,8 +12,12 @@ import "fmt"
 // ListKeys lists the deploy keys for a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/keys/#list
-func (s *RepositoriesService) ListKeys(owner string, repo string) ([]Key, *Response, error) {
+func (s *RepositoriesService) ListKeys(owner string, repo string, opt *ListOptions) ([]Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

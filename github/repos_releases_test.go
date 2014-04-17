@@ -20,10 +20,12 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	releases, _, err := client.Repositories.ListReleases("o", "r")
+	opt := &ListOptions{Page: 2}
+	releases, _, err := client.Repositories.ListReleases("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListReleases returned error: %v", err)
 	}
@@ -128,10 +130,12 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	assets, _, err := client.Repositories.ListReleaseAssets("o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	assets, _, err := client.Repositories.ListReleaseAssets("o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListReleaseAssets returned error: %v", err)
 	}
