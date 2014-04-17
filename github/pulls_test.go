@@ -23,11 +23,12 @@ func TestPullRequestsService_List(t *testing.T) {
 			"state": "closed",
 			"head":  "h",
 			"base":  "b",
+			"page":  "2",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opt := &PullRequestListOptions{"closed", "h", "b"}
+	opt := &PullRequestListOptions{"closed", "h", "b", ListOptions{Page: 2}}
 	pulls, _, err := client.PullRequests.List("o", "r", opt)
 
 	if err != nil {
@@ -145,7 +146,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `
 			[
 			  {
@@ -156,7 +157,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 			      }
 			    ]
 			  },
-  			  {
+			  {
 			    "sha": "2",
 			    "parents": [
 			      {
@@ -167,7 +168,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 			]`)
 	})
 
-	commits, _, err := client.PullRequests.ListCommits("o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	commits, _, err := client.PullRequests.ListCommits("o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListCommits returned error: %v", err)
 	}
@@ -201,7 +203,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `
 			[
 			  {
@@ -225,7 +227,8 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 			]`)
 	})
 
-	commitFiles, _, err := client.PullRequests.ListFiles("o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	commitFiles, _, err := client.PullRequests.ListFiles("o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListFiles returned error: %v", err)
 	}

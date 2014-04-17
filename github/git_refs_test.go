@@ -115,10 +115,11 @@ func TestGitService_ListRefs_options(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"ref": "r"}]`)
 	})
 
-	opt := &ReferenceListOptions{Type: "t"}
+	opt := &ReferenceListOptions{Type: "t", ListOptions: ListOptions{Page: 2}}
 	refs, _, err := client.Git.ListRefs("o", "r", opt)
 	if err != nil {
 		t.Errorf("Git.ListRefs returned error: %v", err)

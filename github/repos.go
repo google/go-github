@@ -270,6 +270,8 @@ type Contributor struct {
 type ListContributorsOptions struct {
 	// Include anonymous contributors in results or not
 	Anon string `url:"anon,omitempty"`
+
+	ListOptions
 }
 
 // ListContributors lists contributors for a repository.
@@ -277,7 +279,6 @@ type ListContributorsOptions struct {
 // GitHub API docs: http://developer.github.com/v3/repos/#list-contributors
 func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
-
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -326,8 +327,13 @@ func (s *RepositoriesService) ListLanguages(owner string, repo string) (map[stri
 // ListTeams lists the teams for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-teams
-func (s *RepositoriesService) ListTeams(owner string, repo string) ([]Team, *Response, error) {
+func (s *RepositoriesService) ListTeams(owner string, repo string, opt *ListOptions) ([]Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -353,8 +359,13 @@ type RepositoryTag struct {
 // ListTags lists tags for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-tags
-func (s *RepositoriesService) ListTags(owner string, repo string) ([]RepositoryTag, *Response, error) {
+func (s *RepositoriesService) ListTags(owner string, repo string, opt *ListOptions) ([]RepositoryTag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -378,8 +389,13 @@ type Branch struct {
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-branches
-func (s *RepositoriesService) ListBranches(owner string, repo string) ([]Branch, *Response, error) {
+func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListOptions) ([]Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

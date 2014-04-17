@@ -19,6 +19,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{
 			"email": "user@example.com",
 			"verified": false,
@@ -26,7 +27,8 @@ func TestUsersService_ListEmails(t *testing.T) {
 		}]`)
 	})
 
-	emails, _, err := client.Users.ListEmails()
+	opt := &ListOptions{Page: 2}
+	emails, _, err := client.Users.ListEmails(opt)
 	if err != nil {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}

@@ -18,10 +18,12 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	users, _, err := client.Repositories.ListCollaborators("o", "r")
+	opt := &ListOptions{Page: 2}
+	users, _, err := client.Repositories.ListCollaborators("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
@@ -33,7 +35,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListCollaborators("%", "%")
+	_, _, err := client.Repositories.ListCollaborators("%", "%", nil)
 	testURLParseError(t, err)
 }
 

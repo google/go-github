@@ -19,10 +19,12 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	teams, _, err := client.Organizations.ListTeams("o")
+	opt := &ListOptions{Page: 2}
+	teams, _, err := client.Organizations.ListTeams("o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeams returned error: %v", err)
 	}
@@ -34,7 +36,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListTeams("%")
+	_, _, err := client.Organizations.ListTeams("%", nil)
 	testURLParseError(t, err)
 }
 
@@ -141,10 +143,12 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListTeamMembers(1)
+	opt := &ListOptions{Page: 2}
+	members, _, err := client.Organizations.ListTeamMembers(1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
 	}
@@ -302,10 +306,12 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	members, _, err := client.Organizations.ListTeamRepos(1)
+	opt := &ListOptions{Page: 2}
+	members, _, err := client.Organizations.ListTeamRepos(1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamRepos returned error: %v", err)
 	}

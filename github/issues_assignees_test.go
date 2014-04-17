@@ -18,10 +18,12 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/assignees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	assignees, _, err := client.Issues.ListAssignees("o", "r")
+	opt := &ListOptions{Page: 2}
+	assignees, _, err := client.Issues.ListAssignees("o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
@@ -33,7 +35,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 }
 
 func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.ListAssignees("%", "r")
+	_, _, err := client.Issues.ListAssignees("%", "r", nil)
 	testURLParseError(t, err)
 }
 

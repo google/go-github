@@ -19,10 +19,12 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	keys, _, err := client.Users.ListKeys("")
+	opt := &ListOptions{Page: 2}
+	keys, _, err := client.Users.ListKeys("", opt)
 	if err != nil {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
@@ -42,7 +44,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	keys, _, err := client.Users.ListKeys("u")
+	keys, _, err := client.Users.ListKeys("u", nil)
 	if err != nil {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
@@ -54,7 +56,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
-	_, _, err := client.Users.ListKeys("%")
+	_, _, err := client.Users.ListKeys("%", nil)
 	testURLParseError(t, err)
 }
 
