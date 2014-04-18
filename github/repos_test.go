@@ -222,6 +222,27 @@ func TestRepositoriesService_Get(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetByID(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
+		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
+	})
+
+	repo, _, err := client.Repositories.GetByID(1)
+	if err != nil {
+		t.Errorf("Repositories.GetByID returned error: %v", err)
+	}
+
+	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.GetByID returned %+v, want %+v", repo, want)
+	}
+}
+
 func TestRepositoriesService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
