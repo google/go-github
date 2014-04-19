@@ -67,6 +67,16 @@ up-to-date rate limit data for the client.
 Learn more about GitHub rate limiting at
 http://developer.github.com/v3/#rate-limiting.
 
+Conditional Requests
+
+The GitHub API has good support for conditional requests which will help
+prevent you from burning through your rate limit, as well as help speed up your
+application.  go-github does not handle conditional requests directly, but is
+instead designed to work with a caching http.Transport.  We recommend using
+https://github.com/gregjones/httpcache, which can be used in conjuction with
+https://github.com/sourcegraph/apiproxy to provide additional flexibility and
+control of caching rules.
+
 Creating and Updating Resources
 
 All structs for GitHub resources use pointer values for all non-repeated fields.
