@@ -77,7 +77,7 @@ https://github.com/gregjones/httpcache, which can be used in conjuction with
 https://github.com/sourcegraph/apiproxy to provide additional flexibility and
 control of caching rules.
 
-Learn more about GitHub rate limiting at
+Learn more about GitHub conditional requests at
 https://developer.github.com/v3/#conditional-requests.
 
 Creating and Updating Resources
