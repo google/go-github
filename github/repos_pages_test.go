@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2014 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func TestRepositoriesService_GetPages(t *testing.T) {
+func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -21,15 +21,14 @@ func TestRepositoriesService_GetPages(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false}`)
 	})
 
-	page, _, err := client.Repositories.GetPages("o", "r")
+	page, _, err := client.Repositories.GetPagesInfo("o", "r")
 	if err != nil {
-		t.Errorf("Repositories.GetPages returned error: %v", err)
+		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
 
-	c := false
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: &c}
+	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false)}
 	if !reflect.DeepEqual(page, want) {
-		t.Errorf("Repositories.GetPages returned %+v, want %+v", page, want)
+		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
 }
 
@@ -53,7 +52,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_ListLatestPagesBuilds(t *testing.T) {
+func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -62,13 +61,13 @@ func TestRepositoriesService_ListLatestPagesBuilds(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
 	})
 
-	build, _, err := client.Repositories.ListLatestPagesBuilds("o", "r")
+	build, _, err := client.Repositories.GetLatestPagesBuild("o", "r")
 	if err != nil {
-		t.Errorf("Repositories.ListLatestPagesBuilds returned error: %v", err)
+		t.Errorf("Repositories.GetLatestPagesBuild returned error: %v", err)
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
 	if !reflect.DeepEqual(build, want) {
-		t.Errorf("Repositories.ListLatestPagesBuilds returned %+v, want %+v", build, want)
+		t.Errorf("Repositories.GetLatestPagesBuild returned %+v, want %+v", build, want)
 	}
 }
