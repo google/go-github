@@ -59,9 +59,11 @@ func main() {
 	}{
 		//{"rate_limit", &github.RateLimits{}},
 		{"users/octocat", &github.User{}},
+		{"user", &github.User{}},
 		{"users/willnorris/keys", &[]github.Key{}},
-		{"orgs/google", &github.Organization{}},
+		{"orgs/google-test", &github.Organization{}},
 		{"repos/google/go-github", &github.Repository{}},
+		{"/gists/9257657", &github.Gist{}},
 	} {
 		err := testType(tt.url, tt.typ)
 		if err != nil {
@@ -72,11 +74,6 @@ func main() {
 
 // testType fetches the JSON resource at urlStr and compares its keys to the
 // struct fields of typ.
-//
-// TODO: handle resources that are more easily fetched as an array of objects,
-// rather than a single object (e.g. a user's public keys).  In this case, we
-// should just take the first object in the array, and use that.  In that case,
-// should typ also be specified as a slice?
 func testType(urlStr string, typ interface{}) error {
 	slice := reflect.Indirect(reflect.ValueOf(typ)).Kind() == reflect.Slice
 

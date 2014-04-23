@@ -22,9 +22,10 @@ type OrganizationsService struct {
 type Organization struct {
 	Login             *string    `json:"login,omitempty"`
 	ID                *int       `json:"id,omitempty"`
-	URL               *string    `json:"url,omitempty"`
 	AvatarURL         *string    `json:"avatar_url,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
 	Name              *string    `json:"name,omitempty"`
+	Company           *string    `json:"company,omitempty"`
 	Blog              *string    `json:"blog,omitempty"`
 	Location          *string    `json:"location,omitempty"`
 	Email             *string    `json:"email,omitempty"`
@@ -40,7 +41,15 @@ type Organization struct {
 	DiskUsage         *int       `json:"disk_usage,omitempty"`
 	Collaborators     *int       `json:"collaborators,omitempty"`
 	BillingEmail      *string    `json:"billing_email,omitempty"`
+	Type              *string    `json:"type,omitempty"`
 	Plan              *Plan      `json:"plan,omitempty"`
+
+	// API URLs
+	URL              *string `json:"url,omitempty"`
+	EventsURL        *string `json:"events_url,omitempty"`
+	MembersURL       *string `json:"members_url,omitempty"`
+	PublicMembersURL *string `json:"public_members_url,omitempty"`
+	ReposURL         *string `json:"repos_url,omitempty"`
 }
 
 func (o Organization) String() string {

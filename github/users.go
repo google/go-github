@@ -5,11 +5,7 @@
 
 package github
 
-import (
-	"fmt"
-
-	"time"
-)
+import "fmt"
 
 // UsersService handles communication with the user related
 // methods of the GitHub API.
@@ -21,22 +17,44 @@ type UsersService struct {
 
 // User represents a GitHub user.
 type User struct {
-	Login       *string    `json:"login,omitempty"`
-	ID          *int       `json:"id,omitempty"`
-	URL         *string    `json:"url,omitempty"`
-	AvatarURL   *string    `json:"avatar_url,omitempty"`
-	HTMLURL     *string    `json:"html_url,omitempty"`
-	GravatarID  *string    `json:"gravatar_id,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	Company     *string    `json:"company,omitempty"`
-	Blog        *string    `json:"blog,omitempty"`
-	Location    *string    `json:"location,omitempty"`
-	Email       *string    `json:"email,omitempty"`
-	Hireable    *bool      `json:"hireable,omitempty"`
-	PublicRepos *int       `json:"public_repos,omitempty"`
-	Followers   *int       `json:"followers,omitempty"`
-	Following   *int       `json:"following,omitempty"`
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	Login             *string    `json:"login,omitempty"`
+	ID                *int       `json:"id,omitempty"`
+	AvatarURL         *string    `json:"avatar_url,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
+	GravatarID        *string    `json:"gravatar_id,omitempty"`
+	Name              *string    `json:"name,omitempty"`
+	Company           *string    `json:"company,omitempty"`
+	Blog              *string    `json:"blog,omitempty"`
+	Location          *string    `json:"location,omitempty"`
+	Email             *string    `json:"email,omitempty"`
+	Hireable          *bool      `json:"hireable,omitempty"`
+	Bio               *string    `json:"bio,omitempty"`
+	PublicRepos       *int       `json:"public_repos,omitempty"`
+	PublicGists       *int       `json:"public_gists,omitempty"`
+	Followers         *int       `json:"followers,omitempty"`
+	Following         *int       `json:"following,omitempty"`
+	CreatedAt         *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
+	Type              *string    `json:"type,omitempty"`
+	SiteAdmin         *bool      `json:"site_admin,omitempty"`
+	TotalPrivateRepos *int       `json:"total_private_repos,omitempty"`
+	OwnedPrivateRepos *int       `json:"owned_private_repos,omitempty"`
+	PrivateGists      *int       `json:"private_gists,omitempty"`
+	DiskUsage         *int       `json:"disk_usage,omitempty"`
+	Collaborators     *int       `json:"collaborators,omitempty"`
+	Plan              *Plan      `json:"plan,omitempty"`
+
+	// API URLs
+	URL               *string `json:"url,omitempty"`
+	EventsURL         *string `json:"events_url,omitempty"`
+	FollowingURL      *string `json:"following_url,omitempty"`
+	FollowersURL      *string `json:"followers_url,omitempty"`
+	GistsURL          *string `json:"gists_url,omitempty"`
+	OrganizationsURL  *string `json:"organizations_url,omitempty"`
+	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
+	ReposURL          *string `json:"repos_url,omitempty"`
+	StarredURL        *string `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
 }
 
 func (u User) String() string {
