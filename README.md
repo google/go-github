@@ -1,6 +1,6 @@
 # go-github #
 
-go-github is Go client library for accessing the [GitHub API][].
+go-github is a Go client library for accessing the [GitHub API][].
 
 **Documentation:** <http://godoc.org/github.com/google/go-github/github>  
 **Mailing List:** [go-github@googlegroups.com](https://groups.google.com/group/go-github)  
