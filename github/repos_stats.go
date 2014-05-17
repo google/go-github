@@ -116,7 +116,7 @@ func (s *RepositoriesService) ListCodeFrequency(owner, repo string) ([]WeeklySta
 	resp, err := s.client.Do(req, &weeks)
 
 	// convert int slices into WeeklyStats
-	stats := make([]WeeklyStats, 0)
+	var stats []WeeklyStats
 	for _, week := range weeks {
 		if len(week) != 3 {
 			continue
@@ -197,7 +197,7 @@ func (s *RepositoriesService) ListPunchCard(owner, repo string) ([]PunchCard, *R
 	resp, err := s.client.Do(req, &results)
 
 	// convert int slices into Punchcards
-	cards := make([]PunchCard, 0)
+	var cards []PunchCard
 	for _, result := range results {
 		if len(result) != 3 {
 			continue

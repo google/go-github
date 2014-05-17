@@ -23,8 +23,8 @@ import (
 	"os"
 	"reflect"
 	"strings"
-	"code.google.com/p/goauth2/oauth"
 
+	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
 )
 

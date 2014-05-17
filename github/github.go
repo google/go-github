@@ -485,10 +485,10 @@ type UnauthenticatedRateLimitedTransport struct {
 // RoundTrip implements the RoundTripper interface.
 func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.ClientID == "" {
-		return nil, errors.New("ClientID is empty")
+		return nil, errors.New("t.ClientID is empty")
 	}
 	if t.ClientSecret == "" {
-		return nil, errors.New("ClientSecret is empty")
+		return nil, errors.New("t.ClientSecret is empty")
 	}
 
 	// To set extra querystring params, we must make a copy of the Request so
