@@ -235,7 +235,7 @@ func (s *RepositoriesService) UploadReleaseAsset(owner, repo string, id int, opt
 		return nil, nil, err
 	}
 	if stat.IsDir() {
-		return nil, nil, errors.New("The asset to upload can't be a directory")
+		return nil, nil, errors.New("the asset to upload can't be a directory")
 	}
 
 	mediaType := mime.TypeByExtension(filepath.Ext(file.Name()))

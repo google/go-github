@@ -58,11 +58,11 @@ func (r RepositoryContent) String() string {
 }
 
 // Decode decodes the file content if it is base64 encoded.
-func (c *RepositoryContent) Decode() ([]byte, error) {
-	if *c.Encoding != "base64" {
-		return nil, errors.New("Cannot decode non-base64")
+func (r *RepositoryContent) Decode() ([]byte, error) {
+	if *r.Encoding != "base64" {
+		return nil, errors.New("cannot decode non-base64")
 	}
-	o, err := base64.StdEncoding.DecodeString(*c.Content)
+	o, err := base64.StdEncoding.DecodeString(*r.Content)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (s *RepositoriesService) GetContents(owner, repo, path string, opt *Reposit
 	if directoryUnmarshalError == nil {
 		return nil, directoryContent, resp, directoryUnmarshalError
 	}
-	return nil, nil, resp, fmt.Errorf("Unmarshalling failed for both file and directory content: %s and %s ", fileUnmarshalError, directoryUnmarshalError)
+	return nil, nil, resp, fmt.Errorf("unmarshalling failed for both file and directory content: %s and %s ", fileUnmarshalError, directoryUnmarshalError)
 }
 
 // CreateFile creates a new file in a repository at the given path and returns
