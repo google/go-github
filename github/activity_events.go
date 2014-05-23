@@ -46,11 +46,14 @@ func (e *Event) Payload() (payload interface{}) {
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID  *int              `json:"push_id,omitempty"`
-	Head    *string           `json:"head,omitempty"`
-	Ref     *string           `json:"ref,omitempty"`
-	Size    *int              `json:"ref,omitempty"`
-	Commits []PushEventCommit `json:"commits,omitempty"`
+	PushID   *int              `json:"push_id,omitempty"`
+	Head     *string           `json:"head,omitempty"`
+	Ref      *string           `json:"ref,omitempty"`
+	Size     *int              `json:"ref,omitempty"`
+	Commits  []PushEventCommit `json:"commits,omitempty"`
+	Added    []*string         `json:"added"`
+	Removed  []*string         `json:"removed"`
+	Modified []*string         `json:"modified"`
 }
 
 func (p PushEvent) String() string {
