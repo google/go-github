@@ -49,6 +49,7 @@ type PushEvent struct {
 	Ref     *string           `json:"ref,omitempty"`
 	Size    *int              `json:"ref,omitempty"`
 	Commits []PushEventCommit `json:"commits,omitempty"`
+	Repo    *Repository       `json:"repository,omitempty"`
 }
 
 func (p PushEvent) String() string {
@@ -61,7 +62,10 @@ type PushEventCommit struct {
 	Message  *string       `json:"message,omitempty"`
 	Author   *CommitAuthor `json:"author,omitempty"`
 	URL      *string       `json:"url,omitempty"`
-	Distinct *bool         `json:"distinct"`
+	Distinct *bool         `json:"distinct,omitempty"`
+	Added    []string      `json:"added,omitempty"`
+	Removed  []string      `json:"removed,omitempty"`
+	Modified []string      `json:"modified,omitempty"`
 }
 
 func (p PushEventCommit) String() string {
