@@ -20,5 +20,5 @@ func main() {
 		fmt.Printf("error: %v\n\n", err)
 	}
 
-	fmt.Printf("converted mardown:\n%v\n", md)
+	fmt.Printf("converted markdown:\n%v\n", md)
 }
