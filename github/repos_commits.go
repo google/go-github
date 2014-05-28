@@ -94,6 +94,8 @@ type CommitsListOptions struct {
 
 	// Until when should Commits be included in the response.
 	Until time.Time `url:"until,omitempty"`
+
+	ListOptions
 }
 
 // ListCommits lists the commits of a repository.
