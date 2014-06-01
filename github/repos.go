@@ -91,6 +91,10 @@ type Repository struct {
 	TagsURL          *string `json:"tags_url,omitempty"`
 	TreesURL         *string `json:"trees_url,omitempty"`
 	TeamsURL         *string `json:"teams_url,omitempty"`
+
+	// TextMatches is only populated from search results that request text matches
+	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
+	TextMatches []TextMatch `json:"text_matches,omitempty"`
 }
 
 func (r Repository) String() string {
