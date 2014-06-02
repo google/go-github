@@ -148,7 +148,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 			"total_count": 1,
 			"items": [
 				{
-					"name":"gopher1"
+					"name":"gopher1",
 					"text_matches": [
 						{
 							"fragment": "I'm afraid my friend what you have found\nIs a gopher who lives to feed",
@@ -159,9 +159,9 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 										14,
 										21
 							  	]
-								},
+								}
 						  ]
-					  },
+					  }
 				  ]
 				}
 			]
