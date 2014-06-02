@@ -56,6 +56,25 @@ repos, _, err := client.Repositories.List("", nil)
 
 See the [goauth2 docs][] for complete instructions on using that library.
 
+### Pagination ###
+
+All requests for resource collections (repos, pull requests, issues, etc)
+support pagination. Pagination options are described in the
+`github.ListOptions` struct and passed to the list methods directly or as an
+embedded type of a more specific list options struct (for example
+`github.PullRequestListOptions`).  Pages information is available via
+`github.Response` struct.
+
+```go
+client := github.NewClient(nil)
+opt := &github.RepositoryListByOrgOptions{
+  Type: "public",
+  ListOptions: github.ListOptions{PerPage: 10, Page: 2},
+}
+repos, resp, err := client.Repositories.ListByOrg("github", opt)
+fmt.Println(resp.NextPage) // outputs 3
+```
+
 For complete usage of go-github, see the full [package docs][].
 
 [GitHub API]: http://developer.github.com/v3/
