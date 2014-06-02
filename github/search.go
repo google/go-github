@@ -34,6 +34,9 @@ type SearchOptions struct {
 	// desc. Default is desc.
 	Order string `url:"order,omitempty"`
 
+	// Whether to retrieve text match metadata with a query
+	TextMatch bool `url:"-"`
+
 	ListOptions
 }
 
@@ -137,12 +140,14 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 
 	req, err := s.client.NewRequest("GET", u, nil)
-
-	// Accept header defaults to "application/vnd.github.v3+json"
-	// We change it here to fetch back text-match metadata
-	req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
 	if err != nil {
 		return nil, err
+	}
+
+	if opt.TextMatch {
+		// Accept header defaults to "application/vnd.github.v3+json"
+		// We change it here to fetch back text-match metadata
+		req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
 	}
 
 	return s.client.Do(req, result)
