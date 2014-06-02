@@ -100,6 +100,10 @@ type TextMatch struct {
 	Matches    []Match `json:"matches,omitempty"`
 }
 
+func (tm TextMatch) String() string {
+	return Stringify(tm)
+}
+
 // CodeSearchResult represents the result of an code search.
 type CodeSearchResult struct {
 	Total       *int         `json:"total_count,omitempty"`
