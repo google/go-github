@@ -2,9 +2,9 @@
 
 go-github is a Go client library for accessing the [GitHub API][].
 
-**Documentation:** <http://godoc.org/github.com/google/go-github/github>  
-**Mailing List:** [go-github@googlegroups.com](https://groups.google.com/group/go-github)  
-**Build Status:** [![Build Status](https://travis-ci.org/google/go-github.png?branch=master)](https://travis-ci.org/google/go-github)  
+**Documentation:** <http://godoc.org/github.com/google/go-github/github>
+**Mailing List:** [go-github@googlegroups.com](https://groups.google.com/group/go-github)
+**Build Status:** [![Build Status](https://travis-ci.org/google/go-github.png?branch=master)](https://travis-ci.org/google/go-github)
 **Test Coverage:** [![Test Coverage](https://coveralls.io/repos/google/go-github/badge.png?branch=master)](https://coveralls.io/r/google/go-github?branch=master) ([gocov report](https://drone.io/github.com/google/go-github/files/coverage.html))
 
 go-github requires Go version 1.1 or greater.
@@ -55,6 +55,24 @@ repos, _, err := client.Repositories.List("", nil)
 ```
 
 See the [goauth2 docs][] for complete instructions on using that library.
+
+### Pagination ###
+
+All requests to the collection resource (repos, pull requests, issues, etc)
+supports pagination. Pagination options described in `github.ListOptions`
+struct and passed to the list methods directly or as a embed type of more
+specific list options struct (for example `github.PullRequestListOptions`).
+Pages information is available via `github.Response` struct.
+
+```go
+client := github.NewClient(nil)
+opt := &github.RepositoryListByOrgOptions{
+  Type: "public",
+  ListOptions: github.ListOptions{PerPage: 10, Page: 2},
+}
+repos, resp, err := client.Repositories.ListByOrg("github", opt)
+fmt.Println(resp.NextPage) // outputs 3
+```
 
 For complete usage of go-github, see the full [package docs][].
 
