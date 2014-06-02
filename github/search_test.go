@@ -187,7 +187,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	}
 
 	want := &CodeSearchResult{
-		Total:       Int(4),
+		Total:       Int(1),
 		CodeResults: []CodeResult{wantedCodeResult},
 	}
 	if !reflect.DeepEqual(result, want) {
