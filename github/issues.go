@@ -34,6 +34,10 @@ type Issue struct {
 	URL       *string    `json:"url,omitempty"`
 	HTMLURL   *string    `json:"html_url,omitempty"`
 	Milestone *Milestone `json:"milestone,omitempty"`
+
+	// TextMatches is only populated from search results that request text matches
+	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
+	TextMatches []TextMatch `json:"text_matches,omitempty"`
 }
 
 func (i Issue) String() string {
