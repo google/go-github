@@ -95,5 +95,31 @@ bool, and int values.  For example:
 	client.Repositories.Create("", repo)
 
 Users who have worked with protocol buffers should find this pattern familiar.
+
+Pagination
+
+All requests for resource collections (repos, pull requests, issues, etc)
+support pagination. Pagination options are described in the
+ListOptions struct and passed to the list methods directly or as an
+embedded type of a more specific list options struct (for example
+PullRequestListOptions).  Pages information is available via Response struct.
+
+	opt := &github.RepositoryListByOrgOptions{
+		ListOptions: github.ListOptions{PerPage: 10},
+	}
+	// get all pages of results
+	for {
+		repos, resp, err := client.Repositories.ListByOrg("github", opt)
+		if err != nil {
+			return err
+		}
+		allRepos = append(allRepos, repos...)
+		if resp.NextPage != 0 {
+			opt.ListOptions.Page = resp.NextPage
+			continue
+		}
+		break
+	}
+
 */
 package github
