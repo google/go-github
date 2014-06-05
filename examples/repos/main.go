@@ -14,15 +14,23 @@ import (
 func main() {
 	client := github.NewClient(nil)
 
-	fmt.Println("Recently updated repositories owned by user willnorris:")
+	fmt.Println("All repositories owned by user willnorris, sorted by most recently updated:")
 
 	opt := &github.RepositoryListOptions{Type: "owner", Sort: "updated", Direction: "desc"}
-	repos, _, err := client.Repositories.List("willnorris", opt)
-	if err != nil {
-		fmt.Printf("error: %v\n\n", err)
-	} else {
-		fmt.Printf("%v\n\n", github.Stringify(repos))
+	var allRepos []github.Repository
+	for {
+		repos, resp, err := client.Repositories.List("willnorris", opt)
+		if err != nil {
+			fmt.Printf("error: %v\n\n", err)
+			break
+		}
+		allRepos = append(allRepos, repos...)
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.ListOptions.Page = resp.NextPage
 	}
+	fmt.Printf("%v\n\n", github.Stringify(allRepos))
 
 	rate, _, err := client.RateLimit()
 	if err != nil {
