@@ -3,7 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package main_test
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/google/go-github/github"
 )
 
-func main() {
+func ExampleMarkdown() {
 	client := github.NewClient(nil)
 
 	input := "# heading #\nLink to issue #1\n"
@@ -21,4 +21,10 @@ func main() {
 	}
 
 	fmt.Printf("converted markdown:\n%v\n", md)
+
+	// Output:
+	//converted markdown:
+	//<h1>heading</h1>
+	//
+	//<p>Link to issue <a href="https://github.com/google/go-github/issues/1" class="issue-link" title="Add support for parsing post-receive webhooks">#1</a></p>
 }
