@@ -47,7 +47,7 @@ type PushEvent struct {
 	PushID  *int              `json:"push_id,omitempty"`
 	Head    *string           `json:"head,omitempty"`
 	Ref     *string           `json:"ref,omitempty"`
-	Size    *int              `json:"ref,omitempty"`
+	Size    *int              `json:"size,omitempty"`
 	Commits []PushEventCommit `json:"commits,omitempty"`
 	Repo    *Repository       `json:"repository,omitempty"`
 }
