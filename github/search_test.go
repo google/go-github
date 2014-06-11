@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-
+	"strings"
 	"testing"
 )
 
@@ -134,6 +134,22 @@ func TestSearchService_Code(t *testing.T) {
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
+}
+func TestSearchService_CodeUnescapedQuery(t *testing.T) {
+	setup()
+	defer teardown()
+
+	query := "addClass+in:file+language:js+repo:jquery/jquery"
+
+	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
+
+		if !strings.Contains((*r.URL).RawQuery, "q="+query) {
+			t.Errorf("url contains escaped query")
+		}
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
+	client.Search.Code(query, opts)
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
