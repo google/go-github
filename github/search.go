@@ -140,9 +140,6 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	if err != nil {
 		return nil, err
 	}
-	//params.Add("q", query)
-	//u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
-
 	u := fmt.Sprintf("search/%s?q=%s&%s", searchType, query, params.Encode())
 
 	req, err := s.client.NewRequest("GET", u, nil)
