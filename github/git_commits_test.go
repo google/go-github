@@ -42,15 +42,25 @@ func TestGitService_CreateCommit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Commit{Message: String("m"), Tree: &Tree{SHA: String("t")}}
+	input := &Commit{
+		Message: String("m"),
+		Tree:    &Tree{SHA: String("t")},
+		Parents: []Commit{{SHA: String("p")}},
+	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Commit)
+		v := new(createCommit)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+
+		want := &createCommit{
+			Message: input.Message,
+			Tree:    String("t"),
+			Parents: []string{"p"},
+		}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
