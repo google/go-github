@@ -57,6 +57,15 @@ func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, 
 	return c, resp, err
 }
 
+// createCommit represents the body of a CreateCommit request.
+type createCommit struct {
+	Author    *CommitAuthor `json:"author,omitempty"`
+	Committer *CommitAuthor `json:"committer,omitempty"`
+	Message   *string       `json:"message,omitempty"`
+	Tree      *string       `json:"tree,omitempty"`
+	Parents   []string      `json:"parents,omitempty"`
+}
+
 // CreateCommit creates a new commit in a repository.
 //
 // The commit.Committer is optional and will be filled with the commit.Author
@@ -66,7 +75,24 @@ func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, 
 // GitHub API docs: http://developer.github.com/v3/git/commits/#create-a-commit
 func (s *GitService) CreateCommit(owner string, repo string, commit *Commit) (*Commit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/commits", owner, repo)
-	req, err := s.client.NewRequest("POST", u, commit)
+
+	body := &createCommit{}
+	if commit != nil {
+		parents := make([]string, len(commit.Parents))
+		for i, parent := range commit.Parents {
+			parents[i] = *parent.SHA
+		}
+
+		body = &createCommit{
+			Author:    commit.Author,
+			Committer: commit.Committer,
+			Message:   commit.Message,
+			Tree:      commit.Tree.SHA,
+			Parents:   parents,
+		}
+	}
+
+	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
