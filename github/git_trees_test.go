@@ -80,7 +80,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		}
 
 		fmt.Fprint(w, `{
-		 "sha": "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
+		  "sha": "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
 		  "tree": [
 		    {
 		      "path": "file.rb",
@@ -107,6 +107,73 @@ func TestGitService_CreateTree(t *testing.T) {
 				Type: String("blob"),
 				Size: Int(132),
 				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+			},
+		},
+	}
+
+	if !reflect.DeepEqual(*tree, want) {
+		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
+	}
+}
+
+func TestGitService_CreateTree_Content(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := []TreeEntry{
+		{
+			Path:    String("content.md"),
+			Mode:    String("100644"),
+			Content: String("file content"),
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
+		v := new(createTree)
+		json.NewDecoder(r.Body).Decode(v)
+
+		if m := "POST"; m != r.Method {
+			t.Errorf("Request method = %v, want %v", r.Method, m)
+		}
+
+		want := &createTree{
+			BaseTree: "b",
+			Entries:  input,
+		}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Git.CreateTree request body: %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{
+		  "sha": "5c6780ad2c68743383b740fd1dab6f6a33202b11",
+		  "url": "https://api.github.com/repos/o/r/git/trees/5c6780ad2c68743383b740fd1dab6f6a33202b11",
+		  "tree": [
+		    {
+			  "mode": "100644",
+			  "type": "blob",
+			  "sha":  "aad8feacf6f8063150476a7b2bd9770f2794c08b",
+			  "path": "content.md",
+			  "size": 12,
+			  "url": "https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"
+		    }
+		  ]
+		}`)
+	})
+
+	tree, _, err := client.Git.CreateTree("o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Git.CreateTree returned error: %v", err)
+	}
+
+	want := Tree{
+		String("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
+		[]TreeEntry{
+			{
+				Path: String("content.md"),
+				Mode: String("100644"),
+				Type: String("blob"),
+				Size: Int(12),
+				SHA:  String("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 	}
