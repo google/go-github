@@ -26,7 +26,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 	})
 
 	opt := &RepositoryListForksOptions{
-		Sort: "newest",
+		Sort:        "newest",
 		ListOptions: ListOptions{Page: 3},
 	}
 	repos, _, err := client.Repositories.ListForks("o", "r", opt)
