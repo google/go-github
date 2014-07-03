@@ -18,11 +18,17 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"sort": "newest"})
+		testFormValues(t, r, values{
+			"sort": "newest",
+			"page": "3",
+		})
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	opt := &RepositoryListForksOptions{Sort: "newest"}
+	opt := &RepositoryListForksOptions{
+		Sort:        "newest",
+		ListOptions: ListOptions{Page: 3},
+	}
 	repos, _, err := client.Repositories.ListForks("o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListForks returned error: %v", err)

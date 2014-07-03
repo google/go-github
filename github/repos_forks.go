@@ -13,6 +13,8 @@ type RepositoryListForksOptions struct {
 	// How to sort the forks list.  Possible values are: newest, oldest,
 	// watchers.  Default is "newest".
 	Sort string `url:"sort,omitempty"`
+
+	ListOptions
 }
 
 // ListForks lists the forks of the specified repository.
