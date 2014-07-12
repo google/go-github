@@ -19,7 +19,7 @@ type Commit struct {
 	Tree      *Tree         `json:"tree,omitempty"`
 	Parents   []Commit      `json:"parents,omitempty"`
 	Stats     *CommitStats  `json:"stats,omitempty"`
-	URL       *string       `json:url,omitempty"`
+	URL       *string       `json:"url,omitempty"`
 }
 
 func (c Commit) String() string {
