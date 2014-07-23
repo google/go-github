@@ -36,16 +36,18 @@ func (r RepositoryRelease) String() string {
 
 // ReleaseAsset represents a Github release asset in a repository.
 type ReleaseAsset struct {
-	ID            *int       `json:"id,omitempty"`
-	URL           *string    `json:"url,omitempty"`
-	Name          *string    `json:"name,omitempty"`
-	Label         *string    `json:"label,omitempty"`
-	State         *string    `json:"state,omitempty"`
-	ContentType   *string    `json:"content_type,omitempty"`
-	Size          *int       `json:"size,omitempty"`
-	DownloadCount *int       `json:"download_count,omitempty"`
-	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	ID                 *int       `json:"id,omitempty"`
+	URL                *string    `json:"url,omitempty"`
+	Name               *string    `json:"name,omitempty"`
+	Label              *string    `json:"label,omitempty"`
+	State              *string    `json:"state,omitempty"`
+	ContentType        *string    `json:"content_type,omitempty"`
+	Size               *int       `json:"size,omitempty"`
+	DownloadCount      *int       `json:"download_count,omitempty"`
+	CreatedAt          *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp `json:"updated_at,omitempty"`
+	BrowserDownloadUrl *string    `json:"browser_download_url,omitempty"`
+	Uploader           *User      `json:"uploader,omitempty"`
 }
 
 func (r ReleaseAsset) String() string {
