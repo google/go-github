@@ -43,6 +43,7 @@ type Repository struct {
 	SubscribersCount *int             `json:"subscribers_count,omitempty"`
 	WatchersCount    *int             `json:"watchers_count,omitempty"`
 	Size             *int             `json:"size,omitempty"`
+	AutoInit         *bool            `json:"auto_init,omitempty"`
 	Parent           *Repository      `json:"parent,omitempty"`
 	Source           *Repository      `json:"source,omitempty"`
 	Organization     *Organization    `json:"organization,omitempty"`
