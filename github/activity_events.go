@@ -72,6 +72,34 @@ func (p PushEventCommit) String() string {
 	return Stringify(p)
 }
 
+//PullRequestEvent represents the payload delivered by PullRequestEvent webhook
+type PullRequestEvent struct {
+	Action      *string      `json:"action,omitempty"`
+	Number      *int         `json:"number,omitempty"`
+	PullRequest *PullRequest `json:"pull_request,omitempty"`
+	Repo        *Repository  `json:"repository,omitempty"`
+	Sender      *User        `json:"sender,omitempty"`
+}
+
+// IssueActivityEvent represents the payload delivered by Issue webhook
+type IssueActivityEvent struct {
+	Action *string     `json:"action,omitempty"`
+	Issue  *Issue      `json:"issue,comitempty"`
+	Repo   *Repository `json:"repository,omitempty"`
+	Sender *User       `json:"sender,omitempty"`
+}
+
+// IssueCommentEvent represents the payload delivered by IssueComment webhook
+//
+// This webhook also gets fired for comments on pull requests
+type IssueCommentEvent struct {
+	Action  *string       `json:"action,omitempty"`
+	Issue   *Issue        `json:"issue,comitempty"`
+	Comment *IssueComment `json:"comment,omitempty"`
+	Repo    *Repository   `json:"repository,omitempty"`
+	Sender  *User         `json:"sender,omitempty"`
+}
+
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
