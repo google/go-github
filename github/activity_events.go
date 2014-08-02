@@ -72,6 +72,15 @@ func (p PushEventCommit) String() string {
 	return Stringify(p)
 }
 
+//PullRequestEvent represents the payload delivered by PullRequestEvent webhook
+type PullRequestEvent struct {
+	Action      *string      `json:"action,omitempty"`
+	Number      *int         `json:"number,omitempty"`
+	PullRequest *PullRequest `json:"pull_request,omitempty"`
+	Repo        *Repository  `json:"repository,omitempty"`
+	Sender      *User        `json:"sender,omitempty"`
+}
+
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
