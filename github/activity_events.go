@@ -81,6 +81,17 @@ type PullRequestEvent struct {
 	Sender      *User        `json:"sender,omitempty"`
 }
 
+// IssueCommentEvent represents the payload delivered by IssueComment webhook
+//
+// This webhook also gets fired for comments on pull requests
+type IssueCommentEvent struct {
+	Action  *string       `json:"action,omitempty"`
+	Issue   *Issue        `json:"issue,comitempty"`
+	Comment *IssueComment `json:"comment,omitempty"`
+	Repo    *Repository   `json:"repository,omitempty"`
+	Sender  *User         `json:"sender,omitempty"`
+}
+
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/#list-public-events
