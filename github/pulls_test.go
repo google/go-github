@@ -174,7 +174,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 		t.Errorf("PullRequests.ListCommits returned error: %v", err)
 	}
 
-	want := &[]Commit{
+	want := []Commit{
 		Commit{
 			SHA: String("3"),
 			Parents: []Commit{
@@ -233,7 +233,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 		t.Errorf("PullRequests.ListFiles returned error: %v", err)
 	}
 
-	want := &[]CommitFile{
+	want := []CommitFile{
 		CommitFile{
 			SHA:       String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 			Filename:  String("file1.txt"),
