@@ -81,6 +81,14 @@ type PullRequestEvent struct {
 	Sender      *User        `json:"sender,omitempty"`
 }
 
+// IssueActivityEvent represents the payload delivered by Issue webhook
+type IssueActivityEvent struct {
+	Action *string     `json:"action,omitempty"`
+	Issue  *Issue      `json:"issue,comitempty"`
+	Repo   *Repository `json:"repository,omitempty"`
+	Sender *User       `json:"sender,omitempty"`
+}
+
 // IssueCommentEvent represents the payload delivered by IssueComment webhook
 //
 // This webhook also gets fired for comments on pull requests
