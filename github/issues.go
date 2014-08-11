@@ -20,20 +20,21 @@ type IssuesService struct {
 
 // Issue represents a GitHub issue on a repository.
 type Issue struct {
-	Number    *int       `json:"number,omitempty"`
-	State     *string    `json:"state,omitempty"`
-	Title     *string    `json:"title,omitempty"`
-	Body      *string    `json:"body,omitempty"`
-	User      *User      `json:"user,omitempty"`
-	Labels    []Label    `json:"labels,omitempty"`
-	Assignee  *User      `json:"assignee,omitempty"`
-	Comments  *int       `json:"comments,omitempty"`
-	ClosedAt  *time.Time `json:"closed_at,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-	HTMLURL   *string    `json:"html_url,omitempty"`
-	Milestone *Milestone `json:"milestone,omitempty"`
+	Number           *int              `json:"number,omitempty"`
+	State            *string           `json:"state,omitempty"`
+	Title            *string           `json:"title,omitempty"`
+	Body             *string           `json:"body,omitempty"`
+	User             *User             `json:"user,omitempty"`
+	Labels           []Label           `json:"labels,omitempty"`
+	Assignee         *User             `json:"assignee,omitempty"`
+	Comments         *int              `json:"comments,omitempty"`
+	ClosedAt         *time.Time        `json:"closed_at,omitempty"`
+	CreatedAt        *time.Time        `json:"created_at,omitempty"`
+	UpdatedAt        *time.Time        `json:"updated_at,omitempty"`
+	URL              *string           `json:"url,omitempty"`
+	HTMLURL          *string           `json:"html_url,omitempty"`
+	Milestone        *Milestone        `json:"milestone,omitempty"`
+	PullRequestLinks *PullRequestLinks `json:"pull_request,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
@@ -82,6 +83,15 @@ type IssueListOptions struct {
 	Since time.Time `url:"since,omitempty"`
 
 	ListOptions
+}
+
+// PullRequestLinks object is added to the Issue object when it's an issue included
+// in the IssueCommentEvent webhook payload, if the webhooks is fired by a comment on a PR
+type PullRequestLinks struct {
+	URL      *string `json:"url,omitempty"`
+	HTMLURL  *string `json:"html_url,omitempty"`
+	DiffURL  *string `json:"diff_url,omitempty"`
+	PatchURL *string `json:"patch_url,omitempty"`
 }
 
 // List the issues for the authenticated user.  If all is true, list issues
