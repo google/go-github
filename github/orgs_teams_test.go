@@ -435,3 +435,61 @@ func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
 	_, err := client.Organizations.RemoveTeamRepo(1, "%", "r")
 	testURLParseError(t, err)
 }
+
+func TestOrganizationsService_GetTeamMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
+		fmt.Fprint(w, `{"url":"u", "status":"active"}`)
+	})
+
+	membership, _, err := client.Organizations.GetTeamMembership(1, "u")
+	if err != nil {
+		t.Errorf("Organizations.GetTeamMembership returned error: %v", err)
+	}
+
+	want := &TeamMembership{URL: String("u"), Status: String("active")}
+	if !reflect.DeepEqual(membership, want) {
+		t.Errorf("Organizations.GetTeamMembership returned %+v, want %+v", membership, want)
+	}
+}
+
+func TestOrganizationsService_AddTeamMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
+		fmt.Fprint(w, `{"url":"u", "status":"pending"}`)
+	})
+
+	membership, _, err := client.Organizations.AddTeamMembership(1, "u")
+	if err != nil {
+		t.Errorf("Organizations.AddTeamMembership returned error: %v", err)
+	}
+
+	want := &TeamMembership{URL: String("u"), Status: String("pending")}
+	if !reflect.DeepEqual(membership, want) {
+		t.Errorf("Organizations.AddTeamMembership returned %+v, want %+v", membership, want)
+	}
+}
+
+func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Organizations.RemoveTeamMembership(1, "u")
+	if err != nil {
+		t.Errorf("Organizations.RemoveTeamMembership returned error: %v", err)
+	}
+}

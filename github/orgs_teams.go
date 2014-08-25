@@ -23,6 +23,17 @@ func (t Team) String() string {
 	return Stringify(t)
 }
 
+// TeamMembership represents the status an a user's membership in a team.
+type TeamMembership struct {
+	URL *string `json:"url,omitempty"`
+	// Status is the user's status within the team.  Possible values are: "active", "pending"
+	Status *string `json:"status,omitempty"`
+}
+
+func (t TeamMembership) String() string {
+	return Stringify(t)
+}
+
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
@@ -248,6 +259,81 @@ func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo strin
 	if err != nil {
 		return nil, err
 	}
+
+	return s.client.Do(req, nil)
+}
+
+// GetTeamMembership returns the membership status for a user in a team.
+//
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team-membership
+func (s *OrganizationsService) GetTeamMembership(team int, user string) (*TeamMembership, *Response, error) {
+	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
+
+	t := new(TeamMembership)
+	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, err
+}
+
+// AddTeamMembership adds or invites a user to a team.
+//
+// In order to add a membership between a user and a team, the authenticated
+// user must have 'admin' permissions to the team or be an owner of the
+// organization that the team is associated with.
+//
+// If the user is already a part of the team's organization (meaning they're on
+// at least one other team in the organization), this endpoint will add the
+// user to the team.
+//
+// If the user is completely unaffiliated with the team's organization (meaning
+// they're on none of the organization's teams), this endpoint will send an
+// invitation to the user via email. This newly-created membership will be in
+// the "pending" state until the user accepts the invitation, at which point
+// the membership will transition to the "active" state and the user will be
+// added as a member of the team.
+//
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#add-team-membership
+func (s *OrganizationsService) AddTeamMembership(team int, user string) (*TeamMembership, *Response, error) {
+	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
+
+	t := new(TeamMembership)
+	resp, err := s.client.Do(req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, err
+}
+
+// RemoveTeamMembership removes a user from a team.
+//
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#remove-team-membership
+func (s *OrganizationsService) RemoveTeamMembership(team int, user string) (*Response, error) {
+	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
 
 	return s.client.Do(req, nil)
 }
