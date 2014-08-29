@@ -442,8 +442,8 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
-		fmt.Fprint(w, `{"url":"u", "status":"active"}`)
+		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
+		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
 	membership, _, err := client.Organizations.GetTeamMembership(1, "u")
@@ -451,7 +451,7 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 		t.Errorf("Organizations.GetTeamMembership returned error: %v", err)
 	}
 
-	want := &TeamMembership{URL: String("u"), Status: String("active")}
+	want := &Membership{URL: String("u"), State: String("active")}
 	if !reflect.DeepEqual(membership, want) {
 		t.Errorf("Organizations.GetTeamMembership returned %+v, want %+v", membership, want)
 	}
@@ -463,8 +463,8 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
-		fmt.Fprint(w, `{"url":"u", "status":"pending"}`)
+		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
+		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
 	membership, _, err := client.Organizations.AddTeamMembership(1, "u")
@@ -472,7 +472,7 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 		t.Errorf("Organizations.AddTeamMembership returned error: %v", err)
 	}
 
-	want := &TeamMembership{URL: String("u"), Status: String("pending")}
+	want := &Membership{URL: String("u"), State: String("pending")}
 	if !reflect.DeepEqual(membership, want) {
 		t.Errorf("Organizations.AddTeamMembership returned %+v, want %+v", membership, want)
 	}
@@ -484,7 +484,7 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeTeamMembershipPreview)
+		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

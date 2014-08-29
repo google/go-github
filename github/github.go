@@ -38,7 +38,7 @@ const (
 	// Media Type values to access preview APIs
 
 	// https://developer.github.com/changes/2014-08-05-team-memberships-api/
-	mediaTypeTeamMembershipPreview = "application/vnd.github.the-wasp-preview+json"
+	mediaTypeMembershipPreview = "application/vnd.github.the-wasp-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

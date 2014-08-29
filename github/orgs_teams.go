@@ -23,17 +23,6 @@ func (t Team) String() string {
 	return Stringify(t)
 }
 
-// TeamMembership represents the status an a user's membership in a team.
-type TeamMembership struct {
-	URL *string `json:"url,omitempty"`
-	// Status is the user's status within the team.  Possible values are: "active", "pending"
-	Status *string `json:"status,omitempty"`
-}
-
-func (t TeamMembership) String() string {
-	return Stringify(t)
-}
-
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
@@ -266,7 +255,7 @@ func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo strin
 // GetTeamMembership returns the membership status for a user in a team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team-membership
-func (s *OrganizationsService) GetTeamMembership(team int, user string) (*TeamMembership, *Response, error) {
+func (s *OrganizationsService) GetTeamMembership(team int, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -274,9 +263,9 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*TeamMe
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
+	req.Header.Set("Accept", mediaTypeMembershipPreview)
 
-	t := new(TeamMembership)
+	t := new(Membership)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
 		return nil, resp, err
@@ -303,7 +292,7 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*TeamMe
 // added as a member of the team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#add-team-membership
-func (s *OrganizationsService) AddTeamMembership(team int, user string) (*TeamMembership, *Response, error) {
+func (s *OrganizationsService) AddTeamMembership(team int, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -311,9 +300,9 @@ func (s *OrganizationsService) AddTeamMembership(team int, user string) (*TeamMe
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
+	req.Header.Set("Accept", mediaTypeMembershipPreview)
 
-	t := new(TeamMembership)
+	t := new(Membership)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
 		return nil, resp, err
@@ -333,7 +322,7 @@ func (s *OrganizationsService) RemoveTeamMembership(team int, user string) (*Res
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeTeamMembershipPreview)
+	req.Header.Set("Accept", mediaTypeMembershipPreview)
 
 	return s.client.Do(req, nil)
 }
