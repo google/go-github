@@ -67,6 +67,37 @@ func TestPullRequestsService_Get(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_Get_headAndBase(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"number":1,"head":{"ref":"r2","repo":{"id":2}},"base":{"ref":"r1","repo":{"id":1}}}`)
+	})
+
+	pull, _, err := client.PullRequests.Get("o", "r", 1)
+
+	if err != nil {
+		t.Errorf("PullRequests.Get returned error: %v", err)
+	}
+
+	want := &PullRequest{
+		Number: Int(1),
+		Head: &PullRequestBranch{
+			Ref:  String("r2"),
+			Repo: &Repository{ID: Int(2)},
+		},
+		Base: &PullRequestBranch{
+			Ref:  String("r1"),
+			Repo: &Repository{ID: Int(1)},
+		},
+	}
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
+	}
+}
+
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
 	_, _, err := client.PullRequests.Get("%", "r", 1)
 	testURLParseError(t, err)
@@ -76,10 +107,10 @@ func TestPullRequestsService_Create(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequest{Title: String("t")}
+	input := &NewPullRequest{Title: String("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequest)
+		v := new(NewPullRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
