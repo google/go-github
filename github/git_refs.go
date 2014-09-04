@@ -7,6 +7,7 @@ package github
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Reference represents a GitHub reference.
@@ -47,6 +48,7 @@ type updateRefRequest struct {
 //
 // GitHub API docs: http://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRef(owner string, repo string, ref string) (*Reference, *Response, error) {
+	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -105,7 +107,8 @@ func (s *GitService) ListRefs(owner, repo string, opt *ReferenceListOptions) ([]
 func (s *GitService) CreateRef(owner string, repo string, ref *Reference) (*Reference, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, &createRefRequest{
-		Ref: String("refs/" + *ref.Ref),
+		// back-compat with previous behavior that didn't require 'refs/' prefix
+		Ref: String("refs/" + strings.TrimPrefix(*ref.Ref, "refs/")),
 		SHA: ref.Object.SHA,
 	})
 	if err != nil {
@@ -125,7 +128,8 @@ func (s *GitService) CreateRef(owner string, repo string, ref *Reference) (*Refe
 //
 // GitHub API docs: http://developer.github.com/v3/git/refs/#update-a-reference
 func (s *GitService) UpdateRef(owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, *ref.Ref)
+	refPath := strings.TrimPrefix(*ref.Ref, "refs/")
+	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refPath)
 	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{
 		SHA:   ref.Object.SHA,
 		Force: &force,
@@ -147,6 +151,7 @@ func (s *GitService) UpdateRef(owner string, repo string, ref *Reference, force 
 //
 // GitHub API docs: http://developer.github.com/v3/git/refs/#delete-a-reference
 func (s *GitService) DeleteRef(owner string, repo string, ref string) (*Response, error) {
+	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
