@@ -9,28 +9,28 @@ import "fmt"
 
 // Deployment represents a deployment in a repo
 type Deployment struct {
-	Url         *string            `json:"url,omitempty"`
-	ID          *int               `json:"id,omitempty"`
-	SHA         *string            `json:"sha,omitempty"`
-	Ref         *string            `json:"ref,omitempty"`
-	Task        *string            `json:"task,omitempty"`
-	Payload     *map[string]string `json:"payload,omitempty"`
-	Environment *string            `json:"environment,omitempty"`
-	Description *string            `json:"description,omitempty"`
-	Creator     *User              `json:"creator,omitempty"`
-	CreatedAt   *Timestamp         `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp         `json:"pushed_at,omitempty"`
+	Url         *string           `json:"url,omitempty"`
+	ID          *int              `json:"id,omitempty"`
+	SHA         *string           `json:"sha,omitempty"`
+	Ref         *string           `json:"ref,omitempty"`
+	Task        *string           `json:"task,omitempty"`
+	Payload     map[string]string `json:"payload,omitempty"`
+	Environment *string           `json:"environment,omitempty"`
+	Description *string           `json:"description,omitempty"`
+	Creator     *User             `json:"creator,omitempty"`
+	CreatedAt   *Timestamp        `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp        `json:"pushed_at,omitempty"`
 }
 
 // DeploymentRequest represents a deployment request
 type DeploymentRequest struct {
-	Ref              *string   `json:"ref,omitempty"`
-	Task             *string   `json:"task,omitempty"`
-	AutoMerge        *bool     `json:"auto_merge,omitempty"`
-	RequiredContexts *[]string `json:"required_contexts,omitempty"`
-	Payload          *string   `json:"payload,omitempty"`
-	Environment      *string   `json:"environment,omitempty"`
-	Description      *string   `json:"description,omitempty"`
+	Ref              *string  `json:"ref,omitempty"`
+	Task             *string  `json:"task,omitempty"`
+	AutoMerge        *bool    `json:"auto_merge,omitempty"`
+	RequiredContexts []string `json:"required_contexts,omitempty"`
+	Payload          *string  `json:"payload,omitempty"`
+	Environment      *string  `json:"environment,omitempty"`
+	Description      *string  `json:"description,omitempty"`
 }
 
 // DeploymentsListOptions specifies the optional parameters to the
