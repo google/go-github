@@ -7,8 +7,8 @@ package github
 
 import "fmt"
 
-// RepositoryDeployment represents a deployment in a repo
-type RepositoryDeployment struct {
+// Deployment represents a deployment in a repo
+type Deployment struct {
 	Url         *string            `json:"url,omitempty"`
 	ID          *int               `json:"id,omitempty"`
 	SHA         *string            `json:"sha,omitempty"`
@@ -22,8 +22,8 @@ type RepositoryDeployment struct {
 	UpdatedAt   *Timestamp         `json:"pushed_at,omitempty"`
 }
 
-// RepositoryDeploymentRequest represents a deployment request
-type RepositoryDeploymentRequest struct {
+// DeploymentRequest represents a deployment request
+type DeploymentRequest struct {
 	Ref              *string   `json:"ref,omitempty"`
 	Task             *string   `json:"task,omitempty"`
 	AutoMerge        *bool     `json:"auto_merge,omitempty"`
@@ -54,7 +54,7 @@ type DeploymentsListOptions struct {
 // ListDeployments lists the deployments of a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#list-deployments
-func (s *RepositoriesService) ListDeployments(owner, repo string, opt *DeploymentsListOptions) ([]RepositoryDeployment, *Response, error) {
+func (s *RepositoriesService) ListDeployments(owner, repo string, opt *DeploymentsListOptions) ([]Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 		return nil, nil, err
 	}
 
-	deployments := new([]RepositoryDeployment)
+	deployments := new([]Deployment)
 	resp, err := s.client.Do(req, deployments)
 	if err != nil {
 		return nil, resp, err
@@ -78,7 +78,7 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 // CreateDeployment creates a new deployment for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment
-func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_req *RepositoryDeploymentRequest) (*RepositoryDeployment, *Response, error) {
+func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_req *DeploymentRequest) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, deployment_req)
@@ -86,7 +86,7 @@ func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_re
 		return nil, nil, err
 	}
 
-	d := new(RepositoryDeployment)
+	d := new(Deployment)
 	resp, err := s.client.Do(req, d)
 	if err != nil {
 		return nil, resp, err
@@ -95,9 +95,9 @@ func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_re
 	return d, resp, err
 }
 
-// RepositoryDeploymentStatus represents the status of a
+// DeploymentStatus represents the status of a
 // particular deployment.
-type RepositoryDeploymentStatus struct {
+type DeploymentStatus struct {
 	ID          *int       `json:"id,omitempty"`
 	State       *string    `json:"state,omitempty"`
 	Creator     *User      `json:"creator,omitempty"`
@@ -107,8 +107,8 @@ type RepositoryDeploymentStatus struct {
 	UpdatedAt   *Timestamp `json:"pushed_at,omitempty"`
 }
 
-// RepositoryDeploymentRequest represents a deployment request
-type RepositoryDeploymentStatusRequest struct {
+// DeploymentRequest represents a deployment request
+type DeploymentStatusRequest struct {
 	State       *string `json:"state,omitempty"`
 	TargetUrl   *string `json:"target_url,omitempty"`
 	Description *string `json:"description,omitempty"`
@@ -117,7 +117,7 @@ type RepositoryDeploymentStatusRequest struct {
 // ListDeploymentStatuses lists the statuses of a given deployment of a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
-func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deployment_id int, opt *ListOptions) ([]RepositoryDeploymentStatus, *Response, error) {
+func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deployment_id int, opt *ListOptions) ([]DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -129,7 +129,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deploym
 		return nil, nil, err
 	}
 
-	statuses := new([]RepositoryDeploymentStatus)
+	statuses := new([]DeploymentStatus)
 	resp, err := s.client.Do(req, statuses)
 	if err != nil {
 		return nil, resp, err
@@ -141,7 +141,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deploym
 // CreateDeploymentStatus creates a new status for a deployment.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment-status
-func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deployment_id int, status_req *RepositoryDeploymentStatusRequest) (*RepositoryDeploymentStatus, *Response, error) {
+func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deployment_id int, status_req *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
 
 	req, err := s.client.NewRequest("POST", u, status_req)
@@ -149,7 +149,7 @@ func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deploym
 		return nil, nil, err
 	}
 
-	d := new(RepositoryDeploymentStatus)
+	d := new(DeploymentStatus)
 	resp, err := s.client.Do(req, d)
 	if err != nil {
 		return nil, resp, err
