@@ -63,3 +63,25 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
 }
+
+func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	statutses, _, err := client.Repositories.ListDeploymentStatuses("o", "r", 1, opt)
+	if err != nil {
+		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
+	}
+
+	want := []RepositoryDeploymentStatus{{ID: Int(1)}, {ID: Int(2)}}
+	if !reflect.DeepEqual(statutses, want) {
+		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
+	}
+}

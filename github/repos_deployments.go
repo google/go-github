@@ -78,15 +78,78 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 // CreateDeployment creates a new deployment for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment
-func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment *RepositoryDeploymentRequest) (*RepositoryDeployment, *Response, error) {
+func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_req *RepositoryDeploymentRequest) (*RepositoryDeployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, deployment)
+	req, err := s.client.NewRequest("POST", u, deployment_req)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	d := new(RepositoryDeployment)
+	resp, err := s.client.Do(req, d)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return d, resp, err
+}
+
+// RepositoryDeploymentStatus represents the status of a
+// particular deployment.
+type RepositoryDeploymentStatus struct {
+	ID          *int       `json:"id,omitempty"`
+	State       *string    `json:"state,omitempty"`
+	Creator     *User      `json:"creator,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	TargetUrl   *string    `json:"target_url,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"pushed_at,omitempty"`
+}
+
+// RepositoryDeploymentRequest represents a deployment request
+type RepositoryDeploymentStatusRequest struct {
+	State       *string `json:"state,omitempty"`
+	TargetUrl   *string `json:"target_url,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// ListDeploymentStatuses lists the statuses of a given deployment of a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
+func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deployment_id int, opt *ListOptions) ([]RepositoryDeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	statuses := new([]RepositoryDeploymentStatus)
+	resp, err := s.client.Do(req, statuses)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *statuses, resp, err
+}
+
+// CreateDeploymentStatus creates a new status for a deployment.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment-status
+func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deployment_id int, status_req *RepositoryDeploymentStatusRequest) (*RepositoryDeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
+
+	req, err := s.client.NewRequest("POST", u, status_req)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	d := new(RepositoryDeploymentStatus)
 	resp, err := s.client.Do(req, d)
 	if err != nil {
 		return nil, resp, err
