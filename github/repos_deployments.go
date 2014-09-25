@@ -81,10 +81,10 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 // CreateDeployment creates a new deployment for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment
-func (s *RepositoriesService) CreateDeployment(owner, repo string, deployment_req *DeploymentRequest) (*Deployment, *Response, error) {
+func (s *RepositoriesService) CreateDeployment(owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, deployment_req)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -123,8 +123,8 @@ type DeploymentStatusRequest struct {
 // ListDeploymentStatuses lists the statuses of a given deployment of a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
-func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deployment_id int, opt *ListOptions) ([]DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
+func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deployment int, opt *ListOptions) ([]DeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -150,10 +150,10 @@ func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deploym
 // CreateDeploymentStatus creates a new status for a deployment.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/deployments/#create-a-deployment-status
-func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deployment_id int, status_req *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment_id)
+func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deployment int, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 
-	req, err := s.client.NewRequest("POST", u, status_req)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
