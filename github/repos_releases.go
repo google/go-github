@@ -15,19 +15,20 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	ID              *int       `json:"id,omitempty"`
-	TagName         *string    `json:"tag_name,omitempty"`
-	TargetCommitish *string    `json:"target_commitish,omitempty"`
-	Name            *string    `json:"name,omitempty"`
-	Body            *string    `json:"body,omitempty"`
-	Draft           *bool      `json:"draft,omitempty"`
-	Prerelease      *bool      `json:"prerelease,omitempty"`
-	CreatedAt       *Timestamp `json:"created_at,omitempty"`
-	PublishedAt     *Timestamp `json:"published_at,omitempty"`
-	URL             *string    `json:"url,omitempty"`
-	HTMLURL         *string    `json:"html_url,omitempty"`
-	AssetsURL       *string    `json:"assets_url,omitempty"`
-	UploadURL       *string    `json:"upload_url,omitempty"`
+	ID              *int           `json:"id,omitempty"`
+	TagName         *string        `json:"tag_name,omitempty"`
+	TargetCommitish *string        `json:"target_commitish,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Body            *string        `json:"body,omitempty"`
+	Draft           *bool          `json:"draft,omitempty"`
+	Prerelease      *bool          `json:"prerelease,omitempty"`
+	CreatedAt       *Timestamp     `json:"created_at,omitempty"`
+	PublishedAt     *Timestamp     `json:"published_at,omitempty"`
+	URL             *string        `json:"url,omitempty"`
+	HTMLURL         *string        `json:"html_url,omitempty"`
+	AssetsURL       *string        `json:"assets_url,omitempty"`
+	Assets          []ReleaseAsset `json:"assets,omitempty"`
+	UploadURL       *string        `json:"upload_url,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
