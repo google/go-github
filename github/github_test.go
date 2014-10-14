@@ -211,6 +211,20 @@ func TestNewRequest_badURL(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+// ensure that no User-Agent header is set if the client's UserAgent is empty.
+// This caused a problem with Google's internal http client.
+func TestNewRequest_emptyUserAgent(t *testing.T) {
+	c := NewClient(nil)
+	c.UserAgent = ""
+	req, err := c.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	if _, ok := req.Header["User-Agent"]; ok {
+		t.Fatal("constructed request contains unexpected User-Agent header")
+	}
+}
+
 func TestResponse_populatePageValues(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
