@@ -12,7 +12,7 @@ import (
 
 // Deployment represents a deployment in a repo
 type Deployment struct {
-	Url         *string         `json:"url,omitempty"`
+	URL         *string         `json:"url,omitempty"`
 	ID          *int            `json:"id,omitempty"`
 	SHA         *string         `json:"sha,omitempty"`
 	Ref         *string         `json:"ref,omitempty"`
@@ -111,15 +111,15 @@ type DeploymentStatus struct {
 	State       *string    `json:"state,omitempty"`
 	Creator     *User      `json:"creator,omitempty"`
 	Description *string    `json:"description,omitempty"`
-	TargetUrl   *string    `json:"target_url,omitempty"`
+	TargetURL   *string    `json:"target_url,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"pushed_at,omitempty"`
 }
 
-// DeploymentRequest represents a deployment request
+// DeploymentStatusRequest represents a deployment request
 type DeploymentStatusRequest struct {
 	State       *string `json:"state,omitempty"`
-	TargetUrl   *string `json:"target_url,omitempty"`
+	TargetURL   *string `json:"target_url,omitempty"`
 	Description *string `json:"description,omitempty"`
 }
 
