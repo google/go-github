@@ -226,7 +226,7 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 }
 
 // If a nil body is passed to github.NewRequest, make sure that nil is also
-// passed to http.NewRequest.  In most cases, passing in io.Reader the returns
+// passed to http.NewRequest.  In most cases, passing an io.Reader that returns
 // no content is fine, since there is no difference between an HTTP request
 // body that is an empty string versus one that is not set at all.  However in
 // certain cases, intermediate systems may treat these differently resulting in
