@@ -493,3 +493,25 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 		t.Errorf("Organizations.RemoveTeamMembership returned error: %v", err)
 	}
 }
+
+func TestOrganizationsService_ListUserTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1"})
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &ListOptions{Page: 1}
+	teams, _, err := client.Organizations.ListUserTeams(opt)
+	if err != nil {
+		t.Errorf("Organizations.ListUserTeams returned error: %v", err)
+	}
+
+	want := []Team{{ID: Int(1)}}
+	if !reflect.DeepEqual(teams, want) {
+		t.Errorf("Organizations.ListUserTeams returned %+v, want %+v", teams, want)
+	}
+}
