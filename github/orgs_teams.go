@@ -252,6 +252,29 @@ func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo strin
 	return s.client.Do(req, nil)
 }
 
+// ListUserTeams lists a user's teams
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#list-user-teams
+func (s *OrganizationsService) ListUserTeams(opt *ListOptions) ([]Team, *Response, error) {
+	u := "user/teams"
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	teams := new([]Team)
+	resp, err := s.client.Do(req, teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *teams, resp, err
+}
+
 // GetTeamMembership returns the membership status for a user in a team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team-membership
