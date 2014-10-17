@@ -7,6 +7,8 @@ package github
 
 import (
 	"bytes"
+	"fmt"
+	"net/url"
 )
 
 // MarkdownOptions specifies optional parameters to the Markdown method.
@@ -48,7 +50,7 @@ func (c *Client) Markdown(text string, opt *MarkdownOptions) (string, *Response,
 		}
 	}
 
-	req, err := c.NewRequest("POST", "/markdown", request)
+	req, err := c.NewRequest("POST", "markdown", request)
 	if err != nil {
 		return "", nil, err
 	}
@@ -66,7 +68,7 @@ func (c *Client) Markdown(text string, opt *MarkdownOptions) (string, *Response,
 //
 // GitHub API docs: https://developer.github.com/v3/emojis/
 func (c *Client) ListEmojis() (map[string]string, *Response, error) {
-	req, err := c.NewRequest("GET", "/emojis", nil)
+	req, err := c.NewRequest("GET", "emojis", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -104,7 +106,7 @@ type APIMeta struct {
 //
 // GitHub API docs: https://developer.github.com/v3/meta/
 func (c *Client) APIMeta() (*APIMeta, *Response, error) {
-	req, err := c.NewRequest("GET", "/meta", nil)
+	req, err := c.NewRequest("GET", "meta", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -116,4 +118,44 @@ func (c *Client) APIMeta() (*APIMeta, *Response, error) {
 	}
 
 	return meta, resp, nil
+}
+
+// Octocat returns an ASCII art octocat with the specified message in a speech
+// bubble.  If message is empty, a random zen phrase is used.
+func (c *Client) Octocat(message string) (string, *Response, error) {
+	u := "octocat"
+	if message != "" {
+		u = fmt.Sprintf("%s?s=%s", u, url.QueryEscape(message))
+	}
+
+	req, err := c.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	resp, err := c.Do(req, buf)
+	if err != nil {
+		return "", resp, err
+	}
+
+	return buf.String(), resp, nil
+}
+
+// Zen returns a random line from The Zen of GitHub.
+//
+// see also: http://warpspire.com/posts/taste/
+func (c *Client) Zen() (string, *Response, error) {
+	req, err := c.NewRequest("GET", "zen", nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	resp, err := c.Do(req, buf)
+	if err != nil {
+		return "", resp, err
+	}
+
+	return buf.String(), resp, nil
 }
