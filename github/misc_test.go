@@ -89,3 +89,49 @@ func TestAPIMeta(t *testing.T) {
 		t.Errorf("APIMeta returned %+v, want %+v", meta, want)
 	}
 }
+
+func TestOctocat(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := "input"
+	output := "sample text"
+
+	mux.HandleFunc("/octocat", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"s": input})
+		w.Header().Set("Content-Type", "application/octocat-stream")
+		fmt.Fprint(w, output)
+	})
+
+	got, _, err := client.Octocat(input)
+	if err != nil {
+		t.Errorf("Octocat returned error: %v", err)
+	}
+
+	if want := output; got != want {
+		t.Errorf("Octocat returned %+v, want %+v", got, want)
+	}
+}
+
+func TestZen(t *testing.T) {
+	setup()
+	defer teardown()
+
+	output := "sample text"
+
+	mux.HandleFunc("/zen", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.Header().Set("Content-Type", "text/plain;charset=utf-8")
+		fmt.Fprint(w, output)
+	})
+
+	got, _, err := client.Zen()
+	if err != nil {
+		t.Errorf("Zen returned error: %v", err)
+	}
+
+	if want := output; got != want {
+		t.Errorf("Zen returned %+v, want %+v", got, want)
+	}
+}
