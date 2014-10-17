@@ -80,8 +80,8 @@ func openTestFile(name, content string) (file *os.File, dir string, err error) {
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {
-	if want != r.Method {
-		t.Errorf("Request method = %v, want %v", r.Method, want)
+	if got := r.Method; got != want {
+		t.Errorf("Request method: %v, want %v", got, want)
 	}
 }
 
@@ -94,14 +94,14 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 	}
 
 	r.ParseForm()
-	if !reflect.DeepEqual(want, r.Form) {
-		t.Errorf("Request parameters = %v, want %v", r.Form, want)
+	if got := r.Form; !reflect.DeepEqual(got, want) {
+		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
 }
 
 func testHeader(t *testing.T, r *http.Request, header string, want string) {
-	if value := r.Header.Get(header); want != value {
-		t.Errorf("Header %s = %s, want: %s", header, value, want)
+	if got := r.Header.Get(header); got != want {
+		t.Errorf("Header.Get(%q) returned %s, want %s", header, got, want)
 	}
 }
 
@@ -117,11 +117,10 @@ func testURLParseError(t *testing.T, err error) {
 func testBody(t *testing.T, r *http.Request, want string) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		t.Errorf("Unable to read body")
+		t.Errorf("Error reading request body: %v", err)
 	}
-	str := string(b)
-	if want != str {
-		t.Errorf("Body = %s, want: %s", str, want)
+	if got := string(b); got != want {
+		t.Errorf("request Body is %s, want %s", got, want)
 	}
 }
 
@@ -156,11 +155,11 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 
-	if c.BaseURL.String() != defaultBaseURL {
-		t.Errorf("NewClient BaseURL = %v, want %v", c.BaseURL.String(), defaultBaseURL)
+	if got, want := c.BaseURL.String(), defaultBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
 	}
-	if c.UserAgent != userAgent {
-		t.Errorf("NewClient UserAgent = %v, want %v", c.UserAgent, userAgent)
+	if got, want := c.UserAgent, userAgent; got != want {
+		t.Errorf("NewClient UserAgent is %v, want %v", got, want)
 	}
 }
 
@@ -172,20 +171,19 @@ func TestNewRequest(t *testing.T) {
 	req, _ := c.NewRequest("GET", inURL, inBody)
 
 	// test that relative URL was expanded
-	if req.URL.String() != outURL {
-		t.Errorf("NewRequest(%v) URL = %v, want %v", inURL, req.URL, outURL)
+	if got, want := req.URL.String(), outURL; got != want {
+		t.Errorf("NewRequest(%q) URL is %v, want %v", inURL, got, want)
 	}
 
 	// test that body was JSON encoded
 	body, _ := ioutil.ReadAll(req.Body)
-	if string(body) != outBody {
-		t.Errorf("NewRequest(%v) Body = %v, want %v", inBody, string(body), outBody)
+	if got, want := string(body), outBody; got != want {
+		t.Errorf("NewRequest(%q) Body is %v, want %v", inBody, got, want)
 	}
 
 	// test that default user-agent is attached to the request
-	userAgent := req.Header.Get("User-Agent")
-	if c.UserAgent != userAgent {
-		t.Errorf("NewRequest() User-Agent = %v, want %v", userAgent, c.UserAgent)
+	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
+		t.Errorf("NewRequest() User-Agent is %v, want %v", got, want)
 	}
 }
 
@@ -254,17 +252,17 @@ func TestResponse_populatePageValues(t *testing.T) {
 	}
 
 	response := newResponse(&r)
-	if want, got := 1, response.FirstPage; want != got {
-		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	if got, want := response.FirstPage, 1; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
 	}
-	if want, got := 2, response.PrevPage; want != got {
-		t.Errorf("response.PrevPage: %v, want %v", want, got)
+	if got, want := response.PrevPage, 2; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
 	}
-	if want, got := 4, response.NextPage; want != got {
-		t.Errorf("response.NextPage: %v, want %v", want, got)
+	if got, want := response.NextPage, 4; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
 	}
-	if want, got := 5, response.LastPage; want != got {
-		t.Errorf("response.LastPage: %v, want %v", want, got)
+	if got, want := response.LastPage, 5; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
 	}
 }
 
@@ -281,17 +279,17 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	}
 
 	response := newResponse(&r)
-	if want, got := 0, response.FirstPage; want != got {
-		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
 	}
-	if want, got := 0, response.PrevPage; want != got {
-		t.Errorf("response.PrevPage: %v, want %v", want, got)
+	if got, want := response.PrevPage, 0; got != want {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
 	}
-	if want, got := 0, response.NextPage; want != got {
-		t.Errorf("response.NextPage: %v, want %v", want, got)
+	if got, want := response.NextPage, 0; got != want {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
 	}
-	if want, got := 0, response.LastPage; want != got {
-		t.Errorf("response.LastPage: %v, want %v", want, got)
+	if got, want := response.LastPage, 0; got != want {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
 	}
 
 	// more invalid URLs
@@ -302,8 +300,8 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	}
 
 	response = newResponse(&r)
-	if want, got := 0, response.FirstPage; want != got {
-		t.Errorf("response.FirstPage: %v, want %v", want, got)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
 	}
 }
 
@@ -380,13 +378,11 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Add(headerRateReset, "1372700873")
 	})
 
-	var want int
-
-	if want = 0; client.Rate.Limit != want {
-		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	if got, want := client.Rate.Limit, 0; got != want {
+		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if want = 0; client.Rate.Limit != want {
-		t.Errorf("Client rate remaining = %v, got %v", client.Rate.Remaining, want)
+	if got, want := client.Rate.Limit, 0; got != want {
+		t.Errorf("Client rate remaining = %v, got %v", got, want)
 	}
 	if !client.Rate.Reset.IsZero() {
 		t.Errorf("Client rate reset not initialized to zero value")
@@ -395,11 +391,11 @@ func TestDo_rateLimit(t *testing.T) {
 	req, _ := client.NewRequest("GET", "/", nil)
 	client.Do(req, nil)
 
-	if want = 60; client.Rate.Limit != want {
-		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	if got, want := client.Rate.Limit, 60; got != want {
+		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if want = 59; client.Rate.Remaining != want {
-		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
+	if got, want := client.Rate.Remaining, 59; got != want {
+		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
 	if client.Rate.Reset.UTC() != reset {
@@ -407,6 +403,7 @@ func TestDo_rateLimit(t *testing.T) {
 	}
 }
 
+// ensure rate limit is still parsed, even for error responses
 func TestDo_rateLimit_errorResponse(t *testing.T) {
 	setup()
 	defer teardown()
@@ -418,16 +415,14 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		http.Error(w, "Bad Request", 400)
 	})
 
-	var want int
-
 	req, _ := client.NewRequest("GET", "/", nil)
 	client.Do(req, nil)
 
-	if want = 60; client.Rate.Limit != want {
-		t.Errorf("Client rate limit = %v, want %v", client.Rate.Limit, want)
+	if got, want := client.Rate.Limit, 60; got != want {
+		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if want = 59; client.Rate.Remaining != want {
-		t.Errorf("Client rate remaining = %v, want %v", client.Rate.Remaining, want)
+	if got, want := client.Rate.Remaining, 59; got != want {
+		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
 	if client.Rate.Reset.UTC() != reset {
@@ -458,8 +453,7 @@ func TestCheckResponse(t *testing.T) {
 	}
 }
 
-// ensure that we properly handle API errors that do not contain a response
-// body
+// ensure that we properly handle API errors that do not contain a response body
 func TestCheckResponse_noBody(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
