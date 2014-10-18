@@ -20,6 +20,7 @@ type RepositoryCommit struct {
 	Committer *User    `json:"committer,omitempty"`
 	Parents   []Commit `json:"parents,omitempty"`
 	Message   *string  `json:"message,omitempty"`
+	HTMLURL   *string  `json:"html_url,omitempty"`
 
 	// Details about how many changes were made in this commit. Only filled in during GetCommit!
 	Stats *CommitStats `json:"stats,omitempty"`
