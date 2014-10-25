@@ -37,6 +37,8 @@ type IssueListCommentsOptions struct {
 
 	// Since filters comments by time.
 	Since time.Time `url:"since,omitempty"`
+
+	ListOptions
 }
 
 // ListComments lists all comments on the specified issue.  Specifying an issue
