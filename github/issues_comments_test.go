@@ -24,12 +24,16 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 			"sort":      "updated",
 			"direction": "desc",
 			"since":     "2002-02-10T15:30:00Z",
+			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &IssueListCommentsOptions{"updated", "desc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+	opt := &IssueListCommentsOptions{
+		Sort:        "updated",
+		Direction:   "desc",
+		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		ListOptions: ListOptions{Page: 2},
 	}
 	comments, _, err := client.Issues.ListComments("o", "r", 0, opt)
 	if err != nil {

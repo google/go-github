@@ -24,12 +24,16 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 			"sort":      "updated",
 			"direction": "desc",
 			"since":     "2002-02-10T15:30:00Z",
+			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &PullRequestListCommentsOptions{"updated", "desc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+	opt := &PullRequestListCommentsOptions{
+		Sort:        "updated",
+		Direction:   "desc",
+		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		ListOptions: ListOptions{Page: 2},
 	}
 	pulls, _, err := client.PullRequests.ListComments("o", "r", 0, opt)
 
