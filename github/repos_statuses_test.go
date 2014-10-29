@@ -17,7 +17,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/commits/r/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -71,4 +71,26 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
 	_, _, err := client.Repositories.CreateStatus("%", "r", "r", nil)
 	testURLParseError(t, err)
+}
+
+func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/commits/r/status", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `{"state":"success", "statuses":[{"id":1}]}`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	status, _, err := client.Repositories.GetCombinedStatus("o", "r", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
+	}
+
+	want := &CombinedStatus{State: String("success"), Statuses: []RepoStatus{{ID: Int(1)}}}
+	if !reflect.DeepEqual(status, want) {
+		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
+	}
 }

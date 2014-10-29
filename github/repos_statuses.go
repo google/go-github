@@ -12,7 +12,8 @@ import (
 
 // RepoStatus represents the status of a repository at a particular reference.
 type RepoStatus struct {
-	ID *int `json:"id,omitempty"`
+	ID  *int    `json:"id,omitempty"`
+	URL *string `json:"url,omitempty"`
 
 	// State is the current state of the repository.  Possible values are:
 	// pending, success, error, or failure.
@@ -42,7 +43,7 @@ func (r RepoStatus) String() string {
 //
 // GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 func (s *RepositoriesService) ListStatuses(owner, repo, ref string, opt *ListOptions) ([]RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -73,11 +74,55 @@ func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *Repo
 		return nil, nil, err
 	}
 
-	statuses := new(RepoStatus)
-	resp, err := s.client.Do(req, statuses)
+	repoStatus := new(RepoStatus)
+	resp, err := s.client.Do(req, repoStatus)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return statuses, resp, err
+	return repoStatus, resp, err
+}
+
+// CombinedStatus represents the combined status of a repository at a particular reference.
+type CombinedStatus struct {
+	// State is the combined state of the repository.  Possible values are:
+	// failture, pending, or success.
+	State *string `json:"state,omitempty"`
+
+	Name       *string      `json:"name,omitempty"`
+	SHA        *string      `json:"sha,omitempty"`
+	TotalCount *int         `json:"total_count,omitempty"`
+	Statuses   []RepoStatus `json:"statuses,omitempty"`
+
+	CommitURL     *string `json:"commit_url,omitempty"`
+	RepositoryURL *string `json:"repository_url,omitempty"`
+}
+
+func (s CombinedStatus) String() string {
+	return Stringify(s)
+}
+
+// GetCombinedStatus returns the combined status of a repository at the specified
+// reference.  ref can be a SHA, a branch name, or a tag name.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
+func (s *RepositoriesService) GetCombinedStatus(owner, repo, ref string, opt *ListOptions) (*CombinedStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, ref)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	status := new(CombinedStatus)
+	resp, err := s.client.Do(req, status)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return status, resp, err
 }
