@@ -205,8 +205,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 		t.Errorf("PullRequests.ListCommits returned error: %v", err)
 	}
 
-	want := []Commit{
-		Commit{
+	want := []RepositoryCommit{
+		{
 			SHA: String("3"),
 			Parents: []Commit{
 				Commit{
@@ -214,7 +214,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 				},
 			},
 		},
-		Commit{
+		{
 			SHA: String("2"),
 			Parents: []Commit{
 				Commit{
