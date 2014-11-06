@@ -77,7 +77,7 @@ fmt.Println(resp.NextPage) // outputs 3
 
 For complete usage of go-github, see the full [package docs][].
 
-[GitHub API]: http://developer.github.com/v3/
+[GitHub API]: https://developer.github.com/v3/
 [goauth2]: https://code.google.com/p/goauth2/
 [goauth2 docs]: https://godoc.org/code.google.com/p/goauth2/oauth
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
