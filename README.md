@@ -79,9 +79,9 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API]: http://developer.github.com/v3/
 [goauth2]: https://code.google.com/p/goauth2/
-[goauth2 docs]: http://godoc.org/code.google.com/p/goauth2/oauth
+[goauth2 docs]: https://godoc.org/code.google.com/p/goauth2/oauth
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: http://godoc.org/github.com/google/go-github/github
+[package docs]: https://godoc.org/github.com/google/go-github/github
 
 
 ## Roadmap ##
