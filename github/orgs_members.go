@@ -15,8 +15,17 @@ type Membership struct {
 	// Possible values are: "active", "pending"
 	State *string `json:"state,omitempty"`
 
+	// TODO(willnorris): add docs
+	Role *string `json:"role,omitempty"`
+
 	// For organization membership, the API URL of the organization.
 	OrganizationURL *string `json:"organization_url,omitempty"`
+
+	// For organization membership, the organization the membership is for.
+	Organization *Organization `json:"organization,omitempty"`
+
+	// For organization membership, the user the membership is for.
+	User *User `json:"user,omitempty"`
 }
 
 func (m Membership) String() string {
