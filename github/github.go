@@ -77,6 +77,13 @@ type Client struct {
 	Repositories  *RepositoriesService
 	Search        *SearchService
 	Users         *UsersService
+
+	// If true, calls to Do will only result in an API request if there is
+	// deemed to be room under the rate limit that the request would
+	// succeed. If there is no room under the rate limit, requests will
+	// block until there is quota.
+	ObeyRateLimit bool
+	wait          func(time.Duration) // Called when rate-limit waiting happens
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -138,6 +145,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Repositories = &RepositoriesService{client: c}
 	c.Search = &SearchService{client: c}
 	c.Users = &UsersService{client: c}
+	c.wait = time.Sleep
 	return c
 }
 
@@ -292,6 +300,10 @@ func (r *Response) populateRate() {
 // interface, the raw response body will be written to v, without attempting to
 // first decode it.
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
+	if err := c.maybeWaitForRateLimit(req); err != nil {
+		return nil, err
+	}
+
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -318,6 +330,41 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 		}
 	}
 	return response, err
+}
+
+func (c *Client) maybeWaitForRateLimit(req *http.Request) error {
+	// Don't wait to make requests for the current rate limit.
+	if req.URL.Path == "/rate_limit" {
+		return nil
+	}
+	if c.wait == nil {
+		c.wait = time.Sleep
+	}
+
+	if c.ObeyRateLimit {
+		if c.Rate.Limit == 0 {
+			// Don't know our rate limits yet, check now
+			if _, _, err := c.RateLimits(); err != nil {
+				return err
+			}
+		}
+		// TODO(imjasonh): Keep track of the last time we checked our
+		// rate limits and refresh now if they're possibly out-of-date.
+
+		// While we have <5% of our remaining requests left, wait to execute.
+		threshold := float64(c.Rate.Limit) * .05
+		tokensPerSecond := float64(c.Rate.Limit) / 60 / 60
+		for float64(c.Rate.Remaining) < threshold {
+			tokensNeeded := threshold - float64(c.Rate.Remaining)
+			waitDur := time.Duration(tokensNeeded*tokensPerSecond*1000) * time.Millisecond
+			c.wait(waitDur)
+			_, _, err := c.RateLimits()
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 /*
