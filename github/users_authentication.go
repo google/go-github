@@ -24,7 +24,7 @@ func (s *UsersService) Promote(user string) (*Response, error) {
 // Demote a user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/administration/#demote-a-site-administrator-to-an-ordinary-user
-func (s *UsersService) Unsuspend(user string) (*Response, error) {
+func (s *UsersService) Demote(user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)

@@ -6,12 +6,51 @@
 package github
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 )
+
+func TestUsersService_Promote(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/willnorris/site_admin", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+	})
+
+	_, err := client.Users.Promote("willnorris")
+	if err != nil {
+		t.Errorf("Users.Promote returned error: %v", err)
+	}
+}
+
+func TestUsersService_Demote(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/willnorris/site_admin", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Users.Demote("willnorris")
+	if err != nil {
+		t.Errorf("Users.Demote returned error: %v", err)
+	}
+}
+
+func TestUsersService_Suspend(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/willnorris/suspended", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+	})
+
+	_, err := client.Users.Suspend("willnorris")
+	if err != nil {
+		t.Errorf("Users.Suspend returned error: %v", err)
+	}
+}
 
 func TestUsersService_Unsuspend(t *testing.T) {
 	setup()
