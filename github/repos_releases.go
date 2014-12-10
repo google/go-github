@@ -29,6 +29,8 @@ type RepositoryRelease struct {
 	AssetsURL       *string        `json:"assets_url,omitempty"`
 	Assets          []ReleaseAsset `json:"assets,omitempty"`
 	UploadURL       *string        `json:"upload_url,omitempty"`
+	ZipballURL      *string        `json:"zipball_url,omitempty"`
+	TarballURL      *string        `json:"tarball_url,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
