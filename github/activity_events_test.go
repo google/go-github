@@ -276,13 +276,13 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 }
 
 func TestActivity_EventPayload_typed(t *testing.T) {
-	raw := []byte(`{"type": "PushEvent","payload":{"push_id": 1}}`)
+	raw := []byte(`{"type": "PushEvent","payload":{"before": "b"}}`)
 	var event *Event
 	if err := json.Unmarshal(raw, &event); err != nil {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PushEvent{PushID: Int(1)}
+	want := &PushEvent{Before: String("b")}
 	if !reflect.DeepEqual(event.Payload(), want) {
 		t.Errorf("Event Payload returned %+v, want %+v", event.Payload(), want)
 	}
