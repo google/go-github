@@ -66,3 +66,17 @@ func TestGitService_CreateTag(t *testing.T) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
 }
+
+func TestGitService_DeleteTag(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/tags/t", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Git.DeleteTag("o", "r", "t")
+	if err != nil {
+		t.Errorf("Git.DeleteTag returned error: %v", err)
+	}
+}
