@@ -30,6 +30,7 @@ type Gist struct {
 	GitPullURL  *string                   `json:"git_pull_url,omitempty"`
 	GitPushURL  *string                   `json:"git_push_url,omitempty"`
 	CreatedAt   *time.Time                `json:"created_at,omitempty"`
+	UpdatedAt   *time.Time                `json:"updated_at,omitempty"`
 }
 
 func (g Gist) String() string {
