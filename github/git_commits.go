@@ -20,6 +20,11 @@ type Commit struct {
 	Parents   []Commit      `json:"parents,omitempty"`
 	Stats     *CommitStats  `json:"stats,omitempty"`
 	URL       *string       `json:"url,omitempty"`
+
+	// CommentCount is the number of GitHub comments on the commit.  This
+	// is only populated for requests that fetch GitHub data like
+	// Pulls.ListCommits, Repositories.ListCommits, etc.
+	CommentCount *int `json:"comment_count,omitempty"`
 }
 
 func (c Commit) String() string {
