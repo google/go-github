@@ -43,7 +43,7 @@ func main() {
 
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		println("!!! No OAuth token.  Some tests won't run. !!!\n")
+		print("!!! No OAuth token.  Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
 		t := &oauth.Transport{

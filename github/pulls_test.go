@@ -209,7 +209,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 		{
 			SHA: String("3"),
 			Parents: []Commit{
-				Commit{
+				{
 					SHA: String("2"),
 				},
 			},
@@ -217,7 +217,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 		{
 			SHA: String("2"),
 			Parents: []Commit{
-				Commit{
+				{
 					SHA: String("1"),
 				},
 			},
@@ -265,7 +265,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 	}
 
 	want := []CommitFile{
-		CommitFile{
+		{
 			SHA:       String("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 			Filename:  String("file1.txt"),
 			Additions: Int(103),
@@ -274,7 +274,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 			Status:    String("added"),
 			Patch:     String("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
 		},
-		CommitFile{
+		{
 			SHA:       String("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
 			Filename:  String("file2.txt"),
 			Additions: Int(5),
