@@ -46,7 +46,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	}
 
 	want := []ContributorStats{
-		ContributorStats{
+		{
 			Author: &Contributor{
 				ID: Int(1),
 			},
