@@ -38,23 +38,37 @@ repos, _, err := client.Repositories.ListByOrg("github", opt)
 
 The go-github library does not directly handle authentication.  Instead, when
 creating a new client, pass an `http.Client` that can handle authentication for
-you.  The easiest and recommended way to do this is using the [goauth2][]
+you.  The easiest and recommended way to do this is using the [oauth2][]
 library, but you can always use any other library that provides an
 `http.Client`.  If you have an OAuth2 access token (for example, a [personal
-API token][]), you can use it with the goauth2 using:
+API token][]), you can use it with oauth2 using:
 
 ```go
-t := &oauth.Transport{
-  Token: &oauth.Token{AccessToken: "... your access token ..."},
+// create struct for the token source
+type tokenSource struct {
+  token *oauth2.Token
 }
 
-client := github.NewClient(t.Client())
+// add Token() method to satisfy oauth2.TokenSource interface
+func (t *tokenSource) Token() (*oauth2.Token, error){
+  return t.token, nil
+}
+
+func main() {
+ts := &tokenSource{
+  &oauth2.Token{AccessToken: "... your access token ..."},
+}
+
+tc := oauth2.NewClient(oauth2.NoContext, ts)
+
+client := github.NewClient(tc)
 
 // list all repositories for the authenticated user
 repos, _, err := client.Repositories.List("", nil)
+}
 ```
 
-See the [goauth2 docs][] for complete instructions on using that library.
+See the [oauth2 docs][] for complete instructions on using that library.
 
 ### Pagination ###
 
@@ -78,8 +92,8 @@ fmt.Println(resp.NextPage) // outputs 3
 For complete usage of go-github, see the full [package docs][].
 
 [GitHub API]: https://developer.github.com/v3/
-[goauth2]: https://code.google.com/p/goauth2/
-[goauth2 docs]: https://godoc.org/code.google.com/p/goauth2/oauth
+[oauth2]: https://github.com/golang/oauth2
+[oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://godoc.org/github.com/google/go-github/github
 
