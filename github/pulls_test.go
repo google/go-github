@@ -20,15 +20,17 @@ func TestPullRequestsService_List(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"state": "closed",
-			"head":  "h",
-			"base":  "b",
-			"page":  "2",
+			"state":     "closed",
+			"head":      "h",
+			"base":      "b",
+			"sort":      "created",
+			"direction": "desc",
+			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opt := &PullRequestListOptions{"closed", "h", "b", ListOptions{Page: 2}}
+	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
 	pulls, _, err := client.PullRequests.List("o", "r", opt)
 
 	if err != nil {
