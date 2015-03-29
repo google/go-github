@@ -98,6 +98,29 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 	}
 }
 
+func TestPullRequestService_Get_DiffURLAndPatchURL(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"number":1, 
+			"diff_url": "https://github.com/octocat/Hello-World/pull/1347.diff", 
+			"patch_url": "https://github.com/octocat/Hello-World/pull/1347.patch"}`)
+	})
+
+	pull, _, err := client.PullRequests.Get("o", "r", 1)
+
+	if err != nil {
+		t.Errorf("PullRequests.Get returned error: %v", err)
+	}
+
+	want := &PullRequest{Number: Int(1), DiffURL: String("https://github.com/octocat/Hello-World/pull/1347.diff"), PatchURL: String("https://github.com/octocat/Hello-World/pull/1347.patch")}
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
+	}
+}
+
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
 	_, _, err := client.PullRequests.Get("%", "r", 1)
 	testURLParseError(t, err)
