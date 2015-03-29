@@ -41,6 +41,8 @@ type PullRequest struct {
 	HTMLURL      *string    `json:"html_url,omitempty"`
 	IssueURL     *string    `json:"issue_url,omitempty"`
 	StatusesURL  *string    `json:"statuses_url,omitempty"`
+	DiffURL      *string    `json:"diff_url,omitempty"`
+	PatchURL     *string    `json:"patch_url,omitempty"`
 
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
