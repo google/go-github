@@ -44,27 +44,27 @@ library, but you can always use any other library that provides an
 API token][]), you can use it with oauth2 using:
 
 ```go
-// create struct for the token source
+// tokenSource is an oauth2.TokenSource which returns a static access token
 type tokenSource struct {
   token *oauth2.Token
 }
 
-// add Token() method to satisfy oauth2.TokenSource interface
+// Token implements the oauth2.TokenSource interface
 func (t *tokenSource) Token() (*oauth2.Token, error){
   return t.token, nil
 }
 
 func main() {
-ts := &tokenSource{
-  &oauth2.Token{AccessToken: "... your access token ..."},
-}
+  ts := &tokenSource{
+    &oauth2.Token{AccessToken: "... your access token ..."},
+  }
 
-tc := oauth2.NewClient(oauth2.NoContext, ts)
+  tc := oauth2.NewClient(oauth2.NoContext, ts)
 
-client := github.NewClient(tc)
+  client := github.NewClient(tc)
 
-// list all repositories for the authenticated user
-repos, _, err := client.Repositories.List("", nil)
+  // list all repositories for the authenticated user
+  repos, _, err := client.Repositories.List("", nil)
 }
 ```
 
