@@ -27,8 +27,8 @@ type RepositoryContent struct {
 	Content  *string `json:"content,omitempty"`
 	SHA      *string `json:"sha,omitempty"`
 	URL      *string `json:"url,omitempty"`
-	GitURL   *string `json:"giturl,omitempty"`
-	HTMLURL  *string `json:"htmlurl,omitempty"`
+	GitURL   *string `json:"git_url,omitempty"`
+	HTMLURL  *string `json:"html_url,omitempty"`
 }
 
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
