@@ -13,8 +13,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 // RepositoryContent represents a file or directory in a github repository.
@@ -89,6 +91,38 @@ func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryConte
 		return nil, resp, err
 	}
 	return readme, resp, err
+}
+
+// DownloadContents can be used to download files.  It circumvents the normal
+// GitHub API (which has a file size limit) and uses the `download_url` link
+// provided by the API.  That URL provides a direct link to the raw data
+// associated with that version of the file and is not subject to the same
+// limits as the GitHub API based requests.
+//
+// If path references a file or a symlink and the call succeeds, it
+// returns an instance of io.ReadCloser that provides the contents of
+// the file.  Otherwise, it returns an error.
+func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt *RepositoryContentGetOptions) (io.ReadCloser, error) {
+	dir := path.Dir(filepath)
+	fname := path.Base(filepath)
+	_, dcon, _, err := s.GetContents(owner, repo, dir, opt)
+	if err != nil {
+		return nil, err
+	}
+	for _, con := range dcon {
+		if *con.Name == fname {
+			if con.DownloadURL == nil || *con.DownloadURL == "" {
+				return nil, fmt.Errorf("No download link found for %s", filepath)
+			}
+			resp, err := http.Get(*con.DownloadURL)
+			if err != nil {
+				return nil, fmt.Errorf("Error downloading %s from %s: %v", filepath,
+					*con.DownloadURL, err)
+			}
+			return resp.Body, nil
+		}
+	}
+	return nil, fmt.Errorf("No file named %s found in %s", fname, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
