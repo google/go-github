@@ -19,16 +19,17 @@ import (
 
 // RepositoryContent represents a file or directory in a github repository.
 type RepositoryContent struct {
-	Type     *string `json:"type,omitempty"`
-	Encoding *string `json:"encoding,omitempty"`
-	Size     *int    `json:"size,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Path     *string `json:"path,omitempty"`
-	Content  *string `json:"content,omitempty"`
-	SHA      *string `json:"sha,omitempty"`
-	URL      *string `json:"url,omitempty"`
-	GitURL   *string `json:"git_url,omitempty"`
-	HTMLURL  *string `json:"html_url,omitempty"`
+	Type        *string `json:"type,omitempty"`
+	Encoding    *string `json:"encoding,omitempty"`
+	Size        *int    `json:"size,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Path        *string `json:"path,omitempty"`
+	Content     *string `json:"content,omitempty"`
+	SHA         *string `json:"sha,omitempty"`
+	URL         *string `json:"url,omitempty"`
+	GitURL      *string `json:"git_url,omitempty"`
+	HTMLURL     *string `json:"html_url,omitempty"`
+	DownloadURL *string `json:"download_url,omitempty"`
 }
 
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
