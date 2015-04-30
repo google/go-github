@@ -37,9 +37,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2014-08-05-team-memberships-api/
-	mediaTypeMembershipPreview = "application/vnd.github.the-wasp-preview+json"
-
 	// https://developer.github.com/changes/2014-01-09-preview-the-new-deployments-api/
 	mediaTypeDeploymentPreview = "application/vnd.github.cannonball-preview+json"
 )
