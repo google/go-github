@@ -109,7 +109,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, fmt.Errorf("No download link found for %s", filepath)
 			}
-			resp, err := http.Get(*contents.DownloadURL)
+			resp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
 				return nil, err
 			}
