@@ -402,7 +402,6 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
@@ -423,7 +422,6 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
@@ -444,7 +442,6 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMembershipPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
