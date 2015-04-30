@@ -286,9 +286,6 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*Member
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeMembershipPreview)
-
 	t := new(Membership)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
@@ -323,9 +320,6 @@ func (s *OrganizationsService) AddTeamMembership(team int, user string) (*Member
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeMembershipPreview)
-
 	t := new(Membership)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
@@ -344,9 +338,6 @@ func (s *OrganizationsService) RemoveTeamMembership(team int, user string) (*Res
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeMembershipPreview)
 
 	return s.client.Do(req, nil)
 }
