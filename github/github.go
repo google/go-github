@@ -37,6 +37,8 @@ const (
 
 	// Media Type values to access preview APIs
 
+	// https://developer.github.com/changes/2015-03-09-licenses-api/
+	mediaTypeLicensesPreview = "application/vnd.github.drax-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -72,6 +74,7 @@ type Client struct {
 	Repositories  *RepositoriesService
 	Search        *SearchService
 	Users         *UsersService
+	Licenses      *LicensesService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -133,6 +136,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Repositories = &RepositoriesService{client: c}
 	c.Search = &SearchService{client: c}
 	c.Users = &UsersService{client: c}
+	c.Licenses = &LicensesService{client: c}
 	return c
 }
 
