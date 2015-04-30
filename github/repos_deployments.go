@@ -69,9 +69,6 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentPreview)
-
 	deployments := new([]Deployment)
 	resp, err := s.client.Do(req, deployments)
 	if err != nil {
@@ -91,9 +88,6 @@ func (s *RepositoriesService) CreateDeployment(owner, repo string, request *Depl
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentPreview)
 
 	d := new(Deployment)
 	resp, err := s.client.Do(req, d)
@@ -138,9 +132,6 @@ func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deploym
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentPreview)
-
 	statuses := new([]DeploymentStatus)
 	resp, err := s.client.Do(req, statuses)
 	if err != nil {
@@ -160,9 +151,6 @@ func (s *RepositoriesService) CreateDeploymentStatus(owner, repo string, deploym
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentPreview)
 
 	d := new(DeploymentStatus)
 	resp, err := s.client.Do(req, d)
