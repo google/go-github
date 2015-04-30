@@ -93,15 +93,10 @@ func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryConte
 	return readme, resp, err
 }
 
-// DownloadContents can be used to download files.  It circumvents the normal
-// GitHub API (which has a file size limit) and uses the `download_url` link
-// provided by the API.  That URL provides a direct link to the raw data
-// associated with that version of the file and is not subject to the same
-// limits as the GitHub API based requests.
-//
-// If path references a file or a symlink and the call succeeds, it
-// returns an instance of io.ReadCloser that provides the contents of
-// the file.  Otherwise, it returns an error.
+// DownloadContents returns an io.ReadCloser that reads the contents
+// of the specified file. This function will work with files of any
+// size, as opposed to GetContents which is limited to 1 Mb files. It
+// is the caller's responsibility to close the ReadCloser.
 func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt *RepositoryContentGetOptions) (io.ReadCloser, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
