@@ -104,25 +104,24 @@ func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryConte
 // the file.  Otherwise, it returns an error.
 func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt *RepositoryContentGetOptions) (io.ReadCloser, error) {
 	dir := path.Dir(filepath)
-	fname := path.Base(filepath)
-	_, dcon, _, err := s.GetContents(owner, repo, dir, opt)
+	filename := path.Base(filepath)
+	_, dirContents, _, err := s.GetContents(owner, repo, dir, opt)
 	if err != nil {
 		return nil, err
 	}
-	for _, con := range dcon {
-		if *con.Name == fname {
-			if con.DownloadURL == nil || *con.DownloadURL == "" {
+	for _, contents := range dirContents {
+		if *contents.Name == filename {
+			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, fmt.Errorf("No download link found for %s", filepath)
 			}
-			resp, err := http.Get(*con.DownloadURL)
+			resp, err := http.Get(*contents.DownloadURL)
 			if err != nil {
-				return nil, fmt.Errorf("Error downloading %s from %s: %v", filepath,
-					*con.DownloadURL, err)
+				return nil, err
 			}
 			return resp.Body, nil
 		}
 	}
-	return nil, fmt.Errorf("No file named %s found in %s", fname, dir)
+	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
