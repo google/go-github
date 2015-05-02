@@ -13,8 +13,8 @@ import (
 	"fmt"
 	"os"
 
-	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 )
 
 var (
@@ -25,16 +25,26 @@ var (
 	auth bool
 )
 
+// tokenSource is an oauth2.TokenSource which returns a static access token
+type tokenSource struct {
+	token *oauth2.Token
+}
+
+// Token implements the oauth2.TokenSource interface
+func (t *tokenSource) Token() (*oauth2.Token, error) {
+	return t.token, nil
+}
+
 func init() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
 		print("!!! No OAuth token.  Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		t := &oauth.Transport{
-			Token: &oauth.Token{AccessToken: token},
-		}
-		client = github.NewClient(t.Client())
+		tc := oauth2.NewClient(oauth2.NoContext, &tokenSource{
+			&oauth2.Token{AccessToken: token},
+		})
+		client = github.NewClient(tc)
 		auth = true
 	}
 }
