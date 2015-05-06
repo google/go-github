@@ -27,13 +27,13 @@ type Deployment struct {
 
 // DeploymentRequest represents a deployment request
 type DeploymentRequest struct {
-	Ref              *string  `json:"ref,omitempty"`
-	Task             *string  `json:"task,omitempty"`
-	AutoMerge        *bool    `json:"auto_merge,omitempty"`
-	RequiredContexts []string `json:"required_contexts,omitempty"`
-	Payload          *string  `json:"payload,omitempty"`
-	Environment      *string  `json:"environment,omitempty"`
-	Description      *string  `json:"description,omitempty"`
+	Ref              *string   `json:"ref,omitempty"`
+	Task             *string   `json:"task,omitempty"`
+	AutoMerge        *bool     `json:"auto_merge,omitempty"`
+	RequiredContexts *[]string `json:"required_contexts,omitempty"`
+	Payload          *string   `json:"payload,omitempty"`
+	Environment      *string   `json:"environment,omitempty"`
+	Description      *string   `json:"description,omitempty"`
 }
 
 // DeploymentsListOptions specifies the optional parameters to the
