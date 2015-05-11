@@ -25,25 +25,15 @@ var (
 	auth bool
 )
 
-// tokenSource is an oauth2.TokenSource which returns a static access token
-type tokenSource struct {
-	token *oauth2.Token
-}
-
-// Token implements the oauth2.TokenSource interface
-func (t *tokenSource) Token() (*oauth2.Token, error) {
-	return t.token, nil
-}
-
 func init() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
 		print("!!! No OAuth token.  Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		tc := oauth2.NewClient(oauth2.NoContext, &tokenSource{
+		tc := oauth2.NewClient(oauth2.NoContext, oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: token},
-		})
+		))
 		client = github.NewClient(tc)
 		auth = true
 	}
