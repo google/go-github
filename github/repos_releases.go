@@ -85,18 +85,7 @@ func (s *RepositoriesService) ListReleases(owner, repo string, opt *ListOptions)
 // GitHub API docs: http://developer.github.com/v3/repos/releases/#get-a-single-release
 func (s *RepositoriesService) GetRelease(owner, repo string, id int) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	release := new(RepositoryRelease)
-	resp, err := s.client.Do(req, release)
-	if err != nil {
-		return nil, resp, err
-	}
-	return release, resp, err
+	return s.getSingleRelease(u)
 }
 
 // GetLatestRelease fetches the latest published release for the repository.
@@ -104,8 +93,19 @@ func (s *RepositoriesService) GetRelease(owner, repo string, id int) (*Repositor
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#get-the-latest-release
 func (s *RepositoriesService) GetLatestRelease(owner, repo string) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/latest", owner, repo)
+	return s.getSingleRelease(u)
+}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+// GetLatestReleaseByTag fetches a release with the specified tag.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
+func (s *RepositoriesService) GetReleaseByTag(owner, repo, tag string) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/tags/%s", owner, repo, tag)
+	return s.getSingleRelease(u)
+}
+
+func (s *RepositoriesService) getSingleRelease(url string) (*RepositoryRelease, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
