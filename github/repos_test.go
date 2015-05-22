@@ -45,11 +45,11 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 			"direction": "asc",
 			"page":      "2",
 		})
-
+		testHeader(t, r, "Accept", mediaTypeOrganizationsPreview)
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListOptions{"owner", "created", "asc", ListOptions{Page: 2}}
+	opt := &RepositoryListOptions{"owner", "created", "asc", true, ListOptions{Page: 2}}
 	repos, _, err := client.Repositories.List("u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
