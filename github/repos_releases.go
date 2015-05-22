@@ -99,6 +99,25 @@ func (s *RepositoriesService) GetRelease(owner, repo string, id int) (*Repositor
 	return release, resp, err
 }
 
+// GetLatestRelease fetches the latest published release for the repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-the-latest-release
+func (s *RepositoriesService) GetLatestRelease(owner, repo string) (*RepositoryRelease, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/latest", owner, repo)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	release := new(RepositoryRelease)
+	resp, err := s.client.Do(req, release)
+	if err != nil {
+		return nil, resp, err
+	}
+	return release, resp, err
+}
+
 // CreateRelease adds a new release for a repository.
 //
 // GitHub API docs : http://developer.github.com/v3/repos/releases/#create-a-release
