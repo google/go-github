@@ -76,7 +76,14 @@ func (s *IssuesService) ListComments(owner string, repo string, number int, opt 
 func (s *IssuesService) GetComment(owner string, repo string, id int) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	return s.GetCommentByURL(u)
+}
+
+// Get an issue comment by its URL
+//
+// Intended for following hypermedia links in the API.
+func (s *IssuesService) GetCommentByURL(url string) (*IssueComment, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}

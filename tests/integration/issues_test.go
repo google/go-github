@@ -47,3 +47,15 @@ func TestGetIssueByURL(t *testing.T) {
 		t.Errorf("expected Issues.GetByURL to return a representation of the issue")
 	}
 }
+
+func TestGetIssueCommentByURL(t *testing.T) {
+	c, _, err := client.Issues.GetCommentByURL("https://api.github.com/repos/google/go-github/issues/comments/19136005")
+
+	if err != nil {
+		t.Fatalf("Issues.GetCommentByURL returned error: %v", err)
+	}
+
+	if *c.ID != 19136005 {
+		t.Errorf("expected Issues.GetCommentByURL to return a representation of the specified comment")
+	}
+}
