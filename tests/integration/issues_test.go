@@ -35,3 +35,15 @@ func TestIssueEvents(t *testing.T) {
 		t.Fatalf("Issues.GetEvent returned event URL: %v, want %v", *event.URL, *events[0].URL)
 	}
 }
+
+func TestGetIssueByURL(t *testing.T) {
+	i, _, err := client.Issues.GetByURL("https://api.github.com/repos/google/go-github/issues/1")
+
+	if err != nil {
+		t.Fatalf("Issues.GetByURL returned error: %v", err)
+	}
+
+	if *i.Number != 1 {
+		t.Errorf("expected Issues.GetByURL to return a representation of the issue")
+	}
+}
