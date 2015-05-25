@@ -5,7 +5,11 @@
 
 package tests
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/google/go-github/github"
+)
 
 func TestIssueEvents(t *testing.T) {
 	events, _, err := client.Issues.ListRepositoryEvents("google", "go-github", nil)
@@ -57,5 +61,17 @@ func TestGetIssueCommentByURL(t *testing.T) {
 
 	if *c.ID != 19136005 {
 		t.Errorf("expected Issues.GetCommentByURL to return a representation of the specified comment")
+	}
+}
+
+func TestListIssueCommentsByURL(t *testing.T) {
+	c, _, err := client.Issues.ListCommentsByURL("https://api.github.com/repos/google/go-github/issues/2/comments", &github.IssueListCommentsOptions{})
+
+	if err != nil {
+		t.Fatalf("Issues.ListIssueCommentsByURL returned error: %v", err)
+	}
+
+	if len(c) == 0 {
+		t.Errorf("expected Issues.ListIssueCommentsByURL to return at least one comment from issue")
 	}
 }

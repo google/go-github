@@ -214,7 +214,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 
 // Get a single issue by its API url.
 //
-// Intended for following hypermedia links exposed in the API.
+// Intended to be used for following hypermedia links exposed in the API.
 func (s *IssuesService) GetByURL(url string) (*Issue, *Response, error) {
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
