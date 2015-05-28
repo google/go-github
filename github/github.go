@@ -221,7 +221,7 @@ type Response struct {
 	Rate
 }
 
-// newResponse creats a new Response for the provided http.Response.
+// newResponse creates a new Response for the provided http.Response.
 func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
 	response.populatePageValues()
