@@ -306,6 +306,34 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	}
 }
 
+func TestResponse_extractLinkHeaders(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
+				` <https://api.github.com/?page=2>; rel="prev",` +
+				` <https://api.github.com/?page=4>; rel="next",` +
+				` <https://api.github.com/?page=5>; rel="last"`,
+			},
+		},
+	}
+
+	expected := map[string]string{
+		"first": "https://api.github.com/?page=1",
+		"prev":  "https://api.github.com/?page=2",
+		"next":  "https://api.github.com/?page=4",
+		"last":  "https://api.github.com/?page=5",
+	}
+	response := newResponse(&r)
+
+	for k, v := range expected {
+		realV := response.Links.GetURLByRel(k)
+
+		if realV != v {
+			t.Errorf("links for %#v not equal. wanted: %#v, got: %#v", k, v, realV)
+		}
+	}
+}
+
 func TestDo(t *testing.T) {
 	setup()
 	defer teardown()
@@ -687,7 +715,7 @@ func TestGetByURL(t *testing.T) {
 		q := r.URL.Query()
 
 		if v, want = q.Get("field"), "Value"; v != want {
-			t.Errorf("expected query string parameter to be inclueded, got: %#v, (%#v)", v, q)
+			t.Errorf("expected query string parameter to be included, got: %#v, (%#v)", v, q)
 		}
 
 		w.WriteHeader(200)
@@ -702,6 +730,37 @@ func TestGetByURL(t *testing.T) {
 	}
 
 	resp, err := client.GetByURL("/endpoint", &opts, &payload)
+
+	if err != nil {
+		t.Fatalf("unexpected err: %v", err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Errorf("unexpected status code %d", resp.StatusCode)
+	}
+
+	if payload.Foo != "bar" {
+		t.Errorf("expected json payload to have been parsed into struct, got value %v", payload.Foo)
+	}
+}
+
+func TestGetByURL_noOpts(t *testing.T) {
+	setup()
+	mux.HandleFunc("/endpoint", func(w http.ResponseWriter, r *http.Request) {
+		var v, want string
+		q := r.URL.Query()
+
+		if v, want = q.Get("field"), "Value"; v != want {
+			t.Errorf("expected query string parameter to be included , got: %#v, (%#v)", v, q)
+		}
+
+		w.WriteHeader(200)
+		io.WriteString(w, `{"foo": "bar"}`)
+	})
+
+	var payload struct{ Foo string }
+
+	resp, err := client.GetByURL("/endpoint?field=Value", nil, &payload)
 
 	if err != nil {
 		t.Fatalf("unexpected err: %v", err)
