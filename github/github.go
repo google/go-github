@@ -322,6 +322,29 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	return response, err
 }
 
+// Convenience wrapper for sending a GET request using the authenticated
+// http client.
+//
+// See Client.Do() for semantics of handling the v parameter.
+//
+// opt should be a pointer to a struct that contains query string values to apply to
+// the URL (e.g. IssueListOptions).
+// See https://github.com/google/go-querystring for examples on making custom
+// structs.
+func (c *Client) GetByURL(url string, opt interface{}, v interface{}) (*Response, error) {
+	u, err := addOptions(url, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := c.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Do(req, v)
+}
+
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 

@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -675,5 +676,42 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	}
 	if tp.transport() == http.DefaultTransport {
 		t.Errorf("Expected custom transport to be used.")
+	}
+}
+
+func TestGetByURL(t *testing.T) {
+	setup()
+
+	mux.HandleFunc("/endpoint", func(w http.ResponseWriter, r *http.Request) {
+		var v, want string
+		q := r.URL.Query()
+
+		if v, want = q.Get("field"), "Value"; v != want {
+			t.Errorf("expected query string parameter to be inclueded, got: %#v, (%#v)", v, q)
+		}
+
+		w.WriteHeader(200)
+		io.WriteString(w, `{"foo": "bar"}`)
+	})
+
+	var payload struct{ Foo string }
+	var opts = struct {
+		Field string `url:"field"`
+	}{
+		Field: "Value",
+	}
+
+	resp, err := client.GetByURL("/endpoint", &opts, &payload)
+
+	if err != nil {
+		t.Fatalf("unexpected err: %v", err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Errorf("unexpected status code %d", resp.StatusCode)
+	}
+
+	if payload.Foo != "bar" {
+		t.Errorf("expected json payload to have been parsed into struct, got value %v", payload.Foo)
 	}
 }
