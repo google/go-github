@@ -10,7 +10,7 @@ import "fmt"
 // StarredRepository is returned by ListStarred.
 type StarredRepository struct {
 	StarredAt  *Timestamp  `json:"starred_at,omitempty"`
-	Repository *Repository `json:"repository,omitempty"`
+	Repository *Repository `json:"repo,omitempty"`
 }
 
 // ListStargazers lists people who have starred the specified repo.
