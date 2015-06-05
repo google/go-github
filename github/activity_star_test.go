@@ -44,7 +44,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeStarringPreview)
-		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repository":{"id":1}}]`)
+		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":1}}]`)
 	})
 
 	repos, _, err := client.Activity.ListStarred("", nil)
@@ -70,7 +70,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 			"direction": "asc",
 			"page":      "2",
 		})
-		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repository":{"id":2}}]`)
+		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":2}}]`)
 	})
 
 	opt := &ActivityListStarredOptions{"created", "asc", ListOptions{Page: 2}}
