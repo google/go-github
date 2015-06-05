@@ -6,8 +6,10 @@
 package github
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
@@ -201,6 +203,64 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 	want := &ReleaseAsset{ID: Int(1)}
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.GetReleaseAsset returned %+v, want %+v", asset, want)
+	}
+}
+
+func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
+		fmt.Fprint(w, "Hello World")
+	})
+
+	reader, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	want := []byte("Hello World")
+	content, err := ioutil.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned bad reader: %v", err)
+	}
+	if !bytes.Equal(want, content) {
+		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
+	}
+}
+
+func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		w.Header().Set("Location", server.URL+"/github-cloud/releases/1/hello-world.txt")
+		w.WriteHeader(http.StatusFound)
+	})
+
+	mux.HandleFunc("/github-cloud/releases/1/hello-world.txt", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
+		fmt.Fprint(w, "Hello World")
+	})
+
+	reader, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	want := []byte("Hello World")
+	content, err := ioutil.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Repositories.DownloadReleaseAsset returned bad reader: %v", err)
+	}
+	if !bytes.Equal(want, content) {
+		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
 	}
 }
 
