@@ -24,6 +24,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 			"all":           "true",
 			"participating": "true",
 			"since":         "2006-01-02T15:04:05Z",
+			"before":        "2007-03-04T15:04:05Z",
 		})
 
 		fmt.Fprint(w, `[{"id":"1", "subject":{"title":"t"}}]`)
@@ -33,6 +34,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		All:           true,
 		Participating: true,
 		Since:         time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC),
+		Before:        time.Date(2007, 03, 04, 15, 04, 05, 0, time.UTC),
 	}
 	notifications, _, err := client.Activity.ListNotifications(opt)
 	if err != nil {
