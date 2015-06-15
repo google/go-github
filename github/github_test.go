@@ -381,7 +381,7 @@ func TestDo_rateLimit(t *testing.T) {
 	if got, want := client.Rate.Limit, 0; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate.Limit, 0; got != want {
+	if got, want := client.Rate.Remaining, 0; got != want {
 		t.Errorf("Client rate remaining = %v, got %v", got, want)
 	}
 	if !client.Rate.Reset.IsZero() {
