@@ -81,6 +81,7 @@ type Client struct {
 	Search        *SearchService
 	Users         *UsersService
 	Licenses      *LicensesService
+	Feeds         *FeedsService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -143,6 +144,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Search = &SearchService{client: c}
 	c.Users = &UsersService{client: c}
 	c.Licenses = &LicensesService{client: c}
+	c.Feeds = &FeedsService{client: c}
 	return c
 }
 
