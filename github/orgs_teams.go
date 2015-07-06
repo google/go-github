@@ -22,6 +22,13 @@ type Team struct {
 	// specifying a permission value when calling AddTeamRepo.
 	Permission *string `json:"permission,omitempty"`
 
+	// Privacy identifies the level of privacy this team should have.
+	// Possible values are:
+	//     secret - only visible to organization owners and members of this team
+	//     closed - visible to all members of this organization
+	// Default is "secret".
+	Privacy *string `json:"privacy,omitempty"`
+
 	MembersCount *int          `json:"members_count,omitempty"`
 	ReposCount   *int          `json:"repos_count,omitempty"`
 	Organization *Organization `json:"organization,omitempty"`
@@ -84,6 +91,10 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Respo
 		return nil, nil, err
 	}
 
+	if team.Privacy != nil {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
+	}
+
 	t := new(Team)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
@@ -101,6 +112,10 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, e
 	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if team.Privacy != nil {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	t := new(Team)
