@@ -288,15 +288,18 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusNoContent)
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepoPreview)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	repo, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
 	if err != nil {
 		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
 	}
-	if want := true; managed != want {
-		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
+
+	want := &Repository{ID: Int(1)}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", repo, want)
 	}
 }
 
@@ -309,12 +312,15 @@ func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
-	if err != nil {
-		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
+	repo, resp, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
 	}
-	if want := false; managed != want {
-		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Organizations.IsTeamRepo returned status %d, want %d", got, want)
+	}
+	if repo != nil {
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want nil", repo)
 	}
 }
 
@@ -327,12 +333,15 @@ func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	managed, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	repo, resp, err := client.Organizations.IsTeamRepo(1, "o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-	if want := false; managed != want {
-		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", managed, want)
+	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
+		t.Errorf("Organizations.IsTeamRepo returned status %d, want %d", got, want)
+	}
+	if repo != nil {
+		t.Errorf("Organizations.IsTeamRepo returned %+v, want nil", repo)
 	}
 }
 
@@ -347,10 +356,13 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testFormValues(t, r, values{"permission": "admin"})
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.AddTeamRepo(1, "o", "r")
+	opt := &OrganizationAddTeamRepoOptions{Permission: "admin"}
+	_, err := client.Organizations.AddTeamRepo(1, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamRepo returned error: %v", err)
 	}
@@ -365,14 +377,14 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 		w.WriteHeader(422)
 	})
 
-	_, err := client.Organizations.AddTeamRepo(1, "o", "r")
+	_, err := client.Organizations.AddTeamRepo(1, "o", "r", nil)
 	if err == nil {
 		t.Errorf("Expcted error to be returned")
 	}
 }
 
 func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
-	_, err := client.Organizations.AddTeamRepo(1, "%", "r")
+	_, err := client.Organizations.AddTeamRepo(1, "%", "r", nil)
 	testURLParseError(t, err)
 }
 

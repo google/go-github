@@ -10,11 +10,18 @@ import "fmt"
 // Team represents a team within a GitHub organization.  Teams are used to
 // manage access to an organization's repositories.
 type Team struct {
-	ID           *int          `json:"id,omitempty"`
-	Name         *string       `json:"name,omitempty"`
-	URL          *string       `json:"url,omitempty"`
-	Slug         *string       `json:"slug,omitempty"`
-	Permission   *string       `json:"permission,omitempty"`
+	ID   *int    `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	URL  *string `json:"url,omitempty"`
+	Slug *string `json:"slug,omitempty"`
+
+	// Permission is deprecated when creating or editing a team in an org
+	// using the new GitHub permission model.  It no longer identifies the
+	// permission a team has on its repos, but only specifies the default
+	// permission a repo is initially added with.  Avoid confusion by
+	// specifying a permission value when calling AddTeamRepo.
+	Permission *string `json:"permission,omitempty"`
+
 	MembersCount *int          `json:"members_count,omitempty"`
 	ReposCount   *int          `json:"repos_count,omitempty"`
 	Organization *Organization `json:"organization,omitempty"`
@@ -182,19 +189,36 @@ func (s *OrganizationsService) ListTeamRepos(team int, opt *ListOptions) ([]Repo
 	return *repos, resp, err
 }
 
-// IsTeamRepo checks if a team manages the specified repository.
+// IsTeamRepo checks if a team manages the specified repository.  If the
+// repository is managed by team, a Repository is returned which includes the
+// permissions team has for that repo.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-repo
-func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (bool, *Response, error) {
+func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return false, nil, err
+		return nil, nil, err
 	}
 
-	resp, err := s.client.Do(req, nil)
-	manages, err := parseBoolResponse(err)
-	return manages, resp, err
+	req.Header.Set("Accept", mediaTypeOrgPermissionRepoPreview)
+
+	repository := new(Repository)
+	resp, err := s.client.Do(req, repository)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repository, resp, err
+}
+
+// OrganizationAddTeamRepoOptions specifies the optional parameters to the
+// OrganizationsService.AddTeamRepo method.
+type OrganizationAddTeamRepoOptions struct {
+	// Permission specifies the permission to grant the team on this
+	// repository.  Possible values are: pull, push, admin.  If not
+	// specified, the team's permission attribute will be used.
+	Permission string `url:"permission"`
 }
 
 // AddTeamRepo adds a repository to be managed by the specified team.  The
@@ -202,11 +226,20 @@ func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (
 // belongs, or a direct fork of a repository owned by the organization.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-repo
-func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string) (*Response, error) {
+func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string, opt *OrganizationAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	if opt != nil {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	return s.client.Do(req, nil)
