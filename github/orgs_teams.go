@@ -140,11 +140,21 @@ func (s *OrganizationsService) DeleteTeam(team int) (*Response, error) {
 	return s.client.Do(req, nil)
 }
 
+// OrganizationListTeamMembersOptions specifies the optional parameters to the
+// OrganizationsService.ListTeamMembers method.
+type OrganizationListTeamMembersOptions struct {
+	// Role filters members returned by their role in the team.  Possible
+	// values are "all", "member", "maintainer".  Default is "all".
+	Role string `url:"role,omitempty"`
+
+	ListOptions
+}
+
 // ListTeamMembers lists all of the users who are members of the specified
 // team.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-members
-func (s *OrganizationsService) ListTeamMembers(team int, opt *ListOptions) ([]User, *Response, error) {
+func (s *OrganizationsService) ListTeamMembers(team int, opt *OrganizationListTeamMembersOptions) ([]User, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members", team)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -154,6 +164,10 @@ func (s *OrganizationsService) ListTeamMembers(team int, opt *ListOptions) ([]Us
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if opt != nil && opt.Role != "" {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	members := new([]User)
@@ -230,10 +244,14 @@ func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (
 // OrganizationAddTeamRepoOptions specifies the optional parameters to the
 // OrganizationsService.AddTeamRepo method.
 type OrganizationAddTeamRepoOptions struct {
-	// Permission specifies the permission to grant the team on this
-	// repository.  Possible values are: pull, push, admin.  If not
-	// specified, the team's permission attribute will be used.
-	Permission string `url:"permission"`
+	// Permission specifies the permission to grant the team on this repository.
+	// Possible values are:
+	//     pull - team members can pull, but not push to or administer this repository
+	//     push - team members can pull and push, but not administer this repository
+	//     admin - team members can pull, push and administer this repository
+	//
+	// If not specified, the team's permission attribute will be used.
+	Permission string `url:"permission,omitempty"`
 }
 
 // AddTeamRepo adds a repository to be managed by the specified team.  The
@@ -317,6 +335,20 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*Member
 	return t, resp, err
 }
 
+// OrganizationAddTeamMembershipOptions does stuff specifies the optional
+// parameters to the OrganizationsService.AddTeamMembership method.
+type OrganizationAddTeamMembershipOptions struct {
+	// Role specifies the role the user should have in the team.  Possible
+	// values are:
+	//     member - a normal member of the team
+	//     maintainer - a team maintainer. Able to add/remove other team
+	//                  members, promote other team members to team
+	//                  maintainer, and edit the team’s name and description
+	//
+	// Default value is "member".
+	Role string `url:"role,omitempty"`
+}
+
 // AddTeamMembership adds or invites a user to a team.
 //
 // In order to add a membership between a user and a team, the authenticated
@@ -335,11 +367,20 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*Member
 // added as a member of the team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#add-team-membership
-func (s *OrganizationsService) AddTeamMembership(team int, user string) (*Membership, *Response, error) {
+func (s *OrganizationsService) AddTeamMembership(team int, user string, opt *OrganizationAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if opt != nil {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	t := new(Membership)
