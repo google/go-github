@@ -15,7 +15,16 @@ type Membership struct {
 	// Possible values are: "active", "pending"
 	State *string `json:"state,omitempty"`
 
-	// TODO(willnorris): add docs
+	// Role identifies the user's role within the organization or team.
+	// Possible values for organization membership:
+	//     member - non-owner organization member
+	//     admin - organization owner
+	//
+	// Possible values for team membership are:
+	//     member - a normal member of the team
+	//     maintainer - a team maintainer. Able to add/remove other team
+	//                  members, promote other team members to team
+	//                  maintainer, and edit the team’s name and description
 	Role *string `json:"role,omitempty"`
 
 	// For organization membership, the API URL of the organization.
@@ -43,6 +52,15 @@ type ListMembersOptions struct {
 	// 2fa_disabled, all.  Default is "all".
 	Filter string `url:"filter,omitempty"`
 
+	// Role filters memebers returned by their role in the organization.
+	// Possible values are:
+	//     all - all members of the organization, regardless of role
+	//     admin - organization owners
+	//     member - non-organization members
+	//
+	// Default is "all".
+	Role string `url:"role,omitempty"`
+
 	ListOptions
 }
 
@@ -66,6 +84,10 @@ func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if opt != nil && opt.Role != "" {
+		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	members := new([]User)

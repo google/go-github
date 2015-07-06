@@ -19,8 +19,10 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		testFormValues(t, r, values{
 			"filter": "2fa_disabled",
+			"role":   "admin",
 			"page":   "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -29,6 +31,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	opt := &ListMembersOptions{
 		PublicOnly:  false,
 		Filter:      "2fa_disabled",
+		Role:        "admin",
 		ListOptions: ListOptions{Page: 2},
 	}
 	members, _, err := client.Organizations.ListMembers("o", opt)

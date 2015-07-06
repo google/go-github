@@ -145,11 +145,12 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
+		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &OrganizationListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
 	members, _, err := client.Organizations.ListTeamMembers(1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
@@ -436,10 +437,13 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testFormValues(t, r, values{"role": "maintainer"})
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	membership, _, err := client.Organizations.AddTeamMembership(1, "u")
+	opt := &OrganizationAddTeamMembershipOptions{Role: "maintainer"}
+	membership, _, err := client.Organizations.AddTeamMembership(1, "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamMembership returned error: %v", err)
 	}
