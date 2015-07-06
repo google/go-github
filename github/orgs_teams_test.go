@@ -357,14 +357,21 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
+	opt := &OrganizationAddTeamRepoOptions{Permission: "admin"}
+
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+		v := new(OrganizationAddTeamRepoOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
 		testMethod(t, r, "PUT")
-		testFormValues(t, r, values{"permission": "admin"})
 		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
+		if !reflect.DeepEqual(v, opt) {
+			t.Errorf("Request body = %+v, want %+v", v, opt)
+		}
+
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	opt := &OrganizationAddTeamRepoOptions{Permission: "admin"}
 	_, err := client.Organizations.AddTeamRepo(1, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamRepo returned error: %v", err)
@@ -435,14 +442,21 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 	setup()
 	defer teardown()
 
+	opt := &OrganizationAddTeamMembershipOptions{Role: "maintainer"}
+
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+		v := new(OrganizationAddTeamMembershipOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
 		testMethod(t, r, "PUT")
-		testFormValues(t, r, values{"role": "maintainer"})
 		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
+		if !reflect.DeepEqual(v, opt) {
+			t.Errorf("Request body = %+v, want %+v", v, opt)
+		}
+
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	opt := &OrganizationAddTeamMembershipOptions{Role: "maintainer"}
 	membership, _, err := client.Organizations.AddTeamMembership(1, "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamMembership returned error: %v", err)

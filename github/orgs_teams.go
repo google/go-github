@@ -251,7 +251,7 @@ type OrganizationAddTeamRepoOptions struct {
 	//     admin - team members can pull, push and administer this repository
 	//
 	// If not specified, the team's permission attribute will be used.
-	Permission string `url:"permission,omitempty"`
+	Permission string `json:"permission,omitempty"`
 }
 
 // AddTeamRepo adds a repository to be managed by the specified team.  The
@@ -261,12 +261,7 @@ type OrganizationAddTeamRepoOptions struct {
 // GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-repo
 func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string, opt *OrganizationAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
 	}
@@ -346,7 +341,7 @@ type OrganizationAddTeamMembershipOptions struct {
 	//                  maintainer, and edit the team’s name and description
 	//
 	// Default value is "member".
-	Role string `url:"role,omitempty"`
+	Role string `json:"role,omitempty"`
 }
 
 // AddTeamMembership adds or invites a user to a team.
@@ -369,12 +364,7 @@ type OrganizationAddTeamMembershipOptions struct {
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#add-team-membership
 func (s *OrganizationsService) AddTeamMembership(team int, user string, opt *OrganizationAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
