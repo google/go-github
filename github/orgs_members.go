@@ -142,7 +142,8 @@ func (s *OrganizationsService) RemoveMember(org, user string) (*Response, error)
 	return s.client.Do(req, nil)
 }
 
-// PublicizeMembership publicizes a user's membership in an organization.
+// PublicizeMembership publicizes a user's membership in an organization. (A
+// user cannot publicize the membership for another user.)
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/members/#publicize-a-users-membership
 func (s *OrganizationsService) PublicizeMembership(org, user string) (*Response, error) {
@@ -202,12 +203,20 @@ func (s *OrganizationsService) ListOrgMemberships(opt *ListOrgMembershipsOptions
 	return memberships, resp, err
 }
 
-// GetOrgMembership gets the membership for the authenticated user for the
-// specified organization.
+// GetOrgMembership gets the membership for a user in a specified organization.
+// Passing an empty string for user will get the membership for the
+// authenticated user.
 //
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#get-organization-membership
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#get-your-organization-membership
-func (s *OrganizationsService) GetOrgMembership(org string) (*Membership, *Response, error) {
-	u := fmt.Sprintf("user/memberships/orgs/%v", org)
+func (s *OrganizationsService) GetOrgMembership(user, org string) (*Membership, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("orgs/%v/memberships/%v", org, user)
+	} else {
+		u = fmt.Sprintf("user/memberships/orgs/%v", org)
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -222,12 +231,20 @@ func (s *OrganizationsService) GetOrgMembership(org string) (*Membership, *Respo
 	return membership, resp, err
 }
 
-// EditOrgMembership edits the membership for the authenticated user for the
-// specified organization.
+// EditOrgMembership edits the membership for user in specified organization.
+// Passing an empty string for user will edit the membership for the
+// authenticated user.
 //
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#add-or-update-organization-membership
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#edit-your-organization-membership
-func (s *OrganizationsService) EditOrgMembership(org string, membership *Membership) (*Membership, *Response, error) {
-	u := fmt.Sprintf("user/memberships/orgs/%v", org)
+func (s *OrganizationsService) EditOrgMembership(user, org string, membership *Membership) (*Membership, *Response, error) {
+	var u string
+	if user != "" {
+		u = fmt.Sprintf("orgs/%v/memberships/%v", org, user)
+	} else {
+		u = fmt.Sprintf("user/memberships/orgs/%v", org)
+	}
+
 	req, err := s.client.NewRequest("PATCH", u, membership)
 	if err != nil {
 		return nil, nil, err
@@ -240,4 +257,18 @@ func (s *OrganizationsService) EditOrgMembership(org string, membership *Members
 	}
 
 	return m, resp, err
+}
+
+// RemoveOrgMembership removes user from the specified organization.  If the
+// user has been invited to the organization, this will cancel their invitation.
+//
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#remove-organization-membership
+func (s *OrganizationsService) RemoveOrgMembership(user, org string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/memberships/%v", org, user)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
