@@ -44,12 +44,17 @@ func (e *Event) Payload() (payload interface{}) {
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID  *int              `json:"push_id,omitempty"`
-	Head    *string           `json:"head,omitempty"`
-	Ref     *string           `json:"ref,omitempty"`
-	Size    *int              `json:"size,omitempty"`
-	Commits []PushEventCommit `json:"commits,omitempty"`
-	Repo    *Repository       `json:"repository,omitempty"`
+	HeadCommit *PushEventCommit  `json:"head_commit,omitempty"`
+	Forced     *bool             `json:"forced,omitempty"`
+	Created    *bool             `json:"created,omitempty"`
+	Deleted    *bool             `json:"deleted,omitempty"`
+	Ref        *string           `json:"ref,omitempty"`
+	Before     *string           `json:"before,omitempty"`
+	After      *string           `json:"after,omitempty"`
+	Compare    *string           `json:"compare,omitempty"`
+	Size       *int              `json:"size,omitempty"`
+	Commits    []PushEventCommit `json:"commits,omitempty"`
+	Repo       *Repository       `json:"repository,omitempty"`
 }
 
 func (p PushEvent) String() string {
@@ -58,7 +63,7 @@ func (p PushEvent) String() string {
 
 // PushEventCommit represents a git commit in a GitHub PushEvent.
 type PushEventCommit struct {
-	SHA      *string       `json:"sha,omitempty"`
+	ID       *string       `json:"id,omitempty"`
 	Message  *string       `json:"message,omitempty"`
 	Author   *CommitAuthor `json:"author,omitempty"`
 	URL      *string       `json:"url,omitempty"`
