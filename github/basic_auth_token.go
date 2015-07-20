@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"time"
 
+	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 )
 
@@ -65,16 +66,16 @@ type tokenBasicAuthJSON struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-// NewBasicAuthClient generates a TokenSource that will do the Basic Auth call to github to get a token
+// NewBasicAuthClient an http client that will do the Basic Auth call to github to get a token
 // via the user creds specified
 //
-// The returned TokenSource can be passed to oauth2.NewClient
+// The returned http.Client can be passed to github.NewClient
 //
 // the github api docs are here:
 //
 //	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
 //
-func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repos []string) (creds oauth2.TokenSource, err error) {
+func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repos []string) (tc *http.Client, err error) {
 
 	postBody := BasicAuthRequestBody{
 		oa2.ClientID,
@@ -88,7 +89,9 @@ func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repo
 		return
 	}
 
-	creds = Creds{username, password, bytes.NewReader(pb), &oa2}
+	creds := Creds{username, password, bytes.NewReader(pb), &oa2}
+
+	tc = oauth2.NewClient(context.Background(), creds)
 
 	return
 
