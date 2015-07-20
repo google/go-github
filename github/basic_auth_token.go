@@ -2,8 +2,8 @@ package github
 
 import (
 	"bytes"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"mime"
@@ -27,10 +27,10 @@ import (
 //	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
 //
 type Creds struct {
-  Username string
-  Password string
-  PostBodyReader io.Reader
-  Config *oauth2.Config
+	Username       string
+	Password       string
+	PostBodyReader io.Reader
+	Config         *oauth2.Config
 }
 
 // Token set username/password and postbody and do nasic auth
@@ -55,14 +55,14 @@ type BasicAuthRequestBody struct {
 // it has no RefreshToken, Expires*
 // leave them in the struct so it won't break the expiry call and maybe other calls
 type tokenBasicAuthJSON struct {
-        Token       string `json:"token"`
-        Url         string `json:"url"`
-        AppRegistry struct {
-                Url      string `json:"url"`
-                ClientID string `json:"client_id"`
-        } `json:"app_registry"`
-        Note         string `json:"note"`
-        RefreshToken string `json:"refresh_token"`
+	Token       string `json:"token"`
+	Url         string `json:"url"`
+	AppRegistry struct {
+		Url      string `json:"url"`
+		ClientID string `json:"client_id"`
+	} `json:"app_registry"`
+	Note         string `json:"note"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 // NewBasicAuthClient generates a TokenSource that will do the Basic Auth call to github to get a token
@@ -93,7 +93,6 @@ func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repo
 	return
 
 }
-
 
 // TokenSourceBasicAuth - use Basic Auth (username/password) to get a token
 //
