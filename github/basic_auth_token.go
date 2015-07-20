@@ -1,5 +1,17 @@
 package github
 
+// Provides a TokenSource that uses the basic auth mechanism to get tokens
+//
+//	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
+//
+// Sample Usage:
+//
+//	oa2 := oauth2.Config{ ... }
+//
+//	tc, err := github.NewBasicAuthClient(oa2, "zup", "nuch", "my oauth", []string{"public_repo"})
+//
+//	client := github.NewClient(tc)
+
 import (
 	"bytes"
 	"encoding/json"
@@ -43,7 +55,7 @@ func (ba Creds) Token() (tk *oauth2.Token, err error) {
 
 // BasicAuthRequestBody is the struct for generating the body for the authentication POST
 //
-// its used to generate the postBodyReader that goes into the oauth2Creds with the username/password
+// its used to generate the postBodyReader that goes into the Creds with the username/password
 type BasicAuthRequestBody struct {
 	ClientId     string   `json:"client_id"`
 	ClientSecret string   `json:"client_secret"`
@@ -51,10 +63,7 @@ type BasicAuthRequestBody struct {
 	Scopes       []string `json:"scopes"`
 }
 
-// tokenBasicAuthJSON basic auth json response
-//
-// it has no RefreshToken, Expires*
-// leave them in the struct so it won't break the expiry call and maybe other calls
+// tokenBasicAuthJSON structure for deserializing the basic auth json response
 type tokenBasicAuthJSON struct {
 	Token       string `json:"token"`
 	Url         string `json:"url"`
@@ -66,10 +75,18 @@ type tokenBasicAuthJSON struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-// NewBasicAuthClient an http client that will do the Basic Auth call to github to get a token
+// NewBasicAuthClient returns an http client that will do the Basic Auth call to github to get a token
 // via the user creds specified
 //
 // The returned http.Client can be passed to github.NewClient
+//
+// Sample Usage:
+//
+//	oa2 := oauth2.Config{ ... }
+//
+//	tc, err := github.NewBasicAuthClient(oa2, "zup", "nuch", "my oauth", []string{"public_repo"})
+//
+//	client := github.NewClient(tc)
 //
 // the github api docs are here:
 //
@@ -98,11 +115,6 @@ func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repo
 }
 
 // TokenSourceBasicAuth - use Basic Auth (username/password) to get a token
-//
-// Get a token with basic auth as in:
-//
-//	https://developer.github.com/enterprise/2.1/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
-//
 func TokenSourceBasicAuth(creds Creds) (*oauth2.Token, error) {
 
 	c := creds.Config
@@ -125,7 +137,7 @@ func TokenSourceBasicAuth(creds Creds) (*oauth2.Token, error) {
 
 }
 
-// Do Basic auth via username/password not client_id/client_secret
+// retrieveTokenBasicAuth - Do Basic auth via username/password not client_id/client_secret
 //
 // POST body for the auth call comes from the caller as a Reader
 func retrieveTokenBasicAuth(TokenURL, Username, Password string, postBodyReader io.Reader) (*oauth2.Token, error) {
