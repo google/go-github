@@ -8,7 +8,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/google/go-github/github"
+	"github.com/walmartlabs/go-github"
 )
 
 func TestActivity_Starring(t *testing.T) {

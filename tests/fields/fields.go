@@ -24,7 +24,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/google/go-github/github"
+	"github.com/walmartlabs/go-github"
 	"golang.org/x/oauth2"
 )
 

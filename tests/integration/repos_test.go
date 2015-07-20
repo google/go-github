@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/google/go-github/github"
+	"github.com/walmartlabs/go-github"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
