@@ -8,7 +8,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/walmartlabs/go-github"
+	"github.com/google/go-github"
 )
 
 func main() {
