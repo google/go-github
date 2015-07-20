@@ -1,5 +1,4 @@
 package github
-
 // Provides a TokenSource that uses the basic auth mechanism to get tokens
 //
 //	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
