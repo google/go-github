@@ -15,7 +15,8 @@ import (
 	// "golang.org/x/net/context"
 	"golang.org/x/oauth2"
 )
-// basicAuthRequestBody is the struct for generating the body for the post
+
+// BasicAuthRequestBody is the struct for generating the body for the authentication POST
 //
 // its used to generate the postBodyReader that goes into the oauth2Creds with the username/password
 type BasicAuthRequestBody struct {
@@ -40,16 +41,8 @@ type tokenBasicAuthJSON struct {
         RefreshToken string `json:"refresh_token"`
 }
 
-// BasicAuth is a struct which is used to orchestrate the Token call
-//
-// Token calls take no arguments, but the creds are in the context
-// and the oauth2 config is needed too
-// type BasicAuth struct {
-// 	context.Context
-// 	oauth2.Config
-// }
-
 // Creds provides the authorization data needed to do a Basic Auth call to get a token
+// and is a TokenSource
 //
 // 	Username is Basic Auth username
 // 	Password is the corresponding password
@@ -59,6 +52,13 @@ type Creds struct {
   Password string
   PostBodyReader io.Reader
   Config *oauth2.Config
+}
+
+// Token set username/password and postbody and do nasic auth
+func (ba Creds) Token() (tk *oauth2.Token, err error) {
+
+	return TokenSourceBasicAuth(ba)
+
 }
 
 // CredsGetter is a type that will get creds from a context for one of these calls
@@ -94,16 +94,8 @@ type Creds struct {
 
 // }
 
-//set username/password and postbody in the context
-//
-//needs to get client from context so this ting needs to get context somehow
-func (ba Creds) Token() (tk *oauth2.Token, err error) {
 
-	return TokenSourceBasicAuth(ba)
-
-}
-
-// GetTokenBasicAuth - use Basic Auth (username/password) to get a token
+// TokenSourceBasicAuth - use Basic Auth (username/password) to get a token
 //
 // Get a token with basic auth as in:
 //
@@ -183,12 +175,6 @@ func retrieveTokenBasicAuth(TokenURL, Username, Password string, postBodyReader 
 			RefreshToken: vals.Get("refresh_token"),
 		}
 		e := vals.Get("expires_in")
-		if e == "" {
-			// TODO(jbd): Facebook's OAuth2 implementation is broken and
-			// returns expires_in field in expires. Remove the fallback to expires,
-			// when Facebook fixes their implementation.
-			e = vals.Get("expires")
-		}
 		expires, _ := strconv.Atoi(e)
 		if expires != 0 {
 			token.Expiry = time.Now().Add(time.Duration(expires) * time.Second)
