@@ -1,6 +1,7 @@
 package github
 
 import (
+	"bytes"
 	"fmt"
 	"encoding/json"
 	"io"
@@ -9,12 +10,35 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	// "strings"
 	"time"
 
-	// "golang.org/x/net/context"
 	"golang.org/x/oauth2"
 )
+
+// Creds provides the authorization data needed to do a Basic Auth call to get a Token
+// and implements the TokenSource interface
+//
+//	Username is the user's Basic Auth username
+//	Password is the corresponding password
+//	PostBodyReader is a reader that will produce the desired body for the Post for the auth call
+//
+// api doc showing the call is here:
+//
+//	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
+//
+type Creds struct {
+  Username string
+  Password string
+  PostBodyReader io.Reader
+  Config *oauth2.Config
+}
+
+// Token set username/password and postbody and do nasic auth
+func (ba Creds) Token() (tk *oauth2.Token, err error) {
+
+	return TokenSourceBasicAuth(ba)
+
+}
 
 // BasicAuthRequestBody is the struct for generating the body for the authentication POST
 //
@@ -41,81 +65,51 @@ type tokenBasicAuthJSON struct {
         RefreshToken string `json:"refresh_token"`
 }
 
-// Creds provides the authorization data needed to do a Basic Auth call to get a token
-// and is a TokenSource
+// NewBasicAuthClient generates a TokenSource that will do the Basic Auth call to github to get a token
+// via the user creds specified
 //
-// 	Username is Basic Auth username
-// 	Password is the corresponding password
-// 	PostBodyReader is a reader that will produce the desired body for the Post for the auth call
-type Creds struct {
-  Username string
-  Password string
-  PostBodyReader io.Reader
-  Config *oauth2.Config
+// The returned TokenSource can be passed to oauth2.NewClient
+//
+// the github api docs are here:
+//
+//	https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
+//
+func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repos []string) (creds oauth2.TokenSource, err error) {
+
+	postBody := BasicAuthRequestBody{
+		oa2.ClientID,
+		oa2.ClientSecret,
+		note,
+		repos,
+	}
+
+	pb, err := json.Marshal(postBody)
+	if err != nil {
+		return
+	}
+
+	creds = Creds{username, password, bytes.NewReader(pb), &oa2}
+
+	return
+
 }
-
-// Token set username/password and postbody and do nasic auth
-func (ba Creds) Token() (tk *oauth2.Token, err error) {
-
-	return TokenSourceBasicAuth(ba)
-
-}
-
-// CredsGetter is a type that will get creds from a context for one of these calls
-// type CredsGetter func(context.Context) (creds, bool)
-
-// NewBasicAuthClient generates an http client that will do the Basic Auth call to github to get a token
-//
-// The returned client can be passed to github.NewClient
-//
-// the api docs are here https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
-//
-// func NewBasicAuthClient(oa2 oauth2.Config, username, password, note string, repos []string) (tc *http.Client, err error) {
-
-// 	postBody := basicAuthRequestBody{
-// 		oa2.ClientID,
-// 		oa2.ClientSecret,
-// 		note,
-// 		repos,
-// 	}
-
-// 	pb, err := json.Marshal(postBody)
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	creds := creds{username, password, bytes.NewReader(pb)}
-
-// 	ctx := NewContext(context.Background(), creds)
-
-// 	tc = oauth2.NewClient(ctx, BasicAuth{ctx, oa2})
-
-// 	return
-
-// }
 
 
 // TokenSourceBasicAuth - use Basic Auth (username/password) to get a token
 //
 // Get a token with basic auth as in:
 //
-// https://developer.github.com/enterprise/2.1/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
+//	https://developer.github.com/enterprise/2.1/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
 //
 func TokenSourceBasicAuth(creds Creds) (*oauth2.Token, error) {
 
 	c := creds.Config
-	// creds, ok := FromContext(ctx)
-
-	// if !ok {
-	// 	return nil, fmt.Errorf("creds for basic auth not found")
-	// }
 
 	tk, err := retrieveTokenBasicAuth(c.Endpoint.TokenURL, creds.Username, creds.Password, creds.PostBodyReader)
 	if err != nil {
 		return nil, err
 	}
 
-	// return tokenFromInternal(tk), nil
 	if tk == nil {
 		return &oauth2.Token{}, fmt.Errorf("got an empty token")
 	}
@@ -126,17 +120,13 @@ func TokenSourceBasicAuth(creds Creds) (*oauth2.Token, error) {
 		RefreshToken: tk.RefreshToken,
 		Expiry:       tk.Expiry,
 	}, nil
+
 }
 
 // Do Basic auth via username/password not client_id/client_secret
 //
 // POST body for the auth call comes from the caller as a Reader
 func retrieveTokenBasicAuth(TokenURL, Username, Password string, postBodyReader io.Reader) (*oauth2.Token, error) {
-
-	// hc, err := ContextClient(ctx)
-	// if err != nil {
-	// 	return nil, err
-	// }
 
 	hc := http.Client{}
 
@@ -194,17 +184,3 @@ func retrieveTokenBasicAuth(TokenURL, Username, Password string, postBodyReader 
 
 	return token, nil
 }
-
-//typesafe context acccessors
-// type key int
-
-// var CredsKey key = 0
-
-// func NewContext(ctx context.Context, ba Creds) context.Context {
-// 	return context.WithValue(ctx, CredsKey, ba)
-// }
-
-// func FromContext(ctx context.Context) (Creds, bool) {
-// 	ba, ok := ctx.Value(CredsKey).(Creds)
-// 	return ba, ok
-// }
