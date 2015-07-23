@@ -57,7 +57,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"id":1}`)
 	})
