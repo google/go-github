@@ -19,6 +19,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -39,6 +40,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		testFormValues(t, r, values{
 			"type":      "owner",
 			"sort":      "created",
@@ -71,6 +73,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		testFormValues(t, r, values{
 			"type": "forks",
 			"page": "2",

@@ -146,6 +146,9 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when license support fully launches
+	req.Header.Set("Accept", mediaTypeLicensesPreview)
+
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
 	if err != nil {
@@ -179,6 +182,9 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when license support fully launches
+	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	repos := new([]Repository)
 	resp, err := s.client.Do(req, repos)
