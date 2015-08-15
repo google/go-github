@@ -24,7 +24,7 @@ func main() {
 		fmt.Printf("%v\n\n", github.Stringify(repos))
 	}
 
-	rate, _, err := client.RateLimit()
+	rate, _, err := client.RateLimits()
 	if err != nil {
 		fmt.Printf("Error fetching rate limit: %#v\n\n", err)
 	} else {
