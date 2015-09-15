@@ -19,7 +19,7 @@ type PullRequestComment struct {
 	Position         *int       `json:"position,omitempty"`
 	OriginalPosition *int       `json:"original_position,omitempty"`
 	CommitID         *string    `json:"commit_id,omitempty"`
-	OriginalCommitId *string    `json:"original_commit_id,omitempty"`
+	OriginalCommitID *string    `json:"original_commit_id,omitempty"`
 	User             *User      `json:"user,omitempty"`
 	CreatedAt        *time.Time `json:"created_at,omitempty"`
 	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
