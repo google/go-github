@@ -45,7 +45,7 @@ type Creds struct {
 	Config         *oauth2.Config
 }
 
-// Token set username/password and postbody and do nasic auth
+// Token set username/password and postbody and do basic auth
 func (ba Creds) Token() (tk *oauth2.Token, err error) {
 
 	return TokenSourceBasicAuth(ba)
