@@ -46,7 +46,7 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("")
+	watched, _, err := client.Activity.ListWatched("", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
@@ -66,7 +66,8 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("u")
+	watched, _, err := client.Activity.ListWatched("u", &ListOptions{Page: 2})
+
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
