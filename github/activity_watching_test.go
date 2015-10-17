@@ -43,10 +43,13 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/subscriptions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("")
+	watched, _, err := client.Activity.ListWatched("", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
@@ -63,10 +66,14 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/subscriptions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("u")
+	watched, _, err := client.Activity.ListWatched("u", &ListOptions{Page: 2})
+
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
