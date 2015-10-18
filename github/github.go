@@ -71,6 +71,7 @@ type Client struct {
 	Rate Rate
 
 	// Services used for talking to different parts of the GitHub API.
+	OAuth         *OAuthService
 	Activity      *ActivityService
 	Gists         *GistsService
 	Git           *GitService
@@ -133,6 +134,7 @@ func NewClient(httpClient *http.Client) *Client {
 	uploadURL, _ := url.Parse(uploadBaseURL)
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
+	c.OAuth = &OAuthService{client: c}
 	c.Activity = &ActivityService{client: c}
 	c.Gists = &GistsService{client: c}
 	c.Git = &GitService{client: c}
@@ -323,6 +325,7 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 			err = json.NewDecoder(resp.Body).Decode(v)
 		}
 	}
+
 	return response, err
 }
 
