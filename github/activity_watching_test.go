@@ -36,7 +36,6 @@ func TestActivityService_ListWatchers(t *testing.T) {
 		t.Errorf("Activity.ListWatchers returned %+v, want %+v", watchers, want)
 	}
 }
-
 func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
@@ -57,6 +56,26 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 	}
 }
 
+func TestActivityService_ListWatched_authenticatedUser_nil(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/subscriptions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	watched, _, err := client.Activity.ListWatched("", nil)
+	if err != nil {
+		t.Errorf("Activity.ListWatched returned error: %v", err)
+	}
+
+	want := []Repository{{ID: Int(1)}}
+	if !reflect.DeepEqual(watched, want) {
+		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
+	}
+}
+
 func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	setup()
 	defer teardown()
@@ -67,6 +86,27 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	})
 
 	watched, _, err := client.Activity.ListWatched("u", &ListOptions{Page: 2})
+
+	if err != nil {
+		t.Errorf("Activity.ListWatched returned error: %v", err)
+	}
+
+	want := []Repository{{ID: Int(1)}}
+	if !reflect.DeepEqual(watched, want) {
+		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
+	}
+}
+
+func TestActivityService_ListWatched_specifiedUser_nil(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/subscriptions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	watched, _, err := client.Activity.ListWatched("u", nil)
 
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
