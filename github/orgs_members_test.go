@@ -321,7 +321,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 		v := new(Membership)
 		json.NewDecoder(r.Body).Decode(v)
 
-		testMethod(t, r, "PATCH")
+		testMethod(t, r, "PUT")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
