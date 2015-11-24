@@ -76,7 +76,7 @@ type IssueListOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
-	// Default is "asc".
+	// Default is "desc".
 	Direction string `url:"direction,omitempty"`
 
 	// Since filters issues by time.
@@ -170,7 +170,7 @@ type IssueListByRepoOptions struct {
 	Sort string `url:"sort,omitempty"`
 
 	// Direction in which to sort issues.  Possible values are: asc, desc.
-	// Default is "asc".
+	// Default is "desc".
 	Direction string `url:"direction,omitempty"`
 
 	// Since filters issues by time.
