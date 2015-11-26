@@ -65,7 +65,7 @@ type IssueListOptions struct {
 	Filter string `url:"filter,omitempty"`
 
 	// State filters issues based on their state.  Possible values are: open,
-	// closed.  Default is "open".
+	// closed, all.  Default is "open".
 	State string `url:"state,omitempty"`
 
 	// Labels filters issues based on their label.
@@ -148,7 +148,7 @@ type IssueListByRepoOptions struct {
 	Milestone string `url:"milestone,omitempty"`
 
 	// State filters issues based on their state.  Possible values are: open,
-	// closed.  Default is "open".
+	// closed, all.  Default is "open".
 	State string `url:"state,omitempty"`
 
 	// Assignee filters issues based on their assignee.  Possible values are a
