@@ -332,6 +332,9 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 			io.Copy(w, resp.Body)
 		} else {
 			err = json.NewDecoder(resp.Body).Decode(v)
+			if err == io.EOF {
+				err = nil // ignore EOF errors caused by empty response body
+			}
 		}
 	}
 	return response, err
