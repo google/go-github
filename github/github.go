@@ -316,7 +316,7 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 		return response, err
 	}
 
-	if v != nil {
+	if v != nil && resp.StatusCode != http.StatusNoContent {
 		if w, ok := v.(io.Writer); ok {
 			io.Copy(w, resp.Body)
 		} else {
