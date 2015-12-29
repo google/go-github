@@ -378,28 +378,28 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Add(headerRateReset, "1372700873")
 	})
 
-	if got, want := client.Rate.Limit, 0; got != want {
+	if got, want := client.Rate().Limit, 0; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate.Remaining, 0; got != want {
+	if got, want := client.Rate().Remaining, 0; got != want {
 		t.Errorf("Client rate remaining = %v, got %v", got, want)
 	}
-	if !client.Rate.Reset.IsZero() {
+	if !client.Rate().Reset.IsZero() {
 		t.Errorf("Client rate reset not initialized to zero value")
 	}
 
 	req, _ := client.NewRequest("GET", "/", nil)
 	client.Do(req, nil)
 
-	if got, want := client.Rate.Limit, 60; got != want {
+	if got, want := client.Rate().Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate.Remaining, 59; got != want {
+	if got, want := client.Rate().Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
-	if client.Rate.Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", client.Rate.Reset, reset)
+	if client.Rate().Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", client.Rate().Reset, reset)
 	}
 }
 
@@ -418,15 +418,15 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	req, _ := client.NewRequest("GET", "/", nil)
 	client.Do(req, nil)
 
-	if got, want := client.Rate.Limit, 60; got != want {
+	if got, want := client.Rate().Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate.Remaining, 59; got != want {
+	if got, want := client.Rate().Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
-	if client.Rate.Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", client.Rate.Reset, reset)
+	if client.Rate().Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", client.Rate().Reset, reset)
 	}
 }
 
@@ -453,7 +453,7 @@ func TestCheckResponse(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
-		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m", 
+		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
 			"errors": [{"resource": "r", "field": "f", "code": "c"}]}`)),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
