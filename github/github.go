@@ -17,6 +17,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -64,11 +65,8 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
-	// Rate specifies the current rate limit for the client as determined by the
-	// most recent API call.  If the client is used in a multi-user application,
-	// this rate may not always be up-to-date.  Call RateLimits() to check the
-	// current rate.
-	Rate Rate
+	rateMu sync.Mutex
+	rate   Rate
 
 	// Services used for talking to different parts of the GitHub API.
 	Activity      *ActivityService
@@ -292,6 +290,17 @@ func (r *Response) populateRate() {
 	}
 }
 
+// Rate specifies the current rate limit for the client as determined by the
+// most recent API call.  If the client is used in a multi-user application,
+// this rate may not always be up-to-date.  Call RateLimits() to check the
+// current rate.
+func (c *Client) Rate() Rate {
+	c.rateMu.Lock()
+	rate := c.rate
+	c.rateMu.Unlock()
+	return rate
+}
+
 // Do sends an API request and returns the API response.  The API response is
 // JSON decoded and stored in the value pointed to by v, or returned as an
 // error if an API error has occurred.  If v implements the io.Writer
@@ -307,7 +316,9 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 
 	response := newResponse(resp)
 
-	c.Rate = response.Rate
+	c.rateMu.Lock()
+	c.rate = response.Rate
+	c.rateMu.Unlock()
 
 	err = CheckResponse(resp)
 	if err != nil {
