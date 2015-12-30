@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -302,6 +303,34 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	response = newResponse(&r)
 	if got, want := response.FirstPage, 0; got != want {
 		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_extractLinkHeaders(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?page=1>; rel="first",` +
+				` <https://api.github.com/?page=2>; rel="prev",` +
+				` <https://api.github.com/?page=4>; rel="next",` +
+				` <https://api.github.com/?page=5>; rel="last"`,
+			},
+		},
+	}
+
+	expected := map[string]string{
+		"first": "https://api.github.com/?page=1",
+		"prev":  "https://api.github.com/?page=2",
+		"next":  "https://api.github.com/?page=4",
+		"last":  "https://api.github.com/?page=5",
+	}
+	response := newResponse(&r)
+
+	for k, v := range expected {
+		realV := response.Links.GetURLByRel(k)
+
+		if realV != v {
+			t.Errorf("links for %#v not equal. wanted: %#v, got: %#v", k, v, realV)
+		}
 	}
 }
 
@@ -693,5 +722,73 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	}
 	if tp.transport() == http.DefaultTransport {
 		t.Errorf("Expected custom transport to be used.")
+	}
+}
+
+func TestGetByURL(t *testing.T) {
+	setup()
+
+	mux.HandleFunc("/endpoint", func(w http.ResponseWriter, r *http.Request) {
+		var v, want string
+		q := r.URL.Query()
+
+		if v, want = q.Get("field"), "Value"; v != want {
+			t.Errorf("expected query string parameter to be included, got: %#v, (%#v)", v, q)
+		}
+
+		w.WriteHeader(200)
+		io.WriteString(w, `{"foo": "bar"}`)
+	})
+
+	var payload struct{ Foo string }
+	var opts = struct {
+		Field string `url:"field"`
+	}{
+		Field: "Value",
+	}
+
+	resp, err := client.GetByURL("/endpoint", &opts, &payload)
+
+	if err != nil {
+		t.Fatalf("unexpected err: %v", err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Errorf("unexpected status code %d", resp.StatusCode)
+	}
+
+	if payload.Foo != "bar" {
+		t.Errorf("expected json payload to have been parsed into struct, got value %v", payload.Foo)
+	}
+}
+
+func TestGetByURL_noOpts(t *testing.T) {
+	setup()
+	mux.HandleFunc("/endpoint", func(w http.ResponseWriter, r *http.Request) {
+		var v, want string
+		q := r.URL.Query()
+
+		if v, want = q.Get("field"), "Value"; v != want {
+			t.Errorf("expected query string parameter to be included , got: %#v, (%#v)", v, q)
+		}
+
+		w.WriteHeader(200)
+		io.WriteString(w, `{"foo": "bar"}`)
+	})
+
+	var payload struct{ Foo string }
+
+	resp, err := client.GetByURL("/endpoint?field=Value", nil, &payload)
+
+	if err != nil {
+		t.Fatalf("unexpected err: %v", err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Errorf("unexpected status code %d", resp.StatusCode)
+	}
+
+	if payload.Foo != "bar" {
+		t.Errorf("expected json payload to have been parsed into struct, got value %v", payload.Foo)
 	}
 }

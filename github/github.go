@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -101,7 +102,7 @@ type UploadOptions struct {
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
 	v := reflect.ValueOf(opt)
-	if v.Kind() == reflect.Ptr && v.IsNil() {
+	if (v.Kind() == reflect.Ptr && v.IsNil()) || v.Kind() == reflect.Invalid {
 		return s, nil
 	}
 
@@ -221,58 +222,142 @@ type Response struct {
 	LastPage  int
 
 	Rate
+
+	Links headerLinks
+}
+
+func linksFromHeader(h string) (*headerLinks, error) {
+	if len(h) == 0 {
+		return &headerLinks{}, nil
+	}
+
+	links := &headerLinks{}
+
+	for _, l := range strings.Split(h, ",") {
+		link, err := parseLink(l)
+		if err != nil {
+			continue
+		}
+
+		if link.Rel == "" {
+			continue
+		}
+
+		links.rels[link.Rel] = append(links.rels[link.Rel], link)
+	}
+
+	return links, nil
+}
+
+var reLink = regexp.MustCompile(`rel="((?:[^"]|\\")+)"`)
+
+func parseLink(l string) (*HeaderLink, error) {
+	segments := strings.Split(strings.TrimSpace(l), ";")
+
+	if len(segments) < 2 {
+		return nil, errors.New("not enough segments in link")
+	}
+
+	// ensure href is properly formatted
+	if !strings.HasPrefix(segments[0], "<") || !strings.HasSuffix(segments[0], ">") {
+		return nil, fmt.Errorf("malformed uri segment: %#v", segments[0])
+	}
+
+	link := HeaderLink{
+		URL: segments[0][1 : len(segments[0])-1],
+	}
+
+	for _, rel := range segments[1:] {
+		if reLink.MatchString(rel) {
+			link.Rel = reLink.FindStringSubmatch(rel)[1]
+		}
+	}
+
+	return &link, nil
+}
+
+type HeaderLink struct {
+	URL string
+	Rel string
+}
+
+type headerLinks struct {
+	rels map[string][]*HeaderLink
+}
+
+func (l *headerLinks) GetURLByRel(rel string) string {
+	if len(l.rels[rel]) == 0 {
+		return ""
+	}
+
+	return (*l.rels[rel][0]).URL
+}
+
+func (l *headerLinks) GetAllByRel(rel string) []*HeaderLink {
+	return l.rels[rel]
 }
 
 // newResponse creates a new Response for the provided http.Response.
 func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
+	response.populateLinks()
 	response.populatePageValues()
 	response.populateRate()
 	return response
 }
 
-// populatePageValues parses the HTTP Link response headers and populates the
-// various pagination link values in the Reponse.
-func (r *Response) populatePageValues() {
+func (r *Response) populateLinks() {
 	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
+		r.Links.rels = make(map[string][]*HeaderLink)
+
 		for _, link := range strings.Split(links[0], ",") {
-			segments := strings.Split(strings.TrimSpace(link), ";")
 
-			// link must at least have href and rel
-			if len(segments) < 2 {
-				continue
-			}
+			l, err := parseLink(link)
 
-			// ensure href is properly formatted
-			if !strings.HasPrefix(segments[0], "<") || !strings.HasSuffix(segments[0], ">") {
-				continue
-			}
-
-			// try to pull out page parameter
-			url, err := url.Parse(segments[0][1 : len(segments[0])-1])
 			if err != nil {
 				continue
 			}
-			page := url.Query().Get("page")
-			if page == "" {
-				continue
+
+			if _, ok := r.Links.rels[l.Rel]; !ok {
+				r.Links.rels[l.Rel] = make([]*HeaderLink, 0)
 			}
 
-			for _, segment := range segments[1:] {
-				switch strings.TrimSpace(segment) {
-				case `rel="next"`:
-					r.NextPage, _ = strconv.Atoi(page)
-				case `rel="prev"`:
-					r.PrevPage, _ = strconv.Atoi(page)
-				case `rel="first"`:
-					r.FirstPage, _ = strconv.Atoi(page)
-				case `rel="last"`:
-					r.LastPage, _ = strconv.Atoi(page)
-				}
-
-			}
+			r.Links.rels[l.Rel] = append(r.Links.rels[l.Rel], l)
 		}
 	}
+}
+
+// populatePageValues parses the HTTP Link response headers and populates the
+// various pagination link values in the Reponse.
+func (r *Response) populatePageValues() {
+	extractPageFromRel := func(rel string) int {
+		var l string
+
+		if l = r.Links.GetURLByRel(rel); l == "" {
+			return 0
+		}
+
+		u, err := url.Parse(l)
+
+		if err != nil {
+			return 0
+		}
+
+		page := u.Query().Get("page")
+
+		if page == "" {
+			return 0
+		}
+
+		i, _ := strconv.Atoi(page)
+
+		return i
+	}
+
+	r.NextPage = extractPageFromRel("next")
+	r.PrevPage = extractPageFromRel("prev")
+	r.FirstPage = extractPageFromRel("first")
+	r.LastPage = extractPageFromRel("last")
 }
 
 // populateRate parses the rate related headers and populates the response Rate.
@@ -338,6 +423,29 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 		}
 	}
 	return response, err
+}
+
+// Convenience wrapper for sending a GET request using the authenticated
+// http client.
+//
+// See Client.Do() for semantics of handling the v parameter.
+//
+// opt should be a pointer to a struct that contains query string values to apply to
+// the URL (e.g. IssueListOptions).
+// See https://github.com/google/go-querystring for examples on making custom
+// structs.
+func (c *Client) GetByURL(url string, opt interface{}, v interface{}) (*Response, error) {
+	u, err := addOptions(url, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := c.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Do(req, v)
 }
 
 /*
