@@ -51,10 +51,13 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 	setup()
 	defer teardown()
 
+	url1 := "http://google.com"
+	url2 := "http://google.com/github"
+
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1, "url":"`+url1+`"}, {"id":2, "url": "`+url2+`"}]`)
 	})
 
 	opt := &ListOptions{Page: 2}
@@ -64,7 +67,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []Hook{{ID: Int(1)}, {ID: Int(2)}}
+	want := []Hook{{ID: Int(1), URL: &url1}, {ID: Int(2), URL: &url2}}
 	if !reflect.DeepEqual(hooks, want) {
 		t.Errorf("Repositories.ListHooks returned %+v, want %+v", hooks, want)
 	}
@@ -79,9 +82,11 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 	setup()
 	defer teardown()
 
+	url := "http://google.com"
+
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1, "url": "`+url+`"}`)
 	})
 
 	hook, _, err := client.Repositories.GetHook("o", "r", 1)
@@ -89,7 +94,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int(1)}
+	want := &Hook{ID: Int(1), URL: &url}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Repositories.GetHook returned %+v, want %+v", hook, want)
 	}
