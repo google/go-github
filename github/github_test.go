@@ -448,6 +448,24 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestDo_noContent(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "No Content", 204)
+	})
+
+	var body map[interface{}]interface{}
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	_, err := client.Do(req, &body)
+
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	tests := []struct {
 		in, want string
