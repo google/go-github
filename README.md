@@ -58,6 +58,9 @@ func main() {
 
 See the [oauth2 docs][] for complete instructions on using that library.
 
+For API methods that require HTTP Basic Authentication, use the
+[`BasicAuthTransport`](https://godoc.org/github.com/google/go-github/github#BasicAuthTransport).
+
 ### Pagination ###
 
 All requests for resource collections (repos, pull requests, issues, etc)
