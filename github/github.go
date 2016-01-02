@@ -48,6 +48,9 @@ const (
 	// https://developer.github.com/changes/2015-06-24-api-enhancements-for-working-with-organization-permissions/
 	mediaTypeOrgPermissionPreview     = "application/vnd.github.ironman-preview+json"
 	mediaTypeOrgPermissionRepoPreview = "application/vnd.github.ironman-preview.repository+json"
+
+	// https://developer.github.com/changes/2015-11-11-protected-branches-api/
+	mediaTypeProtectedBranchesPreview = "application/vnd.github.loki-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

@@ -389,7 +389,8 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}}`)
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}, "protection": {"enabled": true, "required_status_checks": {"enforcement_level": "everyone","contexts": []}}}`)
 	})
 
 	branch, _, err := client.Repositories.GetBranch("o", "r", "b")
@@ -397,7 +398,18 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
 
-	want := &Branch{Name: String("n"), Commit: &Commit{SHA: String("s")}}
+	want := &Branch{
+		Name:   String("n"),
+		Commit: &Commit{SHA: String("s")},
+		Protection: &Protection{
+			Enabled: Bool(true),
+			RequiredStatusChecks: &RequiredStatusChecks{
+				EnforcementLevel: String("everyone"),
+				Contexts:         &[]string{},
+			},
+		},
+	}
+
 	if !reflect.DeepEqual(branch, want) {
 		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
 	}
