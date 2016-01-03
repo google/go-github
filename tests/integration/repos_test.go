@@ -6,12 +6,11 @@
 package tests
 
 import (
-	"fmt"
-	"math/rand"
 	"net/http"
 	"testing"
 
 	"github.com/google/go-github/github"
+	"reflect"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
@@ -25,24 +24,9 @@ func TestRepositories_CRUD(t *testing.T) {
 		t.Fatalf("Users.Get('') returned error: %v", err)
 	}
 
-	// create random repo name that does not currently exist
-	var repoName string
-	for {
-		repoName = fmt.Sprintf("test-%d", rand.Int())
-		_, resp, err := client.Repositories.Get(*me.Login, repoName)
-		if err != nil {
-			if resp.StatusCode == http.StatusNotFound {
-				// found a non-existant repo, perfect
-				break
-			}
-			t.Fatalf("Repositories.Get() returned error: %v", err)
-		}
-	}
-
-	// create the repository
-	repo, _, err := client.Repositories.Create("", &github.Repository{Name: github.String(repoName)})
+	repo, err := createRandomTestRepository(*me.Login, false)
 	if err != nil {
-		t.Fatalf("Repositories.Create() returned error: %v", err)
+		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
 
 	// update the repository description
@@ -104,5 +88,58 @@ func TestRepositories_ServiceHooks(t *testing.T) {
 
 	if len(hooks) == 0 {
 		t.Fatalf("Repositories.ListServiceHooks() returned no hooks")
+	}
+}
+
+func TestRepositories_EditBranches(t *testing.T) {
+	if !checkAuth("TestRepositories_EditBranches") {
+		return
+	}
+
+	// get authenticated user
+	me, _, err := client.Users.Get("")
+	if err != nil {
+		t.Fatalf("Users.Get('') returned error: %v", err)
+	}
+
+	repo, err := createRandomTestRepository(*me.Login, true)
+	if err != nil {
+		t.Fatalf("createRandomTestRepository returned error: %v", err)
+	}
+
+	branch, _, err := client.Repositories.GetBranch(*repo.Owner.Login, *repo.Name, "master")
+	if err != nil {
+		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
+	}
+
+	if *branch.Protection.Enabled {
+		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
+	}
+
+	branch.Protection.Enabled = github.Bool(true)
+	branch.Protection.RequiredStatusChecks = &github.RequiredStatusChecks{
+		EnforcementLevel:github.String("everyone"),
+		Contexts:&[]string{"continous-integration"},
+	}
+	branch, _, err = client.Repositories.EditBranch(*repo.Owner.Login, *repo.Name, "master", branch)
+	if err != nil {
+		t.Fatalf("Repositories.EditBranch() returned error: %v", err)
+	}
+
+	if !*branch.Protection.Enabled {
+		t.Fatalf("Branch %v of repo %v should be protected, but is not!", "master", *repo.Name)
+	}
+	if *branch.Protection.RequiredStatusChecks.EnforcementLevel != "everyone" {
+		t.Fatalf("RequiredStatusChecks should be enabled for everyone, set for: %v", *branch.Protection.RequiredStatusChecks.EnforcementLevel)
+	}
+
+	wantedContexts := []string{"continous-integration"}
+	if !reflect.DeepEqual(*branch.Protection.RequiredStatusChecks.Contexts, wantedContexts) {
+		t.Fatalf("RequiredStatusChecks.Contexts should be: %v but is: %v", wantedContexts, *branch.Protection.RequiredStatusChecks.Contexts)
+	}
+
+	_, err = client.Repositories.Delete(*repo.Owner.Login, *repo.Name)
+	if err != nil {
+		t.Fatalf("Repositories.Delete() returned error: %v", err)
 	}
 }

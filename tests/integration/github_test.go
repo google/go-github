@@ -15,6 +15,8 @@ import (
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
+	"net/http"
+	"math/rand"
 )
 
 var (
@@ -44,4 +46,29 @@ func checkAuth(name string) bool {
 		fmt.Printf("No auth - skipping portions of %v\n", name)
 	}
 	return auth
+}
+
+func createRandomTestRepository(owner string, autoinit bool) (*github.Repository, error) {
+	// create random repo name that does not currently exist
+	var repoName string
+	for {
+		repoName = fmt.Sprintf("test-%d", rand.Int())
+		_, resp, err := client.Repositories.Get(owner, repoName)
+		if err != nil {
+			if resp.StatusCode == http.StatusNotFound {
+				// found a non-existant repo, perfect
+				break
+			}
+
+			return nil, err
+		}
+	}
+
+	// create the repository
+	repo, _, err := client.Repositories.Create("", &github.Repository{Name: github.String(repoName), AutoInit:github.Bool(autoinit)})
+	if err != nil {
+		return nil, err
+	}
+
+	return repo, nil
 }

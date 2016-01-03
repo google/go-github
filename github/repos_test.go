@@ -415,6 +415,42 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_EditBranch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &Branch{
+		Protection: &Protection{
+			Enabled: Bool(true),
+			RequiredStatusChecks: &RequiredStatusChecks{
+				EnforcementLevel: String("everyone"),
+				Contexts:         &[]string{"continous-integration"},
+			},
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Branch)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprint(w, `{"protection": {"enabled": true, "required_status_checks": {"enforcement_level": "everyone", "contexts": ["continous-integration"]}}}`)
+	})
+
+	branch, _, err := client.Repositories.EditBranch("o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.EditBranch returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(branch, input) {
+		t.Errorf("Repositories.EditBranch returned %+v, want %+v", branch, input)
+	}
+}
+
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 	_, _, err := client.Repositories.ListLanguages("%", "%")
 	testURLParseError(t, err)
