@@ -88,6 +88,22 @@ For complete usage of go-github, see the full [package docs][].
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://godoc.org/github.com/google/go-github/github
 
+### Integration Tests ###
+
+You can run the integration tests from from the `tests` directory with:
+
+```bash
+GITHUB_AUTH_TOKEN=<your api token> go test ./...
+```
+
+You can create a token here: https://github.com/settings/tokens
+
+These scopes are needed:
+
+* repo
+* delete_repo
+* user
+* admin:public_key
 
 ## Roadmap ##
 
