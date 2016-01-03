@@ -7,7 +7,7 @@ go-github is a Go client library for accessing the [GitHub API][].
 **Build Status:** [![Build Status](https://travis-ci.org/google/go-github.svg?branch=master)](https://travis-ci.org/google/go-github)  
 **Test Coverage:** [![Test Coverage](https://coveralls.io/repos/google/go-github/badge.svg?branch=master)](https://coveralls.io/r/google/go-github?branch=master) ([gocov report](https://drone.io/github.com/google/go-github/files/coverage.html))
 
-go-github requires Go version 1.1 or greater.
+go-github requires Go version 1.4 or greater.
 
 ## Usage ##
 
@@ -88,6 +88,22 @@ For complete usage of go-github, see the full [package docs][].
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://godoc.org/github.com/google/go-github/github
 
+### Integration Tests ###
+
+You can run the integration tests from from the `tests` directory with:
+
+```bash
+GITHUB_AUTH_TOKEN=<your api token> go test ./...
+```
+
+You can create a token here: https://github.com/settings/tokens
+
+These scopes are needed:
+
+* repo
+* delete_repo
+* user
+* admin:public_key
 
 ## Roadmap ##
 

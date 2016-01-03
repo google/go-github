@@ -173,8 +173,8 @@ func TestUsers_Keys(t *testing.T) {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
 
-	// ssh public key for testing (fingerprint: 04:11:3a:3d:65:ed:f5:c8:29:90:2d:9c:9f:25:ca:7a)
-	key := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAYQDThS/Tvat+hiKTsZ0fuaSkd/o8cMMufy70BXE2/UPZhUx/M4/XBGGiHGXwEbxcRpSTmEsAyN5vGt7nnZrHsjq/WhZmCjVcNlyfnEMGD0UgfsjwVDTT3Y4BYN62bhW4LfM="
+	// ssh public key for testing (fingerprint: 16:c4:b0:2b:99:b4:eb:6d:06:a3:7d:7f:d6:55:e1:65)
+	key := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZ4khAJykHnJXKbv2mWgegSVyVKG6mAl6MwlMjGP9CsuBsbgGrMxCVVH1lhRIWNyGNPh3tqt5qmz0rSjaRqBO9FbTxTXbokAbktWgLvSH3PqSKXyS8NmsaMk/PfAm9BOwYpVQ6P2dg75MmKbXgq1xxe3PxEmgdEHzg4XSw+dkoO4Bika88BksFaXHsE1DIlqfDNtTIheq6vccJ2L9bEoXdhsEbe/OaZsyZHeaOg2Z7Z3K531kLfAYH/uD3kUOcA+4sX/tW29aYpVvca7v1sHFjz9RotF3PkxRH/zekLy8/WHxfxwOptBd0TpEiI0Vg6Yy+pNjkSEGwKNPO8Z2aEflT"
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
 			t.Fatalf("Test key already exists for user.  Please manually remove it first.")
