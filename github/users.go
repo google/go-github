@@ -35,6 +35,7 @@ type User struct {
 	Following         *int       `json:"following,omitempty"`
 	CreatedAt         *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
+	SuspendedAt       *Timestamp `json:"suspended_at,omitempty"`
 	Type              *string    `json:"type,omitempty"`
 	SiteAdmin         *bool      `json:"site_admin,omitempty"`
 	TotalPrivateRepos *int       `json:"total_private_repos,omitempty"`
