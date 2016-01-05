@@ -32,6 +32,7 @@ func TestUser_marshall(t *testing.T) {
 		Followers:   Int(1),
 		Following:   Int(1),
 		CreatedAt:   &Timestamp{referenceTime},
+		SuspendedAt: &Timestamp{referenceTime},
 	}
 	want := `{
 		"login": "l",
@@ -48,6 +49,7 @@ func TestUser_marshall(t *testing.T) {
 		"followers": 1,
 		"following": 1,
 		"created_at": ` + referenceTimeStr + `,
+		"suspended_at": ` + referenceTimeStr + `,
 		"url": "u"
 	}`
 	testJSONMarshal(t, u, want)
