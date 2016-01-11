@@ -32,7 +32,7 @@ func TestRepositories_CRUD(t *testing.T) {
 		_, resp, err := client.Repositories.Get(*me.Login, repoName)
 		if err != nil {
 			if resp.StatusCode == http.StatusNotFound {
-				// found a non-existant repo, perfect
+				// found a non-existent repo, perfect
 				break
 			}
 			t.Fatalf("Repositories.Get() returned error: %v", err)
