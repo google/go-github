@@ -29,6 +29,7 @@ type WebHookPayload struct {
 	Pusher     *User           `json:"pusher,omitempty"`
 	Ref        *string         `json:"ref,omitempty"`
 	Repo       *Repository     `json:"repository,omitempty"`
+	Sender     *User           `json:"sender,omitempty"`
 }
 
 func (w WebHookPayload) String() string {
