@@ -44,12 +44,12 @@ func (e *Event) Payload() (payload interface{}) {
 //
 // GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID  *int              `json:"push_id,omitempty"`
-	Head    *string           `json:"head,omitempty"`
-	Ref     *string           `json:"ref,omitempty"`
-	Size    *int              `json:"size,omitempty"`
-	Commits []PushEventCommit `json:"commits,omitempty"`
-	Repo    *Repository       `json:"repository,omitempty"`
+	PushID  *int                 `json:"push_id,omitempty"`
+	Head    *string              `json:"head,omitempty"`
+	Ref     *string              `json:"ref,omitempty"`
+	Size    *int                 `json:"size,omitempty"`
+	Commits []PushEventCommit    `json:"commits,omitempty"`
+	Repo    *PushEventRepository `json:"repository,omitempty"`
 }
 
 func (p PushEvent) String() string {
@@ -70,6 +70,40 @@ type PushEventCommit struct {
 
 func (p PushEventCommit) String() string {
 	return Stringify(p)
+}
+
+// PushEventRepository represents the repo object in a PushEvent payload
+type PushEventRepository struct {
+	ID              *int                `json:"id,omitempty"`
+	Name            *string             `json:"name,omitempty"`
+	FullName        *string             `json:"full_name,omitempty"`
+	Owner           *PushEventRepoOwner `json:"owner,omitempty"`
+	Private         *bool               `json:"private,omitempty"`
+	Description     *string             `json:"description,omitempty"`
+	Fork            *bool               `json:"fork,omitempty"`
+	CreatedAt       *Timestamp          `json:"created_at,omitempty"`
+	PushedAt        *Timestamp          `json:"pushed_at,omitempty"`
+	UpdatedAt       *Timestamp          `json:"updated_at,omitempty"`
+	Homepage        *string             `json:"homepage,omitempty"`
+	Size            *int                `json:"size,omitempty"`
+	StargazersCount *int                `json:"stargazers_count,omitempty"`
+	WatchersCount   *int                `json:"watchers_count,omitempty"`
+	Language        *string             `json:"language,omitempty"`
+	HasIssues       *bool               `json:"has_issues,omitempty"`
+	HasDownloads    *bool               `json:"has_downloads,omitempty"`
+	HasWiki         *bool               `json:"has_wiki,omitempty"`
+	HasPages        *bool               `json:"has_pages,omitempty"`
+	ForksCount      *int                `json:"forks_count,omitempty"`
+	OpenIssuesCount *int                `json:"open_issues_count,omitempty"`
+	DefaultBranch   *string             `json:"default_branch,omitempty"`
+	MasterBranch    *string             `json:"master_branch,omitempty"`
+	Organization    *string             `json:"organization,omitempty"`
+}
+
+// PushEventRepoOwner is a basic reporesntation of user/org in a PushEvent payload
+type PushEventRepoOwner struct {
+	Name  *string `json:"name,omitempty"`
+	Email *string `json:"email,omitempty"`
 }
 
 //PullRequestEvent represents the payload delivered by PullRequestEvent webhook
