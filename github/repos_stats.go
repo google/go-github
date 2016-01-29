@@ -102,7 +102,7 @@ func (s *RepositoriesService) ListCommitActivity(owner, repo string) ([]WeeklyCo
 
 // ListCodeFrequency returns a weekly aggregate of the number of additions and
 // deletions pushed to a repository.  Returned WeeklyStats will contain
-// additiona and deletions, but not total commits.
+// additions and deletions, but not total commits.
 //
 // GitHub API Docs: https://developer.github.com/v3/repos/statistics/#code-frequency
 func (s *RepositoriesService) ListCodeFrequency(owner, repo string) ([]WeeklyStats, *Response, error) {
@@ -175,7 +175,7 @@ func (s *RepositoriesService) ListParticipation(owner, repo string) (*Repository
 	return participation, resp, err
 }
 
-// PunchCard respresents the number of commits made during a given hour of a
+// PunchCard represents the number of commits made during a given hour of a
 // day of thew eek.
 type PunchCard struct {
 	Day     *int // Day of the week (0-6: =Sunday - Saturday).
