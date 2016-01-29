@@ -236,7 +236,7 @@ func newResponse(r *http.Response) *Response {
 }
 
 // populatePageValues parses the HTTP Link response headers and populates the
-// various pagination link values in the Reponse.
+// various pagination link values in the Response.
 func (r *Response) populatePageValues() {
 	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
 		for _, link := range strings.Split(links[0], ",") {
