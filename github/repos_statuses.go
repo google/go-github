@@ -86,7 +86,7 @@ func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *Repo
 // CombinedStatus represents the combined status of a repository at a particular reference.
 type CombinedStatus struct {
 	// State is the combined state of the repository.  Possible values are:
-	// failture, pending, or success.
+	// failure, pending, or success.
 	State *string `json:"state,omitempty"`
 
 	Name       *string      `json:"name,omitempty"`

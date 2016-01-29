@@ -55,7 +55,7 @@ func teardown() {
 // openTestFile creates a new file with the given name and content for testing.
 // In order to ensure the exact file name, this function will create a new temp
 // directory, and create the file in that directory.  It is the caller's
-// responsibility to remove the directy and its contents when no longer needed.
+// responsibility to remove the directory and its contents when no longer needed.
 func openTestFile(name, content string) (file *os.File, dir string, err error) {
 	dir, err = ioutil.TempDir("", "go-github")
 	if err != nil {
