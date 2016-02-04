@@ -11,12 +11,12 @@ package tests
 
 import (
 	"fmt"
+	"math/rand"
+	"net/http"
 	"os"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	"net/http"
-	"math/rand"
 )
 
 var (
@@ -65,7 +65,7 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 	}
 
 	// create the repository
-	repo, _, err := client.Repositories.Create("", &github.Repository{Name: github.String(repoName), AutoInit:github.Bool(autoinit)})
+	repo, _, err := client.Repositories.Create("", &github.Repository{Name: github.String(repoName), AutoInit: github.Bool(autoinit)})
 	if err != nil {
 		return nil, err
 	}

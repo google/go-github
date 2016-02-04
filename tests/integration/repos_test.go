@@ -118,8 +118,8 @@ func TestRepositories_EditBranches(t *testing.T) {
 
 	branch.Protection.Enabled = github.Bool(true)
 	branch.Protection.RequiredStatusChecks = &github.RequiredStatusChecks{
-		EnforcementLevel:github.String("everyone"),
-		Contexts:&[]string{"continous-integration"},
+		EnforcementLevel: github.String("everyone"),
+		Contexts:         &[]string{"continous-integration"},
 	}
 	branch, _, err = client.Repositories.EditBranch(*repo.Owner.Login, *repo.Name, "master", branch)
 	if err != nil {
