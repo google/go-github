@@ -98,6 +98,44 @@ func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_ListByUser(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/o/repos", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
+		testFormValues(t, r, values{
+			"type":      "owner",
+			"sort":      "created",
+			"direction": "asc",
+			"page":      "2",
+		})
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &RepositoryListByUserOptions{
+		Type:        "owner",
+		Sort:        "created",
+		Direction:   "asc",
+		ListOptions: ListOptions{Page: 2},
+	}
+	repos, _, err := client.Repositories.ListByUser("o", opt)
+	if err != nil {
+		t.Errorf("Repositories.ListByUser returned error: %v", err)
+	}
+
+	want := []Repository{{ID: Int(1)}}
+	if !reflect.DeepEqual(repos, want) {
+		t.Errorf("Repositories.ListByUser returned %+v, want %+v", repos, want)
+	}
+}
+
+func TestRepositoriesService_ListByUser_invalidOrg(t *testing.T) {
+	_, _, err := client.Repositories.ListByUser("%", nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_ListAll(t *testing.T) {
 	setup()
 	defer teardown()

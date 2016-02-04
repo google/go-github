@@ -195,6 +195,50 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 	return *repos, resp, err
 }
 
+// RepositoryListByUserOptions specifies the optional parameters to the
+// RepositoriesService.ListByUser method.
+type RepositoryListByUserOptions struct {
+	// Type of repositories to list. Possible values are: all, owner, member,
+	// Default is "owner".
+	Type string `url:"type,omitempty"`
+
+	// Name of the field to sort by. Possible values are: created, updated,
+	// pushed, full_name. Default: full_name
+	Sort string `url:"sort,omitempty"`
+
+	// Sort order, can be one of asc or desc. Default: when using full_name:
+	// asc, otherwise desc
+	Direction string `url:"direction,omitempty"`
+
+	ListOptions
+}
+
+// ListByUser lists the repositories for an organization.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#list-user-repositories
+func (s *RepositoriesService) ListByUser(user string, opt *RepositoryListByUserOptions) ([]Repository, *Response, error) {
+	u := fmt.Sprintf("users/%s/repos", user)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeLicensesPreview)
+
+	repos := new([]Repository)
+	resp, err := s.client.Do(req, repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *repos, resp, err
+}
+
 // RepositoryListAllOptions specifies the optional parameters to the
 // RepositoriesService.ListAll method.
 type RepositoryListAllOptions struct {
