@@ -466,9 +466,9 @@ type RequiredStatusChecks struct {
 	//     off
 	//     non_admins
 	//     everyone
-	EnforcementLevel *string   `json:"enforcement_level,omitempty"`
+	EnforcementLevel *string `json:"enforcement_level,omitempty"`
 	// The list of status checks which are required
-	Contexts         *[]string `json:"contexts,omitempty"`
+	Contexts *[]string `json:"contexts,omitempty"`
 }
 
 // ListBranches lists branches for the specified repository.
