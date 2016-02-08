@@ -24,6 +24,11 @@ import (
 )
 
 const (
+	// StatusUnprocessableEntity is the status code returned when sending a request with invalid fields.
+	StatusUnprocessableEntity = 422
+)
+
+const (
 	libraryVersion = "0.1"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"

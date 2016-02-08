@@ -384,7 +384,7 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		w.WriteHeader(422)
+		w.WriteHeader(StatusUnprocessableEntity)
 	})
 
 	_, err := client.Organizations.AddTeamRepo(1, "o", "r", nil)
