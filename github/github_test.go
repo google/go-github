@@ -389,8 +389,11 @@ func TestDo_rateLimit(t *testing.T) {
 	}
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	client.Do(req, nil)
+	_, err := client.Do(req, nil)
 
+	if err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
 	if got, want := client.Rate().Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
@@ -416,8 +419,14 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	client.Do(req, nil)
+	_, err := client.Do(req, nil)
 
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	if _, ok := err.(*RateLimitError); ok {
+		t.Errorf("Did not expect a *RateLimitError error; got %#v.", err)
+	}
 	if got, want := client.Rate().Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
@@ -427,6 +436,45 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
 	if client.Rate().Reset.UTC() != reset {
 		t.Errorf("Client rate reset = %v, want %v", client.Rate().Reset, reset)
+	}
+}
+
+// Ensure *RateLimitError is returned when API rate limit is exceeded.
+func TestDo_rateLimit_rateLimitError(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add(headerRateLimit, "60")
+		w.Header().Add(headerRateRemaining, "0")
+		w.Header().Add(headerRateReset, "1372700873")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://developer.github.com/v3/#rate-limiting"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", "/", nil)
+	_, err := client.Do(req, nil)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	rateLimitErr, ok := err.(*RateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
+	}
+	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
+		t.Errorf("rateLimitErr rate limit = %v, want %v", got, want)
+	}
+	if got, want := rateLimitErr.Rate.Remaining, 0; got != want {
+		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
+	}
+	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	if rateLimitErr.Rate.Reset.UTC() != reset {
+		t.Errorf("rateLimitErr rate reset = %v, want %v", client.Rate().Reset, reset)
 	}
 }
 
