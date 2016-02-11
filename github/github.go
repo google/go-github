@@ -75,7 +75,7 @@ type Client struct {
 	UserAgent string
 
 	rateMu sync.Mutex
-	rate   Rate
+	rate   Rate // Rate limit for the client as determined by the most recent API call.
 
 	// Services used for talking to different parts of the GitHub API.
 	Activity      *ActivityService
@@ -487,7 +487,7 @@ func (r RateLimits) String() string {
 	return Stringify(r)
 }
 
-// RateLimit is deprecated.  Use RateLimits instead.
+// Deprecated: RateLimit is deprecated, use RateLimits instead.
 func (c *Client) RateLimit() (*Rate, *Response, error) {
 	limits, resp, err := c.RateLimits()
 	if limits == nil {
