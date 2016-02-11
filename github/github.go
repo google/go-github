@@ -434,6 +434,9 @@ func (e *Error) Error() string {
 // the 200 range.  API error responses are expected to have either no response
 // body, or a JSON response body that maps to ErrorResponse.  Any other
 // response body will be silently ignored.
+//
+// The error type will be *RateLimitError for rate limit exceeded errors,
+// and *TwoFactorAuthError for two-factor authentication errors.
 func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
