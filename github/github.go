@@ -56,6 +56,9 @@ const (
 
 	// https://developer.github.com/changes/2015-11-11-protected-branches-api/
 	mediaTypeProtectedBranchesPreview = "application/vnd.github.loki-preview+json"
+
+	// https://developer.github.com/changes/2016-02-11-issue-locking-api/
+	mediaTypeIssueLockingPreview = "application/vnd.github.the-key-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

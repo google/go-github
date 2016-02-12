@@ -260,3 +260,35 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 
 	return i, resp, err
 }
+
+// Lock an issue's conversation.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/#lock-an-issue
+func (s *IssuesService) Lock(owner string, repo string, number int) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIssueLockingPreview)
+
+	return s.client.Do(req, nil)
+}
+
+// Unlock an issue's conversation.
+//
+// GitHub API docs: https://developer.github.com/v3/issues/#unlock-an-issue
+func (s *IssuesService) Unlock(owner string, repo string, number int) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIssueLockingPreview)
+
+	return s.client.Do(req, nil)
+}
