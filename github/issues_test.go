@@ -240,3 +240,31 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.Edit("%", "r", 1, nil)
 	testURLParseError(t, err)
 }
+
+func TestIssuesService_Lock(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+		testMethod(t, r, "PUT")
+	})
+
+	if _, err := client.Issues.Lock("o", "r", 1); err != nil {
+		t.Errorf("Issues.Lock returned error: %v", err)
+	}
+}
+
+func TestIssuesService_Unlock(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+		testMethod(t, r, "DELETE")
+	})
+
+	if _, err := client.Issues.Unlock("o", "r", 1); err != nil {
+		t.Errorf("Issues.Unlock returned error: %v", err)
+	}
+}
