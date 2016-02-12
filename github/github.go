@@ -263,8 +263,13 @@ func (r *Response) populatePageValues() {
 				continue
 			}
 			page := url.Query().Get("page")
-			if page == "" {
+			since := url.Query().Get("since")
+			if page == "" && since == "" {
 				continue
+			}
+
+			if since != "" {
+				page = since
 			}
 
 			for _, segment := range segments[1:] {
