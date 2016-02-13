@@ -35,6 +35,7 @@ type Issue struct {
 	HTMLURL          *string           `json:"html_url,omitempty"`
 	Milestone        *Milestone        `json:"milestone,omitempty"`
 	PullRequestLinks *PullRequestLinks `json:"pull_request,omitempty"`
+	Repository       *Repository       `json:"repository,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
