@@ -127,9 +127,11 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 // value and the other will be nil.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
-func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent,
-	directoryContent []*RepositoryContent, resp *Response, err error) {
-	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
+func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
+	// escape characters not allowed in URL path.  This actually escapes a
+	// lot more, but seems to be harmless.
+	escapedPath := url.QueryEscape(path)
+	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	u, err = addOptions(u, opt)
 	if err != nil {
 		return nil, nil, nil, err
