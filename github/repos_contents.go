@@ -119,7 +119,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
-func escapeUrlPath(path string) string {
+func escapeURLPath(path string) string {
 	u := url.URL{Path: path}
 	return u.EscapedPath()
 }
@@ -134,7 +134,7 @@ func escapeUrlPath(path string) string {
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent,
 	directoryContent []*RepositoryContent, resp *Response, err error) {
-	u := escapeUrlPath(fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path))
+	u := escapeURLPath(fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path))
 	u, err = addOptions(u, opt)
 	if err != nil {
 		return nil, nil, nil, err
