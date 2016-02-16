@@ -32,6 +32,7 @@ type RepositoryRelease struct {
 	UploadURL       *string        `json:"upload_url,omitempty"`
 	ZipballURL      *string        `json:"zipball_url,omitempty"`
 	TarballURL      *string        `json:"tarball_url,omitempty"`
+	Author          *CommitAuthor  `json:"author,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
