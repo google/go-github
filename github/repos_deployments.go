@@ -101,13 +101,16 @@ func (s *RepositoriesService) CreateDeployment(owner, repo string, request *Depl
 // DeploymentStatus represents the status of a
 // particular deployment.
 type DeploymentStatus struct {
-	ID          *int       `json:"id,omitempty"`
-	State       *string    `json:"state,omitempty"`
-	Creator     *User      `json:"creator,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	TargetURL   *string    `json:"target_url,omitempty"`
-	CreatedAt   *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp `json:"pushed_at,omitempty"`
+	URL           *string    `json:"url,omitempty"`
+	ID            *int       `json:"id,omitempty"`
+	State         *string    `json:"state,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	Description   *string    `json:"description,omitempty"`
+	TargetURL     *string    `json:"target_url,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"pushed_at,omitempty"`
+	DeploymentURL *string    `json:"deployment_url,omitempty"`
+	RepositoryURL *string    `json:"repository_url,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request

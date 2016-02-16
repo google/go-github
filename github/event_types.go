@@ -106,3 +106,15 @@ type IssueCommentEvent struct {
 	Repo   *Repository `json:"repository,omitempty"`
 	Sender *User       `json:"sender,omitempty"`
 }
+
+// DeploymentStatusEvent represents the payload delivered by DeploymentStatus webhook.
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#deploymentstatusevent
+type DeploymentStatusEvent struct {
+	Deployment       *Deployment       `json:"deployment,omitempty"`
+	DeploymentStatus *DeploymentStatus `json:"deployment_status,omitempty"`
+	Repo             *Repository       `json:"repository,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Sender *User `json:"sender,omitempty"`
+}
