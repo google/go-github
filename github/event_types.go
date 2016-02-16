@@ -73,7 +73,7 @@ type PushEventRepoOwner struct {
 	Email *string `json:"email,omitempty"`
 }
 
-//PullRequestEvent represents the payload delivered by PullRequestEvent webhook
+// PullRequestEvent represents the payload delivered by PullRequestEvent webhook
 type PullRequestEvent struct {
 	Action      *string      `json:"action,omitempty"`
 	Number      *int         `json:"number,omitempty"`
@@ -103,6 +103,18 @@ type IssueCommentEvent struct {
 	Comment *IssueComment `json:"comment,omitempty"`
 
 	// The following fields are only populated by Webhook events.
+	Repo   *Repository `json:"repository,omitempty"`
+	Sender *User       `json:"sender,omitempty"`
+}
+
+// CommitCommentEvent represents the payload delivered by CommitComment webhook.
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#commitcommentevent
+type CommitCommentEvent struct {
+	Comment *RepositoryComment `json:"comment,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Action *string     `json:"action,omitempty"`
 	Repo   *Repository `json:"repository,omitempty"`
 	Sender *User       `json:"sender,omitempty"`
 }
