@@ -486,6 +486,8 @@ func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListO
 		return nil, nil, err
 	}
 
+	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+
 	branches := new([]Branch)
 	resp, err := s.client.Do(req, branches)
 	if err != nil {
