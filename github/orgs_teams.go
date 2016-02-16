@@ -30,9 +30,11 @@ type Team struct {
 	// Default is "secret".
 	Privacy *string `json:"privacy,omitempty"`
 
-	MembersCount *int          `json:"members_count,omitempty"`
-	ReposCount   *int          `json:"repos_count,omitempty"`
-	Organization *Organization `json:"organization,omitempty"`
+	MembersCount    *int          `json:"members_count,omitempty"`
+	ReposCount      *int          `json:"repos_count,omitempty"`
+	Organization    *Organization `json:"organization,omitempty"`
+	MembersURL      *string       `json:"members_url,omitempty"`
+	RepositoriesURL *string       `json:"repositories_url,omitempty"`
 }
 
 func (t Team) String() string {

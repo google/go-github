@@ -12,17 +12,19 @@ import (
 
 // Deployment represents a deployment in a repo
 type Deployment struct {
-	URL         *string         `json:"url,omitempty"`
-	ID          *int            `json:"id,omitempty"`
-	SHA         *string         `json:"sha,omitempty"`
-	Ref         *string         `json:"ref,omitempty"`
-	Task        *string         `json:"task,omitempty"`
-	Payload     json.RawMessage `json:"payload,omitempty"`
-	Environment *string         `json:"environment,omitempty"`
-	Description *string         `json:"description,omitempty"`
-	Creator     *User           `json:"creator,omitempty"`
-	CreatedAt   *Timestamp      `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp      `json:"pushed_at,omitempty"`
+	URL           *string         `json:"url,omitempty"`
+	ID            *int            `json:"id,omitempty"`
+	SHA           *string         `json:"sha,omitempty"`
+	Ref           *string         `json:"ref,omitempty"`
+	Task          *string         `json:"task,omitempty"`
+	Payload       json.RawMessage `json:"payload,omitempty"`
+	Environment   *string         `json:"environment,omitempty"`
+	Description   *string         `json:"description,omitempty"`
+	Creator       *User           `json:"creator,omitempty"`
+	CreatedAt     *Timestamp      `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp      `json:"pushed_at,omitempty"`
+	StatusesURL   *string         `json:"statuses_url,omitempty"`
+	RepositoryURL *string         `json:"repository_url,omitempty"`
 }
 
 // DeploymentRequest represents a deployment request
@@ -101,13 +103,15 @@ func (s *RepositoriesService) CreateDeployment(owner, repo string, request *Depl
 // DeploymentStatus represents the status of a
 // particular deployment.
 type DeploymentStatus struct {
-	ID          *int       `json:"id,omitempty"`
-	State       *string    `json:"state,omitempty"`
-	Creator     *User      `json:"creator,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	TargetURL   *string    `json:"target_url,omitempty"`
-	CreatedAt   *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp `json:"pushed_at,omitempty"`
+	ID            *int       `json:"id,omitempty"`
+	State         *string    `json:"state,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	Description   *string    `json:"description,omitempty"`
+	TargetURL     *string    `json:"target_url,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"pushed_at,omitempty"`
+	DeploymentURL *string    `json:"deployment_url,omitempty"`
+	RepositoryURL *string    `json:"repository_url,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request
