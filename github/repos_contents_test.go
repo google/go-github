@@ -141,6 +141,29 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
+	setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/p#?%/中.go", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+		  "type": "file",
+		  "encoding": "base64",
+		  "size": 20678,
+		  "name": "LICENSE",
+		  "path": "LICENSE"
+		}`)
+	})
+	fileContents, _, _, err := client.Repositories.GetContents("o", "r", "p#?%/中.go", &RepositoryContentGetOptions{})
+	if err != nil {
+		t.Fatalf("Repositories.GetContents returned error: %v", err)
+	}
+	want := &RepositoryContent{Type: String("file"), Name: String("LICENSE"), Size: Int(20678), Encoding: String("base64"), Path: String("LICENSE")}
+	if !reflect.DeepEqual(fileContents, want) {
+		t.Errorf("Repositories.GetContents returned %+v, want %+v", fileContents, want)
+	}
+}
+
 func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	setup()
 	defer teardown()
