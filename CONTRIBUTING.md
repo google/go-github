@@ -9,21 +9,12 @@ a just a few small guidelines you need to follow.
 Contributions to any Google project must be accompanied by a Contributor
 License Agreement.  This is not a copyright **assignment**, it simply gives
 Google permission to use and redistribute your contributions as part of the
-project.
+project.  Head over to <https://cla.developers.google.com/> to see your current
+agreements on file or to sign a new one.
 
-  * If you are an individual writing original source code and you're sure you
-    own the intellectual property, then you'll need to sign an [individual
-    CLA][].
-
-  * If you work for a company that wants to allow you to contribute your work,
-    then you'll need to sign a [corporate CLA][].
-
-You generally only need to submit a CLA once, so if you've already submitted
-one (even if it was for a different project), you probably don't need to do it
+You generally only need to submit a CLA once, so if you've already submitted one
+(even if it was for a different project), you probably don't need to do it
 again.
-
-[individual CLA]: https://developers.google.com/open-source/cla/individual
-[corporate CLA]: https://developers.google.com/open-source/cla/corporate
 
 
 ## Submitting a patch ##
@@ -74,9 +65,53 @@ broken into separate service objects.  These services map directly to how
 the [GitHub API documentation][] is organized, so use that as your guide for
 where to put new methods.
 
+Code is organized in files also based pretty closely on the GitHub API
+documentation, following the format `{service}_{api}.go`.  For example, methods
+defined at <https://developer.github.com/v3/repos/hooks/> live in
+[repos_hooks.go][].
+
 Sub-service (e.g. [Repo Hooks][]) implementations are split into separate files
 based on the APIs they provide. These files are named service_api.go (e.g.
 repos_hooks.go) to describe the API to service mappings.
 
 [GitHub API documentation]: http://developer.github.com/v3/
-[Repo Hooks]: http://developer.github.com/v3/repos/hooks/
+[repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
+
+
+## Maintainer's Guide ##
+
+(These notes are mostly only for people merging in pull requests.)
+
+**First and foremost, try to maintain a clean, linear git history.**  With very
+few exceptions, running `git log` should not show a bunch of branching and
+merging.
+
+Never use the GitHub "merge" button, since it always creates a merge commit.
+Instead, check out the pull request locally ([these git aliases
+help][git-aliases]), then cherry-pick or rebase them onto master.  If there are
+small cleanup commits, especially as a result of addressing code review
+comments, these should almost always be squashed down to a single commit.  Don't
+bother squashing commits that really deserve to be separate though.  If needed,
+feel free to amend additional small changes to the code or commit message that
+aren't worth going through code review for.
+
+If you made any changes like squashing commits, rebasing onto master, etc, then
+GitHub won't recognize that this is the same commit in order to mark the pull
+request as "merged".  So instead, amend the commit message to include a line
+"Fixes #0", referencing the pull request number.  This would be in addition to
+any other "Fixes" lines for closing related issues.  If you forget to do this,
+you can also leave a comment on the pull request [like this][rebase-comment].
+If you made any other changes, it's worth noting that as well, [like
+this][modified-comment].
+
+If this is the first pull request from a new contributor, make sure they've
+signed a CLA and then add them to the AUTHORS and CONTRIBUTORS file.  If they
+are contributing on behalf of a company, the individual goes in CONTRIBUTORS and
+the company goes in AUTHORS.  Contributors should never add themselves to these
+files.  If they try to, don't merge that commit.  These files should only ever
+be modified by project maintainers so that the git history of these files
+identifies who actually did the CLA verification.
+
+[git-aliases]: https://github.com/willnorris/dotfiles/blob/d640d010c23b1116bdb3d4dc12088ed26120d87d/git/.gitconfig#L13-L15
+[rebase-comment]: https://github.com/google/go-github/pull/277#issuecomment-183035491
+[modified-comment]: https://github.com/google/go-github/pull/280#issuecomment-184859046
