@@ -13,7 +13,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"html/template"
 	"io"
 	"net/http"
 	"net/url"
@@ -121,7 +120,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 }
 
 func escapeURLPath(path string) string {
-	return template.URLQueryEscaper(path)
+	return url.QueryEscape(path)
 }
 
 // GetContents can return either the metadata and content of a single file
