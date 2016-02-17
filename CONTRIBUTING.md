@@ -70,10 +70,6 @@ documentation, following the format `{service}_{api}.go`.  For example, methods
 defined at <https://developer.github.com/v3/repos/hooks/> live in
 [repos_hooks.go][].
 
-Sub-service (e.g. [Repo Hooks][]) implementations are split into separate files
-based on the APIs they provide. These files are named service_api.go (e.g.
-repos_hooks.go) to describe the API to service mappings.
-
 [GitHub API documentation]: http://developer.github.com/v3/
 [repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
 
