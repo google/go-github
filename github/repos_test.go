@@ -456,3 +456,28 @@ func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 	_, _, err := client.Repositories.ListLanguages("%", "%")
 	testURLParseError(t, err)
 }
+
+func TestRepositoriesService_License(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/license", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"license":{"key":"mit","name":"MIT License","url":"https://api.github.com/licenses/mit","featured":true}}`)
+	})
+
+	got, _, err := client.Repositories.License("o", "r")
+	if err != nil {
+		t.Errorf("Repositories.License returned error: %v", err)
+	}
+
+	want := &License{
+		Name:     String("MIT License"),
+		Key:      String("mit"),
+		URL:      String("https://api.github.com/licenses/mit"),
+		Featured: Bool(true),
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.License returned %+v, want %+v", got, want)
+	}
+}
