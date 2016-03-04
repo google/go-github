@@ -217,7 +217,7 @@ type PageBuildEvent struct {
 	Build *PagesBuild `json:"build,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	ID     *string     `json:"id,omitempty"`
+	ID     *int        `json:"id,omitempty"`
 	Repo   *Repository `json:"repository,omitempty"`
 	Sender *User       `json:"sender,omitempty"`
 }
