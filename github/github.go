@@ -62,6 +62,9 @@ const (
 
 	// https://developer.github.com/changes/2016-02-24-commit-reference-sha-api/
 	mediaTypeCommitReferenceSHAPreview = "application/vnd.github.chitauri-preview+sha"
+
+	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
+	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -97,6 +100,7 @@ type Client struct {
 	Search        *SearchService
 	Users         *UsersService
 	Licenses      *LicensesService
+	Migrations    *MigrationService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -159,6 +163,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Search = &SearchService{client: c}
 	c.Users = &UsersService{client: c}
 	c.Licenses = &LicensesService{client: c}
+	c.Migrations = &MigrationService{client: c}
 	return c
 }
 
