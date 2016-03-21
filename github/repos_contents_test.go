@@ -170,11 +170,11 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 	setup()
 	defer teardown()
-	mux.HandleFunc("/repos/o/r/contents/some directory/file.go", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/some directory+name/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{}`)
 	})
-	_, _, _, err := client.Repositories.GetContents("o", "r", "some+directory/file.go", &RepositoryContentGetOptions{})
+	_, _, _, err := client.Repositories.GetContents("o", "r", "some directory+name/file.go", &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
