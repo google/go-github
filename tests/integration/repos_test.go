@@ -3,14 +3,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// +build integration
+
 package tests
 
 import (
 	"net/http"
+	"reflect"
 	"testing"
 
 	"github.com/google/go-github/github"
-	"reflect"
 )
 
 func TestRepositories_CRUD(t *testing.T) {

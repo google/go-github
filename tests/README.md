@@ -29,7 +29,7 @@ be run using a dedicated test account.
 
 Run tests using:
 
-    GITHUB_AUTH_TOKEN=XXX go test -v ./integration
+    GITHUB_AUTH_TOKEN=XXX go test -v -tags=integration ./integration
 
 
 fields
