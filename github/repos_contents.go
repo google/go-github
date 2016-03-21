@@ -128,8 +128,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
-	tmpURL := url.URL{Path: path}
-	escapedPath := tmpURL.String()
+	escapedPath := (&url.URL{Path: path}).String()
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	u, err = addOptions(u, opt)
 	if err != nil {
