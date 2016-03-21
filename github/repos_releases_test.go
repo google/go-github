@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -218,7 +219,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 		fmt.Fprint(w, "Hello World")
 	})
 
-	reader, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
+	reader, _, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
@@ -239,28 +240,16 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", defaultMediaType)
-		w.Header().Set("Location", server.URL+"/github-cloud/releases/1/hello-world.txt")
-		w.WriteHeader(http.StatusFound)
+		http.Redirect(w, r, "/yo", http.StatusFound)
 	})
 
-	mux.HandleFunc("/github-cloud/releases/1/hello-world.txt", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.Header().Set("Content-Type", "application/octet-stream")
-		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
-		fmt.Fprint(w, "Hello World")
-	})
-
-	reader, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
+	_, got, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
-	want := []byte("Hello World")
-	content, err := ioutil.ReadAll(reader)
-	if err != nil {
-		t.Errorf("Repositories.DownloadReleaseAsset returned bad reader: %v", err)
-	}
-	if !bytes.Equal(want, content) {
-		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
+	want := "/yo"
+	if !strings.HasSuffix(got, want) {
+		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", got, want)
 	}
 }
 

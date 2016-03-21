@@ -68,6 +68,8 @@ const (
 type Client struct {
 	// HTTP client used to communicate with the API.
 	client *http.Client
+	// clientMu protects the client during calls that modify the CheckRedirect func.
+	clientMu sync.Mutex
 
 	// Base URL for API requests.  Defaults to the public GitHub API, but can be
 	// set to a domain endpoint to use with GitHub Enterprise.  BaseURL should
