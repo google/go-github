@@ -520,7 +520,8 @@ func TestCheckResponse(t *testing.T) {
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
 		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
-			"errors": [{"resource": "r", "field": "f", "code": "c"}]}`)),
+			"errors": [{"resource": "r", "field": "f", "code": "c"}],
+			"block": {"reason": "dmca", "created_at": "2016-03-17T15:39:46Z"}}`)),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
 
@@ -532,6 +533,13 @@ func TestCheckResponse(t *testing.T) {
 		Response: res,
 		Message:  "m",
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+		Block: &struct {
+			Reason    string     `json:"reason,omitempty"`
+			CreatedAt *Timestamp `json:"created_at,omitempty"`
+		}{
+			Reason:    "dmca",
+			CreatedAt: &Timestamp{time.Date(2016, 3, 17, 15, 39, 46, 0, time.UTC)},
+		},
 	}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
