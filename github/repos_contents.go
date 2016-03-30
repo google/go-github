@@ -21,11 +21,14 @@ import (
 
 // RepositoryContent represents a file or directory in a github repository.
 type RepositoryContent struct {
-	Type        *string `json:"type,omitempty"`
-	Encoding    *string `json:"encoding,omitempty"`
-	Size        *int    `json:"size,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	Path        *string `json:"path,omitempty"`
+	Type     *string `json:"type,omitempty"`
+	Encoding *string `json:"encoding,omitempty"`
+	Size     *int    `json:"size,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Path     *string `json:"path,omitempty"`
+	// Content contains the actual file content, which may be encoded.
+	// Callers should call GetContent which will decode the content if
+	// necessary.
 	Content     *string `json:"content,omitempty"`
 	SHA         *string `json:"sha,omitempty"`
 	URL         *string `json:"url,omitempty"`
@@ -56,6 +59,7 @@ type RepositoryContentGetOptions struct {
 	Ref string `url:"ref,omitempty"`
 }
 
+// String converts RepositoryContent to a string. It's primarily for testing.
 func (r RepositoryContent) String() string {
 	return Stringify(r)
 }
