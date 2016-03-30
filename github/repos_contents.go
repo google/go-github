@@ -56,6 +56,7 @@ type RepositoryContentGetOptions struct {
 	Ref string `url:"ref,omitempty"`
 }
 
+// String converts RepositoryContent to a string. It's primarily for testing.
 func (r RepositoryContent) String() string {
 	return Stringify(r)
 }
@@ -72,7 +73,8 @@ func (r *RepositoryContent) Decode() ([]byte, error) {
 	return o, nil
 }
 
-// GetReadme gets the Readme file for the repository.
+// GetReadme gets the Readme file for the repository, which is stored as base64.
+// Use Decode() to see its contents.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-the-readme
 func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
@@ -124,7 +126,8 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 // subdirectories of a directory (when path references a directory). To make it
 // easy to distinguish between both result types and to mimic the API as much
 // as possible, both result types will be returned but only one will contain a
-// value and the other will be nil.
+// value and the other will be nil. The content is most likely stored as base64.
+// Use Decode() to easily parse it.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
