@@ -67,6 +67,20 @@ func TestRepositoriesService_List_invalidUser(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func ExampleRepositoriesService_List() {
+	client := NewClient(nil)
+
+	user := "willnorris"
+	opt := &RepositoryListOptions{Type: "owner", Sort: "updated", Direction: "desc"}
+
+	repos, _, err := client.Repositories.List(user, opt)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("Recently updated repositories by %q: %v", user, Stringify(repos))
+}
+
 func TestRepositoriesService_ListByOrg(t *testing.T) {
 	setup()
 	defer teardown()
