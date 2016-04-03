@@ -19,6 +19,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"io"
 )
 
 var (
@@ -97,6 +98,8 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 	if got := r.Form; !reflect.DeepEqual(got, want) {
 		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
+
+	fmt.Println("got: ", r.Form)
 }
 
 func testHeader(t *testing.T, r *http.Request, header string, want string) {
@@ -121,6 +124,21 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 	if got := string(b); got != want {
 		t.Errorf("request Body is %s, want %s", got, want)
+	}
+}
+
+// testBodyIsEmpty verifies that r.Body is empty.
+func testBodyIsEmpty(t *testing.T, r *http.Request) {
+	bytes := make([]byte, 256)
+
+	length, err := r.Body.Read(bytes)
+
+	if length > 0 {
+		t.Errorf("Body length should be zero, but is %v", length)
+	}
+
+	if err != io.EOF {
+		t.Errorf("Expected EOF, but got %v", err)
 	}
 }
 

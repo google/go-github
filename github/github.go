@@ -89,18 +89,19 @@ type Client struct {
 	rate   Rate // Rate limit for the client as determined by the most recent API call.
 
 	// Services used for talking to different parts of the GitHub API.
-	Activity      *ActivityService
-	Gists         *GistsService
-	Git           *GitService
-	Gitignores    *GitignoresService
-	Issues        *IssuesService
-	Organizations *OrganizationsService
-	PullRequests  *PullRequestsService
-	Repositories  *RepositoriesService
-	Search        *SearchService
-	Users         *UsersService
-	Licenses      *LicensesService
-	Migrations    *MigrationService
+	Activity       *ActivityService
+	Gists          *GistsService
+	Git            *GitService
+	Gitignores     *GitignoresService
+	Issues         *IssuesService
+	Organizations  *OrganizationsService
+	PullRequests   *PullRequestsService
+	Repositories   *RepositoriesService
+	Search         *SearchService
+	Users          *UsersService
+	Licenses       *LicensesService
+	Migrations     *MigrationService
+	Authorizations *AuthorizationsService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -164,6 +165,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Users = &UsersService{client: c}
 	c.Licenses = &LicensesService{client: c}
 	c.Migrations = &MigrationService{client: c}
+	c.Authorizations = &AuthorizationsService{client: c}
 	return c
 }
 
