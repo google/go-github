@@ -90,21 +90,7 @@ For complete usage of go-github, see the full [package docs][].
 
 ### Integration Tests ###
 
-You can run the integration tests from from the `tests` directory with:
-
-```bash
-GITHUB_AUTH_TOKEN=<your api token> go test ./...
-```
-
-You can create a token here: https://github.com/settings/tokens
-
-These scopes are needed:
-
-* repo
-* delete_repo
-* user
-* admin:public_key
-
+You can run integration tests from the `tests` directory. See the integration tests [README](tests/README.md).
 ## Roadmap ##
 
 This library is being initially developed for an internal application at
