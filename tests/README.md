@@ -31,6 +31,16 @@ Run tests using:
 
     GITHUB_AUTH_TOKEN=XXX go test -v -tags=integration ./integration
 
+Additionally there are a set of integration tests for the Authorizations API.
+These tests require a GitHub user (username and password), and also that a
+[GitHub Application](https://github.com/settings/applications/new) (with
+attendant Client ID and Client Secret) be available. Then, to execute just the
+Authorization tests:
+
+    GITHUB_USERNAME='<GH_USERNAME>' GITHUB_PASSWORD='<GH_PASSWORD>' GITHUB_CLIENT_ID='<CLIENT_ID>' GITHUB_CLIENT_SECRET='<CLIENT_SECRET>' go test -v -tags=integration --run=Authorizations ./integration
+
+If some or all of these environment variables are not available, certain of the
+Authorization integration tests will be skipped.
 
 fields
 ------

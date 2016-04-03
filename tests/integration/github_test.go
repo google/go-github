@@ -39,6 +39,17 @@ func init() {
 		client = github.NewClient(tc)
 		auth = true
 	}
+
+	// Environment variables required for Authorization integration tests
+	vars := []string{envKeyGitHubUsername, envKeyGitHubPassword, envKeyClientID, envKeyClientSecret}
+
+	for _, v := range vars {
+		value := os.Getenv(v)
+		if value == "" {
+			print("!!! " + fmt.Sprintf(msgEnvMissing, v) + " !!!\n\n")
+		}
+	}
+
 }
 
 func checkAuth(name string) bool {
