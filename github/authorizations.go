@@ -7,22 +7,52 @@ package github
 
 import "fmt"
 
-// AuthorizationsService handles communication with the OAuth related
+// Scope models a GitHub authorization scope.
+//
+// GitHub API docs:https://developer.github.com/v3/oauth/#scopes
+type Scope string
+
+// This is the set of scopes for GitHub API V3
+const (
+	ScopeNone           Scope = "(no scope)" // REVISIT: is this actually returned, or just a documentation artifact?
+	ScopeUser           Scope = "user"
+	ScopeUserEmail      Scope = "user:email"
+	ScopeUserFollow     Scope = "user:follow"
+	ScopePublicRepo     Scope = "public_repo"
+	ScopeRepo           Scope = "repo"
+	ScopeRepoDeployment Scope = "repo_deployment"
+	ScopeRepoStatus     Scope = "repo:status"
+	ScopeDeleteRepo     Scope = "delete_repo"
+	ScopeNotifications  Scope = "notifications"
+	ScopeGist           Scope = "gist"
+	ScopeReadRepoHook   Scope = "read:repo_hook"
+	ScopeWriteRepoHook  Scope = "write:repo_hook"
+	ScopeAdminRepoHook  Scope = "admin:repo_hook"
+	ScopeAdminOrgHook   Scope = "admin:org_hook"
+	ScopeReadOrg        Scope = "read:org"
+	ScopeWriteOrg       Scope = "write:org"
+	ScopeAdminOrg       Scope = "admin:org"
+	ScopeReadPublicKey  Scope = "read:public_key"
+	ScopeWritePublicKey Scope = "write:public_key"
+	ScopeAdminPublicKey Scope = "admin:public_key"
+)
+
+// AuthorizationsService handles communication with the authorization related
 // methods of the GitHub API.
 //
 // This service requires HTTP Basic Authentication; it cannot be accessed using
 // an OAuth token.
 //
-// GitHub API docs: http://developer.github.com/v3/oauth_authorizations/
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/
 type AuthorizationsService struct {
 	client *Client
 }
 
-// Authorization represents a GitHub authorized infomaration.
+// Authorization represents an individual GitHub authorization.
 type Authorization struct {
 	ID             *int              `json:"id,omitempty"`
 	URL            *string           `json:"url,omitempty"`
-	Scopes         []string          `json:"scopes,omitempty"`
+	Scopes         []Scope           `json:"scopes,omitempty"`
 	Token          *string           `json:"token,omitempty"`
 	TokenLastEight *string           `json:"token_last_eight,omitempty"`
 	HashedToken    *string           `json:"hashed_token,omitempty"`
@@ -32,26 +62,47 @@ type Authorization struct {
 	UpdateAt       *Timestamp        `json:"updated_at,omitempty"`
 	CreatedAt      *Timestamp        `json:"created_at,omitempty"`
 	Fingerprint    *string           `json:"fingerprint,omitempty"`
+
+	// User is only populated by the Check and Reset methods.
+	User *User `json:"user,omitempty"`
 }
 
-// AuthorizationApp represents application name that github allows app to use api
+func (a Authorization) String() string {
+	return Stringify(a)
+}
+
+// AuthorizationApp represents an individual GitHub app (in the context of authorization).
 type AuthorizationApp struct {
 	URL      *string `json:"url,omitempty"`
 	Name     *string `json:"name,omitempty"`
 	ClientID *string `json:"client_id,omitempty"`
 }
 
+func (a AuthorizationApp) String() string {
+	return Stringify(a)
+}
+
 // AuthorizationRequest represents a request to create an authorization.
 type AuthorizationRequest struct {
-	Scopes       []string `json:"scopes,omitempty"`
-	Note         *string  `json:"note,omitempty"`
-	NoteURL      *string  `json:"note_url,omitempty"`
-	ClientID     *string  `json:"client_id,omitempty"`
-	ClientSecret *string  `json:"client_secret,omitempty"`
-	Fingerprint  *string  `json:"fingerprint,omitempty"`
+	Scopes       []Scope `json:"scopes,omitempty"`
+	Note         *string `json:"note,omitempty"`
+	NoteURL      *string `json:"note_url,omitempty"`
+	ClientID     *string `json:"client_id,omitempty"`
+	ClientSecret *string `json:"client_secret,omitempty"`
+	Fingerprint  *string `json:"fingerprint,omitempty"`
+}
+
+func (a AuthorizationRequest) String() string {
+	return Stringify(a)
 }
 
 // AuthorizationUpdateRequest represents a request to update an authorization.
+//
+// Note that for any one update, you must only provide one of the "scopes"
+// fields.  That is, you may provide only one of "Scopes", or "AddScopes", or
+// "RemoveScopes".
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#update-an-existing-authorization
 type AuthorizationUpdateRequest struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	AddScopes    []string `json:"add_scopes,omitempty"`
@@ -61,9 +112,13 @@ type AuthorizationUpdateRequest struct {
 	Fingerprint  *string  `json:"fingerprint,omitempty"`
 }
 
-// List the authorizations info the specified OAuth application.
+func (a AuthorizationUpdateRequest) String() string {
+	return Stringify(a)
+}
+
+// List the authorizations for the authenticated user.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
 func (s *AuthorizationsService) List(opt *ListOptions) ([]Authorization, *Response, error) {
 	u := "authorizations"
 	u, err := addOptions(u, opt)
@@ -86,7 +141,7 @@ func (s *AuthorizationsService) List(opt *ListOptions) ([]Authorization, *Respon
 
 // Get a single authorization.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#get-a-single-authorization
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#get-a-single-authorization
 func (s *AuthorizationsService) Get(id int) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("authorizations/%d", id)
 
@@ -105,7 +160,7 @@ func (s *AuthorizationsService) Get(id int) (*Authorization, *Response, error) {
 
 // Create a new authorization for the specified OAuth application.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#create-a-new-authorization
 func (s *AuthorizationsService) Create(auth *AuthorizationRequest) (*Authorization, *Response, error) {
 	u := "authorizations"
 
@@ -126,9 +181,16 @@ func (s *AuthorizationsService) Create(auth *AuthorizationRequest) (*Authorizati
 // application, only if an authorization for that application doesn’t already
 // exist for the user.
 //
+// If a new token is created, the HTTP status code will be "201 Created", and
+// the returned Authorization.Token field will be populated. If an existing
+// token is returned, the status code will be "200 OK" and the
+// Authorization.Token field will be empty.
+//
 // clientID is the OAuth Client ID with which to create the token.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
+// GitHub API docs:
+// - https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
+// - https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app-and-fingerprint
 func (s *AuthorizationsService) GetOrCreateForApp(clientID string, auth *AuthorizationRequest) (*Authorization, *Response, error) {
 	var u string
 	if auth.Fingerprint == nil || *auth.Fingerprint == "" {
@@ -153,7 +215,7 @@ func (s *AuthorizationsService) GetOrCreateForApp(clientID string, auth *Authori
 
 // Edit a single authorization.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#update-an-existing-authorization
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#update-an-existing-authorization
 func (s *AuthorizationsService) Edit(id int, auth *AuthorizationUpdateRequest) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("authorizations/%d", id)
 
@@ -173,7 +235,7 @@ func (s *AuthorizationsService) Edit(id int, auth *AuthorizationUpdateRequest) (
 
 // Delete a single authorization.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#delete-an-authorization
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#delete-an-authorization
 func (s *AuthorizationsService) Delete(id int) (*Response, error) {
 	u := fmt.Sprintf("authorizations/%d", id)
 
@@ -185,17 +247,17 @@ func (s *AuthorizationsService) Delete(id int) (*Response, error) {
 	return s.client.Do(req, nil)
 }
 
-// Check a single authorization.
+// Check if an OAuth token is valid for a specific app.
 //
-// OAuth applications can use this API method for checking OAuth token validity
-// without running afoul of normal rate limits for failed login attempts.
-// Authentication works differently with this particular endpoint.  You must
-// use Basic Authentication when accessing it, where the username is the OAuth
-// application clientID and the password is its client_secret.
+// Note that this operation requires the use of BasicAuth, but where the
+// username is the OAuth application clientID, and the password is its
+// clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
+// The returned Authorization.User field will be populated.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
 func (s *AuthorizationsService) Check(clientID string, token string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%s/tokens/%s", clientID, token)
+	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -211,15 +273,19 @@ func (s *AuthorizationsService) Check(clientID string, token string) (*Authoriza
 	return a, resp, err
 }
 
-// Reset a single authorization.
+// Reset is used to reset a valid OAuth token without end user involvement.
+// Applications must save the "token" property in the response, because changes
+// take effect immediately.
 //
-// OAuth applications can use this API method to reset a valid OAuth token
-// without end user involvement.  Applications must save the "token" property
-// in the response, because changes take effect immediately.
+// Note that this operation requires the use of BasicAuth, but where the
+// username is the OAuth application clientID, and the password is its
+// clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
+// The returned Authorization.User field will be populated.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
 func (s *AuthorizationsService) Reset(clientID string, token string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%s/tokens/%s", clientID, token)
+	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
 
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -237,9 +303,13 @@ func (s *AuthorizationsService) Reset(clientID string, token string) (*Authoriza
 
 // Revoke an authorization for an application.
 //
-// GitHub API Docs: https://developer.github.com/v3/oauth_authorizations/#revoke-an-authorization-for-an-application
+// Note that this operation requires the use of BasicAuth, but where the
+// username is the OAuth application clientID, and the password is its
+// clientSecret. Invalid tokens will return a 404 Not Found.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#revoke-an-authorization-for-an-application
 func (s *AuthorizationsService) Revoke(clientID string, token string) (*Response, error) {
-	u := fmt.Sprintf("applications/%s/tokens/%s", clientID, token)
+	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
