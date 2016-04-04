@@ -55,6 +55,27 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	}
 }
 
+func ExampleRepositoriesService_GetReadme() {
+	setup()
+	defer teardown()
+
+	fmt.Println("Retrieving the go-github README.md file.")
+	encodedText, _, err := client.Repositories.GetReadme("google", "go-github", &RepositoryContentGetOptions{})
+
+	if err != nil {
+		fmt.Printf("Error: %v\n\n", err)
+	}
+	if encodedText == nil {
+		fmt.Println("The returned text is nil. Are you sure it exists?")
+	}
+	text, err := encodedText.Decode()
+	if err != nil {
+		fmt.Printf("Decoding failed: %v", err)
+	}
+	readme := string(text)
+	fmt.Printf("Converted readme:\n%v\n", readme)
+}
+
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 	setup()
 	defer teardown()

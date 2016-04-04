@@ -20,6 +20,7 @@ import (
 )
 
 // RepositoryContent represents a file or directory in a github repository.
+// It's content may be encoded and, if so, call Decode to decode it.
 type RepositoryContent struct {
 	Type        *string `json:"type,omitempty"`
 	Encoding    *string `json:"encoding,omitempty"`
@@ -73,8 +74,7 @@ func (r *RepositoryContent) Decode() ([]byte, error) {
 	return o, nil
 }
 
-// GetReadme gets the Readme file for the repository, which is stored as base64.
-// Use Decode() to see its contents.
+// GetReadme gets the encoded readme file for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-the-readme
 func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
@@ -121,13 +121,12 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
-// GetContents can return either the metadata and content of a single file
+// GetContents can return either the metadata and encoded content of a single file
 // (when path references a file) or the metadata of all the files and/or
 // subdirectories of a directory (when path references a directory). To make it
 // easy to distinguish between both result types and to mimic the API as much
 // as possible, both result types will be returned but only one will contain a
-// value and the other will be nil. The content is most likely stored as base64.
-// Use Decode() to easily parse it.
+// value and the other will be nil.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
