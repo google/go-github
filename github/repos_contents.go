@@ -20,6 +20,7 @@ import (
 )
 
 // RepositoryContent represents a file or directory in a github repository.
+// It's content may be encoded and, if so, call Decode to decode it.
 type RepositoryContent struct {
 	Type        *string `json:"type,omitempty"`
 	Encoding    *string `json:"encoding,omitempty"`
@@ -56,6 +57,7 @@ type RepositoryContentGetOptions struct {
 	Ref string `url:"ref,omitempty"`
 }
 
+// String converts RepositoryContent to a string. It's primarily for testing.
 func (r RepositoryContent) String() string {
 	return Stringify(r)
 }
@@ -72,7 +74,7 @@ func (r *RepositoryContent) Decode() ([]byte, error) {
 	return o, nil
 }
 
-// GetReadme gets the Readme file for the repository.
+// GetReadme gets the encoded readme file for the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/contents/#get-the-readme
 func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
@@ -119,7 +121,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
-// GetContents can return either the metadata and content of a single file
+// GetContents can return either the metadata and encoded content of a single file
 // (when path references a file) or the metadata of all the files and/or
 // subdirectories of a directory (when path references a directory). To make it
 // easy to distinguish between both result types and to mimic the API as much
