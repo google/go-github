@@ -61,6 +61,8 @@ func (r RepositoryContent) String() string {
 }
 
 // Decode decodes the file content if it is base64 encoded.
+//
+// Deprecated: Use GetContent instead.
 func (r *RepositoryContent) Decode() ([]byte, error) {
 	if *r.Encoding != "base64" {
 		return nil, errors.New("cannot decode non-base64")
@@ -70,6 +72,27 @@ func (r *RepositoryContent) Decode() ([]byte, error) {
 		return nil, err
 	}
 	return o, nil
+}
+
+// GetContent returns the content of r, decoding it if necessary.
+func (r *RepositoryContent) GetContent() (string, error) {
+	var encoding string
+	if r.Encoding != nil {
+		encoding = *r.Encoding
+	}
+
+	switch encoding {
+	case "base64":
+		c, err := base64.StdEncoding.DecodeString(*r.Content)
+		return string(c), err
+	case "":
+		if r.Content == nil {
+			return "", nil
+		}
+		return *r.Content, nil
+	default:
+		return "", fmt.Errorf("unsupported content encoding: %v", encoding)
+	}
 }
 
 // GetReadme gets the Readme file for the repository.
