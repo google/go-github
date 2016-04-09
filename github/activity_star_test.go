@@ -19,11 +19,12 @@ func TestActivityService_ListStargazers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/stargazers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeStarringPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
 
-		fmt.Fprint(w, `[{"id":1}]`)
+		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","user":{"id":1}}]`)
 	})
 
 	stargazers, _, err := client.Activity.ListStargazers("o", "r", &ListOptions{Page: 2})
@@ -31,7 +32,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
 	}
 
-	want := []User{{ID: Int(1)}}
+	want := []Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int(1)}}}
 	if !reflect.DeepEqual(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
