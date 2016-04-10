@@ -35,6 +35,9 @@ const (
 	ScopeReadPublicKey  Scope = "read:public_key"
 	ScopeWritePublicKey Scope = "write:public_key"
 	ScopeAdminPublicKey Scope = "admin:public_key"
+	ScopeReadGPGKey     Scope = "read:gpg_key"
+	ScopeWriteGPGKey    Scope = "write:gpg_key"
+	ScopeAdminGPGKey    Scope = "admin:gpg_key"
 )
 
 // AuthorizationsService handles communication with the authorization related
