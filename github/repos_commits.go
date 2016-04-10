@@ -138,6 +138,9 @@ func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCom
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGitSigningPreview)
+
 	commit := new(RepositoryCommit)
 	resp, err := s.client.Do(req, commit)
 	if err != nil {
