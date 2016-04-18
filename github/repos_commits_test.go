@@ -126,7 +126,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/master", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeCommitReferenceSHAPreview)
+		testHeader(t, r, "Accept", mediaTypeV3SHA)
 
 		fmt.Fprintf(w, sha1)
 	})
@@ -143,7 +143,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/tag", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeCommitReferenceSHAPreview)
+		testHeader(t, r, "Accept", mediaTypeV3SHA)
 		testHeader(t, r, "If-None-Match", `"`+sha1+`"`)
 
 		w.WriteHeader(http.StatusNotModified)

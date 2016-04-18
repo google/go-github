@@ -41,6 +41,7 @@ const (
 
 	mediaTypeV3      = "application/vnd.github.v3+json"
 	defaultMediaType = "application/octet-stream"
+	mediaTypeV3SHA   = "application/vnd.github.v3.sha"
 
 	// Media Type values to access preview APIs
 
@@ -59,9 +60,6 @@ const (
 
 	// https://developer.github.com/changes/2016-02-11-issue-locking-api/
 	mediaTypeIssueLockingPreview = "application/vnd.github.the-key-preview+json"
-
-	// https://developer.github.com/changes/2016-02-24-commit-reference-sha-api/
-	mediaTypeCommitReferenceSHAPreview = "application/vnd.github.chitauri-preview+sha"
 
 	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
 	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
