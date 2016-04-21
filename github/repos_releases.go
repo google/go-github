@@ -251,6 +251,11 @@ func (s *RepositoriesService) DownloadReleaseAsset(owner, repo string, id int) (
 		return nil, loc, nil
 	}
 
+	if err := CheckResponse(resp); err != nil {
+		resp.Body.Close()
+		return nil, "", err
+	}
+
 	return resp.Body, "", nil
 }
 
