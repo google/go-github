@@ -253,6 +253,32 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, `{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}`)
+	})
+
+	resp, loc, err := client.Repositories.DownloadReleaseAsset("o", "r", 1)
+	if err == nil {
+		t.Error("Repositories.DownloadReleaseAsset did not return an error")
+	}
+
+	if resp != nil {
+		resp.Close()
+		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
+	}
+
+	if loc != "" {
+		t.Error(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+	}
+}
+
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	setup()
 	defer teardown()
