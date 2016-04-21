@@ -306,3 +306,38 @@ func TestDeleteGrant(t *testing.T) {
 		t.Errorf("OAuthAuthorizations.DeleteGrant returned error: %v", err)
 	}
 }
+
+func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
+	got, _, err := client.Authorizations.CreateImpersonation("u", req)
+	if err != nil {
+		t.Errorf("Authorizations.CreateImpersonation returned error: %+v", err)
+	}
+
+	want := &Authorization{ID: Int(1)}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
+	}
+}
+
+func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Authorizations.DeleteImpersonation("u")
+	if err != nil {
+		t.Errorf("Authorizations.DeleteImpersonation returned error: %+v", err)
+	}
+}
