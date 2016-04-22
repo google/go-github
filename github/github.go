@@ -333,9 +333,15 @@ func (c *Client) Rate() Rate {
 // JSON decoded and stored in the value pointed to by v, or returned as an
 // error if an API error has occurred.  If v implements the io.Writer
 // interface, the raw response body will be written to v, without attempting to
-// first decode it.
+// first decode it.  If rate limit is exceeded and reset time is in the future,
+// Do returns *RateLimitError immediately without making a network API call.
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	rateLimitCategory := category(req.URL.Path)
+
+	// If we've hit rate limit, don't make further requests before Reset time.
+	if err := c.checkRateLimitBeforeDo(req, rateLimitCategory); err != nil {
+		return nil, err
+	}
 
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -374,6 +380,33 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	}
 
 	return response, err
+}
+
+// checkRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
+// current client state in order to quickly check if *RateLimitError can be immediately returned
+// from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unneccessarily.
+// Otherwise it returns nil, and Client.Do should proceed normally.
+func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rateLimitCategory) error {
+	c.rateMu.Lock()
+	rate := c.rateLimits[rateLimitCategory]
+	c.rateMu.Unlock()
+	if !rate.Reset.Time.IsZero() && rate.Remaining == 0 && time.Now().Before(rate.Reset.Time) {
+		// Create a fake response.
+		resp := &http.Response{
+			Status:     http.StatusText(http.StatusForbidden),
+			StatusCode: http.StatusForbidden,
+			Request:    req,
+			Header:     make(http.Header),
+			Body:       ioutil.NopCloser(strings.NewReader("")),
+		}
+		return &RateLimitError{
+			Rate:     rate,
+			Response: resp,
+			Message:  fmt.Sprintf("API rate limit of %v still exceeded until %v, not making remote request.", rate.Limit, rate.Reset.Time),
+		}
+	}
+
+	return nil
 }
 
 /*
