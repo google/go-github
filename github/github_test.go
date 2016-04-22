@@ -474,7 +474,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
 	if rateLimitErr.Rate.Reset.UTC() != reset {
-		t.Errorf("rateLimitErr rate reset = %v, want %v", client.Rate().Reset, reset)
+		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
 	}
 }
 
