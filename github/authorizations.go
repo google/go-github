@@ -322,7 +322,7 @@ func (s *AuthorizationsService) Revoke(clientID string, token string) (*Response
 // Create an impersonation OAuth token.
 //
 // This required admin permissions. With the returned Authorization.Token you can e.g. create or
-// delete a users ssh public key.
+// delete a users ssh public key. NOTE: creating a new token automatically revokes an existing one.
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.5/v3/users/administration/#create-an-impersonation-oauth-token
 func (s *AuthorizationsService) CreateImpersonation(username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
@@ -342,7 +342,7 @@ func (s *AuthorizationsService) CreateImpersonation(username string, authReq *Au
 
 // Delete an impersonation OAuth token.
 //
-// Revokes (all?) impersonation token(s).
+// Revokes an impersonation token. NOTE: there can be only one.
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.5/v3/users/administration/#delete-an-impersonation-oauth-token
 func (s *AuthorizationsService) DeleteImpersonation(username string) (*Response, error) {
