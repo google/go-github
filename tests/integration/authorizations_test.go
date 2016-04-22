@@ -52,7 +52,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 200)
 
 	if len(auths) != initialAuthCount+1 {
-		t.Fatalf("The number of Authorizations should have increased. Expected [%v], was [%v]", (initialAuthCount + 1), len(auths))
+		t.Fatalf("The number of Authorizations should have increased. Expected [%v], was [%v]", initialAuthCount+1, len(auths))
 	}
 
 	// Test updating the authorization
@@ -94,7 +94,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 200)
 
 	if len(auths) != initialAuthCount {
-		t.Fatal("The number of Authorizations should match the initial count Expected [%v], got [%v]", (initialAuthCount), len(auths))
+		t.Fatalf("The number of Authorizations should match the initial count Expected [%v], got [%v]", initialAuthCount, len(auths))
 	}
 
 }

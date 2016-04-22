@@ -275,7 +275,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	}
 
 	if loc != "" {
-		t.Error(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
 	}
 }
 
