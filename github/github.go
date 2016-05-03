@@ -320,8 +320,10 @@ func parseRate(r *http.Response) Rate {
 
 // Rate specifies the current rate limit for the client as determined by the
 // most recent API call.  If the client is used in a multi-user application,
-// this rate may not always be up-to-date.  Call RateLimits() to check the
-// current rate.
+// this rate may not always be up-to-date.
+//
+// Deprecated: Use the Response.Rate returned from most recent API call instead.
+// Call RateLimits() to check the current rate.
 func (c *Client) Rate() Rate {
 	c.rateMu.Lock()
 	rate := c.rateLimits[c.mostRecent]
