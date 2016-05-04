@@ -695,9 +695,8 @@ func Bool(v bool) *bool {
 	return p
 }
 
-// Int is a helper routine that allocates a new int32 value
-// to store v and returns a pointer to it, but unlike Int32
-// its argument value is an int.
+// Int is a helper routine that allocates a new int value
+// to store v and returns a pointer to it.
 func Int(v int) *int {
 	p := new(int)
 	*p = v
