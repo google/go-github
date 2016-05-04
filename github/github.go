@@ -66,6 +66,9 @@ const (
 
 	// https://developer.github.com/changes/2016-04-06-deployment-and-deployment-status-enhancements/
 	mediaTypeDeploymentStatusPreview = "application/vnd.github.ant-man-preview+json"
+
+	// https://developer.github.com/changes/2016-02-19-source-import-preview-api/
+	mediaTypeImportPreview = "application/vnd.github.barred-rock-preview"
 )
 
 // A Client manages communication with the GitHub API.
