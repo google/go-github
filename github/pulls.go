@@ -248,19 +248,30 @@ type PullRequestMergeResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// PullRequestOptions lets you define how a pull request will be merged.
+type PullRequestOptions struct {
+	Squash bool
+}
+
 type pullRequestMergeRequest struct {
 	CommitMessage *string `json:"commit_message"`
+	Squash        *bool   `json:"squash,omitempty"`
 }
 
 // Merge a pull request (Merge Button™).
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-buttontrade
-func (s *PullRequestsService) Merge(owner string, repo string, number int, commitMessage string) (*PullRequestMergeResult, *Response, error) {
+func (s *PullRequestsService) Merge(owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	req, err := s.client.NewRequest("PUT", u, &pullRequestMergeRequest{
-		CommitMessage: &commitMessage,
-	})
+	pullRequestBody := &pullRequestMergeRequest{CommitMessage: &commitMessage}
+	if options != nil {
+		pullRequestBody.Squash = &options.Squash
+	}
+	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
+
+	// TODO: This header will be unnecessary when the API is no longer in preview.
+	req.Header.Set("Accept", mediaTypeSquashPreview)
 
 	if err != nil {
 		return nil, nil, err

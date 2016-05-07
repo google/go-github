@@ -341,6 +341,7 @@ func TestPullRequestsService_Merge(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeSquashPreview)
 		fmt.Fprint(w, `
 			{
 			  "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
@@ -349,7 +350,8 @@ func TestPullRequestsService_Merge(t *testing.T) {
 			}`)
 	})
 
-	merge, _, err := client.PullRequests.Merge("o", "r", 1, "merging pull request")
+	options := &PullRequestOptions{Squash: true}
+	merge, _, err := client.PullRequests.Merge("o", "r", 1, "merging pull request", options)
 	if err != nil {
 		t.Errorf("PullRequests.Merge returned error: %v", err)
 	}
