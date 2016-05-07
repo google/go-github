@@ -69,6 +69,9 @@ const (
 
 	// https://developer.github.com/changes/2016-05-12-reactions-api-preview/
 	mediaTypeReactionsPreview = "application/vnd.github.squirrel-girl-preview"
+
+	// https://developer.github.com/changes/2016-04-01-squash-api-preview/
+	mediaTypeSquashPreview = "application/vnd.github.polaris-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
