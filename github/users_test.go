@@ -155,11 +155,11 @@ func TestUsersService_ListAll(t *testing.T) {
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"since": "1"})
+		testFormValues(t, r, values{"since": "1", "page": "2"})
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
-	opt := &UserListOptions{1}
+	opt := &UserListOptions{1, ListOptions{Page: 2}}
 	users, _, err := client.Users.ListAll(opt)
 	if err != nil {
 		t.Errorf("Users.Get returned error: %v", err)
