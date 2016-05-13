@@ -19,6 +19,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -46,6 +47,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -107,6 +109,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

@@ -69,6 +69,9 @@ const (
 
 	// https://developer.github.com/changes/2016-02-19-source-import-preview-api/
 	mediaTypeImportPreview = "application/vnd.github.barred-rock-preview"
+
+	// https://developer.github.com/changes/2016-05-12-reactions-api-preview/
+	mediaTypeReactionsPreview = "application/vnd.github.squirrel-girl-preview"
 )
 
 // A Client manages communication with the GitHub API.
@@ -107,6 +110,7 @@ type Client struct {
 	Users          *UsersService
 	Licenses       *LicensesService
 	Migrations     *MigrationService
+	Reactions      *ReactionsService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -171,6 +175,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Users = &UsersService{client: c}
 	c.Licenses = &LicensesService{client: c}
 	c.Migrations = &MigrationService{client: c}
+	c.Reactions = &ReactionsService{client: c}
 	return c
 }
 
