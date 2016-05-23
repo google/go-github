@@ -497,6 +497,7 @@ type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
 	Field    string `json:"field"`    // field on which the error occurred
 	Code     string `json:"code"`     // validation error code
+	Message  string `json:"message"`  // error message for "custom" error codes
 }
 
 func (e *Error) Error() string {
