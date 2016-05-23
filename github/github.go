@@ -438,6 +438,10 @@ type ErrorResponse struct {
 		Reason    string     `json:"reason,omitempty"`
 		CreatedAt *Timestamp `json:"created_at,omitempty"`
 	} `json:"block,omitempty"`
+	// Most errors will also include a documentation_url field pointing
+	// to some content that might help you resolve the error, see
+	// https://developer.github.com/v3/#client-errors
+	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
 func (r *ErrorResponse) Error() string {
@@ -493,6 +497,9 @@ These are the possible validation error codes:
         the formatting of a field is invalid
     already_exists:
         another resource has the same valid as this field
+    custom:
+        some resources return this (e.g. github.User.CreateKey()), additional
+        information is set in the Message field of the Error
 
 GitHub API docs: http://developer.github.com/v3/#client-errors
 */
@@ -500,6 +507,7 @@ type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
 	Field    string `json:"field"`    // field on which the error occurred
 	Code     string `json:"code"`     // validation error code
+	Message  string `json:"message"`  // Message describing the error. Errors with Code == "custom" will always have this set.
 }
 
 func (e *Error) Error() string {
