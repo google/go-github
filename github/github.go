@@ -435,7 +435,7 @@ type ErrorResponse struct {
 		Reason    string     `json:"reason,omitempty"`
 		CreatedAt *Timestamp `json:"created_at,omitempty"`
 	} `json:"block,omitempty"`
-	// Most errors willi also include a documentation_url field pointing
+	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
 	// https://developer.github.com/v3/#client-errors
 	DocumentationURL string `json:"documentation_url"`
