@@ -39,9 +39,10 @@ const (
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
 
-	mediaTypeV3      = "application/vnd.github.v3+json"
-	defaultMediaType = "application/octet-stream"
-	mediaTypeV3SHA   = "application/vnd.github.v3.sha"
+	mediaTypeV3                = "application/vnd.github.v3+json"
+	defaultMediaType           = "application/octet-stream"
+	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
+	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
 
 	// Media Type values to access preview APIs
 
@@ -50,10 +51,6 @@ const (
 
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
-
-	// https://developer.github.com/changes/2015-06-24-api-enhancements-for-working-with-organization-permissions/
-	mediaTypeOrgPermissionPreview     = "application/vnd.github.ironman-preview+json"
-	mediaTypeOrgPermissionRepoPreview = "application/vnd.github.ironman-preview.repository+json"
 
 	// https://developer.github.com/changes/2015-11-11-protected-branches-api/
 	mediaTypeProtectedBranchesPreview = "application/vnd.github.loki-preview+json"

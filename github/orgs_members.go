@@ -86,10 +86,6 @@ func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) 
 		return nil, nil, err
 	}
 
-	if opt != nil && opt.Role != "" {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
-	}
-
 	members := new([]User)
 	resp, err := s.client.Do(req, members)
 	if err != nil {
