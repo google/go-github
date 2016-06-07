@@ -71,7 +71,6 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -106,7 +105,6 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -145,7 +143,6 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -291,7 +288,7 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepoPreview)
+		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepo)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -364,7 +361,6 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		if !reflect.DeepEqual(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
@@ -449,7 +445,6 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		if !reflect.DeepEqual(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}

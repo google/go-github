@@ -19,7 +19,6 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		testFormValues(t, r, values{
 			"filter": "2fa_disabled",
 			"role":   "admin",

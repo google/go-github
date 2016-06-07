@@ -94,10 +94,6 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Respo
 		return nil, nil, err
 	}
 
-	if team.Privacy != nil {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
-	}
-
 	t := new(Team)
 	resp, err := s.client.Do(req, t)
 	if err != nil {
@@ -115,10 +111,6 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, e
 	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
 		return nil, nil, err
-	}
-
-	if team.Privacy != nil {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	t := new(Team)
@@ -167,10 +159,6 @@ func (s *OrganizationsService) ListTeamMembers(team int, opt *OrganizationListTe
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
-	}
-
-	if opt != nil && opt.Role != "" {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	members := new([]User)
@@ -225,7 +213,7 @@ func (s *OrganizationsService) ListTeamRepos(team int, opt *ListOptions) ([]Repo
 // repository is managed by team, a Repository is returned which includes the
 // permissions team has for that repo.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-repo
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#check-if-a-team-manages-a-repository
 func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -233,7 +221,7 @@ func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeOrgPermissionRepoPreview)
+	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	repository := new(Repository)
 	resp, err := s.client.Do(req, repository)
@@ -267,10 +255,6 @@ func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string, 
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
-	}
-
-	if opt != nil {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	return s.client.Do(req, nil)
@@ -370,10 +354,6 @@ func (s *OrganizationsService) AddTeamMembership(team int, user string, opt *Org
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
-	}
-
-	if opt != nil {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	t := new(Membership)

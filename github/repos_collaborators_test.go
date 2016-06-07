@@ -19,7 +19,6 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -95,7 +94,6 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionPreview)
 		if !reflect.DeepEqual(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}

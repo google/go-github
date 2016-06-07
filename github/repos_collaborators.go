@@ -22,8 +22,6 @@ func (s *RepositoriesService) ListCollaborators(owner, repo string, opt *ListOpt
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
-
 	users := new([]User)
 	resp, err := s.client.Do(req, users)
 	if err != nil {
@@ -72,10 +70,6 @@ func (s *RepositoriesService) AddCollaborator(owner, repo, user string, opt *Rep
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
-	}
-
-	if opt != nil {
-		req.Header.Set("Accept", mediaTypeOrgPermissionPreview)
 	}
 
 	return s.client.Do(req, nil)
