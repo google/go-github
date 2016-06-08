@@ -20,14 +20,14 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user_id":2,"content":"+1"}]`))
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	got, _, err := client.Reactions.ListCommentReactions("o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int(1), UserID: Int(2), Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	if want := []*Reaction{{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
 		t.Errorf("ListCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -41,14 +41,14 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user_id":2,"content":"+1"}`))
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	got, _, err := client.Reactions.CreateCommentReaction("o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Int(1), UserID: Int(2), Content: String("+1")}
+	want := &Reaction{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CreateCommentReaction = %+v, want %+v", got, want)
 	}
@@ -63,14 +63,14 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user_id":2,"content":"+1"}]`))
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	got, _, err := client.Reactions.ListIssueReactions("o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListIssueReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int(1), UserID: Int(2), Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	if want := []*Reaction{{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueReactions = %+v, want %+v", got, want)
 	}
 }
@@ -84,14 +84,14 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user_id":2,"content":"+1"}`))
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	got, _, err := client.Reactions.CreateIssueReaction("o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateIssueReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Int(1), UserID: Int(2), Content: String("+1")}
+	want := &Reaction{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CreateIssueReaction = %+v, want %+v", got, want)
 	}
@@ -106,14 +106,14 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user_id":2,"content":"+1"}]`))
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	got, _, err := client.Reactions.ListIssueCommentReactions("o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListIssueCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int(1), UserID: Int(2), Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	if want := []*Reaction{{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -127,14 +127,14 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user_id":2,"content":"+1"}`))
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	got, _, err := client.Reactions.CreateIssueCommentReaction("o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateIssueCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Int(1), UserID: Int(2), Content: String("+1")}
+	want := &Reaction{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CreateIssueCommentReaction = %+v, want %+v", got, want)
 	}
@@ -149,14 +149,14 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user_id":2,"content":"+1"}]`))
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
 	got, _, err := client.Reactions.ListPullRequestCommentReactions("o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListPullRequestCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int(1), UserID: Int(2), Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	if want := []*Reaction{{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
 		t.Errorf("ListPullRequestCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -170,14 +170,14 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id":1,"user_id":2,"content":"+1"}`))
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
 	got, _, err := client.Reactions.CreatePullRequestCommentReaction("o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreatePullRequestCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Int(1), UserID: Int(2), Content: String("+1")}
+	want := &Reaction{ID: Int(1), User: &User{Login: String("l"), ID: Int(2)}, Content: String("+1")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CreatePullRequestCommentReaction = %+v, want %+v", got, want)
 	}
