@@ -438,7 +438,7 @@ type ErrorResponse struct {
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
 	// https://developer.github.com/v3/#client-errors
-	DocumentationURL string `json:"documentation_url"`
+	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
 func (r *ErrorResponse) Error() string {
@@ -504,10 +504,7 @@ type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
 	Field    string `json:"field"`    // field on which the error occurred
 	Code     string `json:"code"`     // validation error code
-	// For .Code == "custom" we always get a message.
-	// The github.User.CreateKey() returns such a code when trying to add a key
-	// which is already in use.
-	Message string `json:"message"`
+	Message  string `json:"message"`  // Message describing the error. Errors with Code == "custom" will always have this set.
 }
 
 func (e *Error) Error() string {
