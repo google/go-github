@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -25,7 +26,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 	opt := &ListOptions{Page: 2}
 	assignees, _, err := client.Issues.ListAssignees("o", "r", opt)
 	if err != nil {
-		t.Errorf("Issues.List returned error: %v", err)
+		t.Errorf("Issues.ListAssignees returned error: %v", err)
 	}
 
 	want := []User{{ID: Int(1)}}
@@ -95,4 +96,64 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.IsAssignee("%", "r", "u")
 	testURLParseError(t, err)
+}
+
+func TestIssuesService_AddAssignees(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
+		var assignees struct {
+			Assignees []string `json:"assignees,omitempty"`
+		}
+		json.NewDecoder(r.Body).Decode(&assignees)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeMultipleAssigneesPreview)
+		want := []string{"user1", "user2"}
+		if !reflect.DeepEqual(assignees.Assignees, want) {
+			t.Errorf("assignees = %+v, want %+v", assignees, want)
+		}
+		fmt.Fprint(w, `{"number":1,"assignees":[{"login":"user1"},{"login":"user2"}]}`)
+	})
+
+	got, _, err := client.Issues.AddAssignees("o", "r", 1, []string{"user1", "user2"})
+	if err != nil {
+		t.Errorf("Issues.AddAssignees returned error: %v", err)
+	}
+
+	want := &Issue{Number: Int(1), Assignees: []*User{{Login: String("user1")}, {Login: String("user2")}}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Issues.AddAssignees = %+v, want %+v", got, want)
+	}
+}
+
+func TestIssuesService_RemoveAssignees(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
+		var assignees struct {
+			Assignees []string `json:"assignees,omitempty"`
+		}
+		json.NewDecoder(r.Body).Decode(&assignees)
+
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeMultipleAssigneesPreview)
+		want := []string{"user1", "user2"}
+		if !reflect.DeepEqual(assignees.Assignees, want) {
+			t.Errorf("assignees = %+v, want %+v", assignees, want)
+		}
+		fmt.Fprint(w, `{"number":1,"assignees":[]}`)
+	})
+
+	got, _, err := client.Issues.RemoveAssignees("o", "r", 1, []string{"user1", "user2"})
+	if err != nil {
+		t.Errorf("Issues.RemoveAssignees returned error: %v", err)
+	}
+
+	want := &Issue{Number: Int(1), Assignees: []*User{}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Issues.RemoveAssignees = %+v, want %+v", got, want)
+	}
 }

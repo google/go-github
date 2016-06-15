@@ -75,6 +75,9 @@ const (
 
 	// https://developer.github.com/changes/2016-04-04-git-signing-api-preview/
 	mediaTypeGitSigningPreview = "application/vnd.github.cryptographer-preview+json"
+
+	// https://developer.github.com/changes/2016-5-27-multiple-assignees/
+	mediaTypeMultipleAssigneesPreview = "application/vnd.github.cerberus-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
