@@ -170,6 +170,7 @@ func TestUsers_Keys(t *testing.T) {
 		return
 	}
 
+	// TODO: make this integration test work for any authenticated user.
 	keys, _, err = client.Users.ListKeys("", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
