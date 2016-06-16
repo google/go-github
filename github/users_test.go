@@ -170,3 +170,54 @@ func TestUsersService_ListAll(t *testing.T) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
 }
+
+func TestUsersService_ListInvitations(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	got, _, err := client.Users.ListInvitations()
+	if err != nil {
+		t.Errorf("Users.ListInvitations returned error: %v", err)
+	}
+
+	want := []*RepositoryInvitation{{ID: Int(1)}, {ID: Int(2)}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
+	}
+}
+
+func TestUsersService_AcceptInvitation(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Users.AcceptInvitation(1); err != nil {
+		t.Errorf("Users.AcceptInvitation returned error: %v", err)
+	}
+}
+
+func TestUsersService_DeclineInvitation(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Users.DeclineInvitation(1); err != nil {
+		t.Errorf("Users.DeclineInvitation returned error: %v", err)
+	}
+}

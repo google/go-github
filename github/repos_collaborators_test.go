@@ -94,6 +94,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
 		if !reflect.DeepEqual(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
