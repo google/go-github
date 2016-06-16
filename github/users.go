@@ -145,20 +145,6 @@ type UserListOptions struct {
 // ListAll lists all GitHub users.
 //
 // To paginate through all users, populate 'Since' with the ID of the last user.
-// Example (warning: this will quickly eat through your GitHub API quota!):
-//
-// 	opts := &github.UserListOptions{}
-// 	for {
-// 		users, _, err := client.Users.ListAll(opts)
-// 		if err != nil {
-// 			log.Fatalf("error listing users: %v", err)
-// 		}
-// 		if len(users) == 0 {
-// 			break
-// 		}
-// 		opts.Since = *users[len(users)-1].ID
-// 		// Process users...
-// 	}
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-all-users
 func (s *UsersService) ListAll(opt *UserListOptions) ([]User, *Response, error) {

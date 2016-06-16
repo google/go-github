@@ -119,24 +119,6 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	}
 }
 
-func ExampleRepositoriesService_GetReadme() {
-	client := NewClient(nil)
-
-	readme, _, err := client.Repositories.GetReadme("google", "go-github", nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	content, err := readme.GetContent()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Printf("google/go-github README:\n%v\n", content)
-}
-
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 	setup()
 	defer teardown()
