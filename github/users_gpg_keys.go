@@ -90,10 +90,8 @@ func (s *UsersService) GetGPGKey(id int) (*GPGKey, *Response, error) {
 // GitHub API docs: https://developer.github.com/v3/users/gpg_keys/#create-a-gpg-key
 func (s *UsersService) CreateGPGKey(armoredPublicKey string) (*GPGKey, *Response, error) {
 	gpgKey := &struct {
-		ArmoredPublicKey *string `json:"armored_public_key,omitempty"`
-	}{
-		ArmoredPublicKey: String(armoredPublicKey),
-	}
+		ArmoredPublicKey string `json:"armored_public_key"`
+	}{ArmoredPublicKey: armoredPublicKey}
 	req, err := s.client.NewRequest("POST", "user/gpg_keys", gpgKey)
 	if err != nil {
 		return nil, nil, err

@@ -81,6 +81,9 @@ const (
 
 	// https://developer.github.com/changes/2016-05-23-timeline-preview-api/
 	mediaTypeTimelinePreview = "application/vnd.github.mockingbird-preview+json"
+
+	// https://developer.github.com/changes/2016-06-14-repository-invitations/
+	mediaTypeRepositoryInvitationsPreview = "application/vnd.github.swamp-thing-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
