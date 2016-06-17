@@ -25,7 +25,6 @@ func TestGitService_GetTag(t *testing.T) {
 	})
 
 	tag, _, err := client.Git.GetTag("o", "r", "s")
-
 	if err != nil {
 		t.Errorf("Git.GetTag returned error: %v", err)
 	}

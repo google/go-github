@@ -37,7 +37,6 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		ListOptions: ListOptions{Page: 2},
 	}
 	pulls, _, err := client.PullRequests.ListComments("o", "r", 0, opt)
-
 	if err != nil {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
@@ -59,7 +58,6 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	})
 
 	pulls, _, err := client.PullRequests.ListComments("o", "r", 1, nil)
-
 	if err != nil {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
@@ -86,7 +84,6 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 	})
 
 	comment, _, err := client.PullRequests.GetComment("o", "r", 1)
-
 	if err != nil {
 		t.Errorf("PullRequests.GetComment returned error: %v", err)
 	}
@@ -121,7 +118,6 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	})
 
 	comment, _, err := client.PullRequests.CreateComment("o", "r", 1, input)
-
 	if err != nil {
 		t.Errorf("PullRequests.CreateComment returned error: %v", err)
 	}
@@ -156,7 +152,6 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	})
 
 	comment, _, err := client.PullRequests.EditComment("o", "r", 1, input)
-
 	if err != nil {
 		t.Errorf("PullRequests.EditComment returned error: %v", err)
 	}

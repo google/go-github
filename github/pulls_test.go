@@ -32,7 +32,6 @@ func TestPullRequestsService_List(t *testing.T) {
 
 	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
 	pulls, _, err := client.PullRequests.List("o", "r", opt)
-
 	if err != nil {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
@@ -58,7 +57,6 @@ func TestPullRequestsService_Get(t *testing.T) {
 	})
 
 	pull, _, err := client.PullRequests.Get("o", "r", 1)
-
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -79,7 +77,6 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 	})
 
 	pull, _, err := client.PullRequests.Get("o", "r", 1)
-
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -112,7 +109,6 @@ func TestPullRequestService_Get_DiffURLAndPatchURL(t *testing.T) {
 	})
 
 	pull, _, err := client.PullRequests.Get("o", "r", 1)
-
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}

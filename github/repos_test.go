@@ -297,7 +297,6 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 
 	opts := &ListContributorsOptions{Anon: "true", ListOptions: ListOptions{Page: 2}}
 	contributors, _, err := client.Repositories.ListContributors("o", "r", opts)
-
 	if err != nil {
 		t.Errorf("Repositories.ListContributors returned error: %v", err)
 	}
