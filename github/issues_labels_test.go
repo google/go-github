@@ -29,7 +29,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 		t.Errorf("Issues.ListLabels returned error: %v", err)
 	}
 
-	want := []Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{{Name: String("a")}, {Name: String("b")}}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabels returned %+v, want %+v", labels, want)
 	}
@@ -168,7 +168,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 		t.Errorf("Issues.ListLabelsByIssue returned error: %v", err)
 	}
 
-	want := []Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{{Name: String("a")}, {Name: String("b")}}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
 	}
@@ -202,7 +202,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 		t.Errorf("Issues.AddLabelsToIssue returned error: %v", err)
 	}
 
-	want := []Label{{URL: String("u")}}
+	want := []*Label{{URL: String("u")}}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.AddLabelsToIssue returned %+v, want %+v", labels, want)
 	}
@@ -255,7 +255,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned error: %v", err)
 	}
 
-	want := []Label{{URL: String("u")}}
+	want := []*Label{{URL: String("u")}}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned %+v, want %+v", labels, want)
 	}
@@ -301,7 +301,7 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 		t.Errorf("Issues.ListLabelsForMilestone returned error: %v", err)
 	}
 
-	want := []Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{{Name: String("a")}, {Name: String("b")}}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsForMilestone returned %+v, want %+v", labels, want)
 	}

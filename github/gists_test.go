@@ -34,7 +34,7 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []Gist{{ID: String("1")}}
+	want := []*Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -54,7 +54,7 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []Gist{{ID: String("1")}}
+	want := []*Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -85,7 +85,7 @@ func TestGistsService_ListAll(t *testing.T) {
 		t.Errorf("Gists.ListAll returned error: %v", err)
 	}
 
-	want := []Gist{{ID: String("1")}}
+	want := []*Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
@@ -111,7 +111,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 		t.Errorf("Gists.ListStarred returned error: %v", err)
 	}
 
-	want := []Gist{{ID: String("1")}}
+	want := []*Gist{{ID: String("1")}}
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}

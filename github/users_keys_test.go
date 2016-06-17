@@ -29,7 +29,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -49,7 +49,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}

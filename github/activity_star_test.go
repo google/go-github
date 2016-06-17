@@ -32,7 +32,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
 	}
 
-	want := []Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int(1)}}}
+	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int(1)}}}
 	if !reflect.DeepEqual(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
@@ -53,7 +53,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int(1)}}}
+	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int(1)}}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
@@ -80,7 +80,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int(2)}}}
+	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int(2)}}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}

@@ -41,7 +41,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		t.Errorf("Activity.ListNotifications returned error: %v", err)
 	}
 
-	want := []Notification{{ID: String("1"), Subject: &NotificationSubject{Title: String("t")}}}
+	want := []*Notification{{ID: String("1"), Subject: &NotificationSubject{Title: String("t")}}}
 	if !reflect.DeepEqual(notifications, want) {
 		t.Errorf("Activity.ListNotifications returned %+v, want %+v", notifications, want)
 	}
@@ -61,7 +61,7 @@ func TestActivityService_ListRepositoryNotification(t *testing.T) {
 		t.Errorf("Activity.ListRepositoryNotifications returned error: %v", err)
 	}
 
-	want := []Notification{{ID: String("1")}}
+	want := []*Notification{{ID: String("1")}}
 	if !reflect.DeepEqual(notifications, want) {
 		t.Errorf("Activity.ListRepositoryNotifications returned %+v, want %+v", notifications, want)
 	}

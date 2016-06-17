@@ -34,7 +34,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 		t.Errorf("IssuesService.ListMilestones returned error: %v", err)
 	}
 
-	want := []Milestone{{Number: Int(1)}}
+	want := []*Milestone{{Number: Int(1)}}
 	if !reflect.DeepEqual(milestones, want) {
 		t.Errorf("IssuesService.ListMilestones returned %+v, want %+v", milestones, want)
 	}

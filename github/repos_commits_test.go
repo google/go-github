@@ -43,7 +43,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		t.Errorf("Repositories.ListCommits returned error: %v", err)
 	}
 
-	want := []RepositoryCommit{{SHA: String("s")}}
+	want := []*RepositoryCommit{{SHA: String("s")}}
 	if !reflect.DeepEqual(commits, want) {
 		t.Errorf("Repositories.ListCommits returned %+v, want %+v", commits, want)
 	}

@@ -11,7 +11,7 @@ import "fmt"
 // which issues may be assigned.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/assignees/#list-assignees
-func (s *IssuesService) ListAssignees(owner, repo string, opt *ListOptions) ([]User, *Response, error) {
+func (s *IssuesService) ListAssignees(owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -22,7 +22,7 @@ func (s *IssuesService) ListAssignees(owner, repo string, opt *ListOptions) ([]U
 	if err != nil {
 		return nil, nil, err
 	}
-	assignees := new([]User)
+	assignees := new([]*User)
 	resp, err := s.client.Do(req, assignees)
 	if err != nil {
 		return nil, resp, err

@@ -29,7 +29,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 		t.Errorf("Repositories.ListDeployments returned error: %v", err)
 	}
 
-	want := []Deployment{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Deployment{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
@@ -81,7 +81,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
 	}
 
-	want := []DeploymentStatus{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*DeploymentStatus{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(statutses, want) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
 	}

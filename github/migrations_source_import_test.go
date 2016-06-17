@@ -117,7 +117,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 	if err != nil {
 		t.Errorf("CommitAuthors returned error: %v", err)
 	}
-	want := []SourceImportAuthor{
+	want := []*SourceImportAuthor{
 		{ID: Int(1), Name: String("a")},
 		{ID: Int(2), Name: String("b")},
 	}
@@ -199,7 +199,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 	if err != nil {
 		t.Errorf("LargeFiles returned error: %v", err)
 	}
-	want := []LargeFile{
+	want := []*LargeFile{
 		{OID: String("a")},
 		{OID: String("b")},
 	}

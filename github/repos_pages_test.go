@@ -46,7 +46,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
 
-	want := []PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
+	want := []*PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
 	if !reflect.DeepEqual(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
 	}

@@ -165,7 +165,7 @@ func TestUsersService_ListAll(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := []User{{ID: Int(2)}}
+	want := []*User{{ID: Int(2)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}

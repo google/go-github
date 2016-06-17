@@ -33,7 +33,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
 
-	want := []UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true)}}
+	want := []*UserEmail{{Email: String("user@example.com"), Verified: Bool(false), Primary: Bool(true)}}
 	if !reflect.DeepEqual(emails, want) {
 		t.Errorf("Users.ListEmails returned %+v, want %+v", emails, want)
 	}
@@ -62,7 +62,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
 
-	want := []UserEmail{
+	want := []*UserEmail{
 		{Email: String("old@example.com")},
 		{Email: String("new@example.com")},
 	}

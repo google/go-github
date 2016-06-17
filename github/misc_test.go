@@ -158,7 +158,7 @@ func TestRepositoriesService_ListServiceHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []ServiceHook{{
+	want := []*ServiceHook{{
 		Name:            String("n"),
 		Events:          []string{"e"},
 		SupportedEvents: []string{"s"},

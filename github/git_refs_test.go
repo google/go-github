@@ -89,7 +89,7 @@ func TestGitService_ListRefs(t *testing.T) {
 		t.Errorf("Git.ListRefs returned error: %v", err)
 	}
 
-	want := []Reference{
+	want := []*Reference{
 		{
 			Ref: String("refs/heads/branchA"),
 			URL: String("https://api.github.com/repos/o/r/git/refs/heads/branchA"),
@@ -130,7 +130,7 @@ func TestGitService_ListRefs_options(t *testing.T) {
 		t.Errorf("Git.ListRefs returned error: %v", err)
 	}
 
-	want := []Reference{{Ref: String("r")}}
+	want := []*Reference{{Ref: String("r")}}
 	if !reflect.DeepEqual(refs, want) {
 		t.Errorf("Git.ListRefs returned %+v, want %+v", refs, want)
 	}

@@ -29,7 +29,7 @@ func TestGistsService_ListComments(t *testing.T) {
 		t.Errorf("Gists.Comments returned error: %v", err)
 	}
 
-	want := []GistComment{{ID: Int(1)}}
+	want := []*GistComment{{ID: Int(1)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
 	}
