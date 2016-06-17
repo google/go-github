@@ -73,7 +73,6 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	})
 
 	watched, _, err := client.Activity.ListWatched("u", &ListOptions{Page: 2})
-
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}

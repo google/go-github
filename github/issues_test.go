@@ -40,7 +40,6 @@ func TestIssuesService_List_all(t *testing.T) {
 		ListOptions{Page: 1, PerPage: 2},
 	}
 	issues, _, err := client.Issues.List(true, opt)
-
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}

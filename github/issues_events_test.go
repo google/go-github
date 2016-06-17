@@ -27,7 +27,6 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	events, _, err := client.Issues.ListIssueEvents("o", "r", 1, opt)
-
 	if err != nil {
 		t.Errorf("Issues.ListIssueEvents returned error: %v", err)
 	}
@@ -53,7 +52,6 @@ func TestIssuesService_ListRepositoryEvents(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	events, _, err := client.Issues.ListRepositoryEvents("o", "r", opt)
-
 	if err != nil {
 		t.Errorf("Issues.ListRepositoryEvents returned error: %v", err)
 	}
@@ -74,7 +72,6 @@ func TestIssuesService_GetEvent(t *testing.T) {
 	})
 
 	event, _, err := client.Issues.GetEvent("o", "r", 1)
-
 	if err != nil {
 		t.Errorf("Issues.GetEvent returned error: %v", err)
 	}

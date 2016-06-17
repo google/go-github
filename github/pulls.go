@@ -272,7 +272,6 @@ func (s *PullRequestsService) Merge(owner string, repo string, number int, commi
 
 	// TODO: This header will be unnecessary when the API is no longer in preview.
 	req.Header.Set("Accept", mediaTypeSquashPreview)
-
 	if err != nil {
 		return nil, nil, err
 	}

@@ -397,7 +397,6 @@ func TestDo_rateLimit(t *testing.T) {
 
 	req, _ := client.NewRequest("GET", "/", nil)
 	_, err := client.Do(req, nil)
-
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -551,7 +550,6 @@ func TestDo_noContent(t *testing.T) {
 
 	req, _ := client.NewRequest("GET", "/", nil)
 	_, err := client.Do(req, &body)
-
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
 	}
@@ -630,7 +628,6 @@ func TestCheckResponse_noBody(t *testing.T) {
 
 func TestParseBooleanResponse_true(t *testing.T) {
 	result, err := parseBoolResponse(nil)
-
 	if err != nil {
 		t.Errorf("parseBoolResponse returned error: %+v", err)
 	}
@@ -643,7 +640,6 @@ func TestParseBooleanResponse_true(t *testing.T) {
 func TestParseBooleanResponse_false(t *testing.T) {
 	v := &ErrorResponse{Response: &http.Response{StatusCode: http.StatusNotFound}}
 	result, err := parseBoolResponse(v)
-
 	if err != nil {
 		t.Errorf("parseBoolResponse returned error: %+v", err)
 	}
