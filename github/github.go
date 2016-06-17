@@ -29,7 +29,7 @@ const (
 )
 
 const (
-	libraryVersion = "0.1"
+	libraryVersion = "2"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github/" + libraryVersion

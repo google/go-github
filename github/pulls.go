@@ -91,7 +91,7 @@ type PullRequestListOptions struct {
 // List the pull requests for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/pulls/#list-pull-requests
-func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]PullRequest, *Response, error) {
+func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -103,7 +103,7 @@ func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestLi
 		return nil, nil, err
 	}
 
-	pulls := new([]PullRequest)
+	pulls := new([]*PullRequest)
 	resp, err := s.client.Do(req, pulls)
 	if err != nil {
 		return nil, resp, err
@@ -181,7 +181,7 @@ func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *
 // ListCommits lists the commits in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
-func (s *PullRequestsService) ListCommits(owner string, repo string, number int, opt *ListOptions) ([]RepositoryCommit, *Response, error) {
+func (s *PullRequestsService) ListCommits(owner string, repo string, number int, opt *ListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/commits", owner, repo, number)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -193,7 +193,7 @@ func (s *PullRequestsService) ListCommits(owner string, repo string, number int,
 		return nil, nil, err
 	}
 
-	commits := new([]RepositoryCommit)
+	commits := new([]*RepositoryCommit)
 	resp, err := s.client.Do(req, commits)
 	if err != nil {
 		return nil, resp, err
@@ -205,7 +205,7 @@ func (s *PullRequestsService) ListCommits(owner string, repo string, number int,
 // ListFiles lists the files in a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#list-pull-requests-files
-func (s *PullRequestsService) ListFiles(owner string, repo string, number int, opt *ListOptions) ([]CommitFile, *Response, error) {
+func (s *PullRequestsService) ListFiles(owner string, repo string, number int, opt *ListOptions) ([]*CommitFile, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -217,7 +217,7 @@ func (s *PullRequestsService) ListFiles(owner string, repo string, number int, o
 		return nil, nil, err
 	}
 
-	commitFiles := new([]CommitFile)
+	commitFiles := new([]*CommitFile)
 	resp, err := s.client.Do(req, commitFiles)
 	if err != nil {
 		return nil, resp, err

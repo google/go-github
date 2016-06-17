@@ -67,7 +67,7 @@ type GistListOptions struct {
 // user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Response, error) {
+func (s *GistsService) List(user string, opt *GistListOptions) ([]*Gist, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/gists", user)
@@ -84,7 +84,7 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Respons
 		return nil, nil, err
 	}
 
-	gists := new([]Gist)
+	gists := new([]*Gist)
 	resp, err := s.client.Do(req, gists)
 	if err != nil {
 		return nil, resp, err
@@ -96,7 +96,7 @@ func (s *GistsService) List(user string, opt *GistListOptions) ([]Gist, *Respons
 // ListAll lists all public gists.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) {
+func (s *GistsService) ListAll(opt *GistListOptions) ([]*Gist, *Response, error) {
 	u, err := addOptions("gists/public", opt)
 	if err != nil {
 		return nil, nil, err
@@ -107,7 +107,7 @@ func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) 
 		return nil, nil, err
 	}
 
-	gists := new([]Gist)
+	gists := new([]*Gist)
 	resp, err := s.client.Do(req, gists)
 	if err != nil {
 		return nil, resp, err
@@ -119,7 +119,7 @@ func (s *GistsService) ListAll(opt *GistListOptions) ([]Gist, *Response, error) 
 // ListStarred lists starred gists of authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#list-gists
-func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, *Response, error) {
+func (s *GistsService) ListStarred(opt *GistListOptions) ([]*Gist, *Response, error) {
 	u, err := addOptions("gists/starred", opt)
 	if err != nil {
 		return nil, nil, err
@@ -130,7 +130,7 @@ func (s *GistsService) ListStarred(opt *GistListOptions) ([]Gist, *Response, err
 		return nil, nil, err
 	}
 
-	gists := new([]Gist)
+	gists := new([]*Gist)
 	resp, err := s.client.Do(req, gists)
 	if err != nil {
 		return nil, resp, err

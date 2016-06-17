@@ -28,7 +28,7 @@ func TestUsersService_ListGPGKeys(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []GPGKey{{ID: Int(1), PrimaryKeyID: Int(2)}}
+	want := []*GPGKey{{ID: Int(1), PrimaryKeyID: Int(2)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}

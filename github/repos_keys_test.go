@@ -29,7 +29,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
 
-	want := []Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}

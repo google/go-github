@@ -64,7 +64,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []Hook{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Hook{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(hooks, want) {
 		t.Errorf("Repositories.ListHooks returned %+v, want %+v", hooks, want)
 	}

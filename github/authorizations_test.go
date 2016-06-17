@@ -29,7 +29,7 @@ func TestAuthorizationsService_List(t *testing.T) {
 		t.Errorf("Authorizations.List returned error: %v", err)
 	}
 
-	want := []Authorization{{ID: Int(1)}}
+	want := []*Authorization{{ID: Int(1)}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.List returned %+v, want %+v", *got[0].ID, *want[0].ID)
 	}

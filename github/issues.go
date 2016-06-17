@@ -104,7 +104,7 @@ type PullRequestLinks struct {
 // repositories.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]Issue, *Response, error) {
+func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
 		u = "issues"
@@ -118,12 +118,12 @@ func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]Issue, *Respons
 // authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]Issue, *Response, error) {
+func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
 	return s.listIssues(u, opt)
 }
 
-func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, *Response, error) {
+func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -137,7 +137,7 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]Issue, *R
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	issues := new([]Issue)
+	issues := new([]*Issue)
 	resp, err := s.client.Do(req, issues)
 	if err != nil {
 		return nil, resp, err
@@ -189,7 +189,7 @@ type IssueListByRepoOptions struct {
 // ListByRepo lists the issues for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/#list-issues-for-a-repository
-func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]Issue, *Response, error) {
+func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -204,7 +204,7 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	issues := new([]Issue)
+	issues := new([]*Issue)
 	resp, err := s.client.Do(req, issues)
 	if err != nil {
 		return nil, resp, err

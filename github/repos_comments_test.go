@@ -30,7 +30,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
 	}
 
-	want := []RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -58,7 +58,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
 	}
 
-	want := []RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}

@@ -10,7 +10,7 @@ import "fmt"
 // ListCollaborators lists the Github users that have access to the repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/collaborators/#list
-func (s *RepositoriesService) ListCollaborators(owner, repo string, opt *ListOptions) ([]User, *Response, error) {
+func (s *RepositoriesService) ListCollaborators(owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -22,7 +22,7 @@ func (s *RepositoriesService) ListCollaborators(owner, repo string, opt *ListOpt
 		return nil, nil, err
 	}
 
-	users := new([]User)
+	users := new([]*User)
 	resp, err := s.client.Do(req, users)
 	if err != nil {
 		return nil, resp, err

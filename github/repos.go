@@ -129,7 +129,7 @@ type RepositoryListOptions struct {
 // repositories for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-user-repositories
-func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]Repository, *Response, error) {
+func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/repos", user)
@@ -149,7 +149,7 @@ func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]R
 	// TODO: remove custom Accept header when license support fully launches
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
-	repos := new([]Repository)
+	repos := new([]*Repository)
 	resp, err := s.client.Do(req, repos)
 	if err != nil {
 		return nil, resp, err
@@ -171,7 +171,7 @@ type RepositoryListByOrgOptions struct {
 // ListByOrg lists the repositories for an organization.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
-func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]Repository, *Response, error) {
+func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -186,7 +186,7 @@ func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOpti
 	// TODO: remove custom Accept header when license support fully launches
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
-	repos := new([]Repository)
+	repos := new([]*Repository)
 	resp, err := s.client.Do(req, repos)
 	if err != nil {
 		return nil, resp, err
@@ -207,7 +207,7 @@ type RepositoryListAllOptions struct {
 // ListAll lists all GitHub repositories in the order that they were created.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-all-public-repositories
-func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Repository, *Response, error) {
+func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]*Repository, *Response, error) {
 	u, err := addOptions("repositories", opt)
 	if err != nil {
 		return nil, nil, err
@@ -218,7 +218,7 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]Reposito
 		return nil, nil, err
 	}
 
-	repos := new([]Repository)
+	repos := new([]*Repository)
 	resp, err := s.client.Do(req, repos)
 	if err != nil {
 		return nil, resp, err
@@ -366,7 +366,7 @@ type ListContributorsOptions struct {
 // ListContributors lists contributors for a repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-contributors
-func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]Contributor, *Response, error) {
+func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -378,7 +378,7 @@ func (s *RepositoriesService) ListContributors(owner string, repository string, 
 		return nil, nil, err
 	}
 
-	contributor := new([]Contributor)
+	contributor := new([]*Contributor)
 	resp, err := s.client.Do(req, contributor)
 	if err != nil {
 		return nil, nil, err
@@ -416,7 +416,7 @@ func (s *RepositoriesService) ListLanguages(owner string, repo string) (map[stri
 // ListTeams lists the teams for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-teams
-func (s *RepositoriesService) ListTeams(owner string, repo string, opt *ListOptions) ([]Team, *Response, error) {
+func (s *RepositoriesService) ListTeams(owner string, repo string, opt *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -428,7 +428,7 @@ func (s *RepositoriesService) ListTeams(owner string, repo string, opt *ListOpti
 		return nil, nil, err
 	}
 
-	teams := new([]Team)
+	teams := new([]*Team)
 	resp, err := s.client.Do(req, teams)
 	if err != nil {
 		return nil, resp, err
@@ -448,7 +448,7 @@ type RepositoryTag struct {
 // ListTags lists tags for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-tags
-func (s *RepositoriesService) ListTags(owner string, repo string, opt *ListOptions) ([]RepositoryTag, *Response, error) {
+func (s *RepositoriesService) ListTags(owner string, repo string, opt *ListOptions) ([]*RepositoryTag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -460,7 +460,7 @@ func (s *RepositoriesService) ListTags(owner string, repo string, opt *ListOptio
 		return nil, nil, err
 	}
 
-	tags := new([]RepositoryTag)
+	tags := new([]*RepositoryTag)
 	resp, err := s.client.Do(req, tags)
 	if err != nil {
 		return nil, resp, err
@@ -497,7 +497,7 @@ type RequiredStatusChecks struct {
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-branches
-func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListOptions) ([]Branch, *Response, error) {
+func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -511,7 +511,7 @@ func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListO
 
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
-	branches := new([]Branch)
+	branches := new([]*Branch)
 	resp, err := s.client.Do(req, branches)
 	if err != nil {
 		return nil, resp, err

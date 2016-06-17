@@ -29,7 +29,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 		t.Errorf("Organizations.ListTeams returned error: %v", err)
 	}
 
-	want := []Team{{ID: Int(1)}}
+	want := []*Team{{ID: Int(1)}}
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Organizations.ListTeams returned %+v, want %+v", teams, want)
 	}
@@ -153,7 +153,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
 	}
 
-	want := []User{{ID: Int(1)}}
+	want := []*User{{ID: Int(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListTeamMembers returned %+v, want %+v", members, want)
 	}
@@ -276,7 +276,7 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 		t.Errorf("Organizations.ListTeamRepos returned error: %v", err)
 	}
 
-	want := []Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListTeamRepos returned %+v, want %+v", members, want)
 	}
@@ -494,7 +494,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 		t.Errorf("Organizations.ListUserTeams returned error: %v", err)
 	}
 
-	want := []Team{{ID: Int(1)}}
+	want := []*Team{{ID: Int(1)}}
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Organizations.ListUserTeams returned %+v, want %+v", teams, want)
 	}

@@ -122,7 +122,7 @@ func (a AuthorizationUpdateRequest) String() string {
 // List the authorizations for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
-func (s *AuthorizationsService) List(opt *ListOptions) ([]Authorization, *Response, error) {
+func (s *AuthorizationsService) List(opt *ListOptions) ([]*Authorization, *Response, error) {
 	u := "authorizations"
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -134,7 +134,7 @@ func (s *AuthorizationsService) List(opt *ListOptions) ([]Authorization, *Respon
 		return nil, nil, err
 	}
 
-	auths := new([]Authorization)
+	auths := new([]*Authorization)
 	resp, err := s.client.Do(req, auths)
 	if err != nil {
 		return nil, resp, err
