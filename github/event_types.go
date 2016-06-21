@@ -316,7 +316,7 @@ func (p PushEvent) String() string {
 
 // PushEventCommit represents a git commit in a GitHub PushEvent.
 type PushEventCommit struct {
-	SHA       *string       `json:"sha,omitempty"`
+	ID       *string       `json:"id,omitempty"`
 	Message   *string       `json:"message,omitempty"`
 	Author    *CommitAuthor `json:"author,omitempty"`
 	Committer *CommitAuthor `json:"committer,omitempty"`
