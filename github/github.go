@@ -55,9 +55,6 @@ const (
 	// https://developer.github.com/changes/2015-11-11-protected-branches-api/
 	mediaTypeProtectedBranchesPreview = "application/vnd.github.loki-preview+json"
 
-	// https://developer.github.com/changes/2016-02-11-issue-locking-api/
-	mediaTypeIssueLockingPreview = "application/vnd.github.the-key-preview+json"
-
 	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
 	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
 

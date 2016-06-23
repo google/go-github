@@ -253,7 +253,6 @@ func TestIssuesService_Lock(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeIssueLockingPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -269,7 +268,6 @@ func TestIssuesService_Unlock(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeIssueLockingPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

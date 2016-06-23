@@ -289,9 +289,6 @@ func (s *IssuesService) Lock(owner string, repo string, number int) (*Response, 
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIssueLockingPreview)
-
 	return s.client.Do(req, nil)
 }
 
@@ -304,9 +301,6 @@ func (s *IssuesService) Unlock(owner string, repo string, number int) (*Response
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIssueLockingPreview)
 
 	return s.client.Do(req, nil)
 }
