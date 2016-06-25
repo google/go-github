@@ -42,15 +42,49 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		testFormValues(t, r, values{
-			"type":      "owner",
-			"sort":      "created",
-			"direction": "asc",
-			"page":      "2",
+			"visibility":  "public",
+			"affiliation": "owner,collaborator",
+			"sort":        "created",
+			"direction":   "asc",
+			"page":        "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListOptions{"owner", "created", "asc", ListOptions{Page: 2}}
+	opt := &RepositoryListOptions{
+		Visibility:  "public",
+		Affiliation: "owner,collaborator",
+		Sort:        "created",
+		Direction:   "asc",
+		ListOptions: ListOptions{Page: 2},
+	}
+	repos, _, err := client.Repositories.List("u", opt)
+	if err != nil {
+		t.Errorf("Repositories.List returned error: %v", err)
+	}
+
+	want := []*Repository{{ID: Int(1)}}
+	if !reflect.DeepEqual(repos, want) {
+		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
+	}
+}
+
+func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
+		testFormValues(t, r, values{
+			"type": "owner",
+		})
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &RepositoryListOptions{
+		Type: "owner",
+	}
 	repos, _, err := client.Repositories.List("u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
