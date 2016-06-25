@@ -110,16 +110,33 @@ func (r Repository) String() string {
 // RepositoryListOptions specifies the optional parameters to the
 // RepositoriesService.List method.
 type RepositoryListOptions struct {
-	// Type of repositories to list.  Possible values are: all, owner, public,
-	// private, member.  Default is "all".
+	// Visibility of repositories to list. Can be one of all, public, or private.
+	// Default: all
+	Visibility string `url:"visibility,omitempty"`
+
+	// List repos of given affiliation[s].
+	// Comma-separated list of values. Can include:
+	// * owner: Repositories that are owned by the authenticated user.
+	// * collaborator: Repositories that the user has been added to as a
+	//   collaborator.
+	// * organization_member: Repositories that the user has access to through
+	//   being a member of an organization. This includes every repository on
+	//   every team that the user is on.
+	// Default: owner,collaborator,organization_member
+	Affiliation string `url:"affiliation,omitempty"`
+
+	// Type of repositories to list.
+	// Can be one of all, owner, public, private, member. Default: all
+	// Will cause a 422 error if used in the same request as visibility or
+	// affiliation.
 	Type string `url:"type,omitempty"`
 
-	// How to sort the repository list.  Possible values are: created, updated,
-	// pushed, full_name.  Default is "full_name".
+	// How to sort the repository list. Can be one of created, updated, pushed,
+	// full_name. Default: full_name
 	Sort string `url:"sort,omitempty"`
 
-	// Direction in which to sort repositories.  Possible values are: asc, desc.
-	// Default is "asc" when sort is "full_name", otherwise default is "desc".
+	// Direction in which to sort repositories. Can be one of asc or desc.
+	// Default: when using full_name: asc; otherwise desc
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions
