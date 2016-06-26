@@ -64,6 +64,7 @@ func (gc GistCommit) String() string {
 	return Stringify(gc)
 }
 
+// GistFork represents a fork of a gist
 type GistFork struct {
 	User      *User      `json:"user, omitempty"`
 	ID        *string    `json:"id,omitempty"`
@@ -234,27 +235,23 @@ func (s *GistsService) Edit(id string, gist *Gist) (*Gist, *Response, error) {
 	return g, resp, err
 }
 
-// List gist commits.
+// ListCommits lists commits of a gist.
 //
 // Github API docs: https://developer.github.com/v3/gists/#list-gist-commits
-
 func (s *GistsService) ListCommits(id string) ([]*GistCommit, *Response, error) {
 	u := fmt.Sprintf("gists/%v/commits", id)
 	req, err := s.client.NewRequest("GET", u, nil)
-
 	if err != nil {
 		return nil, nil, err
 	}
 
-	gist_commits := new([]*GistCommit)
-
-	resp, err := s.client.Do(req, gist_commits)
-
+	gistcommits := new([]*GistCommit)
+	resp, err := s.client.Do(req, gistcommits)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *gist_commits, resp, err
+	return *gistcommits, resp, err
 }
 
 // Delete a gist.
@@ -326,25 +323,21 @@ func (s *GistsService) Fork(id string) (*Gist, *Response, error) {
 	return g, resp, err
 }
 
-// List gist forks.
+// ListForks lists forks ofa gist.
 //
 // Github API docs: https://developer.github.com/v3/gists/#list-gist-forks
-
 func (s *GistsService) ListForks(id string) ([]*GistFork, *Response, error) {
 	u := fmt.Sprintf("gists/%v/forks", id)
 	req, err := s.client.NewRequest("GET", u, nil)
-
 	if err != nil {
 		return nil, nil, err
 	}
 
-	gist_forks := new([]*GistFork)
-
-	resp, err := s.client.Do(req, gist_forks)
-
+	gistforks := new([]*GistFork)
+	resp, err := s.client.Do(req, gistforks)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *gist_forks, resp, err
+	return *gistforks, resp, err
 }

@@ -303,7 +303,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		`)
 	})
 
-	gist_commits, _, err := client.Gists.ListCommits("1")
+	gistcommits, _, err := client.Gists.ListCommits("1")
 	if err != nil {
 		t.Errorf("Gists.ListCommits returned error: %v", err)
 	}
@@ -318,8 +318,8 @@ func TestGistsService_ListCommits(t *testing.T) {
 			"total":     180,
 		}}}
 
-	if !reflect.DeepEqual(gist_commits, want) {
-		t.Errorf("Gists.ListCommits returned %+v, want %+v", gist_commits, want)
+	if !reflect.DeepEqual(gistcommits, want) {
+		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistcommits, want)
 	}
 }
 
@@ -459,7 +459,7 @@ func TestGistsService_ListForks(t *testing.T) {
 		`)
 	})
 
-	gist_forks, _, err := client.Gists.ListForks("1")
+	gistforks, _, err := client.Gists.ListForks("1")
 	if err != nil {
 		t.Errorf("Gists.ListForks returned error: %v", err)
 	}
@@ -470,8 +470,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2013, 1, 1, 00, 00, 00, 0, time.UTC)}}}
 
-	if !reflect.DeepEqual(gist_forks, want) {
-		t.Errorf("Gists.ListForks returned %+v, want %+v", gist_forks, want)
+	if !reflect.DeepEqual(gistforks, want) {
+		t.Errorf("Gists.ListForks returned %+v, want %+v", gistforks, want)
 	}
 }
 
