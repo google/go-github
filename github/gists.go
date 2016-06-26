@@ -54,10 +54,11 @@ func (g GistFile) String() string {
 
 // GistCommit represents a commit on a gist.
 type GistCommit struct {
-	Version      *string        `json:"version,omitempty"`
-	User         *User          `json:"user,omitempty"`
-	ChangeStatus map[string]int `json:"change_status,omitempty"`
-	CommitedAt   *Timestamp     `json:"commited_at,omitempty"`
+	URL          *string      `json:"url,omitempty"`
+	Version      *string      `json:"version,omitempty"`
+	User         *User        `json:"user,omitempty"`
+	ChangeStatus *CommitStats `json:"change_status,omitempty"`
+	CommitedAt   *Timestamp   `json:"commited_at,omitempty"`
 }
 
 func (gc GistCommit) String() string {
@@ -66,6 +67,7 @@ func (gc GistCommit) String() string {
 
 // GistFork represents a fork of a gist.
 type GistFork struct {
+	URL       *string    `json:"url,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	ID        *string    `json:"id,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`

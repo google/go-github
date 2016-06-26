@@ -291,6 +291,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		fmt.Fprint(w, `
 		  [
 		    {
+		      "url": "https://api.github.com/gists/1/1",
 		      "version": "1",
 		      "user": {
 		        "id": 1
@@ -312,13 +313,14 @@ func TestGistsService_ListCommits(t *testing.T) {
 	}
 
 	want := []*GistCommit{{
+		URL:        String("https://api.github.com/gists/1/1"),
 		Version:    String("1"),
 		User:       &User{ID: Int(1)},
 		CommitedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
-		ChangeStatus: map[string]int{
-			"deletions": 0,
-			"additions": 180,
-			"total":     180,
+		ChangeStatus: &CommitStats{
+			Additions: Int(180),
+			Deletions: Int(0),
+			Total:     Int(180),
 		}}}
 
 	if !reflect.DeepEqual(gistCommits, want) {
@@ -453,7 +455,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		testFormValues(t, r, nil)
 		fmt.Fprint(w, `
 		  [
-		    {"user": {"id": 1},
+		    {"url": "https://api.github.com/gists/1",
+		     "user": {"id": 1},
 		     "id": "1",
 		     "created_at": "2010-01-01T00:00:00Z",
 		     "updated_at": "2013-01-01T00:00:00Z"
@@ -468,6 +471,7 @@ func TestGistsService_ListForks(t *testing.T) {
 	}
 
 	want := []*GistFork{{
+		URL:       String("https://api.github.com/gists/1"),
 		ID:        String("1"),
 		User:      &User{ID: Int(1)},
 		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},

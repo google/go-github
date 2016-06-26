@@ -33,7 +33,7 @@ func (r RepositoryCommit) String() string {
 	return Stringify(r)
 }
 
-// CommitStats represents the number of additions / deletions from a file in a given RepositoryCommit.
+// CommitStats represents the number of additions / deletions from a file in a given RepositoryCommit or GistCommit.
 type CommitStats struct {
 	Additions *int `json:"additions,omitempty"`
 	Deletions *int `json:"deletions,omitempty"`
