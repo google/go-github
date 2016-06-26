@@ -85,6 +85,20 @@ func (a AuthorizationApp) String() string {
 	return Stringify(a)
 }
 
+// Grant represents an OAuth application that has been granted access to an account.
+type Grant struct {
+	ID        *int              `json:"id,omitempty"`
+	URL       *string           `json:"url,omitempty"`
+	App       *AuthorizationApp `json:"app,omitempty"`
+	CreatedAt *Timestamp        `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp        `json:"updated_at,omitempty"`
+	Scopes    []string          `json:"scopes,omitempty"`
+}
+
+func (g Grant) String() string {
+	return Stringify(g)
+}
+
 // AuthorizationRequest represents a request to create an authorization.
 type AuthorizationRequest struct {
 	Scopes       []Scope `json:"scopes,omitempty"`
@@ -318,6 +332,70 @@ func (s *AuthorizationsService) Revoke(clientID string, token string) (*Response
 	if err != nil {
 		return nil, err
 	}
+
+	return s.client.Do(req, nil)
+}
+
+// ListGrants lists the set of OAuth applications that have been granted
+// access to a user's account. This will return one entry for each application
+// that has been granted access to the account, regardless of the number of
+// tokens an application has generated for the user.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#list-your-grants
+func (s *AuthorizationsService) ListGrants() ([]*Grant, *Response, error) {
+	req, err := s.client.NewRequest("GET", "applications/grants", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeOAuthGrantAuthorizationsPreview)
+
+	grants := []*Grant{}
+	resp, err := s.client.Do(req, &grants)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return grants, resp, err
+}
+
+// GetGrant gets a single OAuth application grant.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#get-a-single-grant
+func (s *AuthorizationsService) GetGrant(id int) (*Grant, *Response, error) {
+	u := fmt.Sprintf("applications/grants/%d", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeOAuthGrantAuthorizationsPreview)
+
+	grant := new(Grant)
+	resp, err := s.client.Do(req, grant)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return grant, resp, err
+}
+
+// DeleteGrant deletes an OAuth application grant. Deleting an application's
+// grant will also delete all OAuth tokens associated with the application for
+// the user.
+//
+// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#delete-a-grant
+func (s *AuthorizationsService) DeleteGrant(id int) (*Response, error) {
+	u := fmt.Sprintf("applications/grants/%d", id)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeOAuthGrantAuthorizationsPreview)
 
 	return s.client.Do(req, nil)
 }
