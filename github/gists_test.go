@@ -289,21 +289,24 @@ func TestGistsService_ListCommits(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, nil)
 		fmt.Fprint(w, `
-			[
-				{"version": "1",
-				 "user": {"id": 1},
-				 "change_status": {
-				 	"deletions": 0,
-				 	"additions": 180,
-				 	"total": 180
-				 },
-				 "commited_at": "2010-01-01T00:00:00Z"
-				}
-			]
+		  [
+		    {
+		      "version": "1",
+		      "user": {
+		        "id": 1
+		      },
+		      "change_status": {
+		        "deletions": 0,
+		        "additions": 180,
+		        "total": 180
+		      },
+		      "commited_at": "2010-01-01T00:00:00Z"
+		    }
+		  ]
 		`)
 	})
 
-	gistcommits, _, err := client.Gists.ListCommits("1")
+	gistCommits, _, err := client.Gists.ListCommits("1")
 	if err != nil {
 		t.Errorf("Gists.ListCommits returned error: %v", err)
 	}
@@ -318,8 +321,8 @@ func TestGistsService_ListCommits(t *testing.T) {
 			"total":     180,
 		}}}
 
-	if !reflect.DeepEqual(gistcommits, want) {
-		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistcommits, want)
+	if !reflect.DeepEqual(gistCommits, want) {
+		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistCommits, want)
 	}
 }
 
@@ -449,17 +452,17 @@ func TestGistsService_ListForks(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, nil)
 		fmt.Fprint(w, `
-			[
-				{"user": {"id": 1},
-				 "id": "1",
-				 "created_at": "2010-01-01T00:00:00Z",
-				 "updated_at": "2013-01-01T00:00:00Z"
-				}
-			]
+		  [
+		    {"user": {"id": 1},
+		     "id": "1",
+		     "created_at": "2010-01-01T00:00:00Z",
+		     "updated_at": "2013-01-01T00:00:00Z"
+		    }
+		  ]
 		`)
 	})
 
-	gistforks, _, err := client.Gists.ListForks("1")
+	gistForks, _, err := client.Gists.ListForks("1")
 	if err != nil {
 		t.Errorf("Gists.ListForks returned error: %v", err)
 	}
@@ -470,8 +473,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2013, 1, 1, 00, 00, 00, 0, time.UTC)}}}
 
-	if !reflect.DeepEqual(gistforks, want) {
-		t.Errorf("Gists.ListForks returned %+v, want %+v", gistforks, want)
+	if !reflect.DeepEqual(gistForks, want) {
+		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
 }
 
