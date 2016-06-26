@@ -52,6 +52,29 @@ func (g GistFile) String() string {
 	return Stringify(g)
 }
 
+// GistCommit represents a commit on a gist.
+type GistCommit struct {
+	Version      *string        `json:"version,omitempty"`
+	User         *User          `json:"user,omitempty"`
+	ChangeStatus map[string]int `json:"change_status,omitempty"`
+	CommitedAt   *Timestamp     `json:"commited_at,omitempty"`
+}
+
+func (gc GistCommit) String() string {
+	return Stringify(gc)
+}
+
+type GistFork struct {
+	User      *User      `json:"user, omitempty"`
+	ID        *string    `json:"id,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+}
+
+func (gf GistFork) String() string {
+	return Stringify(gf)
+}
+
 // GistListOptions specifies the optional parameters to the
 // GistsService.List, GistsService.ListAll, and GistsService.ListStarred methods.
 type GistListOptions struct {
@@ -211,6 +234,29 @@ func (s *GistsService) Edit(id string, gist *Gist) (*Gist, *Response, error) {
 	return g, resp, err
 }
 
+// List gist commits.
+//
+// Github API docs: https://developer.github.com/v3/gists/#list-gist-commits
+
+func (s *GistsService) ListCommits(id string) ([]*GistCommit, *Response, error) {
+	u := fmt.Sprintf("gists/%v/commits", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	gist_commits := new([]*GistCommit)
+
+	resp, err := s.client.Do(req, gist_commits)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *gist_commits, resp, err
+}
+
 // Delete a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#delete-a-gist
@@ -278,4 +324,27 @@ func (s *GistsService) Fork(id string) (*Gist, *Response, error) {
 	}
 
 	return g, resp, err
+}
+
+// List gist forks.
+//
+// Github API docs: https://developer.github.com/v3/gists/#list-gist-forks
+
+func (s *GistsService) ListForks(id string) ([]*GistFork, *Response, error) {
+	u := fmt.Sprintf("gists/%v/forks", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	gist_forks := new([]*GistFork)
+
+	resp, err := s.client.Do(req, gist_forks)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *gist_forks, resp, err
 }

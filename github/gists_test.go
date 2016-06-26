@@ -281,6 +281,48 @@ func TestGistsService_Edit_invalidID(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestGistsService_ListCommits(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, nil)
+		fmt.Fprint(w, `
+			[
+				{"version": "1",
+				 "user": {"id": 1},
+				 "change_status": {
+				 	"deletions": 0,
+				 	"additions": 180,
+				 	"total": 180
+				 },
+				 "commited_at": "2010-01-01T00:00:00Z"
+				}
+			]
+		`)
+	})
+
+	gist_commits, _, err := client.Gists.ListCommits("1")
+	if err != nil {
+		t.Errorf("Gists.ListCommits returned error: %v", err)
+	}
+
+	want := []*GistCommit{{
+		Version:    String("1"),
+		User:       &User{ID: Int(1)},
+		CommitedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
+		ChangeStatus: map[string]int{
+			"deletions": 0,
+			"additions": 180,
+			"total":     180,
+		}}}
+
+	if !reflect.DeepEqual(gist_commits, want) {
+		t.Errorf("Gists.ListCommits returned %+v, want %+v", gist_commits, want)
+	}
+}
+
 func TestGistsService_Delete(t *testing.T) {
 	setup()
 	defer teardown()
@@ -396,6 +438,40 @@ func TestGistsService_Fork(t *testing.T) {
 	want := &Gist{ID: String("2")}
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
+	}
+}
+
+func TestGistsService_ListForks(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, nil)
+		fmt.Fprint(w, `
+			[
+				{"user": {"id": 1},
+				 "id": "1",
+				 "created_at": "2010-01-01T00:00:00Z",
+				 "updated_at": "2013-01-01T00:00:00Z"
+				}
+			]
+		`)
+	})
+
+	gist_forks, _, err := client.Gists.ListForks("1")
+	if err != nil {
+		t.Errorf("Gists.ListForks returned error: %v", err)
+	}
+
+	want := []*GistFork{{
+		ID:        String("1"),
+		User:      &User{ID: Int(1)},
+		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2013, 1, 1, 00, 00, 00, 0, time.UTC)}}}
+
+	if !reflect.DeepEqual(gist_forks, want) {
+		t.Errorf("Gists.ListForks returned %+v, want %+v", gist_forks, want)
 	}
 }
 
