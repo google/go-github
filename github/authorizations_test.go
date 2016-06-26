@@ -249,3 +249,60 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 		t.Errorf("Authorizations.Revoke returned error: %v", err)
 	}
 }
+
+func TestListGrants(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/applications/grants", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
+		fmt.Fprint(w, `[{"id": 1}]`)
+	})
+
+	got, _, err := client.Authorizations.ListGrants()
+	if err != nil {
+		t.Errorf("OAuthAuthorizations.ListGrants returned error: %v", err)
+	}
+
+	want := []*Grant{{ID: Int(1)}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("OAuthAuthorizations.ListGrants = %+v, want %+v", got, want)
+	}
+}
+
+func TestGetGrant(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
+		fmt.Fprint(w, `{"id": 1}`)
+	})
+
+	got, _, err := client.Authorizations.GetGrant(1)
+	if err != nil {
+		t.Errorf("OAuthAuthorizations.GetGrant returned error: %v", err)
+	}
+
+	want := &Grant{ID: Int(1)}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("OAuthAuthorizations.GetGrant = %+v, want %+v", got, want)
+	}
+}
+
+func TestDeleteGrant(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
+	})
+
+	_, err := client.Authorizations.DeleteGrant(1)
+	if err != nil {
+		t.Errorf("OAuthAuthorizations.DeleteGrant returned error: %v", err)
+	}
+}
