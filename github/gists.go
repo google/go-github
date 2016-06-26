@@ -52,6 +52,32 @@ func (g GistFile) String() string {
 	return Stringify(g)
 }
 
+// GistCommit represents a commit on a gist.
+type GistCommit struct {
+	URL          *string      `json:"url,omitempty"`
+	Version      *string      `json:"version,omitempty"`
+	User         *User        `json:"user,omitempty"`
+	ChangeStatus *CommitStats `json:"change_status,omitempty"`
+	CommitedAt   *Timestamp   `json:"commited_at,omitempty"`
+}
+
+func (gc GistCommit) String() string {
+	return Stringify(gc)
+}
+
+// GistFork represents a fork of a gist.
+type GistFork struct {
+	URL       *string    `json:"url,omitempty"`
+	User      *User      `json:"user,omitempty"`
+	ID        *string    `json:"id,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+}
+
+func (gf GistFork) String() string {
+	return Stringify(gf)
+}
+
 // GistListOptions specifies the optional parameters to the
 // GistsService.List, GistsService.ListAll, and GistsService.ListStarred methods.
 type GistListOptions struct {
@@ -211,6 +237,25 @@ func (s *GistsService) Edit(id string, gist *Gist) (*Gist, *Response, error) {
 	return g, resp, err
 }
 
+// ListCommits lists commits of a gist.
+//
+// Github API docs: https://developer.github.com/v3/gists/#list-gist-commits
+func (s *GistsService) ListCommits(id string) ([]*GistCommit, *Response, error) {
+	u := fmt.Sprintf("gists/%v/commits", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	gistCommits := new([]*GistCommit)
+	resp, err := s.client.Do(req, gistCommits)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *gistCommits, resp, err
+}
+
 // Delete a gist.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/#delete-a-gist
@@ -278,4 +323,23 @@ func (s *GistsService) Fork(id string) (*Gist, *Response, error) {
 	}
 
 	return g, resp, err
+}
+
+// ListForks lists forks of a gist.
+//
+// Github API docs: https://developer.github.com/v3/gists/#list-gist-forks
+func (s *GistsService) ListForks(id string) ([]*GistFork, *Response, error) {
+	u := fmt.Sprintf("gists/%v/forks", id)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	gistForks := new([]*GistFork)
+	resp, err := s.client.Do(req, gistForks)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *gistForks, resp, err
 }
