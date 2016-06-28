@@ -14,9 +14,7 @@ import (
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/issues/
-type IssuesService struct {
-	client *Client
-}
+type IssuesService service
 
 // Issue represents a GitHub issue on a repository.
 type Issue struct {

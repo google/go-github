@@ -11,9 +11,7 @@ import "fmt"
 // GitHub API.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/
-type ReactionsService struct {
-	client *Client
-}
+type ReactionsService service
 
 // Reaction represents a GitHub reaction.
 type Reaction struct {
