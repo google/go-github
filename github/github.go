@@ -107,7 +107,8 @@ type Client struct {
 	rateMu     sync.Mutex
 	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
 	mostRecent rateLimitCategory
-	common     service
+
+	common service
 
 	// Services used for talking to different parts of the GitHub API.
 	Activity       *ActivityService
