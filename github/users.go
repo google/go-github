@@ -11,9 +11,7 @@ import "fmt"
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/users/
-type UsersService struct {
-	client *Client
-}
+type UsersService service
 
 // User represents a GitHub user.
 type User struct {

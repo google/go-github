@@ -11,9 +11,7 @@ import "fmt"
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/
-type RepositoriesService struct {
-	client *Client
-}
+type RepositoriesService service
 
 // Repository represents a GitHub repository.
 type Repository struct {

@@ -11,9 +11,7 @@ import "fmt"
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/pulls/
-type LicensesService struct {
-	client *Client
-}
+type LicensesService service
 
 // License represents an open source license.
 type License struct {

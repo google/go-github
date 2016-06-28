@@ -47,9 +47,7 @@ const (
 // an OAuth token.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/
-type AuthorizationsService struct {
-	client *Client
-}
+type AuthorizationsService service
 
 // Authorization represents an individual GitHub authorization.
 type Authorization struct {
