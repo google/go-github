@@ -14,9 +14,7 @@ import (
 // in the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/
-type OrganizationsService struct {
-	client *Client
-}
+type OrganizationsService service
 
 // Organization represents a GitHub organization account.
 type Organization struct {
