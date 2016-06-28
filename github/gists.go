@@ -14,9 +14,7 @@ import (
 // methods of the GitHub API.
 //
 // GitHub API docs: http://developer.github.com/v3/gists/
-type GistsService struct {
-	client *Client
-}
+type GistsService service
 
 // Gist represents a GitHub's gist.
 type Gist struct {
