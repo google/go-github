@@ -9,10 +9,11 @@ import "fmt"
 
 // Key represents a public SSH key used to authenticate a user or deploy script.
 type Key struct {
-	ID    *int    `json:"id,omitempty"`
-	Key   *string `json:"key,omitempty"`
-	URL   *string `json:"url,omitempty"`
-	Title *string `json:"title,omitempty"`
+	ID       *int    `json:"id,omitempty"`
+	Key      *string `json:"key,omitempty"`
+	URL      *string `json:"url,omitempty"`
+	Title    *string `json:"title,omitempty"`
+	ReadOnly *bool   `json:"read_only,omitempty"`
 }
 
 func (k Key) String() string {
