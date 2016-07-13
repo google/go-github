@@ -78,9 +78,13 @@ defined at <https://developer.github.com/v3/repos/hooks/> live in
 
 (These notes are mostly only for people merging in pull requests.)
 
-**First and foremost, try to maintain a clean, linear git history.**  With very
-few exceptions, running `git log` should not show a bunch of branching and
-merging.
+**Verify CLAs.** CLAs must be on file for the pull request submitter and commit
+author(s). Google's CLA verification system should handle this automatically
+and will set commit statuses as appropriate. If there's ever any question about
+a pull request, ask [willnorris](https://github.com/willnorris).
+
+**Always try to maintain a clean, linear git history.** With very few
+exceptions, running `git log` should not show a bunch of branching and merging.
 
 Never use the GitHub "merge" button, since it always creates a merge commit.
 Instead, check out the pull request locally ([these git aliases
@@ -99,14 +103,6 @@ any other "Fixes" lines for closing related issues.  If you forget to do this,
 you can also leave a comment on the pull request [like this][rebase-comment].
 If you made any other changes, it's worth noting that as well, [like
 this][modified-comment].
-
-If this is the first pull request from a new contributor, make sure they've
-signed a CLA and then add them to the AUTHORS and CONTRIBUTORS file.  If they
-are contributing on behalf of a company, the individual goes in CONTRIBUTORS and
-the company goes in AUTHORS.  Contributors should never add themselves to these
-files.  If they try to, don't merge that commit.  These files should only ever
-be modified by project maintainers so that the git history of these files
-identifies who actually did the CLA verification.
 
 [git-aliases]: https://github.com/willnorris/dotfiles/blob/d640d010c23b1116bdb3d4dc12088ed26120d87d/git/.gitconfig#L13-L15
 [rebase-comment]: https://github.com/google/go-github/pull/277#issuecomment-183035491
