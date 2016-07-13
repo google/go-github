@@ -244,9 +244,6 @@ func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMultipleAssigneesPreview)
-
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
 	if err != nil {
@@ -265,9 +262,6 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMultipleAssigneesPreview)
 
 	i := new(Issue)
 	resp, err := s.client.Do(req, i)
