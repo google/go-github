@@ -109,7 +109,6 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&assignees)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeMultipleAssigneesPreview)
 		want := []string{"user1", "user2"}
 		if !reflect.DeepEqual(assignees.Assignees, want) {
 			t.Errorf("assignees = %+v, want %+v", assignees, want)
@@ -139,7 +138,6 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&assignees)
 
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMultipleAssigneesPreview)
 		want := []string{"user1", "user2"}
 		if !reflect.DeepEqual(assignees.Assignees, want) {
 			t.Errorf("assignees = %+v, want %+v", assignees, want)
