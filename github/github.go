@@ -220,9 +220,9 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
-	req.Header.Add("Accept", mediaTypeV3)
+	req.Header.Set("Accept", mediaTypeV3)
 	if c.UserAgent != "" {
-		req.Header.Add("User-Agent", c.UserAgent)
+		req.Header.Set("User-Agent", c.UserAgent)
 	}
 	return req, nil
 }
@@ -246,9 +246,9 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	if len(mediaType) == 0 {
 		mediaType = defaultMediaType
 	}
-	req.Header.Add("Content-Type", mediaType)
-	req.Header.Add("Accept", mediaTypeV3)
-	req.Header.Add("User-Agent", c.UserAgent)
+	req.Header.Set("Content-Type", mediaType)
+	req.Header.Set("Accept", mediaTypeV3)
+	req.Header.Set("User-Agent", c.UserAgent)
 	return req, nil
 }
 
@@ -756,7 +756,7 @@ func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error
 	req = cloneRequest(req) // per RoundTrip contract
 	req.SetBasicAuth(t.Username, t.Password)
 	if t.OTP != "" {
-		req.Header.Add(headerOTP, t.OTP)
+		req.Header.Set(headerOTP, t.OTP)
 	}
 	return t.transport().RoundTrip(req)
 }
