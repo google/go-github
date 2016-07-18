@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"time"
 
 	"testing"
 )
@@ -197,5 +198,20 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearchService_Qualifier(t *testing.T) {
+	now, _ := time.Parse("2006-01-02", "2016-01-01")
+	qualifier := &SearchQualifiers{In: "in", Size: 123, Created: &now}
+	opts := &SearchOptions{Qualifiers: qualifier}
+
+	q, err := buildQueryFromQualifier("f", opts)
+	if q != "f+in:in+size:123+created:2016-01-01T00:00:00Z" {
+		t.Fatalf("Qualifier builder should return correct result")
+	}
+
+	if err != nil {
+		t.Errorf("Qualifier builder return error: %v", err)
 	}
 }

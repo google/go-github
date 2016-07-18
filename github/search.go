@@ -6,7 +6,10 @@
 package github
 
 import (
+	"errors"
 	"fmt"
+	"reflect"
+	"time"
 
 	qs "github.com/google/go-querystring/query"
 )
@@ -16,6 +19,42 @@ import (
 //
 // GitHub API docs: http://developer.github.com/v3/search/
 type SearchService service
+
+type SearchQualifiers struct {
+	In        string     `qual:"in"`
+	Size      uint64     `qual:"size"`
+	Forks     uint64     `qual:"forks"`
+	Fork      string     `qual:"fork"`
+	Created   *time.Time `qual:"created"`
+	Pushed    *time.Time `qual:"pushed"`
+	Updated   *time.Time `qual:"pushed"`
+	Merged    *time.Time `qual:"merged"`
+	Closed    *time.Time `qual:"closed"`
+	User      string     `qual:"user"`
+	Repo      string     `qual:"repo"`
+	Repos     uint64     `qual:"repos"`
+	Language  string     `qual:"language"`
+	Stars     uint64     `qual:"stars"`
+	Path      string     `qual:"path"`
+	FileName  string     `qual:"filename"`
+	Extension string     `qual:"extension"`
+	Type      string     `qual:"type"`
+	Author    string     `qual:"author"`
+	Assignee  string     `qual:"assignee"`
+	Mentions  string     `qual:"mentions"`
+	Commenter string     `qual:"commenter"`
+	Involves  string     `qual:"involves"`
+	Team      string     `qual:"team"`
+	State     string     `qual:"state"`
+	Labels    string     `qual:"labels"`
+	No        string     `qual:"no"`
+	Is        string     `qual:"is"`
+	Status    string     `qual:"status"`
+	Head      string     `qual:"head"`
+	Base      string     `qual:"base"`
+	Comments  uint64     `qual:"comments"`
+	Followers uint64     `qual:"followers"`
+}
 
 // SearchOptions specifies optional parameters to the SearchService methods.
 type SearchOptions struct {
@@ -36,6 +75,8 @@ type SearchOptions struct {
 	TextMatch bool `url:"-"`
 
 	ListOptions
+
+	Qualifiers *SearchQualifiers `url:"-"`
 }
 
 // RepositoriesSearchResult represents the result of a repositories search.
@@ -138,6 +179,12 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	if err != nil {
 		return nil, err
 	}
+
+	query, err = buildQueryFromQualifier(query, opt)
+	if err != nil {
+		return nil, err
+	}
+
 	params.Add("q", query)
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 
@@ -153,4 +200,42 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	}
 
 	return s.client.Do(req, result)
+}
+
+// Helper function build query string from qualifiers
+func buildQueryFromQualifier(query string, opt *SearchOptions) (string, error) {
+	if opt == nil || opt.Qualifiers == nil {
+		return query, nil
+	}
+
+	typ, val := reflect.TypeOf(*(opt.Qualifiers)), reflect.ValueOf(*(opt.Qualifiers))
+	for i := 0; i < typ.NumField(); i++ {
+		tfield := typ.Field(i)
+		vfield := val.Field(i)
+
+		qualName := tfield.Tag.Get("qual")
+		value := vfield.Interface()
+
+		switch vfield.Kind() {
+		case reflect.Uint64:
+			if value.(uint64) > 0 {
+				query = fmt.Sprintf("%s+%s:%d", query, qualName, value)
+			}
+		case reflect.String:
+			if value.(string) != "" {
+				query = fmt.Sprintf("%s+%s:%s", query, qualName, value)
+			}
+		case reflect.Ptr: //current pointer is for time support only
+			v := value.(*time.Time)
+			if v != nil {
+				var iso8601 = "2006-01-02T15:04:05Z"
+				query = fmt.Sprintf("%s+%s:%s", query, qualName, (*v).Format(iso8601))
+			}
+		default:
+			fmt.Println(vfield.Kind())
+			return "", errors.New(fmt.Sprintf("Using unsupport type for qualifier: %s", qualName))
+		}
+	}
+
+	return query, nil
 }
