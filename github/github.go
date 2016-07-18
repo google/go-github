@@ -81,6 +81,9 @@ const (
 
 	// https://developer.github.com/changes/2016-04-21-oauth-authorizations-grants-api-preview/
 	mediaTypeOAuthGrantAuthorizationsPreview = "application/vnd.github.damage-preview+json"
+
+	// https://developer.github.com/changes/2016-07-06-github-pages-preiew-api/
+	mediaTypePagesPreview = "application/vnd.github.mister-fantastic-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
