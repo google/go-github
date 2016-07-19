@@ -223,6 +223,9 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	req.Header.Set("Accept", mediaTypeV3)
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
@@ -246,7 +249,7 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	}
 	req.ContentLength = size
 
-	if len(mediaType) == 0 {
+	if mediaType == "" {
 		mediaType = defaultMediaType
 	}
 	req.Header.Set("Content-Type", mediaType)
