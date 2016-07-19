@@ -220,6 +220,9 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	req.Header.Set("Accept", mediaTypeV3)
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
