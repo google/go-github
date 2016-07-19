@@ -246,7 +246,7 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	}
 	req.ContentLength = size
 
-	if len(mediaType) == 0 {
+	if mediaType == "" {
 		mediaType = defaultMediaType
 	}
 	req.Header.Set("Content-Type", mediaType)
