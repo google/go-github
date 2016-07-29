@@ -93,6 +93,9 @@ func TestTimstamp_MarshalReflexivity(t *testing.T) {
 		}
 		var got Timestamp
 		err = json.Unmarshal(data, &got)
+		if err != nil {
+			t.Errorf("%s: Unmarshal err=%v", tc.desc, err)
+		}
 		if !got.Equal(tc.data) {
 			t.Errorf("%s: %+v != %+v", tc.desc, got, data)
 		}
@@ -174,6 +177,9 @@ func TestWrappedTimstamp_MarshalReflexivity(t *testing.T) {
 		}
 		var got WrappedTimestamp
 		err = json.Unmarshal(bytes, &got)
+		if err != nil {
+			t.Errorf("%s: Unmarshal err=%v", tc.desc, err)
+		}
 		if !got.Time.Equal(tc.data.Time) {
 			t.Errorf("%s: %+v != %+v", tc.desc, got, tc.data)
 		}
