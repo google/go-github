@@ -638,6 +638,8 @@ func category(path string) rateLimitCategory {
 	}
 }
 
+// RateLimit returns the core rate limit for the current client.
+//
 // Deprecated: RateLimit is deprecated, use RateLimits instead.
 func (c *Client) RateLimit() (*Rate, *Response, error) {
 	limits, resp, err := c.RateLimits()
