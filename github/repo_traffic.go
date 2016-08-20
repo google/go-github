@@ -72,12 +72,8 @@ type Clones struct {
 // ListReferrers list the top 10 referrers over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-referrers
-func (s *RepositoriesService) ListReferrers(owner, repo string, opt *ListOptions) ([]*Referrer, *Response, error) {
+func (s *RepositoriesService) ListReferrers(owner, repo string) ([]*Referrer, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/referrers", owner, repo)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -99,12 +95,8 @@ func (s *RepositoriesService) ListReferrers(owner, repo string, opt *ListOptions
 // ListPaths list the top 10 popular content over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-paths
-func (s *RepositoriesService) ListPaths(owner, repo string, opt *ListOptions) ([]*Path, *Response, error) {
+func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/paths", owner, repo)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
