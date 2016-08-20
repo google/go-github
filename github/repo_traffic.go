@@ -83,13 +83,13 @@ func (s *RepositoriesService) ListReferrers(owner, repo string) ([]*Referrer, *R
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	var referrers []*Referrer
+	referrers := new([]*Referrer)
 	resp, err := s.client.Do(req, &referrers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return referrers, resp, err
+	return *referrers, resp, err
 }
 
 // ListPaths list the top 10 popular content over the last 14 days.
@@ -106,13 +106,13 @@ func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response,
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	var paths []*Path
+	var paths = new([]*Path)
 	resp, err := s.client.Do(req, &paths)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return paths, resp, err
+	return *paths, resp, err
 }
 
 // ListViews get total number of views for the last 14 days and breaks it down either per day or week.
@@ -133,7 +133,7 @@ func (s *RepositoriesService) ListViews(owner, repo string, opt *BreakdownOption
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	var views *Views
+	views := new(Views)
 	resp, err := s.client.Do(req, &views)
 	if err != nil {
 		return nil, resp, err
@@ -160,7 +160,7 @@ func (s *RepositoriesService) ListClones(owner, repo string, opt *BreakdownOptio
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	var clones *Clones
+	clones := new(Clones)
 	resp, err := s.client.Do(req, &clones)
 	if err != nil {
 		return nil, resp, err
