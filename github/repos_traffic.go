@@ -33,7 +33,6 @@ type Time struct {
 	time.Time
 }
 
-
 // UnmarshalJSON parse unix timestamp
 func (t *Time) UnmarshalJSON(b []byte) error {
 	s := string(b)
@@ -58,7 +57,6 @@ type Views struct {
 	Views   *[]Datapoint `json:"views,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
-
 }
 
 // Clones represent information about clones on the last 14 days
@@ -66,7 +64,6 @@ type Clones struct {
 	Clones  *[]Datapoint `json:"clones,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
-
 }
 
 // ListReferrers list the top 10 referrers over the last 14 days.
