@@ -53,13 +53,22 @@ type Datapoint struct {
 	Uniques   *int  `json:"uniques,omitempty"`
 }
 
-// Views represent information avout views on the last 14 days
+// Views represent information about views on the last 14 days
 type Views struct {
 	Views   *[]Datapoint `json:"views,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
 
 }
+
+// Clones represent information about clones on the last 14 days
+type Clones struct {
+	Clones  *[]Datapoint `json:"clones,omitempty"`
+	Count   *int         `json:"count,omitempty"`
+	Uniques *int         `json:"uniques,omitempty"`
+
+}
+
 // ListReferrers list the top 10 referrers over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-referrers
@@ -114,7 +123,7 @@ func (s *RepositoriesService) ListPaths(owner, repo string, opt *ListOptions) ([
 	return paths, resp, err
 }
 
-// ListViews get total number of views and breaks it down either per day or week for the last 14 days..
+// ListViews get total number of views for the last 14 days and breaks it down either per day or week.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
 func (s *RepositoriesService) ListViews(owner, repo string, opt *BreakdownOptions) (*Views, *Response, error) {
@@ -139,4 +148,31 @@ func (s *RepositoriesService) ListViews(owner, repo string, opt *BreakdownOption
 	}
 
 	return views, resp, err
+}
+
+// ListClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
+func (s *RepositoriesService) ListClones(owner, repo string, opt *BreakdownOptions) (*Clones, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeTrafficPreview)
+
+	var clones *Clones
+	resp, err := s.client.Do(req, &clones)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return clones, resp, err
 }
