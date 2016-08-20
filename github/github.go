@@ -147,6 +147,11 @@ type UploadOptions struct {
 	Name string `url:"name,omitempty"`
 }
 
+// BreakdownOptions specifies the parameters to methods that support breakdown per day or week.
+type BreakdownOptions struct {
+	Per string `url:"per,omitempty"`
+}
+
 // addOptions adds the parameters in opt as URL query parameters to s.  opt
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opt interface{}) (string, error) {
