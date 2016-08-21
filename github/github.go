@@ -86,7 +86,7 @@ const (
 	mediaTypePagesPreview = "application/vnd.github.mister-fantastic-preview+json"
 
 	// https://developer.github.com/v3/repos/traffic/
-	mediaTypeTrafficPreview = "application/vnd.github.spiderman-preview"
+	mediaTypeTrafficPreview = "application/vnd.github.spiderman-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -147,8 +147,9 @@ type UploadOptions struct {
 	Name string `url:"name,omitempty"`
 }
 
-// BreakdownOptions specifies the parameters to methods that support breakdown per day or week.
-type BreakdownOptions struct {
+// TrafficBreakdownOptions specifies the parameters to methods that support breakdown per day or week.
+// Can be one of: day, week. Default: day.
+type TrafficBreakdownOptions struct {
 	Per string `url:"per,omitempty"`
 }
 

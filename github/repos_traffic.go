@@ -11,14 +11,14 @@ import (
 	"time"
 )
 
-// Referrer represent a referrer information
+// Referrer represent a referrer information.
 type Referrer struct {
 	Referrer *string `json:"referrer,omitempty"`
 	Count    *int    `json:"count,omitempty"`
 	Uniques  *int    `json:"uniques,omitempty"`
 }
 
-// Path represent a referrer information
+// Path represent a referrer information.
 type Path struct {
 	Path    *string `json:"path,omitempty"`
 	Title   *string `json:"title,omitempty"`
@@ -26,14 +26,14 @@ type Path struct {
 	Uniques *int    `json:"uniques,omitempty"`
 }
 
-// Time represents a time stamp as in a datapoint
+// Time represents a time stamp as in a datapoint.
 //
-// This is necessary becausegithub uses unix timestamp and not YYYY-MM-DDTHH:MM:SSZ
+// This is necessary because github uses milliseconds timestamp.
 type Time struct {
 	time.Time
 }
 
-// UnmarshalJSON parse unix timestamp
+// UnmarshalJSON parse unix timestamp.
 func (t *Time) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	i, err := strconv.ParseInt(s, 10, 64)
@@ -45,21 +45,21 @@ func (t *Time) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// Datapoint represent a view in views on clones
+// Datapoint represent a view in views on clones.
 type Datapoint struct {
 	Timestamp *Time `json:"timestamp,omitempty"`
 	Count     *int  `json:"count,omitempty"`
 	Uniques   *int  `json:"uniques,omitempty"`
 }
 
-// Views represent information about views on the last 14 days
+// Views represent information about views on the last 14 days.
 type Views struct {
 	Views   *[]Datapoint `json:"views,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
 }
 
-// Clones represent information about clones on the last 14 days
+// Clones represent information about clones on the last 14 days.
 type Clones struct {
 	Clones  *[]Datapoint `json:"clones,omitempty"`
 	Count   *int         `json:"count,omitempty"`
@@ -115,7 +115,7 @@ func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response,
 // ListViews get total number of views for the last 14 days and breaks it down either per day or week.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListViews(owner, repo string, opt *BreakdownOptions) (*Views, *Response, error) {
+func (s *RepositoriesService) ListViews(owner, repo string, opt *TrafficBreakdownOptions) (*Views, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/views", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -142,7 +142,7 @@ func (s *RepositoriesService) ListViews(owner, repo string, opt *BreakdownOption
 // ListClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListClones(owner, repo string, opt *BreakdownOptions) (*Clones, *Response, error) {
+func (s *RepositoriesService) ListClones(owner, repo string, opt *TrafficBreakdownOptions) (*Clones, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
