@@ -12,6 +12,33 @@ import (
 	"testing"
 )
 
+func TestRepositoriesService_ListReferrers(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("repos/1/2/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTrafficPreview)
+		fmt.Fprintf(w, `[{"referrer":"google.com",
+			 "Counts": 8,
+			 "uniques": 7}]`)
+	})
+	referrers, _, err := client.Repositories.ListReferrers("1", "2")
+	if err != nil {
+		t.Errorf("Repositories.ListPaths returned error: %+v", err)
+	}
+
+	want := []*Referrer{{
+		Referrer: String("google.com"),
+		Count:    Int(8),
+		Uniques:  Int(7),
+	}}
+	if !reflect.DeepEqual(referrers, want) {
+		t.Errorf("Repositories.ListReferrers returned %+v, want %+v", referrers, want)
+	}
+
+}
+
 func TestRepositoriesService_ListPaths(t *testing.T) {
 	setup()
 	defer teardown()
