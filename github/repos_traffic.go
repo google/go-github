@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2016 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-// Referrer represent a referrer information.
-type Referrer struct {
+// TrafficReferrer represent information about traffic from a referrer .
+type TrafficReferrer struct {
 	Referrer *string `json:"referrer,omitempty"`
 	Count    *int    `json:"count,omitempty"`
 	Uniques  *int    `json:"uniques,omitempty"`
 }
 
-// Path represent a referrer information.
-type Path struct {
+// TrafficPath represent information about the traffic on a path of the repo.
+type TrafficPath struct {
 	Path    *string `json:"path,omitempty"`
 	Title   *string `json:"title,omitempty"`
 	Count   *int    `json:"count,omitempty"`
@@ -45,22 +45,22 @@ func (t *Time) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// Datapoint represent a view in views on clones.
+// Datapoint represent information about a specific timestamp in views or clones list.
 type Datapoint struct {
 	Timestamp *Time `json:"timestamp,omitempty"`
 	Count     *int  `json:"count,omitempty"`
 	Uniques   *int  `json:"uniques,omitempty"`
 }
 
-// Views represent information about views on the last 14 days.
-type Views struct {
+// TrafficViews represent information about the number of views in the last 14 days.
+type TrafficViews struct {
 	Views   *[]Datapoint `json:"views,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
 }
 
-// Clones represent information about clones on the last 14 days.
-type Clones struct {
+// TrafficClones represent information about the number of clones in the last 14 days.
+type TrafficClones struct {
 	Clones  *[]Datapoint `json:"clones,omitempty"`
 	Count   *int         `json:"count,omitempty"`
 	Uniques *int         `json:"uniques,omitempty"`
@@ -72,10 +72,10 @@ type TrafficBreakdownOptions struct {
 	Per string `url:"per,omitempty"`
 }
 
-// ListReferrers list the top 10 referrers over the last 14 days.
+// ListTrafficReferrers list the top 10 referrers over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-referrers
-func (s *RepositoriesService) ListReferrers(owner, repo string) ([]*Referrer, *Response, error) {
+func (s *RepositoriesService) ListTrafficReferrers(owner, repo string) ([]*TrafficReferrer, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/referrers", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -86,19 +86,19 @@ func (s *RepositoriesService) ListReferrers(owner, repo string) ([]*Referrer, *R
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	referrers := new([]*Referrer)
-	resp, err := s.client.Do(req, &referrers)
+	trafficReferrers := new([]*TrafficReferrer)
+	resp, err := s.client.Do(req, &trafficReferrers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *referrers, resp, err
+	return *trafficReferrers, resp, err
 }
 
-// ListPaths list the top 10 popular content over the last 14 days.
+// ListTrafficPaths list the top 10 popular content over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-paths
-func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response, error) {
+func (s *RepositoriesService) ListTrafficPaths(owner, repo string) ([]*TrafficPath, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/paths", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -109,7 +109,7 @@ func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response,
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	var paths = new([]*Path)
+	var paths = new([]*TrafficPath)
 	resp, err := s.client.Do(req, &paths)
 	if err != nil {
 		return nil, resp, err
@@ -118,10 +118,10 @@ func (s *RepositoriesService) ListPaths(owner, repo string) ([]*Path, *Response,
 	return *paths, resp, err
 }
 
-// ListViews get total number of views for the last 14 days and breaks it down either per day or week.
+// ListTrafficViews get total number of views for the last 14 days and breaks it down either per day or week.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListViews(owner, repo string, opt *TrafficBreakdownOptions) (*Views, *Response, error) {
+func (s *RepositoriesService) ListTrafficViews(owner, repo string, opt *TrafficBreakdownOptions) (*TrafficViews, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/views", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -136,19 +136,19 @@ func (s *RepositoriesService) ListViews(owner, repo string, opt *TrafficBreakdow
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	views := new(Views)
-	resp, err := s.client.Do(req, &views)
+	trafficViews := new(TrafficViews)
+	resp, err := s.client.Do(req, &trafficViews)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return views, resp, err
+	return trafficViews, resp, err
 }
 
-// ListClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
+// ListTrafficClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListClones(owner, repo string, opt *TrafficBreakdownOptions) (*Clones, *Response, error) {
+func (s *RepositoriesService) ListTrafficClones(owner, repo string, opt *TrafficBreakdownOptions) (*TrafficClones, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -163,11 +163,11 @@ func (s *RepositoriesService) ListClones(owner, repo string, opt *TrafficBreakdo
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTrafficPreview)
 
-	clones := new(Clones)
-	resp, err := s.client.Do(req, &clones)
+	trafficClones := new(TrafficClones)
+	resp, err := s.client.Do(req, &trafficClones)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return clones, resp, err
+	return trafficClones, resp, err
 }

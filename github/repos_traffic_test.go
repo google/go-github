@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2016 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -13,11 +13,11 @@ import (
 	"time"
 )
 
-func TestRepositoriesService_ListReferrers(t *testing.T) {
+func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/1/2/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeTrafficPreview)
 		fmt.Fprintf(w, `[{
@@ -26,12 +26,12 @@ func TestRepositoriesService_ListReferrers(t *testing.T) {
 			"uniques": 3
  		}]`)
 	})
-	referrers, _, err := client.Repositories.ListReferrers("1", "2")
+	referrers, _, err := client.Repositories.ListTrafficReferrers("o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListPaths returned error: %+v", err)
 	}
 
-	want := []*Referrer{{
+	want := []*TrafficReferrer{{
 		Referrer: String("Google"),
 		Count:    Int(4),
 		Uniques:  Int(3),
@@ -42,11 +42,11 @@ func TestRepositoriesService_ListReferrers(t *testing.T) {
 
 }
 
-func TestRepositoriesService_ListPaths(t *testing.T) {
+func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/1/2/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeTrafficPreview)
 		fmt.Fprintf(w, `[{
@@ -56,12 +56,12 @@ func TestRepositoriesService_ListPaths(t *testing.T) {
 			"uniques": 2225
  		}]`)
 	})
-	paths, _, err := client.Repositories.ListPaths("1", "2")
+	paths, _, err := client.Repositories.ListTrafficPaths("o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListPaths returned error: %+v", err)
 	}
 
-	want := []*Path{{
+	want := []*TrafficPath{{
 		Path:    String("/github/hubot"),
 		Title:   String("github/hubot: A customizable life embetterment robot."),
 		Count:   Int(3542),
@@ -73,11 +73,11 @@ func TestRepositoriesService_ListPaths(t *testing.T) {
 
 }
 
-func TestRepositoriesService_ListViews(t *testing.T) {
+func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/1/2/traffic/views", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/traffic/views", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeTrafficPreview)
 		fmt.Fprintf(w, `{"count": 7,
@@ -89,12 +89,12 @@ func TestRepositoriesService_ListViews(t *testing.T) {
 		}]}`)
 	})
 
-	views, _, err := client.Repositories.ListViews("1", "2", nil)
+	views, _, err := client.Repositories.ListTrafficViews("o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPaths returned error: %+v", err)
 	}
 
-	want := &Views{
+	want := &TrafficViews{
 		Views: &[]Datapoint{{
 			Timestamp: &Time{time.Unix(1464710400, 0)},
 			Count:     Int(7),
@@ -110,11 +110,11 @@ func TestRepositoriesService_ListViews(t *testing.T) {
 
 }
 
-func TestRepositoriesService_ListClones(t *testing.T) {
+func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/1/2/traffic/clones", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/traffic/clones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeTrafficPreview)
 		fmt.Fprintf(w, `{"count": 7,
@@ -126,12 +126,12 @@ func TestRepositoriesService_ListClones(t *testing.T) {
 		}]}`)
 	})
 
-	clones, _, err := client.Repositories.ListClones("1", "2", nil)
+	clones, _, err := client.Repositories.ListTrafficClones("o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPaths returned error: %+v", err)
 	}
 
-	want := &Clones{
+	want := &TrafficClones{
 		Clones: &[]Datapoint{{
 			Timestamp: &Time{time.Unix(1464710400, 0)},
 			Count:     Int(7),
