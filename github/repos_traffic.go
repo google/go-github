@@ -54,14 +54,14 @@ type TrafficData struct {
 
 // TrafficViews represent information about the number of views in the last 14 days.
 type TrafficViews struct {
-	Views   *[]TrafficData `json:"views,omitempty"`
+	Views   []*TrafficData `json:"views,omitempty"`
 	Count   *int           `json:"count,omitempty"`
 	Uniques *int           `json:"uniques,omitempty"`
 }
 
 // TrafficClones represent information about the number of clones in the last 14 days.
 type TrafficClones struct {
-	Clones  *[]TrafficData `json:"clones,omitempty"`
+	Clones  []*TrafficData `json:"clones,omitempty"`
 	Count   *int           `json:"count,omitempty"`
 	Uniques *int           `json:"uniques,omitempty"`
 }
