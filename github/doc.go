@@ -23,7 +23,7 @@ Some API methods have optional parameters that can be passed. For example:
 	client := github.NewClient(nil)
 
 	// list recently updated repositories for org "github"
-	opt := &github.RepositoryListByOrgOptions{Type: "member"}
+	opt := &github.RepositoryListByOrgOptions{Type: "public"}
 	repos, _, err := client.Repositories.ListByOrg("github", opt)
 
 The services of a client divide the API into logical chunks and correspond to
