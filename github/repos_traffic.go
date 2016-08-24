@@ -66,6 +66,12 @@ type Clones struct {
 	Uniques *int         `json:"uniques,omitempty"`
 }
 
+// TrafficBreakdownOptions specifies the parameters to methods that support breakdown per day or week.
+// Can be one of: day, week. Default: day.
+type TrafficBreakdownOptions struct {
+	Per string `url:"per,omitempty"`
+}
+
 // ListReferrers list the top 10 referrers over the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#list-referrers
