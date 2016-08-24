@@ -45,8 +45,8 @@ func (t *TimestampMS) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// Datapoint represent information about a specific timestamp in views or clones list.
-type Datapoint struct {
+// TrafficData represent information about a specific timestamp in views or clones list.
+type TrafficData struct {
 	Timestamp *TimestampMS `json:"timestamp,omitempty"`
 	Count     *int         `json:"count,omitempty"`
 	Uniques   *int         `json:"uniques,omitempty"`
@@ -54,16 +54,16 @@ type Datapoint struct {
 
 // TrafficViews represent information about the number of views in the last 14 days.
 type TrafficViews struct {
-	Views   *[]Datapoint `json:"views,omitempty"`
-	Count   *int         `json:"count,omitempty"`
-	Uniques *int         `json:"uniques,omitempty"`
+	Views   *[]TrafficData `json:"views,omitempty"`
+	Count   *int           `json:"count,omitempty"`
+	Uniques *int           `json:"uniques,omitempty"`
 }
 
 // TrafficClones represent information about the number of clones in the last 14 days.
 type TrafficClones struct {
-	Clones  *[]Datapoint `json:"clones,omitempty"`
-	Count   *int         `json:"count,omitempty"`
-	Uniques *int         `json:"uniques,omitempty"`
+	Clones  *[]TrafficData `json:"clones,omitempty"`
+	Count   *int           `json:"count,omitempty"`
+	Uniques *int           `json:"uniques,omitempty"`
 }
 
 // TrafficBreakdownOptions specifies the parameters to methods that support breakdown per day or week.
