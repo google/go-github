@@ -96,7 +96,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 
 	want := &TrafficViews{
 		Views: &[]Datapoint{{
-			Timestamp: &Time{time.Unix(1464710400, 0)},
+			Timestamp: &TimestampMS{time.Unix(1464710400, 0)},
 			Count:     Int(7),
 			Uniques:   Int(6),
 		}},
@@ -133,7 +133,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 
 	want := &TrafficClones{
 		Clones: &[]Datapoint{{
-			Timestamp: &Time{time.Unix(1464710400, 0)},
+			Timestamp: &TimestampMS{time.Unix(1464710400, 0)},
 			Count:     Int(7),
 			Uniques:   Int(6),
 		}},

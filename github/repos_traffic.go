@@ -26,30 +26,30 @@ type TrafficPath struct {
 	Uniques *int    `json:"uniques,omitempty"`
 }
 
-// Time represents a time stamp as in a datapoint.
+// TimestampMS represents a timestamp as used in datapoint.
 //
-// This is necessary because github uses milliseconds timestamp.
-type Time struct {
+// It's only used to parse the result given by the API which are unix timestamp in milliseonds.
+type TimestampMS struct {
 	time.Time
 }
 
 // UnmarshalJSON parse unix timestamp.
-func (t *Time) UnmarshalJSON(b []byte) error {
+func (t *TimestampMS) UnmarshalJSON(b []byte) error {
 	s := string(b)
 	i, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		return err
 	}
 	// We can drop the reaminder as returned values are days and it will always be 0
-	*t = Time{time.Unix(i/1000, 0)}
+	*t = TimestampMS{time.Unix(i/1000, 0)}
 	return nil
 }
 
 // Datapoint represent information about a specific timestamp in views or clones list.
 type Datapoint struct {
-	Timestamp *Time `json:"timestamp,omitempty"`
-	Count     *int  `json:"count,omitempty"`
-	Uniques   *int  `json:"uniques,omitempty"`
+	Timestamp *TimestampMS `json:"timestamp,omitempty"`
+	Count     *int         `json:"count,omitempty"`
+	Uniques   *int         `json:"uniques,omitempty"`
 }
 
 // TrafficViews represent information about the number of views in the last 14 days.
