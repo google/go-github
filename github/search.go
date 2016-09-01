@@ -70,7 +70,7 @@ func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchR
 	return result, resp, err
 }
 
-// UsersSearchResult represents the result of an issues search.
+// UsersSearchResult represents the result of an users search.
 type UsersSearchResult struct {
 	Total             *int   `json:"total_count,omitempty"`
 	IncompleteResults *bool  `json:"incomplete_results,omitempty"`
