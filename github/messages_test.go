@@ -7,7 +7,9 @@ package github
 
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -76,6 +78,113 @@ func TestValidatePayload(t *testing.T) {
 		}
 		if string(got) != test.wantPayload {
 			t.Errorf("ValidatePayload = %q, want %q", got, test.wantPayload)
+		}
+	}
+}
+
+func TestParseWebHook(t *testing.T) {
+	tests := []struct {
+		payload     interface{}
+		messageType string
+	}{
+		{
+			payload:     &CommitCommentEvent{},
+			messageType: "commit_comment",
+		},
+		{
+			payload:     &CreateEvent{},
+			messageType: "create",
+		},
+		{
+			payload:     &DeleteEvent{},
+			messageType: "delete",
+		},
+		{
+			payload:     &DeploymentEvent{},
+			messageType: "deployment",
+		},
+
+		{
+			payload:     &DeploymentStatusEvent{},
+			messageType: "deployment_status",
+		},
+		{
+			payload:     &ForkEvent{},
+			messageType: "fork",
+		},
+		{
+			payload:     &GollumEvent{},
+			messageType: "gollum",
+		},
+		{
+			payload:     &IssueCommentEvent{},
+			messageType: "issue_comment",
+		},
+		{
+			payload:     &IssuesEvent{},
+			messageType: "issues",
+		},
+		{
+			payload:     &MemberEvent{},
+			messageType: "member",
+		},
+		{
+			payload:     &MembershipEvent{},
+			messageType: "membership",
+		},
+		{
+			payload:     &PageBuildEvent{},
+			messageType: "page_build",
+		},
+		{
+			payload:     &PublicEvent{},
+			messageType: "public",
+		},
+		{
+			payload:     &PullRequestEvent{},
+			messageType: "pull_request",
+		},
+		{
+			payload:     &PullRequestReviewCommentEvent{},
+			messageType: "pull_request_review_comment",
+		},
+		{
+			payload:     &PushEvent{},
+			messageType: "push",
+		},
+		{
+			payload:     &ReleaseEvent{},
+			messageType: "release",
+		},
+		{
+			payload:     &RepositoryEvent{},
+			messageType: "repository",
+		},
+		{
+			payload:     &StatusEvent{},
+			messageType: "status",
+		},
+		{
+			payload:     &TeamAddEvent{},
+			messageType: "team_add",
+		},
+		{
+			payload:     &WatchEvent{},
+			messageType: "watch",
+		},
+	}
+
+	for _, test := range tests {
+		p, err := json.Marshal(test.payload)
+		if err != nil {
+			t.Fatalf("Marshal(%#v): %v", test.payload, err)
+		}
+		got, err := ParseWebHook(test.messageType, p)
+		if err != nil {
+			t.Fatalf("ParseWebHook: %v", err)
+		}
+		if want := test.payload; !reflect.DeepEqual(got, want) {
+			t.Errorf("ParseWebHook(%#v, %#v) = %#v, want %#v", test.messageType, p, got, want)
 		}
 	}
 }
