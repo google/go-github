@@ -87,6 +87,9 @@ const (
 
 	// https://developer.github.com/v3/repos/traffic/
 	mediaTypeTrafficPreview = "application/vnd.github.spiderman-preview+json"
+
+	// https://developer.github.com/changes/2016-09-14-projects-api/
+	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
