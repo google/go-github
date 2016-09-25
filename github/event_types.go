@@ -146,6 +146,18 @@ type EditChange struct {
 	} `json:"body,omitempty"`
 }
 
+// IntegrationEvent is triggered when an integration is created or modified.
+// The Webhook event name is "integration_installation" or
+// "integration_installation_repositories".
+//
+// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
+type IntegrationEvent struct {
+	Action            *string       `json:"action,omitempty"`
+	Installation      *Installation `json:"installation,omitempty"`
+	RepositoryAdded   []*Repository `json:"repositories_added,omitempty"`
+	RepositoryRemoved []*Repository `json:"repositories_removed,omitempty"`
+}
+
 // IssueCommentEvent is triggered when an issue comment is created on an issue
 // or pull request.
 // The Webhook event name is "issue_comment".
