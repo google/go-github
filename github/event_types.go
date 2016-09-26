@@ -152,10 +152,14 @@ type EditChange struct {
 //
 // GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
 type IntegrationEvent struct {
-	Action            *string       `json:"action,omitempty"`
-	Installation      *Installation `json:"installation,omitempty"`
-	RepositoryAdded   []*Repository `json:"repositories_added,omitempty"`
-	RepositoryRemoved []*Repository `json:"repositories_removed,omitempty"`
+	// The action that was performed. Possible values for an "integration_installation"
+	// event are: "created", "deleted". Possible values for an "integration_installation_repositories"
+	// event are: "added", "removed".
+	Action              *string       `json:"action,omitempty"`
+	Installation        *Installation `json:"installation,omitempty"`
+	RepositoriesAdded   []*Repository `json:"repositories_added,omitempty"`
+	RepositoriesRemoved []*Repository `json:"repositories_removed,omitempty"`
+	Sender              *User         `json:"sender,omitempty"`
 }
 
 // IssueCommentEvent is triggered when an issue comment is created on an issue
