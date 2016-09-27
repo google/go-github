@@ -149,7 +149,7 @@ type EditChange struct {
 // IntegrationInstallationEvent is triggered when an integration is created or deleted.
 // The Webhook event name is "integration_installation".
 //
-// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
+// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/#integrationinstallationevent
 type IntegrationInstallationEvent struct {
 	// The action that was performed. Possible values for an "integration_installation"
 	// event are: "created", "deleted".
@@ -161,7 +161,7 @@ type IntegrationInstallationEvent struct {
 // IntegrationInstallationRepositoriesEvent is triggered when an integration repository
 // is added or removed. The Webhook event name is "integration_installation_repositories".
 //
-// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
+// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/#integrationinstallationrepositoriesevent
 type IntegrationInstallationRepositoriesEvent struct {
 	// The action that was performed. Possible values for an "integration_installation_repositories"
 	// event are: "added", "removed".
