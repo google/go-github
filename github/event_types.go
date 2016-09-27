@@ -159,7 +159,7 @@ type IntegrationInstallationEvent struct {
 }
 
 // IntegrationInstallationRepositoriesEvent is triggered when an integration repository
-// is added or rempved. The Webhook event name is "integration_installation_repositories".
+// is added or removed. The Webhook event name is "integration_installation_repositories".
 //
 // GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
 type IntegrationInstallationRepositoriesEvent struct {
