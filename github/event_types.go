@@ -146,20 +146,38 @@ type EditChange struct {
 	} `json:"body,omitempty"`
 }
 
-// IntegrationEvent is triggered when an integration is created or modified.
-// The Webhook event name is "integration_installation" or
-// "integration_installation_repositories".
+// IntegrationInstallationEvent is triggered when an integration is created or deleted.
+// The Webhook event name is "integration_installation".
 //
 // GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
-type IntegrationEvent struct {
+type IntegrationInstallationEvent struct {
 	// The action that was performed. Possible values for an "integration_installation"
-	// event are: "created", "deleted". Possible values for an "integration_installation_repositories"
+	// event are: "created", "deleted".
+	Action       *string       `json:"action,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// IntegrationInstallationRepositoriesEvent is triggered when an integration repository
+// is added or rempved. The Webhook event name is "integration_installation_repositories".
+//
+// GitHub docs: https://developer.github.com/early-access/integrations/webhooks/
+type IntegrationInstallationRepositoriesEvent struct {
+	// The action that was performed. Possible values for an "integration_installation_repositories"
 	// event are: "added", "removed".
 	Action              *string       `json:"action,omitempty"`
 	Installation        *Installation `json:"installation,omitempty"`
 	RepositoriesAdded   []*Repository `json:"repositories_added,omitempty"`
 	RepositoriesRemoved []*Repository `json:"repositories_removed,omitempty"`
 	Sender              *User         `json:"sender,omitempty"`
+}
+
+// Installation represents a GitHub integration installation.
+type Installation struct {
+	ID              *int    `json:"id,omitempty"`
+	Account         *User   `json:"account,omitempty"`
+	AccessTokensURL *string `json:"access_tokens_url,omitempty"`
+	RepositoriesURL *string `json:"repositories_url,omitempty"`
 }
 
 // IssueCommentEvent is triggered when an issue comment is created on an issue
