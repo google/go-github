@@ -90,6 +90,9 @@ const (
 
 	// https://developer.github.com/changes/2016-09-14-projects-api/
 	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
+
+	// https://developer.github.com/changes/2016-09-14-Integrations-Early-Access/
+	mediaTypeIntegrationPreview = "application/vnd.github.machine-man-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -120,6 +123,7 @@ type Client struct {
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
+	Integrations   *IntegrationsService
 	Issues         *IssuesService
 	Organizations  *OrganizationsService
 	PullRequests   *PullRequestsService
@@ -190,6 +194,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
+	c.Integrations = (*IntegrationsService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
