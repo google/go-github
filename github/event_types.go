@@ -172,14 +172,6 @@ type IntegrationInstallationRepositoriesEvent struct {
 	Sender              *User         `json:"sender,omitempty"`
 }
 
-// Installation represents a GitHub integration installation.
-type Installation struct {
-	ID              *int    `json:"id,omitempty"`
-	Account         *User   `json:"account,omitempty"`
-	AccessTokensURL *string `json:"access_tokens_url,omitempty"`
-	RepositoriesURL *string `json:"repositories_url,omitempty"`
-}
-
 // IssueCommentEvent is triggered when an issue comment is created on an issue
 // or pull request.
 // The Webhook event name is "issue_comment".
