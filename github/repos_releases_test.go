@@ -44,7 +44,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1,"author":{"login":"l"}}`)
 	})
 
 	release, resp, err := client.Repositories.GetRelease("o", "r", 1)
@@ -52,7 +52,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int(1)}
+	want := &RepositoryRelease{ID: Int(1), Author: &User{Login: String("l")}}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
