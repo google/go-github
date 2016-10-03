@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+// maxCommentLen is the maximum length of a comment that github will accept without a validation error.
+const maxCommentLen = 65536
+
 // IssueComment represents a comment left on an issue.
 type IssueComment struct {
 	ID        *int       `json:"id,omitempty"`
@@ -100,8 +103,13 @@ func (s *IssuesService) GetComment(owner string, repo string, id int) (*IssueCom
 
 // CreateComment creates a new comment on the specified issue.
 //
+// Comments longer than 65536 will return an error.
+//
 // GitHub API docs: http://developer.github.com/v3/issues/comments/#create-a-comment
 func (s *IssuesService) CreateComment(owner string, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
+	if comment != nil && comment.Body != nil && len(*comment.Body) > maxCommentLen {
+		return nil, nil, fmt.Errorf("body is too long (maximum is %d characters)", maxCommentLen)
+	}
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
