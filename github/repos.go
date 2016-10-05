@@ -48,8 +48,8 @@ type Repository struct {
 	Permissions      *map[string]bool `json:"permissions,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
-	License *License `json:"license,omitempty"`
-	LicenseTemplate *string `json:"license_template,omitempty"`	
+	License         *License `json:"license,omitempty"`
+	LicenseTemplate *string  `json:"license_template,omitempty"`
 
 	// Additional mutable fields when creating and editing a repository
 	Private      *bool `json:"private"`
