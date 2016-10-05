@@ -48,8 +48,7 @@ type Repository struct {
 	Permissions      *map[string]bool `json:"permissions,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
-	License         *License `json:"license,omitempty"`
-	LicenseTemplate *string  `json:"license_template,omitempty"`
+	License *License `json:"license,omitempty"`
 
 	// Additional mutable fields when creating and editing a repository
 	Private      *bool `json:"private"`
@@ -98,6 +97,10 @@ type Repository struct {
 	TagsURL          *string `json:"tags_url,omitempty"`
 	TreesURL         *string `json:"trees_url,omitempty"`
 	TeamsURL         *string `json:"teams_url,omitempty"`
+
+	// license and gitignore templates go in here. These are to be provided only while creating a repository
+	LicenseTemplate   *string `json:"license_template,omitempty"`
+	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
