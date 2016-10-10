@@ -363,7 +363,7 @@ func TestPullRequestsService_Merge(t *testing.T) {
 			}`)
 	})
 
-	options := &PullRequestOptions{Squash: true}
+	options := &PullRequestOptions{MergeMethod: "rebase"}
 	merge, _, err := client.PullRequests.Merge("o", "r", 1, "merging pull request", options)
 	if err != nil {
 		t.Errorf("PullRequests.Merge returned error: %v", err)

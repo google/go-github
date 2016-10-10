@@ -5,7 +5,10 @@
 
 package github
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
@@ -46,6 +49,9 @@ type Repository struct {
 	Source           *Repository      `json:"source,omitempty"`
 	Organization     *Organization    `json:"organization,omitempty"`
 	Permissions      *map[string]bool `json:"permissions,omitempty"`
+	AllowRebaseMerge *bool            `json:"allow_rebase_merge,omitempty"`
+	AllowSquashMerge *bool            `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit *bool            `json:"allow_merge_commit,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
@@ -286,7 +292,8 @@ func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, e
 
 	// TODO: remove custom Accept header when the license support fully launches
 	// https://developer.github.com/v3/licenses/#get-a-repositorys-license
-	req.Header.Set("Accept", mediaTypeLicensesPreview)
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	repository := new(Repository)
 	resp, err := s.client.Do(req, repository)
@@ -329,6 +336,9 @@ func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: Remove this preview header after API is fully vetted.
+	req.Header.Add("Accept", mediaTypeSquashPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(req, r)

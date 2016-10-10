@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -225,9 +226,10 @@ func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
 
+	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 

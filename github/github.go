@@ -68,6 +68,7 @@ const (
 	mediaTypeReactionsPreview = "application/vnd.github.squirrel-girl-preview"
 
 	// https://developer.github.com/changes/2016-04-01-squash-api-preview/
+	// https://developer.github.com/changes/2016-09-26-pull-request-merge-api-update/
 	mediaTypeSquashPreview = "application/vnd.github.polaris-preview+json"
 
 	// https://developer.github.com/changes/2016-04-04-git-signing-api-preview/
