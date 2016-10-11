@@ -93,6 +93,25 @@ func (s *RepositoriesService) GetLatestPagesBuild(owner string, repo string) (*P
 	return build, resp, err
 }
 
+// GetPageBuild fetches the specific build information for a GitHub pages site.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#list-a-specific-pages-build
+func (s *RepositoriesService) GetPageBuild(owner string, repo string, ID int) (*PagesBuild, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages/builds/%v", owner, repo, ID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	build := new(PagesBuild)
+	resp, err := s.client.Do(req, build)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return build, resp, err
+}
+
 // RequestPageBuild requests a build of a GitHub Pages site without needing to push new commit.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#request-a-page-build
