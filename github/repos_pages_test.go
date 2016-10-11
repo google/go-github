@@ -73,6 +73,26 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetPageBuild(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages/builds/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
+	})
+
+	build, _, err := client.Repositories.GetPageBuild("o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.GetPageBuild returned error: %v", err)
+	}
+
+	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
+	if !reflect.DeepEqual(build, want) {
+		t.Errorf("Repositories.GetPageBuild returned %+v, want %+v", build, want)
+	}
+}
+
 func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 	setup()
 	defer teardown()
