@@ -69,6 +69,8 @@ func (e *Event) Payload() (payload interface{}) {
 		payload = &PublicEvent{}
 	case "PullRequestEvent":
 		payload = &PullRequestEvent{}
+	case "PullRequestReviewEvent":
+		payload = &PullRequestReviewEvent{}
 	case "PullRequestReviewCommentEvent":
 		payload = &PullRequestReviewCommentEvent{}
 	case "PushEvent":
