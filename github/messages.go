@@ -55,6 +55,7 @@ var (
 		"milestone":                             "MilestoneEvent",
 		"page_build":                            "PageBuildEvent",
 		"public":                                "PublicEvent",
+		"pull_request_review":                   "PullRequestReviewEvent",
 		"pull_request_review_comment":           "PullRequestReviewCommentEvent",
 		"pull_request":                          "PullRequestEvent",
 		"push":                                  "PushEvent",
