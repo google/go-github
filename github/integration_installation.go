@@ -31,6 +31,7 @@ func (s *IntegrationsService) ListRepos(opt *ListOptions) ([]*Repository, *Respo
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	var r struct {
