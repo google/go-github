@@ -27,6 +27,10 @@ type RepositoryCommit struct {
 	Stats *CommitStats `json:"stats,omitempty"`
 	// Details about which files, and how this commit touched. Only filled in during GetCommit!
 	Files []CommitFile `json:"files,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	URL         *string `json:"url,omitempty"`
+	CommentsURL *string `json:"comments_url,omitempty"`
 }
 
 func (r RepositoryCommit) String() string {

@@ -459,17 +459,14 @@ type StatusEvent struct {
 	Branches    []*Branch `json:"branches,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	ID      *int    `json:"id,omitempty"`
-	Name    *string `json:"name,omitempty"`
-	Context *string `json:"context,omitempty"`
-	Commit  *struct {
-		SHA    *string          `json:"sha,omitempty"`
-		Commit *PushEventCommit `json:"commit,omitempty"`
-	}
-	CreatedAt *Timestamp  `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
-	Repo      *Repository `json:"repository,omitempty"`
-	Sender    *User       `json:"sender,omitempty"`
+	ID        *int              `json:"id,omitempty"`
+	Name      *string           `json:"name,omitempty"`
+	Context   *string           `json:"context,omitempty"`
+	Commit    *RepositoryCommit `json:"commit,omitempty"`
+	CreatedAt *Timestamp        `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp        `json:"updated_at,omitempty"`
+	Repo      *Repository       `json:"repository,omitempty"`
+	Sender    *User             `json:"sender,omitempty"`
 }
 
 // TeamAddEvent is triggered when a repository is added to a team.
