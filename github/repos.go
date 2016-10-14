@@ -56,6 +56,10 @@ type Repository struct {
 	HasWiki      *bool `json:"has_wiki"`
 	HasPages     *bool `json:"has_pages"`
 	HasDownloads *bool `json:"has_downloads"`
+
+	LicenseTemplate   *string `json:"license_template,omitempty"`
+	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
+
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int `json:"team_id"`
 
