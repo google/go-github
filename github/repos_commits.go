@@ -15,22 +15,20 @@ import (
 // Note that it's wrapping a Commit, so author/committer information is in two places,
 // but contain different details about them: in RepositoryCommit "github details", in Commit - "git details".
 type RepositoryCommit struct {
-	SHA       *string  `json:"sha,omitempty"`
-	Commit    *Commit  `json:"commit,omitempty"`
-	Author    *User    `json:"author,omitempty"`
-	Committer *User    `json:"committer,omitempty"`
-	Parents   []Commit `json:"parents,omitempty"`
-	Message   *string  `json:"message,omitempty"`
-	HTMLURL   *string  `json:"html_url,omitempty"`
+	SHA         *string  `json:"sha,omitempty"`
+	Commit      *Commit  `json:"commit,omitempty"`
+	Author      *User    `json:"author,omitempty"`
+	Committer   *User    `json:"committer,omitempty"`
+	Parents     []Commit `json:"parents,omitempty"`
+	Message     *string  `json:"message,omitempty"`
+	HTMLURL     *string  `json:"html_url,omitempty"`
+	URL         *string  `json:"url,omitempty"`
+	CommentsURL *string  `json:"comments_url,omitempty"`
 
 	// Details about how many changes were made in this commit. Only filled in during GetCommit!
 	Stats *CommitStats `json:"stats,omitempty"`
 	// Details about which files, and how this commit touched. Only filled in during GetCommit!
 	Files []CommitFile `json:"files,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	URL         *string `json:"url,omitempty"`
-	CommentsURL *string `json:"comments_url,omitempty"`
 }
 
 func (r RepositoryCommit) String() string {
