@@ -125,12 +125,20 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "issues",
 		},
 		{
+			payload:     &LabelEvent{},
+			messageType: "label",
+		},
+		{
 			payload:     &MemberEvent{},
 			messageType: "member",
 		},
 		{
 			payload:     &MembershipEvent{},
 			messageType: "membership",
+		},
+		{
+			payload:     &MilestoneEvent{},
+			messageType: "milestone",
 		},
 		{
 			payload:     &PageBuildEvent{},
