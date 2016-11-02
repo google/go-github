@@ -190,12 +190,12 @@ type IssueCommentEvent struct {
 	Sender  *User       `json:"sender,omitempty"`
 }
 
-// Triggered when a repository's label is created, edited, or deleted.
+// LabelEvent is triggered when a repository's label is created, edited, or deleted.
 // The Webhook event name is "label"
 //
 // GitHub docs: https://developer.github.com/v3/activity/events/types/#labelevent
 type LabelEvent struct {
-	//Action is the action that was performed. Possible values are:
+	// Action is the action that was performed. Possible values are:
 	// "created", "edited", "deleted"
 	Action *string `json:"action,omitempty"`
 	Label  *Label  `json:"label,omitempty"`
@@ -211,7 +211,7 @@ type LabelEvent struct {
 //
 // Github docs: https://developer.github.com/v3/activity/events/types/#milestoneevent
 type MilestoneEvent struct {
-	//Action is the action that was performed. Possible values are:
+	// Action is the action that was performed. Possible values are:
 	// "created", "closed", "opened", "edited", "deleted"
 	Action    *string    `json:"action,omitempty"`
 	Milestone *Milestone `json:"milestone,omitempty"`
