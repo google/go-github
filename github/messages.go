@@ -48,6 +48,8 @@ var (
 		"integration_installation":              "IntegrationInstallationEvent",
 		"integration_installation_repositories": "IntegrationInstallationRepositoriesEvent",
 		"issue_comment":                         "IssueCommentEvent",
+		"label":                                 "LabelEvent",
+		"milestone":                             "MilestoneEvent",
 		"issues":                                "IssuesEvent",
 		"member":                                "MemberEvent",
 		"membership":                            "MembershipEvent",
