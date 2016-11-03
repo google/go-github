@@ -201,9 +201,9 @@ type LabelEvent struct {
 	Label  *Label  `json:"label,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes *EditChange `json:"changes,omitempty"`
-	Repo    *Repository `json:"repository,omitempty"`
-	Sender  *User       `json:"sender,omitempty"`
+	Changes *EditChange   `json:"changes,omitempty"`
+	Repo    *Repository   `json:"repository,omitempty"`
+	Org     *Organization `json:"organization,omitempty"`
 }
 
 // MilestoneEvent is triggered when a milestone is created, closed, opened, edited, or deleted.
@@ -217,9 +217,10 @@ type MilestoneEvent struct {
 	Milestone *Milestone `json:"milestone,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes *EditChange `json:"changes,omitempty"`
-	Repo    *Repository `json:"repository,omitempty"`
-	Sender  *User       `json:"sender,omitempty"`
+	Changes *EditChange   `json:"changes,omitempty"`
+	Repo    *Repository   `json:"repository,omitempty"`
+	Sender  *User         `json:"sender,omitempty"`
+	Org     *Organization `json:"organization,omitempty"`
 }
 
 // IssuesEvent is triggered when an issue is assigned, unassigned, labeled,
