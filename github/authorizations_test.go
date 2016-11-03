@@ -256,7 +256,6 @@ func TestListGrants(t *testing.T) {
 
 	mux.HandleFunc("/applications/grants", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
 		fmt.Fprint(w, `[{"id": 1}]`)
 	})
 
@@ -277,7 +276,6 @@ func TestGetGrant(t *testing.T) {
 
 	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
 		fmt.Fprint(w, `{"id": 1}`)
 	})
 
@@ -298,7 +296,6 @@ func TestDeleteGrant(t *testing.T) {
 
 	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeOAuthGrantAuthorizationsPreview)
 	})
 
 	_, err := client.Authorizations.DeleteGrant(1)
