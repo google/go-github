@@ -12,7 +12,8 @@ import (
 	"reflect"
 	"testing"
 )
-const(
+
+const (
 	projectsUrl = "/projects"
 )
 
