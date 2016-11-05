@@ -43,6 +43,27 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	}
 }
 
+func TestProjectsService_GetProject(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	project, _, err := client.Projects.GetProject(1)
+	if err != nil {
+		t.Errorf("Projects.GetProject returned error: %v", err)
+	}
+
+	want := &Project{ID: Int(1)}
+	if !reflect.DeepEqual(project, want) {
+		t.Errorf("Projects.GetProject returned %+v, want %+v", project, want)
+	}
+}
+
 func TestProjectsService_DeleteProject(t *testing.T) {
 	setup()
 	defer teardown()
