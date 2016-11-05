@@ -9,6 +9,10 @@ import (
 	"fmt"
 )
 
+const(
+	projectUrl = "/projects"
+)
+
 // Project represents a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/projects/
@@ -32,7 +36,7 @@ func (p Project) String() string {
 
 // ListProjects lists the projects for a repo.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#list-projects
+// GitHub API docs: https://developer.github.com/v3/projects/#list-repository-projects
 func (s *RepositoriesService) ListProjects(owner, repo string, opt *ListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	u, err := addOptions(u, opt)
@@ -59,9 +63,9 @@ func (s *RepositoriesService) ListProjects(owner, repo string, opt *ListOptions)
 
 // GetProject gets a GitHub Project for a repo.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#get-a-project
-func (s *RepositoriesService) GetProject(owner, repo string, number int) (*Project, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/%v", owner, repo, number)
+// GitHub API docs: https://developer.github.com/v3/projects/#get-a-project
+func (s *RepositoriesService) GetProject(id int) (*Project, *Response, error) {
+	u := fmt.Sprintf("%s/%v", projectUrl, id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -91,7 +95,7 @@ type ProjectOptions struct {
 
 // CreateProject creates a GitHub Project for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#create-a-project
+// GitHub API docs: https://developer.github.com/v3/projects/#create-a-repository-project
 func (s *RepositoriesService) CreateProject(owner, repo string, projectOptions *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	req, err := s.client.NewRequest("POST", u, projectOptions)
@@ -113,9 +117,9 @@ func (s *RepositoriesService) CreateProject(owner, repo string, projectOptions *
 
 // UpdateProject updates a repository project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#update-a-project
-func (s *RepositoriesService) UpdateProject(owner, repo string, number int, projectOptions *ProjectOptions) (*Project, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/%v", owner, repo, number)
+// GitHub API docs: https://developer.github.com/v3/projects/#update-a-project
+func (s *RepositoriesService) UpdateProject(id int, projectOptions *ProjectOptions) (*Project, *Response, error) {
+	u := fmt.Sprintf("%s/%v", projectUrl, id)
 	req, err := s.client.NewRequest("PATCH", u, projectOptions)
 	if err != nil {
 		return nil, nil, err
@@ -135,9 +139,9 @@ func (s *RepositoriesService) UpdateProject(owner, repo string, number int, proj
 
 // DeleteProject deletes a GitHub Project from a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#delete-a-project
-func (s *RepositoriesService) DeleteProject(owner, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/%v", owner, repo, number)
+// GitHub API docs: https://developer.github.com/v3/projects/#delete-a-project
+func (s *RepositoriesService) DeleteProject(id int) (*Response, error) {
+	u := fmt.Sprintf("%s/%v", projectUrl, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -162,9 +166,9 @@ type ProjectColumn struct {
 
 // ListProjectColumns lists the columns of a GitHub Project for a repo.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#list-columns
-func (s *RepositoriesService) ListProjectColumns(owner, repo string, number int, opt *ListOptions) ([]*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/%v/columns", owner, repo, number)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#list-project-columns
+func (s *RepositoriesService) ListProjectColumns(projectId int, opt *ListOptions) ([]*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("%s/%v/columns", projectUrl, projectId)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -189,9 +193,9 @@ func (s *RepositoriesService) ListProjectColumns(owner, repo string, number int,
 
 // GetProjectColumn gets a column of a GitHub Project for a repo.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#get-a-column
-func (s *RepositoriesService) GetProjectColumn(owner, repo string, columnID int) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#get-a-project-column
+func (s *RepositoriesService) GetProjectColumn(id int) (*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("%s/columns/%v", projectUrl, id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -219,9 +223,9 @@ type ProjectColumnOptions struct {
 
 // CreateProjectColumn creates a column for the specified (by number) project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#create-a-column
-func (s *RepositoriesService) CreateProjectColumn(owner, repo string, number int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/%v/columns", owner, repo, number)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#create-a-project-column
+func (s *RepositoriesService) CreateProjectColumn(projectId int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("%s/%v/columns", projectUrl, projectId)
 	req, err := s.client.NewRequest("POST", u, columnOptions)
 	if err != nil {
 		return nil, nil, err
@@ -241,9 +245,9 @@ func (s *RepositoriesService) CreateProjectColumn(owner, repo string, number int
 
 // UpdateProjectColumn updates a column of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#update-a-column
-func (s *RepositoriesService) UpdateProjectColumn(owner, repo string, columnID int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#update-a-project-column
+func (s *RepositoriesService) UpdateProjectColumn(columnID int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("%s/columns/%v", projectUrl, columnID)
 	req, err := s.client.NewRequest("PATCH", u, columnOptions)
 	if err != nil {
 		return nil, nil, err
@@ -263,9 +267,9 @@ func (s *RepositoriesService) UpdateProjectColumn(owner, repo string, columnID i
 
 // DeleteProjectColumn deletes a column from a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#delete-a-column
-func (s *RepositoriesService) DeleteProjectColumn(owner, repo string, columnID int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#delete-a-project-column
+func (s *RepositoriesService) DeleteProjectColumn(columnID int) (*Response, error) {
+	u := fmt.Sprintf("%s/columns/%v", projectUrl, columnID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -287,9 +291,9 @@ type ProjectColumnMoveOptions struct {
 
 // MoveProjectColumn moves a column within a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#move-a-column
-func (s *RepositoriesService) MoveProjectColumn(owner, repo string, columnID int, moveOptions *ProjectColumnMoveOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v/moves", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/columns/#move-a-project-column
+func (s *RepositoriesService) MoveProjectColumn(columnID int, moveOptions *ProjectColumnMoveOptions) (*Response, error) {
+	u := fmt.Sprintf("%s/columns/%v/moves", projectUrl, columnID)
 	req, err := s.client.NewRequest("POST", u, moveOptions)
 	if err != nil {
 		return nil, err
@@ -315,9 +319,9 @@ type ProjectCard struct {
 
 // ListProjectCards lists the cards in a column of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#list-projects-cards
-func (s *RepositoriesService) ListProjectCards(owner, repo string, columnID int, opt *ListOptions) ([]*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v/cards", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#list-project-cards
+func (s *RepositoriesService) ListProjectCards(columnID int, opt *ListOptions) ([]*ProjectCard, *Response, error) {
+	u := fmt.Sprintf("%s/columns/%v/cards", projectUrl, columnID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -342,9 +346,9 @@ func (s *RepositoriesService) ListProjectCards(owner, repo string, columnID int,
 
 // GetProjectCard gets a card in a column of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#get-a-project-card
-func (s *RepositoriesService) GetProjectCard(owner, repo string, columnID int) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/cards/%v", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#get-a-project-card
+func (s *RepositoriesService) GetProjectCard(columnID int) (*ProjectCard, *Response, error) {
+	u := fmt.Sprintf("%s/columns/cards/%v", projectUrl, columnID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -377,9 +381,9 @@ type ProjectCardOptions struct {
 
 // CreateProjectCard creates a card in the specified column of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#create-a-project-card
-func (s *RepositoriesService) CreateProjectCard(owner, repo string, columnID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/%v/cards", owner, repo, columnID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#create-a-project-card
+func (s *RepositoriesService) CreateProjectCard(columnID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
+	u := fmt.Sprintf("%s/columns/%v/cards", projectUrl, columnID)
 	req, err := s.client.NewRequest("POST", u, cardOptions)
 	if err != nil {
 		return nil, nil, err
@@ -399,9 +403,9 @@ func (s *RepositoriesService) CreateProjectCard(owner, repo string, columnID int
 
 // UpdateProjectCard updates a card of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#update-a-project-card
-func (s *RepositoriesService) UpdateProjectCard(owner, repo string, cardID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/cards/%v", owner, repo, cardID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#update-a-project-card
+func (s *RepositoriesService) UpdateProjectCard(cardID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
+	u := fmt.Sprintf("%s/columns/cards/%v", projectUrl, cardID)
 	req, err := s.client.NewRequest("PATCH", u, cardOptions)
 	if err != nil {
 		return nil, nil, err
@@ -421,9 +425,9 @@ func (s *RepositoriesService) UpdateProjectCard(owner, repo string, cardID int, 
 
 // DeleteProjectCard deletes a card from a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#delete-a-project-card
-func (s *RepositoriesService) DeleteProjectCard(owner, repo string, cardID int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/cards/%v", owner, repo, cardID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#delete-a-project-card
+func (s *RepositoriesService) DeleteProjectCard(cardID int) (*Response, error) {
+	u := fmt.Sprintf("%s/columns/cards/%v", projectUrl, cardID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -449,9 +453,9 @@ type ProjectCardMoveOptions struct {
 
 // MoveProjectCard moves a card within a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/#move-a-project-card
-func (s *RepositoriesService) MoveProjectCard(owner, repo string, cardID int, moveOptions *ProjectCardMoveOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/projects/columns/cards/%v/moves", owner, repo, cardID)
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#move-a-project-card
+func (s *RepositoriesService) MoveProjectCard(cardID int, moveOptions *ProjectCardMoveOptions) (*Response, error) {
+	u := fmt.Sprintf("%s/columns/cards/%v/moves", projectUrl, cardID)
 	req, err := s.client.NewRequest("POST", u, moveOptions)
 	if err != nil {
 		return nil, err

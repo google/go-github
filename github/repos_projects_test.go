@@ -12,6 +12,9 @@ import (
 	"reflect"
 	"testing"
 )
+const(
+	projectsUrl = "/projects"
+)
 
 func TestRepositoriesService_ListProjects(t *testing.T) {
 	setup()
@@ -40,13 +43,13 @@ func TestRepositoriesService_GetProject(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("%s/1", projectsUrl), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Repositories.GetProject("o", "r", 1)
+	project, _, err := client.Repositories.GetProject(1)
 	if err != nil {
 		t.Errorf("Repositories.GetProject returned error: %v", err)
 	}
@@ -91,9 +94,10 @@ func TestRepositoriesService_UpdateProject(t *testing.T) {
 	setup()
 	defer teardown()
 
+	updateUrl := fmt.Sprintf("%s/1", projectsUrl)
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
 
-	mux.HandleFunc("/repos/o/r/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(updateUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -106,7 +110,7 @@ func TestRepositoriesService_UpdateProject(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Repositories.UpdateProject("o", "r", 1, input)
+	project, _, err := client.Repositories.UpdateProject(1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateProject returned error: %v", err)
 	}
@@ -121,12 +125,14 @@ func TestRepositoriesService_DeleteProject(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	deleteUrl := fmt.Sprintf("%s/1", projectsUrl)
+
+	mux.HandleFunc(deleteUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
-	_, err := client.Repositories.DeleteProject("o", "r", 1)
+	_, err := client.Repositories.DeleteProject(1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteProject returned error: %v", err)
 	}
@@ -136,7 +142,9 @@ func TestRepositoriesService_ListProjectColumns(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
+	columnsUrl := fmt.Sprintf("%s/1/columns", projectsUrl)
+
+	mux.HandleFunc(columnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"page": "2"})
@@ -144,7 +152,7 @@ func TestRepositoriesService_ListProjectColumns(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	columns, _, err := client.Repositories.ListProjectColumns("o", "r", 1, opt)
+	columns, _, err := client.Repositories.ListProjectColumns(1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListProjectColumns returned error: %v", err)
 	}
@@ -159,13 +167,15 @@ func TestRepositoriesService_GetProjectColumn(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
+	columnsUrl := fmt.Sprintf("%s/columns/1", projectsUrl)
+
+	mux.HandleFunc(columnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	column, _, err := client.Repositories.GetProjectColumn("o", "r", 1)
+	column, _, err := client.Repositories.GetProjectColumn(1)
 	if err != nil {
 		t.Errorf("Repositories.GetProjectColumn returned error: %v", err)
 	}
@@ -180,9 +190,10 @@ func TestRepositoriesService_CreateProjectColumn(t *testing.T) {
 	setup()
 	defer teardown()
 
+	createColumnsUrl := fmt.Sprintf("%s/1/columns", projectsUrl)
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
-	mux.HandleFunc("/repos/o/r/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(createColumnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -195,7 +206,7 @@ func TestRepositoriesService_CreateProjectColumn(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	column, _, err := client.Repositories.CreateProjectColumn("o", "r", 1, input)
+	column, _, err := client.Repositories.CreateProjectColumn(1, input)
 	if err != nil {
 		t.Errorf("Repositories.CreateProjectColumn returned error: %v", err)
 	}
@@ -210,9 +221,10 @@ func TestRepositoriesService_UpdateProjectColumn(t *testing.T) {
 	setup()
 	defer teardown()
 
+	updateColumnsUrl := fmt.Sprintf("%s/columns/1", projectsUrl)
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(updateColumnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -225,7 +237,7 @@ func TestRepositoriesService_UpdateProjectColumn(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	column, _, err := client.Repositories.UpdateProjectColumn("o", "r", 1, input)
+	column, _, err := client.Repositories.UpdateProjectColumn(1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateProjectColumn returned error: %v", err)
 	}
@@ -240,12 +252,14 @@ func TestRepositoriesService_DeleteProjectColumn(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
+	deleteColumnsUrl := fmt.Sprintf("%s/columns/1", projectsUrl)
+
+	mux.HandleFunc(deleteColumnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
-	_, err := client.Repositories.DeleteProjectColumn("o", "r", 1)
+	_, err := client.Repositories.DeleteProjectColumn(1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteProjectColumn returned error: %v", err)
 	}
@@ -255,9 +269,10 @@ func TestRepositoriesService_MoveProjectColumn(t *testing.T) {
 	setup()
 	defer teardown()
 
+	moveColumnsUrl := fmt.Sprintf("%s/columns/1/moves", projectsUrl)
 	input := &ProjectColumnMoveOptions{Position: "after:12345"}
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1/moves", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(moveColumnsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -268,7 +283,7 @@ func TestRepositoriesService_MoveProjectColumn(t *testing.T) {
 		}
 	})
 
-	_, err := client.Repositories.MoveProjectColumn("o", "r", 1, input)
+	_, err := client.Repositories.MoveProjectColumn(1, input)
 	if err != nil {
 		t.Errorf("Repositories.MoveProjectColumn returned error: %v", err)
 	}
@@ -278,7 +293,9 @@ func TestRepositoriesService_ListProjectCards(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
+	cardsUrl := fmt.Sprintf("%s/columns/1/cards", projectsUrl)
+
+	mux.HandleFunc(cardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"page": "2"})
@@ -286,7 +303,7 @@ func TestRepositoriesService_ListProjectCards(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	cards, _, err := client.Repositories.ListProjectCards("o", "r", 1, opt)
+	cards, _, err := client.Repositories.ListProjectCards(1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListProjectCards returned error: %v", err)
 	}
@@ -301,13 +318,15 @@ func TestRepositoriesService_GetProjectCard(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
+	cardsUrl := fmt.Sprintf("%s/columns/cards/1", projectsUrl)
+
+	mux.HandleFunc(cardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	card, _, err := client.Repositories.GetProjectCard("o", "r", 1)
+	card, _, err := client.Repositories.GetProjectCard(1)
 	if err != nil {
 		t.Errorf("Repositories.GetProjectCard returned error: %v", err)
 	}
@@ -322,12 +341,13 @@ func TestRepositoriesService_CreateProjectCard(t *testing.T) {
 	setup()
 	defer teardown()
 
+	createCardsUrl := fmt.Sprintf("%s/columns/1/cards", projectsUrl)
 	input := &ProjectCardOptions{
 		ContentID:   12345,
 		ContentType: "Issue",
 	}
 
-	mux.HandleFunc("/repos/o/r/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(createCardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -340,7 +360,7 @@ func TestRepositoriesService_CreateProjectCard(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	card, _, err := client.Repositories.CreateProjectCard("o", "r", 1, input)
+	card, _, err := client.Repositories.CreateProjectCard(1, input)
 	if err != nil {
 		t.Errorf("Repositories.CreateProjectCard returned error: %v", err)
 	}
@@ -355,12 +375,13 @@ func TestRepositoriesService_UpdateProjectCard(t *testing.T) {
 	setup()
 	defer teardown()
 
+	updateCardsUrl := fmt.Sprintf("%s/columns/cards/1", projectsUrl)
 	input := &ProjectCardOptions{
 		ContentID:   12345,
 		ContentType: "Issue",
 	}
 
-	mux.HandleFunc("/repos/o/r/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(updateCardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -373,7 +394,7 @@ func TestRepositoriesService_UpdateProjectCard(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	card, _, err := client.Repositories.UpdateProjectCard("o", "r", 1, input)
+	card, _, err := client.Repositories.UpdateProjectCard(1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateProjectCard returned error: %v", err)
 	}
@@ -388,12 +409,14 @@ func TestRepositoriesService_DeleteProjectCard(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
+	deleteCardsUrl := fmt.Sprintf("%s/columns/cards/1", projectsUrl)
+
+	mux.HandleFunc(deleteCardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
-	_, err := client.Repositories.DeleteProjectCard("o", "r", 1)
+	_, err := client.Repositories.DeleteProjectCard(1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteProjectCard returned error: %v", err)
 	}
@@ -403,9 +426,10 @@ func TestRepositoriesService_MoveProjectCard(t *testing.T) {
 	setup()
 	defer teardown()
 
+	moveCardsUrl := fmt.Sprintf("%s/columns/cards/1/moves", projectsUrl)
 	input := &ProjectCardMoveOptions{Position: "after:12345"}
 
-	mux.HandleFunc("/repos/o/r/projects/columns/cards/1/moves", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(moveCardsUrl, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -416,7 +440,7 @@ func TestRepositoriesService_MoveProjectCard(t *testing.T) {
 		}
 	})
 
-	_, err := client.Repositories.MoveProjectCard("o", "r", 1, input)
+	_, err := client.Repositories.MoveProjectCard(1, input)
 	if err != nil {
 		t.Errorf("Repositories.MoveProjectCard returned error: %v", err)
 	}
