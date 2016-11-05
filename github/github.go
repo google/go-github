@@ -124,6 +124,7 @@ type Client struct {
 	Integrations   *IntegrationsService
 	Issues         *IssuesService
 	Organizations  *OrganizationsService
+	Projects       *ProjectsService
 	PullRequests   *PullRequestsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
@@ -197,6 +198,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
+	c.Projects = (*ProjectsService)(&c.common)
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
