@@ -68,7 +68,6 @@ func TestProjectsService_DeleteProject(t *testing.T) {
 	setup()
 	defer teardown()
 
-
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)

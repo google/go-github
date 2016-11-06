@@ -7,7 +7,6 @@ package github
 
 import "fmt"
 
-
 // ListProjects lists the projects for a repo.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-repository-projects

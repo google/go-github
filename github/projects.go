@@ -415,4 +415,3 @@ func (s *ProjectsService) MoveProjectCard(cardID int, moveOptions *ProjectCardMo
 
 	return s.client.Do(req, nil)
 }
-
