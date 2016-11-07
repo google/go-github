@@ -67,9 +67,9 @@ type ProjectOptions struct {
 // UpdateProject updates a repository project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#update-a-project
-func (s *ProjectsService) UpdateProject(id int, projectOptions *ProjectOptions) (*Project, *Response, error) {
+func (s *ProjectsService) UpdateProject(id int, opt *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("/projects/%v", id)
-	req, err := s.client.NewRequest("PATCH", u, projectOptions)
+	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -173,9 +173,9 @@ type ProjectColumnOptions struct {
 // CreateProjectColumn creates a column for the specified (by number) project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#create-a-project-column
-func (s *ProjectsService) CreateProjectColumn(projectId int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+func (s *ProjectsService) CreateProjectColumn(projectId int, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("/projects/%v/columns", projectId)
-	req, err := s.client.NewRequest("POST", u, columnOptions)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -195,9 +195,9 @@ func (s *ProjectsService) CreateProjectColumn(projectId int, columnOptions *Proj
 // UpdateProjectColumn updates a column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#update-a-project-column
-func (s *ProjectsService) UpdateProjectColumn(columnID int, columnOptions *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+func (s *ProjectsService) UpdateProjectColumn(columnID int, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("/projects/columns/%v", columnID)
-	req, err := s.client.NewRequest("PATCH", u, columnOptions)
+	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -241,9 +241,9 @@ type ProjectColumnMoveOptions struct {
 // MoveProjectColumn moves a column within a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#move-a-project-column
-func (s *ProjectsService) MoveProjectColumn(columnID int, moveOptions *ProjectColumnMoveOptions) (*Response, error) {
+func (s *ProjectsService) MoveProjectColumn(columnID int, opt *ProjectColumnMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("/projects/columns/%v/moves", columnID)
-	req, err := s.client.NewRequest("POST", u, moveOptions)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, err
 	}
@@ -331,9 +331,9 @@ type ProjectCardOptions struct {
 // CreateProjectCard creates a card in the specified column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#create-a-project-card
-func (s *ProjectsService) CreateProjectCard(columnID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
+func (s *ProjectsService) CreateProjectCard(columnID int, opt *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("/projects/columns/%v/cards", columnID)
-	req, err := s.client.NewRequest("POST", u, cardOptions)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -353,9 +353,9 @@ func (s *ProjectsService) CreateProjectCard(columnID int, cardOptions *ProjectCa
 // UpdateProjectCard updates a card of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#update-a-project-card
-func (s *ProjectsService) UpdateProjectCard(cardID int, cardOptions *ProjectCardOptions) (*ProjectCard, *Response, error) {
+func (s *ProjectsService) UpdateProjectCard(cardID int, opt *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("/projects/columns/cards/%v", cardID)
-	req, err := s.client.NewRequest("PATCH", u, cardOptions)
+	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -403,9 +403,9 @@ type ProjectCardMoveOptions struct {
 // MoveProjectCard moves a card within a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#move-a-project-card
-func (s *ProjectsService) MoveProjectCard(cardID int, moveOptions *ProjectCardMoveOptions) (*Response, error) {
+func (s *ProjectsService) MoveProjectCard(cardID int, opt *ProjectCardMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("/projects/columns/cards/%v/moves", cardID)
-	req, err := s.client.NewRequest("POST", u, moveOptions)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, err
 	}
