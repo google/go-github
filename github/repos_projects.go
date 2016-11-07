@@ -37,9 +37,9 @@ func (s *RepositoriesService) ListProjects(owner, repo string, opt *ListOptions)
 // CreateProject creates a GitHub Project for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#create-a-repository-project
-func (s *RepositoriesService) CreateProject(owner, repo string, projectOptions *ProjectOptions) (*Project, *Response, error) {
+func (s *RepositoriesService) CreateProject(owner, repo string, opt *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
-	req, err := s.client.NewRequest("POST", u, projectOptions)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
