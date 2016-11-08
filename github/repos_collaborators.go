@@ -60,6 +60,15 @@ type RepositoryAddCollaboratorOptions struct {
 	//
 	// Default value is "push".  This option is only valid for organization-owned repositories.
 	Permission string `json:"permission,omitempty"`
+
+	// AddDirectly specifies the invitations will be sent or not
+	// To send an invitation to a collaborator rather than directly adding them,
+	// you must provide a custom media type in the Accept header
+	// default value is "false"
+	//
+	// To add a user as a collaborator directly into a repository
+	// set AddDirectly value "true"
+	AddDirectly bool `json:"-"`
 }
 
 // AddCollaborator adds the specified Github user as collaborator to the given repo.
@@ -72,8 +81,10 @@ func (s *RepositoriesService) AddCollaborator(owner, repo, user string, opt *Rep
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
+	if !opt.AddDirectly {
+		// TODO: remove custom Accept header when this API fully launches.
+		req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
+	}
 
 	return s.client.Do(req, nil)
 }
