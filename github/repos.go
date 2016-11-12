@@ -595,18 +595,18 @@ func (s *RepositoriesService) EditBranch(owner, repo, branchName string, branch 
 // License gets the contents of a repository's license if one is detected.
 //
 // GitHub API docs: https://developer.github.com/v3/licenses/#get-the-contents-of-a-repositorys-license
-func (s *RepositoriesService) License(owner, repo string) (*License, *Response, error) {
+func (s *RepositoriesService) License(owner, repo string) (*RepositoryLicense, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/license", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	r := &Repository{}
+	r := &RepositoryLicense{}
 	resp, err := s.client.Do(req, r)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return r.License, resp, err
+	return r, resp, err
 }
