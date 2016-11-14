@@ -153,6 +153,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "pull_request",
 		},
 		{
+			payload:     &PullRequestReviewEvent{},
+			messageType: "pull_request_review",
+		},
+		{
 			payload:     &PullRequestReviewCommentEvent{},
 			messageType: "pull_request_review_comment",
 		},
