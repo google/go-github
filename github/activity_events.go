@@ -20,7 +20,7 @@ type Event struct {
 	Actor      *User            `json:"actor,omitempty"`
 	Org        *Organization    `json:"org,omitempty"`
 	CreatedAt  *time.Time       `json:"created_at,omitempty"`
-	ID         *string          `json:"id,omitempty"`
+	ID         *int             `json:"id,omitempty"`
 }
 
 func (e Event) String() string {
