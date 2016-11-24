@@ -75,7 +75,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 		testFormValues(t, r, values{
 			"page": "2",
 		})
-		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
+		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
 	opt := &ListOptions{Page: 2}
@@ -84,7 +84,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
 	}
 
-	want := []*Event{{ID: String("1")}, {ID: String("2")}}
+	want := []*IssueEvent{{ID: Int(1)}, {ID: Int(2)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
