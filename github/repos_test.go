@@ -447,7 +447,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}, "protection": {"enabled": true, "required_status_checks": {"enforcement_level": "everyone","contexts": []}}}`)
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}, "protected":true}`)
 	})
 
 	branch, _, err := client.Repositories.GetBranch("o", "r", "b")
@@ -456,15 +456,9 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	}
 
 	want := &Branch{
-		Name:   String("n"),
-		Commit: &Commit{SHA: String("s")},
-		Protection: &Protection{
-			Enabled: Bool(true),
-			RequiredStatusChecks: &RequiredStatusChecks{
-				EnforcementLevel: String("everyone"),
-				Contexts:         &[]string{},
-			},
-		},
+		Name:      String("n"),
+		Commit:    &Commit{SHA: String("s")},
+		Protected: Bool(true),
 	}
 
 	if !reflect.DeepEqual(branch, want) {
@@ -472,39 +466,110 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_EditBranch(t *testing.T) {
+func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Branch{
-		Protection: &Protection{
-			Enabled: Bool(true),
-			RequiredStatusChecks: &RequiredStatusChecks{
-				EnforcementLevel: String("everyone"),
-				Contexts:         &[]string{"continous-integration"},
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+	})
+
+	protection, _, err := client.Repositories.GetBranchProtection("o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
+	}
+
+	want := &Protection{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			IncludeAdmins: Bool(true),
+			Strict:        Bool(true),
+			Contexts:      &[]string{"continuous-integration"},
+		},
+		Restrictions: &BranchRestrictions{
+			Users: []*User{
+				{Login: String("u"), ID: Int(1)},
+			},
+			Teams: []*Team{
+				{Slug: String("t"), ID: Int(2)},
 			},
 		},
 	}
+	if !reflect.DeepEqual(protection, want) {
+		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
+	}
+}
 
-	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Branch)
+func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &ProtectionRequest{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			IncludeAdmins: Bool(true),
+			Strict:        Bool(true),
+			Contexts:      &[]string{"continuous-integration"},
+		},
+		Restrictions: &BranchRestrictionsRequest{
+			Users: &[]string{"u"},
+			Teams: &[]string{"t"},
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
-		testMethod(t, r, "PATCH")
+		testMethod(t, r, "PUT")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprint(w, `{"protection": {"enabled": true, "required_status_checks": {"enforcement_level": "everyone", "contexts": ["continous-integration"]}}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
-	branch, _, err := client.Repositories.EditBranch("o", "r", "b", input)
+	protection, _, err := client.Repositories.UpdateBranchProtection("o", "r", "b", input)
 	if err != nil {
-		t.Errorf("Repositories.EditBranch returned error: %v", err)
+		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(branch, input) {
-		t.Errorf("Repositories.EditBranch returned %+v, want %+v", branch, input)
+	want := &Protection{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			IncludeAdmins: Bool(true),
+			Strict:        Bool(true),
+			Contexts:      &[]string{"continuous-integration"},
+		},
+		Restrictions: &BranchRestrictions{
+			Users: []*User{
+				{Login: String("u"), ID: Int(1)},
+			},
+			Teams: []*Team{
+				{Slug: String("t"), ID: Int(2)},
+			},
+		},
+	}
+	if !reflect.DeepEqual(protection, want) {
+		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+	}
+}
+
+func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Repositories.RemoveBranchProtection("o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.RemoveBranchProtection returned error: %v", err)
 	}
 }
 
