@@ -506,7 +506,7 @@ type Branch struct {
 	Protected *bool   `json:"protected,omitempty"`
 }
 
-// Protection represents a repository branch's protection
+// Protection represents a repository branch's protection.
 type Protection struct {
 	RequiredStatusChecks *RequiredStatusChecks `json:"required_status_checks"`
 	Restrictions         *BranchRestrictions   `json:"restrictions"`
@@ -520,37 +520,37 @@ type ProtectionRequest struct {
 	Restrictions         *BranchRestrictionsRequest `json:"restrictions"`
 }
 
-// RequiredStatusChecks represents the protection status of a individual branch
+// RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
 	// Enforce required status checks for repository administrators.
 	IncludeAdmins *bool `json:"include_admins,omitempty"`
 	// Require branches to be up to date before merging.
 	Strict *bool `json:"strict,omitempty"`
 	// The list of status checks to require in order to merge into this
-	// branch
+	// branch.
 	Contexts *[]string `json:"contexts,omitempty"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or
-// teams may push to a branch
+// teams may push to a branch.
 type BranchRestrictions struct {
-	// The list of user logins with push access
+	// The list of user logins with push access.
 	Users []*User `json:"users,omitempty"`
-	// The list of team slugs with push access
+	// The list of team slugs with push access.
 	Teams []*Team `json:"teams,omitempty"`
 }
 
 // BranchRestrictionsRequest represents the request to create/edit the
 // restriction that only certain users or teams may push to a branch. It is
 // separate from BranchRestrictions above because the request structure is
+// different from the response structure.
 type BranchRestrictionsRequest struct {
-	// The list of user logins with push access
+	// The list of user logins with push access.
 	Users *[]string `json:"users,omitempty"`
-	// The list of team slugs with push access
+	// The list of team slugs with push access.
 	Teams *[]string `json:"teams,omitempty"`
 }
 
-// different from the response structure.
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: http://developer.github.com/v3/repos/#list-branches
