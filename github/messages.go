@@ -171,9 +171,9 @@ func WebHookType(r *http.Request) string {
 //       event, err := github.ParseWebHook(github.WebHookType(r), payload)
 //       if err != nil { ... }
 //       switch event := event.(type) {
-//       case CommitCommentEvent:
+//       case *github.CommitCommentEvent:
 //           processCommitCommentEvent(event)
-//       case CreateEvent:
+//       case *github.CreateEvent:
 //           processCreateEvent(event)
 //       ...
 //       }
