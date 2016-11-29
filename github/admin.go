@@ -41,7 +41,7 @@ type UserLDAPMapping struct {
 	LDAPDN     *string `json:"ldap_dn,omitempty"`
 	Login      *string `json:"login,omitempty"`
 	AvatarURL  *string `json:"avatar_url,omitempty"`
-	GravatarId *string `json:"gravatar_id,omitempty"`
+	GravatarID *string `json:"gravatar_id,omitempty"`
 	Type       *string `json:"type,omitempty"`
 	SiteAdmin  *bool   `json:"site_admin,omitempty"`
 
