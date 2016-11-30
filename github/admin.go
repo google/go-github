@@ -61,8 +61,7 @@ func (m UserLDAPMapping) String() string {
 	return Stringify(m)
 }
 
-// UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP
-// user.
+// UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
 //
 // GitHub API docs: https://developer.github.com/v3/enterprise/ldap/#update-ldap-mapping-for-a-user
 func (s *AdminService) UpdateUserLDAPMapping(user string, mapping *UserLDAPMapping) (*UserLDAPMapping, *Response, error) {
@@ -81,8 +80,7 @@ func (s *AdminService) UpdateUserLDAPMapping(user string, mapping *UserLDAPMappi
 	return m, resp, err
 }
 
-// UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP
-// group.
+// UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
 //
 // GitHub API docs: https://developer.github.com/v3/enterprise/ldap/#update-ldap-mapping-for-a-team
 func (s *AdminService) UpdateTeamLDAPMapping(team int, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
