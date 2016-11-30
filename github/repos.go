@@ -564,6 +564,7 @@ func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListO
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	branches := new([]*Branch)
@@ -585,6 +586,7 @@ func (s *RepositoriesService) GetBranch(owner, repo, branch string) (*Branch, *R
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	b := new(Branch)
@@ -605,6 +607,8 @@ func (s *RepositoriesService) GetBranchProtection(owner, repo, branch string) (*
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	p := new(Protection)
@@ -625,6 +629,8 @@ func (s *RepositoriesService) UpdateBranchProtection(owner, repo, branch string,
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	p := new(Protection)
@@ -645,6 +651,8 @@ func (s *RepositoriesService) RemoveBranchProtection(owner, repo, branch string)
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	return s.client.Do(req, nil)
