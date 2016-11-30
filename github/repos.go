@@ -513,8 +513,6 @@ type Protection struct {
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
-// It is separate from Protection above because the request structure is
-// different from the response structure.
 type ProtectionRequest struct {
 	RequiredStatusChecks *RequiredStatusChecks      `json:"required_status_checks"`
 	Restrictions         *BranchRestrictionsRequest `json:"restrictions"`
