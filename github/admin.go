@@ -14,8 +14,7 @@ import "fmt"
 // GitHub API docs: https://developer.github.com/v3/enterprise/
 type AdminService service
 
-// TeamLDAPMapping represents the mapping between a GitHub team and an LDAP
-// group.
+// TeamLDAPMapping represents the mapping between a GitHub team and an LDAP group.
 type TeamLDAPMapping struct {
 	ID          *int    `json:"id,omitempty"`
 	LDAPDN      *string `json:"ldap_dn,omitempty"`
@@ -34,8 +33,7 @@ func (m TeamLDAPMapping) String() string {
 	return Stringify(m)
 }
 
-// UserLDAPMapping represents the mapping between a GitHub user and an LDAP
-// user.
+// UserLDAPMapping represents the mapping between a GitHub user and an LDAP user.
 type UserLDAPMapping struct {
 	ID         *int    `json:"id,omitempty"`
 	LDAPDN     *string `json:"ldap_dn,omitempty"`
