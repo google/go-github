@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -64,6 +65,60 @@ func TestPullRequestsService_Get(t *testing.T) {
 	want := &PullRequest{Number: Int(1)}
 	if !reflect.DeepEqual(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
+	}
+}
+
+func TestPullRequestService_GetRawPatch(t *testing.T) {
+	setup()
+	defer teardown()
+	const rawStr = "@@patch content"
+
+	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Patch)
+		fmt.Fprint(w, rawStr)
+	})
+
+	ret, _, err := client.PullRequests.GetRaw("o", "r", 1, RawOptions{Patch})
+	if err != nil {
+		t.Errorf("PullRequests.GetRaw return error: %v", err)
+	}
+
+	if ret != rawStr {
+		t.Errorf("PullRequests.GetRaw returned %s want %s", ret, rawStr)
+	}
+}
+
+func TestPullRequestService_GetRawDiff(t *testing.T) {
+	setup()
+	defer teardown()
+	const rawStr = "@@diff content"
+
+	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Diff)
+		fmt.Fprint(w, rawStr)
+	})
+
+	ret, _, err := client.PullRequests.GetRaw("o", "r", 1, RawOptions{Diff})
+	if err != nil {
+		t.Errorf("PullRequests.GetRaw return error: %v", err)
+	}
+
+	if ret != rawStr {
+		t.Errorf("PullRequests.GetRaw returned %s want %s", ret, rawStr)
+	}
+}
+
+func TestPullRequestService_GetRawInvalid(t *testing.T) {
+	setup()
+	defer teardown()
+	_, _, err := client.PullRequests.GetRaw("o", "r", 1, RawOptions{100})
+	if err == nil {
+		t.Error("PullRequests.GetRaw should return error")
+	}
+	if !strings.Contains(err.Error(), "unsupported raw type") {
+		t.Error("PullRequests.GetRaw should return unsupported raw type error")
 	}
 }
 

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"bytes"
 	"fmt"
 	"time"
 )
@@ -132,6 +133,32 @@ func (s *PullRequestsService) Get(owner string, repo string, number int) (*PullR
 	}
 
 	return pull, resp, err
+}
+
+// GetRaw gets raw (diff or patch) format of a pull request.
+func (s *PullRequestsService) GetRaw(owner string, repo string, number int, opt RawOptions) (string, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	switch opt.Type {
+	case Diff:
+		req.Header.Set("Accept", mediaTypeV3Diff)
+	case Patch:
+		req.Header.Set("Accept", mediaTypeV3Patch)
+	default:
+		return "", nil, fmt.Errorf("unsupported raw type %d", opt.Type)
+	}
+
+	ret := new(bytes.Buffer)
+	resp, err := s.client.Do(req, ret)
+	if err != nil {
+		return "", resp, err
+	}
+
+	return ret.String(), resp, err
 }
 
 // NewPullRequest represents a new pull request to be created.
