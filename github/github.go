@@ -42,6 +42,8 @@ const (
 	mediaTypeV3                = "application/vnd.github.v3+json"
 	defaultMediaType           = "application/octet-stream"
 	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
+	mediaTypeV3Diff            = "application/vnd.github.v3.diff"
+	mediaTypeV3Patch           = "application/vnd.github.v3.patch"
 	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
 
 	// Media Type values to access preview APIs
@@ -152,6 +154,22 @@ type ListOptions struct {
 // UploadOptions specifies the parameters to methods that support uploads.
 type UploadOptions struct {
 	Name string `url:"name,omitempty"`
+}
+
+// RawType represents type of raw format of a request instead of JSON.
+type RawType uint8
+
+const (
+	// Diff format.
+	Diff RawType = 1 + iota
+	// Patch format.
+	Patch
+)
+
+// RawOptions specifies parameters when user wants to get raw format of
+// a response instead of JSON.
+type RawOptions struct {
+	Type RawType
 }
 
 // addOptions adds the parameters in opt as URL query parameters to s.  opt
