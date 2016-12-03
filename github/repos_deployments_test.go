@@ -35,6 +35,27 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetDeployment(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/deployments/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":3}`)
+	})
+
+	deployment, _, err := client.Repositories.GetDeployment("o", "r", 3)
+	if err != nil {
+		t.Errorf("Repositories.GetDeployment returned error: %v", err)
+	}
+
+	want := &Deployment{ID: Int(3)}
+
+	if !reflect.DeepEqual(deployment, want) {
+		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
+	}
+}
+
 func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	setup()
 	defer teardown()
