@@ -70,9 +70,10 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 		      "deletions": 2,
 		      "changes": 12,
 		      "status": "s",
-		      "raw_url": "r",
+		      "patch": "p",
 		      "blob_url": "b",
-		      "patch": "p"
+		      "raw_url": "r",
+		      "contents_url": "c"
 		    }
 		  ]
 		}`)
@@ -106,12 +107,15 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 		},
 		Files: []CommitFile{
 			{
-				Filename:  String("f"),
-				Additions: Int(10),
-				Deletions: Int(2),
-				Changes:   Int(12),
-				Status:    String("s"),
-				Patch:     String("p"),
+				Filename:    String("f"),
+				Additions:   Int(10),
+				Deletions:   Int(2),
+				Changes:     Int(12),
+				Status:      String("s"),
+				Patch:       String("p"),
+				BlobURL:     String("b"),
+				RawURL:      String("r"),
+				ContentsURL: String("c"),
 			},
 		},
 	}
