@@ -501,6 +501,15 @@ func (r *RateLimitError) Error() string {
 		r.Response.StatusCode, r.Message, r.Rate.Reset.Time.Sub(time.Now()))
 }
 
+// AcceptedError occurs when GitHub returns 202 Accepted response with an
+// empty body, which means a job was scheduled on the GitHub side to process
+// the information needed and cache it.
+type AcceptedError struct{}
+
+func (r *AcceptedError) Error() string {
+	return "Job scheduled on GitHub side, try again later"
+}
+
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
 // "documentation_url" field value equal to "https://developer.github.com/v3#abuse-rate-limits".
 type AbuseRateLimitError struct {
@@ -603,6 +612,8 @@ func CheckResponse(r *http.Response) error {
 			abuseRateLimitError.RetryAfter = &retryAfter
 		}
 		return abuseRateLimitError
+	case r.StatusCode == http.StatusAccepted:
+		return &AcceptedError{}
 	default:
 		return errorResponse
 	}
