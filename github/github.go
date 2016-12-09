@@ -509,7 +509,7 @@ func (r *RateLimitError) Error() string {
 // The request can be repeated after some time.
 type AcceptedError struct{}
 
-func (AcceptedError) Error() string {
+func (*AcceptedError) Error() string {
 	return "job scheduled on github side, try again later"
 }
 
@@ -583,10 +583,11 @@ func (e *Error) Error() string {
 // response body will be silently ignored.
 //
 // The error type will be *RateLimitError for rate limit exceeded errors,
+// *AcceptedError for 202 Accepted status codes,
 // and *TwoFactorAuthError for two-factor authentication errors.
 func CheckResponse(r *http.Response) error {
 	if r.StatusCode == http.StatusAccepted {
-		return AcceptedError{}
+		return &AcceptedError{}
 	}
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
