@@ -158,11 +158,10 @@ func (r RepositoryParticipation) String() string {
 // The array order is oldest week (index 0) to most recent week.
 //
 // If this is the first time these statistics are requested for the given
-// repository, this method will return an *AcceptedError and a status code
-// of 202. This is because this is the status that github returns to
-// signify that it is now computing the requested statistics. A follow
-// up request, after a delay of a second or so, should result in a
-// successful request.
+// repository, this method will return an *AcceptedError and a status code of
+// 202. This is because this is the status that github returns to signify that
+// it is now computing the requested statistics. A follow up request, after a
+// delay of a second or so, should result in a successful request.
 //
 // GitHub API Docs: https://developer.github.com/v3/repos/statistics/#participation
 func (s *RepositoriesService) ListParticipation(owner, repo string) (*RepositoryParticipation, *Response, error) {
