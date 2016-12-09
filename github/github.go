@@ -504,10 +504,13 @@ func (r *RateLimitError) Error() string {
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
 // empty body, which means a job was scheduled on the GitHub side to process
 // the information needed and cache it.
+// Technically, 202 Accepted is not a real error, it's just used to
+// indicate that results are not ready yet, but should be available soon.
+// The request can be repeated after some time.
 type AcceptedError struct{}
 
-func (r *AcceptedError) Error() string {
-	return "Job scheduled on GitHub side, try again later"
+func (AcceptedError) Error() string {
+	return "job scheduled on github side, try again later"
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
@@ -573,14 +576,18 @@ func (e *Error) Error() string {
 }
 
 // CheckResponse checks the API response for errors, and returns them if
-// present.  A response is considered an error if it has a status code outside
-// the 200 range.  API error responses are expected to have either no response
+// present. A response is considered an error if it has a status code outside
+// the 200 range or equal to 202 Accepted.
+// API error responses are expected to have either no response
 // body, or a JSON response body that maps to ErrorResponse.  Any other
 // response body will be silently ignored.
 //
 // The error type will be *RateLimitError for rate limit exceeded errors,
 // and *TwoFactorAuthError for two-factor authentication errors.
 func CheckResponse(r *http.Response) error {
+	if r.StatusCode == http.StatusAccepted {
+		return AcceptedError{}
+	}
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
@@ -612,8 +619,6 @@ func CheckResponse(r *http.Response) error {
 			abuseRateLimitError.RetryAfter = &retryAfter
 		}
 		return abuseRateLimitError
-	case r.StatusCode == http.StatusAccepted:
-		return &AcceptedError{}
 	default:
 		return errorResponse
 	}
