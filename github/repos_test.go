@@ -434,7 +434,7 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 		t.Errorf("Repositories.ListBranches returned error: %v", err)
 	}
 
-	want := []*Branch{{Name: String("master"), Commit: &Commit{SHA: String("a57781"), URL: String("https://api.github.com/repos/o/r/commits/a57781")}}}
+	want := []*Branch{{Name: String("master"), Commit: &RepositoryCommit{SHA: String("a57781"), URL: String("https://api.github.com/repos/o/r/commits/a57781")}}}
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
 	}
@@ -447,7 +447,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s"}, "protected":true}`)
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
 	})
 
 	branch, _, err := client.Repositories.GetBranch("o", "r", "b")
@@ -456,8 +456,13 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	}
 
 	want := &Branch{
-		Name:      String("n"),
-		Commit:    &Commit{SHA: String("s")},
+		Name: String("n"),
+		Commit: &RepositoryCommit{
+			SHA: String("s"),
+			Commit: &Commit{
+				Message: String("m"),
+			},
+		},
 		Protected: Bool(true),
 	}
 
