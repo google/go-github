@@ -86,17 +86,17 @@ To detect an API rate limit error, you can check if its type is *github.RateLimi
 Learn more about GitHub rate limiting at
 http://developer.github.com/v3/#rate-limiting.
 
-Accepted status
+Accepted Status
 
 Some endpoints may return a 202 Accepted status code, meaning that the
-information required is not yet ready and was scheduled to be gather in
-GitHub side. Methods know to behave like this are documented specifying
+information required is not yet ready and was scheduled to be gathered on
+GitHub side. Methods known to behave like this are documented specifying
 this behavior.
 
 To detect this condition of error, you can check if its type is
 *github.AcceptedError:
 
-	repos, _, err := client.Repositories.ListContributorsStats(org, repo)
+	stats, _, err := client.Repositories.ListContributorsStats(org, repo)
 	if _, ok := err.(*github.AcceptedError); ok {
 		log.Println("scheduled on github side")
 	}
