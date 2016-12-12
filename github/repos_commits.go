@@ -20,7 +20,6 @@ type RepositoryCommit struct {
 	Author      *User    `json:"author,omitempty"`
 	Committer   *User    `json:"committer,omitempty"`
 	Parents     []Commit `json:"parents,omitempty"`
-	Message     *string  `json:"message,omitempty"`
 	HTMLURL     *string  `json:"html_url,omitempty"`
 	URL         *string  `json:"url,omitempty"`
 	CommentsURL *string  `json:"comments_url,omitempty"`
