@@ -231,7 +231,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		},
 	}
 
-	if reflect.DeepEqual(got, want) {
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
 	}
 }
