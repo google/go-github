@@ -108,6 +108,27 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeDeploymentStatusPreview)
+		fmt.Fprint(w, `{"id":4}`)
+	})
+
+	deploymentStatus, _, err := client.Repositories.GetDeploymentStatus("o", "r", 3, 4)
+	if err != nil {
+		t.Errorf("Repositories.GetDeploymentStatus returned error: %v", err)
+	}
+
+	want := &DeploymentStatus{ID: Int(4)}
+	if !reflect.DeepEqual(deploymentStatus, want) {
+		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
+	}
+}
+
 func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	setup()
 	defer teardown()
