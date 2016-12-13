@@ -84,8 +84,7 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 
 // GetDeployment returns a single deployment of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/deployments/
-// Note: GetDeployment uses the undocumented GitHub API endpoint /repos/:owner/:repo/deployments/:id.
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-single-deployment
 func (s *RepositoriesService) GetDeployment(owner, repo string, deploymentID int) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 
