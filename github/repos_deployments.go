@@ -84,8 +84,7 @@ func (s *RepositoriesService) ListDeployments(owner, repo string, opt *Deploymen
 
 // GetDeployment returns a single deployment of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/deployments/
-// Note: GetDeployment uses the undocumented GitHub API endpoint /repos/:owner/:repo/deployments/:id.
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-single-deployment
 func (s *RepositoriesService) GetDeployment(owner, repo string, deploymentID int) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 
@@ -174,6 +173,29 @@ func (s *RepositoriesService) ListDeploymentStatuses(owner, repo string, deploym
 	}
 
 	return *statuses, resp, err
+}
+
+// GetDeploymentStatus returns a single deployment status of a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-single-deployment-status
+func (s *RepositoriesService) GetDeploymentStatus(owner, repo string, deploymentID, deploymentStatusID int) (*DeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when deployment support fully launches
+	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
+
+	d := new(DeploymentStatus)
+	resp, err := s.client.Do(req, d)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return d, resp, err
 }
 
 // CreateDeploymentStatus creates a new status for a deployment.
