@@ -24,6 +24,18 @@ type PullRequestReview struct {
 	State *string `json:"state,omitempty"`
 }
 
+// PullRequestReviewComment represents a comment left on a pull request review
+type PullRequestReviewComment struct {
+	ID             *int       `json:"id,omitempty"`
+	User           *User      `json:"user,omitempty"`
+	Body           *string    `json:"body,omitempty"`
+	CreatedAt      *time.Time `json:"created_at,omitempty"`
+	UpdatedAt      *time.Time `json:"updated_at,omitempty"`
+	CommitID       *string    `json:"commit_id,omitempty"`
+	HTMLURL        *string    `json:"html_url,omitempty"`
+	PullRequestURL *string    `json:"pull_request_url,omitempty"`
+}
+
 func (p PullRequestReview) String() string {
 	return Stringify(p)
 }
@@ -49,4 +61,50 @@ func (s *PullRequestsService) ListReviews(owner string, repo string, number int)
 	}
 
 	return *reviews, resp, err
+}
+
+// GetReview fetches the specified pull request review.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-review
+func (s *PullRequestsService) GetReview(owner string, number int, id int) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/pulls/%d/reviews/%d", owner, number, id)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+
+	review := new(PullRequestReview)
+	resp, err := s.client.Do(req, review)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return review, resp, err
+}
+
+// ListReviewComments lists all the comments for the specified review
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
+func (s *PullRequestsService) ListReviewComments(owner string, number int, id int) ([]*PullRequestReviewComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/pulls/%d/reviews/%d/comments", owner, number, id)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+
+	comments := new([]*PullRequestReviewComment)
+	resp, err := s.client.Do(req, comments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return *comments, resp, err
 }
