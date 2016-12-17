@@ -40,13 +40,13 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.GetReview("o", 1, 1)
+	review, _, err := client.PullRequests.GetReview("o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
@@ -61,13 +61,13 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	comments, _, err := client.PullRequests.ListReviewComments("o", 1, 1)
+	comments, _, err := client.PullRequests.ListReviewComments("o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}

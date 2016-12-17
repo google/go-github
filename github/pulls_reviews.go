@@ -66,8 +66,8 @@ func (s *PullRequestsService) ListReviews(owner string, repo string, number int)
 // GetReview fetches the specified pull request review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-review
-func (s *PullRequestsService) GetReview(owner string, number int, id int) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/pulls/%d/reviews/%d", owner, number, id)
+func (s *PullRequestsService) GetReview(owner string, repo string, number int, id int) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -89,8 +89,8 @@ func (s *PullRequestsService) GetReview(owner string, number int, id int) (*Pull
 // ListReviewComments lists all the comments for the specified review
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
-func (s *PullRequestsService) ListReviewComments(owner string, number int, id int) ([]*PullRequestReviewComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/pulls/%d/reviews/%d/comments", owner, number, id)
+func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, id int) ([]*PullRequestReviewComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
