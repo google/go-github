@@ -54,7 +54,7 @@ type PullRequestReviewRequest struct {
 	Comments []DraftReviewComment `json:"comments,omitempty"`
 
 	// Message is used (optionally) while dismissing a review
-	Message  *string              `json:"message,omitempty"`
+	Message *string `json:"message,omitempty"`
 }
 
 // ListReviews lists all reviews on the specified pull request.
