@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -78,5 +79,35 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
+	}
+}
+
+func TestPullRequestsService_CreateReview(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &PullRequestReview{Body: String("b")}
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PullRequestReview)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	review, _, err := client.PullRequests.CreateReview("o", "r", 1, input)
+	if err != nil {
+		t.Errorf("PullRequests.CreateReview returned error: %v", err)
+	}
+
+	want := &PullRequestReview{ID: Int(1)}
+	if !reflect.DeepEqual(review, want) {
+		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
 }

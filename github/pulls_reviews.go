@@ -108,3 +108,26 @@ func (s *PullRequestsService) ListReviewComments(owner string, repo string, numb
 
 	return *comments, resp, err
 }
+
+// CreateReview creates a new review on the specified pull request
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
+func (s *PullRequestsService) CreateReview(owner string, repo string, number int, review *PullRequestReview) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+
+	req, err := s.client.NewRequest("POST", u, review)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+
+	r := new(PullRequestReview)
+	resp, err := s.client.Do(req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, err
+}
