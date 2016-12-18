@@ -86,10 +86,13 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequestReview{Body: String("b")}
+	input := &PullRequestReviewRequest{
+		Body:  String("b"),
+		Event: String("APPROVE"),
+	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequestReview)
+		v := new(PullRequestReviewRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")

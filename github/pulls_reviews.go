@@ -24,6 +24,10 @@ type PullRequestReview struct {
 	State *string `json:"state,omitempty"`
 }
 
+func (p PullRequestReview) String() string {
+	return Stringify(p)
+}
+
 // PullRequestReviewComment represents a comment left on a pull request review
 type PullRequestReviewComment struct {
 	ID             *int       `json:"id,omitempty"`
@@ -36,8 +40,18 @@ type PullRequestReviewComment struct {
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 }
 
-func (p PullRequestReview) String() string {
-	return Stringify(p)
+// DraftReviewComment represents a comment part of the review
+type DraftReviewComment struct {
+	Path     *string `json:"path,omitempty"`
+	Position *int    `json:"position,omitempty"`
+	Body     *string `json:"body,omitempty"`
+}
+
+// PullRequestReviewRequest represents a request to create a review
+type PullRequestReviewRequest struct {
+	Body     *string              `json:"body,omitempty"`
+	Event    *string              `json:"event,omitempty"`
+	Comments []DraftReviewComment `json:"comments",omitempty"`
 }
 
 // ListReviews lists all reviews on the specified pull request.
@@ -112,7 +126,7 @@ func (s *PullRequestsService) ListReviewComments(owner string, repo string, numb
 // CreateReview creates a new review on the specified pull request
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
-func (s *PullRequestsService) CreateReview(owner string, repo string, number int, review *PullRequestReview) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) CreateReview(owner string, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
 	req, err := s.client.NewRequest("POST", u, review)
