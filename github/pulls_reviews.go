@@ -146,9 +146,9 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 	return r, resp, err
 }
 
-// SubmitReview creates a new review on the specified pull request
+// SubmitReview submits a review on the specified pull request
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
+// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
 func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, id int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, id)
 
