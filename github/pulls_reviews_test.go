@@ -147,3 +147,33 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
 }
+
+func TestPullRequestsService_DismissReview(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &PullRequestReviewRequest{Message: String("m")}
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PullRequestReviewRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	review, _, err := client.PullRequests.DismissReview("o", "r", 1, 1, input)
+	if err != nil {
+		t.Errorf("PullRequests.DismissReview returned error: %v", err)
+	}
+
+	want := &PullRequestReview{ID: Int(1)}
+	if !reflect.DeepEqual(review, want) {
+		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
+	}
+}
