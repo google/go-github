@@ -116,8 +116,8 @@ type ProjectColumn struct {
 // ListProjectColumns lists the columns of a GitHub Project for a repo.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#list-project-columns
-func (s *ProjectsService) ListProjectColumns(projectId int, opt *ListOptions) ([]*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/%v/columns", projectId)
+func (s *ProjectsService) ListProjectColumns(projectID int, opt *ListOptions) ([]*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("projects/%v/columns", projectID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -173,8 +173,8 @@ type ProjectColumnOptions struct {
 // CreateProjectColumn creates a column for the specified (by number) project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#create-a-project-column
-func (s *ProjectsService) CreateProjectColumn(projectId int, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
-	u := fmt.Sprintf("projects/%v/columns", projectId)
+func (s *ProjectsService) CreateProjectColumn(projectID int, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+	u := fmt.Sprintf("projects/%v/columns", projectID)
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
