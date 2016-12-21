@@ -145,6 +145,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "page_build",
 		},
 		{
+			payload:     &PingEvent{},
+			messageType: "ping",
+		},
+		{
 			payload:     &PublicEvent{},
 			messageType: "public",
 		},
