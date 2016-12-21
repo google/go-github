@@ -20,7 +20,7 @@ type PullRequestReview struct {
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 
-	// State can be "ACCEPTED", "DISMISSED", "CHANGES_REQUESTED" or "COMMENTED".
+	// State can be "ACCEPTED", "DISMISSED", "CHANGES_REQUESTED", "COMMENTED" or "PENDING".
 	State *string `json:"state,omitempty"`
 }
 
