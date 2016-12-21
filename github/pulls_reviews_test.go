@@ -152,10 +152,10 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequestReviewRequest{Message: String("m")}
+	input := &PullRequestReviewDismissalRequest{Message: String("m")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequestReviewRequest)
+		v := new(PullRequestReviewDismissalRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")

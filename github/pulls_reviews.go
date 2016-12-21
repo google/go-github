@@ -28,7 +28,7 @@ func (p PullRequestReview) String() string {
 	return Stringify(p)
 }
 
-// PullRequestReviewComment represents a comment left on a pull request review
+// PullRequestReviewComment represents a comment left on a pull request review.
 type PullRequestReviewComment struct {
 	ID             *int       `json:"id,omitempty"`
 	User           *User      `json:"user,omitempty"`
@@ -40,20 +40,22 @@ type PullRequestReviewComment struct {
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 }
 
-// DraftReviewComment represents a comment part of the review
+// DraftReviewComment represents a comment part of the review.
 type DraftReviewComment struct {
 	Path     *string `json:"path,omitempty"`
 	Position *int    `json:"position,omitempty"`
 	Body     *string `json:"body,omitempty"`
 }
 
-// PullRequestReviewRequest represents a request to create a review
+// PullRequestReviewRequest represents a request to create a review.
 type PullRequestReviewRequest struct {
 	Body     *string              `json:"body,omitempty"`
 	Event    *string              `json:"event,omitempty"`
 	Comments []DraftReviewComment `json:"comments,omitempty"`
+}
 
-	// Message is used (optionally) while dismissing a review
+// PullRequestReviewDismissalRequest represents a request to dismiss a review.
+type PullRequestReviewDismissalRequest struct {
 	Message *string `json:"message,omitempty"`
 }
 
@@ -103,7 +105,7 @@ func (s *PullRequestsService) GetReview(owner string, repo string, number int, i
 	return review, resp, err
 }
 
-// ListReviewComments lists all the comments for the specified review
+// ListReviewComments lists all the comments for the specified review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
 func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, id int) ([]*PullRequestReviewComment, *Response, error) {
@@ -126,7 +128,7 @@ func (s *PullRequestsService) ListReviewComments(owner string, repo string, numb
 	return *comments, resp, err
 }
 
-// CreateReview creates a new review on the specified pull request
+// CreateReview creates a new review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
 func (s *PullRequestsService) CreateReview(owner string, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -149,7 +151,7 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 	return r, resp, err
 }
 
-// SubmitReview submits a specified review on the specified pull request
+// SubmitReview submits a specified review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
 func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, id int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -172,10 +174,10 @@ func (s *PullRequestsService) SubmitReview(owner string, repo string, number int
 	return r, resp, err
 }
 
-// DismissReview dismisses a specified review on the specified pull request
+// DismissReview dismisses a specified review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#dismiss-a-pull-request-review
-func (s *PullRequestsService) DismissReview(owner string, repo string, number int, id int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) DismissReview(owner string, repo string, number int, id int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, id)
 
 	req, err := s.client.NewRequest("PUT", u, review)
