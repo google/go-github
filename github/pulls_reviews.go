@@ -85,8 +85,8 @@ func (s *PullRequestsService) ListReviews(owner string, repo string, number int)
 // GetReview fetches the specified pull request review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-review
-func (s *PullRequestsService) GetReview(owner string, repo string, number int, id int) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, id)
+func (s *PullRequestsService) GetReview(owner string, repo string, number int, reviewID int) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -108,8 +108,8 @@ func (s *PullRequestsService) GetReview(owner string, repo string, number int, i
 // ListReviewComments lists all the comments for the specified review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
-func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, id int) ([]*PullRequestReviewComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, id)
+func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, reviewID int) ([]*PullRequestReviewComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -154,8 +154,8 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 // SubmitReview submits a specified review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
-func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, id int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, id)
+func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, reviewID int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
@@ -177,8 +177,8 @@ func (s *PullRequestsService) SubmitReview(owner string, repo string, number int
 // DismissReview dismisses a specified review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#dismiss-a-pull-request-review
-func (s *PullRequestsService) DismissReview(owner string, repo string, number int, id int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, id)
+func (s *PullRequestsService) DismissReview(owner string, repo string, number int, reviewID int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("PUT", u, review)
 	if err != nil {
