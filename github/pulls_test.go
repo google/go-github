@@ -434,3 +434,55 @@ func TestPullRequestsService_Merge(t *testing.T) {
 		t.Errorf("PullRequests.Merge returned %+v, want %+v", merge, want)
 	}
 }
+
+// Test that different merge options produce expected PUT requests. See issue https://github.com/google/go-github/issues/500.
+func TestPullRequestsService_Merge_options(t *testing.T) {
+	setup()
+	defer teardown()
+
+	tests := []struct {
+		options  *PullRequestOptions
+		wantBody string
+	}{
+		{
+			options:  nil,
+			wantBody: `{"commit_message":"merging pull request"}`,
+		},
+		{
+			options:  &PullRequestOptions{},
+			wantBody: `{"commit_message":"merging pull request"}`,
+		},
+		{
+			options:  &PullRequestOptions{MergeMethod: "rebase"},
+			wantBody: `{"commit_message":"merging pull request","merge_method":"rebase"}`,
+		},
+		{
+			options:  &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
+			wantBody: `{"commit_message":"merging pull request","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+		},
+		{
+			options: &PullRequestOptions{
+				CommitTitle: "Extra detail",
+				SHA:         "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+				MergeMethod: "squash",
+			},
+			wantBody: `{"commit_message":"merging pull request","commit_title":"Extra detail","merge_method":"squash","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+		},
+	}
+
+	for i, test := range tests {
+		t.Run(fmt.Sprintf("Test%d/%#v", i, test.options), func(t *testing.T) {
+			madeRequest := false
+			mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PUT")
+				testHeader(t, r, "Accept", mediaTypeSquashPreview)
+				testBody(t, r, test.wantBody+"\n")
+				madeRequest = true
+			})
+			_, _, _ = client.PullRequests.Merge("o", "r", i, "merging pull request", test.options)
+			if !madeRequest {
+				t.Error("expected request was not made")
+			}
+		})
+	}
+}
