@@ -65,6 +65,8 @@ func (e *Event) Payload() (payload interface{}) {
 		payload = &MilestoneEvent{}
 	case "PageBuildEvent":
 		payload = &PageBuildEvent{}
+	case "PingEvent":
+		payload = &PingEvent{}
 	case "PublicEvent":
 		payload = &PublicEvent{}
 	case "PullRequestEvent":

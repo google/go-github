@@ -54,6 +54,7 @@ var (
 		"membership":                            "MembershipEvent",
 		"milestone":                             "MilestoneEvent",
 		"page_build":                            "PageBuildEvent",
+		"ping":                                  "PingEvent",
 		"public":                                "PublicEvent",
 		"pull_request_review":                   "PullRequestReviewEvent",
 		"pull_request_review_comment":           "PullRequestReviewCommentEvent",
