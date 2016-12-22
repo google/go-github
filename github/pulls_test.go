@@ -471,18 +471,16 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test%d/%#v", i, test.options), func(t *testing.T) {
-			madeRequest := false
-			mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(w http.ResponseWriter, r *http.Request) {
-				testMethod(t, r, "PUT")
-				testHeader(t, r, "Accept", mediaTypeSquashPreview)
-				testBody(t, r, test.wantBody+"\n")
-				madeRequest = true
-			})
-			_, _, _ = client.PullRequests.Merge("o", "r", i, "merging pull request", test.options)
-			if !madeRequest {
-				t.Error("expected request was not made")
-			}
+		madeRequest := false
+		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "PUT")
+			testHeader(t, r, "Accept", mediaTypeSquashPreview)
+			testBody(t, r, test.wantBody+"\n")
+			madeRequest = true
 		})
+		_, _, _ = client.PullRequests.Merge("o", "r", i, "merging pull request", test.options)
+		if !madeRequest {
+			t.Errorf("%d: PullRequests.Merge(%#v): expected request was not made", i, test.options)
+		}
 	}
 }
