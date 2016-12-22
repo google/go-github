@@ -301,7 +301,7 @@ type pullRequestMergeRequest struct {
 func (s *PullRequestsService) Merge(owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	pullRequestBody := pullRequestMergeRequest{CommitMessage: commitMessage}
+	pullRequestBody := &pullRequestMergeRequest{CommitMessage: commitMessage}
 	if options != nil {
 		pullRequestBody.CommitTitle = options.CommitTitle
 		pullRequestBody.MergeMethod = options.MergeMethod
