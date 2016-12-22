@@ -68,7 +68,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 	}
 }
 
-func TestPullRequestService_GetRawDiff(t *testing.T) {
+func TestPullRequestsService_GetRawDiff(t *testing.T) {
 	setup()
 	defer teardown()
 	const rawStr = "@@diff content"
@@ -89,7 +89,7 @@ func TestPullRequestService_GetRawDiff(t *testing.T) {
 	}
 }
 
-func TestPullRequestService_GetRawPatch(t *testing.T) {
+func TestPullRequestsService_GetRawPatch(t *testing.T) {
 	setup()
 	defer teardown()
 	const rawStr = "@@patch content"
@@ -110,7 +110,7 @@ func TestPullRequestService_GetRawPatch(t *testing.T) {
 	}
 }
 
-func TestPullRequestService_GetRawInvalid(t *testing.T) {
+func TestPullRequestsService_GetRawInvalid(t *testing.T) {
 	setup()
 	defer teardown()
 
