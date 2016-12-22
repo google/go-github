@@ -288,10 +288,10 @@ type PullRequestOptions struct {
 }
 
 type pullRequestMergeRequest struct {
-	CommitMessage *string `json:"commit_message"`
-	CommitTitle   *string `json:"commit_title,omitempty"`
-	MergeMethod   *string `json:"merge_method,omitempty"`
-	SHA           *string `json:"sha,omitempty"`
+	CommitMessage string `json:"commit_message"`
+	CommitTitle   string `json:"commit_title,omitempty"`
+	MergeMethod   string `json:"merge_method,omitempty"`
+	SHA           string `json:"sha,omitempty"`
 }
 
 // Merge a pull request (Merge Button™).
@@ -301,11 +301,11 @@ type pullRequestMergeRequest struct {
 func (s *PullRequestsService) Merge(owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	pullRequestBody := &pullRequestMergeRequest{CommitMessage: &commitMessage}
+	pullRequestBody := &pullRequestMergeRequest{CommitMessage: commitMessage}
 	if options != nil {
-		pullRequestBody.CommitTitle = &options.CommitTitle
-		pullRequestBody.MergeMethod = &options.MergeMethod
-		pullRequestBody.SHA = &options.SHA
+		pullRequestBody.CommitTitle = options.CommitTitle
+		pullRequestBody.MergeMethod = options.MergeMethod
+		pullRequestBody.SHA = options.SHA
 	}
 	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
 	if err != nil {
