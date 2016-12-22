@@ -295,6 +295,18 @@ type PageBuildEvent struct {
 	Sender *User       `json:"sender,omitempty"`
 }
 
+// PingEvent is triggered when a Webhook is added to GitHub.
+//
+// GitHub docs: https://developer.github.com/webhooks/#ping-event
+type PingEvent struct {
+	// Random string of GitHub zen.
+	Zen *string `json:"zen,omitempty"`
+	// The ID of the webhook that triggered the ping.
+	HookID *string `json:"hook_id,omitempty"`
+	// The webhook configuration.
+	Hook *Hook `json:"hook,omitempty"`
+}
+
 // PublicEvent is triggered when a private repository is open sourced.
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
