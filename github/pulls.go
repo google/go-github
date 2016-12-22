@@ -307,12 +307,12 @@ func (s *PullRequestsService) Merge(owner string, repo string, number int, commi
 		pullRequestBody.SHA = &options.SHA
 	}
 	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
-
-	// TODO: This header will be unnecessary when the API is no longer in preview.
-	req.Header.Set("Accept", mediaTypeSquashPreview)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: This header will be unnecessary when the API is no longer in preview.
+	req.Header.Set("Accept", mediaTypeSquashPreview)
 
 	mergeResult := new(PullRequestMergeResult)
 	resp, err := s.client.Do(req, mergeResult)
