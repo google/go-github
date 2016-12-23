@@ -37,6 +37,11 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
+	_, _, err := client.PullRequests.ListReviews("%", "r", 1)
+	testURLParseError(t, err)
+}
+
 func TestPullRequestsService_GetReview(t *testing.T) {
 	setup()
 	defer teardown()
@@ -56,6 +61,11 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
+}
+
+func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
+	_, _, err := client.PullRequests.GetReview("%", "r", 1, 1)
+	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_ListReviewComments(t *testing.T) {
