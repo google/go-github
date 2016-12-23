@@ -302,7 +302,7 @@ type PingEvent struct {
 	// Random string of GitHub zen.
 	Zen *string `json:"zen,omitempty"`
 	// The ID of the webhook that triggered the ping.
-	HookID *string `json:"hook_id,omitempty"`
+	HookID *int `json:"hook_id,omitempty"`
 	// The webhook configuration.
 	Hook *Hook `json:"hook,omitempty"`
 }
