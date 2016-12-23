@@ -40,11 +40,19 @@ type PullRequestReviewComment struct {
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 }
 
+func (c PullRequestReviewComment) String() string {
+	return Stringify(c)
+}
+
 // DraftReviewComment represents a comment part of the review.
 type DraftReviewComment struct {
 	Path     *string `json:"path,omitempty"`
 	Position *int    `json:"position,omitempty"`
 	Body     *string `json:"body,omitempty"`
+}
+
+func (c DraftReviewComment) String() string {
+	return Stringify(c)
 }
 
 // PullRequestReviewRequest represents a request to create a review.
@@ -54,9 +62,17 @@ type PullRequestReviewRequest struct {
 	Comments []DraftReviewComment `json:"comments,omitempty"`
 }
 
+func (r PullRequestReviewRequest) String() string {
+	return Stringify(r)
+}
+
 // PullRequestReviewDismissalRequest represents a request to dismiss a review.
 type PullRequestReviewDismissalRequest struct {
 	Message *string `json:"message,omitempty"`
+}
+
+func (r PullRequestReviewDismissalRequest) String() string {
+	return Stringify(r)
 }
 
 // ListReviews lists all reviews on the specified pull request.
