@@ -53,6 +53,7 @@ var (
 		"member":                                "MemberEvent",
 		"membership":                            "MembershipEvent",
 		"milestone":                             "MilestoneEvent",
+		"organization":                          "OrganizationEvent",
 		"page_build":                            "PageBuildEvent",
 		"public":                                "PublicEvent",
 		"pull_request_review":                   "PullRequestReviewEvent",

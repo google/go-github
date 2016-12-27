@@ -93,6 +93,9 @@ const (
 
 	// https://developer.github.com/changes/2016-09-14-Integrations-Early-Access/
 	mediaTypeIntegrationPreview = "application/vnd.github.machine-man-preview+json"
+
+	// https://developer.github.com/changes/2016-11-28-preview-org-membership/
+	mediaTypeOrgMembershipPreview = "application/vnd.github.korra-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
