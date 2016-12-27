@@ -499,3 +499,26 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 		t.Errorf("Organizations.ListUserTeams returned %+v, want %+v", teams, want)
 	}
 }
+
+func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1"})
+		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &ListOptions{Page: 1}
+	invitations, _, err := client.Organizations.ListPendingTeamInvitations(1, opt)
+	if err != nil {
+		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
+	}
+
+	want := []*Invitation{{ID: Int(1)}}
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Organizations.ListPendingTeamInvitations returned %+v, want %+v", invitations, want)
+	}
+}
