@@ -276,9 +276,9 @@ type MilestoneEvent struct {
 	Org     *Organization `json:"organization,omitempty"`
 }
 
-// OrganizationEvent is Triggered when a user is added, removed, or invited to an Organization.
+// OrganizationEvent is triggered when a user is added, removed, or invited to an organization.
 // Events of this type are not visible in timelines. These events are only used to trigger organization hooks.
-// Webhook event name is "organization"
+// Webhook event name is "organization".
 //
 // Github docs: https://developer.github.com/v3/activity/events/types/#organizationevent
 type OrganizationEvent struct {

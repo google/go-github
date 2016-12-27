@@ -40,6 +40,10 @@ type Team struct {
 	RepositoriesURL *string       `json:"repositories_url,omitempty"`
 }
 
+func (t Team) String() string {
+	return Stringify(t)
+}
+
 // Invitation represents a team member's inviation status
 type Invitation struct {
 	ID        *int       `json:"id,omitempty"`
@@ -47,10 +51,6 @@ type Invitation struct {
 	Email     *string    `json:"email,omitempty"`
 	Role      *string    `json:"role,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-}
-
-func (t Team) String() string {
-	return Stringify(t)
 }
 
 func (i Invitation) String() string {
@@ -402,12 +402,16 @@ func (s *OrganizationsService) RemoveTeamMembership(team int, user string) (*Res
 func (s *OrganizationsService) ListPendingTeamInvitations(team int, opt *ListOptions) ([]*Invitation, *Response, error) {
 	u := fmt.Sprintf("teams/%v/invitations", team)
 	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// TODO: remove custom accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
 	pendingInvitations := new([]*Invitation)
