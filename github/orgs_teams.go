@@ -411,7 +411,7 @@ func (s *OrganizationsService) ListPendingTeamInvitations(team int, opt *ListOpt
 		return nil, nil, err
 	}
 
-	// TODO: remove custom accept header when this API fully launches.
+	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
 	pendingInvitations := new([]*Invitation)
