@@ -110,7 +110,6 @@ func TestString(t *testing.T) {
 		{PullRequestComment{ID: Int(1)}, `github.PullRequestComment{ID:1}`},
 		{PullRequest{Number: Int(1)}, `github.PullRequest{Number:1}`},
 		{PullRequestReview{ID: Int(1)}, `github.PullRequestReview{ID:1}`},
-		{PullRequestReviewComment{ID: Int(1)}, `github.PullRequestReviewComment{ID:1}`},
 		{DraftReviewComment{Position: Int(1)}, `github.DraftReviewComment{Position:1}`},
 		{PullRequestReviewRequest{Body: String("r")}, `github.PullRequestReviewRequest{Body:"r"}`},
 		{PullRequestReviewDismissalRequest{Message: String("r")}, `github.PullRequestReviewDismissalRequest{Message:"r"}`},

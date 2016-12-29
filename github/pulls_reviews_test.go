@@ -83,7 +83,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}
 
-	want := []*PullRequestReviewComment{
+	want := []*PullRequestComment{
 		{ID: Int(1)},
 		{ID: Int(2)},
 	}

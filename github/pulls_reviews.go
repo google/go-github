@@ -28,22 +28,6 @@ func (p PullRequestReview) String() string {
 	return Stringify(p)
 }
 
-// PullRequestReviewComment represents a comment left on a pull request review.
-type PullRequestReviewComment struct {
-	ID             *int       `json:"id,omitempty"`
-	User           *User      `json:"user,omitempty"`
-	Body           *string    `json:"body,omitempty"`
-	CreatedAt      *time.Time `json:"created_at,omitempty"`
-	UpdatedAt      *time.Time `json:"updated_at,omitempty"`
-	CommitID       *string    `json:"commit_id,omitempty"`
-	HTMLURL        *string    `json:"html_url,omitempty"`
-	PullRequestURL *string    `json:"pull_request_url,omitempty"`
-}
-
-func (c PullRequestReviewComment) String() string {
-	return Stringify(c)
-}
-
 // DraftReviewComment represents a comment part of the review.
 type DraftReviewComment struct {
 	Path     *string `json:"path,omitempty"`
@@ -124,7 +108,7 @@ func (s *PullRequestsService) GetReview(owner string, repo string, number int, r
 // ListReviewComments lists all the comments for the specified review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
-func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, reviewID int) ([]*PullRequestReviewComment, *Response, error) {
+func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, reviewID int) ([]*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -135,7 +119,7 @@ func (s *PullRequestsService) ListReviewComments(owner string, repo string, numb
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
-	comments := new([]*PullRequestReviewComment)
+	comments := new([]*PullRequestComment)
 	resp, err := s.client.Do(req, comments)
 	if err != nil {
 		return nil, resp, err
