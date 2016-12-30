@@ -283,14 +283,14 @@ type MilestoneEvent struct {
 // Github docs: https://developer.github.com/v3/activity/events/types/#organizationevent
 type OrganizationEvent struct {
 	// Action is the action that was performed.
-	// Can be one of "member_added", "member_removed", or "member_invited"
+	// Can be one of "member_added", "member_removed", or "member_invited".
 	Action *string `json:"action,omitempty"`
 
-	// Invitaion is the invitation for the user or email if the action is "member_invited"
+	// Invitaion is the invitation for the user or email if the action is "member_invited".
 	Invitation *Invitation `json:"invitation,omitempty"`
 
 	// Membership is the membership between the user and the organization.
-	// Not present when the action is "member_invited"
+	// Not present when the action is "member_invited".
 	Membership *Membership `json:"membership,omitempty"`
 
 	Organization *Organization `json:"organization,omitempty"`
@@ -439,7 +439,7 @@ func (p PushEventCommit) String() string {
 	return Stringify(p)
 }
 
-// PushEventRepository represents the repo object in a PushEvent payload
+// PushEventRepository represents the repo object in a PushEvent payload.
 type PushEventRepository struct {
 	ID              *int                `json:"id,omitempty"`
 	Name            *string             `json:"name,omitempty"`
@@ -471,7 +471,7 @@ type PushEventRepository struct {
 	HTMLURL *string `json:"html_url,omitempty"`
 }
 
-// PushEventRepoOwner is a basic representation of user/org in a PushEvent payload
+// PushEventRepoOwner is a basic representation of user/org in a PushEvent payload.
 type PushEventRepoOwner struct {
 	Name  *string `json:"name,omitempty"`
 	Email *string `json:"email,omitempty"`
