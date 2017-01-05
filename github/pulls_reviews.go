@@ -19,9 +19,7 @@ type PullRequestReview struct {
 	CommitID       *string    `json:"commit_id,omitempty"`
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
-
-	// State can be "ACCEPTED", "DISMISSED", "CHANGES_REQUESTED", "COMMENTED" or "PENDING".
-	State *string `json:"state,omitempty"`
+	State          *string    `json:"state,omitempty"`
 }
 
 func (p PullRequestReview) String() string {
