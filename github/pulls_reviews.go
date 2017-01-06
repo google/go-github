@@ -151,6 +151,11 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 
 // SubmitReview submits a specified review on the specified pull request.
 //
+// Note: There is a known issue with this preview endpoint.
+// Read more about it here - https://github.com/google/go-github/pull/497#discussion_r94593877
+//
+// TODO: Remove this once we arrive at resolution with GitHub Support.
+//
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
 func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, reviewID int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
