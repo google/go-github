@@ -114,30 +114,43 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
 
-	if *branch.Protection.Enabled {
+	if *branch.Protected {
 		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
 	}
 
-	branch.Protection.Enabled = github.Bool(true)
-	branch.Protection.RequiredStatusChecks = &github.RequiredStatusChecks{
-		EnforcementLevel: github.String("everyone"),
-		Contexts:         &[]string{"continous-integration"},
+	protectionRequest := &github.ProtectionRequest{
+		RequiredStatusChecks: &github.RequiredStatusChecks{
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &github.RequiredPullRequestReviews{
+			IncludeAdmins: true,
+		},
+		// TODO: Only organization repositories can have users and team restrictions.
+		//       In order to be able to test these Restrictions, need to add support
+		//       for creating temporary organization repositories.
+		Restrictions: nil,
 	}
-	branch, _, err = client.Repositories.EditBranch(*repo.Owner.Login, *repo.Name, "master", branch)
+
+	protection, _, err := client.Repositories.UpdateBranchProtection(*repo.Owner.Login, *repo.Name, "master", protectionRequest)
 	if err != nil {
-		t.Fatalf("Repositories.EditBranch() returned error: %v", err)
+		t.Fatalf("Repositories.UpdateBranchProtection() returned error: %v", err)
 	}
 
-	if !*branch.Protection.Enabled {
-		t.Fatalf("Branch %v of repo %v should be protected, but is not!", "master", *repo.Name)
+	want := &github.Protection{
+		RequiredStatusChecks: &github.RequiredStatusChecks{
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &github.RequiredPullRequestReviews{
+			IncludeAdmins: true,
+		},
+		Restrictions: nil,
 	}
-	if *branch.Protection.RequiredStatusChecks.EnforcementLevel != "everyone" {
-		t.Fatalf("RequiredStatusChecks should be enabled for everyone, set for: %v", *branch.Protection.RequiredStatusChecks.EnforcementLevel)
-	}
-
-	wantedContexts := []string{"continous-integration"}
-	if !reflect.DeepEqual(*branch.Protection.RequiredStatusChecks.Contexts, wantedContexts) {
-		t.Fatalf("RequiredStatusChecks.Contexts should be: %v but is: %v", wantedContexts, *branch.Protection.RequiredStatusChecks.Contexts)
+	if !reflect.DeepEqual(protection, want) {
+		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
 	}
 
 	_, err = client.Repositories.Delete(*repo.Owner.Login, *repo.Name)
