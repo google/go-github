@@ -121,6 +121,8 @@ type Timeline struct {
 type Source struct {
 	ID    *int    `json:"id,omitempty"`
 	URL   *string `json:"url,omitempty"`
+	Type  *string `json:"type,omitempty"`
+	Issue *Issue  `json:"issue,omitempty"`
 	Actor *User   `json:"actor,omitempty"`
 }
 
