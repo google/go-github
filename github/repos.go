@@ -508,14 +508,16 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks *RequiredStatusChecks `json:"required_status_checks"`
-	Restrictions         *BranchRestrictions   `json:"restrictions"`
+	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
+	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	Restrictions               *BranchRestrictions         `json:"restrictions"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
 type ProtectionRequest struct {
-	RequiredStatusChecks *RequiredStatusChecks      `json:"required_status_checks"`
-	Restrictions         *BranchRestrictionsRequest `json:"restrictions"`
+	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
+	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	Restrictions               *BranchRestrictionsRequest  `json:"restrictions"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
@@ -527,6 +529,12 @@ type RequiredStatusChecks struct {
 	// The list of status checks to require in order to merge into this
 	// branch.
 	Contexts *[]string `json:"contexts,omitempty"`
+}
+
+// RequiredPullRequestReviews represents the protection configuration for pull requests.
+type RequiredPullRequestReviews struct {
+	// Enforce pull request reviews for repository administrators.
+	IncludeAdmins *bool `json:"include_admins,omitempty"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or
