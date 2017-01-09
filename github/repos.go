@@ -508,34 +508,42 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks *RequiredStatusChecks `json:"required_status_checks"`
-	Restrictions         *BranchRestrictions   `json:"restrictions"`
+	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
+	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	Restrictions               *BranchRestrictions         `json:"restrictions"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
 type ProtectionRequest struct {
-	RequiredStatusChecks *RequiredStatusChecks      `json:"required_status_checks"`
-	Restrictions         *BranchRestrictionsRequest `json:"restrictions"`
+	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
+	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	Restrictions               *BranchRestrictionsRequest  `json:"restrictions"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
 	// Enforce required status checks for repository administrators.
-	IncludeAdmins *bool `json:"include_admins,omitempty"`
+	IncludeAdmins bool `json:"include_admins"`
 	// Require branches to be up to date before merging.
-	Strict *bool `json:"strict,omitempty"`
+	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Contexts *[]string `json:"contexts,omitempty"`
+	Contexts []string `json:"contexts"`
+}
+
+// RequiredPullRequestReviews represents the protection configuration for pull requests.
+type RequiredPullRequestReviews struct {
+	// Enforce pull request reviews for repository administrators.
+	IncludeAdmins bool `json:"include_admins"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or
 // teams may push to a branch.
 type BranchRestrictions struct {
 	// The list of user logins with push access.
-	Users []*User `json:"users,omitempty"`
+	Users []*User `json:"users"`
 	// The list of team slugs with push access.
-	Teams []*Team `json:"teams,omitempty"`
+	Teams []*Team `json:"teams"`
 }
 
 // BranchRestrictionsRequest represents the request to create/edit the
@@ -544,9 +552,9 @@ type BranchRestrictions struct {
 // different from the response structure.
 type BranchRestrictionsRequest struct {
 	// The list of user logins with push access.
-	Users *[]string `json:"users,omitempty"`
+	Users []string `json:"users"`
 	// The list of team slugs with push access.
-	Teams *[]string `json:"teams,omitempty"`
+	Teams []string `json:"teams"`
 }
 
 // ListBranches lists branches for the specified repository.
