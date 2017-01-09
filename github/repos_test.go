@@ -481,7 +481,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"include_admins":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.GetBranchProtection("o", "r", "b")
@@ -491,9 +491,12 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &RequiredPullRequestReviews{
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
@@ -515,13 +518,16 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	input := &ProtectionRequest{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &RequiredPullRequestReviews{
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictionsRequest{
-			Users: &[]string{"u"},
-			Teams: &[]string{"t"},
+			Users: []string{"u"},
+			Teams: []string{"t"},
 		},
 	}
 
@@ -534,7 +540,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"include_admins":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.UpdateBranchProtection("o", "r", "b", input)
@@ -544,9 +550,12 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &RequiredPullRequestReviews{
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
