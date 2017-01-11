@@ -523,12 +523,12 @@ type ProtectionRequest struct {
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
 	// Enforce required status checks for repository administrators.
-	IncludeAdmins *bool `json:"include_admins,omitempty"`
+	IncludeAdmins bool `json:"include_admins"`
 	// Require branches to be up to date before merging.
-	Strict *bool `json:"strict,omitempty"`
+	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Contexts *[]string `json:"contexts,omitempty"`
+	Contexts []string `json:"contexts"`
 }
 
 // RequiredPullRequestReviews represents the protection configuration for pull requests.

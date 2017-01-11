@@ -491,9 +491,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
 			IncludeAdmins: true,
@@ -518,9 +518,9 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	input := &ProtectionRequest{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
 			IncludeAdmins: true,
@@ -550,9 +550,9 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: Bool(true),
-			Strict:        Bool(true),
-			Contexts:      &[]string{"continuous-integration"},
+			IncludeAdmins: true,
+			Strict:        true,
+			Contexts:      []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
 			IncludeAdmins: true,
