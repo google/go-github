@@ -496,7 +496,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			Contexts:      &[]string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
-			IncludeAdmins: Bool(true),
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
@@ -523,7 +523,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			Contexts:      &[]string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
-			IncludeAdmins: Bool(true),
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictionsRequest{
 			Users: &[]string{"u"},
@@ -555,7 +555,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			Contexts:      &[]string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
-			IncludeAdmins: Bool(true),
+			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{

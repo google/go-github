@@ -534,7 +534,7 @@ type RequiredStatusChecks struct {
 // RequiredPullRequestReviews represents the protection configuration for pull requests.
 type RequiredPullRequestReviews struct {
 	// Enforce pull request reviews for repository administrators.
-	IncludeAdmins *bool `json:"include_admins,omitempty"`
+	IncludeAdmins bool `json:"include_admins"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or
