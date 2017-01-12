@@ -57,7 +57,7 @@ type IssueEvent struct {
 	//     head_ref_deleted, head_ref_restored
 	//       The pull request’s branch was deleted or restored.
 	//
-	Event *string `json:"event,omitempty"`
+	Event *string `json:"action,omitempty"`
 
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Issue     *Issue     `json:"issue,omitempty"`
