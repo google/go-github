@@ -526,8 +526,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			IncludeAdmins: true,
 		},
 		Restrictions: &BranchRestrictionsRequest{
-			Users: &[]string{"u"},
-			Teams: &[]string{"t"},
+			Users: []string{"u"},
+			Teams: []string{"t"},
 		},
 	}
 

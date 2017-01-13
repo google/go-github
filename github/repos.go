@@ -541,9 +541,9 @@ type RequiredPullRequestReviews struct {
 // teams may push to a branch.
 type BranchRestrictions struct {
 	// The list of user logins with push access.
-	Users []*User `json:"users,omitempty"`
+	Users []*User `json:"users"`
 	// The list of team slugs with push access.
-	Teams []*Team `json:"teams,omitempty"`
+	Teams []*Team `json:"teams"`
 }
 
 // BranchRestrictionsRequest represents the request to create/edit the
@@ -552,9 +552,9 @@ type BranchRestrictions struct {
 // different from the response structure.
 type BranchRestrictionsRequest struct {
 	// The list of user logins with push access.
-	Users *[]string `json:"users,omitempty"`
+	Users []string `json:"users"`
 	// The list of team slugs with push access.
-	Teams *[]string `json:"teams,omitempty"`
+	Teams []string `json:"teams"`
 }
 
 // ListBranches lists branches for the specified repository.
