@@ -58,11 +58,11 @@ func (s *SearchService) Repositories(query string, opt *SearchOptions) (*Reposit
 type SingleCommitResult struct {
 	Hash           *string     `json:"hash,omitempty"`
 	Message        *string     `json:"message,omitempty"`
-	AuthorID       int         `json:"author_id,omitempty"`
+	AuthorID       *int        `json:"author_id,omitempty"`
 	AuthorName     *string     `json:"author_name,omitempty"`
 	AuthorEmail    *string     `json:"author_email,omitempty"`
 	AuthorDate     *string     `json:"author_date,omitempty"`
-	CommitterID    int         `json:"committer_id,omitempty"`
+	CommitterID    *int        `json:"committer_id,omitempty"`
 	CommitterName  *string     `json:"committer_name,omitempty"`
 	CommitterEmail *string     `json:"committer_email,omitempty"`
 	CommitterDate  *string     `json:"committer_date,omitempty"`
