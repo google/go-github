@@ -46,6 +46,37 @@ func TestSearchService_Repositories(t *testing.T) {
 	}
 }
 
+func TestSearchService_Commits(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"q":     "blah",
+			"sort":  "author-date",
+			"order": "desc",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"hash":"random_hash1"},{"hash":"random_hash2"}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "author-date", Order: "desc"}
+	result, _, err := client.Search.Commits("blah", opts)
+	if err != nil {
+		t.Errorf("Search.Commits returned error: %v", err)
+	}
+
+	want := &CommitsSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(false),
+		Commits:           []*CommitResult{{Hash: String("random_hash1")}, {Hash: String("random_hash2")}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
+	}
+}
+
 func TestSearchService_Issues(t *testing.T) {
 	setup()
 	defer teardown()
