@@ -53,9 +53,9 @@ func TestSearchService_Commits(t *testing.T) {
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"q":        "blah",
-			"sort":     "author-date",
-			"order":    "desc",
+			"q":     "blah",
+			"sort":  "author-date",
+			"order": "desc",
 		})
 
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"hash":"random_hash1"},{"hash":"random_hash2"}]}`)
