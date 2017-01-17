@@ -55,6 +55,7 @@ func (s *SearchService) Repositories(query string, opt *SearchOptions) (*Reposit
 	return result, resp, err
 }
 
+// SingleCommitResult represents a commit object as returned in commit search endpoint response.
 type SingleCommitResult struct {
 	Hash           *string     `json:"hash,omitempty"`
 	Message        *string     `json:"message,omitempty"`
