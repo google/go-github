@@ -21,6 +21,7 @@ type SearchService service
 type SearchOptions struct {
 	// How to sort the search results.  Possible values are:
 	//   - for repositories: stars, fork, updated
+	//   - for commits: author-date, committer-date
 	//   - for code: indexed
 	//   - for issues: comments, created, updated
 	//   - for users: followers, repositories, joined
@@ -51,6 +52,36 @@ type RepositoriesSearchResult struct {
 func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
 	resp, err := s.search("repositories", query, opt, result)
+	return result, resp, err
+}
+
+type SingleCommitResult struct {
+	Hash           *string     `json:"hash,omitempty"`
+	Message        *string     `json:"message,omitempty"`
+	AuthorID       int         `json:"author_id,omitempty"`
+	AuthorName     *string     `json:"author_name,omitempty"`
+	AuthorEmail    *string     `json:"author_email,omitempty"`
+	AuthorDate     *string     `json:"author_date,omitempty"`
+	CommitterID    int         `json:"committer_id,omitempty"`
+	CommitterName  *string     `json:"committer_name,omitempty"`
+	CommitterEmail *string     `json:"committer_email,omitempty"`
+	CommitterDate  *string     `json:"committer_date,omitempty"`
+	Repository     *Repository `json:"repository,omitempty"`
+}
+
+// CommitsSearchResult represents the result of a commits search.
+type CommitsSearchResult struct {
+	Total             *int                 `json:"total_count,omitempty"`
+	IncompleteResults *bool                `json:"incomplete_results,omitempty"`
+	Commits           []SingleCommitResult `json:"items,omitempty"`
+}
+
+// Commits searches commits via various criteria.
+//
+// GitHub API Docs: https://developer.github.com/v3/search/#search-commits
+func (s *SearchService) Commits(query string, opt *SearchOptions) (*CommitsSearchResult, *Response, error) {
+	result := new(CommitsSearchResult)
+	resp, err := s.search("commits", query, opt, result)
 	return result, resp, err
 }
 
@@ -148,6 +179,11 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	if searchType == "commits" {
+		// Accept header for search commits preview endpoint
+		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
 	}
 
 	if opt != nil && opt.TextMatch {
