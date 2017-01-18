@@ -522,18 +522,18 @@ type ProtectionRequest struct {
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
-	// Enforce required status checks for repository administrators.
+	// Enforce required status checks for repository administrators. (Required.)
 	IncludeAdmins bool `json:"include_admins"`
-	// Require branches to be up to date before merging.
+	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
-	// branch.
+	// branch. (Required; use []string{} instead of nil for empty list.)
 	Contexts []string `json:"contexts"`
 }
 
 // RequiredPullRequestReviews represents the protection configuration for pull requests.
 type RequiredPullRequestReviews struct {
-	// Enforce pull request reviews for repository administrators.
+	// Enforce pull request reviews for repository administrators. (Required.)
 	IncludeAdmins bool `json:"include_admins"`
 }
 
@@ -551,9 +551,9 @@ type BranchRestrictions struct {
 // separate from BranchRestrictions above because the request structure is
 // different from the response structure.
 type BranchRestrictionsRequest struct {
-	// The list of user logins with push access.
+	// The list of user logins with push access. (Required; use []string{} instead of nil for empty list.)
 	Users []string `json:"users"`
-	// The list of team slugs with push access.
+	// The list of team slugs with push access. (Required; use []string{} instead of nil for empty list.)
 	Teams []string `json:"teams"`
 }
 
