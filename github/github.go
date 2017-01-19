@@ -406,6 +406,12 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 
 	resp, err := c.client.Do(req)
 	if err != nil {
+		if e, ok := err.(*url.Error); ok {
+			if url, err := url.Parse(e.URL); err == nil {
+				e.URL = sanitizeURL(url).String()
+				return nil, e
+			}
+		}
 		return nil, err
 	}
 
