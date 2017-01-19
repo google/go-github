@@ -312,6 +312,27 @@ type OrganizationEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// OrganizationEvent is triggered when a user is added, removed, or invited to an organization.
+// Events of this type are not visible in timelines. These events are only used to trigger organization hooks.
+// Webhook event name is "organization".
+//
+// Github docs: https://developer.github.com/v3/activity/events/types/#organizationevent
+type OrganizationEvent struct {
+	// Action is the action that was performed.
+	// Can be one of "member_added", "member_removed", or "member_invited".
+	Action *string `json:"action,omitempty"`
+
+	// Invitaion is the invitation for the user or email if the action is "member_invited".
+	Invitation *Invitation `json:"invitation,omitempty"`
+
+	// Membership is the membership between the user and the organization.
+	// Not present when the action is "member_invited".
+	Membership *Membership `json:"membership,omitempty"`
+
+	Organization *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
 // PageBuildEvent represents an attempted build of a GitHub Pages site, whether
 // successful or not.
 // The Webhook event name is "page_build".
