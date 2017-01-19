@@ -550,7 +550,7 @@ func (r *AbuseRateLimitError) Error() string {
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be
-// exposed to the user, specifically in the ErrorResponse error message.
+// exposed to the user.
 func sanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
