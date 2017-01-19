@@ -375,6 +375,29 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
+// Test that an error caused by the internal http client's Do() function
+// does not leak the client secret.
+func TestDo_sanitizeURL(t *testing.T) {
+	tp := &UnauthenticatedRateLimitedTransport{
+		ClientID:     "id",
+		ClientSecret: "secret",
+	}
+	unauthedClient := NewClient(tp.Client())
+	unauthedClient.BaseURL = &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
+	req, err := unauthedClient.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	_, err = unauthedClient.Do(req, nil)
+	if err == nil {
+		t.Fatal("Expected error to be returned.")
+	}
+	if !strings.Contains(err.Error(), "client_secret=REDACTED") ||
+		strings.Contains(err.Error(), "client_secret=secret") {
+		t.Errorf("Do error contains secret, should be redacted:\n%q", err)
+	}
+}
+
 func TestDo_rateLimit(t *testing.T) {
 	setup()
 	defer teardown()
