@@ -392,8 +392,7 @@ func TestDo_sanitizeURL(t *testing.T) {
 	if err == nil {
 		t.Fatal("Expected error to be returned.")
 	}
-	if !strings.Contains(err.Error(), "client_secret=REDACTED") ||
-		strings.Contains(err.Error(), "client_secret=secret") {
+	if strings.Contains(err.Error(), "client_secret=secret") {
 		t.Errorf("Do error contains secret, should be redacted:\n%q", err)
 	}
 }
