@@ -8,7 +8,7 @@ package github
 import (
 	"encoding/json"
 	"fmt"
-//	"time"
+	//	"time"
 	"net/http"
 	"reflect"
 	"testing"
@@ -554,7 +554,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 			Login: String("monalisa"),
 			Email: String("octocat@github.com"),
 			Role:  String("direct_member"),
-		//	CreatedAt: tmCreatedAt, 
+			//	CreatedAt: tmCreatedAt,
 			Inviter: &Inviter{
 				Login:               String("other_user"),
 				ID:                  Int(1),

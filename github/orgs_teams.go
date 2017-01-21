@@ -46,12 +46,12 @@ func (t Team) String() string {
 
 // Invitation represents a team member's inviation status
 type Invitation struct {
-	ID        *int       `json:"id,omitempty"`
-	Login     *string    `json:"login,omitempty"`
-	Email     *string    `json:"email,omitempty"`
-	Role      *string    `json:"role,omitempty"`
+	ID        *int      `json:"id,omitempty"`
+	Login     *string   `json:"login,omitempty"`
+	Email     *string   `json:"email,omitempty"`
+	Role      *string   `json:"role,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	Inviter   *Inviter   `json:"inviter,omitempty"`
+	Inviter   *Inviter  `json:"inviter,omitempty"`
 }
 
 func (i Invitation) String() string {
