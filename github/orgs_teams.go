@@ -50,10 +50,36 @@ type Invitation struct {
 	Login     *string    `json:"login,omitempty"`
 	Email     *string    `json:"email,omitempty"`
 	Role      *string    `json:"role,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	Inviter   *Inviter   `json:"inviter,omitempty"`
 }
 
 func (i Invitation) String() string {
+	return Stringify(i)
+}
+
+// Inviter represents the entity introduced in team and org invitations
+type Inviter struct {
+	Login               *string `json:"login,omitempty"`
+	ID                  *int    `json:"id,omitempty"`
+	Avatar_url          *string `json:"avatar_url,omitempty"`
+	Gravatar_id         *string `json:"gravatar_id,omitempty"`
+	Url                 *string `json:"url,omit_empty"`
+	Html_url            *string `json:"html_url,omitempty"`
+	Followers_url       *string `json:"followers_url,omitempty"`
+	Following_url       *string `json:"following_url,omitempty"`
+	Gists_url           *string `json:"gists_url,omitempty"`
+	Starred_url         *string `json:"starred_url,omitempty"`
+	Subscriptions_url   *string `json:"subscriptions_url,omitempty"`
+	Organizations_url   *string `json:"organizations_url,omitempty"`
+	Repos_url           *string `json:"repos_url,omitempty"`
+	Events_url          *string `json:"events_url,omitempty"`
+	Received_events_url *string `json:"received_events_url,omitempty"`
+	Type                *string `json:"type,omitempty"`
+	Site_admin          bool    `json:"site_admin,omitempty"`
+}
+
+func (i Inviter) String() string {
 	return Stringify(i)
 }
 

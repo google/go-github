@@ -8,6 +8,7 @@ package github
 import (
 	"encoding/json"
 	"fmt"
+//	"time"
 	"net/http"
 	"reflect"
 	"testing"
@@ -500,6 +501,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 	}
 }
 
+//"created_at": "2016-11-30T06:46:10-08:00",
 func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 	setup()
 	defer teardown()
@@ -508,7 +510,33 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
 		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
-		fmt.Fprint(w, `[{"id":1}]`)
+		fmt.Fprint(w, `[
+				{
+    					"id": 1,
+    					"login": "monalisa",
+    					"email": "octocat@github.com",
+    					"role": "direct_member",
+    					"inviter": {
+      						"login": "other_user",
+      						"id": 1,
+      						"avatar_url": "https://github.com/images/error/other_user_happy.gif",
+      						"gravatar_id": "",
+      						"url": "https://api.github.com/users/other_user",
+      						"html_url": "https://github.com/other_user",
+      						"followers_url": "https://api.github.com/users/other_user/followers",
+      						"following_url": "https://api.github.com/users/other_user/following/other_user",
+      						"gists_url": "https://api.github.com/users/other_user/gists/gist_id",
+      						"starred_url": "https://api.github.com/users/other_user/starred/owner/repo",
+      						"subscriptions_url": "https://api.github.com/users/other_user/subscriptions",
+      						"organizations_url": "https://api.github.com/users/other_user/orgs",
+      						"repos_url": "https://api.github.com/users/other_user/repos",
+      						"events_url": "https://api.github.com/users/other_user/events/privacy",
+      						"received_events_url": "https://api.github.com/users/other_user/received_events/privacy",
+      						"type": "User",
+      						"site_admin": false
+    					}
+  				}
+			]`)
 	})
 
 	opt := &ListOptions{Page: 1}
@@ -517,7 +545,37 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
 	}
 
-	want := []*Invitation{{ID: Int(1)}}
+	//layout := "2006-01-02T15:04:05.000Z"
+	//strCreatedAt := "2016-11-30T06:46:10-08:00"
+	//tmCreatedAt, err := time.Parse(layout, strCreatedAt)
+	want := []*Invitation{
+		{
+			ID:    Int(1),
+			Login: String("monalisa"),
+			Email: String("octocat@github.com"),
+			Role:  String("direct_member"),
+		//	CreatedAt: tmCreatedAt, 
+			Inviter: &Inviter{
+				Login:               String("other_user"),
+				ID:                  Int(1),
+				Avatar_url:          String("https://github.com/images/error/other_user_happy.gif"),
+				Gravatar_id:         String(""),
+				Url:                 String("https://api.github.com/users/other_user"),
+				Html_url:            String("https://github.com/other_user"),
+				Followers_url:       String("https://api.github.com/users/other_user/followers"),
+				Following_url:       String("https://api.github.com/users/other_user/following/other_user"),
+				Gists_url:           String("https://api.github.com/users/other_user/gists/gist_id"),
+				Starred_url:         String("https://api.github.com/users/other_user/starred/owner/repo"),
+				Subscriptions_url:   String("https://api.github.com/users/other_user/subscriptions"),
+				Organizations_url:   String("https://api.github.com/users/other_user/orgs"),
+				Repos_url:           String("https://api.github.com/users/other_user/repos"),
+				Events_url:          String("https://api.github.com/users/other_user/events/privacy"),
+				Received_events_url: String("https://api.github.com/users/other_user/received_events/privacy"),
+				Type:                String("User"),
+				Site_admin:          false,
+			},
+		}}
+	fmt.Println("DEBUG %v", want[0])
 	if !reflect.DeepEqual(invitations, want) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned %+v, want %+v", invitations, want)
 	}
