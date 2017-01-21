@@ -396,7 +396,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	opt := &ListOptions{Page: 1}
 	invitations, _, err := client.Organizations.ListPendingOrgInvitations(1, opt)
 	if err != nil {
-		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
+		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
 
 	want := []*Invitation{
@@ -428,6 +428,6 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 		}}
 
 	if !reflect.DeepEqual(invitations, want) {
-		t.Errorf("Organizations.ListPendingTeamInvitations returned %+v, want %+v", invitations, want)
+		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 }
