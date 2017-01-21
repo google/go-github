@@ -8,10 +8,10 @@ package github
 import (
 	"encoding/json"
 	"fmt"
-	//	"time"
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestOrganizationsService_ListTeams(t *testing.T) {
@@ -501,7 +501,6 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 	}
 }
 
-//"created_at": "2016-11-30T06:46:10-08:00",
 func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 	setup()
 	defer teardown()
@@ -516,6 +515,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
     					"login": "monalisa",
     					"email": "octocat@github.com",
     					"role": "direct_member",
+					"created_at": "2017-01-21T00:00:00Z",
     					"inviter": {
       						"login": "other_user",
       						"id": 1,
@@ -545,16 +545,13 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
 	}
 
-	//layout := "2006-01-02T15:04:05.000Z"
-	//strCreatedAt := "2016-11-30T06:46:10-08:00"
-	//tmCreatedAt, err := time.Parse(layout, strCreatedAt)
 	want := []*Invitation{
 		{
-			ID:    Int(1),
-			Login: String("monalisa"),
-			Email: String("octocat@github.com"),
-			Role:  String("direct_member"),
-			//	CreatedAt: tmCreatedAt,
+			ID:        Int(1),
+			Login:     String("monalisa"),
+			Email:     String("octocat@github.com"),
+			Role:      String("direct_member"),
+			CreatedAt: time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC),
 			Inviter: &Inviter{
 				Login:               String("other_user"),
 				ID:                  Int(1),
