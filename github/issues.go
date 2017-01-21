@@ -241,8 +241,14 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 
 // Create a new issue on the specified repository.
 //
+// Issues with a body longer than 65536 will return an error.
+//
 // GitHub API docs: http://developer.github.com/v3/issues/#create-an-issue
 func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
+	if issue != nil && issue.Body != nil && len(*issue.Body) > maxCommentLen {
+		return nil, nil, fmt.Errorf("body is too long (maximum is %d characters)", maxCommentLen)
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
