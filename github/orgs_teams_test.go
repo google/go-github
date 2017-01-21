@@ -575,7 +575,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 				Site_admin:          false,
 			},
 		}}
-	fmt.Println("DEBUG %v", want[0])
+
 	if !reflect.DeepEqual(invitations, want) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned %+v, want %+v", invitations, want)
 	}
