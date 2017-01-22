@@ -189,12 +189,30 @@ func (s *PullRequestsService) Create(owner string, repo string, pull *NewPullReq
 	return p, resp, err
 }
 
+type pullRequestUpdate struct {
+	Title *string `json:"title,omitempty"`
+	Body  *string `json:"body,omitempty"`
+	State *string `json:"state,omitempty"`
+	Base  *string `json:"base,omitempty"`
+}
+
 // Edit a pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request
 func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
-	req, err := s.client.NewRequest("PATCH", u, pull)
+
+	update := new(pullRequestUpdate)
+	if pull != nil {
+		update.Title = pull.Title
+		update.Body = pull.Body
+		update.State = pull.State
+		if pull.Base != nil {
+			update.Base = pull.Base.Ref
+		}
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, update)
 	if err != nil {
 		return nil, nil, err
 	}
