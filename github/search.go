@@ -55,27 +55,28 @@ func (s *SearchService) Repositories(query string, opt *SearchOptions) (*Reposit
 	return result, resp, err
 }
 
-// SingleCommitResult represents a commit object as returned in commit search endpoint response.
-type SingleCommitResult struct {
+// CommitsSearchResult represents the result of a commits search.
+type CommitsSearchResult struct {
+	Total             *int           `json:"total_count,omitempty"`
+	IncompleteResults *bool          `json:"incomplete_results,omitempty"`
+	Commits           []CommitResult `json:"items,omitempty"`
+}
+
+// CommitResult represents a commit object as returned in commit search endpoint response.
+type CommitResult struct {
 	Hash           *string     `json:"hash,omitempty"`
 	Message        *string     `json:"message,omitempty"`
 	AuthorID       *int        `json:"author_id,omitempty"`
 	AuthorName     *string     `json:"author_name,omitempty"`
 	AuthorEmail    *string     `json:"author_email,omitempty"`
-	AuthorDate     *string     `json:"author_date,omitempty"`
+	AuthorDate     *Timestamp  `json:"author_date,omitempty"`
 	CommitterID    *int        `json:"committer_id,omitempty"`
 	CommitterName  *string     `json:"committer_name,omitempty"`
 	CommitterEmail *string     `json:"committer_email,omitempty"`
-	CommitterDate  *string     `json:"committer_date,omitempty"`
+	CommitterDate  *Timestamp  `json:"committer_date,omitempty"`
 	Repository     *Repository `json:"repository,omitempty"`
 }
 
-// CommitsSearchResult represents the result of a commits search.
-type CommitsSearchResult struct {
-	Total             *int                 `json:"total_count,omitempty"`
-	IncompleteResults *bool                `json:"incomplete_results,omitempty"`
-	Commits           []SingleCommitResult `json:"items,omitempty"`
-}
 
 // Commits searches commits via various criteria.
 //
@@ -168,7 +169,7 @@ func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResul
 }
 
 // Helper function that executes search queries against different
-// GitHub search types (repositories, code, issues, users)
+// GitHub search types (repositories, commits, code, issues, users)
 func (s *SearchService) search(searchType string, query string, opt *SearchOptions, result interface{}) (*Response, error) {
 	params, err := qs.Values(opt)
 	if err != nil {
@@ -182,15 +183,14 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 		return nil, err
 	}
 
-	if searchType == "commits" {
-		// Accept header for search commits preview endpoint
-		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
-	}
-
-	if opt != nil && opt.TextMatch {
-		// Accept header defaults to "application/vnd.github.v3+json"
-		// We change it here to fetch back text-match metadata
-		req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
+	switch {
+		case opt != nil && opt.TextMatch:
+			// Accept header defaults to "application/vnd.github.v3+json"
+			// We change it here to fetch back text-match metadata
+			req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
+		case searchType == "commits":
+			// Accept header for search commits preview endpoint
+			req.Header.Set("Accept", mediaTypeCommitSearchPreview)
 	}
 
 	return s.client.Do(req, result)
