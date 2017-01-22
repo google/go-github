@@ -7,6 +7,7 @@ package github
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -385,6 +386,14 @@ func parseRate(r *http.Response) Rate {
 // first decode it. If rate limit is exceeded and reset time is in the future,
 // Do returns *RateLimitError immediately without making a network API call.
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
+	return c.do(context.TODO(), req, v)
+}
+
+// TODO: The signature of Do is kept unmodified temporarily, in order for tests
+//       to pass during the transition period. Once all endpoints are updated
+//       to accept ctx parameter, the old Do method can be removed, and this
+//       new do method with ctx parameter should be made to take its place.
+func (c *Client) do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
 	rateLimitCategory := category(req.URL.Path)
 
 	// If we've hit rate limit, don't make further requests before Reset time.
@@ -392,7 +401,7 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 		return nil, err
 	}
 
-	resp, err := c.client.Do(req)
+	resp, err := c.client.Do(req.WithContext(ctx))
 	if err != nil {
 		if e, ok := err.(*url.Error); ok {
 			if url, err := url.Parse(e.URL); err == nil {

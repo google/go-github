@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -149,7 +150,7 @@ func TestIssuesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1, "labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
-	issue, _, err := client.Issues.Get("o", "r", 1)
+	issue, _, err := client.Issues.Get(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.Get returned error: %v", err)
 	}
@@ -168,7 +169,7 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.Get("%", "r", 1)
+	_, _, err := client.Issues.Get(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 

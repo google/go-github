@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"time"
 )
@@ -220,7 +221,7 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 // Get a single issue.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#get-a-single-issue
-func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Response, error) {
+func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -231,7 +232,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	issue := new(Issue)
-	resp, err := s.client.Do(req, issue)
+	resp, err := s.client.do(ctx, req, issue)
 	if err != nil {
 		return nil, resp, err
 	}
