@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -237,26 +238,26 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		input        *PullRequest
 		sendResponse string
 
-		wantUpdate   *pullRequestUpdate
+		wantUpdate   string
 		wantResponse *PullRequest
 	}{
 		{
 			input:        &PullRequest{Title: String("t")},
 			sendResponse: `{"number":1}`,
-			wantUpdate:   &pullRequestUpdate{Title: String("t")},
+			wantUpdate:   `{"title":"t"}`,
 			wantResponse: &PullRequest{Number: Int(1)},
 		},
 		{
 			// nil request
 			sendResponse: `{}`,
-			wantUpdate:   &pullRequestUpdate{},
+			wantUpdate:   `{}`,
 			wantResponse: &PullRequest{},
 		},
 		{
 			// base update
 			input:        &PullRequest{Base: &PullRequestBranch{Ref: String("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
-			wantUpdate:   &pullRequestUpdate{Base: String("master")},
+			wantUpdate:   `{"base":"master"}`,
 			wantResponse: &PullRequest{
 				Number: Int(1),
 				Base:   &PullRequestBranch{Ref: String("master")},
@@ -270,12 +271,12 @@ func TestPullRequestsService_Edit(t *testing.T) {
 			defer teardown()
 
 			mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
-				v := new(pullRequestUpdate)
-				json.NewDecoder(r.Body).Decode(v)
-
 				testMethod(t, r, "PATCH")
-				if !reflect.DeepEqual(v, tt.wantUpdate) {
-					t.Errorf("Request body = %+v, want %+v", v, tt.wantUpdate)
+
+				gotUpdate, _ := ioutil.ReadAll(r.Body)
+				wantUpdate := tt.wantUpdate + "\n" // json encoder adds a newline
+				if string(gotUpdate) != wantUpdate {
+					t.Errorf("Request body = %q, want %q", gotUpdate, wantUpdate)
 				}
 
 				io.WriteString(w, tt.sendResponse)
