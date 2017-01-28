@@ -198,6 +198,9 @@ type pullRequestUpdate struct {
 
 // Edit a pull request.
 //
+// The following fields are editable: Title, Body, State, and Base.Ref.
+// Base.Ref updates the base branch of the pull request.
+//
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request
 func (s *PullRequestsService) Edit(owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
