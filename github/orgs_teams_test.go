@@ -545,13 +545,14 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
 	}
 
+	tm := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:        Int(1),
 			Login:     String("monalisa"),
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
-			CreatedAt: time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC),
+			CreatedAt: &tm,
 			Inviter: &Inviter{
 				Login:               String("other_user"),
 				ID:                  Int(1),

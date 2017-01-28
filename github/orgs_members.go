@@ -271,13 +271,9 @@ func (s *OrganizationsService) RemoveOrgMembership(user, org string) (*Response,
 	return s.client.Do(req, nil)
 }
 
-//ListPendingOrgInvitations returns a list of contains a role field which refers to the
-//Organization Invitation role and will be one of the following values:
-//direct_member, admin, billing_manager, hiring_manager, or reinstate.
-//If the invitee is not a GitHub member, the login field in the return hash will be null.
+// ListPendingOrgInvitations returns a list of pending invitations.
 //
-// GitHub API docs:
-// https://developer.github.com/v3/orgs/members/#list-pending-organization-invitations
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#list-pending-organization-invitations
 func (s *OrganizationsService) ListPendingOrgInvitations(org int, opt *ListOptions) ([]*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 	u, err := addOptions(u, opt)

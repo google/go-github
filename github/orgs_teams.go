@@ -44,24 +44,22 @@ func (t Team) String() string {
 	return Stringify(t)
 }
 
-// Invitation represents a team member's inviation status
+// Invitation represents a team member's invitation status.
+// Role can be one of the values - direct_member, admin, billing_manager, hiring_manager, or reinstate.
 type Invitation struct {
-	ID    *int    `json:"id,omitempty"`
-	Login *string `json:"login,omitempty"`
-	Email *string `json:"email,omitempty"`
-	Role  *string `json:"role,omitempty"`
-	//golang documentation states
-	//Programs using times should typically store and pass them as values, not pointers.
-	//That is, time variables and struct fields should be of type time.Time, not *time.Time
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	Inviter   *Inviter  `json:"inviter,omitempty"`
+	ID        *int       `json:"id,omitempty"`
+	Login     *string    `json:"login,omitempty"`
+	Email     *string    `json:"email,omitempty"`
+	Role      *string    `json:"role,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Inviter   *Inviter   `json:"inviter,omitempty"`
 }
 
 func (i Invitation) String() string {
 	return Stringify(i)
 }
 
-// Inviter represents the entity introduced in team and org invitations
+// Inviter represents the entity introduced in team and organization invitations.
 type Inviter struct {
 	Login               *string `json:"login,omitempty"`
 	ID                  *int    `json:"id,omitempty"`
