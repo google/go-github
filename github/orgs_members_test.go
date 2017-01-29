@@ -399,32 +399,32 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
 
-	tm := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
+	createdAt := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:        Int(1),
 			Login:     String("monalisa"),
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
-			CreatedAt: &tm,
+			CreatedAt: &createdAt,
 			Inviter: &Inviter{
 				Login:               String("other_user"),
 				ID:                  Int(1),
-				Avatar_url:          String("https://github.com/images/error/other_user_happy.gif"),
-				Gravatar_id:         String(""),
-				Url:                 String("https://api.github.com/users/other_user"),
-				Html_url:            String("https://github.com/other_user"),
-				Followers_url:       String("https://api.github.com/users/other_user/followers"),
-				Following_url:       String("https://api.github.com/users/other_user/following/other_user"),
-				Gists_url:           String("https://api.github.com/users/other_user/gists/gist_id"),
-				Starred_url:         String("https://api.github.com/users/other_user/starred/owner/repo"),
-				Subscriptions_url:   String("https://api.github.com/users/other_user/subscriptions"),
-				Organizations_url:   String("https://api.github.com/users/other_user/orgs"),
-				Repos_url:           String("https://api.github.com/users/other_user/repos"),
-				Events_url:          String("https://api.github.com/users/other_user/events/privacy"),
-				Received_events_url: String("https://api.github.com/users/other_user/received_events/privacy"),
+				Avatar_URL:          String("https://github.com/images/error/other_user_happy.gif"),
+				Gravatar_ID:         String(""),
+				URL:                 String("https://api.github.com/users/other_user"),
+				HTML_URL:            String("https://github.com/other_user"),
+				Followers_URL:       String("https://api.github.com/users/other_user/followers"),
+				Following_URL:       String("https://api.github.com/users/other_user/following/other_user"),
+				Gists_URL:           String("https://api.github.com/users/other_user/gists/gist_id"),
+				Starred_URL:         String("https://api.github.com/users/other_user/starred/owner/repo"),
+				Subscriptions_URL:   String("https://api.github.com/users/other_user/subscriptions"),
+				Organizations_URL:   String("https://api.github.com/users/other_user/orgs"),
+				Repos_URL:           String("https://api.github.com/users/other_user/repos"),
+				Events_URL:          String("https://api.github.com/users/other_user/events/privacy"),
+				Received_events_URL: String("https://api.github.com/users/other_user/received_events/privacy"),
 				Type:                String("User"),
-				Site_admin:          false,
+				Site_admin:          Bool(false),
 			},
 		}}
 
