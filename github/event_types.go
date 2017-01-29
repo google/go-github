@@ -504,6 +504,7 @@ type PushEventRepository struct {
 	// The following fields are only populated by Webhook events.
 	URL          *string       `json:"url,omitempty"`
 	HTMLURL      *string       `json:"html_url,omitempty"`
+	StatusesURL  *string       `json:"statuses_url,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 
