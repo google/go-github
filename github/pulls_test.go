@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -234,6 +233,9 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit(t *testing.T) {
+	setup()
+	defer teardown()
+
 	tests := []struct {
 		input        *PullRequest
 		sendResponse string
@@ -265,32 +267,27 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		},
 	}
 
-	for _, tt := range tests {
-		func() {
-			setup()
-			defer teardown()
+	for i, tt := range tests {
+		madeRequest := false
+		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "PATCH")
+			testBody(t, r, tt.wantUpdate+"\n")
+			io.WriteString(w, tt.sendResponse)
+			madeRequest = true
+		})
 
-			mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
-				testMethod(t, r, "PATCH")
+		pull, _, err := client.PullRequests.Edit("o", "r", i, tt.input)
+		if err != nil {
+			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
+		}
 
-				gotUpdate, _ := ioutil.ReadAll(r.Body)
-				wantUpdate := tt.wantUpdate + "\n" // json encoder adds a newline
-				if string(gotUpdate) != wantUpdate {
-					t.Errorf("Request body = %q, want %q", gotUpdate, wantUpdate)
-				}
+		if !reflect.DeepEqual(pull, tt.wantResponse) {
+			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.wantResponse)
+		}
 
-				io.WriteString(w, tt.sendResponse)
-			})
-
-			pull, _, err := client.PullRequests.Edit("o", "r", 1, tt.input)
-			if err != nil {
-				t.Errorf("PullRequests.Edit returned error: %v", err)
-			}
-
-			if !reflect.DeepEqual(pull, tt.wantResponse) {
-				t.Errorf("PullRequests.Edit returned %+v, want %+v", pull, tt.wantResponse)
-			}
-		}()
+		if !madeRequest {
+			t.Errorf("%d: PullRequest.Edit did not make the expected request", i)
+		}
 	}
 }
 
