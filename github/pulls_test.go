@@ -240,27 +240,27 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		input        *PullRequest
 		sendResponse string
 
-		wantUpdate   string
-		wantResponse *PullRequest
+		wantUpdate string
+		want       *PullRequest
 	}{
 		{
 			input:        &PullRequest{Title: String("t")},
 			sendResponse: `{"number":1}`,
 			wantUpdate:   `{"title":"t"}`,
-			wantResponse: &PullRequest{Number: Int(1)},
+			want:         &PullRequest{Number: Int(1)},
 		},
 		{
 			// nil request
 			sendResponse: `{}`,
 			wantUpdate:   `{}`,
-			wantResponse: &PullRequest{},
+			want:         &PullRequest{},
 		},
 		{
 			// base update
 			input:        &PullRequest{Base: &PullRequestBranch{Ref: String("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
 			wantUpdate:   `{"base":"master"}`,
-			wantResponse: &PullRequest{
+			want: &PullRequest{
 				Number: Int(1),
 				Base:   &PullRequestBranch{Ref: String("master")},
 			},
@@ -281,8 +281,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
 		}
 
-		if !reflect.DeepEqual(pull, tt.wantResponse) {
-			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.wantResponse)
+		if !reflect.DeepEqual(pull, tt.want) {
+			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.want)
 		}
 
 		if !madeRequest {
