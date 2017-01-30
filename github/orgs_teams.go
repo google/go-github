@@ -52,7 +52,7 @@ type Invitation struct {
 	// Role can be one of the values - direct_member, admin, billing_manager, hiring_manager, or reinstate.
 	Role      *string    `json:"role,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	Inviter   *Inviter   `json:"inviter,omitempty"`
+	Inviter   *User      `json:"inviter,omitempty"`
 }
 
 func (i Invitation) String() string {

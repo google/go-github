@@ -553,7 +553,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
 			CreatedAt: &createdAt,
-			Inviter: &Inviter{
+			Inviter: &User{
 				Login:             String("other_user"),
 				ID:                Int(1),
 				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
