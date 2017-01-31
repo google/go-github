@@ -68,6 +68,32 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestPullRequestsService_DeletePendingReview(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	review, _, err := client.PullRequests.DeletePendingReview("o", "r", 1, 1)
+	if err != nil {
+		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
+	}
+
+	want := &PullRequestReview{ID: Int(1)}
+	if !reflect.DeepEqual(review, want) {
+		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
+	}
+}
+
+func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
+	_, _, err := client.PullRequests.DeletePendingReview("%", "r", 1, 1)
+	testURLParseError(t, err)
+}
+
 func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	setup()
 	defer teardown()

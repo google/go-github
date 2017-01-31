@@ -103,6 +103,29 @@ func (s *PullRequestsService) GetReview(owner string, repo string, number int, r
 	return review, resp, err
 }
 
+// DeletePendingReview deletes the specified pull request pending review.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/reviews/#delete-a-pending-review
+func (s *PullRequestsService) DeletePendingReview(owner string, repo string, number int, reviewID int) (*PullRequestReview, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+
+	review := new(PullRequestReview)
+	resp, err := s.client.Do(req, review)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return review, resp, err
+}
+
 // ListReviewComments lists all the comments for the specified review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
