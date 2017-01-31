@@ -46,12 +46,12 @@ func TestUsersService_AddEmails(t *testing.T) {
 	input := []string{"new@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]string)
-		json.NewDecoder(r.Body).Decode(v)
+		var v []string
+		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(*v, input) {
-			t.Errorf("Request body = %+v, want %+v", *v, input)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
 		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
@@ -78,12 +78,12 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	input := []string{"user@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]string)
-		json.NewDecoder(r.Body).Decode(v)
+		var v []string
+		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "DELETE")
-		if !reflect.DeepEqual(*v, input) {
-			t.Errorf("Request body = %+v, want %+v", *v, input)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 	})
 

@@ -107,13 +107,13 @@ func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestLi
 		return nil, nil, err
 	}
 
-	pulls := new([]*PullRequest)
-	resp, err := s.client.Do(req, pulls)
+	var pulls []*PullRequest
+	resp, err := s.client.Do(req, &pulls)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *pulls, resp, err
+	return pulls, resp, nil
 }
 
 // Get a single pull request.
@@ -223,13 +223,13 @@ func (s *PullRequestsService) ListCommits(owner string, repo string, number int,
 		return nil, nil, err
 	}
 
-	commits := new([]*RepositoryCommit)
-	resp, err := s.client.Do(req, commits)
+	var commits []*RepositoryCommit
+	resp, err := s.client.Do(req, &commits)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *commits, resp, err
+	return commits, resp, nil
 }
 
 // ListFiles lists the files in a pull request.
@@ -247,13 +247,13 @@ func (s *PullRequestsService) ListFiles(owner string, repo string, number int, o
 		return nil, nil, err
 	}
 
-	commitFiles := new([]*CommitFile)
-	resp, err := s.client.Do(req, commitFiles)
+	var commitFiles []*CommitFile
+	resp, err := s.client.Do(req, &commitFiles)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *commitFiles, resp, err
+	return commitFiles, resp, nil
 }
 
 // IsMerged checks if a pull request has been merged.

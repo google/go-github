@@ -22,13 +22,13 @@ func (s *RepositoriesService) ListCollaborators(owner, repo string, opt *ListOpt
 		return nil, nil, err
 	}
 
-	users := new([]*User)
-	resp, err := s.client.Do(req, users)
+	var users []*User
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *users, resp, err
+	return users, resp, nil
 }
 
 // IsCollaborator checks whether the specified Github user has collaborator

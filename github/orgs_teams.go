@@ -72,13 +72,13 @@ func (s *OrganizationsService) ListTeams(org string, opt *ListOptions) ([]*Team,
 		return nil, nil, err
 	}
 
-	teams := new([]*Team)
-	resp, err := s.client.Do(req, teams)
+	var teams []*Team
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *teams, resp, err
+	return teams, resp, nil
 }
 
 // GetTeam fetches a team by ID.
@@ -177,13 +177,13 @@ func (s *OrganizationsService) ListTeamMembers(team int, opt *OrganizationListTe
 		return nil, nil, err
 	}
 
-	members := new([]*User)
-	resp, err := s.client.Do(req, members)
+	var members []*User
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *members, resp, err
+	return members, resp, nil
 }
 
 // IsTeamMember checks if a user is a member of the specified team.
@@ -216,13 +216,13 @@ func (s *OrganizationsService) ListTeamRepos(team int, opt *ListOptions) ([]*Rep
 		return nil, nil, err
 	}
 
-	repos := new([]*Repository)
-	resp, err := s.client.Do(req, repos)
+	var repos []*Repository
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *repos, resp, err
+	return repos, resp, nil
 }
 
 // IsTeamRepo checks if a team manages the specified repository.  If the
@@ -305,13 +305,13 @@ func (s *OrganizationsService) ListUserTeams(opt *ListOptions) ([]*Team, *Respon
 		return nil, nil, err
 	}
 
-	teams := new([]*Team)
-	resp, err := s.client.Do(req, teams)
+	var teams []*Team
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *teams, resp, err
+	return teams, resp, nil
 }
 
 // GetTeamMembership returns the membership status for a user in a team.
@@ -414,11 +414,11 @@ func (s *OrganizationsService) ListPendingTeamInvitations(team int, opt *ListOpt
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
-	pendingInvitations := new([]*Invitation)
-	resp, err := s.client.Do(req, pendingInvitations)
+	var pendingInvitations []*Invitation
+	resp, err := s.client.Do(req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *pendingInvitations, resp, err
+	return pendingInvitations, resp, nil
 }
