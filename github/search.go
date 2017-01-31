@@ -183,13 +183,14 @@ func (s *SearchService) search(searchType string, query string, opt *SearchOptio
 	}
 
 	switch {
+	case searchType == "commits":
+		// Accept header for search commits preview endpoint
+		// TODO: remove custom Accept header when this API fully launches.
+		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
 	case opt != nil && opt.TextMatch:
 		// Accept header defaults to "application/vnd.github.v3+json"
 		// We change it here to fetch back text-match metadata
 		req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
-	case searchType == "commits":
-		// Accept header for search commits preview endpoint
-		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
 	}
 
 	return s.client.Do(req, result)
