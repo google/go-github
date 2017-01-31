@@ -49,7 +49,7 @@ type Invitation struct {
 	ID    *int    `json:"id,omitempty"`
 	Login *string `json:"login,omitempty"`
 	Email *string `json:"email,omitempty"`
-	// Role can be one of the values - direct_member, admin, billing_manager, hiring_manager, or reinstate.
+	// Role can be one of the values - 'direct_member', 'admin', 'billing_manager', 'hiring_manager', or 'reinstate'.
 	Role      *string    `json:"role,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Inviter   *User      `json:"inviter,omitempty"`
