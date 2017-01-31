@@ -75,7 +75,7 @@ func (s *RepositoriesService) GetPermissionLevel(owner, repo, user string) (*Rep
 	if err != nil {
 		return nil, resp, err
 	}
-	return rpl, resp, err
+	return rpl, resp, nil
 }
 
 // RepositoryAddCollaboratorOptions specifies the optional parameters to the
