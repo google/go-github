@@ -186,11 +186,11 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 	input := []string{"a", "b"}
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]string)
-		json.NewDecoder(r.Body).Decode(v)
+		var v []string
+		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(*v, input) {
+		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -239,11 +239,11 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 	input := []string{"a", "b"}
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
-		v := new([]string)
-		json.NewDecoder(r.Body).Decode(v)
+		var v []string
+		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(*v, input) {
+		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
