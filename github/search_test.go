@@ -70,7 +70,7 @@ func TestSearchService_Commits(t *testing.T) {
 	want := &CommitsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Commits:           []CommitResult{{Hash: String("random_hash1")}, {Hash: String("random_hash2")}},
+		Commits:           []*CommitResult{{Hash: String("random_hash1")}, {Hash: String("random_hash2")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)

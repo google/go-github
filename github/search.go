@@ -57,9 +57,9 @@ func (s *SearchService) Repositories(query string, opt *SearchOptions) (*Reposit
 
 // CommitsSearchResult represents the result of a commits search.
 type CommitsSearchResult struct {
-	Total             *int           `json:"total_count,omitempty"`
-	IncompleteResults *bool          `json:"incomplete_results,omitempty"`
-	Commits           []CommitResult `json:"items,omitempty"`
+	Total             *int            `json:"total_count,omitempty"`
+	IncompleteResults *bool           `json:"incomplete_results,omitempty"`
+	Commits           []*CommitResult `json:"items,omitempty"`
 }
 
 // CommitResult represents a commit object as returned in commit search endpoint response.
