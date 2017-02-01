@@ -39,9 +39,9 @@ func (c DraftReviewComment) String() string {
 
 // PullRequestReviewRequest represents a request to create a review.
 type PullRequestReviewRequest struct {
-	Body     *string              `json:"body,omitempty"`
-	Event    *string              `json:"event,omitempty"`
-	Comments []DraftReviewComment `json:"comments,omitempty"`
+	Body     *string               `json:"body,omitempty"`
+	Event    *string               `json:"event,omitempty"`
+	Comments []*DraftReviewComment `json:"comments,omitempty"`
 }
 
 func (r PullRequestReviewRequest) String() string {
@@ -60,7 +60,7 @@ func (r PullRequestReviewDismissalRequest) String() string {
 // ListReviews lists all reviews on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request
-func (s *PullRequestsService) ListReviews(owner string, repo string, number int) ([]*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) ListReviews(owner, repo string, number int) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -71,19 +71,19 @@ func (s *PullRequestsService) ListReviews(owner string, repo string, number int)
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
-	reviews := new([]*PullRequestReview)
-	resp, err := s.client.Do(req, reviews)
+	var reviews []*PullRequestReview
+	resp, err := s.client.Do(req, &reviews)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *reviews, resp, err
+	return reviews, resp, nil
 }
 
 // GetReview fetches the specified pull request review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-review
-func (s *PullRequestsService) GetReview(owner string, repo string, number int, reviewID int) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) GetReview(owner, repo string, number, reviewID int) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -100,13 +100,13 @@ func (s *PullRequestsService) GetReview(owner string, repo string, number int, r
 		return nil, resp, err
 	}
 
-	return review, resp, err
+	return review, resp, nil
 }
 
 // DeletePendingReview deletes the specified pull request pending review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#delete-a-pending-review
-func (s *PullRequestsService) DeletePendingReview(owner string, repo string, number int, reviewID int) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) DeletePendingReview(owner, repo string, number, reviewID int) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -123,13 +123,13 @@ func (s *PullRequestsService) DeletePendingReview(owner string, repo string, num
 		return nil, resp, err
 	}
 
-	return review, resp, err
+	return review, resp, nil
 }
 
 // ListReviewComments lists all the comments for the specified review.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
-func (s *PullRequestsService) ListReviewComments(owner string, repo string, number int, reviewID int) ([]*PullRequestComment, *Response, error) {
+func (s *PullRequestsService) ListReviewComments(owner, repo string, number, reviewID int) ([]*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -140,19 +140,19 @@ func (s *PullRequestsService) ListReviewComments(owner string, repo string, numb
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
-	comments := new([]*PullRequestComment)
-	resp, err := s.client.Do(req, comments)
+	var comments []*PullRequestComment
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *comments, resp, err
+	return comments, resp, nil
 }
 
 // CreateReview creates a new review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
-func (s *PullRequestsService) CreateReview(owner string, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) CreateReview(owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
 	req, err := s.client.NewRequest("POST", u, review)
@@ -169,7 +169,7 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // SubmitReview submits a specified review on the specified pull request.
@@ -180,7 +180,7 @@ func (s *PullRequestsService) CreateReview(owner string, repo string, number int
 // TODO: Remove this once we arrive at resolution with GitHub Support.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
-func (s *PullRequestsService) SubmitReview(owner string, repo string, number int, reviewID int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) SubmitReview(owner, repo string, number, reviewID int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("POST", u, review)
@@ -197,13 +197,13 @@ func (s *PullRequestsService) SubmitReview(owner string, repo string, number int
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // DismissReview dismisses a specified review on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#dismiss-a-pull-request-review
-func (s *PullRequestsService) DismissReview(owner string, repo string, number int, reviewID int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) DismissReview(owner, repo string, number, reviewID int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest("PUT", u, review)
@@ -220,5 +220,5 @@ func (s *PullRequestsService) DismissReview(owner string, repo string, number in
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
