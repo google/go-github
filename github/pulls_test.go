@@ -8,6 +8,7 @@ package github
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"reflect"
 	"strings"
@@ -235,28 +236,58 @@ func TestPullRequestsService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequest{Title: String("t")}
+	tests := []struct {
+		input        *PullRequest
+		sendResponse string
 
-	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
-		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		fmt.Fprint(w, `{"number":1}`)
-	})
-
-	pull, _, err := client.PullRequests.Edit("o", "r", 1, input)
-	if err != nil {
-		t.Errorf("PullRequests.Edit returned error: %v", err)
+		wantUpdate string
+		want       *PullRequest
+	}{
+		{
+			input:        &PullRequest{Title: String("t")},
+			sendResponse: `{"number":1}`,
+			wantUpdate:   `{"title":"t"}`,
+			want:         &PullRequest{Number: Int(1)},
+		},
+		{
+			// nil request
+			sendResponse: `{}`,
+			wantUpdate:   `{}`,
+			want:         &PullRequest{},
+		},
+		{
+			// base update
+			input:        &PullRequest{Base: &PullRequestBranch{Ref: String("master")}},
+			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
+			wantUpdate:   `{"base":"master"}`,
+			want: &PullRequest{
+				Number: Int(1),
+				Base:   &PullRequestBranch{Ref: String("master")},
+			},
+		},
 	}
 
-	want := &PullRequest{Number: Int(1)}
-	if !reflect.DeepEqual(pull, want) {
-		t.Errorf("PullRequests.Edit returned %+v, want %+v", pull, want)
+	for i, tt := range tests {
+		madeRequest := false
+		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
+			testMethod(t, r, "PATCH")
+			testBody(t, r, tt.wantUpdate+"\n")
+			io.WriteString(w, tt.sendResponse)
+			madeRequest = true
+		})
+
+		pull, _, err := client.PullRequests.Edit("o", "r", i, tt.input)
+		if err != nil {
+			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
+		}
+
+		if !reflect.DeepEqual(pull, tt.want) {
+			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.want)
+		}
+
+		if !madeRequest {
+			t.Errorf("%d: PullRequest.Edit did not make the expected request", i)
+		}
 	}
 }
 
