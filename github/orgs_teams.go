@@ -44,13 +44,15 @@ func (t Team) String() string {
 	return Stringify(t)
 }
 
-// Invitation represents a team member's inviation status
+// Invitation represents a team member's invitation status.
 type Invitation struct {
-	ID        *int       `json:"id,omitempty"`
-	Login     *string    `json:"login,omitempty"`
-	Email     *string    `json:"email,omitempty"`
+	ID    *int    `json:"id,omitempty"`
+	Login *string `json:"login,omitempty"`
+	Email *string `json:"email,omitempty"`
+	// Role can be one of the values - 'direct_member', 'admin', 'billing_manager', 'hiring_manager', or 'reinstate'.
 	Role      *string    `json:"role,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Inviter   *User      `json:"inviter,omitempty"`
 }
 
 func (i Invitation) String() string {
