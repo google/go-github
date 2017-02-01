@@ -198,6 +198,7 @@ type pullRequestUpdate struct {
 }
 
 // Edit a pull request.
+// pull may be nil, in which case the requested PR is returned unmodified.
 //
 // The following fields are editable: Title, Body, State, and Base.Ref.
 // Base.Ref updates the base branch of the pull request.
