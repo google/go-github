@@ -502,6 +502,10 @@ type PushEventRepository struct {
 	URL             *string             `json:"url,omitempty"`
 	HTMLURL         *string             `json:"html_url,omitempty"`
 	StatusesURL     *string             `json:"statuses_url,omitempty"`
+	GitURL          *string             `json:"git_url,omitempty"`
+	SSHURL          *string             `json:"ssh_url,omitempty"`
+	CloneURL        *string             `json:"clone_url,omitempty"`
+	SVNURL          *string             `json:"svn_url,omitempty"`
 }
 
 // PushEventRepoOwner is a basic representation of user/org in a PushEvent payload.
