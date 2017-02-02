@@ -61,8 +61,7 @@ func (r PullRequestReviewDismissalRequest) String() string {
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request
 func (s *PullRequestsService) ListReviews(owner, repo string, number int) ([]*PullRequestReview, *Response, error) {
@@ -89,8 +88,7 @@ func (s *PullRequestsService) ListReviews(owner, repo string, number int) ([]*Pu
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-review
 func (s *PullRequestsService) GetReview(owner, repo string, number, reviewID int) (*PullRequestReview, *Response, error) {
@@ -117,8 +115,7 @@ func (s *PullRequestsService) GetReview(owner, repo string, number, reviewID int
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#delete-a-pending-review
 func (s *PullRequestsService) DeletePendingReview(owner, repo string, number, reviewID int) (*PullRequestReview, *Response, error) {
@@ -145,8 +142,7 @@ func (s *PullRequestsService) DeletePendingReview(owner, repo string, number, re
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-a-single-reviews-comments
 func (s *PullRequestsService) ListReviewComments(owner, repo string, number, reviewID int) ([]*PullRequestComment, *Response, error) {
@@ -173,8 +169,7 @@ func (s *PullRequestsService) ListReviewComments(owner, repo string, number, rev
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-pull-request-review
 func (s *PullRequestsService) CreateReview(owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -201,8 +196,7 @@ func (s *PullRequestsService) CreateReview(owner, repo string, number int, revie
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#submit-a-pull-request-review
 func (s *PullRequestsService) SubmitReview(owner, repo string, number, reviewID int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -229,8 +223,7 @@ func (s *PullRequestsService) SubmitReview(owner, repo string, number, reviewID 
 //
 // TODO: Follow up with GitHub support about an issue with this method's
 // returned error format and remove this comment once it's fixed.
-// Read mroe about it here -
-// https://github.com/google/go-github/pull/497#issuecomment-267810912
+// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#dismiss-a-pull-request-review
 func (s *PullRequestsService) DismissReview(owner, repo string, number, reviewID int, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
