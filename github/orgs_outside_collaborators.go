@@ -1,4 +1,4 @@
-// Copyright 2016 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -24,7 +24,7 @@ type ListOutsideCollaboratorsOptions struct {
 // Warning: The API may change without advance notice during the preview period.
 // Preview features are not supported for production use.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/
+// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators
 func (s *OrganizationsService) ListOutsideCollaborators(org string, opt *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators", org)
 	u, err := addOptions(u, opt)
@@ -33,7 +33,6 @@ func (s *OrganizationsService) ListOutsideCollaborators(org string, opt *ListOut
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
-
 	if err != nil {
 		return nil, nil, err
 	}
