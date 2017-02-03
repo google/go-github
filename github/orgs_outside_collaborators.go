@@ -40,11 +40,11 @@ func (s *OrganizationsService) ListOutsideCollaborators(org string, opt *ListOut
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
-	members := new([]*User)
-	resp, err := s.client.Do(req, members)
+	var members []*User
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *members, resp, err
+	return members, resp, err
 }
