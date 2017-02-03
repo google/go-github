@@ -46,5 +46,5 @@ func (s *OrganizationsService) ListOutsideCollaborators(org string, opt *ListOut
 		return nil, resp, err
 	}
 
-	return members, resp, err
+	return members, resp, nil
 }
