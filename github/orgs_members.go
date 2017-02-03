@@ -86,13 +86,13 @@ func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) 
 		return nil, nil, err
 	}
 
-	members := new([]*User)
-	resp, err := s.client.Do(req, members)
+	var members []*User
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *members, resp, err
+	return members, resp, nil
 }
 
 // IsMember checks if a user is a member of an organization.
@@ -289,10 +289,10 @@ func (s *OrganizationsService) ListPendingOrgInvitations(org int, opt *ListOptio
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
-	pendingInvitations := new([]*Invitation)
-	resp, err := s.client.Do(req, pendingInvitations)
+	var pendingInvitations []*Invitation
+	resp, err := s.client.Do(req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}
-	return *pendingInvitations, resp, err
+	return pendingInvitations, resp, nil
 }

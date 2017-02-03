@@ -141,13 +141,13 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]*Issue, *
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	issues := new([]*Issue)
-	resp, err := s.client.Do(req, issues)
+	var issues []*Issue
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *issues, resp, err
+	return issues, resp, nil
 }
 
 // IssueListByRepoOptions specifies the optional parameters to the
@@ -208,13 +208,13 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	issues := new([]*Issue)
-	resp, err := s.client.Do(req, issues)
+	var issues []*Issue
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return *issues, resp, err
+	return issues, resp, nil
 }
 
 // Get a single issue.
@@ -236,7 +236,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 		return nil, resp, err
 	}
 
-	return issue, resp, err
+	return issue, resp, nil
 }
 
 // Create a new issue on the specified repository.
@@ -255,7 +255,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (
 		return nil, resp, err
 	}
 
-	return i, resp, err
+	return i, resp, nil
 }
 
 // Edit an issue.
@@ -274,7 +274,7 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 		return nil, resp, err
 	}
 
-	return i, resp, err
+	return i, resp, nil
 }
 
 // Lock an issue's conversation.
