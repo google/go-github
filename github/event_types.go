@@ -345,6 +345,42 @@ type PingEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ProjectEvent is triggered when project is created, modified or deleted.
+// the webhook event name is "project".
+//
+// GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
+type ProjectEvent struct {
+	Action        *string       `json:"action,omitempty"`
+	Project       *Project      `json:"project,omitempty"`
+	Repository    *Repository   `json:"repository,omitempty"`
+	Organizaition *Organization `json:"organization,omitempty"`
+	Sender        *User         `json:"sender,omitempty"`
+}
+
+// ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
+// the webhook event name is "project_card".
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#projectcardevent
+type ProjectCardEvent struct {
+	Action       *string       `json:"action,omitempty"`
+	ProjectCard  *ProjectCard  `json:"project_card,omitempty"`
+	Repository   *Repository   `json:"repository,omitempty"`
+	Organization *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
+// ProjectColumnEvent is triggered when a project column is created, updated, moved, or deleted.
+// the webhook event name is "project_column".
+//
+// GitHub docs https://developer.github.com/v3/activity/events/types/#projectcolumnevent
+type ProjectColumnEvent struct {
+	Action        *string        `json:"action,omitempty"`
+	ProjectColumn *ProjectColumn `json:"project_column,omitempty"`
+	Repository    *Repository    `json:"repository,omitempty"`
+	Organization  *Organization  `json:"organization,omitempty"`
+	Sender        *User          `json:"sender,omitempty"`
+}
+
 // PublicEvent is triggered when a private repository is open sourced.
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
