@@ -99,7 +99,7 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 		return nil, resp, err
 	}
 
-	return h, resp, err
+	return h, resp, nil
 }
 
 // ListHooks lists all Hooks for the specified repository.

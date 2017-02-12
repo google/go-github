@@ -99,7 +99,7 @@ func (s *OrganizationsService) GetTeam(team int) (*Team, *Response, error) {
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // CreateTeam creates a new team within an organization.
@@ -118,7 +118,7 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Respo
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // EditTeam edits a team.
@@ -137,7 +137,7 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, e
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // DeleteTeam deletes a team.
@@ -247,7 +247,7 @@ func (s *OrganizationsService) IsTeamRepo(team int, owner string, repo string) (
 		return nil, resp, err
 	}
 
-	return repository, resp, err
+	return repository, resp, nil
 }
 
 // OrganizationAddTeamRepoOptions specifies the optional parameters to the
@@ -332,7 +332,7 @@ func (s *OrganizationsService) GetTeamMembership(team int, user string) (*Member
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // OrganizationAddTeamMembershipOptions does stuff specifies the optional
@@ -380,7 +380,7 @@ func (s *OrganizationsService) AddTeamMembership(team int, user string, opt *Org
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // RemoveTeamMembership removes a user from a team.
