@@ -170,7 +170,7 @@ func (s *AuthorizationsService) Get(id int) (*Authorization, *Response, error) {
 	if err != nil {
 		return nil, resp, err
 	}
-	return a, resp, err
+	return a, resp, nil
 }
 
 // Create a new authorization for the specified OAuth application.
@@ -408,7 +408,6 @@ func (s *AuthorizationsService) CreateImpersonation(username string, authReq *Au
 	if err != nil {
 		return nil, resp, err
 	}
-	
 	return a, resp, nil
 }
 
