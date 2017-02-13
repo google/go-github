@@ -74,7 +74,7 @@ func (s *GitService) GetCommit(owner string, repo string, sha string) (*Commit, 
 		return nil, resp, err
 	}
 
-	return c, resp, err
+	return c, resp, nil
 }
 
 // createCommit represents the body of a CreateCommit request.
@@ -123,5 +123,5 @@ func (s *GitService) CreateCommit(owner string, repo string, commit *Commit) (*C
 		return nil, resp, err
 	}
 
-	return c, resp, err
+	return c, resp, nil
 }

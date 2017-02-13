@@ -768,7 +768,7 @@ func (c *Client) RateLimits() (*RateLimits, *Response, error) {
 		c.rateMu.Unlock()
 	}
 
-	return response.Resources, resp, err
+	return response.Resources, resp, nil
 }
 
 /*

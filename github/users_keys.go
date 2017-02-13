@@ -67,7 +67,7 @@ func (s *UsersService) GetKey(id int) (*Key, *Response, error) {
 		return nil, resp, err
 	}
 
-	return key, resp, err
+	return key, resp, nil
 }
 
 // CreateKey adds a public key for the authenticated user.
@@ -87,7 +87,7 @@ func (s *UsersService) CreateKey(key *Key) (*Key, *Response, error) {
 		return nil, resp, err
 	}
 
-	return k, resp, err
+	return k, resp, nil
 }
 
 // DeleteKey deletes a public key.
