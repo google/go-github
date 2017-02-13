@@ -53,7 +53,7 @@ func (s *GitService) GetTree(owner string, repo string, sha string, recursive bo
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
 
 // createTree represents the body of a CreateTree request.
@@ -85,5 +85,5 @@ func (s *GitService) CreateTree(owner string, repo string, baseTree string, entr
 		return nil, resp, err
 	}
 
-	return t, resp, err
+	return t, resp, nil
 }
