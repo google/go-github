@@ -160,7 +160,7 @@ func (s *MigrationService) StartImport(owner, repo string, in *Import) (*Import,
 		return nil, resp, err
 	}
 
-	return out, resp, err
+	return out, resp, nil
 }
 
 // ImportProgress queries for the status and progress of an ongoing repository import.
@@ -182,7 +182,7 @@ func (s *MigrationService) ImportProgress(owner, repo string) (*Import, *Respons
 		return nil, resp, err
 	}
 
-	return out, resp, err
+	return out, resp, nil
 }
 
 // UpdateImport initiates a repository import.
@@ -204,7 +204,7 @@ func (s *MigrationService) UpdateImport(owner, repo string, in *Import) (*Import
 		return nil, resp, err
 	}
 
-	return out, resp, err
+	return out, resp, nil
 }
 
 // CommitAuthors gets the authors mapped from the original repository.
@@ -260,7 +260,7 @@ func (s *MigrationService) MapCommitAuthor(owner, repo string, id int, author *S
 		return nil, resp, err
 	}
 
-	return out, resp, err
+	return out, resp, nil
 }
 
 // SetLFSPreference sets whether imported repositories should use Git LFS for
@@ -284,7 +284,7 @@ func (s *MigrationService) SetLFSPreference(owner, repo string, in *Import) (*Im
 		return nil, resp, err
 	}
 
-	return out, resp, err
+	return out, resp, nil
 }
 
 // LargeFiles lists files larger than 100MB found during the import.

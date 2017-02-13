@@ -80,7 +80,7 @@ func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *Repo
 		return nil, resp, err
 	}
 
-	return repoStatus, resp, err
+	return repoStatus, resp, nil
 }
 
 // CombinedStatus represents the combined status of a repository at a particular reference.
@@ -124,5 +124,5 @@ func (s *RepositoriesService) GetCombinedStatus(owner, repo, ref string, opt *Li
 		return nil, resp, err
 	}
 
-	return status, resp, err
+	return status, resp, nil
 }

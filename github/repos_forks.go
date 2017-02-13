@@ -75,5 +75,5 @@ func (s *RepositoriesService) CreateFork(owner, repo string, opt *RepositoryCrea
 		return nil, resp, err
 	}
 
-	return fork, resp, err
+	return fork, resp, nil
 }

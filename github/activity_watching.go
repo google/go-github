@@ -97,7 +97,7 @@ func (s *ActivityService) GetRepositorySubscription(owner, repo string) (*Subscr
 		return nil, resp, err
 	}
 
-	return sub, resp, err
+	return sub, resp, nil
 }
 
 // SetRepositorySubscription sets the subscription for the specified repository
@@ -122,7 +122,7 @@ func (s *ActivityService) SetRepositorySubscription(owner, repo string, subscrip
 		return nil, resp, err
 	}
 
-	return sub, resp, err
+	return sub, resp, nil
 }
 
 // DeleteRepositorySubscription deletes the subscription for the specified

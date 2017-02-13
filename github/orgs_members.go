@@ -196,7 +196,7 @@ func (s *OrganizationsService) ListOrgMemberships(opt *ListOrgMembershipsOptions
 		return nil, resp, err
 	}
 
-	return memberships, resp, err
+	return memberships, resp, nil
 }
 
 // GetOrgMembership gets the membership for a user in a specified organization.
@@ -224,7 +224,7 @@ func (s *OrganizationsService) GetOrgMembership(user, org string) (*Membership, 
 		return nil, resp, err
 	}
 
-	return membership, resp, err
+	return membership, resp, nil
 }
 
 // EditOrgMembership edits the membership for user in specified organization.
@@ -254,7 +254,7 @@ func (s *OrganizationsService) EditOrgMembership(user, org string, membership *M
 		return nil, resp, err
 	}
 
-	return m, resp, err
+	return m, resp, nil
 }
 
 // RemoveOrgMembership removes user from the specified organization.  If the

@@ -58,7 +58,7 @@ func (s *RepositoriesService) ListContributorsStats(owner, repo string) ([]*Cont
 		return nil, resp, err
 	}
 
-	return contributorStats, resp, err
+	return contributorStats, resp, nil
 }
 
 // WeeklyCommitActivity represents the weekly commit activity for a repository.
@@ -97,7 +97,7 @@ func (s *RepositoriesService) ListCommitActivity(owner, repo string) ([]*WeeklyC
 		return nil, resp, err
 	}
 
-	return weeklyCommitActivity, resp, err
+	return weeklyCommitActivity, resp, nil
 }
 
 // ListCodeFrequency returns a weekly aggregate of the number of additions and
@@ -177,7 +177,7 @@ func (s *RepositoriesService) ListParticipation(owner, repo string) (*Repository
 		return nil, resp, err
 	}
 
-	return participation, resp, err
+	return participation, resp, nil
 }
 
 // PunchCard represents the number of commits made during a given hour of a
