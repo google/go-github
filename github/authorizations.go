@@ -114,7 +114,7 @@ func (a AuthorizationRequest) String() string {
 // AuthorizationUpdateRequest represents a request to update an authorization.
 //
 // Note that for any one update, you must only provide one of the "scopes"
-// fields.  That is, you may provide only one of "Scopes", or "AddScopes", or
+// fields. That is, you may provide only one of "Scopes", or "AddScopes", or
 // "RemoveScopes".
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#update-an-existing-authorization

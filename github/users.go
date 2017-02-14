@@ -68,7 +68,7 @@ func (u User) String() string {
 	return Stringify(u)
 }
 
-// Get fetches a user.  Passing the empty string will fetch the authenticated
+// Get fetches a user. Passing the empty string will fetch the authenticated
 // user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/#get-a-single-user

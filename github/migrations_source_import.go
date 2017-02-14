@@ -39,7 +39,7 @@ type Import struct {
 	// repository. To see a list of these files, call LargeFiles.
 	LargeFilesCount *int `json:"large_files_count,omitempty"`
 
-	// Identifies the current status of an import.  An import that does not
+	// Identifies the current status of an import. An import that does not
 	// have errors will progress through these steps:
 	//
 	//     detecting - the "detection" step of the import is in progress
@@ -101,7 +101,7 @@ type Import struct {
 	HumanName *string `json:"human_name,omitempty"`
 
 	// When the importer finds several projects or repositories at the
-	// provided URLs, this will identify the available choices.  Call
+	// provided URLs, this will identify the available choices. Call
 	// UpdateImport with the selected Import value.
 	ProjectChoices []Import `json:"project_choices,omitempty"`
 }
@@ -264,7 +264,7 @@ func (s *MigrationService) MapCommitAuthor(owner, repo string, id int, author *S
 }
 
 // SetLFSPreference sets whether imported repositories should use Git LFS for
-// files larger than 100MB.  Only the UseLFS field on the provided Import is
+// files larger than 100MB. Only the UseLFS field on the provided Import is
 // used.
 //
 // GitHub API docs: https://developer.github.com/v3/migration/source_imports/#set-git-lfs-preference
