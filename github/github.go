@@ -736,10 +736,10 @@ func category(path string) rateLimitCategory {
 func (c *Client) RateLimit() (*Rate, *Response, error) {
 	limits, resp, err := c.RateLimits()
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	if limits == nil {
-		return nil, nil, fmt.Errorf("RateLimits returned nil limits and error. Unable to extract Core rate limit")
+		return nil, resp, fmt.Errorf("RateLimits returned nil limits and error; unable to extract Core rate limit")
 	}
 
 	return limits.Core, resp, nil
