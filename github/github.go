@@ -735,8 +735,11 @@ func category(path string) rateLimitCategory {
 // Deprecated: RateLimit is deprecated, use RateLimits instead.
 func (c *Client) RateLimit() (*Rate, *Response, error) {
 	limits, resp, err := c.RateLimits()
-	if limits == nil {
+	if err != nil {
 		return nil, nil, err
+	}
+	if limits == nil {
+		return nil, nil, fmt.Errorf("RateLimits returned nil limits and error. Unable to extract Core rate limit")
 	}
 
 	return limits.Core, resp, nil
