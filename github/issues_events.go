@@ -91,7 +91,7 @@ func (s *IssuesService) ListIssueEvents(owner, repo string, number int, opt *Lis
 		return nil, resp, err
 	}
 
-	return events, resp, err
+	return events, resp, nil
 }
 
 // ListRepositoryEvents lists events for the specified repository.
@@ -115,7 +115,7 @@ func (s *IssuesService) ListRepositoryEvents(owner, repo string, opt *ListOption
 		return nil, resp, err
 	}
 
-	return events, resp, err
+	return events, resp, nil
 }
 
 // GetEvent returns the specified issue event.
@@ -135,7 +135,7 @@ func (s *IssuesService) GetEvent(owner, repo string, id int) (*IssueEvent, *Resp
 		return nil, resp, err
 	}
 
-	return event, resp, err
+	return event, resp, nil
 }
 
 // Rename contains details for 'renamed' events.
