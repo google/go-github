@@ -18,7 +18,7 @@ type IssueEvent struct {
 	// The User that generated this event.
 	Actor *User `json:"actor,omitempty"`
 
-	// Event identifies the actual type of Event that occurred.  Possible
+	// Event identifies the actual type of Event that occurred. Possible
 	// values are:
 	//
 	//     closed

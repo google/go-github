@@ -183,7 +183,7 @@ func TestUsers_Keys(t *testing.T) {
 	key := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy/RIqaMFj2wjkOEjx9EAU0ReLAIhodga82/feo5nnT9UUkHLbL9xrIavfdLHx28lD3xYgPfAoSicUMaAeNwuQhmuerr2c2LFGxzrdXP8pVsQ+Ol7y7OdmFPfe0KrzoZaLJs9aSiZ4VKyY4z5Se/k2UgcJTdgQVlLfw/P96aqCx8yUu94BiWqkDqYEvgWKRNHrTiIo1EXeVBCCcfgNZe1suFfNJUJSUU2T3EG2bpwBbSOCjE3FyH8+Lz3K3BOGzm3df8E7Regj9j4YIcD8cWJYO86jLJoGgQ0L5MSOq+ishNaHQXech22Ix03D1lVMjCvDT7S/C94Z1LzhI2lhvyff"
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
-			t.Fatalf("Test key already exists for user.  Please manually remove it first.")
+			t.Fatalf("Test key already exists for user. Please manually remove it first.")
 		}
 	}
 
