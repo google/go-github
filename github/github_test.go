@@ -33,7 +33,7 @@ var (
 )
 
 // setup sets up a test HTTP server along with a github.Client that is
-// configured to talk to that test server.  Tests should register handlers on
+// configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() {
 	// test server
@@ -54,7 +54,7 @@ func teardown() {
 
 // openTestFile creates a new file with the given name and content for testing.
 // In order to ensure the exact file name, this function will create a new temp
-// directory, and create the file in that directory.  It is the caller's
+// directory, and create the file in that directory. It is the caller's
 // responsibility to remove the directory and its contents when no longer needed.
 func openTestFile(name, content string) (file *os.File, dir string, err error) {
 	dir, err = ioutil.TempDir("", "go-github")
@@ -231,9 +231,9 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 }
 
 // If a nil body is passed to github.NewRequest, make sure that nil is also
-// passed to http.NewRequest.  In most cases, passing an io.Reader that returns
+// passed to http.NewRequest. In most cases, passing an io.Reader that returns
 // no content is fine, since there is no difference between an HTTP request
-// body that is an empty string versus one that is not set at all.  However in
+// body that is an empty string versus one that is not set at all. However in
 // certain cases, intermediate systems may treat these differently resulting in
 // subtle errors.
 func TestNewRequest_emptyBody(t *testing.T) {
@@ -354,7 +354,7 @@ func TestDo_httpError(t *testing.T) {
 }
 
 // Test handling of an error caused by the internal http client's Do()
-// function.  A redirect loop is pretty unlikely to occur within the GitHub
+// function. A redirect loop is pretty unlikely to occur within the GitHub
 // API, but does allow us to exercise the right code path.
 func TestDo_redirectLoop(t *testing.T) {
 	setup()

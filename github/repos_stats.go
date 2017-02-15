@@ -101,7 +101,7 @@ func (s *RepositoriesService) ListCommitActivity(owner, repo string) ([]*WeeklyC
 }
 
 // ListCodeFrequency returns a weekly aggregate of the number of additions and
-// deletions pushed to a repository.  Returned WeeklyStats will contain
+// deletions pushed to a repository. Returned WeeklyStats will contain
 // additions and deletions, but not total commits.
 //
 // If this is the first time these statistics are requested for the given
