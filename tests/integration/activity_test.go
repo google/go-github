@@ -39,7 +39,7 @@ func TestActivity_Starring(t *testing.T) {
 		t.Fatalf("Activity.IsStarred returned error: %v", err)
 	}
 	if star {
-		t.Fatalf("Already starring %v/%v.  Please manually unstar it first.", owner, repo)
+		t.Fatalf("Already starring %v/%v. Please manually unstar it first.", owner, repo)
 	}
 
 	// star the target repository

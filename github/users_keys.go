@@ -20,7 +20,7 @@ func (k Key) String() string {
 	return Stringify(k)
 }
 
-// ListKeys lists the verified public keys for a user.  Passing the empty
+// ListKeys lists the verified public keys for a user. Passing the empty
 // string will fetch keys for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/users/keys/#list-public-keys-for-a-user

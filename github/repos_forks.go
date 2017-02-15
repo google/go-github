@@ -10,8 +10,8 @@ import "fmt"
 // RepositoryListForksOptions specifies the optional parameters to the
 // RepositoriesService.ListForks method.
 type RepositoryListForksOptions struct {
-	// How to sort the forks list.  Possible values are: newest, oldest,
-	// watchers.  Default is "newest".
+	// How to sort the forks list. Possible values are: newest, oldest,
+	// watchers. Default is "newest".
 	Sort string `url:"sort,omitempty"`
 
 	ListOptions

@@ -57,7 +57,7 @@ func (o Organization) String() string {
 	return Stringify(o)
 }
 
-// Plan represents the payment plan for an account.  See plans at https://github.com/plans.
+// Plan represents the payment plan for an account. See plans at https://github.com/plans.
 type Plan struct {
 	Name          *string `json:"name,omitempty"`
 	Space         *int    `json:"space,omitempty"`
@@ -104,7 +104,7 @@ func (s *OrganizationsService) ListAll(opt *OrganizationsListOptions) ([]*Organi
 	return orgs, resp, nil
 }
 
-// List the organizations for a user.  Passing the empty string will list
+// List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
 // GitHub API docs: http://developer.github.com/v3/orgs/#list-user-organizations

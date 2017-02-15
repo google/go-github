@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // The basicauth command demonstrates using the github.BasicAuthTransport,
-// including handling two-factor authentication.  This won't currently work for
+// including handling two-factor authentication. This won't currently work for
 // accounts that use SMS to receive one-time passwords.
 package main
 
@@ -36,7 +36,7 @@ func main() {
 	client := github.NewClient(tp.Client())
 	user, _, err := client.Users.Get("")
 
-	// Is this a two-factor auth error?  If so, prompt for OTP and try again.
+	// Is this a two-factor auth error? If so, prompt for OTP and try again.
 	if _, ok := err.(*github.TwoFactorAuthError); err != nil && ok {
 		fmt.Print("\nGitHub OTP: ")
 		otp, _ := r.ReadString('\n')

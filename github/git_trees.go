@@ -17,7 +17,7 @@ func (t Tree) String() string {
 	return Stringify(t)
 }
 
-// TreeEntry represents the contents of a tree structure.  TreeEntry can
+// TreeEntry represents the contents of a tree structure. TreeEntry can
 // represent either a blob, a commit (in the case of a submodule), or another
 // tree.
 type TreeEntry struct {
@@ -62,7 +62,7 @@ type createTree struct {
 	Entries  []TreeEntry `json:"tree"`
 }
 
-// CreateTree creates a new tree in a repository.  If both a tree and a nested
+// CreateTree creates a new tree in a repository. If both a tree and a nested
 // path modifying that tree are specified, it will overwrite the contents of
 // that tree with the new path contents and write a new tree out.
 //

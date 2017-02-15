@@ -154,7 +154,7 @@ func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCom
 	return commit, resp, nil
 }
 
-// GetCommitSHA1 gets the SHA-1 of a commit reference.  If a last-known SHA1 is
+// GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
 // supplied and no new commits have occurred, a 304 Unmodified response is returned.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference
