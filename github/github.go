@@ -741,7 +741,6 @@ func (c *Client) RateLimit() (*Rate, *Response, error) {
 	if limits == nil {
 		return nil, resp, fmt.Errorf("RateLimits returned nil limits and error; unable to extract Core rate limit")
 	}
-
 	return limits.Core, resp, nil
 }
 
