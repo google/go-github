@@ -739,7 +739,7 @@ func (c *Client) RateLimit() (*Rate, *Response, error) {
 		return nil, nil, err
 	}
 
-	return limits.Core, resp, err
+	return limits.Core, resp, nil
 }
 
 // RateLimits returns the rate limits for the current client.
