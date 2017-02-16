@@ -35,7 +35,7 @@ func (t TreeEntry) String() string {
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/git/trees/#get-a-tree
+// GitHub API docs: https://developer.github.com/v3/git/trees/#get-a-tree
 func (s *GitService) GetTree(owner string, repo string, sha string, recursive bool) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees/%v", owner, repo, sha)
 	if recursive {
@@ -66,7 +66,7 @@ type createTree struct {
 // path modifying that tree are specified, it will overwrite the contents of
 // that tree with the new path contents and write a new tree out.
 //
-// GitHub API docs: http://developer.github.com/v3/git/trees/#create-a-tree
+// GitHub API docs: https://developer.github.com/v3/git/trees/#create-a-tree
 func (s *GitService) CreateTree(owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 

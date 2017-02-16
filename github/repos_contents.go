@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // Repository contents API methods.
-// http://developer.github.com/v3/repos/contents/
+// https://developer.github.com/v3/repos/contents/
 
 package github
 
@@ -101,7 +101,7 @@ func (r *RepositoryContent) GetContent() (string, error) {
 
 // GetReadme gets the Readme file for the repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#get-the-readme
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#get-the-readme
 func (s *RepositoriesService) GetReadme(owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
 	u, err := addOptions(u, opt)
@@ -153,7 +153,7 @@ func (s *RepositoriesService) DownloadContents(owner, repo, filepath string, opt
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#get-contents
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#get-contents
 func (s *RepositoriesService) GetContents(owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
 	escapedPath := (&url.URL{Path: path}).String()
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
@@ -184,7 +184,7 @@ func (s *RepositoriesService) GetContents(owner, repo, path string, opt *Reposit
 // CreateFile creates a new file in a repository at the given path and returns
 // the commit and file metadata.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#create-a-file
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#create-a-file
 func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
@@ -202,7 +202,7 @@ func (s *RepositoriesService) CreateFile(owner, repo, path string, opt *Reposito
 // UpdateFile updates a file in a repository at the given path and returns the
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#update-a-file
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#update-a-file
 func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opt)
@@ -220,7 +220,7 @@ func (s *RepositoriesService) UpdateFile(owner, repo, path string, opt *Reposito
 // DeleteFile deletes a file from a repository and returns the commit.
 // Requires the blob SHA of the file to be deleted.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#delete-a-file
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#delete-a-file
 func (s *RepositoriesService) DeleteFile(owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("DELETE", u, opt)
@@ -250,7 +250,7 @@ const (
 // repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/contents/#get-archive-link
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
 func (s *RepositoriesService) GetArchiveLink(owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
