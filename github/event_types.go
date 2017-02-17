@@ -351,29 +351,17 @@ type PingEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// ProjectEvent is triggered when project is created, modified or deleted.
-// the webhook event name is "project".
-//
-// GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
-type ProjectEvent struct {
-	Action       *string       `json:"action,omitempty"`
-	Changes      *EditChange   `json:"changes,omitempty"`
-	Project      *Project      `json:"project,omitempty"`
-	Repo         *Repository   `json:"repository,omitempty"`
-	Org          *Organization `json:"organization,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
 // ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
 // the webhook event name is "project_card".
 //
 // GitHub docs: https://developer.github.com/v3/activity/events/types/#projectcardevent
 type ProjectCardEvent struct {
-	Action       *string       `json:"action,omitempty"`
-	Changes      *EditChange   `json:"changes,omitempty"`
-	ProjectCard  *ProjectCard  `json:"project_card,omitempty"`
-	AfterID      *int          `json:"after_id,omitempty"`
+	Action      *string      `json:"action,omitempty"`
+	Changes     *EditChange  `json:"changes,omitempty"`
+	AfterID     *int         `json:"after_id,omitempty"`
+	ProjectCard *ProjectCard `json:"project_card,omitempty"`
+
+	// The following fields are only populated by Webhook events.
 	Repo         *Repository   `json:"repository,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
@@ -389,10 +377,28 @@ type ProjectColumnEvent struct {
 	Changes       *EditChange    `json:"changes,omitempty"`
 	AfterID       *int           `json:"after_id,omitempty"`
 	ProjectColumn *ProjectColumn `json:"project_column,omitempty"`
-	Repo          *Repository    `json:"repository,omitempty"`
-	Org           *Organization  `json:"organization,omitempty"`
-	Sender        *User          `json:"sender,omitempty"`
-	Installation  *Installation  `json:"installation,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
+// ProjectEvent is triggered when project is created, modified or deleted.
+// the webhook event name is "project".
+//
+// GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
+type ProjectEvent struct {
+	Action  *string     `json:"action,omitempty"`
+	Changes *EditChange `json:"changes,omitempty"`
+	Project *Project    `json:"project,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
 }
 
 // PublicEvent is triggered when a private repository is open sourced.
