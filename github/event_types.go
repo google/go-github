@@ -149,6 +149,12 @@ type EditChange struct {
 	Title *struct {
 		From *string `json:"from,omitempty"`
 	} `json:"title,omitempty"`
+	Name *struct {
+		From *string `json:"from,omitempty"`
+	} `json:"title,omitempty"`
+	Note *struct {
+		From *string `json:"from,omitempty"`
+	} `json:"title,omitempty"`
 	Body *struct {
 		From *string `json:"from,omitempty"`
 	} `json:"body,omitempty"`
@@ -350,11 +356,13 @@ type PingEvent struct {
 //
 // GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
 type ProjectEvent struct {
-	Action        *string       `json:"action,omitempty"`
-	Project       *Project      `json:"project,omitempty"`
-	Repository    *Repository   `json:"repository,omitempty"`
-	Organizaition *Organization `json:"organization,omitempty"`
-	Sender        *User         `json:"sender,omitempty"`
+	Action       *string       `json:"action,omitempty"`
+	Changes      *EditChange   `json:"changes,omitempty"`
+	Project      *Project      `json:"project,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
 }
 
 // ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
@@ -363,10 +371,13 @@ type ProjectEvent struct {
 // GitHub docs: https://developer.github.com/v3/activity/events/types/#projectcardevent
 type ProjectCardEvent struct {
 	Action       *string       `json:"action,omitempty"`
+	Changes      *EditChange   `json:"changes,omitempty"`
 	ProjectCard  *ProjectCard  `json:"project_card,omitempty"`
-	Repository   *Repository   `json:"repository,omitempty"`
-	Organization *Organization `json:"organization,omitempty"`
+	AfterID      *int          `json:"after_id,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
 }
 
 // ProjectColumnEvent is triggered when a project column is created, updated, moved, or deleted.
@@ -375,10 +386,13 @@ type ProjectCardEvent struct {
 // GitHub docs https://developer.github.com/v3/activity/events/types/#projectcolumnevent
 type ProjectColumnEvent struct {
 	Action        *string        `json:"action,omitempty"`
+	Changes       *EditChange    `json:"changes,omitempty"`
+	AfterID       *int           `json:"after_id,omitempty"`
 	ProjectColumn *ProjectColumn `json:"project_column,omitempty"`
-	Repository    *Repository    `json:"repository,omitempty"`
-	Organization  *Organization  `json:"organization,omitempty"`
+	Repo          *Repository    `json:"repository,omitempty"`
+	Org           *Organization  `json:"organization,omitempty"`
 	Sender        *User          `json:"sender,omitempty"`
+	Installation  *Installation  `json:"installation,omitempty"`
 }
 
 // PublicEvent is triggered when a private repository is open sourced.
