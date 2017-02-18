@@ -61,7 +61,7 @@ func (i Invitation) String() string {
 
 // ListTeams lists all of the teams for an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-teams
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#list-teams
 func (s *OrganizationsService) ListTeams(org string, opt *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	u, err := addOptions(u, opt)
@@ -85,7 +85,7 @@ func (s *OrganizationsService) ListTeams(org string, opt *ListOptions) ([]*Team,
 
 // GetTeam fetches a team by ID.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team
 func (s *OrganizationsService) GetTeam(team int) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", team)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -104,7 +104,7 @@ func (s *OrganizationsService) GetTeam(team int) (*Team, *Response, error) {
 
 // CreateTeam creates a new team within an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#create-team
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#create-team
 func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", u, team)
@@ -123,7 +123,7 @@ func (s *OrganizationsService) CreateTeam(org string, team *Team) (*Team, *Respo
 
 // EditTeam edits a team.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#edit-team
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#edit-team
 func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, team)
@@ -142,7 +142,7 @@ func (s *OrganizationsService) EditTeam(id int, team *Team) (*Team, *Response, e
 
 // DeleteTeam deletes a team.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#delete-team
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#delete-team
 func (s *OrganizationsService) DeleteTeam(team int) (*Response, error) {
 	u := fmt.Sprintf("teams/%v", team)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -166,7 +166,7 @@ type OrganizationListTeamMembersOptions struct {
 // ListTeamMembers lists all of the users who are members of the specified
 // team.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-members
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#list-team-members
 func (s *OrganizationsService) ListTeamMembers(team int, opt *OrganizationListTeamMembersOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members", team)
 	u, err := addOptions(u, opt)
@@ -190,7 +190,7 @@ func (s *OrganizationsService) ListTeamMembers(team int, opt *OrganizationListTe
 
 // IsTeamMember checks if a user is a member of the specified team.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#get-team-member
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team-member
 func (s *OrganizationsService) IsTeamMember(team int, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members/%v", team, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -205,7 +205,7 @@ func (s *OrganizationsService) IsTeamMember(team int, user string) (bool, *Respo
 
 // ListTeamRepos lists the repositories that the specified team has access to.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#list-team-repos
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#list-team-repos
 func (s *OrganizationsService) ListTeamRepos(team int, opt *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos", team)
 	u, err := addOptions(u, opt)
@@ -267,7 +267,7 @@ type OrganizationAddTeamRepoOptions struct {
 // specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#add-team-repo
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#add-team-repo
 func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string, opt *OrganizationAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opt)
@@ -282,7 +282,7 @@ func (s *OrganizationsService) AddTeamRepo(team int, owner string, repo string, 
 // team. Note that this does not delete the repository, it just removes it
 // from the team.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/teams/#remove-team-repo
+// GitHub API docs: https://developer.github.com/v3/orgs/teams/#remove-team-repo
 func (s *OrganizationsService) RemoveTeamRepo(team int, owner string, repo string) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)

@@ -10,7 +10,7 @@ import "fmt"
 // ListAssignees fetches all available assignees (owners and collaborators) to
 // which issues may be assigned.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/assignees/#list-assignees
+// GitHub API docs: https://developer.github.com/v3/issues/assignees/#list-assignees
 func (s *IssuesService) ListAssignees(owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
 	u, err := addOptions(u, opt)
@@ -33,7 +33,7 @@ func (s *IssuesService) ListAssignees(owner, repo string, opt *ListOptions) ([]*
 
 // IsAssignee checks if a user is an assignee for the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/assignees/#check-assignee
+// GitHub API docs: https://developer.github.com/v3/issues/assignees/#check-assignee
 func (s *IssuesService) IsAssignee(owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)

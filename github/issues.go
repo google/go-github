@@ -13,7 +13,7 @@ import (
 // IssuesService handles communication with the issue related
 // methods of the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/
+// GitHub API docs: https://developer.github.com/v3/issues/
 type IssuesService service
 
 // Issue represents a GitHub issue on a repository.
@@ -107,7 +107,7 @@ type PullRequestLinks struct {
 // organization repositories; if false, list only owned and member
 // repositories.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#list-issues
+// GitHub API docs: https://developer.github.com/v3/issues/#list-issues
 func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
@@ -121,7 +121,7 @@ func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]*Issue, *Respon
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#list-issues
+// GitHub API docs: https://developer.github.com/v3/issues/#list-issues
 func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
 	return s.listIssues(u, opt)
@@ -192,7 +192,7 @@ type IssueListByRepoOptions struct {
 
 // ListByRepo lists the issues for the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#list-issues-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/issues/#list-issues-for-a-repository
 func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opt)
@@ -219,7 +219,7 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 
 // Get a single issue.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#get-a-single-issue
+// GitHub API docs: https://developer.github.com/v3/issues/#get-a-single-issue
 func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -241,7 +241,7 @@ func (s *IssuesService) Get(owner string, repo string, number int) (*Issue, *Res
 
 // Create a new issue on the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#create-an-issue
+// GitHub API docs: https://developer.github.com/v3/issues/#create-an-issue
 func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
@@ -260,7 +260,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (
 
 // Edit an issue.
 //
-// GitHub API docs: http://developer.github.com/v3/issues/#edit-an-issue
+// GitHub API docs: https://developer.github.com/v3/issues/#edit-an-issue
 func (s *IssuesService) Edit(owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)

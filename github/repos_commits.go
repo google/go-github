@@ -107,7 +107,7 @@ type CommitsListOptions struct {
 
 // ListCommits lists the commits of a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/commits/#list
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#list
 func (s *RepositoriesService) ListCommits(owner, repo string, opt *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
 	u, err := addOptions(u, opt)
@@ -132,8 +132,8 @@ func (s *RepositoriesService) ListCommits(owner, repo string, opt *CommitsListOp
 // GetCommit fetches the specified commit, including all details about it.
 // todo: support media formats - https://github.com/google/go-github/issues/6
 //
-// GitHub API docs: http://developer.github.com/v3/repos/commits/#get-a-single-commit
-// See also: http://developer.github.com//v3/git/commits/#get-a-single-commit provides the same functionality
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
+// See also: https://developer.github.com//v3/git/commits/#get-a-single-commit provides the same functionality
 func (s *RepositoriesService) GetCommit(owner, repo, sha string) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
 
@@ -183,7 +183,7 @@ func (s *RepositoriesService) GetCommitSHA1(owner, repo, ref, lastSHA string) (s
 // CompareCommits compares a range of commits with each other.
 // todo: support media formats - https://github.com/google/go-github/issues/6
 //
-// GitHub API docs: http://developer.github.com/v3/repos/commits/index.html#compare-two-commits
+// GitHub API docs: https://developer.github.com/v3/repos/commits/index.html#compare-two-commits
 func (s *RepositoriesService) CompareCommits(owner, repo string, base, head string) (*CommitsComparison, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, base, head)
 

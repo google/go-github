@@ -485,7 +485,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
-GitHub API docs: http://developer.github.com/v3/#client-errors
+GitHub API docs: https://developer.github.com/v3/#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response // HTTP response that caused this error
@@ -591,7 +591,7 @@ These are the possible validation error codes:
         some resources return this (e.g. github.User.CreateKey()), additional
         information is set in the Message field of the Error
 
-GitHub API docs: http://developer.github.com/v3/#client-errors
+GitHub API docs: https://developer.github.com/v3/#client-errors
 */
 type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
@@ -786,7 +786,7 @@ that need to use a higher rate limit associated with your OAuth application.
 This will append the querystring params client_id=xxx&client_secret=yyy to all
 requests.
 
-See http://developer.github.com/v3/#unauthenticated-rate-limited-requests for
+See https://developer.github.com/v3/#unauthenticated-rate-limited-requests for
 more information.
 */
 type UnauthenticatedRateLimitedTransport struct {

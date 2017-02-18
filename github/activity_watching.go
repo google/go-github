@@ -24,7 +24,7 @@ type Subscription struct {
 
 // ListWatchers lists watchers of a particular repo.
 //
-// GitHub API Docs: http://developer.github.com/v3/activity/watching/#list-watchers
+// GitHub API Docs: https://developer.github.com/v3/activity/watching/#list-watchers
 func (s *ActivityService) ListWatchers(owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
 	u, err := addOptions(u, opt)
