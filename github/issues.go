@@ -232,7 +232,7 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	issue := new(Issue)
-	resp, err := s.client.do(ctx, req, issue)
+	resp, err := s.client.Do(ctx, req, issue)
 	if err != nil {
 		return nil, resp, err
 	}
