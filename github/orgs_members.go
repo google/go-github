@@ -68,7 +68,7 @@ type ListMembersOptions struct {
 // user is an owner of the organization, this will return both concealed and
 // public members, otherwise it will only return public members.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#members-list
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#members-list
 func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) ([]*User, *Response, error) {
 	var u string
 	if opt != nil && opt.PublicOnly {
@@ -97,7 +97,7 @@ func (s *OrganizationsService) ListMembers(org string, opt *ListMembersOptions) 
 
 // IsMember checks if a user is a member of an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#check-membership
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#check-membership
 func (s *OrganizationsService) IsMember(org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -112,7 +112,7 @@ func (s *OrganizationsService) IsMember(org, user string) (bool, *Response, erro
 
 // IsPublicMember checks if a user is a public member of an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#check-public-membership
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#check-public-membership
 func (s *OrganizationsService) IsPublicMember(org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -127,7 +127,7 @@ func (s *OrganizationsService) IsPublicMember(org, user string) (bool, *Response
 
 // RemoveMember removes a user from all teams of an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#remove-a-member
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#remove-a-member
 func (s *OrganizationsService) RemoveMember(org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -141,7 +141,7 @@ func (s *OrganizationsService) RemoveMember(org, user string) (*Response, error)
 // PublicizeMembership publicizes a user's membership in an organization. (A
 // user cannot publicize the membership for another user.)
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#publicize-a-users-membership
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#publicize-a-users-membership
 func (s *OrganizationsService) PublicizeMembership(org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -154,7 +154,7 @@ func (s *OrganizationsService) PublicizeMembership(org, user string) (*Response,
 
 // ConcealMembership conceals a user's membership in an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/members/#conceal-a-users-membership
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#conceal-a-users-membership
 func (s *OrganizationsService) ConcealMembership(org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)

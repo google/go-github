@@ -41,7 +41,7 @@ func (r RepoStatus) String() string {
 // ListStatuses lists the statuses of a repository at the specified
 // reference. ref can be a SHA, a branch name, or a tag name.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
+// GitHub API docs: https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 func (s *RepositoriesService) ListStatuses(owner, repo, ref string, opt *ListOptions) ([]*RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, ref)
 	u, err := addOptions(u, opt)
@@ -66,7 +66,7 @@ func (s *RepositoriesService) ListStatuses(owner, repo, ref string, opt *ListOpt
 // CreateStatus creates a new status for a repository at the specified
 // reference. Ref can be a SHA, a branch name, or a tag name.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/statuses/#create-a-status
+// GitHub API docs: https://developer.github.com/v3/repos/statuses/#create-a-status
 func (s *RepositoriesService) CreateStatus(owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("POST", u, status)

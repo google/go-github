@@ -85,7 +85,7 @@ func (h Hook) String() string {
 // CreateHook creates a Hook for the specified repository.
 // Name and Config are required fields.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#create-a-hook
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#create-a-hook
 func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 	req, err := s.client.NewRequest("POST", u, hook)
@@ -104,7 +104,7 @@ func (s *RepositoriesService) CreateHook(owner, repo string, hook *Hook) (*Hook,
 
 // ListHooks lists all Hooks for the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#list
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#list
 func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([]*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 	u, err := addOptions(u, opt)
@@ -128,7 +128,7 @@ func (s *RepositoriesService) ListHooks(owner, repo string, opt *ListOptions) ([
 
 // GetHook returns a single specified Hook.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#get-single-hook
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#get-single-hook
 func (s *RepositoriesService) GetHook(owner, repo string, id int) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -142,7 +142,7 @@ func (s *RepositoriesService) GetHook(owner, repo string, id int) (*Hook, *Respo
 
 // EditHook updates a specified Hook.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#edit-a-hook
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#edit-a-hook
 func (s *RepositoriesService) EditHook(owner, repo string, id int, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, hook)
@@ -156,7 +156,7 @@ func (s *RepositoriesService) EditHook(owner, repo string, id int, hook *Hook) (
 
 // DeleteHook deletes a specified Hook.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#delete-a-hook
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#delete-a-hook
 func (s *RepositoriesService) DeleteHook(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -180,7 +180,7 @@ func (s *RepositoriesService) PingHook(owner, repo string, id int) (*Response, e
 
 // TestHook triggers a test Hook by github.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/hooks/#test-a-push-hook
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#test-a-push-hook
 func (s *RepositoriesService) TestHook(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d/tests", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)

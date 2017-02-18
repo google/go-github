@@ -14,7 +14,7 @@ import (
 // PullRequestsService handles communication with the pull request related
 // methods of the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/pulls/
+// GitHub API docs: https://developer.github.com/v3/pulls/
 type PullRequestsService service
 
 // PullRequest represents a GitHub pull request on a repository.
@@ -94,7 +94,7 @@ type PullRequestListOptions struct {
 
 // List the pull requests for the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/pulls/#list-pull-requests
+// GitHub API docs: https://developer.github.com/v3/pulls/#list-pull-requests
 func (s *PullRequestsService) List(owner string, repo string, opt *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	u, err := addOptions(u, opt)

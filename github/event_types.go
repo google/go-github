@@ -421,7 +421,7 @@ type PullRequestReviewCommentEvent struct {
 
 // PushEvent represents a git push to a GitHub repository.
 //
-// GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
 	PushID       *int              `json:"push_id,omitempty"`
 	Head         *string           `json:"head,omitempty"`

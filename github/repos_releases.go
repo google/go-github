@@ -63,7 +63,7 @@ func (r ReleaseAsset) String() string {
 
 // ListReleases lists the releases for a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
 func (s *RepositoriesService) ListReleases(owner, repo string, opt *ListOptions) ([]*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 	u, err := addOptions(u, opt)
@@ -86,7 +86,7 @@ func (s *RepositoriesService) ListReleases(owner, repo string, opt *ListOptions)
 
 // GetRelease fetches a single release.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/releases/#get-a-single-release
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release
 func (s *RepositoriesService) GetRelease(owner, repo string, id int) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 	return s.getSingleRelease(u)
@@ -124,7 +124,7 @@ func (s *RepositoriesService) getSingleRelease(url string) (*RepositoryRelease, 
 
 // CreateRelease adds a new release for a repository.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#create-a-release
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#create-a-release
 func (s *RepositoriesService) CreateRelease(owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
@@ -143,7 +143,7 @@ func (s *RepositoriesService) CreateRelease(owner, repo string, release *Reposit
 
 // EditRelease edits a repository release.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#edit-a-release
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#edit-a-release
 func (s *RepositoriesService) EditRelease(owner, repo string, id int, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
@@ -162,7 +162,7 @@ func (s *RepositoriesService) EditRelease(owner, repo string, id int, release *R
 
 // DeleteRelease delete a single release from a repository.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#delete-a-release
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#delete-a-release
 func (s *RepositoriesService) DeleteRelease(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
@@ -175,7 +175,7 @@ func (s *RepositoriesService) DeleteRelease(owner, repo string, id int) (*Respon
 
 // ListReleaseAssets lists the release's assets.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#list-assets-for-a-release
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#list-assets-for-a-release
 func (s *RepositoriesService) ListReleaseAssets(owner, repo string, id int, opt *ListOptions) ([]*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opt)
@@ -198,7 +198,7 @@ func (s *RepositoriesService) ListReleaseAssets(owner, repo string, id int, opt 
 
 // GetReleaseAsset fetches a single release asset.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#get-a-single-release-asset
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
 func (s *RepositoriesService) GetReleaseAsset(owner, repo string, id int) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -222,7 +222,7 @@ func (s *RepositoriesService) GetReleaseAsset(owner, repo string, id int) (*Rele
 // If a redirect is returned, the redirect URL will be returned as a string instead
 // of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#get-a-single-release-asset
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
 func (s *RepositoriesService) DownloadReleaseAsset(owner, repo string, id int) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -261,7 +261,7 @@ func (s *RepositoriesService) DownloadReleaseAsset(owner, repo string, id int) (
 
 // EditReleaseAsset edits a repository release asset.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#edit-a-release-asset
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#edit-a-release-asset
 func (s *RepositoriesService) EditReleaseAsset(owner, repo string, id int, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -280,7 +280,7 @@ func (s *RepositoriesService) EditReleaseAsset(owner, repo string, id int, relea
 
 // DeleteReleaseAsset delete a single release asset from a repository.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#delete-a-release-asset
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#delete-a-release-asset
 func (s *RepositoriesService) DeleteReleaseAsset(owner, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -294,7 +294,7 @@ func (s *RepositoriesService) DeleteReleaseAsset(owner, repo string, id int) (*R
 // UploadReleaseAsset creates an asset by uploading a file into a release repository.
 // To upload assets that cannot be represented by an os.File, call NewUploadRequest directly.
 //
-// GitHub API docs : http://developer.github.com/v3/repos/releases/#upload-a-release-asset
+// GitHub API docs : https://developer.github.com/v3/repos/releases/#upload-a-release-asset
 func (s *RepositoriesService) UploadReleaseAsset(owner, repo string, id int, opt *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opt)

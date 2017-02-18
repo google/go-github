@@ -19,7 +19,7 @@ type RepositoryListForksOptions struct {
 
 // ListForks lists the forks of the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/forks/#list-forks
+// GitHub API docs: https://developer.github.com/v3/repos/forks/#list-forks
 func (s *RepositoriesService) ListForks(owner, repo string, opt *RepositoryListForksOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
 	u, err := addOptions(u, opt)

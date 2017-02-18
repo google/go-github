@@ -11,7 +11,7 @@ import "fmt"
 
 // ListKeys lists the deploy keys for a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/keys/#list
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#list
 func (s *RepositoriesService) ListKeys(owner string, repo string, opt *ListOptions) ([]*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 	u, err := addOptions(u, opt)
@@ -35,7 +35,7 @@ func (s *RepositoriesService) ListKeys(owner string, repo string, opt *ListOptio
 
 // GetKey fetches a single deploy key.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/keys/#get
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#get
 func (s *RepositoriesService) GetKey(owner string, repo string, id int) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
@@ -55,7 +55,7 @@ func (s *RepositoriesService) GetKey(owner string, repo string, id int) (*Key, *
 
 // CreateKey adds a deploy key for a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/keys/#create
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#create
 func (s *RepositoriesService) CreateKey(owner string, repo string, key *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
@@ -75,7 +75,7 @@ func (s *RepositoriesService) CreateKey(owner string, repo string, key *Key) (*K
 
 // EditKey edits a deploy key.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/keys/#edit
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#edit
 func (s *RepositoriesService) EditKey(owner string, repo string, id int, key *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
@@ -95,7 +95,7 @@ func (s *RepositoriesService) EditKey(owner string, repo string, id int, key *Ke
 
 // DeleteKey deletes a deploy key.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/keys/#delete
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#delete
 func (s *RepositoriesService) DeleteKey(owner string, repo string, id int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 

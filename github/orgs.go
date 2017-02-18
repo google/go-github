@@ -13,7 +13,7 @@ import (
 // OrganizationsService provides access to the organization related functions
 // in the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/
+// GitHub API docs: https://developer.github.com/v3/orgs/
 type OrganizationsService service
 
 // Organization represents a GitHub organization account.
@@ -107,7 +107,7 @@ func (s *OrganizationsService) ListAll(opt *OrganizationsListOptions) ([]*Organi
 // List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/#list-user-organizations
+// GitHub API docs: https://developer.github.com/v3/orgs/#list-user-organizations
 func (s *OrganizationsService) List(user string, opt *ListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {
@@ -136,7 +136,7 @@ func (s *OrganizationsService) List(user string, opt *ListOptions) ([]*Organizat
 
 // Get fetches an organization by name.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/#get-an-organization
+// GitHub API docs: https://developer.github.com/v3/orgs/#get-an-organization
 func (s *OrganizationsService) Get(org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -155,7 +155,7 @@ func (s *OrganizationsService) Get(org string) (*Organization, *Response, error)
 
 // Edit an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/orgs/#edit-an-organization
+// GitHub API docs: https://developer.github.com/v3/orgs/#edit-an-organization
 func (s *OrganizationsService) Edit(name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", u, org)
