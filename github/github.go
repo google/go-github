@@ -114,7 +114,6 @@ type Client struct {
 
 	rateMu     sync.Mutex
 	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
-	mostRecent rateLimitCategory
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -413,7 +412,6 @@ func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 
 	c.rateMu.Lock()
 	c.rateLimits[rateLimitCategory] = response.Rate
-	c.mostRecent = rateLimitCategory
 	c.rateMu.Unlock()
 
 	err = CheckResponse(resp)
