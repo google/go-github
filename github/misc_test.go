@@ -137,7 +137,7 @@ func TestZen(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_ListServiceHooks(t *testing.T) {
+func TestListServiceHooks(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -153,9 +153,9 @@ func TestRepositoriesService_ListServiceHooks(t *testing.T) {
 		}]`)
 	})
 
-	hooks, _, err := client.Repositories.ListServiceHooks()
+	hooks, _, err := client.ListServiceHooks()
 	if err != nil {
-		t.Errorf("Repositories.ListHooks returned error: %v", err)
+		t.Errorf("ListServiceHooks returned error: %v", err)
 	}
 
 	want := []*ServiceHook{{
@@ -165,6 +165,6 @@ func TestRepositoriesService_ListServiceHooks(t *testing.T) {
 		Schema:          [][]string{{"a", "b"}},
 	}}
 	if !reflect.DeepEqual(hooks, want) {
-		t.Errorf("Repositories.ListServiceHooks returned %+v, want %+v", hooks, want)
+		t.Errorf("ListServiceHooks returned %+v, want %+v", hooks, want)
 	}
 }

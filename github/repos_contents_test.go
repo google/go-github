@@ -13,41 +13,6 @@ import (
 	"testing"
 )
 
-func TestRepositoryContent_Decode(t *testing.T) {
-	tests := []struct {
-		encoding, content *string // input encoding and content
-		want              string  // desired output
-		wantErr           bool    // whether an error is expected
-	}{
-		{
-			encoding: String("base64"),
-			content:  String("aGVsbG8="),
-			want:     "hello",
-			wantErr:  false,
-		},
-		{
-			encoding: String("bad"),
-			content:  String("aGVsbG8="),
-			want:     "",
-			wantErr:  true,
-		},
-	}
-
-	for _, tt := range tests {
-		r := RepositoryContent{Encoding: tt.encoding, Content: tt.content}
-		o, err := r.Decode()
-		if err != nil && !tt.wantErr {
-			t.Errorf("RepositoryContent(%q, %q) returned unexpected error: %v", tt.encoding, tt.content, err)
-		}
-		if err == nil && tt.wantErr {
-			t.Errorf("RepositoryContent(%q, %q) did not return unexpected error", tt.encoding, tt.content)
-		}
-		if got, want := string(o), tt.want; got != want {
-			t.Errorf("RepositoryContent.Decode returned %+v, want %+v", got, want)
-		}
-	}
-}
-
 func TestRepositoryContent_GetContent(t *testing.T) {
 	tests := []struct {
 		encoding, content *string // input encoding and content

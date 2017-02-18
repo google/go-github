@@ -49,8 +49,6 @@ func (e *Event) Payload() (payload interface{}) {
 		payload = &IntegrationInstallationEvent{}
 	case "IntegrationInstallationRepositoriesEvent":
 		payload = &IntegrationInstallationRepositoriesEvent{}
-	case "IssueActivityEvent":
-		payload = &IssueActivityEvent{}
 	case "IssueCommentEvent":
 		payload = &IssueCommentEvent{}
 	case "IssuesEvent":
