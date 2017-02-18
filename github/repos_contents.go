@@ -11,7 +11,6 @@ package github
 import (
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -62,20 +61,6 @@ type RepositoryContentGetOptions struct {
 // String converts RepositoryContent to a string. It's primarily for testing.
 func (r RepositoryContent) String() string {
 	return Stringify(r)
-}
-
-// Decode decodes the file content if it is base64 encoded.
-//
-// Deprecated: Use GetContent instead.
-func (r *RepositoryContent) Decode() ([]byte, error) {
-	if *r.Encoding != "base64" {
-		return nil, errors.New("cannot decode non-base64")
-	}
-	o, err := base64.StdEncoding.DecodeString(*r.Content)
-	if err != nil {
-		return nil, err
-	}
-	return o, nil
 }
 
 // GetContent returns the content of r, decoding it if necessary.

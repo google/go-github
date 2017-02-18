@@ -189,8 +189,3 @@ func (s *RepositoriesService) TestHook(owner, repo string, id int) (*Response, e
 	}
 	return s.client.Do(req, nil)
 }
-
-// ListServiceHooks is deprecated. Use Client.ListServiceHooks instead.
-func (s *RepositoriesService) ListServiceHooks() ([]*ServiceHook, *Response, error) {
-	return s.client.ListServiceHooks()
-}
