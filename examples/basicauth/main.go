@@ -37,7 +37,7 @@ func main() {
 	user, _, err := client.Users.Get("")
 
 	// Is this a two-factor auth error? If so, prompt for OTP and try again.
-	if _, ok := err.(*github.TwoFactorAuthError); err != nil && ok {
+	if _, ok := err.(*github.TwoFactorAuthError); ok {
 		fmt.Print("\nGitHub OTP: ")
 		otp, _ := r.ReadString('\n')
 		tp.OTP = strings.TrimSpace(otp)
