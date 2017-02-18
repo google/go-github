@@ -14,7 +14,7 @@ import (
 // SearchService provides access to the search related functions
 // in the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/search/
+// GitHub API docs: https://developer.github.com/v3/search/
 type SearchService service
 
 // SearchOptions specifies optional parameters to the SearchService methods.
@@ -48,7 +48,7 @@ type RepositoriesSearchResult struct {
 
 // Repositories searches repositories via various criteria.
 //
-// GitHub API docs: http://developer.github.com/v3/search/#search-repositories
+// GitHub API docs: https://developer.github.com/v3/search/#search-repositories
 func (s *SearchService) Repositories(query string, opt *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
 	resp, err := s.search("repositories", query, opt, result)
@@ -95,7 +95,7 @@ type IssuesSearchResult struct {
 
 // Issues searches issues via various criteria.
 //
-// GitHub API docs: http://developer.github.com/v3/search/#search-issues
+// GitHub API docs: https://developer.github.com/v3/search/#search-issues
 func (s *SearchService) Issues(query string, opt *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
 	resp, err := s.search("issues", query, opt, result)
@@ -111,7 +111,7 @@ type UsersSearchResult struct {
 
 // Users searches users via various criteria.
 //
-// GitHub API docs: http://developer.github.com/v3/search/#search-users
+// GitHub API docs: https://developer.github.com/v3/search/#search-users
 func (s *SearchService) Users(query string, opt *SearchOptions) (*UsersSearchResult, *Response, error) {
 	result := new(UsersSearchResult)
 	resp, err := s.search("users", query, opt, result)
@@ -160,7 +160,7 @@ func (c CodeResult) String() string {
 
 // Code searches code via various criteria.
 //
-// GitHub API docs: http://developer.github.com/v3/search/#search-code
+// GitHub API docs: https://developer.github.com/v3/search/#search-code
 func (s *SearchService) Code(query string, opt *SearchOptions) (*CodeSearchResult, *Response, error) {
 	result := new(CodeSearchResult)
 	resp, err := s.search("code", query, opt, result)

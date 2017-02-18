@@ -37,7 +37,7 @@ repos, _, err := client.Repositories.ListByOrg("github", opt)
 
 The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
-http://developer.github.com/v3/.
+https://developer.github.com/v3/.
 
 ### Authentication ###
 
@@ -97,7 +97,7 @@ if _, ok := err.(*github.RateLimitError); ok {
 ```
 
 Learn more about GitHub rate limiting at
-http://developer.github.com/v3/#rate-limiting.
+https://developer.github.com/v3/#rate-limiting.
 
 ### Accepted Status ###
 

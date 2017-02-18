@@ -13,7 +13,7 @@ import (
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/
+// GitHub API docs: https://developer.github.com/v3/repos/
 type RepositoriesService service
 
 // Repository represents a GitHub repository.
@@ -154,7 +154,7 @@ type RepositoryListOptions struct {
 // List the repositories for a user. Passing the empty string will list
 // repositories for the authenticated user.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-user-repositories
+// GitHub API docs: https://developer.github.com/v3/repos/#list-user-repositories
 func (s *RepositoriesService) List(user string, opt *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
@@ -196,7 +196,7 @@ type RepositoryListByOrgOptions struct {
 
 // ListByOrg lists the repositories for an organization.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-organization-repositories
+// GitHub API docs: https://developer.github.com/v3/repos/#list-organization-repositories
 func (s *RepositoriesService) ListByOrg(org string, opt *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
 	u, err := addOptions(u, opt)
@@ -232,7 +232,7 @@ type RepositoryListAllOptions struct {
 
 // ListAll lists all GitHub repositories in the order that they were created.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-all-public-repositories
+// GitHub API docs: https://developer.github.com/v3/repos/#list-all-public-repositories
 func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]*Repository, *Response, error) {
 	u, err := addOptions("repositories", opt)
 	if err != nil {
@@ -257,7 +257,7 @@ func (s *RepositoriesService) ListAll(opt *RepositoryListAllOptions) ([]*Reposit
 // repository will be created under that org. If the empty string is
 // specified, it will be created for the authenticated user.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#create
+// GitHub API docs: https://developer.github.com/v3/repos/#create
 func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
@@ -282,7 +282,7 @@ func (s *RepositoriesService) Create(org string, repo *Repository) (*Repository,
 
 // Get fetches a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#get
+// GitHub API docs: https://developer.github.com/v3/repos/#get
 func (s *RepositoriesService) Get(owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -329,7 +329,7 @@ func (s *RepositoriesService) GetByID(id int) (*Repository, *Response, error) {
 
 // Edit updates a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#edit
+// GitHub API docs: https://developer.github.com/v3/repos/#edit
 func (s *RepositoriesService) Edit(owner, repo string, repository *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, repository)
@@ -395,7 +395,7 @@ type ListContributorsOptions struct {
 
 // ListContributors lists contributors for a repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-contributors
+// GitHub API docs: https://developer.github.com/v3/repos/#list-contributors
 func (s *RepositoriesService) ListContributors(owner string, repository string, opt *ListContributorsOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
 	u, err := addOptions(u, opt)
@@ -426,7 +426,7 @@ func (s *RepositoriesService) ListContributors(owner string, repository string, 
 //       "Python": 7769
 //     }
 //
-// GitHub API Docs: http://developer.github.com/v3/repos/#list-languages
+// GitHub API Docs: https://developer.github.com/v3/repos/#list-languages
 func (s *RepositoriesService) ListLanguages(owner string, repo string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -559,7 +559,7 @@ type BranchRestrictionsRequest struct {
 
 // ListBranches lists branches for the specified repository.
 //
-// GitHub API docs: http://developer.github.com/v3/repos/#list-branches
+// GitHub API docs: https://developer.github.com/v3/repos/#list-branches
 func (s *RepositoriesService) ListBranches(owner string, repo string, opt *ListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opt)
