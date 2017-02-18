@@ -49,7 +49,7 @@ func (s *ProjectsService) GetProject(ctx context.Context, id int) (*Project, *Re
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	project := &Project{}
-	resp, err := s.client.Do(ctx, req, project)
+	resp, err := s.client.Do(req.WithContext(ctx), project)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -81,7 +81,7 @@ func (s *ProjectsService) UpdateProject(ctx context.Context, id int, opt *Projec
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	project := &Project{}
-	resp, err := s.client.Do(ctx, req, project)
+	resp, err := s.client.Do(req.WithContext(ctx), project)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,7 +102,7 @@ func (s *ProjectsService) DeleteProject(ctx context.Context, id int) (*Response,
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ProjectColumn represents a column of a GitHub Project.
@@ -135,7 +135,7 @@ func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int,
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	columns := []*ProjectColumn{}
-	resp, err := s.client.Do(ctx, req, &columns)
+	resp, err := s.client.Do(req.WithContext(ctx), &columns)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,7 +157,7 @@ func (s *ProjectsService) GetProjectColumn(ctx context.Context, id int) (*Projec
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	column := &ProjectColumn{}
-	resp, err := s.client.Do(ctx, req, column)
+	resp, err := s.client.Do(req.WithContext(ctx), column)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -187,7 +187,7 @@ func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	column := &ProjectColumn{}
-	resp, err := s.client.Do(ctx, req, column)
+	resp, err := s.client.Do(req.WithContext(ctx), column)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -209,7 +209,7 @@ func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int,
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	column := &ProjectColumn{}
-	resp, err := s.client.Do(ctx, req, column)
+	resp, err := s.client.Do(req.WithContext(ctx), column)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -230,7 +230,7 @@ func (s *ProjectsService) DeleteProjectColumn(ctx context.Context, columnID int)
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ProjectColumnMoveOptions specifies the parameters to the
@@ -254,7 +254,7 @@ func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int, o
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ProjectCard represents a card in a column of a GitHub Project.
@@ -288,7 +288,7 @@ func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int, op
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	cards := []*ProjectCard{}
-	resp, err := s.client.Do(ctx, req, &cards)
+	resp, err := s.client.Do(req.WithContext(ctx), &cards)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -310,7 +310,7 @@ func (s *ProjectsService) GetProjectCard(ctx context.Context, columnID int) (*Pr
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	card := &ProjectCard{}
-	resp, err := s.client.Do(ctx, req, card)
+	resp, err := s.client.Do(req.WithContext(ctx), card)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -345,7 +345,7 @@ func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int, o
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	card := &ProjectCard{}
-	resp, err := s.client.Do(ctx, req, card)
+	resp, err := s.client.Do(req.WithContext(ctx), card)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -367,7 +367,7 @@ func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int, opt
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	card := &ProjectCard{}
-	resp, err := s.client.Do(ctx, req, card)
+	resp, err := s.client.Do(req.WithContext(ctx), card)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -388,7 +388,7 @@ func (s *ProjectsService) DeleteProjectCard(ctx context.Context, cardID int) (*R
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ProjectCardMoveOptions specifies the parameters to the
@@ -416,5 +416,5 @@ func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int, opt *
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

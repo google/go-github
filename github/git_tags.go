@@ -46,7 +46,7 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	tag := new(Tag)
-	resp, err := s.client.Do(ctx, req, tag)
+	resp, err := s.client.Do(req.WithContext(ctx), tag)
 	return tag, resp, err
 }
 
@@ -73,6 +73,6 @@ func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, t
 	}
 
 	t := new(Tag)
-	resp, err := s.client.Do(ctx, req, t)
+	resp, err := s.client.Do(req.WithContext(ctx), t)
 	return t, resp, err
 }

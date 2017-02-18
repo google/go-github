@@ -76,7 +76,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner string, re
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*PullRequestComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req.WithContext(ctx), &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -98,7 +98,7 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner string, repo
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	comment := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, comment)
+	resp, err := s.client.Do(req.WithContext(ctx), comment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,7 +117,7 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner string, r
 	}
 
 	c := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, c)
+	resp, err := s.client.Do(req.WithContext(ctx), c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,7 +136,7 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner string, rep
 	}
 
 	c := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, c)
+	resp, err := s.client.Do(req.WithContext(ctx), c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -153,5 +153,5 @@ func (s *PullRequestsService) DeleteComment(ctx context.Context, owner string, r
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

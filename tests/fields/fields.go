@@ -17,7 +17,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -85,7 +84,7 @@ func testType(urlStr string, typ interface{}) error {
 
 	// start with a json.RawMessage so we can decode multiple ways below
 	raw := new(json.RawMessage)
-	_, err = client.Do(context.Background(), req, raw)
+	_, err = client.Do(req, raw)
 	if err != nil {
 		return err
 	}

@@ -75,7 +75,7 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 	}
 
 	var deployments []*Deployment
-	resp, err := s.client.Do(ctx, req, &deployments)
+	resp, err := s.client.Do(req.WithContext(ctx), &deployments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,7 +95,7 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 	}
 
 	deployment := new(Deployment)
-	resp, err := s.client.Do(ctx, req, deployment)
+	resp, err := s.client.Do(req.WithContext(ctx), deployment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -118,7 +118,7 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
 
 	d := new(Deployment)
-	resp, err := s.client.Do(ctx, req, d)
+	resp, err := s.client.Do(req.WithContext(ctx), d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -167,7 +167,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 	}
 
 	var statuses []*DeploymentStatus
-	resp, err := s.client.Do(ctx, req, &statuses)
+	resp, err := s.client.Do(req.WithContext(ctx), &statuses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,7 +190,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
 
 	d := new(DeploymentStatus)
-	resp, err := s.client.Do(ctx, req, d)
+	resp, err := s.client.Do(req.WithContext(ctx), d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -213,7 +213,7 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
 
 	d := new(DeploymentStatus)
-	resp, err := s.client.Do(ctx, req, d)
+	resp, err := s.client.Do(req.WithContext(ctx), d)
 	if err != nil {
 		return nil, resp, err
 	}

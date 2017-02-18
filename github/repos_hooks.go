@@ -95,7 +95,7 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 	}
 
 	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+	resp, err := s.client.Do(req.WithContext(ctx), h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,7 +119,7 @@ func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string,
 	}
 
 	var hooks []*Hook
-	resp, err := s.client.Do(ctx, req, &hooks)
+	resp, err := s.client.Do(req.WithContext(ctx), &hooks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -137,7 +137,7 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 		return nil, nil, err
 	}
 	hook := new(Hook)
-	resp, err := s.client.Do(ctx, req, hook)
+	resp, err := s.client.Do(req.WithContext(ctx), hook)
 	return hook, resp, err
 }
 
@@ -151,7 +151,7 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+	resp, err := s.client.Do(req.WithContext(ctx), h)
 	return h, resp, err
 }
 
@@ -164,7 +164,7 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // PingHook triggers a 'ping' event to be sent to the Hook.
@@ -176,7 +176,7 @@ func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // TestHook triggers a test Hook by github.
@@ -188,5 +188,5 @@ func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

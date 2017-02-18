@@ -41,7 +41,7 @@ func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, 
 	}
 
 	var watchers []*User
-	resp, err := s.client.Do(ctx, req, &watchers)
+	resp, err := s.client.Do(req.WithContext(ctx), &watchers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -71,7 +71,7 @@ func (s *ActivityService) ListWatched(ctx context.Context, user string, opt *Lis
 	}
 
 	var watched []*Repository
-	resp, err := s.client.Do(ctx, req, &watched)
+	resp, err := s.client.Do(req.WithContext(ctx), &watched)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -93,7 +93,7 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 	}
 
 	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	resp, err := s.client.Do(req.WithContext(ctx), sub)
 	if err != nil {
 		// if it's just a 404, don't return that as an error
 		_, err = parseBoolResponse(err)
@@ -120,7 +120,7 @@ func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, 
 	}
 
 	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	resp, err := s.client.Do(req.WithContext(ctx), sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -142,5 +142,5 @@ func (s *ActivityService) DeleteRepositorySubscription(ctx context.Context, owne
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

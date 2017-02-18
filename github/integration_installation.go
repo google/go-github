@@ -39,7 +39,7 @@ func (s *IntegrationsService) ListRepos(ctx context.Context, opt *ListOptions) (
 	var r struct {
 		Repositories []*Repository `json:"repositories"`
 	}
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req.WithContext(ctx), &r)
 	if err != nil {
 		return nil, resp, err
 	}

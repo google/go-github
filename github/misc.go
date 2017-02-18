@@ -57,7 +57,7 @@ func (c *Client) Markdown(ctx context.Context, text string, opt *MarkdownOptions
 	}
 
 	buf := new(bytes.Buffer)
-	resp, err := c.Do(ctx, req, buf)
+	resp, err := c.Do(req.WithContext(ctx), buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -75,7 +75,7 @@ func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, 
 	}
 
 	var emoji map[string]string
-	resp, err := c.Do(ctx, req, &emoji)
+	resp, err := c.Do(req.WithContext(ctx), &emoji)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,7 +117,7 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	}
 
 	meta := new(APIMeta)
-	resp, err := c.Do(ctx, req, meta)
+	resp, err := c.Do(req.WithContext(ctx), meta)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,7 +139,7 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 	}
 
 	buf := new(bytes.Buffer)
-	resp, err := c.Do(ctx, req, buf)
+	resp, err := c.Do(req.WithContext(ctx), buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -157,7 +157,7 @@ func (c *Client) Zen(ctx context.Context) (string, *Response, error) {
 	}
 
 	buf := new(bytes.Buffer)
-	resp, err := c.Do(ctx, req, buf)
+	resp, err := c.Do(req.WithContext(ctx), buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -189,7 +189,7 @@ func (c *Client) ListServiceHooks(ctx context.Context) ([]*ServiceHook, *Respons
 	}
 
 	var hooks []*ServiceHook
-	resp, err := c.Do(ctx, req, &hooks)
+	resp, err := c.Do(req.WithContext(ctx), &hooks)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -78,7 +78,7 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 	}
 
 	var releases []*RepositoryRelease
-	resp, err := s.client.Do(ctx, req, &releases)
+	resp, err := s.client.Do(req.WithContext(ctx), &releases)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -116,7 +116,7 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 	}
 
 	release := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, release)
+	resp, err := s.client.Do(req.WithContext(ctx), release)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -135,7 +135,7 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 	}
 
 	r := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, r)
+	resp, err := s.client.Do(req.WithContext(ctx), r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -154,7 +154,7 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 	}
 
 	r := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, r)
+	resp, err := s.client.Do(req.WithContext(ctx), r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -171,7 +171,7 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ListReleaseAssets lists the release's assets.
@@ -190,7 +190,7 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 	}
 
 	var assets []*ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &assets)
+	resp, err := s.client.Do(req.WithContext(ctx), &assets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -209,7 +209,7 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 	}
 
 	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	resp, err := s.client.Do(req.WithContext(ctx), asset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -272,7 +272,7 @@ func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo 
 	}
 
 	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	resp, err := s.client.Do(req.WithContext(ctx), asset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -289,7 +289,7 @@ func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, rep
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // UploadReleaseAsset creates an asset by uploading a file into a release repository.
@@ -318,7 +318,7 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 	}
 
 	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	resp, err := s.client.Do(req.WithContext(ctx), asset)
 	if err != nil {
 		return nil, resp, err
 	}

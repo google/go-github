@@ -26,7 +26,7 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req.WithContext(ctx), &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,7 +47,7 @@ func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, u
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req.WithContext(ctx), nil)
 	isCollab, err := parseBoolResponse(err)
 	return isCollab, resp, err
 }
@@ -74,7 +74,7 @@ func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
 	rpl := new(RepositoryPermissionLevel)
-	resp, err := s.client.Do(ctx, req, rpl)
+	resp, err := s.client.Do(req.WithContext(ctx), rpl)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,7 +107,7 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // RemoveCollaborator removes the specified Github user as collaborator from the given repo.
@@ -120,5 +120,5 @@ func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, rep
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

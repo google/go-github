@@ -54,7 +54,7 @@ func (s *UsersService) ListGPGKeys(ctx context.Context) ([]*GPGKey, *Response, e
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	var keys []*GPGKey
-	resp, err := s.client.Do(ctx, req, &keys)
+	resp, err := s.client.Do(req.WithContext(ctx), &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -77,7 +77,7 @@ func (s *UsersService) GetGPGKey(ctx context.Context, id int) (*GPGKey, *Respons
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	key := &GPGKey{}
-	resp, err := s.client.Do(ctx, req, key)
+	resp, err := s.client.Do(req.WithContext(ctx), key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,7 +102,7 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	key := &GPGKey{}
-	resp, err := s.client.Do(ctx, req, key)
+	resp, err := s.client.Do(req.WithContext(ctx), key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -124,5 +124,5 @@ func (s *UsersService) DeleteGPGKey(ctx context.Context, id int) (*Response, err
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

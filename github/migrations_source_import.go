@@ -158,7 +158,7 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	resp, err := s.client.Do(req.WithContext(ctx), out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -180,7 +180,7 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	resp, err := s.client.Do(req.WithContext(ctx), out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -202,7 +202,7 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	resp, err := s.client.Do(req.WithContext(ctx), out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -234,7 +234,7 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	var authors []*SourceImportAuthor
-	resp, err := s.client.Do(ctx, req, &authors)
+	resp, err := s.client.Do(req.WithContext(ctx), &authors)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -258,7 +258,7 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	out := new(SourceImportAuthor)
-	resp, err := s.client.Do(ctx, req, out)
+	resp, err := s.client.Do(req.WithContext(ctx), out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -282,7 +282,7 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	resp, err := s.client.Do(req.WithContext(ctx), out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -304,7 +304,7 @@ func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) (
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
 	var files []*LargeFile
-	resp, err := s.client.Do(ctx, req, &files)
+	resp, err := s.client.Do(req.WithContext(ctx), &files)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -325,5 +325,5 @@ func (s *MigrationService) CancelImport(ctx context.Context, owner, repo string)
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeImportPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

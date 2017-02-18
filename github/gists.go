@@ -112,7 +112,7 @@ func (s *GistsService) List(ctx context.Context, user string, opt *GistListOptio
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req.WithContext(ctx), &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -135,7 +135,7 @@ func (s *GistsService) ListAll(ctx context.Context, opt *GistListOptions) ([]*Gi
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req.WithContext(ctx), &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -158,7 +158,7 @@ func (s *GistsService) ListStarred(ctx context.Context, opt *GistListOptions) ([
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req.WithContext(ctx), &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -176,7 +176,7 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 		return nil, nil, err
 	}
 	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	resp, err := s.client.Do(req.WithContext(ctx), gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,7 +194,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 		return nil, nil, err
 	}
 	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	resp, err := s.client.Do(req.WithContext(ctx), gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -212,7 +212,7 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 		return nil, nil, err
 	}
 	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	resp, err := s.client.Do(req.WithContext(ctx), g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -230,7 +230,7 @@ func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, 
 		return nil, nil, err
 	}
 	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	resp, err := s.client.Do(req.WithContext(ctx), g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -249,7 +249,7 @@ func (s *GistsService) ListCommits(ctx context.Context, id string) ([]*GistCommi
 	}
 
 	var gistCommits []*GistCommit
-	resp, err := s.client.Do(ctx, req, &gistCommits)
+	resp, err := s.client.Do(req.WithContext(ctx), &gistCommits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -266,7 +266,7 @@ func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // Star a gist on behalf of authenticated user.
@@ -278,7 +278,7 @@ func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // Unstar a gist on a behalf of authenticated user.
@@ -290,7 +290,7 @@ func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // IsStarred checks if a gist is starred by authenticated user.
@@ -302,7 +302,7 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 	if err != nil {
 		return false, nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req.WithContext(ctx), nil)
 	starred, err := parseBoolResponse(err)
 	return starred, resp, err
 }
@@ -318,7 +318,7 @@ func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, e
 	}
 
 	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	resp, err := s.client.Do(req.WithContext(ctx), g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -337,7 +337,7 @@ func (s *GistsService) ListForks(ctx context.Context, id string) ([]*GistFork, *
 	}
 
 	var gistForks []*GistFork
-	resp, err := s.client.Do(ctx, req, &gistForks)
+	resp, err := s.client.Do(req.WithContext(ctx), &gistForks)
 	if err != nil {
 		return nil, resp, err
 	}

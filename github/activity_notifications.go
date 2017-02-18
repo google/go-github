@@ -63,7 +63,7 @@ func (s *ActivityService) ListNotifications(ctx context.Context, opt *Notificati
 	}
 
 	var notifications []*Notification
-	resp, err := s.client.Do(ctx, req, &notifications)
+	resp, err := s.client.Do(req.WithContext(ctx), &notifications)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,7 +88,7 @@ func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner
 	}
 
 	var notifications []*Notification
-	resp, err := s.client.Do(ctx, req, &notifications)
+	resp, err := s.client.Do(req.WithContext(ctx), &notifications)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -112,7 +112,7 @@ func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead ti
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // MarkRepositoryNotificationsRead marks all notifications up to lastRead in
@@ -129,7 +129,7 @@ func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, o
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // GetThread gets the specified notification thread.
@@ -144,7 +144,7 @@ func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notificati
 	}
 
 	notification := new(Notification)
-	resp, err := s.client.Do(ctx, req, notification)
+	resp, err := s.client.Do(req.WithContext(ctx), notification)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -163,7 +163,7 @@ func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Respo
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // GetThreadSubscription checks to see if the authenticated user is subscribed
@@ -179,7 +179,7 @@ func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) 
 	}
 
 	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	resp, err := s.client.Do(req.WithContext(ctx), sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -200,7 +200,7 @@ func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, 
 	}
 
 	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	resp, err := s.client.Do(req.WithContext(ctx), sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -219,5 +219,5 @@ func (s *ActivityService) DeleteThreadSubscription(ctx context.Context, id strin
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

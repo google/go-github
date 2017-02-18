@@ -31,7 +31,7 @@ func (s *IntegrationsService) ListInstallations(ctx context.Context, opt *ListOp
 	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	var i []*Installation
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req.WithContext(ctx), &i)
 	if err != nil {
 		return nil, resp, err
 	}

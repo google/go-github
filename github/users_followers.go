@@ -32,7 +32,7 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opt *List
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req.WithContext(ctx), &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -62,7 +62,7 @@ func (s *UsersService) ListFollowing(ctx context.Context, user string, opt *List
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req.WithContext(ctx), &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -87,7 +87,7 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req.WithContext(ctx), nil)
 	following, err := parseBoolResponse(err)
 	return following, resp, err
 }
@@ -102,7 +102,7 @@ func (s *UsersService) Follow(ctx context.Context, user string) (*Response, erro
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // Unfollow will cause the authenticated user to unfollow the specified user.
@@ -115,5 +115,5 @@ func (s *UsersService) Unfollow(ctx context.Context, user string) (*Response, er
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

@@ -143,7 +143,7 @@ func (s *IssuesService) listIssues(ctx context.Context, u string, opt *IssueList
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req.WithContext(ctx), &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -210,7 +210,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req.WithContext(ctx), &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -232,7 +232,7 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	issue := new(Issue)
-	resp, err := s.client.Do(ctx, req, issue)
+	resp, err := s.client.Do(req.WithContext(ctx), issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -251,7 +251,7 @@ func (s *IssuesService) Create(ctx context.Context, owner string, repo string, i
 	}
 
 	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	resp, err := s.client.Do(req.WithContext(ctx), i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -270,7 +270,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 	}
 
 	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	resp, err := s.client.Do(req.WithContext(ctx), i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -288,7 +288,7 @@ func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, num
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // Unlock an issue's conversation.
@@ -301,5 +301,5 @@ func (s *IssuesService) Unlock(ctx context.Context, owner string, repo string, n
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }

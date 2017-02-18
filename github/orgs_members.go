@@ -90,7 +90,7 @@ func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opt 
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req.WithContext(ctx), &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,7 +108,7 @@ func (s *OrganizationsService) IsMember(ctx context.Context, org, user string) (
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req.WithContext(ctx), nil)
 	member, err := parseBoolResponse(err)
 	return member, resp, err
 }
@@ -123,7 +123,7 @@ func (s *OrganizationsService) IsPublicMember(ctx context.Context, org, user str
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req.WithContext(ctx), nil)
 	member, err := parseBoolResponse(err)
 	return member, resp, err
 }
@@ -138,7 +138,7 @@ func (s *OrganizationsService) RemoveMember(ctx context.Context, org, user strin
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // PublicizeMembership publicizes a user's membership in an organization. (A
@@ -152,7 +152,7 @@ func (s *OrganizationsService) PublicizeMembership(ctx context.Context, org, use
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ConcealMembership conceals a user's membership in an organization.
@@ -165,7 +165,7 @@ func (s *OrganizationsService) ConcealMembership(ctx context.Context, org, user 
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ListOrgMembershipsOptions specifies optional parameters to the
@@ -194,7 +194,7 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opt *List
 	}
 
 	var memberships []*Membership
-	resp, err := s.client.Do(ctx, req, &memberships)
+	resp, err := s.client.Do(req.WithContext(ctx), &memberships)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -222,7 +222,7 @@ func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org s
 	}
 
 	membership := new(Membership)
-	resp, err := s.client.Do(ctx, req, membership)
+	resp, err := s.client.Do(req.WithContext(ctx), membership)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -252,7 +252,7 @@ func (s *OrganizationsService) EditOrgMembership(ctx context.Context, user, org 
 	}
 
 	m := new(Membership)
-	resp, err := s.client.Do(ctx, req, m)
+	resp, err := s.client.Do(req.WithContext(ctx), m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -271,7 +271,7 @@ func (s *OrganizationsService) RemoveOrgMembership(ctx context.Context, user, or
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req.WithContext(ctx), nil)
 }
 
 // ListPendingOrgInvitations returns a list of pending invitations.
@@ -293,7 +293,7 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
 	var pendingInvitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &pendingInvitations)
+	resp, err := s.client.Do(req.WithContext(ctx), &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}

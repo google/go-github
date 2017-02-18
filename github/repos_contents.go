@@ -99,7 +99,7 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 	readme := new(RepositoryContent)
-	resp, err := s.client.Do(ctx, req, readme)
+	resp, err := s.client.Do(req.WithContext(ctx), readme)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,7 +152,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 		return nil, nil, nil, err
 	}
 	var rawJSON json.RawMessage
-	resp, err = s.client.Do(ctx, req, &rawJSON)
+	resp, err = s.client.Do(req.WithContext(ctx), &rawJSON)
 	if err != nil {
 		return nil, nil, resp, err
 	}
@@ -178,7 +178,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 	createResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, createResponse)
+	resp, err := s.client.Do(req.WithContext(ctx), createResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -196,7 +196,7 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 	updateResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, updateResponse)
+	resp, err := s.client.Do(req.WithContext(ctx), updateResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -214,7 +214,7 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 	deleteResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, deleteResponse)
+	resp, err := s.client.Do(req.WithContext(ctx), deleteResponse)
 	if err != nil {
 		return nil, resp, err
 	}

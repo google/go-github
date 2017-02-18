@@ -110,7 +110,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opt *ListOptions) ([]*
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -134,7 +134,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -158,7 +158,7 @@ func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owne
 	}
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,7 +182,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -206,7 +206,7 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,7 +236,7 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -266,7 +266,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -291,7 +291,7 @@ func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	if err != nil {
 		return nil, resp, err
 	}

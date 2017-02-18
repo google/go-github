@@ -144,6 +144,6 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", mediaTypeTimelinePreview)
 
 	var events []*Timeline
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req.WithContext(ctx), &events)
 	return events, resp, err
 }

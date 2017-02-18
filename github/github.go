@@ -385,7 +385,7 @@ func parseRate(r *http.Response) Rate {
 // interface, the raw response body will be written to v, without attempting to
 // first decode it. If rate limit is exceeded and reset time is in the future,
 // Do returns *RateLimitError immediately without making a network API call.
-func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	rateLimitCategory := category(req.URL.Path)
 
 	// If we've hit rate limit, don't make further requests before Reset time.
@@ -393,7 +393,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		return nil, err
 	}
 
-	resp, err := c.client.Do(req.WithContext(ctx))
+	resp, err := c.client.Do(req)
 	if err != nil {
 		if e, ok := err.(*url.Error); ok {
 			if url, err := url.Parse(e.URL); err == nil {
@@ -723,7 +723,7 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 	response := new(struct {
 		Resources *RateLimits `json:"resources"`
 	})
-	resp, err := c.Do(ctx, req, response)
+	resp, err := c.Do(req.WithContext(ctx), response)
 	if err != nil {
 		return nil, nil, err
 	}
