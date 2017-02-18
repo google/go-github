@@ -35,14 +35,15 @@ func main() {
 	}
 
 	client := github.NewClient(tp.Client())
-	user, _, err := client.Users.Get(context.Background(), "")
+	ctx := context.Background()
+	user, _, err := client.Users.Get(ctx, "")
 
 	// Is this a two-factor auth error? If so, prompt for OTP and try again.
 	if _, ok := err.(*github.TwoFactorAuthError); err != nil && ok {
 		fmt.Print("\nGitHub OTP: ")
 		otp, _ := r.ReadString('\n')
 		tp.OTP = strings.TrimSpace(otp)
-		user, _, err = client.Users.Get(context.Background(), "")
+		user, _, err = client.Users.Get(ctx, "")
 	}
 
 	if err != nil {
