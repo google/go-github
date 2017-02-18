@@ -714,7 +714,7 @@ func category(path string) rateLimitCategory {
 }
 
 // RateLimits returns the rate limits for the current client.
-func (c *Client) RateLimits() (*RateLimits, *Response, error) {
+func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error) {
 	req, err := c.NewRequest("GET", "rate_limit", nil)
 	if err != nil {
 		return nil, nil, err
@@ -723,7 +723,7 @@ func (c *Client) RateLimits() (*RateLimits, *Response, error) {
 	response := new(struct {
 		Resources *RateLimits `json:"resources"`
 	})
-	resp, err := c.Do(req, response)
+	resp, err := c.Do(ctx, req, response)
 	if err != nil {
 		return nil, nil, err
 	}

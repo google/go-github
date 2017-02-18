@@ -109,26 +109,26 @@ type PullRequestLinks struct {
 // repositories.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) List(all bool, opt *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) List(ctx context.Context, all bool, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
 		u = "issues"
 	} else {
 		u = "user/issues"
 	}
-	return s.listIssues(u, opt)
+	return s.listIssues(ctx, u, opt)
 }
 
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) ListByOrg(org string, opt *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListByOrg(ctx context.Context, org string, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
-	return s.listIssues(u, opt)
+	return s.listIssues(ctx, u, opt)
 }
 
-func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) listIssues(ctx context.Context, u string, opt *IssueListOptions) ([]*Issue, *Response, error) {
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -143,7 +143,7 @@ func (s *IssuesService) listIssues(u string, opt *IssueListOptions) ([]*Issue, *
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(req, &issues)
+	resp, err := s.client.Do(ctx, req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,7 +194,7 @@ type IssueListByRepoOptions struct {
 // ListByRepo lists the issues for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues-for-a-repository
-func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRepoOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opt *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -210,7 +210,7 @@ func (s *IssuesService) ListByRepo(owner string, repo string, opt *IssueListByRe
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(req, &issues)
+	resp, err := s.client.Do(ctx, req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -243,7 +243,7 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 // Create a new issue on the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#create-an-issue
-func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Create(ctx context.Context, owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
 	if err != nil {
@@ -251,7 +251,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (
 	}
 
 	i := new(Issue)
-	resp, err := s.client.Do(req, i)
+	resp, err := s.client.Do(ctx, req, i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -262,7 +262,7 @@ func (s *IssuesService) Create(owner string, repo string, issue *IssueRequest) (
 // Edit an issue.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#edit-an-issue
-func (s *IssuesService) Edit(owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)
 	if err != nil {
@@ -270,7 +270,7 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 	}
 
 	i := new(Issue)
-	resp, err := s.client.Do(req, i)
+	resp, err := s.client.Do(ctx, req, i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -281,25 +281,25 @@ func (s *IssuesService) Edit(owner string, repo string, number int, issue *Issue
 // Lock an issue's conversation.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#lock-an-issue
-func (s *IssuesService) Lock(owner string, repo string, number int) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(req, nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Unlock an issue's conversation.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#unlock-an-issue
-func (s *IssuesService) Unlock(owner string, repo string, number int) (*Response, error) {
+func (s *IssuesService) Unlock(ctx context.Context, owner string, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(req, nil)
+	return s.client.Do(ctx, req, nil)
 }
