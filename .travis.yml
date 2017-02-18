@@ -1,18 +1,12 @@
 sudo: false
 language: go
 go:
-  - 1.5.4
-  - 1.6.3
-  - 1.7
-  - tip
+  - 1.7.x
+  - 1.8.x
+  - master
 matrix:
-  include:
-    - go: 1.4.3
-      script:
-        - go get -t -v ./...
-        - go test -v -race ./...
   allow_failures:
-    - go: tip
+    - go: master
   fast_finish: true
 install:
   - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
