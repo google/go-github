@@ -144,7 +144,6 @@ type DeploymentStatus struct {
 // DeploymentStatusRequest represents a deployment request
 type DeploymentStatusRequest struct {
 	State          *string `json:"state,omitempty"`
-	TargetURL      *string `json:"target_url,omitempty"` // Deprecated. Use LogURL instead.
 	LogURL         *string `json:"log_url,omitempty"`
 	Description    *string `json:"description,omitempty"`
 	EnvironmentURL *string `json:"environment_url,omitempty"`

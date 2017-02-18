@@ -24,11 +24,6 @@ import (
 )
 
 const (
-	// StatusUnprocessableEntity is the status code returned when sending a request with invalid fields.
-	StatusUnprocessableEntity = 422
-)
-
-const (
 	libraryVersion = "3"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
@@ -383,19 +378,6 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
-// Rate specifies the current rate limit for the client as determined by the
-// most recent API call. If the client is used in a multi-user application,
-// this rate may not always be up-to-date.
-//
-// Deprecated: Use the Response.Rate returned from most recent API call instead.
-// Call RateLimits() to check the current rate.
-func (c *Client) Rate() Rate {
-	c.rateMu.Lock()
-	rate := c.rateLimits[c.mostRecent]
-	c.rateMu.Unlock()
-	return rate
-}
-
 // Do sends an API request and returns the API response. The API response is
 // JSON decoded and stored in the value pointed to by v, or returned as an
 // error if an API error has occurred. If v implements the io.Writer
@@ -728,20 +710,6 @@ func category(path string) rateLimitCategory {
 	case strings.HasPrefix(path, "/search/"):
 		return searchCategory
 	}
-}
-
-// RateLimit returns the core rate limit for the current client.
-//
-// Deprecated: RateLimit is deprecated, use RateLimits instead.
-func (c *Client) RateLimit() (*Rate, *Response, error) {
-	limits, resp, err := c.RateLimits()
-	if err != nil {
-		return nil, resp, err
-	}
-	if limits == nil {
-		return nil, resp, errors.New("RateLimits returned nil limits and error; unable to extract Core rate limit")
-	}
-	return limits.Core, resp, nil
 }
 
 // RateLimits returns the rate limits for the current client.
