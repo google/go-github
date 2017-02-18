@@ -407,30 +407,20 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Add(headerRateReset, "1372700873")
 	})
 
-	if got, want := client.Rate().Limit, 0; got != want {
-		t.Errorf("Client rate limit = %v, want %v", got, want)
-	}
-	if got, want := client.Rate().Remaining, 0; got != want {
-		t.Errorf("Client rate remaining = %v, got %v", got, want)
-	}
-	if !client.Rate().Reset.IsZero() {
-		t.Errorf("Client rate reset not initialized to zero value")
-	}
-
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
-	if got, want := client.Rate().Limit, 60; got != want {
+	if got, want := resp.Rate.Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate().Remaining, 59; got != want {
+	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
-	if client.Rate().Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", client.Rate().Reset, reset)
+	if resp.Rate.Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
 	}
 }
 
@@ -447,23 +437,22 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
-
+	resp, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	if _, ok := err.(*RateLimitError); ok {
 		t.Errorf("Did not expect a *RateLimitError error; got %#v.", err)
 	}
-	if got, want := client.Rate().Limit, 60; got != want {
+	if got, want := resp.Rate.Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
 	}
-	if got, want := client.Rate().Remaining, 59; got != want {
+	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
 	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
-	if client.Rate().Reset.UTC() != reset {
-		t.Errorf("Client rate reset = %v, want %v", client.Rate().Reset, reset)
+	if resp.Rate.Reset.UTC() != reset {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
 	}
 }
 
@@ -761,35 +750,6 @@ func TestError_Error(t *testing.T) {
 	err := Error{}
 	if err.Error() == "" {
 		t.Errorf("Expected non-empty Error.Error()")
-	}
-}
-
-func TestRateLimit(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
-		fmt.Fprint(w, `{"resources":{
-			"core": {"limit":2,"remaining":1,"reset":1372700873},
-			"search": {"limit":3,"remaining":2,"reset":1372700874}
-		}}`)
-	})
-
-	rate, _, err := client.RateLimit()
-	if err != nil {
-		t.Errorf("Rate limit returned error: %v", err)
-	}
-
-	want := &Rate{
-		Limit:     2,
-		Remaining: 1,
-		Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local()},
-	}
-	if !reflect.DeepEqual(rate, want) {
-		t.Errorf("RateLimit returned %+v, want %+v", rate, want)
 	}
 }
 
