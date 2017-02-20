@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -40,7 +41,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 `)
 	})
 
-	stats, _, err := client.Repositories.ListContributorsStats("o", "r")
+	stats, _, err := client.Repositories.ListContributorsStats(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListContributorsStats returned error: %v", err)
 	}
@@ -85,7 +86,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 `)
 	})
 
-	activity, _, err := client.Repositories.ListCommitActivity("o", "r")
+	activity, _, err := client.Repositories.ListCommitActivity(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCommitActivity returned error: %v", err)
 	}
@@ -113,7 +114,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 		fmt.Fprint(w, `[[1302998400, 1124, -435]]`)
 	})
 
-	code, _, err := client.Repositories.ListCodeFrequency("o", "r")
+	code, _, err := client.Repositories.ListCodeFrequency(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCodeFrequency returned error: %v", err)
 	}
@@ -154,7 +155,7 @@ func TestRepositoriesService_Participation(t *testing.T) {
 `)
 	})
 
-	participation, _, err := client.Repositories.ListParticipation("o", "r")
+	participation, _, err := client.Repositories.ListParticipation(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListParticipation returned error: %v", err)
 	}
@@ -193,7 +194,7 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 		]`)
 	})
 
-	card, _, err := client.Repositories.ListPunchCard("o", "r")
+	card, _, err := client.Repositories.ListPunchCard(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListPunchCard returned error: %v", err)
 	}

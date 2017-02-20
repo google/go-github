@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -27,7 +28,7 @@ func TestIntegrationService_ListInstallations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	installations, _, err := client.Integrations.ListInstallations(opt)
+	installations, _, err := client.Integrations.ListInstallations(context.Background(), opt)
 	if err != nil {
 		t.Errorf("Integration.ListInstallations returned error: %v", err)
 	}

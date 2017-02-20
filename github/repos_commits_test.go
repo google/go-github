@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -38,7 +39,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		Since:  time.Date(2013, time.August, 1, 0, 0, 0, 0, time.UTC),
 		Until:  time.Date(2013, time.September, 3, 0, 0, 0, 0, time.UTC),
 	}
-	commits, _, err := client.Repositories.ListCommits("o", "r", opt)
+	commits, _, err := client.Repositories.ListCommits(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCommits returned error: %v", err)
 	}
@@ -79,7 +80,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 		}`)
 	})
 
-	commit, _, err := client.Repositories.GetCommit("o", "r", "s")
+	commit, _, err := client.Repositories.GetCommit(context.Background(), "o", "r", "s")
 	if err != nil {
 		t.Errorf("Repositories.GetCommit returned error: %v", err)
 	}
@@ -136,7 +137,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		fmt.Fprintf(w, sha1)
 	})
 
-	got, _, err := client.Repositories.GetCommitSHA1("o", "r", "master", "")
+	got, _, err := client.Repositories.GetCommitSHA1(context.Background(), "o", "r", "master", "")
 	if err != nil {
 		t.Errorf("Repositories.GetCommitSHA1 returned error: %v", err)
 	}
@@ -154,7 +155,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		w.WriteHeader(http.StatusNotModified)
 	})
 
-	got, _, err = client.Repositories.GetCommitSHA1("o", "r", "tag", sha1)
+	got, _, err = client.Repositories.GetCommitSHA1(context.Background(), "o", "r", "tag", sha1)
 	if err == nil {
 		t.Errorf("Expected HTTP 304 response")
 	}
@@ -201,7 +202,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		}`)
 	})
 
-	got, _, err := client.Repositories.CompareCommits("o", "r", "b", "h")
+	got, _, err := client.Repositories.CompareCommits(context.Background(), "o", "r", "b", "h")
 	if err != nil {
 		t.Errorf("Repositories.CompareCommits returned error: %v", err)
 	}

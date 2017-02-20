@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +27,7 @@ func TestActivityService_ListWatchers(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watchers, _, err := client.Activity.ListWatchers("o", "r", &ListOptions{Page: 2})
+	watchers, _, err := client.Activity.ListWatchers(context.Background(), "o", "r", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatchers returned error: %v", err)
 	}
@@ -49,7 +50,7 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("", &ListOptions{Page: 2})
+	watched, _, err := client.Activity.ListWatched(context.Background(), "", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
@@ -72,7 +73,7 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	watched, _, err := client.Activity.ListWatched("u", &ListOptions{Page: 2})
+	watched, _, err := client.Activity.ListWatched(context.Background(), "u", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
@@ -92,7 +93,7 @@ func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 		fmt.Fprint(w, `{"subscribed":true}`)
 	})
 
-	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	sub, _, err := client.Activity.GetRepositorySubscription(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
@@ -112,7 +113,7 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	sub, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	sub, _, err := client.Activity.GetRepositorySubscription(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
@@ -132,7 +133,7 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 		w.WriteHeader(http.StatusBadRequest)
 	})
 
-	_, _, err := client.Activity.GetRepositorySubscription("o", "r")
+	_, _, err := client.Activity.GetRepositorySubscription(context.Background(), "o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -156,7 +157,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
-	sub, _, err := client.Activity.SetRepositorySubscription("o", "r", input)
+	sub, _, err := client.Activity.SetRepositorySubscription(context.Background(), "o", "r", input)
 	if err != nil {
 		t.Errorf("Activity.SetRepositorySubscription returned error: %v", err)
 	}
@@ -176,7 +177,7 @@ func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Activity.DeleteRepositorySubscription("o", "r")
+	_, err := client.Activity.DeleteRepositorySubscription(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Activity.DeleteRepositorySubscription returned error: %v", err)
 	}

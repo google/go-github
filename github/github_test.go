@@ -7,6 +7,7 @@ package github
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -329,7 +330,7 @@ func TestDo(t *testing.T) {
 
 	req, _ := client.NewRequest("GET", "/", nil)
 	body := new(foo)
-	client.Do(req, body)
+	client.Do(context.Background(), req, body)
 
 	want := &foo{"a"}
 	if !reflect.DeepEqual(body, want) {
@@ -346,7 +347,7 @@ func TestDo_httpError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if err == nil {
 		t.Error("Expected HTTP 400 error.")
@@ -365,7 +366,7 @@ func TestDo_redirectLoop(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -388,7 +389,7 @@ func TestDo_sanitizeURL(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
-	_, err = unauthedClient.Do(req, nil)
+	_, err = unauthedClient.Do(context.Background(), req, nil)
 	if err == nil {
 		t.Fatal("Expected error to be returned.")
 	}
@@ -408,7 +409,7 @@ func TestDo_rateLimit(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	resp, err := client.Do(req, nil)
+	resp, err := client.Do(context.Background(), req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -437,7 +438,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	resp, err := client.Do(req, nil)
+	resp, err := client.Do(context.Background(), req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
@@ -474,7 +475,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -521,11 +522,11 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 
 	// First request is made, and it makes the client aware of rate reset time being in the future.
 	req, _ := client.NewRequest("GET", "/first", nil)
-	client.Do(req, nil)
+	client.Do(context.Background(), req, nil)
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
 	req, _ = client.NewRequest("GET", "/second", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -567,7 +568,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -597,7 +598,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, nil)
+	_, err := client.Do(context.Background(), req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -625,7 +626,7 @@ func TestDo_noContent(t *testing.T) {
 	var body json.RawMessage
 
 	req, _ := client.NewRequest("GET", "/", nil)
-	_, err := client.Do(req, &body)
+	_, err := client.Do(context.Background(), req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
 	}
@@ -767,7 +768,7 @@ func TestRateLimits(t *testing.T) {
 		}}`)
 	})
 
-	rate, _, err := client.RateLimits()
+	rate, _, err := client.RateLimits(context.Background())
 	if err != nil {
 		t.Errorf("RateLimits returned error: %v", err)
 	}
@@ -818,7 +819,7 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	unauthedClient := NewClient(tp.Client())
 	unauthedClient.BaseURL = client.BaseURL
 	req, _ := unauthedClient.NewRequest("GET", "/", nil)
-	unauthedClient.Do(req, nil)
+	unauthedClient.Do(context.Background(), req, nil)
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
@@ -892,7 +893,7 @@ func TestBasicAuthTransport(t *testing.T) {
 	basicAuthClient := NewClient(tp.Client())
 	basicAuthClient.BaseURL = client.BaseURL
 	req, _ := basicAuthClient.NewRequest("GET", "/", nil)
-	basicAuthClient.Do(req, nil)
+	basicAuthClient.Do(context.Background(), req, nil)
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {

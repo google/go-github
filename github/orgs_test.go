@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +26,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	})
 
 	opt := &OrganizationsListOptions{Since: since}
-	orgs, _, err := client.Organizations.ListAll(opt)
+	orgs, _, err := client.Organizations.ListAll(context.Background(), opt)
 	if err != nil {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
 	}
@@ -45,7 +46,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	orgs, _, err := client.Organizations.List("", nil)
+	orgs, _, err := client.Organizations.List(context.Background(), "", nil)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -67,7 +68,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	orgs, _, err := client.Organizations.List("u", opt)
+	orgs, _, err := client.Organizations.List(context.Background(), "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -79,7 +80,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
-	_, _, err := client.Organizations.List("%", nil)
+	_, _, err := client.Organizations.List(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -92,7 +93,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	org, _, err := client.Organizations.Get("o")
+	org, _, err := client.Organizations.Get(context.Background(), "o")
 	if err != nil {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
@@ -104,7 +105,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.Get("%")
+	_, _, err := client.Organizations.Get(context.Background(), "%")
 	testURLParseError(t, err)
 }
 
@@ -126,7 +127,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	org, _, err := client.Organizations.Edit("o", input)
+	org, _, err := client.Organizations.Edit(context.Background(), "o", input)
 	if err != nil {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
@@ -138,6 +139,6 @@ func TestOrganizationsService_Edit(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.Edit("%", nil)
+	_, _, err := client.Organizations.Edit(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }

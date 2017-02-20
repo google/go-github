@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -24,7 +25,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	got, _, err := client.Repositories.ListInvitations(1, opt)
+	got, _, err := client.Repositories.ListInvitations(context.Background(), 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListInvitations returned error: %v", err)
 	}
@@ -45,7 +46,7 @@ func TestRepositoriesService_DeleteInvitation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.DeleteInvitation(1, 2)
+	_, err := client.Repositories.DeleteInvitation(context.Background(), 1, 2)
 	if err != nil {
 		t.Errorf("Repositories.DeleteInvitation returned error: %v", err)
 	}
@@ -61,7 +62,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 
-	got, _, err := client.Repositories.UpdateInvitation(1, 2, "write")
+	got, _, err := client.Repositories.UpdateInvitation(context.Background(), 1, 2, "write")
 	if err != nil {
 		t.Errorf("Repositories.UpdateInvitation returned error: %v", err)
 	}

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +26,7 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 
-	hooks, _, err := client.Organizations.ListHooks("o", opt)
+	hooks, _, err := client.Organizations.ListHooks(context.Background(), "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListHooks returned error: %v", err)
 	}
@@ -37,7 +38,7 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 }
 
 func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListHooks("%", nil)
+	_, _, err := client.Organizations.ListHooks(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -50,7 +51,7 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Organizations.GetHook("o", 1)
+	hook, _, err := client.Organizations.GetHook(context.Background(), "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetHook returned error: %v", err)
 	}
@@ -62,7 +63,7 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 }
 
 func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.GetHook("%", 1)
+	_, _, err := client.Organizations.GetHook(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -84,7 +85,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Organizations.EditHook("o", 1, input)
+	hook, _, err := client.Organizations.EditHook(context.Background(), "o", 1, input)
 	if err != nil {
 		t.Errorf("Organizations.EditHook returned error: %v", err)
 	}
@@ -96,7 +97,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 }
 
 func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.EditHook("%", 1, nil)
+	_, _, err := client.Organizations.EditHook(context.Background(), "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -108,7 +109,7 @@ func TestOrganizationsService_PingHook(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	_, err := client.Organizations.PingHook("o", 1)
+	_, err := client.Organizations.PingHook(context.Background(), "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.PingHook returned error: %v", err)
 	}
@@ -122,13 +123,13 @@ func TestOrganizationsService_DeleteHook(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Organizations.DeleteHook("o", 1)
+	_, err := client.Organizations.DeleteHook(context.Background(), "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.DeleteHook returned error: %v", err)
 	}
 }
 
 func TestOrganizationsService_DeleteHook_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.DeleteHook("%", 1)
+	_, err := client.Organizations.DeleteHook(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }

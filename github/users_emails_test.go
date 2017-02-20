@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -28,7 +29,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	emails, _, err := client.Users.ListEmails(opt)
+	emails, _, err := client.Users.ListEmails(context.Background(), opt)
 	if err != nil {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
@@ -57,7 +58,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
 	})
 
-	emails, _, err := client.Users.AddEmails(input)
+	emails, _, err := client.Users.AddEmails(context.Background(), input)
 	if err != nil {
 		t.Errorf("Users.AddEmails returned error: %v", err)
 	}
@@ -87,7 +88,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 		}
 	})
 
-	_, err := client.Users.DeleteEmails(input)
+	_, err := client.Users.DeleteEmails(context.Background(), input)
 	if err != nil {
 		t.Errorf("Users.DeleteEmails returned error: %v", err)
 	}
