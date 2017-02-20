@@ -5,7 +5,10 @@
 
 package github
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 // GitignoresService provides access to the gitignore related functions in the
 // GitHub API.
@@ -26,14 +29,14 @@ func (g Gitignore) String() string {
 // List all available Gitignore templates.
 //
 // https://developer.github.com/v3/gitignore/#listing-available-templates
-func (s GitignoresService) List() ([]string, *Response, error) {
+func (s GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "gitignore/templates", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var availableTemplates []string
-	resp, err := s.client.Do(req, &availableTemplates)
+	resp, err := s.client.Do(ctx, req, &availableTemplates)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -44,7 +47,7 @@ func (s GitignoresService) List() ([]string, *Response, error) {
 // Get a Gitignore by name.
 //
 // https://developer.github.com/v3/gitignore/#get-a-single-template
-func (s GitignoresService) Get(name string) (*Gitignore, *Response, error) {
+func (s GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
 	u := fmt.Sprintf("gitignore/templates/%v", name)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -52,7 +55,7 @@ func (s GitignoresService) Get(name string) (*Gitignore, *Response, error) {
 	}
 
 	gitignore := new(Gitignore)
-	resp, err := s.client.Do(req, gitignore)
+	resp, err := s.client.Do(ctx, req, gitignore)
 	if err != nil {
 		return nil, resp, err
 	}
