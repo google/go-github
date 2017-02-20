@@ -51,7 +51,7 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 	}
 
 	t := new(Tree)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -83,7 +83,7 @@ func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, 
 	}
 
 	t := new(Tree)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}

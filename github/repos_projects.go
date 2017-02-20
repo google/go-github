@@ -29,7 +29,7 @@ func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	projects := []*Project{}
-	resp, err := s.client.Do(req.WithContext(ctx), &projects)
+	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -51,7 +51,7 @@ func (s *RepositoriesService) CreateProject(ctx context.Context, owner, repo str
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	project := &Project{}
-	resp, err := s.client.Do(req.WithContext(ctx), project)
+	resp, err := s.client.Do(ctx, req, project)
 	if err != nil {
 		return nil, resp, err
 	}

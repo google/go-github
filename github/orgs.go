@@ -98,7 +98,7 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opt *OrganizationsLi
 	}
 
 	orgs := []*Organization{}
-	resp, err := s.client.Do(req.WithContext(ctx), &orgs)
+	resp, err := s.client.Do(ctx, req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -127,7 +127,7 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opt *ListO
 	}
 
 	var orgs []*Organization
-	resp, err := s.client.Do(req.WithContext(ctx), &orgs)
+	resp, err := s.client.Do(ctx, req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -146,7 +146,7 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 	}
 
 	organization := new(Organization)
-	resp, err := s.client.Do(req.WithContext(ctx), organization)
+	resp, err := s.client.Do(ctx, req, organization)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -165,7 +165,7 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	}
 
 	o := new(Organization)
-	resp, err := s.client.Do(req.WithContext(ctx), o)
+	resp, err := s.client.Do(ctx, req, o)
 	if err != nil {
 		return nil, resp, err
 	}

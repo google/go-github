@@ -37,7 +37,7 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo strin
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(req.WithContext(ctx), &labels)
+	resp, err := s.client.Do(ctx, req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -56,7 +56,7 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner string, repo string,
 	}
 
 	label := new(Label)
-	resp, err := s.client.Do(req.WithContext(ctx), label)
+	resp, err := s.client.Do(ctx, req, label)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,7 +75,7 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner string, repo stri
 	}
 
 	l := new(Label)
-	resp, err := s.client.Do(req.WithContext(ctx), l)
+	resp, err := s.client.Do(ctx, req, l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,7 +94,7 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner string, repo string
 	}
 
 	l := new(Label)
-	resp, err := s.client.Do(req.WithContext(ctx), l)
+	resp, err := s.client.Do(ctx, req, l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,7 +111,7 @@ func (s *IssuesService) DeleteLabel(ctx context.Context, owner string, repo stri
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListLabelsByIssue lists all labels for an issue.
@@ -130,7 +130,7 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, rep
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(req.WithContext(ctx), &labels)
+	resp, err := s.client.Do(ctx, req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -149,7 +149,7 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo
 	}
 
 	var l []*Label
-	resp, err := s.client.Do(req.WithContext(ctx), &l)
+	resp, err := s.client.Do(ctx, req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -166,7 +166,7 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner string, r
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ReplaceLabelsForIssue replaces all labels for an issue.
@@ -180,7 +180,7 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner string,
 	}
 
 	var l []*Label
-	resp, err := s.client.Do(req.WithContext(ctx), &l)
+	resp, err := s.client.Do(ctx, req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -197,7 +197,7 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner string, 
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListLabelsForMilestone lists labels for every issue in a milestone.
@@ -216,7 +216,7 @@ func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(req.WithContext(ctx), &labels)
+	resp, err := s.client.Do(ctx, req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}

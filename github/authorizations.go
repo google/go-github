@@ -150,7 +150,7 @@ func (s *AuthorizationsService) List(ctx context.Context, opt *ListOptions) ([]*
 	}
 
 	var auths []*Authorization
-	resp, err := s.client.Do(req.WithContext(ctx), &auths)
+	resp, err := s.client.Do(ctx, req, &auths)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -169,7 +169,7 @@ func (s *AuthorizationsService) Get(ctx context.Context, id int) (*Authorization
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,7 +188,7 @@ func (s *AuthorizationsService) Create(ctx context.Context, auth *AuthorizationR
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -223,7 +223,7 @@ func (s *AuthorizationsService) GetOrCreateForApp(ctx context.Context, clientID 
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -243,7 +243,7 @@ func (s *AuthorizationsService) Edit(ctx context.Context, id int, auth *Authoriz
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -262,7 +262,7 @@ func (s *AuthorizationsService) Delete(ctx context.Context, id int) (*Response, 
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Check if an OAuth token is valid for a specific app.
@@ -283,7 +283,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID string, toke
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -311,7 +311,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, toke
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -334,7 +334,7 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, tok
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListGrants lists the set of OAuth applications that have been granted
@@ -350,7 +350,7 @@ func (s *AuthorizationsService) ListGrants(ctx context.Context) ([]*Grant, *Resp
 	}
 
 	grants := []*Grant{}
-	resp, err := s.client.Do(req.WithContext(ctx), &grants)
+	resp, err := s.client.Do(ctx, req, &grants)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -369,7 +369,7 @@ func (s *AuthorizationsService) GetGrant(ctx context.Context, id int) (*Grant, *
 	}
 
 	grant := new(Grant)
-	resp, err := s.client.Do(req.WithContext(ctx), grant)
+	resp, err := s.client.Do(ctx, req, grant)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -389,7 +389,7 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, id int) (*Respo
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // CreateImpersonation creates an impersonation OAuth token.
@@ -407,7 +407,7 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 	}
 
 	a := new(Authorization)
-	resp, err := s.client.Do(req.WithContext(ctx), a)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -426,5 +426,5 @@ func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, usernam
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

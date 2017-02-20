@@ -54,7 +54,7 @@ func (s *RepositoriesService) ListContributorsStats(ctx context.Context, owner, 
 	}
 
 	var contributorStats []*ContributorStats
-	resp, err := s.client.Do(req.WithContext(ctx), &contributorStats)
+	resp, err := s.client.Do(ctx, req, &contributorStats)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -93,7 +93,7 @@ func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, rep
 	}
 
 	var weeklyCommitActivity []*WeeklyCommitActivity
-	resp, err := s.client.Do(req.WithContext(ctx), &weeklyCommitActivity)
+	resp, err := s.client.Do(ctx, req, &weeklyCommitActivity)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -120,7 +120,7 @@ func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo
 	}
 
 	var weeks [][]int
-	resp, err := s.client.Do(req.WithContext(ctx), &weeks)
+	resp, err := s.client.Do(ctx, req, &weeks)
 
 	// convert int slices into WeeklyStats
 	var stats []*WeeklyStats
@@ -173,7 +173,7 @@ func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo
 	}
 
 	participation := new(RepositoryParticipation)
-	resp, err := s.client.Do(req.WithContext(ctx), participation)
+	resp, err := s.client.Do(ctx, req, participation)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -206,7 +206,7 @@ func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo str
 	}
 
 	var results [][]int
-	resp, err := s.client.Do(req.WithContext(ctx), &results)
+	resp, err := s.client.Do(ctx, req, &results)
 
 	// convert int slices into Punchcards
 	var cards []*PunchCard

@@ -29,7 +29,7 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 	}
 
 	commit := new(RepositoryCommit)
-	resp, err := s.client.Do(req.WithContext(ctx), commit)
+	resp, err := s.client.Do(ctx, req, commit)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -36,7 +36,7 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,7 +73,7 @@ func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string
 	}
 
 	fork := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), fork)
+	resp, err := s.client.Do(ctx, req, fork)
 	if err != nil {
 		return nil, resp, err
 	}

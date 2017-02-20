@@ -30,7 +30,7 @@ func (s *GitService) GetBlob(ctx context.Context, owner string, repo string, sha
 	}
 
 	blob := new(Blob)
-	resp, err := s.client.Do(req.WithContext(ctx), blob)
+	resp, err := s.client.Do(ctx, req, blob)
 	return blob, resp, err
 }
 
@@ -45,6 +45,6 @@ func (s *GitService) CreateBlob(ctx context.Context, owner string, repo string, 
 	}
 
 	t := new(Blob)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	return t, resp, err
 }

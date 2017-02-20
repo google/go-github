@@ -64,7 +64,7 @@ func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, r
 	}
 
 	var trafficReferrers []*TrafficReferrer
-	resp, err := s.client.Do(req.WithContext(ctx), &trafficReferrers)
+	resp, err := s.client.Do(ctx, req, &trafficReferrers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,7 +84,7 @@ func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo 
 	}
 
 	var paths []*TrafficPath
-	resp, err := s.client.Do(req.WithContext(ctx), &paths)
+	resp, err := s.client.Do(ctx, req, &paths)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,7 +108,7 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 	}
 
 	trafficViews := new(TrafficViews)
-	resp, err := s.client.Do(req.WithContext(ctx), &trafficViews)
+	resp, err := s.client.Do(ctx, req, &trafficViews)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -132,7 +132,7 @@ func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo
 	}
 
 	trafficClones := new(TrafficClones)
-	resp, err := s.client.Do(req.WithContext(ctx), &trafficClones)
+	resp, err := s.client.Do(ctx, req, &trafficClones)
 	if err != nil {
 		return nil, resp, err
 	}

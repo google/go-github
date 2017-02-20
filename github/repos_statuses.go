@@ -56,7 +56,7 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 	}
 
 	var statuses []*RepoStatus
-	resp, err := s.client.Do(req.WithContext(ctx), &statuses)
+	resp, err := s.client.Do(ctx, req, &statuses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -76,7 +76,7 @@ func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref
 	}
 
 	repoStatus := new(RepoStatus)
-	resp, err := s.client.Do(req.WithContext(ctx), repoStatus)
+	resp, err := s.client.Do(ctx, req, repoStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -120,7 +120,7 @@ func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo
 	}
 
 	status := new(CombinedStatus)
-	resp, err := s.client.Do(req.WithContext(ctx), status)
+	resp, err := s.client.Do(ctx, req, status)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -87,7 +87,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 	}
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(req.WithContext(ctx), &events)
+	resp, err := s.client.Do(ctx, req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,7 +111,7 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 	}
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(req.WithContext(ctx), &events)
+	resp, err := s.client.Do(ctx, req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,7 +131,7 @@ func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int
 	}
 
 	event := new(IssueEvent)
-	resp, err := s.client.Do(req.WithContext(ctx), event)
+	resp, err := s.client.Do(ctx, req, event)
 	if err != nil {
 		return nil, resp, err
 	}

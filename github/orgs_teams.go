@@ -76,7 +76,7 @@ func (s *OrganizationsService) ListTeams(ctx context.Context, org string, opt *L
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(req.WithContext(ctx), &teams)
+	resp, err := s.client.Do(ctx, req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,7 +95,7 @@ func (s *OrganizationsService) GetTeam(ctx context.Context, team int) (*Team, *R
 	}
 
 	t := new(Team)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,7 +114,7 @@ func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team 
 	}
 
 	t := new(Team)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -133,7 +133,7 @@ func (s *OrganizationsService) EditTeam(ctx context.Context, id int, team *Team)
 	}
 
 	t := new(Team)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -151,7 +151,7 @@ func (s *OrganizationsService) DeleteTeam(ctx context.Context, team int) (*Respo
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // OrganizationListTeamMembersOptions specifies the optional parameters to the
@@ -181,7 +181,7 @@ func (s *OrganizationsService) ListTeamMembers(ctx context.Context, team int, op
 	}
 
 	var members []*User
-	resp, err := s.client.Do(req.WithContext(ctx), &members)
+	resp, err := s.client.Do(ctx, req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -199,7 +199,7 @@ func (s *OrganizationsService) IsTeamMember(ctx context.Context, team int, user 
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(req.WithContext(ctx), nil)
+	resp, err := s.client.Do(ctx, req, nil)
 	member, err := parseBoolResponse(err)
 	return member, resp, err
 }
@@ -220,7 +220,7 @@ func (s *OrganizationsService) ListTeamRepos(ctx context.Context, team int, opt 
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -243,7 +243,7 @@ func (s *OrganizationsService) IsTeamRepo(ctx context.Context, team int, owner s
 	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	repository := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), repository)
+	resp, err := s.client.Do(ctx, req, repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -276,7 +276,7 @@ func (s *OrganizationsService) AddTeamRepo(ctx context.Context, team int, owner 
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // RemoveTeamRepo removes a repository from being managed by the specified
@@ -291,7 +291,7 @@ func (s *OrganizationsService) RemoveTeamRepo(ctx context.Context, team int, own
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListUserTeams lists a user's teams
@@ -309,7 +309,7 @@ func (s *OrganizationsService) ListUserTeams(ctx context.Context, opt *ListOptio
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(req.WithContext(ctx), &teams)
+	resp, err := s.client.Do(ctx, req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -328,7 +328,7 @@ func (s *OrganizationsService) GetTeamMembership(ctx context.Context, team int, 
 	}
 
 	t := new(Membership)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -376,7 +376,7 @@ func (s *OrganizationsService) AddTeamMembership(ctx context.Context, team int, 
 	}
 
 	t := new(Membership)
-	resp, err := s.client.Do(req.WithContext(ctx), t)
+	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -394,7 +394,7 @@ func (s *OrganizationsService) RemoveTeamMembership(ctx context.Context, team in
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListPendingTeamInvitations get pending invitaion list in team.
@@ -418,7 +418,7 @@ func (s *OrganizationsService) ListPendingTeamInvitations(ctx context.Context, t
 	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
 
 	var pendingInvitations []*Invitation
-	resp, err := s.client.Do(req.WithContext(ctx), &pendingInvitations)
+	resp, err := s.client.Do(ctx, req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}

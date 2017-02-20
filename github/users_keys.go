@@ -45,7 +45,7 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opt *ListOptio
 	}
 
 	var keys []*Key
-	resp, err := s.client.Do(req.WithContext(ctx), &keys)
+	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -65,7 +65,7 @@ func (s *UsersService) GetKey(ctx context.Context, id int) (*Key, *Response, err
 	}
 
 	key := new(Key)
-	resp, err := s.client.Do(req.WithContext(ctx), key)
+	resp, err := s.client.Do(ctx, req, key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -85,7 +85,7 @@ func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response
 	}
 
 	k := new(Key)
-	resp, err := s.client.Do(req.WithContext(ctx), k)
+	resp, err := s.client.Do(ctx, req, k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -104,5 +104,5 @@ func (s *UsersService) DeleteKey(ctx context.Context, id int) (*Response, error)
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

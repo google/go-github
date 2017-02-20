@@ -30,7 +30,7 @@ func (s *UsersService) ListEmails(ctx context.Context, opt *ListOptions) ([]*Use
 	}
 
 	var emails []*UserEmail
-	resp, err := s.client.Do(req.WithContext(ctx), &emails)
+	resp, err := s.client.Do(ctx, req, &emails)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -49,7 +49,7 @@ func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserE
 	}
 
 	var e []*UserEmail
-	resp, err := s.client.Do(req.WithContext(ctx), &e)
+	resp, err := s.client.Do(ctx, req, &e)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -67,5 +67,5 @@ func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Resp
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

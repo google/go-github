@@ -44,7 +44,7 @@ func (s *RepositoriesService) ListInvitations(ctx context.Context, repoID int, o
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
 	invites := []*RepositoryInvitation{}
-	resp, err := s.client.Do(req.WithContext(ctx), &invites)
+	resp, err := s.client.Do(ctx, req, &invites)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -65,7 +65,7 @@ func (s *RepositoriesService) DeleteInvitation(ctx context.Context, repoID, invi
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // UpdateInvitation updates the permissions associated with a repository
@@ -89,6 +89,6 @@ func (s *RepositoriesService) UpdateInvitation(ctx context.Context, repoID, invi
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
 	invite := &RepositoryInvitation{}
-	resp, err := s.client.Do(req.WithContext(ctx), invite)
+	resp, err := s.client.Do(ctx, req, invite)
 	return invite, resp, err
 }

@@ -62,7 +62,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(req.WithContext(ctx), &m)
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,7 +88,7 @@ func (s ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -115,7 +115,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(req.WithContext(ctx), &m)
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -141,7 +141,7 @@ func (s ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo s
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -168,7 +168,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(req.WithContext(ctx), &m)
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,7 +194,7 @@ func (s ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -221,7 +221,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(req.WithContext(ctx), &m)
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -247,7 +247,7 @@ func (s ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -269,5 +269,5 @@ func (s *ReactionsService) DeleteReaction(ctx context.Context, id int) (*Respons
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

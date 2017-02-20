@@ -21,7 +21,7 @@ func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Resp
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
@@ -35,7 +35,7 @@ func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Respo
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Suspend a user on a GitHub Enterprise instance.
@@ -49,7 +49,7 @@ func (s *UsersService) Suspend(ctx context.Context, user string) (*Response, err
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Unsuspend a user on a GitHub Enterprise instance.
@@ -63,5 +63,5 @@ func (s *UsersService) Unsuspend(ctx context.Context, user string) (*Response, e
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

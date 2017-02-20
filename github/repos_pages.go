@@ -50,7 +50,7 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypePagesPreview)
 
 	site := new(Pages)
-	resp, err := s.client.Do(req.WithContext(ctx), site)
+	resp, err := s.client.Do(ctx, req, site)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -69,7 +69,7 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 	}
 
 	var pages []*PagesBuild
-	resp, err := s.client.Do(req.WithContext(ctx), &pages)
+	resp, err := s.client.Do(ctx, req, &pages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,7 +88,7 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 	}
 
 	build := new(PagesBuild)
-	resp, err := s.client.Do(req.WithContext(ctx), build)
+	resp, err := s.client.Do(ctx, req, build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,7 +107,7 @@ func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo stri
 	}
 
 	build := new(PagesBuild)
-	resp, err := s.client.Do(req.WithContext(ctx), build)
+	resp, err := s.client.Do(ctx, req, build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -129,7 +129,7 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", mediaTypePagesPreview)
 
 	build := new(PagesBuild)
-	resp, err := s.client.Do(req.WithContext(ctx), build)
+	resp, err := s.client.Do(ctx, req, build)
 	if err != nil {
 		return nil, resp, err
 	}

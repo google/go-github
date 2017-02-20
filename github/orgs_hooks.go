@@ -26,7 +26,7 @@ func (s *OrganizationsService) ListHooks(ctx context.Context, org string, opt *L
 	}
 
 	var hooks []*Hook
-	resp, err := s.client.Do(req.WithContext(ctx), &hooks)
+	resp, err := s.client.Do(ctx, req, &hooks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -44,7 +44,7 @@ func (s *OrganizationsService) GetHook(ctx context.Context, org string, id int) 
 		return nil, nil, err
 	}
 	hook := new(Hook)
-	resp, err := s.client.Do(req.WithContext(ctx), hook)
+	resp, err := s.client.Do(ctx, req, hook)
 	return hook, resp, err
 }
 
@@ -60,7 +60,7 @@ func (s *OrganizationsService) CreateHook(ctx context.Context, org string, hook 
 	}
 
 	h := new(Hook)
-	resp, err := s.client.Do(req.WithContext(ctx), h)
+	resp, err := s.client.Do(ctx, req, h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -78,7 +78,7 @@ func (s *OrganizationsService) EditHook(ctx context.Context, org string, id int,
 		return nil, nil, err
 	}
 	h := new(Hook)
-	resp, err := s.client.Do(req.WithContext(ctx), h)
+	resp, err := s.client.Do(ctx, req, h)
 	return h, resp, err
 }
 
@@ -91,7 +91,7 @@ func (s *OrganizationsService) PingHook(ctx context.Context, org string, id int)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // DeleteHook deletes a specified Hook.
@@ -103,5 +103,5 @@ func (s *OrganizationsService) DeleteHook(ctx context.Context, org string, id in
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

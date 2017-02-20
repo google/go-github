@@ -41,7 +41,7 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeStarringPreview)
 
 	var stargazers []*Stargazer
-	resp, err := s.client.Do(req.WithContext(ctx), &stargazers)
+	resp, err := s.client.Do(ctx, req, &stargazers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,7 +88,7 @@ func (s *ActivityService) ListStarred(ctx context.Context, user string, opt *Act
 	req.Header.Set("Accept", mediaTypeStarringPreview)
 
 	var repos []*StarredRepository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -105,7 +105,7 @@ func (s *ActivityService) IsStarred(ctx context.Context, owner, repo string) (bo
 	if err != nil {
 		return false, nil, err
 	}
-	resp, err := s.client.Do(req.WithContext(ctx), nil)
+	resp, err := s.client.Do(ctx, req, nil)
 	starred, err := parseBoolResponse(err)
 	return starred, resp, err
 }
@@ -119,7 +119,7 @@ func (s *ActivityService) Star(ctx context.Context, owner, repo string) (*Respon
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Unstar a repository as the authenticated user.
@@ -131,5 +131,5 @@ func (s *ActivityService) Unstar(ctx context.Context, owner, repo string) (*Resp
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

@@ -36,7 +36,7 @@ func (s GitignoresService) List(ctx context.Context) ([]string, *Response, error
 	}
 
 	var availableTemplates []string
-	resp, err := s.client.Do(req.WithContext(ctx), &availableTemplates)
+	resp, err := s.client.Do(ctx, req, &availableTemplates)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -55,7 +55,7 @@ func (s GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *R
 	}
 
 	gitignore := new(Gitignore)
-	resp, err := s.client.Do(req.WithContext(ctx), gitignore)
+	resp, err := s.client.Do(ctx, req, gitignore)
 	if err != nil {
 		return nil, resp, err
 	}

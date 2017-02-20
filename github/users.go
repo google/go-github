@@ -88,7 +88,7 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 	}
 
 	uResp := new(User)
-	resp, err := s.client.Do(req.WithContext(ctx), uResp)
+	resp, err := s.client.Do(ctx, req, uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,7 +107,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int) (*User, *Response, e
 	}
 
 	user := new(User)
-	resp, err := s.client.Do(req.WithContext(ctx), user)
+	resp, err := s.client.Do(ctx, req, user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,7 +126,7 @@ func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, 
 	}
 
 	uResp := new(User)
-	resp, err := s.client.Do(req.WithContext(ctx), uResp)
+	resp, err := s.client.Do(ctx, req, uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,7 +160,7 @@ func (s *UsersService) ListAll(ctx context.Context, opt *UserListOptions) ([]*Us
 	}
 
 	var users []*User
-	resp, err := s.client.Do(req.WithContext(ctx), &users)
+	resp, err := s.client.Do(ctx, req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,7 +182,7 @@ func (s *UsersService) ListInvitations(ctx context.Context) ([]*RepositoryInvita
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
 	invites := []*RepositoryInvitation{}
-	resp, err := s.client.Do(req.WithContext(ctx), &invites)
+	resp, err := s.client.Do(ctx, req, &invites)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -204,7 +204,7 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int) (
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // DeclineInvitation declines the currently-open repository invitation for the
@@ -221,5 +221,5 @@ func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int) 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

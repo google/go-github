@@ -70,7 +70,7 @@ func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, s
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	c := new(Commit)
-	resp, err := s.client.Do(req.WithContext(ctx), c)
+	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,7 +119,7 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	}
 
 	c := new(Commit)
-	resp, err := s.client.Do(req.WithContext(ctx), c)
+	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
 		return nil, resp, err
 	}

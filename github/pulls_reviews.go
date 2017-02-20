@@ -77,7 +77,7 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	var reviews []*PullRequestReview
-	resp, err := s.client.Do(req.WithContext(ctx), &reviews)
+	resp, err := s.client.Do(ctx, req, &reviews)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -104,7 +104,7 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	review := new(PullRequestReview)
-	resp, err := s.client.Do(req.WithContext(ctx), review)
+	resp, err := s.client.Do(ctx, req, review)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,7 +131,7 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	review := new(PullRequestReview)
-	resp, err := s.client.Do(req.WithContext(ctx), review)
+	resp, err := s.client.Do(ctx, req, review)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -158,7 +158,7 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	var comments []*PullRequestComment
-	resp, err := s.client.Do(req.WithContext(ctx), &comments)
+	resp, err := s.client.Do(ctx, req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -185,7 +185,7 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	r := new(PullRequestReview)
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -212,7 +212,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	r := new(PullRequestReview)
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -239,7 +239,7 @@ func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo str
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
 	r := new(PullRequestReview)
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}

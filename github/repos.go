@@ -177,7 +177,7 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opt *Reposi
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	var repos []*Repository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -214,7 +214,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	var repos []*Repository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -246,7 +246,7 @@ func (s *RepositoriesService) ListAll(ctx context.Context, opt *RepositoryListAl
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(req.WithContext(ctx), &repos)
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -273,7 +273,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 	}
 
 	r := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -297,7 +297,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	repository := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), repository)
+	resp, err := s.client.Do(ctx, req, repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -320,7 +320,7 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int) (*Repository,
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	repository := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), repository)
+	resp, err := s.client.Do(ctx, req, repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -342,7 +342,7 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 	req.Header.Add("Accept", mediaTypeSquashPreview)
 
 	r := new(Repository)
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -360,7 +360,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // Contributor represents a repository contributor
@@ -410,7 +410,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 	}
 
 	var contributor []*Contributor
-	resp, err := s.client.Do(req.WithContext(ctx), &contributor)
+	resp, err := s.client.Do(ctx, req, &contributor)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -436,7 +436,7 @@ func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, r
 	}
 
 	languages := make(map[string]int)
-	resp, err := s.client.Do(req.WithContext(ctx), &languages)
+	resp, err := s.client.Do(ctx, req, &languages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -460,7 +460,7 @@ func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo 
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(req.WithContext(ctx), &teams)
+	resp, err := s.client.Do(ctx, req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -492,7 +492,7 @@ func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo s
 	}
 
 	var tags []*RepositoryTag
-	resp, err := s.client.Do(req.WithContext(ctx), &tags)
+	resp, err := s.client.Do(ctx, req, &tags)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -577,7 +577,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	var branches []*Branch
-	resp, err := s.client.Do(req.WithContext(ctx), &branches)
+	resp, err := s.client.Do(ctx, req, &branches)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -599,7 +599,7 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	b := new(Branch)
-	resp, err := s.client.Do(req.WithContext(ctx), b)
+	resp, err := s.client.Do(ctx, req, b)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -621,7 +621,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	p := new(Protection)
-	resp, err := s.client.Do(req.WithContext(ctx), p)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -643,7 +643,7 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	p := new(Protection)
-	resp, err := s.client.Do(req.WithContext(ctx), p)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -664,7 +664,7 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // License gets the contents of a repository's license if one is detected.
@@ -678,7 +678,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 	}
 
 	r := &RepositoryLicense{}
-	resp, err := s.client.Do(req.WithContext(ctx), r)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}

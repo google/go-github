@@ -194,5 +194,5 @@ func (s *SearchService) search(ctx context.Context, searchType string, query str
 		req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
 	}
 
-	return s.client.Do(req.WithContext(ctx), result)
+	return s.client.Do(ctx, req, result)
 }

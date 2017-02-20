@@ -93,7 +93,7 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	m := &Migration{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -116,7 +116,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string) ([]*M
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m []*Migration
-	resp, err := s.client.Do(req.WithContext(ctx), &m)
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -140,7 +140,7 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	m := &Migration{}
-	resp, err := s.client.Do(req.WithContext(ctx), m)
+	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -175,7 +175,7 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 	}
 	defer func() { s.client.client.CheckRedirect = saveRedirect }()
 
-	_, err = s.client.Do(req.WithContext(ctx), nil) // expect error from disable redirect
+	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
 	if err == nil {
 		return "", errors.New("expected redirect, none provided")
 	}
@@ -200,7 +200,7 @@ func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id i
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }
 
 // UnlockRepo unlocks a repository that was locked for migration.
@@ -220,5 +220,5 @@ func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int, r
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

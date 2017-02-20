@@ -122,7 +122,7 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 	}
 
 	var commits []*RepositoryCommit
-	resp, err := s.client.Do(req.WithContext(ctx), &commits)
+	resp, err := s.client.Do(ctx, req, &commits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -147,7 +147,7 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	commit := new(RepositoryCommit)
-	resp, err := s.client.Do(req.WithContext(ctx), commit)
+	resp, err := s.client.Do(ctx, req, commit)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,7 +173,7 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 	req.Header.Set("Accept", mediaTypeV3SHA)
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(req.WithContext(ctx), &buf)
+	resp, err := s.client.Do(ctx, req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -194,7 +194,7 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 	}
 
 	comp := new(CommitsComparison)
-	resp, err := s.client.Do(req.WithContext(ctx), comp)
+	resp, err := s.client.Do(ctx, req, comp)
 	if err != nil {
 		return nil, resp, err
 	}

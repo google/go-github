@@ -109,7 +109,7 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 	}
 
 	var pulls []*PullRequest
-	resp, err := s.client.Do(req.WithContext(ctx), &pulls)
+	resp, err := s.client.Do(ctx, req, &pulls)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -128,7 +128,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 	}
 
 	pull := new(PullRequest)
-	resp, err := s.client.Do(req.WithContext(ctx), pull)
+	resp, err := s.client.Do(ctx, req, pull)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -154,7 +154,7 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo str
 	}
 
 	ret := new(bytes.Buffer)
-	resp, err := s.client.Do(req.WithContext(ctx), ret)
+	resp, err := s.client.Do(ctx, req, ret)
 	if err != nil {
 		return "", resp, err
 	}
@@ -182,7 +182,7 @@ func (s *PullRequestsService) Create(ctx context.Context, owner string, repo str
 	}
 
 	p := new(PullRequest)
-	resp, err := s.client.Do(req.WithContext(ctx), p)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -222,7 +222,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 	}
 
 	p := new(PullRequest)
-	resp, err := s.client.Do(req.WithContext(ctx), p)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -246,7 +246,7 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, rep
 	}
 
 	var commits []*RepositoryCommit
-	resp, err := s.client.Do(req.WithContext(ctx), &commits)
+	resp, err := s.client.Do(ctx, req, &commits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -270,7 +270,7 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner string, repo 
 	}
 
 	var commitFiles []*CommitFile
-	resp, err := s.client.Do(req.WithContext(ctx), &commitFiles)
+	resp, err := s.client.Do(ctx, req, &commitFiles)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -288,7 +288,7 @@ func (s *PullRequestsService) IsMerged(ctx context.Context, owner string, repo s
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(req.WithContext(ctx), nil)
+	resp, err := s.client.Do(ctx, req, nil)
 	merged, err := parseBoolResponse(err)
 	return merged, resp, err
 }
@@ -338,7 +338,7 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo stri
 	req.Header.Set("Accept", mediaTypeSquashPreview)
 
 	mergeResult := new(PullRequestMergeResult)
-	resp, err := s.client.Do(req.WithContext(ctx), mergeResult)
+	resp, err := s.client.Do(ctx, req, mergeResult)
 	if err != nil {
 		return nil, resp, err
 	}

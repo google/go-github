@@ -28,7 +28,7 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo s
 	}
 
 	var keys []*Key
-	resp, err := s.client.Do(req.WithContext(ctx), &keys)
+	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -48,7 +48,7 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo str
 	}
 
 	key := new(Key)
-	resp, err := s.client.Do(req.WithContext(ctx), key)
+	resp, err := s.client.Do(ctx, req, key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,7 +68,7 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 	}
 
 	k := new(Key)
-	resp, err := s.client.Do(req.WithContext(ctx), k)
+	resp, err := s.client.Do(ctx, req, k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,7 +88,7 @@ func (s *RepositoriesService) EditKey(ctx context.Context, owner string, repo st
 	}
 
 	k := new(Key)
-	resp, err := s.client.Do(req.WithContext(ctx), k)
+	resp, err := s.client.Do(ctx, req, k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,5 +107,5 @@ func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo 
 		return nil, err
 	}
 
-	return s.client.Do(req.WithContext(ctx), nil)
+	return s.client.Do(ctx, req, nil)
 }

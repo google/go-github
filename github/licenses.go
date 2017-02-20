@@ -71,7 +71,7 @@ func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, erro
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	var licenses []*License
-	resp, err := s.client.Do(req.WithContext(ctx), &licenses)
+	resp, err := s.client.Do(ctx, req, &licenses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,7 +94,7 @@ func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License
 	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	license := new(License)
-	resp, err := s.client.Do(req.WithContext(ctx), license)
+	resp, err := s.client.Do(ctx, req, license)
 	if err != nil {
 		return nil, resp, err
 	}
