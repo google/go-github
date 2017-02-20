@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -21,7 +22,7 @@ func TestGitignoresService_List(t *testing.T) {
 		fmt.Fprint(w, `["C", "Go"]`)
 	})
 
-	available, _, err := client.Gitignores.List()
+	available, _, err := client.Gitignores.List(context.Background())
 	if err != nil {
 		t.Errorf("Gitignores.List returned error: %v", err)
 	}
@@ -41,7 +42,7 @@ func TestGitignoresService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"name":"Name","source":"template source"}`)
 	})
 
-	gitignore, _, err := client.Gitignores.Get("name")
+	gitignore, _, err := client.Gitignores.Get(context.Background(), "name")
 	if err != nil {
 		t.Errorf("Gitignores.List returned error: %v", err)
 	}
@@ -53,6 +54,6 @@ func TestGitignoresService_Get(t *testing.T) {
 }
 
 func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
-	_, _, err := client.Gitignores.Get("%")
+	_, _, err := client.Gitignores.Get(context.Background(), "%")
 	testURLParseError(t, err)
 }

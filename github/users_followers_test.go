@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -23,7 +24,7 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	users, _, err := client.Users.ListFollowers("", opt)
+	users, _, err := client.Users.ListFollowers(context.Background(), "", opt)
 	if err != nil {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowers("u", nil)
+	users, _, err := client.Users.ListFollowers(context.Background(), "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
@@ -55,7 +56,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
-	_, _, err := client.Users.ListFollowers("%", nil)
+	_, _, err := client.Users.ListFollowers(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -70,7 +71,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	users, _, err := client.Users.ListFollowing("", opts)
+	users, _, err := client.Users.ListFollowing(context.Background(), "", opts)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -90,7 +91,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing("u", nil)
+	users, _, err := client.Users.ListFollowing(context.Background(), "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -102,7 +103,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
-	_, _, err := client.Users.ListFollowing("%", nil)
+	_, _, err := client.Users.ListFollowing(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -115,7 +116,7 @@ func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	following, _, err := client.Users.IsFollowing("", "t")
+	following, _, err := client.Users.IsFollowing(context.Background(), "", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -133,7 +134,7 @@ func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	following, _, err := client.Users.IsFollowing("u", "t")
+	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -151,7 +152,7 @@ func TestUsersService_IsFollowing_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	following, _, err := client.Users.IsFollowing("u", "t")
+	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -169,7 +170,7 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	following, _, err := client.Users.IsFollowing("u", "t")
+	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -179,7 +180,7 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 }
 
 func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
-	_, _, err := client.Users.IsFollowing("%", "%")
+	_, _, err := client.Users.IsFollowing(context.Background(), "%", "%")
 	testURLParseError(t, err)
 }
 
@@ -191,14 +192,14 @@ func TestUsersService_Follow(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	_, err := client.Users.Follow("u")
+	_, err := client.Users.Follow(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
 }
 
 func TestUsersService_Follow_invalidUser(t *testing.T) {
-	_, err := client.Users.Follow("%")
+	_, err := client.Users.Follow(context.Background(), "%")
 	testURLParseError(t, err)
 }
 
@@ -210,13 +211,13 @@ func TestUsersService_Unfollow(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Users.Unfollow("u")
+	_, err := client.Users.Unfollow(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
 }
 
 func TestUsersService_Unfollow_invalidUser(t *testing.T) {
-	_, err := client.Users.Unfollow("%")
+	_, err := client.Users.Unfollow(context.Background(), "%")
 	testURLParseError(t, err)
 }
