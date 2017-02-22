@@ -130,19 +130,6 @@ type GollumEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// IssueActivityEvent represents the payload delivered by Issue webhook.
-//
-// Deprecated: Use IssuesEvent instead.
-type IssueActivityEvent struct {
-	Action *string `json:"action,omitempty"`
-	Issue  *Issue  `json:"issue,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
 // EditChange represents the changes when an issue, pull request, or comment has
 // been edited.
 type EditChange struct {
@@ -477,7 +464,7 @@ type PullRequestReviewCommentEvent struct {
 
 // PushEvent represents a git push to a GitHub repository.
 //
-// GitHub API docs: http://developer.github.com/v3/activity/events/types/#pushevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
 	PushID       *int              `json:"push_id,omitempty"`
 	Head         *string           `json:"head,omitempty"`

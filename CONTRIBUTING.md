@@ -70,7 +70,7 @@ documentation, following the format `{service}_{api}.go`. For example, methods
 defined at <https://developer.github.com/v3/repos/hooks/> live in
 [repos_hooks.go][].
 
-[GitHub API documentation]: http://developer.github.com/v3/
+[GitHub API documentation]: https://developer.github.com/v3/
 [repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
 
 

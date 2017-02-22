@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -35,7 +36,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
-	commit, _, err := client.Repositories.Merge("o", "r", input)
+	commit, _, err := client.Repositories.Merge(context.Background(), "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Merge returned error: %v", err)
 	}
