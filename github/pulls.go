@@ -198,23 +198,26 @@ type pullRequestUpdate struct {
 }
 
 // Edit a pull request.
-// pull may be nil, in which case the requested PR is returned unmodified.
+// pull must not be nil.
 //
 // The following fields are editable: Title, Body, State, and Base.Ref.
 // Base.Ref updates the base branch of the pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request
 func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
+	if pull == nil {
+		return nil, nil, fmt.Errorf("pull must be provided")
+	}
+
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 
-	update := new(pullRequestUpdate)
-	if pull != nil {
-		update.Title = pull.Title
-		update.Body = pull.Body
-		update.State = pull.State
-		if pull.Base != nil {
-			update.Base = pull.Base.Ref
-		}
+	update := &pullRequestUpdate{
+		Title: pull.Title,
+		Body:  pull.Body,
+		State: pull.State,
+	}
+	if pull.Base != nil {
+		update.Base = pull.Base.Ref
 	}
 
 	req, err := s.client.NewRequest("PATCH", u, update)
