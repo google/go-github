@@ -45,7 +45,7 @@ use it with the oauth2 library using:
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: "... your access token ..."},
 		)
-		tc := oauth2.NewClient(oauth2.NoContext, ts)
+		tc := oauth2.NewClient(context.Background(), ts)
 
 		client := github.NewClient(tc)
 
