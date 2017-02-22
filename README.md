@@ -22,7 +22,7 @@ access different parts of the GitHub API. For example:
 client := github.NewClient(nil)
 
 // list all organizations for user "willnorris"
-orgs, _, err := client.Organizations.List("willnorris", nil)
+orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
 ```
 
 Some API methods have optional parameters that can be passed. For example:
@@ -32,7 +32,7 @@ client := github.NewClient(nil)
 
 // list public repositories for org "github"
 opt := &github.RepositoryListByOrgOptions{Type: "public"}
-repos, _, err := client.Repositories.ListByOrg("github", opt)
+repos, _, err := client.Repositories.ListByOrg(ctx, "github", opt)
 ```
 
 The services of a client divide the API into logical chunks and correspond to
@@ -60,7 +60,7 @@ func main() {
   client := github.NewClient(tc)
 
   // list all repositories for the authenticated user
-  repos, _, err := client.Repositories.List("", nil)
+  repos, _, err := client.Repositories.List(ctx, "", nil)
 }
 ```
 
@@ -90,7 +90,7 @@ up-to-date rate limit data for the client.
 To detect an API rate limit error, you can check if its type is `*github.RateLimitError`:
 
 ```go
-repos, _, err := client.Repositories.List("", nil)
+repos, _, err := client.Repositories.List(ctx, "", nil)
 if _, ok := err.(*github.RateLimitError); ok {
 	log.Println("hit rate limit")
 }
@@ -110,7 +110,7 @@ To detect this condition of error, you can check if its type is
 `*github.AcceptedError`:
 
 ```go
-stats, _, err := client.Repositories.ListContributorsStats(org, repo)
+stats, _, err := client.Repositories.ListContributorsStats(ctx, org, repo)
 if _, ok := err.(*github.AcceptedError); ok {
 	log.Println("scheduled on GitHub side")
 }
@@ -140,7 +140,7 @@ repo := &github.Repository{
 	Name:    github.String("foo"),
 	Private: github.Bool(true),
 }
-client.Repositories.Create("", repo)
+client.Repositories.Create(ctx, "", repo)
 ```
 
 Users who have worked with protocol buffers should find this pattern familiar.
@@ -163,7 +163,7 @@ opt := &github.RepositoryListByOrgOptions{
 // get all pages of results
 var allRepos []*github.Repository
 for {
-	repos, resp, err := client.Repositories.ListByOrg("github", opt)
+	repos, resp, err := client.Repositories.ListByOrg(ctx, "github", opt)
 	if err != nil {
 		return err
 	}
