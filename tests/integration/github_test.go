@@ -8,6 +8,7 @@
 package tests
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -31,7 +32,7 @@ func init() {
 		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		tc := oauth2.NewClient(oauth2.NoContext, oauth2.StaticTokenSource(
+		tc := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: token},
 		))
 		client = github.NewClient(tc)
