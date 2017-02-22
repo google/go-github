@@ -130,23 +130,6 @@ type GollumEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// EditChange represents the changes when an issue, pull request, or comment has
-// been edited.
-type EditChange struct {
-	Title *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"title,omitempty"`
-	Name *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"title,omitempty"`
-	Note *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"title,omitempty"`
-	Body *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"body,omitempty"`
-}
-
 // IntegrationInstallationEvent is triggered when an integration is created or deleted.
 // The Webhook event name is "integration_installation".
 //
@@ -186,7 +169,11 @@ type IssueCommentEvent struct {
 	Comment *IssueComment `json:"comment,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Body *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"body,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -206,7 +193,14 @@ type IssuesEvent struct {
 	Label    *Label  `json:"label,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Title *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"title,omitempty"`
+		Body *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"body,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -223,7 +217,14 @@ type LabelEvent struct {
 	Label  *Label  `json:"label,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Name *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"name,omitempty"`
+		Color *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"color,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -276,7 +277,17 @@ type MilestoneEvent struct {
 	Milestone *Milestone `json:"milestone,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Description *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"description,omitempty"`
+		DueOn *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"due_on,omitempty"`
+		Title *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"title,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
@@ -338,13 +349,40 @@ type PingEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ProjectEvent is triggered when project is created, modified or deleted.
+// the webhook event name is "project".
+//
+// GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
+type ProjectEvent struct {
+	Action  *string `json:"action,omitempty"`
+	Changes *struct {
+		Name *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"name,omitempty"`
+		Body *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"body,omitempty"`
+	} `json:"changes,omitempty"`
+	Project *Project `json:"project,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // ProjectCardEvent is triggered when a project card is created, updated, moved, converted to an issue, or deleted.
 // the webhook event name is "project_card".
 //
 // GitHub docs: https://developer.github.com/v3/activity/events/types/#projectcardevent
 type ProjectCardEvent struct {
-	Action      *string      `json:"action,omitempty"`
-	Changes     *EditChange  `json:"changes,omitempty"`
+	Action  *string `json:"action,omitempty"`
+	Changes *struct {
+		Note *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"note,omitempty"`
+	} `json:"changes,omitempty"`
 	AfterID     *int         `json:"after_id,omitempty"`
 	ProjectCard *ProjectCard `json:"project_card,omitempty"`
 
@@ -360,26 +398,14 @@ type ProjectCardEvent struct {
 //
 // GitHub docs https://developer.github.com/v3/activity/events/types/#projectcolumnevent
 type ProjectColumnEvent struct {
-	Action        *string        `json:"action,omitempty"`
-	Changes       *EditChange    `json:"changes,omitempty"`
+	Action  *string `json:"action,omitempty"`
+	Changes *struct {
+		Name *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"name,omitempty"`
+	} `json:"changes,omitempty"`
 	AfterID       *int           `json:"after_id,omitempty"`
 	ProjectColumn *ProjectColumn `json:"project_column,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Org          *Organization `json:"organization,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
-}
-
-// ProjectEvent is triggered when project is created, modified or deleted.
-// the webhook event name is "project".
-//
-// GitHub docs https://developer.github.com/v3/activity/events/types/#projectevent
-type ProjectEvent struct {
-	Action  *string     `json:"action,omitempty"`
-	Changes *EditChange `json:"changes,omitempty"`
-	Project *Project    `json:"project,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Repo         *Repository   `json:"repository,omitempty"`
@@ -416,7 +442,14 @@ type PullRequestEvent struct {
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Title *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"title,omitempty"`
+		Body *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"body,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -456,7 +489,11 @@ type PullRequestReviewCommentEvent struct {
 	Comment     *PullRequestComment `json:"comment,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
+	Changes *struct {
+		Body *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"body,omitempty"`
+	} `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
