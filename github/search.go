@@ -80,7 +80,7 @@ type CommitResult struct {
 
 // Commits searches commits via various criteria.
 //
-// GitHub API Docs: https://developer.github.com/v3/search/#search-commits
+// GitHub API docs: https://developer.github.com/v3/search/#search-commits
 func (s *SearchService) Commits(ctx context.Context, query string, opt *SearchOptions) (*CommitsSearchResult, *Response, error) {
 	result := new(CommitsSearchResult)
 	resp, err := s.search(ctx, "commits", query, opt, result)

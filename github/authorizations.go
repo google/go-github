@@ -12,7 +12,7 @@ import (
 
 // Scope models a GitHub authorization scope.
 //
-// GitHub API docs:https://developer.github.com/v3/oauth/#scopes
+// GitHub API docs: https://developer.github.com/v3/oauth/#scopes
 type Scope string
 
 // This is the set of scopes for GitHub API V3
@@ -207,8 +207,8 @@ func (s *AuthorizationsService) Create(ctx context.Context, auth *AuthorizationR
 // clientID is the OAuth Client ID with which to create the token.
 //
 // GitHub API docs:
-// - https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
-// - https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app-and-fingerprint
+// https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app
+// https://developer.github.com/v3/oauth_authorizations/#get-or-create-an-authorization-for-a-specific-app-and-fingerprint
 func (s *AuthorizationsService) GetOrCreateForApp(ctx context.Context, clientID string, auth *AuthorizationRequest) (*Authorization, *Response, error) {
 	var u string
 	if auth.Fingerprint == nil || *auth.Fingerprint == "" {
