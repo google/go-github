@@ -27,7 +27,7 @@ type Subscription struct {
 
 // ListWatchers lists watchers of a particular repo.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/watching/#list-watchers
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#list-watchers
 func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscribers", owner, repo)
 	u, err := addOptions(u, opt)
@@ -52,7 +52,7 @@ func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, 
 // ListWatched lists the repositories the specified user is watching. Passing
 // the empty string will fetch watched repos for the authenticated user.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/watching/#list-repositories-being-watched
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#list-repositories-being-watched
 func (s *ActivityService) ListWatched(ctx context.Context, user string, opt *ListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
@@ -83,7 +83,7 @@ func (s *ActivityService) ListWatched(ctx context.Context, user string, opt *Lis
 // repository for the authenticated user. If the authenticated user is not
 // watching the repository, a nil Subscription is returned.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/watching/#get-a-repository-subscription
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#get-a-repository-subscription
 func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, repo string) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 
@@ -110,7 +110,7 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 // To ignore notifications made within a repository, set subscription.Ignored to true.
 // To stop watching a repository, use DeleteRepositorySubscription.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/watching/#set-a-repository-subscription
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#set-a-repository-subscription
 func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 
@@ -134,7 +134,7 @@ func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, 
 // This is used to stop watching a repository. To control whether or not to
 // receive notifications from a repository, use SetRepositorySubscription.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/watching/#delete-a-repository-subscription
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#delete-a-repository-subscription
 func (s *ActivityService) DeleteRepositorySubscription(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/subscription", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
