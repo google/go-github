@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // Repository contents API methods.
-// https://developer.github.com/v3/repos/contents/
+// GitHub API docs: https://developer.github.com/v3/repos/contents/
 
 package github
 

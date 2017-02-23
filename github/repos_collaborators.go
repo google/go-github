@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ListCollaborators lists the Github users that have access to the repository.
+// ListCollaborators lists the GitHub users that have access to the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#list
 func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
@@ -34,7 +34,7 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 	return users, resp, nil
 }
 
-// IsCollaborator checks whether the specified Github user has collaborator
+// IsCollaborator checks whether the specified GitHub user has collaborator
 // access to the given repo.
 // Note: This will return false if the user is not a collaborator OR the user
 // is not a GitHub user.
@@ -94,7 +94,7 @@ type RepositoryAddCollaboratorOptions struct {
 	Permission string `json:"permission,omitempty"`
 }
 
-// AddCollaborator adds the specified Github user as collaborator to the given repo.
+// AddCollaborator adds the specified GitHub user as collaborator to the given repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
 func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*Response, error) {
@@ -110,7 +110,7 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 	return s.client.Do(ctx, req, nil)
 }
 
-// RemoveCollaborator removes the specified Github user as collaborator from the given repo.
+// RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.
 // Note: Does not return error if a valid user that is not a collaborator is removed.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#remove-collaborator

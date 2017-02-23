@@ -45,7 +45,7 @@ func (w WeeklyStats) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#contributors
+// GitHub API docs: https://developer.github.com/v3/repos/statistics/#contributors
 func (s *RepositoriesService) ListContributorsStats(ctx context.Context, owner, repo string) ([]*ContributorStats, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/contributors", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -84,7 +84,7 @@ func (w WeeklyCommitActivity) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#commit-activity
+// GitHub API docs: https://developer.github.com/v3/repos/statistics/#commit-activity
 func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, repo string) ([]*WeeklyCommitActivity, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/commit_activity", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -111,7 +111,7 @@ func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, rep
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#code-frequency
+// GitHub API docs: https://developer.github.com/v3/repos/statistics/#code-frequency
 func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo string) ([]*WeeklyStats, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/code_frequency", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -164,7 +164,7 @@ func (r RepositoryParticipation) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#participation
+// GitHub API docs: https://developer.github.com/v3/repos/statistics/#participation
 func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo string) (*RepositoryParticipation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/participation", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -197,7 +197,7 @@ type PunchCard struct {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/statistics/#punch-card
+// GitHub API docs: https://developer.github.com/v3/repos/statistics/#punch-card
 func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo string) ([]*PunchCard, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/punch_card", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

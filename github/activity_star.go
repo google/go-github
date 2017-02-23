@@ -24,7 +24,7 @@ type Stargazer struct {
 
 // ListStargazers lists people who have starred the specified repo.
 //
-// GitHub API Docs: https://developer.github.com/v3/activity/starring/#list-stargazers
+// GitHub API docs: https://developer.github.com/v3/activity/starring/#list-stargazers
 func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Stargazer, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
 	u, err := addOptions(u, opt)
