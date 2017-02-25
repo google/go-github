@@ -136,7 +136,7 @@ EmailLoop:
 	}
 
 	if !found {
-		t.Fatalf("Users.ListEmails() does not contain new addres: %v", email)
+		t.Fatalf("Users.ListEmails() does not contain new address: %v", email)
 	}
 
 	// Remove new address
