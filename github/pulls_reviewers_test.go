@@ -34,6 +34,7 @@ func TestRequestReviewers(t *testing.T) {
 			return
 		}
 	})
+
 	logins := []string{"octocat", "googlebot"}
 
 	// This returns a PR, unmarshalling of which is tested elsewhere
@@ -69,9 +70,9 @@ func TestRemoveReviewers(t *testing.T) {
 			return
 		}
 	})
+
 	logins := []string{"octocat", "googlebot"}
 
-	// This returns a PR, unmarshalling of which is tested elsewhere
 	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, logins)
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
