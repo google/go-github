@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -25,7 +26,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	teams, _, err := client.Organizations.ListTeams("o", opt)
+	teams, _, err := client.Organizations.ListTeams(context.Background(), "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeams returned error: %v", err)
 	}
@@ -37,7 +38,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.ListTeams("%", nil)
+	_, _, err := client.Organizations.ListTeams(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -50,7 +51,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p"}`)
 	})
 
-	team, _, err := client.Organizations.GetTeam(1)
+	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
 	if err != nil {
 		t.Errorf("Organizations.GetTeam returned error: %v", err)
 	}
@@ -79,7 +80,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Organizations.CreateTeam("o", input)
+	team, _, err := client.Organizations.CreateTeam(context.Background(), "o", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateTeam returned error: %v", err)
 	}
@@ -91,7 +92,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateTeam_invalidOrg(t *testing.T) {
-	_, _, err := client.Organizations.CreateTeam("%", nil)
+	_, _, err := client.Organizations.CreateTeam(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -113,7 +114,7 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Organizations.EditTeam(1, input)
+	team, _, err := client.Organizations.EditTeam(context.Background(), 1, input)
 	if err != nil {
 		t.Errorf("Organizations.EditTeam returned error: %v", err)
 	}
@@ -132,7 +133,7 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Organizations.DeleteTeam(1)
+	_, err := client.Organizations.DeleteTeam(context.Background(), 1)
 	if err != nil {
 		t.Errorf("Organizations.DeleteTeam returned error: %v", err)
 	}
@@ -149,7 +150,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 	})
 
 	opt := &OrganizationListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	members, _, err := client.Organizations.ListTeamMembers(1, opt)
+	members, _, err := client.Organizations.ListTeamMembers(context.Background(), 1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
 	}
@@ -168,7 +169,7 @@ func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	member, _, err := client.Organizations.IsTeamMember(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "u")
 	if err != nil {
 		t.Errorf("Organizations.IsTeamMember returned error: %v", err)
 	}
@@ -187,7 +188,7 @@ func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.IsTeamMember(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "u")
 	if err != nil {
 		t.Errorf("Organizations.IsTeamMember returned error: %+v", err)
 	}
@@ -207,7 +208,7 @@ func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.IsTeamMember(1, "u")
+	member, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -217,7 +218,7 @@ func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamMember_invalidUser(t *testing.T) {
-	_, _, err := client.Organizations.IsTeamMember(1, "%")
+	_, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "%")
 	testURLParseError(t, err)
 }
 
@@ -230,14 +231,14 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.PublicizeMembership("o", "u")
+	_, err := client.Organizations.PublicizeMembership(context.Background(), "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.PublicizeMembership returned error: %v", err)
 	}
 }
 
 func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.PublicizeMembership("%", "u")
+	_, err := client.Organizations.PublicizeMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
@@ -250,14 +251,14 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.ConcealMembership("o", "u")
+	_, err := client.Organizations.ConcealMembership(context.Background(), "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.ConcealMembership returned error: %v", err)
 	}
 }
 
 func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
-	_, err := client.Organizations.ConcealMembership("%", "u")
+	_, err := client.Organizations.ConcealMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
@@ -272,7 +273,7 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	members, _, err := client.Organizations.ListTeamRepos(1, opt)
+	members, _, err := client.Organizations.ListTeamRepos(context.Background(), 1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListTeamRepos returned error: %v", err)
 	}
@@ -293,7 +294,7 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	repo, _, err := client.Organizations.IsTeamRepo(context.Background(), 1, "o", "r")
 	if err != nil {
 		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
 	}
@@ -313,7 +314,7 @@ func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	repo, resp, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	repo, resp, err := client.Organizations.IsTeamRepo(context.Background(), 1, "o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -334,7 +335,7 @@ func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	repo, resp, err := client.Organizations.IsTeamRepo(1, "o", "r")
+	repo, resp, err := client.Organizations.IsTeamRepo(context.Background(), 1, "o", "r")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -347,7 +348,7 @@ func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_invalidOwner(t *testing.T) {
-	_, _, err := client.Organizations.IsTeamRepo(1, "%", "r")
+	_, _, err := client.Organizations.IsTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -369,7 +370,7 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.AddTeamRepo(1, "o", "r", opt)
+	_, err := client.Organizations.AddTeamRepo(context.Background(), 1, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamRepo returned error: %v", err)
 	}
@@ -381,17 +382,17 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		w.WriteHeader(StatusUnprocessableEntity)
+		w.WriteHeader(http.StatusUnprocessableEntity)
 	})
 
-	_, err := client.Organizations.AddTeamRepo(1, "o", "r", nil)
+	_, err := client.Organizations.AddTeamRepo(context.Background(), 1, "o", "r", nil)
 	if err == nil {
 		t.Errorf("Expcted error to be returned")
 	}
 }
 
 func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
-	_, err := client.Organizations.AddTeamRepo(1, "%", "r", nil)
+	_, err := client.Organizations.AddTeamRepo(context.Background(), 1, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -404,14 +405,14 @@ func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.RemoveTeamRepo(1, "o", "r")
+	_, err := client.Organizations.RemoveTeamRepo(context.Background(), 1, "o", "r")
 	if err != nil {
 		t.Errorf("Organizations.RemoveTeamRepo returned error: %v", err)
 	}
 }
 
 func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
-	_, err := client.Organizations.RemoveTeamRepo(1, "%", "r")
+	_, err := client.Organizations.RemoveTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -424,7 +425,7 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
-	membership, _, err := client.Organizations.GetTeamMembership(1, "u")
+	membership, _, err := client.Organizations.GetTeamMembership(context.Background(), 1, "u")
 	if err != nil {
 		t.Errorf("Organizations.GetTeamMembership returned error: %v", err)
 	}
@@ -453,7 +454,7 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	membership, _, err := client.Organizations.AddTeamMembership(1, "u", opt)
+	membership, _, err := client.Organizations.AddTeamMembership(context.Background(), 1, "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.AddTeamMembership returned error: %v", err)
 	}
@@ -473,7 +474,7 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.RemoveTeamMembership(1, "u")
+	_, err := client.Organizations.RemoveTeamMembership(context.Background(), 1, "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveTeamMembership returned error: %v", err)
 	}
@@ -490,7 +491,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	teams, _, err := client.Organizations.ListUserTeams(opt)
+	teams, _, err := client.Organizations.ListUserTeams(context.Background(), opt)
 	if err != nil {
 		t.Errorf("Organizations.ListUserTeams returned error: %v", err)
 	}
@@ -540,7 +541,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	invitations, _, err := client.Organizations.ListPendingTeamInvitations(1, opt)
+	invitations, _, err := client.Organizations.ListPendingTeamInvitations(context.Background(), 1, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
 	}

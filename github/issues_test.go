@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -39,7 +40,7 @@ func TestIssuesService_List_all(t *testing.T) {
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions{Page: 1, PerPage: 2},
 	}
-	issues, _, err := client.Issues.List(true, opt)
+	issues, _, err := client.Issues.List(context.Background(), true, opt)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
@@ -60,7 +61,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	issues, _, err := client.Issues.List(false, nil)
+	issues, _, err := client.Issues.List(context.Background(), false, nil)
 	if err != nil {
 		t.Errorf("Issues.List returned error: %v", err)
 	}
@@ -81,7 +82,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	issues, _, err := client.Issues.ListByOrg("o", nil)
+	issues, _, err := client.Issues.ListByOrg(context.Background(), "o", nil)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
@@ -93,7 +94,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
-	_, _, err := client.Issues.ListByOrg("%", nil)
+	_, _, err := client.Issues.ListByOrg(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -123,7 +124,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions{0, 0},
 	}
-	issues, _, err := client.Issues.ListByRepo("o", "r", opt)
+	issues, _, err := client.Issues.ListByRepo(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
@@ -135,7 +136,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.ListByRepo("%", "r", nil)
+	_, _, err := client.Issues.ListByRepo(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -149,7 +150,7 @@ func TestIssuesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1, "labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
-	issue, _, err := client.Issues.Get("o", "r", 1)
+	issue, _, err := client.Issues.Get(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Issues.Get returned error: %v", err)
 	}
@@ -168,7 +169,7 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.Get("%", "r", 1)
+	_, _, err := client.Issues.Get(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -195,7 +196,7 @@ func TestIssuesService_Create(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	issue, _, err := client.Issues.Create("o", "r", input)
+	issue, _, err := client.Issues.Create(context.Background(), "o", "r", input)
 	if err != nil {
 		t.Errorf("Issues.Create returned error: %v", err)
 	}
@@ -207,7 +208,7 @@ func TestIssuesService_Create(t *testing.T) {
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.Create("%", "r", nil)
+	_, _, err := client.Issues.Create(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -229,7 +230,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	issue, _, err := client.Issues.Edit("o", "r", 1, input)
+	issue, _, err := client.Issues.Edit(context.Background(), "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.Edit returned error: %v", err)
 	}
@@ -241,7 +242,7 @@ func TestIssuesService_Edit(t *testing.T) {
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
-	_, _, err := client.Issues.Edit("%", "r", 1, nil)
+	_, _, err := client.Issues.Edit(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -255,7 +256,7 @@ func TestIssuesService_Lock(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Issues.Lock("o", "r", 1); err != nil {
+	if _, err := client.Issues.Lock(context.Background(), "o", "r", 1); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
 }
@@ -270,7 +271,7 @@ func TestIssuesService_Unlock(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Issues.Unlock("o", "r", 1); err != nil {
+	if _, err := client.Issues.Unlock(context.Background(), "o", "r", 1); err != nil {
 		t.Errorf("Issues.Unlock returned error: %v", err)
 	}
 }

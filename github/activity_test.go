@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"net/http"
 	"reflect"
 	"testing"
@@ -22,7 +23,7 @@ func TestActivityService_List(t *testing.T) {
 		w.Write(feedsJSON)
 	})
 
-	got, _, err := client.Activity.ListFeeds()
+	got, _, err := client.Activity.ListFeeds(context.Background())
 	if err != nil {
 		t.Errorf("Activity.ListFeeds returned error: %v", err)
 	}

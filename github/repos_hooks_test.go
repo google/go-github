@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -31,7 +32,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Repositories.CreateHook("o", "r", input)
+	hook, _, err := client.Repositories.CreateHook(context.Background(), "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateHook returned error: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateHook_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.CreateHook("%", "%", nil)
+	_, _, err := client.Repositories.CreateHook(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -59,7 +60,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 
-	hooks, _, err := client.Repositories.ListHooks("o", "r", opt)
+	hooks, _, err := client.Repositories.ListHooks(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
@@ -71,7 +72,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListHooks_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.ListHooks("%", "%", nil)
+	_, _, err := client.Repositories.ListHooks(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -84,7 +85,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Repositories.GetHook("o", "r", 1)
+	hook, _, err := client.Repositories.GetHook(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
@@ -96,7 +97,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 }
 
 func TestRepositoriesService_GetHook_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.GetHook("%", "%", 1)
+	_, _, err := client.Repositories.GetHook(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -118,7 +119,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Repositories.EditHook("o", "r", 1, input)
+	hook, _, err := client.Repositories.EditHook(context.Background(), "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.EditHook returned error: %v", err)
 	}
@@ -130,7 +131,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 }
 
 func TestRepositoriesService_EditHook_invalidOwner(t *testing.T) {
-	_, _, err := client.Repositories.EditHook("%", "%", 1, nil)
+	_, _, err := client.Repositories.EditHook(context.Background(), "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -142,14 +143,14 @@ func TestRepositoriesService_DeleteHook(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Repositories.DeleteHook("o", "r", 1)
+	_, err := client.Repositories.DeleteHook(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteHook returned error: %v", err)
 	}
 }
 
 func TestRepositoriesService_DeleteHook_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.DeleteHook("%", "%", 1)
+	_, err := client.Repositories.DeleteHook(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -161,7 +162,7 @@ func TestRepositoriesService_PingHook(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	_, err := client.Repositories.PingHook("o", "r", 1)
+	_, err := client.Repositories.PingHook(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.PingHook returned error: %v", err)
 	}
@@ -175,13 +176,13 @@ func TestRepositoriesService_TestHook(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	_, err := client.Repositories.TestHook("o", "r", 1)
+	_, err := client.Repositories.TestHook(context.Background(), "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.TestHook returned error: %v", err)
 	}
 }
 
 func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
-	_, err := client.Repositories.TestHook("%", "%", 1)
+	_, err := client.Repositories.TestHook(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }

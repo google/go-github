@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"net/http"
 	"testing"
 )
@@ -19,7 +20,7 @@ func TestUsersService_PromoteSiteAdmin(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.PromoteSiteAdmin("u")
+	_, err := client.Users.PromoteSiteAdmin(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.PromoteSiteAdmin returned error: %v", err)
 	}
@@ -34,7 +35,7 @@ func TestUsersService_DemoteSiteAdmin(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.DemoteSiteAdmin("u")
+	_, err := client.Users.DemoteSiteAdmin(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.DemoteSiteAdmin returned error: %v", err)
 	}
@@ -49,7 +50,7 @@ func TestUsersService_Suspend(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.Suspend("u")
+	_, err := client.Users.Suspend(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
@@ -64,7 +65,7 @@ func TestUsersService_Unsuspend(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.Unsuspend("u")
+	_, err := client.Users.Unsuspend(context.Background(), "u")
 	if err != nil {
 		t.Errorf("Users.Unsuspend returned error: %v", err)
 	}

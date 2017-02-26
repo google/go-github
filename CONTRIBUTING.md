@@ -42,6 +42,11 @@ again.
      are invaluable tools for seeing which parts of your code aren't being
      exercised by your tests.
 
+  1. Please run:
+     * `go generate github.com/google/go-github/...`
+     * `go test github.com/google/go-github/...`
+     * `go vet github.com/google/go-github/...`
+
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
      messages are able to be formatted properly by various git tools.
@@ -70,7 +75,7 @@ documentation, following the format `{service}_{api}.go`. For example, methods
 defined at <https://developer.github.com/v3/repos/hooks/> live in
 [repos_hooks.go][].
 
-[GitHub API documentation]: http://developer.github.com/v3/
+[GitHub API documentation]: https://developer.github.com/v3/
 [repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
 
 
