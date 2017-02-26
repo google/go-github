@@ -111,7 +111,7 @@ func TestListReviewers(t *testing.T) {
 	_id := 1
 
 	want := []User{
-		User{
+		{
 			Login: &_login,
 			ID:    &_id,
 		},
