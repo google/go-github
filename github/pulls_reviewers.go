@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// RequestReviewers submits a set of logins to be potential reviewers on a PR.
+// RequestReviewers creates a review request for the provided GitHub users for the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#create-a-review-request
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, logins []string) (*PullRequest, *Response, error) {
