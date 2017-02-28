@@ -15,6 +15,7 @@ import (
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#create-a-review-request
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, logins []string) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
+
 	reviewers := struct {
 		Reviewers []string `json:"reviewers,omitempty"`
 	}{

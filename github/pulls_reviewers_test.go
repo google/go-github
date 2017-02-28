@@ -7,99 +7,58 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
 )
 
-type reviewersRequest struct {
-	Reviewers []string `json:"reviewers,omitempty"`
-}
-
 func TestRequestReviewers(t *testing.T) {
 	setup()
 	defer teardown()
 
-	logins := []string{"octocat", "googlebot"}
-
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		b, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("TestReviewerRequest couldn't read request body: %v", err)
-		}
-
-		reviewers := reviewersRequest{}
-		if err := json.Unmarshal(b, &reviewers); err != nil {
-			return
-		}
-		want := reviewersRequest{
-			Reviewers: logins,
-		}
-		if !reflect.DeepEqual(reviewers, want) {
-			t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", reviewers, want)
-		}
+		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`)
+		fmt.Fprint(w, `{"number":1}`)
 	})
 
 	// This returns a PR, unmarshalling of which is tested elsewhere
-	_, _, err := client.PullRequests.RequestReviewers(context.Background(), "o", "r", 1, logins)
+	pull, _, err := client.PullRequests.RequestReviewers(context.Background(), "o", "r", 1, []string{"octocat", "googlebot"})
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
+	}
+	want := &PullRequest{Number: Int(1)}
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", pull, want)
 	}
 }
 
 func TestRemoveReviewers(t *testing.T) {
 	setup()
 	defer teardown()
-	logins := []string{"octocat", "googlebot"}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		b, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("TestReviewerRequest couldn't read request body: %v", err)
-		}
-
-		reviewers := reviewersRequest{}
-		if err := json.Unmarshal(b, &reviewers); err != nil {
-			return
-		}
-
-		want := reviewersRequest{
-			Reviewers: logins,
-		}
-		if !reflect.DeepEqual(reviewers, want) {
-			t.Errorf("PullRequests.RemoveReviewers returned %+v, want %+v", reviewers, want)
-		}
+		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`)
 	})
 
-	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, logins)
+	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, []string{"octocat", "googlebot"})
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
-
 }
 
 func TestListReviewers(t *testing.T) {
 	setup()
 	defer teardown()
 
-	sampleResponse := `[
-  {
-    "login": "octocat",
-    "id": 1
-  }
-]`
-
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		fmt.Fprintf(w, sampleResponse)
+		fmt.Fprint(w, `[{"login": "octocat","id": 1 }]`)
 	})
 
 	reviewers, _, err := client.PullRequests.ListReviewers(context.Background(), "o", "r", 1)
