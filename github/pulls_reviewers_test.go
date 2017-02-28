@@ -20,7 +20,7 @@ func TestRequestReviewers(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`)
+		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`+"\n")
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -42,12 +42,12 @@ func TestRemoveReviewers(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`)
+		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`+"\n")
 	})
 
 	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, []string{"octocat", "googlebot"})
 	if err != nil {
-		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
+		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 }
 
@@ -58,12 +58,12 @@ func TestListReviewers(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		fmt.Fprint(w, `[{"login": "octocat","id": 1 }]`)
+		fmt.Fprint(w, `[{"login": "octocat","id":1}]`)
 	})
 
 	reviewers, _, err := client.PullRequests.ListReviewers(context.Background(), "o", "r", 1)
 	if err != nil {
-		t.Errorf("PullRequests.ListReviewers error: %v", err)
+		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
 
 	want := &[]User{
@@ -73,6 +73,6 @@ func TestListReviewers(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(reviewers, want) {
-		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviewers, want)
+		t.Errorf("PullRequests.ListReviewers returned %+v, want %+v", reviewers, want)
 	}
 }
