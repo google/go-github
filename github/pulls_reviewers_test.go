@@ -58,7 +58,7 @@ func TestListReviewers(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
-		fmt.Fprint(w, `[{"login": "octocat","id":1}]`)
+		fmt.Fprint(w, `[{"login":"octocat","id":1}]`)
 	})
 
 	reviewers, _, err := client.PullRequests.ListReviewers(context.Background(), "o", "r", 1)
