@@ -67,7 +67,7 @@ func TestListReviewers(t *testing.T) {
 	}
 
 	want := []*User{
-		&User{
+		{
 			Login: String("octocat"),
 			ID:    Int(1),
 		},
