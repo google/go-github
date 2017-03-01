@@ -403,9 +403,9 @@ func TestDo_rateLimit(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(headerRateLimit, "60")
-		w.Header().Add(headerRateRemaining, "59")
-		w.Header().Add(headerRateReset, "1372700873")
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "59")
+		w.Header().Set(headerRateReset, "1372700873")
 	})
 
 	req, _ := client.NewRequest("GET", "/", nil)
@@ -431,9 +431,9 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(headerRateLimit, "60")
-		w.Header().Add(headerRateRemaining, "59")
-		w.Header().Add(headerRateReset, "1372700873")
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "59")
+		w.Header().Set(headerRateReset, "1372700873")
 		http.Error(w, "Bad Request", 400)
 	})
 
@@ -463,9 +463,9 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(headerRateLimit, "60")
-		w.Header().Add(headerRateRemaining, "0")
-		w.Header().Add(headerRateReset, "1372700873")
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, "1372700873")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
@@ -504,9 +504,9 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	reset := time.Now().UTC().Round(time.Second).Add(time.Minute) // Rate reset is a minute from now, with 1 second precision.
 
 	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add(headerRateLimit, "60")
-		w.Header().Add(headerRateRemaining, "0")
-		w.Header().Add(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
