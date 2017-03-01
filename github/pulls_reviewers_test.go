@@ -66,8 +66,8 @@ func TestListReviewers(t *testing.T) {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
 
-	want := &[]User{
-		{
+	want := []*User{
+		&User{
 			Login: String("octocat"),
 			ID:    Int(1),
 		},

@@ -41,7 +41,7 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 // ListReviewers lists users whose reviews have been requested on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#list-review-requests
-func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int) (*[]User, *Response, error) {
+func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -52,13 +52,13 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
 
-	var users []User
+	var users []*User
 	resp, err := s.client.Do(ctx, req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &users, resp, nil
+	return users, resp, nil
 }
 
 // RemoveReviewers removes the review request for the provided GitHub users for the specified pull request.
