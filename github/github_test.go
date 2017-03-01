@@ -91,7 +91,7 @@ type values map[string]string
 func testFormValues(t *testing.T, r *http.Request, values values) {
 	want := url.Values{}
 	for k, v := range values {
-		want.Add(k, v)
+		want.Set(k, v)
 	}
 
 	r.ParseForm()
