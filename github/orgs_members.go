@@ -206,8 +206,9 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opt *List
 // Passing an empty string for user will get the membership for the
 // authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/members/#get-organization-membership
-// GitHub API docs: https://developer.github.com/v3/orgs/members/#get-your-organization-membership
+// GitHub API docs:
+// https://developer.github.com/v3/orgs/members/#get-organization-membership
+// https://developer.github.com/v3/orgs/members/#get-your-organization-membership
 func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org string) (*Membership, *Response, error) {
 	var u string
 	if user != "" {

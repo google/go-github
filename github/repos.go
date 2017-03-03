@@ -427,7 +427,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 //       "Python": 7769
 //     }
 //
-// GitHub API Docs: https://developer.github.com/v3/repos/#list-languages
+// GitHub API docs: https://developer.github.com/v3/repos/#list-languages
 func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, repo string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
