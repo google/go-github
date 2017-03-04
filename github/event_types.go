@@ -359,7 +359,7 @@ type PingEvent struct {
 // ProjectEvent is triggered when project is created, modified or deleted.
 // The webhook event name is "project".
 //
-// GitHub API docs https://developer.github.com/v3/activity/events/types/#projectevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#projectevent
 type ProjectEvent struct {
 	Action  *string        `json:"action,omitempty"`
 	Changes *ProjectChange `json:"changes,omitempty"`
@@ -392,7 +392,7 @@ type ProjectCardEvent struct {
 // ProjectColumnEvent is triggered when a project column is created, updated, moved, or deleted.
 // The webhook event name is "project_column".
 //
-// GitHub API docs https://developer.github.com/v3/activity/events/types/#projectcolumnevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#projectcolumnevent
 type ProjectColumnEvent struct {
 	Action        *string              `json:"action,omitempty"`
 	Changes       *ProjectColumnChange `json:"changes,omitempty"`
