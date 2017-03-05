@@ -2052,6 +2052,14 @@ func (i *Issue) GetID() int {
 	return *i.ID
 }
 
+// GetLocked returns the Locked field if it's non-nil, zero value otherwise.
+func (i *Issue) GetLocked() bool {
+	if i == nil || i.Locked == nil {
+		return false
+	}
+	return *i.Locked
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (i *Issue) GetNumber() int {
 	if i == nil || i.Number == nil {
