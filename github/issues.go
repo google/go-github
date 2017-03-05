@@ -44,6 +44,7 @@ type Issue struct {
 	Repository       *Repository       `json:"repository,omitempty"`
 	Reactions        *Reactions        `json:"reactions,omitempty"`
 	Assignees        []*User           `json:"assignees,omitempty"`
+	FakeNewField     *string           `json:"fake_new_field,omitempty"` // not a real field, just testing if go generate check catches this
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
