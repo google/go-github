@@ -1,5 +1,6 @@
 sudo: false
 language: go
+go_import_path: github.com/google/go-github
 go:
   - 1.7.x
   - 1.8.x
@@ -8,10 +9,15 @@ matrix:
   allow_failures:
     - go: master
   fast_finish: true
+before_script:
+    - mkdir -p $HOME/bin
+    - curl --silent --location https://github.com/kevinburke/differ/releases/download/0.4/differ-linux-amd64 > $HOME/bin/differ
+    - chmod 755 $HOME/bin/differ
 install:
   - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 script:
   - go get -t -v ./...
-  - diff -u <(echo -n) <(gofmt -d -s .)
+  - differ gofmt -s .
+  - differ go generate ./...
   - go tool vet .
   - go test -v -race ./...
