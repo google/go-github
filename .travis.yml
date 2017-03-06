@@ -14,6 +14,5 @@ script:
   - go get -t -v ./...
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-  - git diff --exit-code
   - go tool vet .
   - go test -v -race ./...
