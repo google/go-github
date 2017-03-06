@@ -94,7 +94,7 @@ type RepositoryAddCollaboratorOptions struct {
 	Permission string `json:"permission,omitempty"`
 }
 
-// AddCollaborator adds the specified GitHub user as collaborator to the given repo.
+// AddCollaborator invites the specified GitHub user as a collaborator to the given repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
 func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*Response, error) {
@@ -106,6 +106,19 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// AddCollaboratorDirectly adds the specified GitHub user as a collaborator to the given repo.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
+func (s *RepositoriesService) AddCollaboratorDirectly(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
+	req, err := s.client.NewRequest("PUT", u, opt)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.client.Do(ctx, req, nil)
 }

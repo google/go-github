@@ -141,6 +141,31 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_AddCollaboratorDirectly(t *testing.T) {
+	setup()
+	defer teardown()
+
+	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
+
+	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RepositoryAddCollaboratorOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeV3)
+		if !reflect.DeepEqual(v, opt) {
+			t.Errorf("Request body = %+v, want %+v", v, opt)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Repositories.AddCollaboratorDirectly(context.Background(), "o", "r", "u", opt)
+	if err != nil {
+		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 	setup()
 	defer teardown()
