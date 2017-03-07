@@ -162,7 +162,7 @@ func WebHookType(r *http.Request) string {
 
 // ParseWebHook parses the event payload. For recognized event types, a
 // value of the corresponding struct type will be returned (as returned
-// by Event.Payload()). An error will be returned for unrecognized event
+// by Event.ParsePayload()). An error will be returned for unrecognized event
 // types.
 //
 // Example usage:
@@ -191,5 +191,5 @@ func ParseWebHook(messageType string, payload []byte) (interface{}, error) {
 		Type:       &eventType,
 		RawPayload: (*json.RawMessage)(&payload),
 	}
-	return event.Payload(), nil
+	return event.ParsePayload()
 }
