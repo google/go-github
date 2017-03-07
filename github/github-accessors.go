@@ -3436,6 +3436,22 @@ func (p *ProjectCard) GetUpdatedAt() Timestamp {
 	return *p.UpdatedAt
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *ProjectCardEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
+func (p *ProjectCardEvent) GetAfterID() int {
+	if p == nil || p.AfterID == nil {
+		return 0
+	}
+	return *p.AfterID
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectColumn) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
@@ -3474,6 +3490,30 @@ func (p *ProjectColumn) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *ProjectColumnEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
+func (p *ProjectColumnEvent) GetAfterID() int {
+	if p == nil || p.AfterID == nil {
+		return 0
+	}
+	return *p.AfterID
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *ProjectEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
 }
 
 // GetAdditions returns the Additions field if it's non-nil, zero value otherwise.
