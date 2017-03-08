@@ -1428,12 +1428,12 @@ func (g *GistComment) GetURL() string {
 	return *g.URL
 }
 
-// GetCommitedAt returns the CommitedAt field if it's non-nil, zero value otherwise.
-func (g *GistCommit) GetCommitedAt() Timestamp {
-	if g == nil || g.CommitedAt == nil {
+// GetCommittedAt returns the CommittedAt field if it's non-nil, zero value otherwise.
+func (g *GistCommit) GetCommittedAt() Timestamp {
+	if g == nil || g.CommittedAt == nil {
 		return Timestamp{}
 	}
-	return *g.CommitedAt
+	return *g.CommittedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
