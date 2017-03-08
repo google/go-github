@@ -79,6 +79,6 @@ func TestGitService_CreateCommit(t *testing.T) {
 }
 
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
-	_, _, err := client.Git.CreateCommit(context.Background(), "%", "%", nil)
+	_, _, err := client.Git.CreateCommit(context.Background(), "%", "%", &Commit{})
 	testURLParseError(t, err)
 }
