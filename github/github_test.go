@@ -501,7 +501,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	setup()
 	defer teardown()
 
-	reset := time.Now().UTC().Round(time.Second).Add(time.Minute) // Rate reset is a minute from now, with 1 second precision.
+	reset := time.Now().UTC().Add(time.Minute).Round(time.Second).AddDate(0, 0, 0) // Rate reset is a minute from now, with 1 second precision.
 
 	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(headerRateLimit, "60")
