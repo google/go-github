@@ -302,7 +302,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		        "additions": 180,
 		        "total": 180
 		      },
-		      "commited_at": "2010-01-01T00:00:00Z"
+		      "committed_at": "2010-01-01T00:00:00Z"
 		    }
 		  ]
 		`)
@@ -314,10 +314,10 @@ func TestGistsService_ListCommits(t *testing.T) {
 	}
 
 	want := []*GistCommit{{
-		URL:        String("https://api.github.com/gists/1/1"),
-		Version:    String("1"),
-		User:       &User{ID: Int(1)},
-		CommitedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
+		URL:         String("https://api.github.com/gists/1/1"),
+		Version:     String("1"),
+		User:        &User{ID: Int(1)},
+		CommittedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
 		ChangeStatus: &CommitStats{
 			Additions: Int(180),
 			Deletions: Int(0),
