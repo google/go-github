@@ -37,6 +37,7 @@ type Issue struct {
 	ClosedAt         *time.Time        `json:"closed_at,omitempty"`
 	CreatedAt        *time.Time        `json:"created_at,omitempty"`
 	UpdatedAt        *time.Time        `json:"updated_at,omitempty"`
+	ClosedBy         *User             `json:"closed_by,omitempty"`
 	URL              *string           `json:"url,omitempty"`
 	HTMLURL          *string           `json:"html_url,omitempty"`
 	Milestone        *Milestone        `json:"milestone,omitempty"`
