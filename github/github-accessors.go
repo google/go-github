@@ -2788,6 +2788,14 @@ func (n *NewPullRequest) GetIssue() int {
 	return *n.Issue
 }
 
+// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
+func (n *NewPullRequest) GetMaintainerCanModify() bool {
+	if n == nil || n.MaintainerCanModify == nil {
+		return false
+	}
+	return *n.MaintainerCanModify
+}
+
 // GetTitle returns the Title field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetTitle() string {
 	if n == nil || n.Title == nil {
@@ -3612,6 +3620,14 @@ func (p *PullRequest) GetIssueURL() string {
 	return *p.IssueURL
 }
 
+// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetMaintainerCanModify() bool {
+	if p == nil || p.MaintainerCanModify == nil {
+		return false
+	}
+	return *p.MaintainerCanModify
+}
+
 // GetMergeable returns the Mergeable field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetMergeable() bool {
 	if p == nil || p.Mergeable == nil {
@@ -4026,6 +4042,14 @@ func (p *pullRequestUpdate) GetBody() string {
 		return ""
 	}
 	return *p.Body
+}
+
+// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
+func (p *pullRequestUpdate) GetMaintainerCanModify() bool {
+	if p == nil || p.MaintainerCanModify == nil {
+		return false
+	}
+	return *p.MaintainerCanModify
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
