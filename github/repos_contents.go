@@ -248,10 +248,11 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	}
 	var resp *http.Response
 	// Use http.DefaultTransport if no custom Transport is configured
+	ctx, req = withContext(ctx, req)
 	if s.client.client.Transport == nil {
-		resp, err = http.DefaultTransport.RoundTrip(req.WithContext(ctx))
+		resp, err = http.DefaultTransport.RoundTrip(req)
 	} else {
-		resp, err = s.client.client.Transport.RoundTrip(req.WithContext(ctx))
+		resp, err = s.client.client.Transport.RoundTrip(req)
 	}
 	if err != nil {
 		return nil, nil, err
