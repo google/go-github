@@ -390,7 +390,7 @@ func parseRate(r *http.Response) Rate {
 // The provided ctx must be non-nil. If it is canceled or times out,
 // ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
-	req = req.WithContext(ctx)
+	ctx, req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
 
