@@ -2332,6 +2332,14 @@ func (l *Label) GetColor() string {
 	return *l.Color
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (l *Label) GetID() int {
+	if l == nil || l.ID == nil {
+		return 0
+	}
+	return *l.ID
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (l *Label) GetName() string {
 	if l == nil || l.Name == nil {

@@ -160,7 +160,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
+		fmt.Fprint(w, `[{"name":"a","id":1},{"name":"b","id":2}]`)
 	})
 
 	opt := &ListOptions{Page: 2}
@@ -169,7 +169,10 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 		t.Errorf("Issues.ListLabelsByIssue returned error: %v", err)
 	}
 
-	want := []*Label{{Name: String("a")}, {Name: String("b")}}
+	want := []*Label{
+		{Name: String("a"), ID: Int(1)},
+		{Name: String("b"), ID: Int(2)},
+	}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
 	}
