@@ -1932,6 +1932,14 @@ func (i *Installation) GetAccessTokensURL() string {
 	return *i.AccessTokensURL
 }
 
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (i *Installation) GetHTMLURL() string {
+	if i == nil || i.HTMLURL == nil {
+		return ""
+	}
+	return *i.HTMLURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (i *Installation) GetID() int {
 	if i == nil || i.ID == nil {
@@ -1956,28 +1964,12 @@ func (i *IntegrationInstallationEvent) GetAction() string {
 	return *i.Action
 }
 
-// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
-func (i *IntegrationInstallationEvent) GetHTMLURL() string {
-	if i == nil || i.HTMLURL == nil {
-		return ""
-	}
-	return *i.HTMLURL
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (i *IntegrationInstallationRepositoriesEvent) GetAction() string {
 	if i == nil || i.Action == nil {
 		return ""
 	}
 	return *i.Action
-}
-
-// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
-func (i *IntegrationInstallationRepositoriesEvent) GetHTMLURL() string {
-	if i == nil || i.HTMLURL == nil {
-		return ""
-	}
-	return *i.HTMLURL
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.

@@ -175,7 +175,6 @@ type IntegrationInstallationEvent struct {
 	Action       *string       `json:"action,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
-	HTMLURL      *string       `json:"html_url,omitempty"`
 }
 
 // IntegrationInstallationRepositoriesEvent is triggered when an integration repository
@@ -190,7 +189,6 @@ type IntegrationInstallationRepositoriesEvent struct {
 	RepositoriesRemoved []*Repository `json:"repositories_removed,omitempty"`
 	Sender              *User         `json:"sender,omitempty"`
 	Installation        *Installation `json:"installation,omitempty"`
-	HTMLURL             *string       `json:"html_url,omitempty"`
 }
 
 // IssueCommentEvent is triggered when an issue comment is created on an issue
