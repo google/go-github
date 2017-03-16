@@ -1932,6 +1932,14 @@ func (i *Installation) GetAccessTokensURL() string {
 	return *i.AccessTokensURL
 }
 
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (i *Installation) GetHTMLURL() string {
+	if i == nil || i.HTMLURL == nil {
+		return ""
+	}
+	return *i.HTMLURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (i *Installation) GetID() int {
 	if i == nil || i.ID == nil {
