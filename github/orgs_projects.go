@@ -12,7 +12,7 @@ import (
 
 // ListProjectsOptions specifies the optional parameters to the
 // OrganizationsService.ListProjects method.
-type ListProjectsOptions struct {
+type ProjectsListOptions struct {
 	// Indicates the state of the projects to return. Can be either open, closed, or all. Default: open
 	State string `url:"state,omitempty"`
 
@@ -22,7 +22,7 @@ type ListProjectsOptions struct {
 // ListProjects lists the projects for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-organization-projects
-func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt *ListProjectsOptions) ([]*Project, *Response, error) {
+func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt *ProjectsListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projects", org)
 	u, err := addOptions(u, opt)
 	if err != nil {
