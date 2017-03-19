@@ -23,7 +23,7 @@ type ListProjectsOptions struct {
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-organization-projects
 func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt *ListProjectsOptions) ([]*Project, *Response, error) {
-	u := fmt.Sprintf("repos/%v/projects", org)
+	u := fmt.Sprintf("orgs/%v/projects", org)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -50,7 +50,7 @@ func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#create-an-organization-project
 func (s *OrganizationsService) CreateProject(ctx context.Context, org string, opt *ProjectOptions) (*Project, *Response, error) {
-	u := fmt.Sprintf("repos/%v/projects", org)
+	u := fmt.Sprintf("orgs/%v/projects", org)
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err

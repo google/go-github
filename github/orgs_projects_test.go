@@ -18,7 +18,7 @@ func TestOrganizationsService_ListProjects(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"state": "open", "page": "2"})
@@ -43,7 +43,7 @@ func TestOrganizationsService_CreateProject(t *testing.T) {
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
 
-	mux.HandleFunc("/repos/o/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
