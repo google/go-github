@@ -10,15 +10,6 @@ import (
 	"fmt"
 )
 
-// ProjectListOptions specifies the optional parameters to the
-// OrganizationsService.ListProjects method.
-type ProjectListOptions struct {
-	// Indicates the state of the projects to return. Can be either open, closed, or all. Default: open
-	State string `url:"state,omitempty"`
-
-	ListOptions
-}
-
 // ListProjects lists the projects for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-organization-projects
