@@ -1,4 +1,4 @@
-// Copyright 2016 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -28,7 +28,7 @@ func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	projects := []*Project{}
+	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
