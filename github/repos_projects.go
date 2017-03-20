@@ -13,7 +13,7 @@ import (
 // ListProjects lists the projects for a repo.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-repository-projects
-func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo string, opt *ProjectsListOptions) ([]*Project, *Response, error) {
+func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo string, opt *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {

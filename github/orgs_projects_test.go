@@ -25,7 +25,7 @@ func TestOrganizationsService_ListProjects(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ProjectsListOptions{State: "open", ListOptions: ListOptions{Page: 2}}
+	opt := &ProjectListOptions{State: "open", ListOptions: ListOptions{Page: 2}}
 	projects, _, err := client.Organizations.ListProjects(context.Background(), "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListProjects returned error: %v", err)
