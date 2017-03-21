@@ -14,17 +14,19 @@ import (
 	"testing"
 )
 
-func TestUsersService_ListGPGKeys(t *testing.T) {
+func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
 	})
 
-	keys, _, err := client.Users.ListGPGKeys(context.Background())
+	opt := &ListOptions{Page: 2}
+	keys, _, err := client.Users.ListGPGKeys(context.Background(), "", opt)
 	if err != nil {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
@@ -33,6 +35,32 @@ func TestUsersService_ListGPGKeys(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
+}
+
+func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
+	})
+
+	keys, _, err := client.Users.ListGPGKeys(context.Background(), "u", nil)
+	if err != nil {
+		t.Errorf("Users.ListGPGKeys returned error: %v", err)
+	}
+
+	want := []*GPGKey{{ID: Int(1), PrimaryKeyID: Int(2)}}
+	if !reflect.DeepEqual(keys, want) {
+		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
+	}
+}
+
+func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
+	_, _, err := client.Users.ListGPGKeys(context.Background(), "%", nil)
+	testURLParseError(t, err)
 }
 
 func TestUsersService_GetGPGKey(t *testing.T) {
