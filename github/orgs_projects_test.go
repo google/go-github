@@ -14,36 +14,36 @@ import (
 	"testing"
 )
 
-func TestRepositoriesService_ListProjects(t *testing.T) {
+func TestOrganizationsService_ListProjects(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testFormValues(t, r, values{"page": "2"})
+		testFormValues(t, r, values{"state": "open", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ProjectListOptions{ListOptions: ListOptions{Page: 2}}
-	projects, _, err := client.Repositories.ListProjects(context.Background(), "o", "r", opt)
+	opt := &ProjectListOptions{State: "open", ListOptions: ListOptions{Page: 2}}
+	projects, _, err := client.Organizations.ListProjects(context.Background(), "o", opt)
 	if err != nil {
-		t.Errorf("Repositories.ListProjects returned error: %v", err)
+		t.Errorf("Organizations.ListProjects returned error: %v", err)
 	}
 
 	want := []*Project{{ID: Int(1)}}
 	if !reflect.DeepEqual(projects, want) {
-		t.Errorf("Repositories.ListProjects returned %+v, want %+v", projects, want)
+		t.Errorf("Organizations.ListProjects returned %+v, want %+v", projects, want)
 	}
 }
 
-func TestRepositoriesService_CreateProject(t *testing.T) {
+func TestOrganizationsService_CreateProject(t *testing.T) {
 	setup()
 	defer teardown()
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
 
-	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -56,13 +56,13 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Repositories.CreateProject(context.Background(), "o", "r", input)
+	project, _, err := client.Organizations.CreateProject(context.Background(), "o", input)
 	if err != nil {
-		t.Errorf("Repositories.CreateProject returned error: %v", err)
+		t.Errorf("Organizations.CreateProject returned error: %v", err)
 	}
 
 	want := &Project{ID: Int(1)}
 	if !reflect.DeepEqual(project, want) {
-		t.Errorf("Repositories.CreateProject returned %+v, want %+v", project, want)
+		t.Errorf("Organizations.CreateProject returned %+v, want %+v", project, want)
 	}
 }
