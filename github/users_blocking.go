@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ListBlockedUsers lists all the blocked users by the authenticated user
+// ListBlockedUsers lists all the blocked users by the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#list-blocked-users
 func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) ([]*User, *Response, error) {
@@ -25,6 +25,9 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) (
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
+
 	var blockedUsers []*User
 	resp, err := s.client.Do(ctx, req, &blockedUsers)
 	if err != nil {
@@ -34,7 +37,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) (
 	return blockedUsers, resp, nil
 }
 
-// CheckIfUserIsBlocked allows the authenticated user to check if the other user is blocked
+// CheckIfUserIsBlocked allows the authenticated user to check if the other user is blocked.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#check-whether-youve-blocked-a-user
 func (s *UsersService) CheckIfUserIsBlocked(ctx context.Context, user string) (bool, *Response, error) {
@@ -45,12 +48,15 @@ func (s *UsersService) CheckIfUserIsBlocked(ctx context.Context, user string) (b
 		return false, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
+
 	resp, err := s.client.Do(ctx, req, nil)
 	isBlocked, err := parseBoolResponse(err)
 	return isBlocked, resp, err
 }
 
-// BlockUser allows authenticated User to block another User
+// BlockUser allows authenticated User to block another User.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#block-a-user
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
@@ -61,10 +67,13 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 		return nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
+
 	return s.client.Do(ctx, req, nil)
 }
 
-// UnblockUser allows authenticated User to unblock BlockedUser
+// UnblockUser allows authenticated User to unblock BlockedUser.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#unblock-a-user
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {
@@ -74,6 +83,9 @@ func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response,
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

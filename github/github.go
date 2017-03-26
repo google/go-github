@@ -97,6 +97,9 @@ const (
 
 	// https://developer.github.com/changes/2016-12-14-reviews-api/
 	mediaTypePullRequestReviewsPreview = "application/vnd.github.black-cat-preview+json"
+
+	// https://developer.github.com/changes/2017-02-28-user-blocking-apis-and-webhook/
+	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
