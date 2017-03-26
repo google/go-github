@@ -395,11 +395,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-<<<<<<< HEAD
 	invitations, _, err := client.Organizations.ListPendingOrgInvitations(context.Background(), 1, opt)
-=======
-	invitations, _, err := client.Organizations.ListPendingOrgInvitations(1, opt)
->>>>>>> 1bd4328a520dfc6d58f92e0f441f3f56718b725d
 	if err != nil {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
