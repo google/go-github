@@ -6,7 +6,9 @@
 package github
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -45,10 +47,12 @@ type updateRefRequest struct {
 	Force *bool   `json:"force"`
 }
 
-// GetRef fetches the Reference object for a given Git ref.
+// GetRef fetches a slice of Reference objects for a given Git ref.
+// If a Git ref does not match exactly, GitHub will return all refs that match it as a prefix
+// E.g. feature -> [featureA, featureB]
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
-func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
+func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -56,13 +60,35 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 		return nil, nil, err
 	}
 
-	r := new(Reference)
-	resp, err := s.client.Do(ctx, req, r)
+	buf := new(bytes.Buffer)
+	resp, err := s.client.Do(ctx, req, buf)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return r, resp, nil
+	rbuf := bytes.NewBuffer(buf.Bytes())
+
+	var rs []*Reference
+	r := new(Reference)
+	// prioritize the most common case: a single returned ref
+	err = json.NewDecoder(rbuf).Decode(r)
+	if err != nil {
+		_, ok := err.(*json.UnmarshalTypeError)
+		if ok {
+			rbuf = bytes.NewBuffer(buf.Bytes())
+			serr := json.NewDecoder(rbuf).Decode(&rs)
+			if serr != nil {
+				return nil, resp, serr
+			}
+		} else {
+			return nil, resp, err
+		}
+
+	} else {
+		rs = append(rs, r)
+	}
+
+	return rs, resp, nil
 }
 
 // ReferenceListOptions specifies optional parameters to the
