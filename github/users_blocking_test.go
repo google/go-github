@@ -38,7 +38,7 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 	}
 }
 
-func TestUsersService_CheckIfUserIsBlocked(t *testing.T) {
+func TestUsersService_IsBlocked(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -48,12 +48,12 @@ func TestUsersService_CheckIfUserIsBlocked(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	isBlocked, _, err := client.Users.CheckIfUserIsBlocked(context.Background(), "u")
+	isBlocked, _, err := client.Users.IsBlocked(context.Background(), "u")
 	if err != nil {
-		t.Errorf("Users.CheckIfUserIsBlocked returned error: %v", err)
+		t.Errorf("Users.IsBlocked returned error: %v", err)
 	}
 	if want := false; isBlocked != want {
-		t.Errorf("Users.CheckIfUserIsBlocked returned %+v, want %+v", isBlocked, want)
+		t.Errorf("Users.IsBlocked returned %+v, want %+v", isBlocked, want)
 	}
 }
 

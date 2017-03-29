@@ -37,10 +37,10 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) (
 	return blockedUsers, resp, nil
 }
 
-// CheckIfUserIsBlocked allows the authenticated user to check if the other user is blocked.
+// IsBlocked allows the authenticated user to check if the other user is blocked.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#check-whether-youve-blocked-a-user
-func (s *UsersService) CheckIfUserIsBlocked(ctx context.Context, user string) (bool, *Response, error) {
+func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("users/blocks/%v", user)
 
 	req, err := s.client.NewRequest("GET", u, nil)
