@@ -47,12 +47,49 @@ type updateRefRequest struct {
 	Force *bool   `json:"force"`
 }
 
-// GetRef fetches a slice of Reference objects for a given Git ref.
-// If a Git ref does not match exactly, GitHub will return all refs that match it as a prefix
-// E.g. feature -> [featureA, featureB]
+// GetRef fetches a single Reference object for a given Git ref.
+// If a Git ref does not match exactly, this method will return a nil result.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
-func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {
+func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
+	ref = strings.TrimPrefix(ref, "refs/")
+	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	resp, err := s.client.Do(ctx, req, buf)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	rbuf := bytes.NewBuffer(buf.Bytes())
+	r := new(Reference)
+
+	err = json.NewDecoder(rbuf).Decode(r)
+	if err != nil {
+		_, ok := err.(*json.UnmarshalTypeError)
+		if ok {
+			// multiple responses
+			return nil, resp, nil
+		} else {
+			return nil, resp, err
+		}
+	}
+
+	return r, resp, nil
+}
+
+// GetRefs fetches a slice of Reference objects for a given Git ref.
+// If a Git ref does not match exactly, GitHub will return all refs that match it as a prefix.
+// Example:
+// feature -> [featureA, featureB]
+// featureA -> [featureA]
+//
+// GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
+func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, ref)
 	req, err := s.client.NewRequest("GET", u, nil)
