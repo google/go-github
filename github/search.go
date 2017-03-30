@@ -58,7 +58,7 @@ func (s *SearchService) Repositories(ctx context.Context, query string, opt *Sea
 
 // CommitsSearchResult represents the result of a commits search.
 type CommitsSearchResult struct {
-	TotalCount        *int            `json:"total_count,omitempty"`
+	Total             *int            `json:"total_count,omitempty"`
 	IncompleteResults *bool           `json:"incomplete_results,omitempty"`
 	Commits           []*CommitResult `json:"items,omitempty"`
 }
