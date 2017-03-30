@@ -69,14 +69,11 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	r := new(Reference)
 
 	err = json.NewDecoder(rbuf).Decode(r)
-	if err != nil {
-		_, ok := err.(*json.UnmarshalTypeError)
-		if ok {
-			// multiple responses
-			return nil, resp, nil
-		} else {
-			return nil, resp, err
-		}
+	if _, ok := err.(*json.UnmarshalTypeError); ok {
+		// Multiple refs, means there wasn't an exact match.
+		return nil, resp, nil
+	} else if err != nil {
+		return nil, resp, err
 	}
 
 	return r, resp, nil
@@ -109,20 +106,17 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 	r := new(Reference)
 	// prioritize the most common case: a single returned ref
 	err = json.NewDecoder(rbuf).Decode(r)
-	if err != nil {
-		_, ok := err.(*json.UnmarshalTypeError)
-		if ok {
-			rbuf = bytes.NewBuffer(buf.Bytes())
-			serr := json.NewDecoder(rbuf).Decode(&rs)
-			if serr != nil {
-				return nil, resp, serr
-			}
-		} else {
-			return nil, resp, err
-		}
-
-	} else {
+	if err == nil {
 		rs = append(rs, r)
+	} else if _, ok := err.(*json.UnmarshalTypeError); ok {
+		// check for multiple refs returned
+		rbuf = bytes.NewBuffer(buf.Bytes())
+		serr := json.NewDecoder(rbuf).Decode(&rs)
+		if serr != nil {
+			return nil, resp, serr
+		}
+	} else {
+		return nil, resp, err
 	}
 
 	return rs, resp, nil
