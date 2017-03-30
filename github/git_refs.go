@@ -59,15 +59,9 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 		return nil, nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	resp, err := s.client.Do(ctx, req, buf)
-	if err != nil {
-		return nil, resp, err
-	}
-
 	r := new(Reference)
+	resp, err := s.client.Do(ctx, req, r)
 
-	err = json.NewDecoder(buf).Decode(r)
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
 		// Multiple refs, means there wasn't an exact match.
 		return nil, resp, nil
@@ -99,7 +93,7 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 		return nil, resp, err
 	}
 
-	rbuf := bytes.NewBuffer(buf.Bytes())
+	rbuf := bytes.NewReader(buf.Bytes())
 
 	var rs []*Reference
 	r := new(Reference)
@@ -109,10 +103,10 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 		rs = append(rs, r)
 	} else if _, ok := err.(*json.UnmarshalTypeError); ok {
 		// check for multiple refs returned
-		rbuf = bytes.NewBuffer(buf.Bytes())
-		serr := json.NewDecoder(rbuf).Decode(&rs)
-		if serr != nil {
-			return nil, resp, serr
+		rbuf = bytes.NewReader(buf.Bytes())
+		err := json.NewDecoder(rbuf).Decode(&rs)
+		if err != nil {
+			return nil, resp, err
 		}
 	} else {
 		return nil, resp, err
