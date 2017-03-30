@@ -65,10 +65,9 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 		return nil, resp, err
 	}
 
-	rbuf := bytes.NewBuffer(buf.Bytes())
 	r := new(Reference)
 
-	err = json.NewDecoder(rbuf).Decode(r)
+	err = json.NewDecoder(buf).Decode(r)
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
 		// Multiple refs, means there wasn't an exact match.
 		return nil, resp, nil
