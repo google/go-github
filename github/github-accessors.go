@@ -356,6 +356,14 @@ func (c *Commit) GetCommentCount() int {
 	return *c.CommentCount
 }
 
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *Commit) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (c *Commit) GetMessage() string {
 	if c == nil || c.Message == nil {

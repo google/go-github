@@ -22,6 +22,7 @@ type SignatureVerification struct {
 // Commit represents a GitHub commit.
 type Commit struct {
 	SHA          *string                `json:"sha,omitempty"`
+	HTMLURL      *string                `json:"html_url,omitempty"`
 	Author       *CommitAuthor          `json:"author,omitempty"`
 	Committer    *CommitAuthor          `json:"committer,omitempty"`
 	Message      *string                `json:"message,omitempty"`
