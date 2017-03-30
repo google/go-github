@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -41,7 +41,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) (
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#check-whether-youve-blocked-a-user
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("users/blocks/%v", user)
+	u := fmt.Sprintf("user/blocks/%v", user)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#block-a-user
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("users/blocks/%v", user)
+	u := fmt.Sprintf("user/blocks/%v", user)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#unblock-a-user
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {
-	u := fmt.Sprintf("users/blocks/%v", user)
+	u := fmt.Sprintf("user/blocks/%v", user)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

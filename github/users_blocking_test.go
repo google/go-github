@@ -1,4 +1,4 @@
-// Copyright 2014 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -52,7 +52,7 @@ func TestUsersService_IsBlocked(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.IsBlocked returned error: %v", err)
 	}
-	if want := false; isBlocked != want {
+	if want := true; isBlocked != want {
 		t.Errorf("Users.IsBlocked returned %+v, want %+v", isBlocked, want)
 	}
 }
@@ -61,7 +61,7 @@ func TestUsersService_BlockUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/users/blocks/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
@@ -77,7 +77,7 @@ func TestUsersService_UnblockUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/users/blocks/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
