@@ -59,7 +59,7 @@ func TestSearchService_Commits(t *testing.T) {
 			"order": "desc",
 		})
 
-		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"hash":"random_hash1"},{"hash":"random_hash2"}]}`)
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"sha":"random_hash1"},{"sha":"random_hash2"}]}`)
 	})
 
 	opts := &SearchOptions{Sort: "author-date", Order: "desc"}
@@ -71,7 +71,7 @@ func TestSearchService_Commits(t *testing.T) {
 	want := &CommitsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Commits:           []*CommitResult{{Hash: String("random_hash1")}, {Hash: String("random_hash2")}},
+		Commits:           []*CommitResult{{SHA: String("random_hash1")}, {SHA: String("random_hash2")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
