@@ -65,16 +65,17 @@ type CommitsSearchResult struct {
 
 // CommitResult represents a commit object as returned in commit search endpoint response.
 type CommitResult struct {
-	SHA         *string     `json:"sha,omitempty"`
-	Commit      *Commit     `json:"commit,omitempty"`
-	Author      *User       `json:"author,omitempty"`
-	Committer   *User       `json:"committer,omitempty"`
-	Parents     []*Commit   `json:"parents,omitempty"`
-	HTMLURL     *string     `json:"html_url,omitempty"`
-	URL         *string     `json:"url,omitempty"`
-	CommentsURL *string     `json:"comments_url,omitempty"`
-	Repository  *Repository `json:"repository,omitempty"`
-	Score       *float64    `json:"score,omitempty"`
+	SHA         *string   `json:"sha,omitempty"`
+	Commit      *Commit   `json:"commit,omitempty"`
+	Author      *User     `json:"author,omitempty"`
+	Committer   *User     `json:"committer,omitempty"`
+	Parents     []*Commit `json:"parents,omitempty"`
+	HTMLURL     *string   `json:"html_url,omitempty"`
+	URL         *string   `json:"url,omitempty"`
+	CommentsURL *string   `json:"comments_url,omitempty"`
+
+	Repository *Repository `json:"repository,omitempty"`
+	Score      *float64    `json:"score,omitempty"`
 }
 
 // Commits searches commits via various criteria.
