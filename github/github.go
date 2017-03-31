@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	libraryVersion = "5"
+	libraryVersion = "6"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github/" + libraryVersion
