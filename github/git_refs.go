@@ -6,7 +6,6 @@
 package github
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -86,32 +85,26 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 		return nil, nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	resp, err := s.client.Do(ctx, req, buf)
+	var rawJSON json.RawMessage
+	resp, err := s.client.Do(ctx, req, &rawJSON)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	rbuf := bytes.NewReader(buf.Bytes())
-
 	var rs []*Reference
 	r := new(Reference)
 	// prioritize the most common case: a single returned ref
-	err = json.NewDecoder(rbuf).Decode(r)
-	if err == nil {
-		rs = append(rs, r)
-	} else if _, ok := err.(*json.UnmarshalTypeError); ok {
-		// check for multiple refs returned
-		rbuf = bytes.NewReader(buf.Bytes())
-		err := json.NewDecoder(rbuf).Decode(&rs)
-		if err != nil {
-			return nil, resp, err
-		}
-	} else {
-		return nil, resp, err
+	singleUnmarshalErr := json.Unmarshal(rawJSON, r)
+	if singleUnmarshalErr == nil {
+		return append(rs, r), resp, nil
 	}
 
-	return rs, resp, nil
+	multipleUnmarshalErr := json.Unmarshal(rawJSON, &rs)
+	if multipleUnmarshalErr == nil {
+		return rs, resp, nil
+	}
+
+	return nil, resp, fmt.Errorf("unmarshalling failed for both single and multiple responses: %s and %s ", singleUnmarshalErr, multipleUnmarshalErr)
 }
 
 // ReferenceListOptions specifies optional parameters to the
