@@ -511,6 +511,7 @@ type Branch struct {
 type Protection struct {
 	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
 	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	EnforceAdmins              *AdminEnforcement           `json:"enforce_admins"`
 	Restrictions               *BranchRestrictions         `json:"restrictions"`
 }
 
@@ -518,6 +519,7 @@ type Protection struct {
 type ProtectionRequest struct {
 	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
 	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
+	EnforceAdmins              bool                        `json:"enforce_admins"`
 	Restrictions               *BranchRestrictionsRequest  `json:"restrictions"`
 }
 
@@ -536,6 +538,12 @@ type RequiredStatusChecks struct {
 type RequiredPullRequestReviews struct {
 	// Enforce pull request reviews for repository administrators. (Required.)
 	IncludeAdmins bool `json:"include_admins"`
+}
+
+// AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
+type AdminEnforcement struct {
+	URL     *string `json:"url,omitempty"`
+	Enabled bool    `json:"enabled"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or
