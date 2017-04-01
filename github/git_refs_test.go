@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestGitService_GetRef_SingleResult(t *testing.T) {
+func TestGitService_GetRef_singleRef(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -56,7 +56,7 @@ func TestGitService_GetRef_SingleResult(t *testing.T) {
 	}
 }
 
-func TestGitService_GetRef_MultipleResult(t *testing.T) {
+func TestGitService_GetRef_multipleRefs(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -97,7 +97,7 @@ func TestGitService_GetRef_MultipleResult(t *testing.T) {
 
 }
 
-func TestGitService_GetRefs_SingleResult(t *testing.T) {
+func TestGitService_GetRefs_singleRef(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -117,7 +117,7 @@ func TestGitService_GetRefs_SingleResult(t *testing.T) {
 
 	refs, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
 	if err != nil {
-		t.Fatalf("Git.GetRef returned error: %v", err)
+		t.Fatalf("Git.GetRefs returned error: %v", err)
 	}
 
 	ref := refs[0]
@@ -131,16 +131,16 @@ func TestGitService_GetRefs_SingleResult(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(ref, want) {
-		t.Errorf("Git.GetRef returned %+v, want %+v", ref, want)
+		t.Errorf("Git.GetRefs returned %+v, want %+v", ref, want)
 	}
 
 	// without 'refs/' prefix
 	if _, _, err := client.Git.GetRefs(context.Background(), "o", "r", "heads/b"); err != nil {
-		t.Errorf("Git.GetRef returned error: %v", err)
+		t.Errorf("Git.GetRefs returned error: %v", err)
 	}
 }
 
-func TestGitService_GetRefs_MultipleResult(t *testing.T) {
+func TestGitService_GetRefs_multipleRefs(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -172,7 +172,7 @@ func TestGitService_GetRefs_MultipleResult(t *testing.T) {
 
 	refs, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
 	if err != nil {
-		t.Errorf("Git.GetRef returned error: %v", err)
+		t.Errorf("Git.GetRefs returned error: %v", err)
 	}
 
 	want := &Reference{
@@ -185,7 +185,7 @@ func TestGitService_GetRefs_MultipleResult(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(refs[0], want) {
-		t.Errorf("Git.GetRef returned %+v, want %+v", refs[0], want)
+		t.Errorf("Git.GetRefs returned %+v, want %+v", refs[0], want)
 	}
 }
 

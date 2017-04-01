@@ -47,7 +47,7 @@ type updateRefRequest struct {
 }
 
 // GetRef fetches a single Reference object for a given Git ref.
-// If a Git ref does not match exactly, this method will return a nil result.
+// If there is no exact match, GetRef will return a nil Reference.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
@@ -71,10 +71,12 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 }
 
 // GetRefs fetches a slice of Reference objects for a given Git ref.
-// If a Git ref does not match exactly, GitHub will return all refs that match it as a prefix.
-// Example:
-// feature -> [featureA, featureB]
-// featureA -> [featureA]
+// If there is an exact match, only that ref is returned.
+// If there is no exact match, GitHub returns all refs that start with ref.
+// For example:
+//
+// 	"heads/featureA" -> ["refs/heads/featureA"]                         // Exact match, single ref is returned.
+// 	"heads/feature"  -> ["refs/heads/featureA", "refs/heads/featureB"]  // All refs that start with ref.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {
@@ -91,20 +93,21 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 		return nil, resp, err
 	}
 
-	var rs []*Reference
+	// Prioritize the most common case: a single returned ref.
 	r := new(Reference)
-	// prioritize the most common case: a single returned ref
-	singleUnmarshalErr := json.Unmarshal(rawJSON, r)
-	if singleUnmarshalErr == nil {
-		return append(rs, r), resp, nil
+	singleUnmarshalError := json.Unmarshal(rawJSON, r)
+	if singleUnmarshalError == nil {
+		return []*Reference{r}, resp, nil
 	}
 
-	multipleUnmarshalErr := json.Unmarshal(rawJSON, &rs)
-	if multipleUnmarshalErr == nil {
+	// Attempt to unmarshal multiple refs.
+	var rs []*Reference
+	multipleUnmarshalError := json.Unmarshal(rawJSON, &rs)
+	if multipleUnmarshalError == nil {
 		return rs, resp, nil
 	}
 
-	return nil, resp, fmt.Errorf("unmarshalling failed for both single and multiple responses: %s and %s ", singleUnmarshalErr, multipleUnmarshalErr)
+	return nil, resp, fmt.Errorf("unmarshalling failed for both single and multiple refs: %s and %s", singleUnmarshalError, multipleUnmarshalError)
 }
 
 // ReferenceListOptions specifies optional parameters to the
