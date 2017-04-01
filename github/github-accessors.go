@@ -4236,6 +4236,14 @@ func (p *PushEventRepoOwner) GetName() string {
 	return *p.Name
 }
 
+// GetArchiveURL returns the ArchiveURL field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetArchiveURL() string {
+	if p == nil || p.ArchiveURL == nil {
+		return ""
+	}
+	return *p.ArchiveURL
+}
+
 // GetCloneURL returns the CloneURL field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetCloneURL() string {
 	if p == nil || p.CloneURL == nil {
