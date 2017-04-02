@@ -90,7 +90,6 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
 		fmt.Fprintf(w, `{"permission":"admin","user":{"login":"u"}}`)
 	})
 
