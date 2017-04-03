@@ -73,10 +73,12 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 // GetRefs fetches a slice of Reference objects for a given Git ref.
 // If there is an exact match, only that ref is returned.
 // If there is no exact match, GitHub returns all refs that start with ref.
+// If returned error is nil, there will be at least 1 ref returned.
 // For example:
 //
 // 	"heads/featureA" -> ["refs/heads/featureA"]                         // Exact match, single ref is returned.
 // 	"heads/feature"  -> ["refs/heads/featureA", "refs/heads/featureB"]  // All refs that start with ref.
+// 	"heads/feature"  -> []                                              // Returns an error.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {
@@ -104,6 +106,9 @@ func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref
 	var rs []*Reference
 	multipleUnmarshalError := json.Unmarshal(rawJSON, &rs)
 	if multipleUnmarshalError == nil {
+		if len(rs) == 0 {
+			return nil, resp, fmt.Errorf("unexpected response from GitHub API: an array of refs with length 0")
+		}
 		return rs, resp, nil
 	}
 

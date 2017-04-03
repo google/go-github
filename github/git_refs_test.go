@@ -189,6 +189,21 @@ func TestGitService_GetRefs_multipleRefs(t *testing.T) {
 	}
 }
 
+func TestGitService_GetRefs_noRefs(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "[]")
+	})
+
+	_, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
+	if err == nil {
+		t.Errorf("Git.GetRefs did not return an error when one was expected.")
+	}
+}
+
 func TestGitService_ListRefs(t *testing.T) {
 	setup()
 	defer teardown()
