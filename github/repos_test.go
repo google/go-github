@@ -623,3 +623,55 @@ func TestRepositoriesService_License(t *testing.T) {
 		t.Errorf("Repositories.License returned %+v, want %+v", got, want)
 	}
 }
+
+func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprint(w, `{"include_admins": true,"strict": true,"contexts": ["x","y","z"]}`)
+	})
+
+	contexts, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+	}
+
+	want := &RequiredStatusChecks{
+		IncludeAdmins: true,
+		Strict:        true,
+		Contexts:      []string{"x", "y", "z"},
+	}
+	if !reflect.DeepEqual(contexts, want) {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+	}
+}
+
+func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprint(w, `["x", "y", "z"]`)
+	})
+
+	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+	}
+
+	want := []string{"x", "y", "z"}
+	if !reflect.DeepEqual(contexts, want) {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+	}
+}
