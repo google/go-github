@@ -78,7 +78,7 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 //
 // 	"heads/featureA"  -> ["refs/heads/featureA"]                         // Exact match, single ref is returned.
 // 	"heads/feature"   -> ["refs/heads/featureA", "refs/heads/featureB"]  // All refs that start with ref.
-// 	"heads/notexist"  -> []                                             // Returns an error.
+// 	"heads/notexist"  -> []                                              // Returns an error.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRefs(ctx context.Context, owner string, repo string, ref string) ([]*Reference, *Response, error) {

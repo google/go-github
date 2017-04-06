@@ -189,6 +189,7 @@ func TestGitService_GetRefs_multipleRefs(t *testing.T) {
 	}
 }
 
+// TestGitService_GetRefs_noRefs tests for behaviour resulting from an unexpected GH response. This should never actually happen.
 func TestGitService_GetRefs_noRefs(t *testing.T) {
 	setup()
 	defer teardown()
@@ -199,9 +200,11 @@ func TestGitService_GetRefs_noRefs(t *testing.T) {
 	})
 
 	_, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
-	if err == nil {
-		t.Errorf("Git.GetRefs did not return an error when one was expected.")
+	want := "unexpected response from GitHub API: an array of refs with length 0"
+	if err.Error() != want {
+		t.Errorf("Git.GetRefs returned %+v, want %+v", err, want)
 	}
+
 }
 
 func TestGitService_ListRefs(t *testing.T) {
