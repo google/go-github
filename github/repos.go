@@ -509,22 +509,21 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
-	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
-	EnforceAdmins              *AdminEnforcement           `json:"enforce_admins"`
-	Restrictions               *BranchRestrictions         `json:"restrictions"`
+	RequiredStatusChecks *RequiredStatusChecks `json:"required_status_checks"`
+	EnforceAdmins        *AdminEnforcement     `json:"enforce_admins"`
+	Restrictions         *BranchRestrictions   `json:"restrictions"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
 type ProtectionRequest struct {
-	RequiredStatusChecks       *RequiredStatusChecks       `json:"required_status_checks"`
-	RequiredPullRequestReviews *RequiredPullRequestReviews `json:"required_pull_request_reviews"`
-	EnforceAdmins              bool                        `json:"enforce_admins"`
-	Restrictions               *BranchRestrictionsRequest  `json:"restrictions"`
+	RequiredStatusChecks *RequiredStatusChecks      `json:"required_status_checks"`
+	EnforceAdmins        bool                       `json:"enforce_admins"`
+	Restrictions         *BranchRestrictionsRequest `json:"restrictions"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
+	// Deprecated: Use EnforceAdmins instead.
 	// Enforce required status checks for repository administrators. (Required.)
 	IncludeAdmins bool `json:"include_admins"`
 	// Require branches to be up to date before merging. (Required.)
@@ -532,12 +531,6 @@ type RequiredStatusChecks struct {
 	// The list of status checks to require in order to merge into this
 	// branch. (Required; use []string{} instead of nil for empty list.)
 	Contexts []string `json:"contexts"`
-}
-
-// RequiredPullRequestReviews represents the protection configuration for pull requests.
-type RequiredPullRequestReviews struct {
-	// Enforce pull request reviews for repository administrators. (Required.)
-	IncludeAdmins bool `json:"include_admins"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
