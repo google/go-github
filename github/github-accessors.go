@@ -6212,6 +6212,14 @@ func (t *Team) GetID() int {
 	return *t.ID
 }
 
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (t *Team) GetLDAPDN() string {
+	if t == nil || t.LDAPDN == nil {
+		return ""
+	}
+	return *t.LDAPDN
+}
+
 // GetMembersCount returns the MembersCount field if it's non-nil, zero value otherwise.
 func (t *Team) GetMembersCount() int {
 	if t == nil || t.MembersCount == nil {
