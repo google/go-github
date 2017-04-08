@@ -39,6 +39,10 @@ type Team struct {
 	Organization    *Organization `json:"organization,omitempty"`
 	MembersURL      *string       `json:"members_url,omitempty"`
 	RepositoriesURL *string       `json:"repositories_url,omitempty"`
+
+	// LDAPDN is only available in GitHub Enterprise and when the team
+	// membership is synchronized with LDAP.
+	LDAPDN *string `json:"ldap_dn,omitempty"`
 }
 
 func (t Team) String() string {
