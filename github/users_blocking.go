@@ -37,7 +37,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) (
 	return blockedUsers, resp, nil
 }
 
-// IsBlocked allows the authenticated user to check if the other user is blocked.
+// IsBlocked reports whether specified user is blocked by the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#check-whether-youve-blocked-a-user
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
@@ -56,7 +56,7 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 	return isBlocked, resp, err
 }
 
-// BlockUser allows authenticated User to block another User.
+// BlockUser blocks specified user for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#block-a-user
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
@@ -73,7 +73,7 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 	return s.client.Do(ctx, req, nil)
 }
 
-// UnblockUser allows authenticated User to unblock BlockedUser.
+// UnblockUser unblocks specified user for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#unblock-a-user
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {
