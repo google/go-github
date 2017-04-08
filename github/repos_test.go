@@ -637,9 +637,9 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		fmt.Fprint(w, `{"include_admins": true,"strict": true,"contexts": ["x","y","z"]}`)
 	})
 
-	contexts, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
+	checks, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
 	if err != nil {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+		t.Errorf("Repositories.GetRequiredStatusChecks returned error: %v", err)
 	}
 
 	want := &RequiredStatusChecks{
@@ -647,8 +647,8 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		Strict:        true,
 		Contexts:      []string{"x", "y", "z"},
 	}
-	if !reflect.DeepEqual(contexts, want) {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+	if !reflect.DeepEqual(checks, want) {
+		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
 	}
 }
 
