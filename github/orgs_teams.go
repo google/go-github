@@ -418,9 +418,6 @@ func (s *OrganizationsService) ListPendingTeamInvitations(ctx context.Context, t
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeOrgMembershipPreview)
-
 	var pendingInvitations []*Invitation
 	resp, err := s.client.Do(ctx, req, &pendingInvitations)
 	if err != nil {

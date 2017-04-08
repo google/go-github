@@ -89,9 +89,6 @@ const (
 	// https://developer.github.com/changes/2016-09-14-Integrations-Early-Access/
 	mediaTypeIntegrationPreview = "application/vnd.github.machine-man-preview+json"
 
-	// https://developer.github.com/changes/2016-11-28-preview-org-membership/
-	mediaTypeOrgMembershipPreview = "application/vnd.github.korra-preview+json"
-
 	// https://developer.github.com/changes/2017-01-05-commit-search-api/
 	mediaTypeCommitSearchPreview = "application/vnd.github.cloak-preview+json"
 

@@ -23,7 +23,6 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 			"filter": "2fa_disabled",
 			"page":   "2",
 		})
-		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
