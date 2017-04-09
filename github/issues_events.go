@@ -65,6 +65,7 @@ type IssueEvent struct {
 
 	// Only present on certain events; see above.
 	Assignee  *User      `json:"assignee,omitempty"`
+	Assigner  *User      `json:"assigner,omitempty"`
 	CommitID  *string    `json:"commit_id,omitempty"`
 	Milestone *Milestone `json:"milestone,omitempty"`
 	Label     *Label     `json:"label,omitempty"`
