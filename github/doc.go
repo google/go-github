@@ -71,8 +71,10 @@ limited to 60 requests per hour, while authenticated clients can make up to
 that are not issued on behalf of a user, use the
 UnauthenticatedRateLimitedTransport.
 
-You can always call RateLimits() directly to get the most up-to-date
-rate limit data for the client.
+The returned Response.Rate value contains the rate limit information
+from the most recent API call. If a recent enough response isn't
+available, you can use RateLimits to fetch the most up-to-date rate
+limit data for the client.
 
 To detect an API rate limit error, you can check if its type is *github.RateLimitError:
 
