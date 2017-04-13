@@ -47,7 +47,7 @@ type updateRefRequest struct {
 }
 
 // GetRef fetches a single Reference object for a given Git ref.
-// If there is no exact match, GetRef will return a nil Reference.
+// If there is no exact match, GetRef will return an error.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
@@ -61,8 +61,7 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	r := new(Reference)
 	resp, err := s.client.Do(ctx, req, r)
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
-		// Multiple refs, means there wasn't an exact match.
-		return nil, resp, nil
+		return nil, resp, fmt.Errorf("No exact match found for this ref")
 	} else if err != nil {
 		return nil, resp, err
 	}
