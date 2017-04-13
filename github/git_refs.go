@@ -50,6 +50,8 @@ type updateRefRequest struct {
 // GetRef fetches a single Reference object for a given Git ref.
 // If there is no exact match, GetRef will return an error.
 //
+// Note: the GitHub API can return multiple matches, if you wish to use this functionality please use the GetRefs() method.
+//
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
