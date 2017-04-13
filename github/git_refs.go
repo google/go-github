@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -61,7 +62,8 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	r := new(Reference)
 	resp, err := s.client.Do(ctx, req, r)
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
-		return nil, resp, fmt.Errorf("No exact match found for this ref")
+		// Multiple refs, means there wasn't an exact match.
+		return nil, resp, errors.New("no exact match found for this ref")
 	} else if err != nil {
 		return nil, resp, err
 	}

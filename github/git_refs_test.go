@@ -87,9 +87,9 @@ func TestGitService_GetRef_multipleRefs(t *testing.T) {
 	})
 
 	_, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
-	want := "No exact match found for this ref"
+	want := "no exact match found for this ref"
 	if err.Error() != want {
-		t.Errorf("Git.GetRefs returned %+v, want %+v", err, want)
+		t.Errorf("Git.GetRef returned %+v, want %+v", err, want)
 	}
 
 }
