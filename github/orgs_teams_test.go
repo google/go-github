@@ -48,7 +48,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p"}`)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com"}`)
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
@@ -56,7 +56,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 		t.Errorf("Organizations.GetTeam returned error: %v", err)
 	}
 
-	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p")}
+	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
 	}
@@ -509,7 +509,6 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 	mux.HandleFunc("/teams/1/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
-		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
 		fmt.Fprint(w, `[
 				{
     					"id": 1,
