@@ -76,3 +76,16 @@ func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, t
 	resp, err := s.client.Do(ctx, req, t)
 	return t, resp, err
 }
+
+// DeleteTag deletes a tag from a repository.
+//
+// GitHub API docs: http://developer.github.com/v3/git/refs/#delete-a-reference
+func (s *GitService) DeleteTag(owner string, repo string, tag string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/git/refs/tags/%v", owner, repo, tag)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
