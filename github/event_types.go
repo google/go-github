@@ -670,3 +670,14 @@ type WatchEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// DeploymentEvent represents the payload delivered by Deployment webhook.
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#deploymentevent
+type DeploymentEvent struct {
+	Deployment *Deployment `json:"deployment,omitempty"`
+	Repo       *Repository `json:"repository,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Sender *User `json:"sender,omitempty"`
+}
