@@ -670,3 +670,16 @@ type WatchEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// DeleteEvent represents the payload delivered by Delete webhook.
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#deleteevent
+type DeleteEvent struct {
+	Ref     *string `json:"ref,omitempty"`
+	RefType *string `json:"ref_type,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	PusherType *string     `json:"pusher_type,omitempty"`
+	Repo       *Repository `json:"repository,omitempty"`
+	Sender     *User       `json:"sender,omitempty"`
+}
