@@ -161,11 +161,15 @@ func validateSignature(signature string, payload, secretKey []byte) error {
 }
 
 // WebHookType returns the event type of webhook request r.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#webhook-headers
 func WebHookType(r *http.Request) string {
 	return r.Header.Get(eventTypeHeader)
 }
 
 // DeliveryID returns the unique delivery ID of webhook request r.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#webhook-headers
 func DeliveryID(r *http.Request) string {
 	return r.Header.Get(deliveryIDHeader)
 }
