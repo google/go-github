@@ -33,6 +33,8 @@ const (
 	signatureHeader = "X-Hub-Signature"
 	// eventTypeHeader is the GitHub header key used to pass the event type.
 	eventTypeHeader = "X-Github-Event"
+	// deliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
+	deliveryIDHeader = "X-Github-Delivery"
 )
 
 var (
@@ -161,6 +163,11 @@ func validateSignature(signature string, payload, secretKey []byte) error {
 // WebHookType returns the event type of webhook request r.
 func WebHookType(r *http.Request) string {
 	return r.Header.Get(eventTypeHeader)
+}
+
+// DeliveryID returns the unique delivery ID of webhook request r.
+func DeliveryID(r *http.Request) string {
+	return r.Header.Get(deliveryIDHeader)
 }
 
 // ParseWebHook parses the event payload. For recognized event types, a
