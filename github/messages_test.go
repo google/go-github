@@ -231,6 +231,6 @@ func TestDeliveryID(t *testing.T) {
 
 	got := DeliveryID(req)
 	if got != id {
-		t.Errorf("DeliveryID(%#v) = %#v, want %#v", req, got, id)
+		t.Errorf("DeliveryID(%#v) = %q, want %q", req, got, id)
 	}
 }
