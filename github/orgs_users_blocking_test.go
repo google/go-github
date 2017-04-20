@@ -14,6 +14,7 @@ import (
 )
 
 func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
+	// TODO: add a check for scope to be admin:org
 	setup()
 	defer teardown()
 
@@ -39,6 +40,7 @@ func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
 }
 
 func TestOrganizationsService_IsBlocked(t *testing.T) {
+	// TODO: add a check for scope to be admin:org
 	setup()
 	defer teardown()
 
@@ -58,6 +60,7 @@ func TestOrganizationsService_IsBlocked(t *testing.T) {
 }
 
 func TestOrganizationsService_BlockUser(t *testing.T) {
+	// TODO: add a check for scope to be admin:org
 	setup()
 	defer teardown()
 
@@ -74,6 +77,7 @@ func TestOrganizationsService_BlockUser(t *testing.T) {
 }
 
 func TestOrganizationsService_UnblockUser(t *testing.T) {
+	// TODO: add a check for scope to be admin:org
 	setup()
 	defer teardown()
 

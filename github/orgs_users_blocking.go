@@ -42,6 +42,7 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/blocking/#check-whether-a-user-is-blocked-from-an-organization
 func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user string) (bool, *Response, error) {
+	// TODO: add a check for scope to be admin:org
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -61,6 +62,7 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user s
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/blocking/#block-a-user
 func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user string) (*Response, error) {
+	// TODO: add a check for scope to be admin:org
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -78,6 +80,7 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user s
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/blocking/#unblock-a-user
 func (s *OrganizationsService) UnblockUser(ctx context.Context, org string, user string) (*Response, error) {
+	// TODO: add a check for scope to be admin:org
 	u := fmt.Sprintf("user/%v/blocks/%v", org, user)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
