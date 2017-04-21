@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestGitService_GetRef(t *testing.T) {
+func TestGitService_GetRef_singleRef(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -34,7 +34,7 @@ func TestGitService_GetRef(t *testing.T) {
 
 	ref, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
 	if err != nil {
-		t.Errorf("Git.GetRef returned error: %v", err)
+		t.Fatalf("Git.GetRef returned error: %v", err)
 	}
 
 	want := &Reference{
@@ -54,6 +54,154 @@ func TestGitService_GetRef(t *testing.T) {
 	if _, _, err := client.Git.GetRef(context.Background(), "o", "r", "heads/b"); err != nil {
 		t.Errorf("Git.GetRef returned error: %v", err)
 	}
+}
+
+func TestGitService_GetRef_multipleRefs(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		  [
+		    {
+			    "ref": "refs/heads/booger",
+			    "url": "https://api.github.com/repos/o/r/git/refs/heads/booger",
+			    "object": {
+			      "type": "commit",
+			      "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			      "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+			    }
+		  	},
+		    {
+		      "ref": "refs/heads/bandsaw",
+		      "url": "https://api.github.com/repos/o/r/git/refs/heads/bandsaw",
+		      "object": {
+		        "type": "commit",
+		        "sha": "612077ae6dffb4d2fbd8ce0cccaa58893b07b5ac",
+		        "url": "https://api.github.com/repos/o/r/git/commits/612077ae6dffb4d2fbd8ce0cccaa58893b07b5ac"
+		      }
+		    }
+		  ]
+		`)
+	})
+
+	_, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
+	want := "no exact match found for this ref"
+	if err.Error() != want {
+		t.Errorf("Git.GetRef returned %+v, want %+v", err, want)
+	}
+
+}
+
+func TestGitService_GetRefs_singleRef(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		  {
+		    "ref": "refs/heads/b",
+		    "url": "https://api.github.com/repos/o/r/git/refs/heads/b",
+		    "object": {
+		      "type": "commit",
+		      "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		      "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+		    }
+		  }`)
+	})
+
+	refs, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
+	if err != nil {
+		t.Fatalf("Git.GetRefs returned error: %v", err)
+	}
+
+	ref := refs[0]
+	want := &Reference{
+		Ref: String("refs/heads/b"),
+		URL: String("https://api.github.com/repos/o/r/git/refs/heads/b"),
+		Object: &GitObject{
+			Type: String("commit"),
+			SHA:  String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+		},
+	}
+	if !reflect.DeepEqual(ref, want) {
+		t.Errorf("Git.GetRefs returned %+v, want %+v", ref, want)
+	}
+
+	// without 'refs/' prefix
+	if _, _, err := client.Git.GetRefs(context.Background(), "o", "r", "heads/b"); err != nil {
+		t.Errorf("Git.GetRefs returned error: %v", err)
+	}
+}
+
+func TestGitService_GetRefs_multipleRefs(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		  [
+		    {
+			    "ref": "refs/heads/booger",
+			    "url": "https://api.github.com/repos/o/r/git/refs/heads/booger",
+			    "object": {
+			      "type": "commit",
+			      "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+			      "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+			    }
+		  	},
+		    {
+		      "ref": "refs/heads/bandsaw",
+		      "url": "https://api.github.com/repos/o/r/git/refs/heads/bandsaw",
+		      "object": {
+		        "type": "commit",
+		        "sha": "612077ae6dffb4d2fbd8ce0cccaa58893b07b5ac",
+		        "url": "https://api.github.com/repos/o/r/git/commits/612077ae6dffb4d2fbd8ce0cccaa58893b07b5ac"
+		      }
+		    }
+		  ]
+		`)
+	})
+
+	refs, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
+	if err != nil {
+		t.Errorf("Git.GetRefs returned error: %v", err)
+	}
+
+	want := &Reference{
+		Ref: String("refs/heads/booger"),
+		URL: String("https://api.github.com/repos/o/r/git/refs/heads/booger"),
+		Object: &GitObject{
+			Type: String("commit"),
+			SHA:  String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+		},
+	}
+	if !reflect.DeepEqual(refs[0], want) {
+		t.Errorf("Git.GetRefs returned %+v, want %+v", refs[0], want)
+	}
+}
+
+// TestGitService_GetRefs_noRefs tests for behaviour resulting from an unexpected GH response. This should never actually happen.
+func TestGitService_GetRefs_noRefs(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "[]")
+	})
+
+	_, _, err := client.Git.GetRefs(context.Background(), "o", "r", "refs/heads/b")
+	want := "unexpected response from GitHub API: an array of refs with length 0"
+	if err.Error() != want {
+		t.Errorf("Git.GetRefs returned %+v, want %+v", err, want)
+	}
+
 }
 
 func TestGitService_ListRefs(t *testing.T) {
