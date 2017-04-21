@@ -482,7 +482,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"include_admins":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"include_admins":true},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
@@ -498,6 +498,10 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &RequiredPullRequestReviews{
 			IncludeAdmins: true,
+		},
+		EnforceAdmins: &AdminEnforcement{
+			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+			Enabled: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
