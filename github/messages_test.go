@@ -220,3 +220,17 @@ func TestParseWebHook(t *testing.T) {
 		}
 	}
 }
+
+func TestDeliveryID(t *testing.T) {
+	id := "8970a780-244e-11e7-91ca-da3aabcb9793"
+	req, err := http.NewRequest("POST", "http://localhost", nil)
+	if err != nil {
+		t.Fatalf("DeliveryID: %v", err)
+	}
+	req.Header.Set("X-Github-Delivery", id)
+
+	got := DeliveryID(req)
+	if got != id {
+		t.Errorf("DeliveryID(%#v) = %q, want %q", req, got, id)
+	}
+}
