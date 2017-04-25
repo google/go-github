@@ -77,7 +77,7 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org string, user s
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/blocking/#unblock-a-user
 func (s *OrganizationsService) UnblockUser(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("user/%v/blocks/%v", org, user)
+	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

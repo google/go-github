@@ -61,13 +61,13 @@ func TestOrganizationsService_BlockUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o1/blocks/u1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.BlockUser(context.Background(), "o1", "u1")
+	_, err := client.Organizations.BlockUser(context.Background(), "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.BlockUser returned error: %v", err)
 	}
@@ -77,7 +77,7 @@ func TestOrganizationsService_UnblockUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/user/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
