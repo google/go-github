@@ -717,7 +717,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_unprotectedBranch(
 		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
 	}
 
-	if contexts != nil {
-		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want nil", contexts)
+	if len(contexts) != 0 {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want zero length slice", contexts)
 	}
 }

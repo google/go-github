@@ -639,7 +639,8 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	return p, resp, nil
 }
 
-// GetRequiredStatusChecks gets the required status checks for a given protected branch.
+// GetRequiredStatusChecks gets the required status checks for a given protected branch,
+// or nil if the branch is not protected.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#get-required-status-checks-of-protected-branch
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
