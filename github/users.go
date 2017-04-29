@@ -45,6 +45,8 @@ type User struct {
 	DiskUsage         *int       `json:"disk_usage,omitempty"`
 	Collaborators     *int       `json:"collaborators,omitempty"`
 	Plan              *Plan      `json:"plan,omitempty"`
+        // Date sometimes occurs when users take action like author a commit
+        Date              *Timestamp `json:"date,omitempty"`
 
 	// API URLs
 	URL               *string `json:"url,omitempty"`
