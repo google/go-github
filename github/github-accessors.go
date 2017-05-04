@@ -620,6 +620,14 @@ func (c *CommitStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetHealthPercentage returns the HealthPercentage field if it's non-nil, zero value otherwise.
+func (c *CommunityHealthMetrics) GetHealthPercentage() int {
+	if c == nil || c.HealthPercentage == nil {
+		return 0
+	}
+	return *c.HealthPercentage
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (c *Contributor) GetAvatarURL() string {
 	if c == nil || c.AvatarURL == nil {
