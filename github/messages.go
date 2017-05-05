@@ -56,6 +56,7 @@ var (
 		"membership":                            "MembershipEvent",
 		"milestone":                             "MilestoneEvent",
 		"organization":                          "OrganizationEvent",
+		"org_block":                             "OrgBlockEvent",
 		"page_build":                            "PageBuildEvent",
 		"ping":                                  "PingEvent",
 		"project":                               "ProjectEvent",
