@@ -17,7 +17,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/repositories/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeRepositoryCommunityHealthMetricsPreview)
 		fmt.Fprintf(w, `{"health_percentage":75}`)
