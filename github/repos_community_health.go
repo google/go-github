@@ -43,7 +43,7 @@ type CommunityHealthMetrics struct {
 //
 // GitHub API docs: https://developer.github.com/v3/repos/community/#retrieve-community-health-metrics
 func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, owner, repo string) (*CommunityHealthMetrics, *Response, error) {
-	u := fmt.Sprintf("repositories/%v/%v/community/profile", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/community/profile", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -54,5 +54,9 @@ func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, own
 
 	metrics := &CommunityHealthMetrics{}
 	resp, err := s.client.Do(ctx, req, metrics)
-	return metrics, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return metrics, resp, nil
 }

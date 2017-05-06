@@ -99,7 +99,7 @@ const (
 	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"
 
 	// https://developer.github.com/changes/2017-02-09-community-health/
-	mediaTypeRepositoryCommunityHealthMetricsPreview = "application/vnd.github.black-panther-preview"
+	mediaTypeRepositoryCommunityHealthMetricsPreview = "application/vnd.github.black-panther-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
