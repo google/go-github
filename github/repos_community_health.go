@@ -36,7 +36,7 @@ type CommunityHealthMetrics struct {
 			HTMLURL *string `json:"html_url"`
 		} `json:"readme"`
 	} `json:"files"`
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt *time.Time `json:"updated_at"`
 }
 
 // GetCommunityHealthMetrics retrieves all the community health  metrics for a  repository.
