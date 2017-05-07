@@ -175,6 +175,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 				Type: String("blob"),
 				Size: Int(12),
 				SHA:  String("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				URL:  String("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 	}
