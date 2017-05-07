@@ -6636,6 +6636,14 @@ func (t *TreeEntry) GetType() string {
 	return *t.Type
 }
 
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (t *TreeEntry) GetURL() string {
+	if t == nil || t.URL == nil {
+		return ""
+	}
+	return *t.URL
+}
+
 // GetForce returns the Force field if it's non-nil, zero value otherwise.
 func (u *updateRefRequest) GetForce() bool {
 	if u == nil || u.Force == nil {
