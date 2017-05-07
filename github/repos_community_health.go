@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// Metric represents the different fields for one file in community health files.
 type Metric struct {
 	Name    *string `json:"name"`
 	Key     *string `json:"key"`
@@ -18,6 +19,7 @@ type Metric struct {
 	HTMLURL *string `json:"html_url"`
 }
 
+// CommunityHealthFiles represents the different files in the community health metrics response.
 type CommunityHealthFiles struct {
 	CodeOfConduct *Metric `json:"code_conduct"`
 	Contributing  *Metric `json:"contributing"`
