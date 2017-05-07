@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/http/httputil"
 	"net/url"
 	"os"
 	"path"
@@ -629,6 +630,90 @@ func TestDo_noContent(t *testing.T) {
 	_, err := client.Do(context.Background(), req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
+func TestDo_onRequestHook(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	var body json.RawMessage
+	type T struct {
+		A string
+		B int
+	}
+
+	var dumpedRequest string
+	client.OnRequest = func(request *http.Request) {
+		b, err := httputil.DumpRequestOut(request, true)
+		if err != nil {
+			t.Errorf("Failed to dump request: %s", err)
+		}
+		dumpedRequest = string(b)
+	}
+	req, _ := client.NewRequest("GET", "/", &T{})
+	_, err := client.Do(context.Background(), req, &body)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+
+	expectedRequest := fmt.Sprintf("GET / HTTP/1.1\r\n"+
+		"Host: %s\r\n"+
+		"User-Agent: go-github/6\r\n"+
+		"Content-Length: 15\r\n"+
+		"Accept: application/vnd.github.v3+json\r\n"+
+		"Content-Type: application/json\r\n"+
+		"Accept-Encoding: gzip\r\n"+
+		"\r\n"+
+		`{"A":"","B":0}`+"\n", req.Host)
+	if dumpedRequest != expectedRequest {
+		t.Fatalf("Requests don't match.\nGiven: %#v\nExpected: %#v",
+			dumpedRequest, expectedRequest)
+	}
+}
+
+func TestDo_onResponseHook(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		h := w.Header()
+		h["Date"] = nil
+		fmt.Fprintf(w, `{"msg": "all is ok"}`)
+	})
+
+	var body json.RawMessage
+	type T struct {
+		A string
+		B int
+	}
+
+	var dumpedResponse string
+	client.OnResponse = func(response *http.Response) {
+		b, err := httputil.DumpResponse(response, true)
+		if err != nil {
+			t.Errorf("Failed to dump response: %s", err)
+		}
+		dumpedResponse = string(b)
+	}
+	req, _ := client.NewRequest("GET", "/", &T{})
+	_, err := client.Do(context.Background(), req, &body)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+
+	expectedResponse := "HTTP/1.1 200 OK\r\n" +
+		"Content-Length: 20\r\n" +
+		"Content-Type: text/plain; charset=utf-8\r\n" +
+		"\r\n" +
+		`{"msg": "all is ok"}`
+	if dumpedResponse != expectedResponse {
+		t.Fatalf("Responses don't match.\nGiven: %#v\nExpected: %#v",
+			dumpedResponse, expectedResponse)
 	}
 }
 
