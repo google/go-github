@@ -11,32 +11,25 @@ import (
 	"time"
 )
 
+type Metric struct {
+	Name    *string `json:"name"`
+	Key     *string `json:"key"`
+	URL     *string `json:"url"`
+	HTMLURL *string `json:"html_url"`
+}
+
+type CommunityHealthFiles struct {
+	CodeOfConduct *Metric `json:"code_conduct"`
+	Contributing  *Metric `json:"contributing"`
+	License       *Metric `json:"license"`
+	Readme        *Metric `json:"readme"`
+}
+
 // CommunityHealthMetrics represents a response containing the community metrics of a repository.
 type CommunityHealthMetrics struct {
-	HealthPercentage *int `json:"health_percentage"`
-	Files            struct {
-		CodeOfConduct struct {
-			Name    *string `json:"name"`
-			Key     *string `json:"key"`
-			URL     *string `json:"url"`
-			HTMLURL *string `json:"html_url"`
-		} `json:"code_of_conduct"`
-		Contributing struct {
-			URL     *string `json:"url"`
-			HTMLURL *string `json:"html_url"`
-		} `json:"contributing"`
-		License struct {
-			Name    *string `json:"name"`
-			Key     *string `json:"key"`
-			URL     *string `json:"url"`
-			HTMLURL *string `json:"html_url"`
-		} `json:"license"`
-		Readme struct {
-			URL     *string `json:"url"`
-			HTMLURL *string `json:"html_url"`
-		} `json:"readme"`
-	} `json:"files"`
-	UpdatedAt *time.Time `json:"updated_at"`
+	HealthPercentage *int                  `json:"health_percentage"`
+	Files            *CommunityHealthFiles `json:"files"`
+	UpdatedAt        *time.Time            `json:"updated_at"`
 }
 
 // GetCommunityHealthMetrics retrieves all the community health  metrics for a  repository.
