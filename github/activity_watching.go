@@ -144,3 +144,24 @@ func (s *ActivityService) DeleteRepositorySubscription(ctx context.Context, owne
 
 	return s.client.Do(ctx, req, nil)
 }
+
+//Watch a repository as the authenticated user
+//https://developer.github.com/v3/activity/watching/#watch-a-repository-legacy
+func (s *ActivityService) Watch(owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("user/subscriptions/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(req, nil)
+}
+
+// Unwatch a repository as the authenticated user.
+func (s *ActivityService) Unwatch(owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("user/subscriptions/%v/%v", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(req, nil)
+}
