@@ -109,7 +109,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	comments, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1)
+	comments, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}
@@ -123,8 +123,27 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		fmt.Fprint(w, `[]`)
+	})
+
+	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1, &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
+	}
+}
+
 func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
-	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "%", "r", 1, 1)
+	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "%", "r", 1, 1, nil)
 	testURLParseError(t, err)
 }
 
