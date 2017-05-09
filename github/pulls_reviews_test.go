@@ -20,11 +20,15 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
 		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	reviews, _, err := client.PullRequests.ListReviews(context.Background(), "o", "r", 1)
+	opt := &ListOptions{Page: 2}
+	reviews, _, err := client.PullRequests.ListReviews(context.Background(), "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviews returned error: %v", err)
 	}
@@ -39,7 +43,7 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
-	_, _, err := client.PullRequests.ListReviews(context.Background(), "%", "r", 1)
+	_, _, err := client.PullRequests.ListReviews(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 

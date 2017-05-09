@@ -65,8 +65,12 @@ func (r PullRequestReviewDismissalRequest) String() string {
 // Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request
-func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int) ([]*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opt *ListOptions) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
