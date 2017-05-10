@@ -830,3 +830,64 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// GetAdminEnforcement gets admin enforcement information of a protected branch.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#get-admin-enforcement-of-protected-branch
+func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+
+	r := new(AdminEnforcement)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
+
+// AddAdminEnforcement adds admin enforcement to a protected branch.
+// It requires admin access and branch protection to be enabled.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#add-admin-enforcement-of-protected-branch
+func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+
+	r := new(AdminEnforcement)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, err
+}
+
+// RemoveAdminEnforcement removess admin enforcement from a protected branch.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-admin-enforcement-of-protected-branch
+func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+
+	return s.client.Do(ctx, req, nil)
+}

@@ -787,3 +787,68 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 		t.Errorf("Repositories.RemovePullRequestReviewEnforcement returned error: %v", err)
 	}
 }
+
+func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+	})
+
+	enforcement, _, err := client.Repositories.GetAdminEnforcement(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetAdminEnforcement returned error: %v", err)
+	}
+
+	want := &AdminEnforcement{
+		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+		Enabled: true,
+	}
+
+	if !reflect.DeepEqual(enforcement, want) {
+		t.Errorf("Repositories.GetAdminEnforcement returned %+v, want %+v", enforcement, want)
+	}
+}
+
+func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
+	})
+
+	enforcement, _, err := client.Repositories.AddAdminEnforcement(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.AddAdminEnforcement returned error: %v", err)
+	}
+
+	want := &AdminEnforcement{
+		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+		Enabled: true,
+	}
+	if !reflect.DeepEqual(enforcement, want) {
+		t.Errorf("Repositories.AddAdminEnforcement returned %+v, want %+v", enforcement, want)
+	}
+}
+
+func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Repositories.RemoveAdminEnforcement(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
+	}
+}
