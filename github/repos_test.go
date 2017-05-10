@@ -482,7 +482,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"u"}],"teams":[{"id":4,"slug":"t"}]},"dismiss_stale_reviews":true},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"u"}],"teams":[{"id":4,"slug":"t"}]},"dismiss_stale_reviews":true},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
@@ -492,9 +492,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: true,
-			Strict:        true,
-			Contexts:      []string{"continuous-integration"},
+			Strict:   true,
+			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
@@ -531,9 +530,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	input := &ProtectionRequest{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: true,
-			Strict:        true,
-			Contexts:      []string{"continuous-integration"},
+			Strict:   true,
+			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
 			DismissStaleReviews: true,
@@ -557,7 +555,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"include_admins":true,"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"uu"}],"teams":[{"id":4,"slug":"tt"}]},"dismiss_stale_reviews":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"uu"}],"teams":[{"id":4,"slug":"tt"}]},"dismiss_stale_reviews":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), "o", "r", "b", input)
@@ -567,9 +565,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 
 	want := &Protection{
 		RequiredStatusChecks: &RequiredStatusChecks{
-			IncludeAdmins: true,
-			Strict:        true,
-			Contexts:      []string{"continuous-integration"},
+			Strict:   true,
+			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
@@ -658,7 +655,7 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprint(w, `{"include_admins": true,"strict": true,"contexts": ["x","y","z"]}`)
+		fmt.Fprint(w, `{"strict": true,"contexts": ["x","y","z"]}`)
 	})
 
 	checks, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
@@ -667,9 +664,8 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 
 	want := &RequiredStatusChecks{
-		IncludeAdmins: true,
-		Strict:        true,
-		Contexts:      []string{"x", "y", "z"},
+		Strict:   true,
+		Contexts: []string{"x", "y", "z"},
 	}
 	if !reflect.DeepEqual(checks, want) {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)

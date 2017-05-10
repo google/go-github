@@ -525,9 +525,6 @@ type ProtectionRequest struct {
 
 // RequiredStatusChecks represents the protection status of a individual branch.
 type RequiredStatusChecks struct {
-	// Enforce required status checks for repository administrators. (Required.)
-	// Deprecated: Use EnforceAdmins instead.
-	IncludeAdmins bool `json:"include_admins"`
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
