@@ -153,7 +153,7 @@ github.Response struct.
 		if resp.NextPage == 0 {
 			break
 		}
-		opt.ListOptions.Page = resp.NextPage
+		opt.Page = resp.NextPage
 	}
 
 Google App Engine
