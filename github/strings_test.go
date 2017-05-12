@@ -105,7 +105,7 @@ func TestString(t *testing.T) {
 		{IssueComment{ID: Int(1)}, `github.IssueComment{ID:1}`},
 		{Issue{Number: Int(1)}, `github.Issue{Number:1}`},
 		{Key{ID: Int(1)}, `github.Key{ID:1}`},
-		{Label{Name: String("l")}, "l"},
+		{Label{ID: Int(1), Name: String("l")}, `github.Label{ID:1, Name:"l"}`},
 		{Organization{ID: Int(1)}, `github.Organization{ID:1}`},
 		{PullRequestComment{ID: Int(1)}, `github.PullRequestComment{ID:1}`},
 		{PullRequest{Number: Int(1)}, `github.PullRequest{Number:1}`},
