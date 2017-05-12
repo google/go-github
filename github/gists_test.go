@@ -308,7 +308,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		`)
 	})
 
-	gistCommits, _, err := client.Gists.ListCommits(context.Background(), "1")
+	gistCommits, _, err := client.Gists.ListCommits(context.Background(), "1", nil)
 	if err != nil {
 		t.Errorf("Gists.ListCommits returned error: %v", err)
 	}
@@ -326,6 +326,24 @@ func TestGistsService_ListCommits(t *testing.T) {
 
 	if !reflect.DeepEqual(gistCommits, want) {
 		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistCommits, want)
+	}
+}
+
+func TestGistsService_ListCommits_withOptions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[]`)
+	})
+
+	_, _, err := client.Gists.ListCommits(context.Background(), "1", &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Gists.ListCommits returned error: %v", err)
 	}
 }
 

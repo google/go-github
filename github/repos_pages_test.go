@@ -43,7 +43,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		fmt.Fprint(w, `[{"url":"u","status":"s","commit":"c"}]`)
 	})
 
-	pages, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r")
+	pages, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
@@ -51,6 +51,24 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 	want := []*PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
 	if !reflect.DeepEqual(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
+	}
+}
+
+func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[]`)
+	})
+
+	_, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
 }
 
