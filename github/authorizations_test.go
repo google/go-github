@@ -260,7 +260,7 @@ func TestListGrants(t *testing.T) {
 		fmt.Fprint(w, `[{"id": 1}]`)
 	})
 
-	got, _, err := client.Authorizations.ListGrants(context.Background())
+	got, _, err := client.Authorizations.ListGrants(context.Background(), nil)
 	if err != nil {
 		t.Errorf("OAuthAuthorizations.ListGrants returned error: %v", err)
 	}
@@ -268,6 +268,24 @@ func TestListGrants(t *testing.T) {
 	want := []*Grant{{ID: Int(1)}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("OAuthAuthorizations.ListGrants = %+v, want %+v", got, want)
+	}
+}
+
+func TestListGrants_withOptions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/applications/grants", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[{"id": 1}]`)
+	})
+
+	_, _, err := client.Authorizations.ListGrants(context.Background(), &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("OAuthAuthorizations.ListGrants returned error: %v", err)
 	}
 }
 

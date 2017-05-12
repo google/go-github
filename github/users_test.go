@@ -182,7 +182,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	got, _, err := client.Users.ListInvitations(context.Background())
+	got, _, err := client.Users.ListInvitations(context.Background(), nil)
 	if err != nil {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
 	}
@@ -193,6 +193,24 @@ func TestUsersService_ListInvitations(t *testing.T) {
 	}
 }
 
+func TestUsersService_ListInvitations_withOptions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	_, _, err := client.Users.ListInvitations(context.Background(), &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Users.ListInvitations returned error: %v", err)
+	}
+}
 func TestUsersService_AcceptInvitation(t *testing.T) {
 	setup()
 	defer teardown()
