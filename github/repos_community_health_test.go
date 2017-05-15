@@ -61,7 +61,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 			CodeOfConduct: &Metric{
 				Name: String("Contributor Covenant"),
 				Key: String("contributor_covenant"),
-				HTMLURL: String("https://github.com/octocat/Hello-World`/blob/master/CODE_OF_CONDUCT.md"),
+				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			Contributing: &Metric{
 				URL: String("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
@@ -80,6 +80,6 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Repositories.GetCommunityHealthMetrics = %+v, want %+v", got, want)
+		t.Errorf("Repositories.GetCommunityHealthMetrics:\ngot:\n%v\nwant:\n%v", Stringify(got), Stringify(want))
 	}
 }
