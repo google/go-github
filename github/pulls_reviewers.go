@@ -27,7 +27,7 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	r := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, r)
@@ -54,7 +54,7 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	var users []*User
 	resp, err := s.client.Do(ctx, req, &users)
@@ -82,7 +82,7 @@ func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo s
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	return s.client.Do(ctx, req, reviewers)
 }

@@ -19,7 +19,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`+"\n")
 		fmt.Fprint(w, `{"number":1}`)
 	})
@@ -41,7 +41,7 @@ func TestRemoveReviewers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		testBody(t, r, `{"reviewers":["octocat","googlebot"]}`+"\n")
 	})
 
@@ -57,7 +57,7 @@ func TestListReviewers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `[{"login":"octocat","id":1}]`)
 	})
 
@@ -86,7 +86,7 @@ func TestListReviewers_withOptions(t *testing.T) {
 		testFormValues(t, r, values{
 			"page": "2",
 		})
-		testHeader(t, r, "Accept", mediaTypePullRequestReviewsPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `[]`)
 	})
 

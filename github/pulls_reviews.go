@@ -78,7 +78,7 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	var reviews []*PullRequestReview
 	resp, err := s.client.Do(ctx, req, &reviews)
@@ -105,7 +105,7 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	review := new(PullRequestReview)
 	resp, err := s.client.Do(ctx, req, review)
@@ -132,7 +132,7 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	review := new(PullRequestReview)
 	resp, err := s.client.Do(ctx, req, review)
@@ -163,7 +163,7 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	var comments []*PullRequestComment
 	resp, err := s.client.Do(ctx, req, &comments)
@@ -190,7 +190,7 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	r := new(PullRequestReview)
 	resp, err := s.client.Do(ctx, req, r)
@@ -217,7 +217,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	r := new(PullRequestReview)
 	resp, err := s.client.Do(ctx, req, r)
@@ -244,7 +244,7 @@ func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo str
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypePullRequestReviewsPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	r := new(PullRequestReview)
 	resp, err := s.client.Do(ctx, req, r)
