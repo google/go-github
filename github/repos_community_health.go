@@ -21,7 +21,7 @@ type Metric struct {
 
 // CommunityHealthFiles represents the different files in the community health metrics response.
 type CommunityHealthFiles struct {
-	CodeOfConduct *Metric `json:"code_conduct"`
+	CodeOfConduct *Metric `json:"code_of_conduct"`
 	Contributing  *Metric `json:"contributing"`
 	License       *Metric `json:"license"`
 	Readme        *Metric `json:"readme"`
