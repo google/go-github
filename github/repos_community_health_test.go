@@ -56,25 +56,25 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 	updatedAt := time.Date(2017, 02, 28, 0, 0, 0, 0, time.UTC)
 	want := &CommunityHealthMetrics{
 		HealthPercentage: Int(100),
-		UpdatedAt: &updatedAt,
+		UpdatedAt:        &updatedAt,
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{
-				Name: String("Contributor Covenant"),
-				Key: String("contributor_covenant"),
+				Name:    String("Contributor Covenant"),
+				Key:     String("contributor_covenant"),
 				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			Contributing: &Metric{
-				URL: String("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
+				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
 				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/CONTRIBUTING"),
 			},
 			License: &Metric{
-				Name: String("MIT License"),
-				Key: String("mit"),
-				URL: String("https://api.github.com/licenses/mit"),
+				Name:    String("MIT License"),
+				Key:     String("mit"),
+				URL:     String("https://api.github.com/licenses/mit"),
 				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/LICENSE"),
 			},
 			Readme: &Metric{
-				URL: String("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
+				URL:     String("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
 				HTMLURL: String("https://github.com/octocat/Hello-World/blob/master/README.md"),
 			},
 		},
