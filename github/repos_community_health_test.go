@@ -27,6 +27,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 					"code_of_conduct": {
 						"name": "Contributor Covenant",
 						"key": "contributor_covenant",
+						"url": null,
 						"html_url": "https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"
 					},
 					"contributing": {
