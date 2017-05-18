@@ -564,6 +564,38 @@ func (c *CommitsComparison) GetBehindBy() int {
 	return *c.BehindBy
 }
 
+// GetDiffURL returns the DiffURL field if it's non-nil, zero value otherwise.
+func (c *CommitsComparison) GetDiffURL() string {
+	if c == nil || c.DiffURL == nil {
+		return ""
+	}
+	return *c.DiffURL
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CommitsComparison) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetPatchURL returns the PatchURL field if it's non-nil, zero value otherwise.
+func (c *CommitsComparison) GetPatchURL() string {
+	if c == nil || c.PatchURL == nil {
+		return ""
+	}
+	return *c.PatchURL
+}
+
+// GetPermalinkURL returns the PermalinkURL field if it's non-nil, zero value otherwise.
+func (c *CommitsComparison) GetPermalinkURL() string {
+	if c == nil || c.PermalinkURL == nil {
+		return ""
+	}
+	return *c.PermalinkURL
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (c *CommitsComparison) GetStatus() string {
 	if c == nil || c.Status == nil {
@@ -578,6 +610,14 @@ func (c *CommitsComparison) GetTotalCommits() int {
 		return 0
 	}
 	return *c.TotalCommits
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CommitsComparison) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
 }
 
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
