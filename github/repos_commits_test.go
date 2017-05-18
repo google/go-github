@@ -198,7 +198,12 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		      "parents": [ { "sha": "s" } ]
 		    }
 		  ],
-		  "files": [ { "filename": "f" } ]
+		  "files": [ { "filename": "f" } ],
+		  "html_url":      "https://github.com/o/r/compare/b...h",
+		  "permalink_url": "https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17",
+		  "diff_url":      "https://github.com/o/r/compare/b...h.diff",
+		  "patch_url":     "https://github.com/o/r/compare/b...h.patch",
+		  "url":           "https://api.github.com/repos/o/r/compare/b...h"
 		}`)
 	})
 
@@ -248,6 +253,11 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 				Filename: String("f"),
 			},
 		},
+		HTMLURL:      String("https://github.com/o/r/compare/b...h"),
+		PermalinkURL: String("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
+		DiffURL:      String("https://github.com/o/r/compare/b...h.diff"),
+		PatchURL:     String("https://github.com/o/r/compare/b...h.patch"),
+		URL:          String("https://api.github.com/repos/o/r/compare/b...h"),
 	}
 
 	if !reflect.DeepEqual(got, want) {
