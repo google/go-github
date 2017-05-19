@@ -3716,6 +3716,14 @@ func (p *PullRequest) GetMergeable() bool {
 	return *p.Mergeable
 }
 
+// GetMergeCommitSHA returns the MergeCommitSHA field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetMergeCommitSHA() string {
+	if p == nil || p.MergeCommitSHA == nil {
+		return ""
+	}
+	return *p.MergeCommitSHA
+}
+
 // GetMerged returns the Merged field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetMerged() bool {
 	if p == nil || p.Merged == nil {
