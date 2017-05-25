@@ -497,7 +497,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
+			DismissalRestrictions: DismissalRestrictions{
 				Users: []*User{
 					{Login: String("u"), ID: Int(3)},
 				},
@@ -570,7 +570,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
-			DismissalRestrictions: &DismissalRestrictions{
+			DismissalRestrictions: DismissalRestrictions{
 				Users: []*User{
 					{Login: String("uu"), ID: Int(3)},
 				},
@@ -713,7 +713,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 	want := &PullRequestReviewsEnforcement{
 		DismissStaleReviews: true,
-		DismissalRestrictions: &DismissalRestrictions{
+		DismissalRestrictions: DismissalRestrictions{
 			Users: []*User{
 				{Login: String("u"), ID: Int(1)},
 			},
@@ -732,7 +732,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &PullRequestReviewsEnforcementPatchRequest{
+	input := &PullRequestReviewsEnforcementUpdate{
 		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 			Users: []string{"u"},
 			Teams: []string{"t"},
@@ -740,7 +740,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PullRequestReviewsEnforcementPatchRequest)
+		v := new(PullRequestReviewsEnforcementUpdate)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
@@ -758,7 +758,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 
 	want := &PullRequestReviewsEnforcement{
 		DismissStaleReviews: true,
-		DismissalRestrictions: &DismissalRestrictions{
+		DismissalRestrictions: DismissalRestrictions{
 			Users: []*User{
 				{Login: String("u"), ID: Int(1)},
 			},
@@ -850,5 +850,21 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	_, err := client.Repositories.RemoveAdminEnforcement(context.Background(), "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
+	}
+}
+
+func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
+	req := PullRequestReviewsEnforcementRequest{}
+
+	json, err := json.Marshal(req)
+
+	if err != nil {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
+	}
+
+	want := `{"dismissal_restrictions":[],"dismiss_stale_reviews":false}`
+
+	if want != string(json) {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(json), want)
 	}
 }

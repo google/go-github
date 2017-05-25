@@ -4021,7 +4021,7 @@ func (p *PullRequestReviewRequest) GetEvent() string {
 }
 
 // GetDismissStaleReviews returns the DismissStaleReviews field if it's non-nil, zero value otherwise.
-func (p *PullRequestReviewsEnforcementPatchRequest) GetDismissStaleReviews() bool {
+func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
 	if p == nil || p.DismissStaleReviews == nil {
 		return false
 	}

@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -534,24 +535,53 @@ type RequiredStatusChecks struct {
 
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
-	DismissalRestrictions *DismissalRestrictions `json:"dismissal_restrictions"`
-	DismissStaleReviews   bool                   `json:"dismiss_stale_reviews"`
+	// Specifies which users and teams can dismiss pull requets reviews.
+	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
+	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
+	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
 // enforcement of a protected branch. It is separate from PullRequestReviewsEnforcement above
 // because the request structure is different from the response structure.
 type PullRequestReviewsEnforcementRequest struct {
+	// Specifies which users and teams should be allowed to dismiss pull requets reviews. Can be nil to disable the restrictions.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
-	DismissStaleReviews          bool                          `json:"dismiss_stale_reviews"`
+	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. (Required)
+	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 }
 
-// PullRequestReviewsEnforcementPatchRequest represents request to patch the pull request review
-// enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementPatchRequest above
+// MarshalJSON implements the json.Marshaler interface.
+// Converts nil value of PullRequestReviewsEnforcementRequest.DismissalRestrictionsRequest to empty array
+func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
+	if req.DismissalRestrictionsRequest == nil {
+		newReq := struct {
+			R []bool `json:"dismissal_restrictions"`
+			D bool   `json:"dismiss_stale_reviews"`
+		}{
+			R: []bool{},
+			D: req.DismissStaleReviews,
+		}
+		return json.Marshal(newReq)
+	}
+	newReq := struct {
+		R *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
+		D bool                          `json:"dismiss_stale_reviews"`
+	}{
+		R: req.DismissalRestrictionsRequest,
+		D: req.DismissStaleReviews,
+	}
+	return json.Marshal(newReq)
+}
+
+// PullRequestReviewsEnforcementUpdate represents request to patch the pull request review
+// enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementUpdate above
 // because the patch request does not require all fields to be initialized.
-type PullRequestReviewsEnforcementPatchRequest struct {
+type PullRequestReviewsEnforcementUpdate struct {
+	// Specifies which users and teams can dismiss pull requets reviews. Can be ommitted.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
-	DismissStaleReviews          *bool                         `json:"dismiss_stale_reviews,omitempty"`
+	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be ommited.
+	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
@@ -796,7 +826,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 // It requires admin access and branch protection to be enabled.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#update-pull-request-review-enforcement-of-protected-branch
-func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementPatchRequest) (*PullRequestReviewsEnforcement, *Response, error) {
+func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("PATCH", u, patch)
 	if err != nil {
