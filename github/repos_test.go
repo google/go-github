@@ -6,6 +6,7 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -769,6 +770,43 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	}
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
+	}
+}
+
+func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
+	setup()
+	defer teardown()
+
+	wantBody := `{"dismissal_restrictions":[]}`
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(r.Body)
+		body := strings.TrimSpace(buf.String())
+		if wantBody != body {
+			t.Errorf("Request body = %+v, want %+v", body, wantBody)
+		}
+
+		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":true}`)
+	})
+
+	enforcement, _, err := client.Repositories.DisableDismissalRestrictions(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.DisableDismissalRestrictions returned error: %v", err)
+	}
+
+	want := &PullRequestReviewsEnforcement{
+		DismissStaleReviews: true,
+		DismissalRestrictions: DismissalRestrictions{
+			Users: []*User{},
+			Teams: []*Team{},
+		},
+	}
+	if !reflect.DeepEqual(enforcement, want) {
+		t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
 	}
 }
 

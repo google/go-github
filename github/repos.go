@@ -556,10 +556,10 @@ type PullRequestReviewsEnforcementRequest struct {
 func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 	if req.DismissalRestrictionsRequest == nil {
 		newReq := struct {
-			R []bool `json:"dismissal_restrictions"`
-			D bool   `json:"dismiss_stale_reviews"`
+			R []interface{} `json:"dismissal_restrictions"`
+			D bool          `json:"dismiss_stale_reviews"`
 		}{
-			R: []bool{},
+			R: []interface{}{},
 			D: req.DismissStaleReviews,
 		}
 		return json.Marshal(newReq)
@@ -829,6 +829,34 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("PATCH", u, patch)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+
+	r := new(PullRequestReviewsEnforcement)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, err
+}
+
+// DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
+// It requires admin access and branch protection to be enabled.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#update-pull-request-review-enforcement-of-protected-branch
+func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+
+	data := struct {
+		R []interface{} `json:"dismissal_restrictions"`
+	}{[]interface{}{}}
+
+	req, err := s.client.NewRequest("PATCH", u, data)
 	if err != nil {
 		return nil, nil, err
 	}
