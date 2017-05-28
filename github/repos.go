@@ -293,7 +293,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 	// TODO: remove custom Accept header when the license support fully launches
 	// https://developer.github.com/v3/licenses/#get-a-repositorys-license
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	repository := new(Repository)
@@ -303,6 +303,28 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	}
 
 	return repository, resp, nil
+}
+
+// Get the contents of a repository's code of conduct.
+//
+// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/
+func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*Conduct, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/community/code_of_conduct", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
+
+	conduct := new(Conduct)
+	resp, err := s.client.Do(ctx, req, conduct)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return conduct, resp, nil
 }
 
 // GetByID fetches a repository.
