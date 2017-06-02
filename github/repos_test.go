@@ -6,7 +6,6 @@
 package github
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -777,19 +776,10 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	setup()
 	defer teardown()
 
-	wantBody := `{"dismissal_restrictions":[]}`
-
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := strings.TrimSpace(buf.String())
-		if wantBody != body {
-			t.Errorf("Request body = %+v, want %+v", body, wantBody)
-		}
-
+		testBody(t, r, `{"dismissal_restrictions":[]}`+"\n")
 		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":true}`)
 	})
 
@@ -895,13 +885,11 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 	req := PullRequestReviewsEnforcementRequest{}
 
 	json, err := json.Marshal(req)
-
 	if err != nil {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
 	want := `{"dismissal_restrictions":[],"dismiss_stale_reviews":false}`
-
 	if want != string(json) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(json), want)
 	}

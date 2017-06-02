@@ -575,7 +575,7 @@ func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 }
 
 // PullRequestReviewsEnforcementUpdate represents request to patch the pull request review
-// enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementUpdate above
+// enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementRequest above
 // because the patch request does not require all fields to be initialized.
 type PullRequestReviewsEnforcementUpdate struct {
 	// Specifies which users and teams can dismiss pull requets reviews. Can be ommitted.
@@ -804,7 +804,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#get-pull-request-review-enforcement-of-protected-branch
 func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -827,7 +827,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#update-pull-request-review-enforcement-of-protected-branch
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("PATCH", u, patch)
 	if err != nil {
 		return nil, nil, err
@@ -850,7 +850,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#update-pull-request-review-enforcement-of-protected-branch
 func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 
 	data := struct {
 		R []interface{} `json:"dismissal_restrictions"`
@@ -877,7 +877,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-pull-request-review-enforcement-of-protected-branch
 func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -893,7 +893,7 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#get-admin-enforcement-of-protected-branch
 func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -916,7 +916,7 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#add-admin-enforcement-of-protected-branch
 func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -938,7 +938,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-admin-enforcement-of-protected-branch
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
