@@ -6404,6 +6404,14 @@ func (t *Team) GetURL() string {
 	return *t.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (t *TeamEvent) GetAction() string {
+	if t == nil || t.Action == nil {
+		return ""
+	}
+	return *t.Action
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (t *TeamLDAPMapping) GetDescription() string {
 	if t == nil || t.Description == nil {
