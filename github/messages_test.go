@@ -201,6 +201,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "status",
 		},
 		{
+			payload:     &TeamEvent{},
+			messageType: "team",
+		},
+		{
 			payload:     &TeamAddEvent{},
 			messageType: "team_add",
 		},
