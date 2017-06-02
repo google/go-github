@@ -165,6 +165,28 @@ type ProjectColumnChange struct {
 	} `json:"name,omitempty"`
 }
 
+// TeamChange represents the changes when a team has been edited.
+type TeamChange struct {
+	Description *struct {
+		From *string `json:"from,omitempty"`
+	} `json:"description,omitempty"`
+	Name *struct {
+		From *string `json:"from,omitempty"`
+	} `json:"name,omitempty"`
+	Privacy *struct {
+		From *string `json:"from,omitempty"`
+	} `json:"privacy,omitempty"`
+	Repository *struct {
+		Permissions *struct {
+			From *struct {
+				Admin *string `json:"admin,omitempty"`
+				Pull  *string `json:"pull,omitempty"`
+				Push  *string `json:"push,omitempty"`
+			} `json:"from,omitempty"`
+		} `json:"permissions,omitempty"`
+	} `json:"repository,omitempty"`
+}
+
 // IntegrationInstallationEvent is triggered when an integration is created or deleted.
 // The Webhook event name is "integration_installation".
 //
@@ -651,6 +673,25 @@ type StatusEvent struct {
 	Repo         *Repository       `json:"repository,omitempty"`
 	Sender       *User             `json:"sender,omitempty"`
 	Installation *Installation     `json:"installation,omitempty"`
+}
+
+// TeamEvent is triggered when an organization's team is created, modified or deleted.
+// The Webhook event name is "team".
+//
+// Events of this type are not visible in timelines. These events are only used
+// to trigger hooks.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#teamevent
+type TeamEvent struct {
+	Action  *string     `json:"action,omitempty"`
+	Team    *Team       `json:"team,omitempty"`
+	Changes *TeamChange `json:"changes,omitempty"`
+	Repo    *Repository `json:"repository,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
 }
 
 // TeamAddEvent is triggered when a repository is added to a team.
