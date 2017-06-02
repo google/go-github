@@ -92,6 +92,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &RepositoryEvent{}
 	case "StatusEvent":
 		payload = &StatusEvent{}
+	case "TeamEvent":
+		payload = &TeamEvent{}
 	case "TeamAddEvent":
 		payload = &TeamAddEvent{}
 	case "WatchEvent":

@@ -70,6 +70,7 @@ var (
 		"repository":                            "RepositoryEvent",
 		"release":                               "ReleaseEvent",
 		"status":                                "StatusEvent",
+		"team":                                  "TeamEvent",
 		"team_add":                              "TeamAddEvent",
 		"watch":                                 "WatchEvent",
 	}
