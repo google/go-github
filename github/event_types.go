@@ -187,28 +187,27 @@ type TeamChange struct {
 	} `json:"repository,omitempty"`
 }
 
-// IntegrationInstallationEvent is triggered when an integration is created or deleted.
-// The Webhook event name is "integration_installation".
+// InstallationEvent is triggered when a GitHub App has been installed or uninstalled.
+// The Webhook event name is "installation".
 //
-// GitHub API docs: https://developer.github.com/early-access/integrations/webhooks/#integrationinstallationevent
-type IntegrationInstallationEvent struct {
-	// The action that was performed. Possible values for an "integration_installation"
-	// event are: "created", "deleted".
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#installationevent
+type InstallationEvent struct {
+	// The action that was performed. Can be either "created" or "deleted".
 	Action       *string       `json:"action,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// IntegrationInstallationRepositoriesEvent is triggered when an integration repository
-// is added or removed. The Webhook event name is "integration_installation_repositories".
+// InstallationRepositoriesEvent is triggered when a repository is added or
+// removed from an installation. The Webhook event name is "installation_repositories".
 //
-// GitHub API docs: https://developer.github.com/early-access/integrations/webhooks/#integrationinstallationrepositoriesevent
-type IntegrationInstallationRepositoriesEvent struct {
-	// The action that was performed. Possible values for an "integration_installation_repositories"
-	// event are: "added", "removed".
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#installationrepositoriesevent
+type InstallationRepositoriesEvent struct {
+	// The action that was performed. Can be either "added" or "removed".
 	Action              *string       `json:"action,omitempty"`
 	RepositoriesAdded   []*Repository `json:"repositories_added,omitempty"`
 	RepositoriesRemoved []*Repository `json:"repositories_removed,omitempty"`
+	RepositorySelection *string       `json:"repository_selection,omitempty"`
 	Sender              *User         `json:"sender,omitempty"`
 	Installation        *Installation `json:"installation,omitempty"`
 }

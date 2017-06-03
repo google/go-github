@@ -1981,7 +1981,7 @@ func (i *Installation) GetRepositoriesURL() string {
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *IntegrationInstallationEvent) GetAction() string {
+func (i *InstallationEvent) GetAction() string {
 	if i == nil || i.Action == nil {
 		return ""
 	}
@@ -1989,11 +1989,19 @@ func (i *IntegrationInstallationEvent) GetAction() string {
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (i *IntegrationInstallationRepositoriesEvent) GetAction() string {
+func (i *InstallationRepositoriesEvent) GetAction() string {
 	if i == nil || i.Action == nil {
 		return ""
 	}
 	return *i.Action
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (i *InstallationRepositoriesEvent) GetRepositorySelection() string {
+	if i == nil || i.RepositorySelection == nil {
+		return ""
+	}
+	return *i.RepositorySelection
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
