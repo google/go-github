@@ -25,6 +25,7 @@ type Repository struct {
 	FullName         *string          `json:"full_name,omitempty"`
 	Description      *string          `json:"description,omitempty"`
 	Homepage         *string          `json:"homepage,omitempty"`
+	CodeOfConduct    *CodeOfConduct   `json:"code_of_conduct,omitempty"`
 	DefaultBranch    *string          `json:"default_branch,omitempty"`
 	MasterBranch     *string          `json:"master_branch,omitempty"`
 	CreatedAt        *Timestamp       `json:"created_at,omitempty"`
@@ -75,7 +76,6 @@ type Repository struct {
 	AssigneesURL     *string `json:"assignees_url,omitempty"`
 	BlobsURL         *string `json:"blobs_url,omitempty"`
 	BranchesURL      *string `json:"branches_url,omitempty"`
-	CodeOfConduct    *string `json:"code_of_conduct,omitempty"`
 	CollaboratorsURL *string `json:"collaborators_url,omitempty"`
 	CommentsURL      *string `json:"comments_url,omitempty"`
 	CommitsURL       *string `json:"commits_url,omitempty"`
