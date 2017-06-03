@@ -227,7 +227,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview}
+	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
@@ -242,6 +242,38 @@ func TestRepositoriesService_Get(t *testing.T) {
 	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/community/code_of_conduct", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
+		fmt.Fprint(w, `{
+						"key": "key",
+						"name": "name",
+						"url": "url",
+						"body": "body"}`,
+		)
+	})
+
+	coc, _, err := client.Repositories.GetCodeOfConduct(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetCodeOfConduct returned error: %v", err)
+	}
+
+	want := &CodeOfConduct{
+		Key:  String("key"),
+		Name: String("name"),
+		URL:  String("url"),
+		Body: String("body"),
+	}
+
+	if !reflect.DeepEqual(coc, want) {
+		t.Errorf("Repositories.Get returned %+v, want %+v", coc, want)
 	}
 }
 

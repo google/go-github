@@ -260,6 +260,38 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CodeOfConduct) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (c *CodeOfConduct) GetKey() string {
+	if c == nil || c.Key == nil {
+		return ""
+	}
+	return *c.Key
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodeOfConduct) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CodeOfConduct) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
