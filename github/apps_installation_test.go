@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestIntegrationService_ListRepos(t *testing.T) {
+func TestAppsService_ListRepos(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -28,13 +28,13 @@ func TestIntegrationService_ListRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	repositories, _, err := client.Integrations.ListRepos(context.Background(), opt)
+	repositories, _, err := client.Apps.ListRepos(context.Background(), opt)
 	if err != nil {
-		t.Errorf("Integration.ListRepos returned error: %v", err)
+		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int(1)}}
 	if !reflect.DeepEqual(repositories, want) {
-		t.Errorf("Integration.ListRepos returned %+v, want %+v", repositories, want)
+		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
 }
