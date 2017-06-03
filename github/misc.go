@@ -130,7 +130,7 @@ func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfCondu
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	coc := new(CodeOfConduct)
-	resp, err := c.Do(ctx, req, &coc)
+	resp, err := c.Do(ctx, req, coc)
 	if err != nil {
 		return nil, resp, err
 	}
