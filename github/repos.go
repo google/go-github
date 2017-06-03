@@ -75,6 +75,7 @@ type Repository struct {
 	AssigneesURL     *string `json:"assignees_url,omitempty"`
 	BlobsURL         *string `json:"blobs_url,omitempty"`
 	BranchesURL      *string `json:"branches_url,omitempty"`
+	CodeOfConduct    *string `json:"code_of_conduct,omitempty"`
 	CollaboratorsURL *string `json:"collaborators_url,omitempty"`
 	CommentsURL      *string `json:"comments_url,omitempty"`
 	CommitsURL       *string `json:"commits_url,omitempty"`

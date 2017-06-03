@@ -4924,6 +4924,14 @@ func (r *Repository) GetCloneURL() string {
 	return *r.CloneURL
 }
 
+// GetCodeOfConduct returns the CodeOfConduct field if it's non-nil, zero value otherwise.
+func (r *Repository) GetCodeOfConduct() string {
+	if r == nil || r.CodeOfConduct == nil {
+		return ""
+	}
+	return *r.CodeOfConduct
+}
+
 // GetCollaboratorsURL returns the CollaboratorsURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetCollaboratorsURL() string {
 	if r == nil || r.CollaboratorsURL == nil {
