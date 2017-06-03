@@ -934,7 +934,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 	return r, resp, err
 }
 
-// RemoveAdminEnforcement removess admin enforcement from a protected branch.
+// RemoveAdminEnforcement removes admin enforcement from a protected branch.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-admin-enforcement-of-protected-branch
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
