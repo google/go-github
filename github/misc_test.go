@@ -81,23 +81,23 @@ func TestListCodesOfConduct(t *testing.T) {
 						]`)
 	})
 
-	metrics, _, err := client.ListCodesOfConduct(context.Background())
+	codeOfConducts, _, err := client.ListCodesOfConduct(context.Background())
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
 
-	want := []*Conduct{
+	want := []*CodeOfConduct{
 		{
 			Key:  String("key"),
 			Name: String("name"),
 			URL:  String("url"),
 		}}
-	if !reflect.DeepEqual(want, metrics) {
-		t.Errorf("ListCodesOfConduct returned %+v, want %+v", metrics, want)
+	if !reflect.DeepEqual(want, codeOfConducts) {
+		t.Errorf("ListCodesOfConduct returned %+v, want %+v", codeOfConducts, want)
 	}
 }
 
-func TestListCodeOfConductByKey(t *testing.T) {
+func TestGetCodeOfConductByKey(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -112,19 +112,19 @@ func TestListCodeOfConductByKey(t *testing.T) {
 		)
 	})
 
-	metric, _, err := client.ListCodeOfConductByKey(context.Background(), "k")
+	codeOfConduct, _, err := client.GetCodeOfConductByKey(context.Background(), "k")
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
 
-	want := &Conduct{
+	want := &CodeOfConduct{
 		Key:  String("key"),
 		Name: String("name"),
 		URL:  String("url"),
-		BODY: String("body"),
+		Body: String("body"),
 	}
-	if !reflect.DeepEqual(want, metric) {
-		t.Errorf("ListCodeOfConductByKey returned %+v, want %+v", metric, want)
+	if !reflect.DeepEqual(want, codeOfConduct) {
+		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", codeOfConduct, want)
 	}
 }
 

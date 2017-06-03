@@ -83,22 +83,22 @@ func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, 
 	return emoji, resp, nil
 }
 
-// Conduct represents metric that contains name, key, url, body.
-type Conduct struct {
+// CodeOfConduct represents a code of conduct
+type CodeOfConduct struct {
 	Name *string `json:"name,omitempty"`
 	Key  *string `json:"key,omitempty"`
 	URL  *string `json:"url,omitempty"`
-	BODY *string `json:"body,omitempty"`
+	Body *string `json:"body,omitempty"`
 }
 
-func (c *Conduct) String() string {
+func (c *CodeOfConduct) String() string {
 	return Stringify(c)
 }
 
 // ListCodesOfConduct returns all codes of conduct.
 //
-// https://developer.github.com/v3/codes_of_conduct/
-func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*Conduct, *Response, error) {
+// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/
+func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	req, err := c.NewRequest("GET", "codes_of_conduct", nil)
 	if err != nil {
 		return nil, nil, err
@@ -107,19 +107,19 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*Conduct, *Response,
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	var conducts []*Conduct
-	resp, err := c.Do(ctx, req, &conducts)
+	var codeOfConducts []*CodeOfConduct
+	resp, err := c.Do(ctx, req, &codeOfConducts)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return conducts, resp, nil
+	return codeOfConducts, resp, nil
 }
 
-// ListCodeOfConductByKey returns an individual code of conduct.
+// GetCodeOfConductByKey returns an individual code of conduct.
 //
 // https://developer.github.com/v3/codes_of_conduct/
-func (c *Client) ListCodeOfConductByKey(ctx context.Context, key string) (*Conduct, *Response, error) {
+func (c *Client) GetCodeOfConductByKey(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%s", key)
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {
@@ -129,13 +129,13 @@ func (c *Client) ListCodeOfConductByKey(ctx context.Context, key string) (*Condu
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	conduct := new(Conduct)
-	resp, err := c.Do(ctx, req, &conduct)
+	codeOfConduct := new(CodeOfConduct)
+	resp, err := c.Do(ctx, req, &codeOfConduct)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return conduct, resp, nil
+	return codeOfConduct, resp, nil
 }
 
 // APIMeta represents metadata about the GitHub API.
