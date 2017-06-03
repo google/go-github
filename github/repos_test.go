@@ -260,7 +260,7 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		)
 	})
 
-	codeOfConduct, _, err := client.Repositories.GetCodeOfConduct(context.Background(), "o", "r")
+	coc, _, err := client.Repositories.GetCodeOfConduct(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetCodeOfConduct returned error: %v", err)
 	}
@@ -272,8 +272,8 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		Body: String("body"),
 	}
 
-	if !reflect.DeepEqual(codeOfConduct, want) {
-		t.Errorf("Repositories.Get returned %+v, want %+v", codeOfConduct, want)
+	if !reflect.DeepEqual(coc, want) {
+		t.Errorf("Repositories.Get returned %+v, want %+v", coc, want)
 	}
 }
 

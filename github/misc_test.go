@@ -81,7 +81,7 @@ func TestListCodesOfConduct(t *testing.T) {
 						]`)
 	})
 
-	codeOfConducts, _, err := client.ListCodesOfConduct(context.Background())
+	cs, _, err := client.ListCodesOfConduct(context.Background())
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -92,12 +92,12 @@ func TestListCodesOfConduct(t *testing.T) {
 			Name: String("name"),
 			URL:  String("url"),
 		}}
-	if !reflect.DeepEqual(want, codeOfConducts) {
-		t.Errorf("ListCodesOfConduct returned %+v, want %+v", codeOfConducts, want)
+	if !reflect.DeepEqual(want, cs) {
+		t.Errorf("ListCodesOfConduct returned %+v, want %+v", cs, want)
 	}
 }
 
-func TestGetCodeOfConductByKey(t *testing.T) {
+func TestGetCodeOfConduct(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -112,7 +112,7 @@ func TestGetCodeOfConductByKey(t *testing.T) {
 		)
 	})
 
-	codeOfConduct, _, err := client.GetCodeOfConductByKey(context.Background(), "k")
+	coc, _, err := client.GetCodeOfConduct(context.Background(), "k")
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -123,8 +123,8 @@ func TestGetCodeOfConductByKey(t *testing.T) {
 		URL:  String("url"),
 		Body: String("body"),
 	}
-	if !reflect.DeepEqual(want, codeOfConduct) {
-		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", codeOfConduct, want)
+	if !reflect.DeepEqual(want, coc) {
+		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", coc, want)
 	}
 }
 

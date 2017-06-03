@@ -83,7 +83,7 @@ func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, 
 	return emoji, resp, nil
 }
 
-// CodeOfConduct represents a code of conduct
+// CodeOfConduct represents a code of conduct.
 type CodeOfConduct struct {
 	Name *string `json:"name,omitempty"`
 	Key  *string `json:"key,omitempty"`
@@ -97,7 +97,7 @@ func (c *CodeOfConduct) String() string {
 
 // ListCodesOfConduct returns all codes of conduct.
 //
-// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/
+// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/#list-all-codes-of-conduct
 func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	req, err := c.NewRequest("GET", "codes_of_conduct", nil)
 	if err != nil {
@@ -107,19 +107,19 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	var codeOfConducts []*CodeOfConduct
-	resp, err := c.Do(ctx, req, &codeOfConducts)
+	var cs []*CodeOfConduct
+	resp, err := c.Do(ctx, req, &cs)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return codeOfConducts, resp, nil
+	return cs, resp, nil
 }
 
-// GetCodeOfConductByKey returns an individual code of conduct.
+// GetCodeOfConduct returns an individual code of conduct.
 //
-// https://developer.github.com/v3/codes_of_conduct/
-func (c *Client) GetCodeOfConductByKey(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
+// https://developer.github.com/v3/codes_of_conduct/#get-an-individual-code-of-conduct
+func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%s", key)
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {
@@ -129,13 +129,13 @@ func (c *Client) GetCodeOfConductByKey(ctx context.Context, key string) (*CodeOf
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	codeOfConduct := new(CodeOfConduct)
-	resp, err := c.Do(ctx, req, &codeOfConduct)
+	coc := new(CodeOfConduct)
+	resp, err := c.Do(ctx, req, &coc)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return codeOfConduct, resp, nil
+	return coc, resp, nil
 }
 
 // APIMeta represents metadata about the GitHub API.

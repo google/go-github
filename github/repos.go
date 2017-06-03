@@ -307,7 +307,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 // GetCodeOfConduct gets the contents of a repository's code of conduct.
 //
-// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/
+// GitHub API docs: https://developer.github.com/v3/codes_of_conduct/#get-the-contents-of-a-repositorys-code-of-conduct
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/community/code_of_conduct", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -318,13 +318,13 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	codeOfconduct := new(CodeOfConduct)
-	resp, err := s.client.Do(ctx, req, codeOfconduct)
+	coc := new(CodeOfConduct)
+	resp, err := s.client.Do(ctx, req, coc)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return codeOfconduct, resp, nil
+	return coc, resp, nil
 }
 
 // GetByID fetches a repository.
