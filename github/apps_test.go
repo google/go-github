@@ -13,11 +13,11 @@ import (
 	"testing"
 )
 
-func TestIntegrationService_ListInstallations(t *testing.T) {
+func TestAppsService_ListInstallations(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/integration/installations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		testFormValues(t, r, values{
@@ -28,13 +28,13 @@ func TestIntegrationService_ListInstallations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	installations, _, err := client.Integrations.ListInstallations(context.Background(), opt)
+	installations, _, err := client.Apps.ListInstallations(context.Background(), opt)
 	if err != nil {
-		t.Errorf("Integration.ListInstallations returned error: %v", err)
+		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
 	want := []*Installation{{ID: Int(1)}}
 	if !reflect.DeepEqual(installations, want) {
-		t.Errorf("Integration.ListInstallations returned %+v, want %+v", installations, want)
+		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
 	}
 }
