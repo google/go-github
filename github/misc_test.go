@@ -67,6 +67,67 @@ func TestListEmojis(t *testing.T) {
 	}
 }
 
+func TestListCodesOfConduct(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/codes_of_conduct", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
+		fmt.Fprint(w, `[{
+						"key": "key",
+						"name": "name",
+						"url": "url"}
+						]`)
+	})
+
+	cs, _, err := client.ListCodesOfConduct(context.Background())
+	if err != nil {
+		t.Errorf("ListCodesOfConduct returned error: %v", err)
+	}
+
+	want := []*CodeOfConduct{
+		{
+			Key:  String("key"),
+			Name: String("name"),
+			URL:  String("url"),
+		}}
+	if !reflect.DeepEqual(want, cs) {
+		t.Errorf("ListCodesOfConduct returned %+v, want %+v", cs, want)
+	}
+}
+
+func TestGetCodeOfConduct(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/codes_of_conduct/k", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
+		fmt.Fprint(w, `{
+						"key": "key",
+						"name": "name",
+						"url": "url",
+						"body": "body"}`,
+		)
+	})
+
+	coc, _, err := client.GetCodeOfConduct(context.Background(), "k")
+	if err != nil {
+		t.Errorf("ListCodesOfConduct returned error: %v", err)
+	}
+
+	want := &CodeOfConduct{
+		Key:  String("key"),
+		Name: String("name"),
+		URL:  String("url"),
+		Body: String("body"),
+	}
+	if !reflect.DeepEqual(want, coc) {
+		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", coc, want)
+	}
+}
+
 func TestAPIMeta(t *testing.T) {
 	setup()
 	defer teardown()
