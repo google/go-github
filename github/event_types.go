@@ -726,3 +726,14 @@ type WatchEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// ForkEvent represents the payload delivered by Fork webhook.
+//
+// GitHub docs: https://developer.github.com/v3/activity/events/types/#forkevent
+type ForkEvent struct {
+	Forkee *Repository `json:"forkee,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo   *Repository `json:"repository,omitempty"`
+	Sender *User       `json:"sender,omitempty"`
+}
