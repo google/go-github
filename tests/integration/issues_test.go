@@ -7,7 +7,11 @@
 
 package tests
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/google/go-github/github"
+)
 
 func TestIssueEvents(t *testing.T) {
 	events, _, err := client.Issues.ListRepositoryEvents("google", "go-github", nil)
@@ -35,5 +39,41 @@ func TestIssueEvents(t *testing.T) {
 
 	if *event.URL != *events[0].URL {
 		t.Fatalf("Issues.GetEvent returned event URL: %v, want %v", *event.URL, *events[0].URL)
+	}
+}
+
+func TestGetIssueByURL(t *testing.T) {
+	i, _, err := client.Issues.GetByURL("https://api.github.com/repos/google/go-github/issues/1")
+
+	if err != nil {
+		t.Fatalf("Issues.GetByURL returned error: %v", err)
+	}
+
+	if *i.Number != 1 {
+		t.Errorf("expected Issues.GetByURL to return a representation of the issue")
+	}
+}
+
+func TestGetIssueCommentByURL(t *testing.T) {
+	c, _, err := client.Issues.GetCommentByURL("https://api.github.com/repos/google/go-github/issues/comments/19136005")
+
+	if err != nil {
+		t.Fatalf("Issues.GetCommentByURL returned error: %v", err)
+	}
+
+	if *c.ID != 19136005 {
+		t.Errorf("expected Issues.GetCommentByURL to return a representation of the specified comment")
+	}
+}
+
+func TestListIssueCommentsByURL(t *testing.T) {
+	c, _, err := client.Issues.ListCommentsByURL("https://api.github.com/repos/google/go-github/issues/2/comments", &github.IssueListCommentsOptions{})
+
+	if err != nil {
+		t.Fatalf("Issues.ListIssueCommentsByURL returned error: %v", err)
+	}
+
+	if len(c) == 0 {
+		t.Errorf("expected Issues.ListIssueCommentsByURL to return at least one comment from issue")
 	}
 }

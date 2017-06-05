@@ -225,7 +225,15 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 // GitHub API docs: https://developer.github.com/v3/issues/#get-a-single-issue
 func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+
+	return s.GetByURL(u)
+}
+
+// Get a single issue by its API url.
+//
+// Intended to be used for following hypermedia links exposed in the API.
+func (s *IssuesService) GetByURL(url string) (*Issue, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}

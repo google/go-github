@@ -54,7 +54,15 @@ func (s *IssuesService) ListComments(ctx context.Context, owner string, repo str
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	}
-	u, err := addOptions(u, opt)
+
+	return s.ListCommentsByURL(u, opt)
+}
+
+// ListCommentsByURL lists all issue comments at the specified URL.
+//
+// Intended to be used for following hypermedia links in the API.
+func (s *IssuesService) ListCommentsByURL(url string, opt *IssueListCommentsOptions) ([]IssueComment, *Response, error) {
+	u, err := addOptions(url, opt)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -82,7 +90,14 @@ func (s *IssuesService) ListComments(ctx context.Context, owner string, repo str
 func (s *IssuesService) GetComment(ctx context.Context, owner string, repo string, id int) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%d", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	return s.GetCommentByURL(u)
+}
+
+// Get an issue comment by its URL
+//
+// Intended to be used for following hypermedia links in the API.
+func (s *IssuesService) GetCommentByURL(url string) (*IssueComment, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
