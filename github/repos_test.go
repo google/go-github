@@ -665,9 +665,6 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
 		fmt.Fprint(w, `{"include_admins": true,"strict": true,"contexts": ["x","y","z"]}`)
@@ -688,14 +685,35 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetRequiredStatusChecks_unprotectedBranch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, `{
+  "message": "Not Found",
+  "documentation_url": "https://developer.github.com/v3"
+}`)
+	})
+
+	checks, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetRequiredStatusChecks returned error: %v", err)
+	}
+
+	if checks != nil {
+		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want nil", checks)
+	}
+}
+
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ProtectionRequest)
-		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
 		fmt.Fprint(w, `["x", "y", "z"]`)
@@ -709,5 +727,29 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	want := []string{"x", "y", "z"}
 	if !reflect.DeepEqual(contexts, want) {
 		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
+	}
+}
+
+func TestRepositoriesService_ListRequiredStatusChecksContexts_unprotectedBranch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, `{
+  "message": "Not Found",
+  "documentation_url": "https://developer.github.com/v3"
+}`)
+	})
+
+	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
+	}
+
+	if len(contexts) != 0 {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want zero length slice", contexts)
 	}
 }

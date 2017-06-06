@@ -662,7 +662,8 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	return p, resp, nil
 }
 
-// GetRequiredStatusChecks gets the required status checks for a given protected branch.
+// GetRequiredStatusChecks gets the required status checks for a given protected branch,
+// or nil if the branch is not protected.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#get-required-status-checks-of-protected-branch
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
@@ -678,6 +679,8 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 	p := new(RequiredStatusChecks)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
+		// if it's just a 404, don't return that as an error
+		_, err = parseBoolResponse(err)
 		return nil, resp, err
 	}
 
@@ -699,6 +702,8 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 
 	resp, err = s.client.Do(ctx, req, &contexts)
 	if err != nil {
+		// if it's just a 404, don't return that as an error, but rather just the empty slice
+		_, err = parseBoolResponse(err)
 		return nil, resp, err
 	}
 
