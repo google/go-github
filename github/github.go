@@ -102,6 +102,9 @@ const (
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 )
 
+type onRequestFunc func(r *http.Request)
+type onResponseFunc func(r *http.Response)
+
 // A Client manages communication with the GitHub API.
 type Client struct {
 	clientMu sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
@@ -122,6 +125,11 @@ type Client struct {
 	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
+
+	// A function to call prior to sending a request
+	OnRequest onRequestFunc
+	// A function to call right after receiving a response
+	OnResponse onResponseFunc
 
 	// Services used for talking to different parts of the GitHub API.
 	Activity       *ActivityService
@@ -393,6 +401,10 @@ func parseRate(r *http.Response) Rate {
 // The provided ctx must be non-nil. If it is canceled or times out,
 // ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+	if c.OnRequest != nil {
+		c.OnRequest(req)
+	}
+
 	ctx, req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
@@ -424,6 +436,10 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		}
 
 		return nil, err
+	}
+
+	if c.OnResponse != nil {
+		c.OnResponse(resp)
 	}
 
 	defer func() {
