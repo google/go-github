@@ -230,3 +230,49 @@ func TestListServiceHooks(t *testing.T) {
 		t.Errorf("ListServiceHooks returned %+v, want %+v", hooks, want)
 	}
 }
+
+func TestParseURL(t *testing.T) {
+	const (
+		owner, repo = "bazelbuild", "bazel"
+	)
+	tests := []struct {
+		url                 string
+		wantOwner, wantRepo string
+		wantErr             bool
+	}{
+		{url: "https://github.com/bazelbuild/bazel", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild/bazel/", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild", wantOwner: owner},
+		{url: "https://github.com/bazelbuild/", wantOwner: owner},
+		{url: "https://github.com////bazelbuild////bazel", wantOwner: owner, wantRepo: repo},
+		{url: "http://github.com/bazelbuild/bazel/tree/master", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild/bazel/archive/0.2.1.zip", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild/bazel/commit/19b...edc", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild/bazel/releases/tag/0.2.1", wantOwner: owner, wantRepo: repo},
+		{url: "https://github.com/bazelbuild/bazel/tree/master", wantOwner: owner, wantRepo: repo},
+		{url: "https://www.github.com/bazelbuild/bazel/tree/master", wantOwner: owner, wantRepo: repo},
+		{url: "https://mygithub.com/bazelbuild", wantErr: true},
+		{url: "https://github.com///", wantErr: true},
+		{url: "https://github.com//", wantErr: true},
+		{url: "https://github.com/", wantErr: true},
+		{url: "https://github.com", wantErr: true},
+	}
+
+	for _, test := range tests {
+		gotOwner, gotRepo, err := ParseURL(test.url)
+		if err != nil {
+			if !test.wantErr {
+				t.Errorf("ParseURL(%q) = %v, want nil", test.url, err)
+			}
+			continue
+		}
+		if test.wantErr {
+			t.Errorf("ParseURL(%q) = nil, want error", test.url)
+			continue
+		}
+
+		if gotOwner != test.wantOwner || gotRepo != test.wantRepo {
+			t.Errorf("ParseURL(%q) = (%q, %q), want (%q, %q)", test.url, gotOwner, gotRepo, test.wantOwner, test.wantRepo)
+		}
+	}
+}

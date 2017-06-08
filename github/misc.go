@@ -10,6 +10,8 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"path"
+	"strings"
 )
 
 // MarkdownOptions specifies optional parameters to the Markdown method.
@@ -250,4 +252,34 @@ func (c *Client) ListServiceHooks(ctx context.Context) ([]*ServiceHook, *Respons
 	}
 
 	return hooks, resp, nil
+}
+
+// ParseURL parses a GitHub URL and returns the owner and repo (if provided).
+// It returns an error if it is unable to parse the URL.
+//
+// Examples of valid URLs are:
+//     https://github.com/bazelbuild/bazel
+//     http://github.com/bazelbuild/bazel/tree/master
+//     https://www.github.com/bazelbuild/bazel/tree/master
+//     https://github.com/bazelbuild/bazel/releases/tag/0.2.1
+//     https://github.com/bazelbuild/bazel/commit/19b5675725caf69008a717082149237400260edc
+//     https://github.com/bazelbuild/bazel/archive/0.2.1.zip
+func ParseURL(rawurl string) (owner, repo string, err error) {
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return "", "", fmt.Errorf("unrecognized GitHub URL %q: %v", rawurl, err)
+	}
+	if u.Host != "github.com" && u.Host != "www.github.com" {
+		return "", "", fmt.Errorf("unrecognized GitHub URL: %q", rawurl)
+	}
+
+	parts := strings.SplitN(path.Clean(u.Path), "/", 4)
+	switch {
+	case len(parts) < 2 || parts[1] == "":
+		return "", "", fmt.Errorf("unrecognized GitHub URL: %q", rawurl)
+	case len(parts) == 2:
+		return parts[1], "", nil
+	default:
+		return parts[1], parts[2], nil
+	}
 }
