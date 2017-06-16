@@ -161,6 +161,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 
 	req.Header.Add("Accept", mediaTypeV3)
 	req.Header.Add("User-Agent", c.UserAgent)
+	req.Header.Set("Cache-Control", "must-revalidate")
 	return req, nil
 }
 
