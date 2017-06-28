@@ -4156,6 +4156,14 @@ func (p *PullRequestReviewRequest) GetEvent() string {
 	return *p.Event
 }
 
+// GetDismissStaleReviews returns the DismissStaleReviews field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
+	if p == nil || p.DismissStaleReviews == nil {
+		return false
+	}
+	return *p.DismissStaleReviews
+}
+
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (p *pullRequestUpdate) GetBase() string {
 	if p == nil || p.Base == nil {
