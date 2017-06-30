@@ -880,12 +880,12 @@ func cloneRequest(r *http.Request) *http.Request {
 	return r2
 }
 
-func formatDuration(d time.Duration) string{
+func formatDuration(d time.Duration) string {
 	secondsTotal := int(d.Seconds())
 	hours := int(secondsTotal / 60 / 60)
-	minutes := int((secondsTotal - hours * 60 * 60) / 60)
-	seconds := int(secondsTotal - hours * 60 * 60 - minutes * 60)
-	
+	minutes := int((secondsTotal - hours*60*60) / 60)
+	seconds := int(secondsTotal - hours*60*60 - minutes*60)
+
 	if hours > 0 {
 		return fmt.Sprintf("%dh%02dm%02ds", hours, minutes, seconds)
 	}
