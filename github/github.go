@@ -530,9 +530,9 @@ type RateLimitError struct {
 }
 
 func (r *RateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v; rate reset in %v",
+	return fmt.Sprintf("%v %v: %d %v [rate reset in %v]",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, r.Rate.Reset.Time.Sub(time.Now()))
+		r.Response.StatusCode, r.Message, formatDuration(r.Rate.Reset.Time.Sub(time.Now())))
 }
 
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
@@ -878,6 +878,23 @@ func cloneRequest(r *http.Request) *http.Request {
 		r2.Header[k] = append([]string(nil), s...)
 	}
 	return r2
+}
+
+func formatDuration(d time.Duration) string{
+	secondsTotal := int(d.Seconds())
+	hours := int(secondsTotal / 60 / 60)
+	minutes := int((secondsTotal - hours * 60 * 60) / 60)
+	seconds := int(secondsTotal - hours * 60 * 60 - minutes * 60)
+	
+	if hours > 0 {
+		return fmt.Sprintf("%dh%02dm%02ds", hours, minutes, seconds)
+	}
+
+	if minutes > 0 {
+		return fmt.Sprintf("%dm%02ds", minutes, seconds)
+	}
+
+	return fmt.Sprintf("%ds", seconds)
 }
 
 // Bool is a helper routine that allocates a new bool value
