@@ -916,7 +916,6 @@ func TestFormatRateLimitResetDuration(t *testing.T) {
 	d := 120*time.Minute + 12*time.Second
 	got := formatRateReset(d)
 	want := "[rate reset in 120m12s]"
-
 	if got != want {
 		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
 	}
