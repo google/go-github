@@ -532,7 +532,7 @@ type RateLimitError struct {
 func (r *RateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %d %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, formatRateLimitResetDuration(r.Rate.Reset.Time.Sub(time.Now())))
+		r.Response.StatusCode, r.Message, formatRateReset(r.Rate.Reset.Time.Sub(time.Now())))
 }
 
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
@@ -883,9 +883,8 @@ func cloneRequest(r *http.Request) *http.Request {
 // formatRateLimitResetDuration formats d to look like "[rate reset in 2s]" or
 // "[rate reset in 87m02s]" for the positive durations. And like "[rate limit was reset 87m02s ago]"
 // for the negative cases.
-func formatRateLimitResetDuration(d time.Duration) string {
+func formatRateReset(d time.Duration) string {
 	isNegative := d < 0
-	var timeString string
 	if isNegative {
 		d *= -1
 	}
@@ -893,6 +892,7 @@ func formatRateLimitResetDuration(d time.Duration) string {
 	minutes := int((secondsTotal) / 60)
 	seconds := int(secondsTotal - minutes*60)
 
+	var timeString string
 	if minutes > 0 {
 		timeString = fmt.Sprintf("%dm%02ds", minutes, seconds)
 	} else {
