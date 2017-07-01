@@ -316,6 +316,9 @@ type Response struct {
 
 // newResponse creates a new Response for the provided http.Response.
 func newResponse(r *http.Response) *Response {
+	if r == nil {
+		return nil
+	}
 	response := &Response{Response: r}
 	response.populatePageValues()
 	response.Rate = parseRate(r)
