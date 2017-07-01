@@ -112,7 +112,7 @@ func TestUsersService_GetByID(t *testing.T) {
 
 	user, _, err := client.Users.GetByID(context.Background(), 1)
 	if err != nil {
-		t.Errorf("Users.GetByID returned error: %v", err)
+		t.Fatalf("Users.GetByID returned error: %v", err)
 	}
 
 	want := &User{ID: Int(1)}
