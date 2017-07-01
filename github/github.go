@@ -530,9 +530,9 @@ type RateLimitError struct {
 }
 
 func (r *RateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %d %v [rate reset in %v]",
+	return fmt.Sprintf("%v %v: %d %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, formatDuration(r.Rate.Reset.Time.Sub(time.Now())))
+		r.Response.StatusCode, r.Message, formatRateLimitResetDuration(r.Rate.Reset.Time.Sub(time.Now())))
 }
 
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
@@ -880,21 +880,30 @@ func cloneRequest(r *http.Request) *http.Request {
 	return r2
 }
 
-func formatDuration(d time.Duration) string {
-	secondsTotal := int(d.Seconds())
-	hours := int(secondsTotal / 60 / 60)
-	minutes := int((secondsTotal - hours*60*60) / 60)
-	seconds := int(secondsTotal - hours*60*60 - minutes*60)
-
-	if hours > 0 {
-		return fmt.Sprintf("%dh%02dm%02ds", hours, minutes, seconds)
+// formatRateLimitResetDuration formats d to look like "[rate reset in 2s]" or
+// "[rate reset in 87m02s]" for the positive durations. And like "[rate limit was reset 87m02s ago]"
+// for the negative cases.
+func formatRateLimitResetDuration(d time.Duration) string {
+	isNegative := d < 0
+	var timeString string
+	if isNegative {
+		d *= -1
 	}
+	secondsTotal := int(d.Seconds())
+	minutes := int((secondsTotal) / 60)
+	seconds := int(secondsTotal - minutes*60)
 
 	if minutes > 0 {
-		return fmt.Sprintf("%dm%02ds", minutes, seconds)
+		timeString = fmt.Sprintf("%dm%02ds", minutes, seconds)
+	} else {
+		timeString = fmt.Sprintf("%ds", seconds)
 	}
 
-	return fmt.Sprintf("%ds", seconds)
+	if isNegative {
+		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
+	}
+
+	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 
 // Bool is a helper routine that allocates a new bool value
