@@ -289,7 +289,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 
 	repo, _, err := client.Repositories.GetByID(context.Background(), 1)
 	if err != nil {
-		t.Errorf("Repositories.GetByID returned error: %v", err)
+		t.Fatalf("Repositories.GetByID returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}

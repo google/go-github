@@ -120,7 +120,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 
 	org, _, err := client.Organizations.GetByID(context.Background(), 1)
 	if err != nil {
-		t.Errorf("Organizations.GetByID returned error: %v", err)
+		t.Fatalf("Organizations.GetByID returned error: %v", err)
 	}
 
 	want := &Organization{ID: Int(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
