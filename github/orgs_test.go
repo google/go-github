@@ -109,6 +109,26 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestOrganizationsService_GetByID(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/organizations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
+	})
+
+	org, _, err := client.Organizations.GetByID(context.Background(), 1)
+	if err != nil {
+		t.Fatalf("Organizations.GetByID returned error: %v", err)
+	}
+
+	want := &Organization{ID: Int(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
+	if !reflect.DeepEqual(org, want) {
+		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
+	}
+}
+
 func TestOrganizationsService_Edit(t *testing.T) {
 	setup()
 	defer teardown()
