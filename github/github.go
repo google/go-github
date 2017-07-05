@@ -888,9 +888,9 @@ func formatRateReset(d time.Duration) string {
 	if isNegative {
 		d *= -1
 	}
-	secondsTotal := int(d.Seconds())
-	minutes := int((secondsTotal) / 60)
-	seconds := int(secondsTotal - minutes*60)
+	secondsTotal := int(0.5 + d.Seconds())
+	minutes := secondsTotal / 60
+	seconds := secondsTotal - minutes*60
 
 	var timeString string
 	if minutes > 0 {
