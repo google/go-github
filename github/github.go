@@ -315,6 +315,7 @@ type Response struct {
 }
 
 // newResponse creates a new Response for the provided http.Response.
+// r must not be nil.
 func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
 	response.populatePageValues()
