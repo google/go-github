@@ -267,6 +267,9 @@ type ProjectCard struct {
 	Note       *string    `json:"note,omitempty"`
 	CreatedAt  *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
+	Url        *string    `json:"url,omitempty"`
+	Creator    *User      `json:"creator,omitempty"`
+	ColumnID   *int       `json:"column_id,omitempty"`
 }
 
 // ListProjectCards lists the cards in a column of a GitHub Project.
