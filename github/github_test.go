@@ -911,3 +911,40 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 		t.Errorf("Expected custom transport to be used.")
 	}
 }
+
+func TestFormatRateReset(t *testing.T) {
+	d := 120*time.Minute + 12*time.Second
+	got := formatRateReset(d)
+	want := "[rate reset in 120m12s]"
+	if got != want {
+		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
+	}
+
+	d = 14*time.Minute + 2*time.Second
+	got = formatRateReset(d)
+	want = "[rate reset in 14m02s]"
+	if got != want {
+		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
+	}
+
+	d = 2*time.Minute + 2*time.Second
+	got = formatRateReset(d)
+	want = "[rate reset in 2m02s]"
+	if got != want {
+		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
+	}
+
+	d = 12 * time.Second
+	got = formatRateReset(d)
+	want = "[rate reset in 12s]"
+	if got != want {
+		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
+	}
+
+	d = -1 * (2*time.Hour + 2*time.Second)
+	got = formatRateReset(d)
+	want = "[rate limit was reset 120m02s ago]"
+	if got != want {
+		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
+	}
+}
