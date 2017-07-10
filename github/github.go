@@ -880,7 +880,7 @@ func cloneRequest(r *http.Request) *http.Request {
 	return r2
 }
 
-// formatRateLimitResetDuration formats d to look like "[rate reset in 2s]" or
+// formatRateReset formats d to look like "[rate reset in 2s]" or
 // "[rate reset in 87m02s]" for the positive durations. And like "[rate limit was reset 87m02s ago]"
 // for the negative cases.
 func formatRateReset(d time.Duration) string {
@@ -902,7 +902,6 @@ func formatRateReset(d time.Duration) string {
 	if isNegative {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
-
 	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 

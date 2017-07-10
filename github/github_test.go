@@ -912,7 +912,7 @@ func TestBasicAuthTransport_transport(t *testing.T) {
 	}
 }
 
-func TestFormatRateLimitResetDuration(t *testing.T) {
+func TestFormatRateReset(t *testing.T) {
 	d := 120*time.Minute + 12*time.Second
 	got := formatRateReset(d)
 	want := "[rate reset in 120m12s]"
