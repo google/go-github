@@ -261,14 +261,14 @@ func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int, o
 //
 // GitHub API docs: https://developer.github.com/v3/repos/projects/
 type ProjectCard struct {
+	URL        *string    `json:"url,omitempty"`
 	ColumnURL  *string    `json:"column_url,omitempty"`
 	ContentURL *string    `json:"content_url,omitempty"`
 	ID         *int       `json:"id,omitempty"`
 	Note       *string    `json:"note,omitempty"`
+	Creator    *User      `json:"creator,omitempty"`
 	CreatedAt  *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
-	Url        *string    `json:"url,omitempty"`
-	Creator    *User      `json:"creator,omitempty"`
 	ColumnID   *int       `json:"column_id,omitempty"`
 }
 
