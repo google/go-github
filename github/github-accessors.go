@@ -3516,6 +3516,14 @@ func (p *Project) GetURL() string {
 	return *p.URL
 }
 
+// GetColumnID returns the ColumnID field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetColumnID() int {
+	if p == nil || p.ColumnID == nil {
+		return 0
+	}
+	return *p.ColumnID
+}
+
 // GetColumnURL returns the ColumnURL field if it's non-nil, zero value otherwise.
 func (p *ProjectCard) GetColumnURL() string {
 	if p == nil || p.ColumnURL == nil {
@@ -3562,6 +3570,14 @@ func (p *ProjectCard) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
