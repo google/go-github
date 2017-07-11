@@ -269,7 +269,9 @@ type ProjectCard struct {
 	Creator    *User      `json:"creator,omitempty"`
 	CreatedAt  *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
-	ColumnID   *int       `json:"column_id,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	ColumnID *int `json:"column_id,omitempty"`
 }
 
 // ListProjectCards lists the cards in a column of a GitHub Project.
