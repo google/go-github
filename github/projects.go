@@ -259,7 +259,7 @@ func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int, o
 
 // ProjectCard represents a card in a column of a GitHub Project.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/projects/
+// GitHub API docs: https://developer.github.com/v3/projects/cards/#get-a-project-card
 type ProjectCard struct {
 	URL        *string    `json:"url,omitempty"`
 	ColumnURL  *string    `json:"column_url,omitempty"`
