@@ -1,8 +1,8 @@
 sudo: false
 language: go
 go:
-  - 1.7.x
   - 1.8.x
+  - 1.7.x
   - master
 matrix:
   allow_failures:
@@ -16,3 +16,4 @@ script:
   - go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code) # Check that go generate ./... produces a zero diff; clean up any changes afterwards.
   - go tool vet .
   - go test -v -race ./...
+  - go test -v -tags=integration -run=^$ ./test/integration # Check that integration test builds successfully, but don't run any of the tests (they hit live GitHub API).
