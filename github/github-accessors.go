@@ -5452,6 +5452,14 @@ func (r *Repository) GetTeamsURL() string {
 	return *r.TeamsURL
 }
 
+// GetTopics returns the Topics field if it's non-nil, zero value otherwise.
+func (r *Repository) GetTopics() []string {
+	if r == nil || r.Topics == nil {
+		return nil
+	}
+	return *r.Topics
+}
+
 // GetTreesURL returns the TreesURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetTreesURL() string {
 	if r == nil || r.TreesURL == nil {
@@ -6634,6 +6642,14 @@ func (t *Timeline) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetNames returns the Names field if it's non-nil, zero value otherwise.
+func (t *Topics) GetNames() []string {
+	if t == nil || t.Names == nil {
+		return nil
+	}
+	return *t.Names
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
