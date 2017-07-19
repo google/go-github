@@ -933,17 +933,18 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
 	got, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.ReplaceAllTopics returned error: %v", err)
+		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
 	}
 
 	want := &Topics{Names: []string{"go", "go-github", "github"}}
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
+		t.Errorf("Repositories.ListAllTopics returned %+v, want %+v", got, want)
 	}
 }
 
@@ -953,12 +954,13 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
 	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", &Topics{Names: []string{"go", "go-github", "github"}})
 	if err != nil {
-		t.Errorf("Repositories.ReplaceAllTopics returned error: %v", err)
+		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
 
 	want := &Topics{Names: []string{"go", "go-github", "github"}}
