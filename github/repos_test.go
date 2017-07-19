@@ -936,14 +936,14 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
-	want := &Topics{Names: &[]string{"go", "go-github", "github"}}
-	topics, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
+	got, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(topics, want) {
-		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", topics, want)
+	want := &Topics{Names: []string{"go", "go-github", "github"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }
 
@@ -956,13 +956,13 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
-	want := &Topics{Names: &[]string{"go", "go-github", "github"}}
-	topics, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", want)
+	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", &Topics{Names: []string{"go", "go-github", "github"}})
 	if err != nil {
 		t.Errorf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(topics, want) {
-		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", topics, want)
+	want := &Topics{Names: []string{"go", "go-github", "github"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }

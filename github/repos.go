@@ -55,7 +55,7 @@ type Repository struct {
 	AllowRebaseMerge *bool            `json:"allow_rebase_merge,omitempty"`
 	AllowSquashMerge *bool            `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit *bool            `json:"allow_merge_commit,omitempty"`
-	Topics           *[]string        `json:"topics,omitempty"`
+	Topics           []string         `json:"topics,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
@@ -974,9 +974,9 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
-// Topics represents a repository topics to list or replace.
+// Topics represents a collection of repository topics.
 type Topics struct {
-	Names *[]string `json:"names,omitempty"`
+	Names []string `json:"names,omitempty"`
 }
 
 // ListAllTopics lists topics for a repository.
