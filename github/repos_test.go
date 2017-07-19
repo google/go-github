@@ -227,7 +227,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview}
+	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
@@ -924,5 +924,47 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 	want := `{"dismissal_restrictions":[],"dismiss_stale_reviews":false}`
 	if want != string(json) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(json), want)
+	}
+}
+
+func TestRepositoriesService_ListAllTopics(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
+		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
+	})
+
+	got, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
+	if err != nil {
+		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
+	}
+
+	want := &Topics{Names: []string{"go", "go-github", "github"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListAllTopics returned %+v, want %+v", got, want)
+	}
+}
+
+func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
+		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
+	})
+
+	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", &Topics{Names: []string{"go", "go-github", "github"}})
+	if err != nil {
+		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
+	}
+
+	want := &Topics{Names: []string{"go", "go-github", "github"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }
