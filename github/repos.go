@@ -176,8 +176,10 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opt *Reposi
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when license support fully launches
-	req.Header.Set("Accept", mediaTypeLicensesPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
+
+	req.Header.Set("Accept", strings.Join(acceptHeader, ", "))
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
@@ -213,9 +215,10 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when license support fully launches
-	req.Header.Set("Accept", mediaTypeLicensesPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
 
+	req.Header.Set("Accept", strings.Join(acceptHeader, ", "))
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
