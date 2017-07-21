@@ -19,10 +19,10 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -41,10 +41,10 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"visibility":  "public",
 			"affiliation": "owner,collaborator",
@@ -77,10 +77,10 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"type": "owner",
 		})
@@ -110,10 +110,10 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"type": "forks",
 			"page": "2",
@@ -231,10 +231,10 @@ func TestRepositoriesService_Get(t *testing.T) {
 	setup()
 	defer teardown()
 
-	acceptHeader := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeSquashPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeader, ", "))
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
