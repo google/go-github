@@ -436,7 +436,6 @@ func TestPullRequestsService_Merge(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeSquashPreview)
 		fmt.Fprint(w, `
 			{
 			  "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
@@ -500,7 +499,6 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%d/merge", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
-			testHeader(t, r, "Accept", mediaTypeSquashPreview)
 			testBody(t, r, test.wantBody+"\n")
 			madeRequest = true
 		})

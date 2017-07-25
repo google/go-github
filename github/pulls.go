@@ -343,9 +343,6 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: This header will be unnecessary when the API is no longer in preview.
-	req.Header.Set("Accept", mediaTypeSquashPreview)
-
 	mergeResult := new(PullRequestMergeResult)
 	resp, err := s.client.Do(ctx, req, mergeResult)
 	if err != nil {
