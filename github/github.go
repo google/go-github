@@ -99,6 +99,9 @@ const (
 
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
+
+	// https://developer.github.com/changes/2017-07-26-team-review-request-thor-preview/
+	mediaTypeTeamReviewPreview = "application/vnd.github.thor-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

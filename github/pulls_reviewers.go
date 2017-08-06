@@ -13,18 +13,22 @@ import (
 // RequestReviewers creates a review request for the provided GitHub users for the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#create-a-review-request
-func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, logins []string) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, logins []string, teams []string) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
 
 	reviewers := struct {
-		Reviewers []string `json:"reviewers,omitempty"`
+		Reviewers     []string `json:"reviewers,omitempty"`
+		TeamReviewers []string `json:"team_reviewers,omitempty"`
 	}{
-		Reviewers: logins,
+		Reviewers:     logins,
+		TeamReviewers: teams,
 	}
 	req, err := s.client.NewRequest("POST", u, &reviewers)
 	if err != nil {
 		return nil, nil, err
 	}
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeTeamReviewPreview)
 
 	r := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, r)
@@ -35,10 +39,16 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 	return r, resp, nil
 }
 
+// Reviewers represents reviewers of a pull request.
+type Reviewers struct {
+	Users []*User `json:"users,omitempty"`
+	Teams []*Team `json:"teams,omitempty"`
+}
+
 // ListReviewers lists users whose reviews have been requested on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#list-review-requests
-func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opt *ListOptions) ([]*User, *Response, error) {
+func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opt *ListOptions) (*Reviewers, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/requested_reviewers", owner, repo, number)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -50,30 +60,38 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeTeamReviewPreview)
+
+	reviewers := new(Reviewers)
+	resp, err := s.client.Do(ctx, req, reviewers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return users, resp, nil
+	return reviewers, resp, nil
 }
 
 // RemoveReviewers removes the review request for the provided GitHub users for the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#delete-a-review-request
-func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, logins []string) (*Response, error) {
+func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, logins []string, teams []string) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/pulls/%d/requested_reviewers", owner, repo, number)
 
 	reviewers := struct {
-		Reviewers []string `json:"reviewers,omitempty"`
+		Reviewers     []string `json:"reviewers,omitempty"`
+		TeamReviewers []string `json:"team_reviewers,omitempty"`
 	}{
-		Reviewers: logins,
+		Reviewers:     logins,
+		TeamReviewers: teams,
 	}
 	req, err := s.client.NewRequest("DELETE", u, &reviewers)
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeTeamReviewPreview)
 
 	return s.client.Do(ctx, req, reviewers)
 }
