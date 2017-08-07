@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// RequestReviewers creates a review request for the provided GitHub users for the specified pull request.
+// RequestReviewers creates a review request for the provided GitHub users and teams for the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#create-a-review-request
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, logins []string, teams []string) (*PullRequest, *Response, error) {
@@ -45,7 +45,7 @@ type Reviewers struct {
 	Teams []*Team `json:"teams,omitempty"`
 }
 
-// ListReviewers lists users whose reviews have been requested on the specified pull request.
+// ListReviewers lists users and teams whose reviews have been requested on the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#list-review-requests
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int, opt *ListOptions) (*Reviewers, *Response, error) {
@@ -72,7 +72,7 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 	return reviewers, resp, nil
 }
 
-// RemoveReviewers removes the review request for the provided GitHub users for the specified pull request.
+// RemoveReviewers removes the review request for the provided GitHub users and teams for the specified pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/review_requests/#delete-a-review-request
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, logins []string, teams []string) (*Response, error) {
