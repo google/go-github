@@ -4164,6 +4164,14 @@ func (p *PullRequestReviewRequest) GetBody() string {
 	return *p.Body
 }
 
+// GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewRequest) GetCommitID() string {
+	if p == nil || p.CommitID == nil {
+		return ""
+	}
+	return *p.CommitID
+}
+
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
 func (p *PullRequestReviewRequest) GetEvent() string {
 	if p == nil || p.Event == nil {
