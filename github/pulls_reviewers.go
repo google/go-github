@@ -10,16 +10,16 @@ import (
 	"fmt"
 )
 
-// Reviewers represents reviewers of a pull request.
-type Reviewers struct {
-	Users []*User `json:"users,omitempty"`
-	Teams []*Team `json:"teams,omitempty"`
-}
-
 // ReviewersRequest specifies users and teams for a pull request review request.
 type ReviewersRequest struct {
 	Reviewers     []string `json:"reviewers,omitempty"`
 	TeamReviewers []string `json:"team_reviewers,omitempty"`
+}
+
+// Reviewers represents reviewers of a pull request.
+type Reviewers struct {
+	Users []*User `json:"users,omitempty"`
+	Teams []*Team `json:"teams,omitempty"`
 }
 
 // RequestReviewers creates a review request for the provided reviewers for the specified pull request.
