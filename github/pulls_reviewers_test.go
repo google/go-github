@@ -25,7 +25,7 @@ func TestRequestReviewers(t *testing.T) {
 	})
 
 	// This returns a PR, unmarshalling of which is tested elsewhere
-	pull, _, err := client.PullRequests.RequestReviewers(context.Background(), "o", "r", 1, []string{"octocat", "googlebot"}, []string{"justice-league", "injustice-league"})
+	pull, _, err := client.PullRequests.RequestReviewers(context.Background(), "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
@@ -45,7 +45,7 @@ func TestRemoveReviewers(t *testing.T) {
 		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`+"\n")
 	})
 
-	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, []string{"octocat", "googlebot"}, []string{"justice-league"})
+	_, err := client.PullRequests.RemoveReviewers(context.Background(), "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
