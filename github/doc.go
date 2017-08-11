@@ -181,7 +181,7 @@ the "context" import and still relies on "golang.org/x/net/context".
 As a result, if you wish to continue to use "go-github" on App Engine Classic,
 you will need to rewrite all the "context" imports using the following command:
 
-    gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go
+	gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go
 
 See "with_appengine.go" for more details.
 

@@ -52,16 +52,16 @@ API token][]), you can use it with the oauth2 library using:
 import "golang.org/x/oauth2"
 
 func main() {
-  ctx := context.Background()
-  ts := oauth2.StaticTokenSource(
-    &oauth2.Token{AccessToken: "... your access token ..."},
-  )
-  tc := oauth2.NewClient(ctx, ts)
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: "... your access token ..."},
+	)
+	tc := oauth2.NewClient(ctx, ts)
 
-  client := github.NewClient(tc)
+	client := github.NewClient(tc)
 
-  // list all repositories for the authenticated user
-  repos, _, err := client.Repositories.List(ctx, "", nil)
+	// list all repositories for the authenticated user
+	repos, _, err := client.Repositories.List(ctx, "", nil)
 }
 ```
 
@@ -81,16 +81,16 @@ package.
 import "github.com/bradleyfalzon/ghinstallation"
 
 func main() {
-  // Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
-  itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
-  if err != nil {
-    // Handle error.
-  }
+	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
+	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
+	if err != nil {
+		// Handle error.
+	}
 
-  // Use installation transport with client.
-  client := github.NewClient(&http.Client{Transport: itr})
+	// Use installation transport with client.
+	client := github.NewClient(&http.Client{Transport: itr})
 
-  // Use client...
+	// Use client...
 }
 ```
 
@@ -228,7 +228,7 @@ the `"context"` import and still relies on `"golang.org/x/net/context"`.
 As a result, if you wish to continue to use `go-github` on App Engine Classic,
 you will need to rewrite all the `"context"` imports using the following command:
 
-    `gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go`
+	gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go
 
 See `with_appengine.go` for more details.
 
