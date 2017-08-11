@@ -17,6 +17,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"path"
 	"reflect"
 	"strconv"
 	"strings"
@@ -110,8 +111,7 @@ type Client struct {
 	client   *http.Client // HTTP client used to communicate with the API.
 
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
-	// set to a domain endpoint to use with GitHub Enterprise. BaseURL should
-	// always be specified with a trailing slash.
+	// set to a domain endpoint to use with GitHub Enterprise.
 	BaseURL *url.URL
 
 	// Base URL for uploading files.
@@ -246,7 +246,9 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 		return nil, err
 	}
 
-	u := c.BaseURL.ResolveReference(rel)
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.Path)
+	u.RawQuery = rel.RawQuery
 
 	var buf io.ReadWriter
 	if body != nil {
@@ -281,7 +283,9 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 		return nil, err
 	}
 
-	u := c.UploadURL.ResolveReference(rel)
+	u := *c.BaseURL
+	u.Path = path.Join(u.Path, rel.Path)
+	u.RawQuery = rel.RawQuery
 	req, err := http.NewRequest("POST", u.String(), reader)
 	if err != nil {
 		return nil, err

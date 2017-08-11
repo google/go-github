@@ -248,6 +248,41 @@ func TestNewRequest_emptyBody(t *testing.T) {
 	}
 }
 
+func TestTrailingSlash(t *testing.T) {
+	tests := []struct {
+		isUpload bool
+		rawurl   string
+	}{
+		{true, "https://example.com/api/v3/"},
+		{true, "https://example.com/api/v3"},
+		{false, "https://example.com/api/v3/"},
+		{false, "https://example.com/api/v3"},
+	}
+	c := NewClient(nil)
+	for _, test := range tests {
+		u, err := url.Parse(test.rawurl)
+		if err != nil {
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
+		}
+		c.BaseURL = u
+		var req *http.Request
+		if test.isUpload {
+			req, err = c.NewUploadRequest("test?foo=bar", nil, 0, "")
+		} else {
+			req, err = c.NewRequest(http.MethodGet, "test?foo=bar", nil)
+		}
+		if err != nil {
+			t.Fatalf("NewRequest returned unexpected error: %v", err)
+		}
+		if got, want := req.URL.Path, "/api/v3/test"; got != want {
+			t.Fatalf("req.URL.Path: %v, want %v", got, want)
+		}
+		if got, want := req.URL.RawQuery, "foo=bar"; got != want {
+			t.Fatalf("req.URL.RawQuery: %v, want %v", got, want)
+		}
+	}
+}
+
 func TestResponse_populatePageValues(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
