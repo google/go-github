@@ -248,6 +248,52 @@ func TestNewRequest_emptyBody(t *testing.T) {
 	}
 }
 
+func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
+	tests := []struct {
+		rawurl  string
+		isError bool
+	}{
+		{"https://example.com/api/v3", true},
+		{"https://example.com/api/v3/", false},
+	}
+	c := NewClient(nil)
+	for _, test := range tests {
+		u, err := url.Parse(test.rawurl)
+		if err != nil {
+			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+		}
+		c.BaseURL = u
+		if _, err := c.NewRequest(http.MethodGet, "test", nil); test.isError && err == nil {
+			t.Fatalf("Expected error to be returned.")
+		} else if !test.isError && err != nil {
+			t.Fatalf("NewRequest returned unexpected error: %v.", err)
+		}
+	}
+}
+
+func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
+	tests := []struct {
+		rawurl  string
+		isError bool
+	}{
+		{"https://example.com/api/v3", true},
+		{"https://example.com/api/v3/", false},
+	}
+	c := NewClient(nil)
+	for _, test := range tests {
+		u, err := url.Parse(test.rawurl)
+		if err != nil {
+			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+		}
+		c.UploadURL = u
+		if _, err = c.NewUploadRequest("test", nil, 0, ""); test.isError && err == nil {
+			t.Fatalf("Expected error to be returned.")
+		} else if !test.isError && err != nil {
+			t.Fatalf("NewUploadRequest returned unexpected error: %v.", err)
+		}
+	}
+}
+
 func TestResponse_populatePageValues(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
