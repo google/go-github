@@ -206,7 +206,7 @@ For complete usage of go-github, see the full [package docs][].
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://godoc.org/github.com/google/go-github/github
 [GraphQL API v4]: https://developer.github.com/v4/
-[shurcooL/githubql]: https://github.com/shurcool/githubql
+[shurcooL/githubql]: https://github.com/shurcooL/githubql
 
 ### Integration Tests ###
 
