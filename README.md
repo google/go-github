@@ -1,6 +1,6 @@
 # go-github #
 
-go-github is a Go client library for accessing the [GitHub API][].
+go-github is a Go client library for accessing the [GitHub API v3][].
 
 **Documentation:** [![GoDoc](https://godoc.org/github.com/google/go-github/github?status.svg)](https://godoc.org/github.com/google/go-github/github)  
 **Mailing List:** [go-github@googlegroups.com](https://groups.google.com/group/go-github)  
@@ -8,6 +8,9 @@ go-github is a Go client library for accessing the [GitHub API][].
 **Test Coverage:** [![Test Coverage](https://coveralls.io/repos/google/go-github/badge.svg?branch=master)](https://coveralls.io/r/google/go-github?branch=master) ([gocov report](https://drone.io/github.com/google/go-github/files/coverage.html))
 
 go-github requires Go version 1.7 or greater.
+
+If you're interested in using the [GraphQL API v4][], the recommended library is
+[shurcooL/githubql][].
 
 ## Usage ##
 
@@ -197,11 +200,13 @@ for {
 
 For complete usage of go-github, see the full [package docs][].
 
-[GitHub API]: https://developer.github.com/v3/
+[GitHub API v3]: https://developer.github.com/v3/
 [oauth2]: https://github.com/golang/oauth2
 [oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
 [package docs]: https://godoc.org/github.com/google/go-github/github
+[GraphQL API v4]: https://developer.github.com/v4/
+[shurcooL/githubql]: https://github.com/shurcool/githubql
 
 ### Integration Tests ###
 
