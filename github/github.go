@@ -241,7 +241,7 @@ func NewClient(httpClient *http.Client) *Client {
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
-	if c.BaseURL.Path != "" && !strings.HasSuffix(c.BaseURL.Path, "/") {
+	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 	u, err := c.BaseURL.Parse(urlStr)
@@ -277,7 +277,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error) {
-	if c.UploadURL.Path != "" && !strings.HasSuffix(c.UploadURL.Path, "/") {
+	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("UploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
 	u, err := c.UploadURL.Parse(urlStr)

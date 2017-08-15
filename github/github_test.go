@@ -43,7 +43,7 @@ func setup() {
 
 	// github client configured to use test server
 	client = NewClient(nil)
-	url, _ := url.Parse(server.URL)
+	url, _ := url.Parse(server.URL + "/")
 	client.BaseURL = url
 	client.UploadURL = url
 }
