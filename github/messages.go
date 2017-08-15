@@ -20,6 +20,7 @@ import (
 	"hash"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -35,6 +36,9 @@ const (
 	eventTypeHeader = "X-Github-Event"
 	// deliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
 	deliveryIDHeader = "X-Github-Delivery"
+	// payloadFormParam is the name of the form parameter that the JSON payload
+	// will be in if a webhook has its content type set to application/x-www-form-urlencoded
+	payloadFormParam = "payload"
 )
 
 var (
@@ -122,6 +126,7 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 
 // ValidatePayload validates an incoming GitHub Webhook event request
 // and returns the (JSON) payload.
+// The payload can be of Content-Type application/json or application/x-www-form-urlencoded
 // secretKey is the GitHub Webhook secret message.
 //
 // Example usage:
@@ -132,17 +137,37 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 //       // Process payload...
 //     }
 //
-func ValidatePayload(r *http.Request, secretKey []byte) (payload []byte, err error) {
-	payload, err = ioutil.ReadAll(r.Body)
-	if err != nil {
-		return nil, err
+func ValidatePayload(r *http.Request, secretKey []byte) ([]byte, error) {
+	// jsonPayload is the json webhook data
+	var jsonPayload []byte
+	// rawPayload is the raw body that GitHub uses to calculate the signature
+	var rawPayload []byte
+
+	if r.Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+		// If the content type is application/x-www-form-urlencoded
+		// the json payload will be under the "payload" form param
+		jsonPayload = []byte(r.FormValue(payloadFormParam))
+
+		// GitHub calculates the signature based on the query-escaped
+		// post body. In order to validate, we need to reconstruct the raw body.
+		rawPayload = []byte(fmt.Sprintf("%s=%s", payloadFormParam, url.QueryEscape(string(jsonPayload))))
+	} else {
+		defer r.Body.Close()
+		var err error
+		jsonPayload, err = ioutil.ReadAll(r.Body)
+		// If the content type is application/json then the raw body
+		// used to calculate the signature is just the original body.
+		rawPayload = jsonPayload
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	sig := r.Header.Get(signatureHeader)
-	if err := validateSignature(sig, payload, secretKey); err != nil {
+	if err := validateSignature(sig, rawPayload, secretKey); err != nil {
 		return nil, err
 	}
-	return payload, nil
+	return jsonPayload, nil
 }
 
 // validateSignature validates the signature for the given payload.

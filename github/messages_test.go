@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -79,6 +80,54 @@ func TestValidatePayload(t *testing.T) {
 		if string(got) != test.wantPayload {
 			t.Errorf("ValidatePayload = %q, want %q", got, test.wantPayload)
 		}
+	}
+}
+
+func TestValidateFormPayloadGET(t *testing.T) {
+	payload := `{"yo":true}`
+	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
+	secretKey := []byte("0123456789abcdef")
+
+	req, err := http.NewRequest("GET", "http://localhost/event", nil)
+	q := req.URL.Query()
+	q.Add("payload", payload)
+	req.URL.RawQuery = q.Encode()
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set(signatureHeader, signature)
+
+	got, err := ValidatePayload(req, secretKey)
+	if err != nil {
+		t.Errorf("ValidatePayload(%#v): err = %v, want nil", payload, err)
+	}
+	if string(got) != payload {
+		t.Errorf("ValidatePayload = %q, want %q", got, payload)
+	}
+}
+
+func TestValidateFormPayloadPOST(t *testing.T) {
+	payload := `{"yo":true}`
+	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
+	secretKey := []byte("0123456789abcdef")
+
+	form := url.Values{}
+	form.Set("payload", payload)
+	buf := bytes.NewBufferString(form.Encode())
+	req, err := http.NewRequest("POST", "http://localhost/event", buf)
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set(signatureHeader, signature)
+
+	got, err := ValidatePayload(req, secretKey)
+	if err != nil {
+		t.Errorf("ValidatePayload(%#v): err = %v, want nil", payload, err)
+	}
+	if string(got) != payload {
+		t.Errorf("ValidatePayload = %q, want %q", got, payload)
 	}
 }
 
