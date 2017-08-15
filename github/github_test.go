@@ -276,8 +276,8 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 		rawurl    string
 		wantError bool
 	}{
-		{rawurl: "https://example.com/api/v3", wantError: true},
-		{rawurl: "https://example.com/api/v3/", wantError: false},
+		{rawurl: "https://example.com/api/uploads", wantError: true},
+		{rawurl: "https://example.com/api/uploads/", wantError: false},
 	}
 	c := NewClient(nil)
 	for _, test := range tests {
