@@ -37,6 +37,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	commits, _, err := client.Repositories.ListCommits(ctx, "google", "go-github", nil)
 	if err != nil {
 		log.Errorf(ctx, "ListCommits: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
