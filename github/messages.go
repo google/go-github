@@ -126,7 +126,8 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 
 // ValidatePayload validates an incoming GitHub Webhook event request
 // and returns the (JSON) payload.
-// The payload can be of Content-Type application/json or application/x-www-form-urlencoded
+// The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
+// If the Content-Type is neither then an error is returned.
 // secretKey is the GitHub Webhook secret message.
 //
 // Example usage:
@@ -143,7 +144,8 @@ func ValidatePayload(r *http.Request, secretKey []byte) ([]byte, error) {
 	// rawPayload is the raw body that GitHub uses to calculate the signature
 	var rawPayload []byte
 
-	if r.Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+	switch c := r.Header.Get("Content-Type"); c {
+	case "application/x-www-form-urlencoded":
 		// If the content type is application/x-www-form-urlencoded
 		// the json payload will be under the "payload" form param
 		jsonPayload = []byte(r.FormValue(payloadFormParam))
@@ -151,7 +153,7 @@ func ValidatePayload(r *http.Request, secretKey []byte) ([]byte, error) {
 		// GitHub calculates the signature based on the query-escaped
 		// post body. In order to validate, we need to reconstruct the raw body.
 		rawPayload = []byte(fmt.Sprintf("%s=%s", payloadFormParam, url.QueryEscape(string(jsonPayload))))
-	} else {
+	case "application/json":
 		defer r.Body.Close()
 		var err error
 		jsonPayload, err = ioutil.ReadAll(r.Body)
@@ -161,6 +163,8 @@ func ValidatePayload(r *http.Request, secretKey []byte) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
+	default:
+		return nil, fmt.Errorf("Webhook request has unsupported Content-Type %q", c)
 	}
 
 	sig := r.Header.Get(signatureHeader)

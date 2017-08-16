@@ -69,6 +69,7 @@ func TestValidatePayload(t *testing.T) {
 		if test.signature != "" {
 			req.Header.Set(signatureHeader, test.signature)
 		}
+		req.Header.Set("Content-Type", "application/json")
 
 		got, err := ValidatePayload(req, secretKey)
 		if err != nil {
@@ -83,7 +84,7 @@ func TestValidatePayload(t *testing.T) {
 	}
 }
 
-func TestValidateFormPayloadGET(t *testing.T) {
+func TestValidatePayload_FormGet(t *testing.T) {
 	payload := `{"yo":true}`
 	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
 	secretKey := []byte("0123456789abcdef")
@@ -95,7 +96,7 @@ func TestValidateFormPayloadGET(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewRequest: %v", err)
 	}
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set(signatureHeader, signature)
 
 	got, err := ValidatePayload(req, secretKey)
@@ -105,9 +106,16 @@ func TestValidateFormPayloadGET(t *testing.T) {
 	if string(got) != payload {
 		t.Errorf("ValidatePayload = %q, want %q", got, payload)
 	}
+
+	// check that if payload is invalid we get error
+	req.Header.Set(signatureHeader, "invalid signature")
+	_, err = ValidatePayload(req, nil)
+	if err == nil {
+		t.Error("ValidatePayload = nil, want err")
+	}
 }
 
-func TestValidateFormPayloadPOST(t *testing.T) {
+func TestValidatePayload_FormPost(t *testing.T) {
 	payload := `{"yo":true}`
 	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
 	secretKey := []byte("0123456789abcdef")
@@ -119,7 +127,7 @@ func TestValidateFormPayloadPOST(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewRequest: %v", err)
 	}
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set(signatureHeader, signature)
 
 	got, err := ValidatePayload(req, secretKey)
@@ -128,6 +136,25 @@ func TestValidateFormPayloadPOST(t *testing.T) {
 	}
 	if string(got) != payload {
 		t.Errorf("ValidatePayload = %q, want %q", got, payload)
+	}
+
+	// check that if payload is invalid we get error
+	req.Header.Set(signatureHeader, "invalid signature")
+	_, err = ValidatePayload(req, nil)
+	if err == nil {
+		t.Error("ValidatePayload = nil, want err")
+	}
+}
+
+func TestValidatePayload_InvalidContentType(t *testing.T) {
+	req, err := http.NewRequest("POST", "http://localhost/event", nil)
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+	req.Header.Set("Content-Type", "invalid content type")
+	_, err = ValidatePayload(req, nil)
+	if err == nil {
+		t.Error("ValidatePayload = nil, want err")
 	}
 }
 
