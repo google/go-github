@@ -332,7 +332,7 @@ type ProjectCardOptions struct {
 	// The ID (not Number) of the Issue or Pull Request to associate with this card.
 	// Note and ContentID are mutually exclusive.
 	ContentID int `json:"content_id,omitempty"`
-	// The type of content to associate with this card. Possible values are: "Issue", "PullRequest".
+	// The type of content to associate with this card. Possible values are: "Issue".
 	ContentType string `json:"content_type,omitempty"`
 }
 
