@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -559,9 +558,11 @@ type RequiredStatusChecks struct {
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
 	// Specifies which users and teams can dismiss pull requets reviews.
-	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
+	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
-	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
+	DismissStaleReviews bool `json:"dismiss_stale_reviews,omitempty"`
+	// Specifies if review by the code owner is required
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
@@ -569,32 +570,11 @@ type PullRequestReviewsEnforcement struct {
 // because the request structure is different from the response structure.
 type PullRequestReviewsEnforcementRequest struct {
 	// Specifies which users and teams should be allowed to dismiss pull requets reviews. Can be nil to disable the restrictions.
-	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
+	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. (Required)
-	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
-}
-
-// MarshalJSON implements the json.Marshaler interface.
-// Converts nil value of PullRequestReviewsEnforcementRequest.DismissalRestrictionsRequest to empty array
-func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
-	if req.DismissalRestrictionsRequest == nil {
-		newReq := struct {
-			R []interface{} `json:"dismissal_restrictions"`
-			D bool          `json:"dismiss_stale_reviews"`
-		}{
-			R: []interface{}{},
-			D: req.DismissStaleReviews,
-		}
-		return json.Marshal(newReq)
-	}
-	newReq := struct {
-		R *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
-		D bool                          `json:"dismiss_stale_reviews"`
-	}{
-		R: req.DismissalRestrictionsRequest,
-		D: req.DismissStaleReviews,
-	}
-	return json.Marshal(newReq)
+	DismissStaleReviews bool `json:"dismiss_stale_reviews,omitempty"`
+	// Specifies if review by the code owner is required
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 }
 
 // PullRequestReviewsEnforcementUpdate represents request to patch the pull request review
@@ -609,8 +589,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
 type AdminEnforcement struct {
-	URL     *string `json:"url,omitempty"`
-	Enabled bool    `json:"enabled"`
+	Enabled bool `json:"enabled"`
 }
 
 // BranchRestrictions represents the restriction that only certain users or

@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/go-github/github"
 )
 
@@ -108,20 +109,16 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
 	}
 
-	// TODO: This test fails with 422 Validation Failed [{Resource: Field: Code: Message:}].
-	//       Someone familiar with protection requests needs to come up with
-	//       a valid protection request that doesn't give 422 error.
 	protectionRequest := &github.ProtectionRequest{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			DismissalRestrictionsRequest: &github.DismissalRestrictionsRequest{
-				Users: []string{},
-				Teams: []string{},
-			},
-			DismissStaleReviews: true,
+			// 422 Error comes from trying to use team/user permissions
+			// on a non-organization repo.
+			DismissStaleReviews:     true,
+			RequireCodeOwnerReviews: true,
 		},
 		EnforceAdmins: true,
 		// TODO: Only organization repositories can have users and team restrictions.
@@ -142,10 +139,11 @@ func TestRepositories_EditBranches(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcement{
 			DismissalRestrictions: github.DismissalRestrictions{
-				Users: []*github.User{},
-				Teams: []*github.Team{},
+				Users: nil,
+				Teams: nil,
 			},
-			DismissStaleReviews: true,
+			DismissStaleReviews:     true,
+			RequireCodeOwnerReviews: true,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
 			Enabled: true,
@@ -153,7 +151,9 @@ func TestRepositories_EditBranches(t *testing.T) {
 		Restrictions: nil,
 	}
 	if !reflect.DeepEqual(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
+		// Using spew helped me see that we were comparing an unwanted URL as part of
+		// AdminEnforcement structure.  Maybe add to other %+v tests?
+		t.Error(spew.Sprintf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want))
 	}
 
 	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
