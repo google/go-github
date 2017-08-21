@@ -13,7 +13,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/go-github/github"
 )
 
@@ -151,9 +150,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		Restrictions: nil,
 	}
 	if !reflect.DeepEqual(protection, want) {
-		// Using spew helped me see that we were comparing an unwanted URL as part of
-		// AdminEnforcement structure.  Maybe add to other %+v tests?
-		t.Error(spew.Sprintf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want))
+		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
 	}
 
 	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
