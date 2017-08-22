@@ -48,12 +48,12 @@ func (s *AppsService) ListRepos(ctx context.Context, opt *ListOptions) ([]*Repos
 	return r.Repositories, resp, nil
 }
 
-// Add a single repository to an installation.
+// AddRepo adds a single repository to an installation.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
 func (s *AppService) AddRepo(ctx context.Context, instID int, repoID int) (*Repository, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
-	req, err := s.client.NewRequest("PUT", u, nil) {
+	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -70,12 +70,12 @@ func (s *AppService) AddRepo(ctx context.Context, instID int, repoID int) (*Repo
 	return r, resp, nil
 }
 
-// Remove a single repository from an installation.
+// RemoveRepo removes a single repository from an installation.
 //
 // GitHub docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
 func (s *AppService) RemoveRepo(ctx context.Context, instID int, repoID int) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
-	req, err := s.client.NewRequest("DELETE", u, nil) {
+	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
