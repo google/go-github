@@ -38,3 +38,14 @@ func TestAppsService_ListRepos(t *testing.T) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
 }
+
+func TestAppsService_AddRepository(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := &
+}
+
+func TestAppsService_RemoveRepository(t *testing.T) {
+
+}
