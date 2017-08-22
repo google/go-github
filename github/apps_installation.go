@@ -51,7 +51,7 @@ func (s *AppsService) ListRepos(ctx context.Context, opt *ListOptions) ([]*Repos
 // Add a single repository to an installation.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
-func (s *AppService) AddRepository(ctx context.Context, instID int, repoID int) (*Installation, *Response, error) {
+func (s *AppService) AddRepository(ctx context.Context, instID int, repoID int) (*Repository, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
 	req, err := s.client.NewRequest("PUT", u, nil) {
 	if err != nil {
@@ -61,7 +61,7 @@ func (s *AppService) AddRepository(ctx context.Context, instID int, repoID int) 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
-	i := new(Installation)
+	i := new(Repository)
 	resp, err := s.client.Do(ctx, req, i)
 	if err != nil {
 		return nil, resp, err
