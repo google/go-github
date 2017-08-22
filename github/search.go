@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 
 	qs "github.com/google/go-querystring/query"
 )
@@ -176,7 +177,13 @@ func (s *SearchService) search(ctx context.Context, searchType string, query str
 		return nil, err
 	}
 	params.Set("q", query)
-	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
+
+	encodedParams, err := url.QueryUnescape(params.Encode())
+	if err != nil {
+		return nil, err
+	}
+
+	u := fmt.Sprintf("search/%s?%s", searchType, encodedParams)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
