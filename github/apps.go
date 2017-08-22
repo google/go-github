@@ -38,3 +38,26 @@ func (s *AppsService) ListInstallations(ctx context.Context, opt *ListOptions) (
 
 	return i, resp, nil
 }
+
+// AddRepository adds a single repository to an installation.
+//
+// GitHub API docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
+func (s *AppService) AddRepository(ctx context.Context, installationID int, repoID int) (*Installation, *Response, error) {
+	u := fmt.Sprintf("app/installations/%v/repositories/%v", installationID, repoID)
+
+	req, err := s.client.NewRequest("PUT", u, nil) {
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+
+	i := new(Installation)
+	resp, err := s.client.Do(ctx, req, i)
+	if err != nil {
+		return nil, resp, err
+	}
+	
+	return i, resp, nil
+}
