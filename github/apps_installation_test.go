@@ -39,13 +39,34 @@ func TestAppsService_ListRepos(t *testing.T) {
 	}
 }
 
-func TestAppsService_Add_Repository(t *testing.T) {
+func TestAppsService_AddRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &
+	input := "/app/installations/1/repositories/1"
+
+	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+	})
+
+	repo, _, err := client.Apps.AddRepo(context.Background(), input)
+	if err != nil {
+		t.Errorf("Apps.AddRepo returned error: %v", err)
+	}
 }
 
-func TestAppsService_Remove_Repository(t *testing.T) {
+func TestAppsService_RemoveRepo(t *testing.T) {
+	setup()
+	defer teardown()
 
+	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+	})
+
+	repositories, _, err := client.Apps.RemoveRepo(context.Background(), opt)
+	if err != nil {
+		t.Errorf("Apps.RemoveRepo returned error: %v", err)
+	}
 }
