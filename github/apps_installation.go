@@ -61,13 +61,13 @@ func (s *AppService) AddRepository(ctx context.Context, instID int, repoID int) 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
-	i := new(Repository)
-	resp, err := s.client.Do(ctx, req, i)
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
 	
-	return i, resp, nil
+	return r, resp, nil
 }
 
 // Remove a single repository from an installation.
