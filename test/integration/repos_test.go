@@ -114,10 +114,10 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			// 422 Error comes from trying to use team/user permissions
-			// on a non-organization repo.
-			DismissStaleReviews:     true,
-			RequireCodeOwnerReviews: true,
+			// Nil is perfectly acceptable here now and it proves the test.
+			DismissalRestrictionsRequest: nil,
+			DismissStaleReviews:          true,
+			RequireCodeOwnerReviews:      true,
 		},
 		EnforceAdmins: true,
 		// TODO: Only organization repositories can have users and team restrictions.
@@ -150,7 +150,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		Restrictions: nil,
 	}
 	if !reflect.DeepEqual(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
+		t.Errorf("Repositories.UpdateBranchProtection() returned %s, want %s", github.Stringify(protection), github.Stringify(want))
 	}
 
 	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
