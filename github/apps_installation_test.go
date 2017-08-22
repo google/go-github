@@ -39,13 +39,13 @@ func TestAppsService_ListRepos(t *testing.T) {
 	}
 }
 
-func TestAppsService_AddRepository(t *testing.T) {
+func TestAppsService_Add_Repository(t *testing.T) {
 	setup()
 	defer teardown()
 
 	input := &
 }
 
-func TestAppsService_RemoveRepository(t *testing.T) {
+func TestAppsService_Remove_Repository(t *testing.T) {
 
 }
