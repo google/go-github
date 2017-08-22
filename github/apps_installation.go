@@ -76,7 +76,6 @@ func (s *AppService) AddRepository(ctx context.Context, installationID int, repo
 // GitHub docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
 func (s *AppService) RemoveRepository(ctx context.Context, installationID int, repoID int) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/repositories/%v", installationID, repoID)
-
 	req, err := s.client.NewRequest("DELETE", u, nil) {
 	if err != nil {
 		return nil, nil, err
