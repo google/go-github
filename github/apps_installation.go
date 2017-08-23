@@ -5,7 +5,10 @@
 
 package github
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // Installation represents a GitHub Apps installation.
 type Installation struct {
@@ -77,7 +80,7 @@ func (s *AppsService) RemoveRepo(ctx context.Context, instID int, repoID int) (*
 	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return s.client.Do(ctx, req, nil)
