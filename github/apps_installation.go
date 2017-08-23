@@ -66,7 +66,7 @@ func (s *AppService) AddRepo(ctx context.Context, instID int, repoID int) (*Repo
 	if err != nil {
 		return nil, resp, err
 	}
-	
+
 	return r, resp, nil
 }
 
