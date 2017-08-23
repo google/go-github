@@ -13,8 +13,6 @@ import (
 // ListCollaboratorsOptions specifies the optional parameters to the
 // RepositoriesService.ListCollaborators method.
 type ListCollaboratorsOptions struct {
-	ListOptions
-
 	// Affiliation specifies how collaborators should be filtered by their affiliation.
 	// Possible values are:
 	//     outside - All outside collaborators of an organization-owned repository
@@ -23,6 +21,8 @@ type ListCollaboratorsOptions struct {
 	//
 	// Default value is "all".
 	Affiliation string `url:"affiliation,omitempty"`
+
+	ListOptions
 }
 
 // ListCollaborators lists the GitHub users that have access to the repository.
