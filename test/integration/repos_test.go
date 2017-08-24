@@ -114,7 +114,9 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			// Nil is perfectly acceptable here now and it proves the test.
+			// The way to disable the setting is to send: &github.DismissalRestrictionsRequest{},
+			// but that yields a 422 error if you are operating on a non-org repo.
+			// Leaving the field out allows the test to function on a non-org repo.
 			DismissalRestrictionsRequest: nil,
 			DismissStaleReviews:          true,
 			RequireCodeOwnerReviews:      true,
@@ -125,7 +127,6 @@ func TestRepositories_EditBranches(t *testing.T) {
 		//       for creating temporary organization repositories.
 		Restrictions: nil,
 	}
-
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
 	if err != nil {
 		t.Fatalf("Repositories.UpdateBranchProtection() returned error: %v", err)
