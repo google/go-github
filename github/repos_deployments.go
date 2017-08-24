@@ -137,7 +137,7 @@ type DeploymentStatus struct {
 	Description   *string    `json:"description,omitempty"`
 	TargetURL     *string    `json:"target_url,omitempty"`
 	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp `json:"pushed_at,omitempty"`
+	PushedAt      *Timestamp `json:"pushed_at,omitempty"`
 	DeploymentURL *string    `json:"deployment_url,omitempty"`
 	RepositoryURL *string    `json:"repository_url,omitempty"`
 }
