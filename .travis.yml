@@ -23,6 +23,6 @@ script:
   - go test -v -tags=integration -run=^$ ./test/integration # Check that integration test builds successfully, but don't run any of the tests (they hit live GitHub API).
 
   # Generate test coverage report. This must be after all other tests.
-  - rm github/github-accessors.go # exclude generated code
-  - go test -v -covermode=count -coverprofile=coverage.out ./github
-  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
+  #- rm github/github-accessors.go # exclude generated code
+  #- go test -v -covermode=count -coverprofile=coverage.out ./github
+  #- $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
