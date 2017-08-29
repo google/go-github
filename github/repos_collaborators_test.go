@@ -26,7 +26,6 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 
 	opt := &ListCollaboratorsOptions{
 		ListOptions: ListOptions{Page: 2},
-		Affiliation: "",
 	}
 	users, _, err := client.Repositories.ListCollaborators(context.Background(), "o", "r", opt)
 	if err != nil {
