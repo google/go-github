@@ -39,7 +39,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_ListCollaborators_With_Affiliation(t *testing.T) {
+func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 	setup()
 	defer teardown()
 
