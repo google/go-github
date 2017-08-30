@@ -28,7 +28,7 @@ type ListCollaboratorsOptions struct {
 
 // ListCollaborators lists the GitHub users that have access to the repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#list
+// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#list-collaborators
 func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opt *ListCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
 	u, err := addOptions(u, opt)
