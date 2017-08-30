@@ -1180,14 +1180,6 @@ func (d *DeploymentStatus) GetID() int {
 	return *d.ID
 }
 
-// GetPushedAt returns the PushedAt field if it's non-nil, zero value otherwise.
-func (d *DeploymentStatus) GetPushedAt() Timestamp {
-	if d == nil || d.PushedAt == nil {
-		return Timestamp{}
-	}
-	return *d.PushedAt
-}
-
 // GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
 func (d *DeploymentStatus) GetRepositoryURL() string {
 	if d == nil || d.RepositoryURL == nil {
@@ -1210,6 +1202,14 @@ func (d *DeploymentStatus) GetTargetURL() string {
 		return ""
 	}
 	return *d.TargetURL
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
 }
 
 // GetAutoInactive returns the AutoInactive field if it's non-nil, zero value otherwise.
