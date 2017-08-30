@@ -24,7 +24,34 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &ListCollaboratorsOptions{
+		ListOptions: ListOptions{Page: 2},
+	}
+	users, _, err := client.Repositories.ListCollaborators(context.Background(), "o", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
+	}
+
+	want := []*User{{ID: Int(1)}, {ID: Int(2)}}
+	if !reflect.DeepEqual(users, want) {
+		t.Errorf("Repositori es.ListCollaborators returned %+v, want %+v", users, want)
+	}
+}
+
+func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"affiliation": "all", "page": "2"})
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	opt := &ListCollaboratorsOptions{
+		ListOptions: ListOptions{Page: 2},
+		Affiliation: "all",
+	}
 	users, _, err := client.Repositories.ListCollaborators(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
