@@ -16,7 +16,8 @@ type ListCollaboratorsOptions struct {
 	// Affiliation specifies how collaborators should be filtered by their affiliation.
 	// Possible values are:
 	//     outside - All outside collaborators of an organization-owned repository
-	//     direct - All collaborators with permissions to an organization-owned repository, regardless of organization membership status
+	//     direct - All collaborators with permissions to an organization-owned repository,
+	//     regardless of organization membership status
 	//     all - All collaborators the authenticated user can see
 	//
 	// Default value is "all".
