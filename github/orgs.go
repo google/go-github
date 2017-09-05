@@ -25,7 +25,7 @@ type Organization struct {
 	HTMLURL           *string    `json:"html_url,omitempty"`
 	Name              *string    `json:"name,omitempty"`
 	Company           *string    `json:"company,omitempty"`
-	Blog              *string    `json:"blog,omitempty"`
+	Blog              *string    `json:"-"`
 	Location          *string    `json:"location,omitempty"`
 	Email             *string    `json:"email,omitempty"`
 	Description       *string    `json:"description,omitempty"`
