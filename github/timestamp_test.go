@@ -13,10 +13,10 @@ import (
 )
 
 const (
-	emptyTimeStr         = `"0001-01-01T00:00:00Z"`
-	referenceTimeStr     = `"2006-01-02T15:04:05Z"`
+	emptyTimeStr               = `"0001-01-01T00:00:00Z"`
+	referenceTimeStr           = `"2006-01-02T15:04:05Z"`
 	referenceTimeStrFractional = `"2006-01-02T15:04:05.000Z"` // This format was returned by the Projects API before October 1, 2017.
-	referenceUnixTimeStr = `1136214245`
+	referenceUnixTimeStr       = `1136214245`
 )
 
 var (
