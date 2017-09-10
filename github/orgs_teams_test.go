@@ -63,6 +63,30 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 	}
 }
 
+func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
+		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
+
+	})
+
+	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Organizations.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"),
+		Parent: &Team{ID: Int(2), Name: String("n"), Description: String("d")},
+	}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
 func TestOrganizationsService_CreateTeam(t *testing.T) {
 	setup()
 	defer teardown()
