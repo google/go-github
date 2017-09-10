@@ -197,9 +197,6 @@ func (s *OrganizationsService) ListTeamMembers(ctx context.Context, team int, op
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
-
 	var members []*User
 	resp, err := s.client.Do(ctx, req, &members)
 	if err != nil {
@@ -352,9 +349,6 @@ func (s *OrganizationsService) GetTeamMembership(ctx context.Context, team int, 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	t := new(Membership)
 	resp, err := s.client.Do(ctx, req, t)
