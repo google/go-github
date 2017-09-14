@@ -73,6 +73,7 @@ func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
 		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
+
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
@@ -92,9 +93,11 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	r := "r"
+	input := &NewTeam{Name: String("n"), Privacy: String("closed"), RepoNames: []*string{&r}}
+
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -126,10 +129,10 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: String("n"), Privacy: String("closed")}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")

@@ -146,7 +146,7 @@ type NewTeam struct {
 // CreateTeam creates a new team within an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#create-team
-func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, parent_team_id int, team *Team) (*Team, *Response, error) {
+func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team *NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", u, team)
 	if err != nil {
@@ -168,7 +168,7 @@ func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, paren
 // EditTeam edits a team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#edit-team
-func (s *OrganizationsService) EditTeam(ctx context.Context, id, parent_team_id int, team *Team) (*Team, *Response, error) {
+func (s *OrganizationsService) EditTeam(ctx context.Context, id int, team *NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
