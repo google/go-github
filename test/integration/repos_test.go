@@ -108,20 +108,18 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
 	}
 
-	// TODO: This test fails with 422 Validation Failed [{Resource: Field: Code: Message:}].
-	//       Someone familiar with protection requests needs to come up with
-	//       a valid protection request that doesn't give 422 error.
 	protectionRequest := &github.ProtectionRequest{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			DismissalRestrictionsRequest: &github.DismissalRestrictionsRequest{
-				Users: []string{},
-				Teams: []string{},
-			},
-			DismissStaleReviews: true,
+			// The way to disable the setting is to send: &github.DismissalRestrictionsRequest{},
+			// but that yields a 422 error if you are operating on a non-org repo.
+			// Leaving the field out allows the test to function on a non-org repo.
+			DismissalRestrictionsRequest: nil,
+			DismissStaleReviews:          true,
+			RequireCodeOwnerReviews:      true,
 		},
 		EnforceAdmins: true,
 		// TODO: Only organization repositories can have users and team restrictions.
@@ -129,7 +127,6 @@ func TestRepositories_EditBranches(t *testing.T) {
 		//       for creating temporary organization repositories.
 		Restrictions: nil,
 	}
-
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
 	if err != nil {
 		t.Fatalf("Repositories.UpdateBranchProtection() returned error: %v", err)
@@ -142,10 +139,11 @@ func TestRepositories_EditBranches(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcement{
 			DismissalRestrictions: github.DismissalRestrictions{
-				Users: []*github.User{},
-				Teams: []*github.Team{},
+				Users: nil,
+				Teams: nil,
 			},
-			DismissStaleReviews: true,
+			DismissStaleReviews:     true,
+			RequireCodeOwnerReviews: true,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
 			Enabled: true,
@@ -153,7 +151,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		Restrictions: nil,
 	}
 	if !reflect.DeepEqual(protection, want) {
-		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
+		t.Errorf("Repositories.UpdateBranchProtection() returned %s, want %s", github.Stringify(protection), github.Stringify(want))
 	}
 
 	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)

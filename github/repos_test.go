@@ -543,7 +543,6 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			},
 		},
 		EnforceAdmins: &AdminEnforcement{
-			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
 			Enabled: true,
 		},
 		Restrictions: &BranchRestrictions{
@@ -868,7 +867,6 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 	}
 
 	want := &AdminEnforcement{
-		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
 		Enabled: true,
 	}
 
@@ -893,7 +891,6 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 	}
 
 	want := &AdminEnforcement{
-		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
 		Enabled: true,
 	}
 	if !reflect.DeepEqual(enforcement, want) {
@@ -914,20 +911,6 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	_, err := client.Repositories.RemoveAdminEnforcement(context.Background(), "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
-	}
-}
-
-func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
-	req := PullRequestReviewsEnforcementRequest{}
-
-	json, err := json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want := `{"dismissal_restrictions":[],"dismiss_stale_reviews":false}`
-	if want != string(json) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(json), want)
 	}
 }
 
