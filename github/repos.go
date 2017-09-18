@@ -601,9 +601,9 @@ func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 // enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementRequest above
 // because the patch request does not require all fields to be initialized.
 type PullRequestReviewsEnforcementUpdate struct {
-	// Specifies which users and teams can dismiss pull requets reviews. Can be ommitted.
+	// Specifies which users and teams can dismiss pull requests reviews. Can be omitted.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
-	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be ommited.
+	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
 }
 
