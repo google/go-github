@@ -21,6 +21,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -48,7 +49,8 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com"}`)
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
@@ -57,6 +59,31 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 	}
 
 	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
+		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
+
+	})
+
+	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Organizations.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"),
+		Parent: &Team{ID: Int(2), Name: String("n"), Description: String("d")},
+	}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
 	}
@@ -73,6 +100,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -487,6 +515,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "1"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
