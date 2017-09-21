@@ -58,7 +58,7 @@ func TestTimestamp_Unmarshal(t *testing.T) {
 		equal   bool
 	}{
 		{"Reference", referenceTimeStr, Timestamp{referenceTime}, false, true},
-		{"ReferenceUnix", `1136214245`, Timestamp{referenceTime}, false, true},
+		{"ReferenceUnix", referenceUnixTimeStr, Timestamp{referenceTime}, false, true},
 		{"ReferenceFractional", referenceTimeStrFractional, Timestamp{referenceTime}, false, true},
 		{"Empty", emptyTimeStr, Timestamp{}, false, true},
 		{"UnixStart", `0`, Timestamp{unixOrigin}, false, true},
