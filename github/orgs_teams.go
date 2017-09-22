@@ -39,6 +39,7 @@ type Team struct {
 	Organization    *Organization `json:"organization,omitempty"`
 	MembersURL      *string       `json:"members_url,omitempty"`
 	RepositoriesURL *string       `json:"repositories_url,omitempty"`
+	Parent          *Team         `json:"parent,omitempty"`
 
 	// LDAPDN is only available in GitHub Enterprise and when the team
 	// membership is synchronized with LDAP.
@@ -79,6 +80,9 @@ func (s *OrganizationsService) ListTeams(ctx context.Context, org string, opt *L
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
+
 	var teams []*Team
 	resp, err := s.client.Do(ctx, req, &teams)
 	if err != nil {
@@ -97,6 +101,9 @@ func (s *OrganizationsService) GetTeam(ctx context.Context, team int) (*Team, *R
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	t := new(Team)
 	resp, err := s.client.Do(ctx, req, t)
@@ -117,6 +124,9 @@ func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team 
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
+
 	t := new(Team)
 	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
@@ -135,6 +145,9 @@ func (s *OrganizationsService) EditTeam(ctx context.Context, id int, team *Team)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	t := new(Team)
 	resp, err := s.client.Do(ctx, req, t)
@@ -314,6 +327,9 @@ func (s *OrganizationsService) ListUserTeams(ctx context.Context, opt *ListOptio
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	var teams []*Team
 	resp, err := s.client.Do(ctx, req, &teams)
