@@ -2916,6 +2916,54 @@ func (n *NewPullRequest) GetTitle() string {
 	return *n.Title
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetDescription() string {
+	if n == nil || n.Description == nil {
+		return ""
+	}
+	return *n.Description
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetID() int {
+	if n == nil || n.ID == nil {
+		return 0
+	}
+	return *n.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetName() string {
+	if n == nil || n.Name == nil {
+		return ""
+	}
+	return *n.Name
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetParentTeamID() string {
+	if n == nil || n.ParentTeamID == nil {
+		return ""
+	}
+	return *n.ParentTeamID
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetPermission() string {
+	if n == nil || n.Permission == nil {
+		return ""
+	}
+	return *n.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetPrivacy() string {
+	if n == nil || n.Privacy == nil {
+		return ""
+	}
+	return *n.Privacy
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (n *Notification) GetID() string {
 	if n == nil || n.ID == nil {
