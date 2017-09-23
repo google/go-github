@@ -73,7 +73,6 @@ func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
 		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
-
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
