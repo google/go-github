@@ -116,12 +116,13 @@ func (s *OrganizationsService) GetTeam(ctx context.Context, team int) (*Team, *R
 
 // NewTeam represents a team to be created or modified.
 type NewTeam struct {
-	ID           *int      `json:"id,omitempty"`
-	Name         *string   `json:"name,omitempty"`
-	Description  *string   `json:"description,omitempty"`
+
+	// The name of the team (Required.)
+	Name         string   `json:"name"`
+	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
 	RepoNames    []string `json:"repo_names,omitempty"`
-	ParentTeamID *string   `json:"parent_team_id,omitempty"`
+	ParentTeamID *string  `json:"parent_team_id,omitempty"`
 
 	// Permission is deprecated when creating or editing a team in an org
 	// using the new GitHub permission model. It no longer identifies the

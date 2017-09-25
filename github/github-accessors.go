@@ -2924,22 +2924,6 @@ func (n *NewTeam) GetDescription() string {
 	return *n.Description
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetID() int {
-	if n == nil || n.ID == nil {
-		return 0
-	}
-	return *n.ID
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetName() string {
-	if n == nil || n.Name == nil {
-		return ""
-	}
-	return *n.Name
-}
-
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
 func (n *NewTeam) GetParentTeamID() string {
 	if n == nil || n.ParentTeamID == nil {

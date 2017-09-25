@@ -92,7 +92,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &NewTeam{Name: String("n"), Privacy: String("closed"), RepoNames: []string{"r"}}
+	input := &NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
@@ -127,7 +127,7 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &NewTeam{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: "n", Privacy: String("closed")}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
