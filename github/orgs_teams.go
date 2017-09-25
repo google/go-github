@@ -119,8 +119,8 @@ type NewTeam struct {
 	ID           *int      `json:"id,omitempty"`
 	Name         *string   `json:"name,omitempty"`
 	Description  *string   `json:"description,omitempty"`
-	Maintainers  []*string `json:"maintainers,omitempty"`
-	RepoNames    []*string `json:"repo_names,omitempty"`
+	Maintainers  []string `json:"maintainers,omitempty"`
+	RepoNames    []string `json:"repo_names,omitempty"`
 	ParentTeamID *string   `json:"parent_team_id,omitempty"`
 
 	// Permission is deprecated when creating or editing a team in an org

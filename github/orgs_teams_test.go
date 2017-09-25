@@ -92,8 +92,7 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	r := "r"
-	input := &NewTeam{Name: String("n"), Privacy: String("closed"), RepoNames: []*string{&r}}
+	input := &NewTeam{Name: String("n"), Privacy: String("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
