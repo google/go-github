@@ -133,6 +133,7 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
