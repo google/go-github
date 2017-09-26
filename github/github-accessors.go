@@ -2924,6 +2924,14 @@ func (n *NewTeam) GetDescription() string {
 	return *n.Description
 }
 
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetLDAPDN() string {
+	if n == nil || n.LDAPDN == nil {
+		return ""
+	}
+	return *n.LDAPDN
+}
+
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
 func (n *NewTeam) GetParentTeamID() string {
 	if n == nil || n.ParentTeamID == nil {

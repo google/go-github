@@ -137,6 +137,10 @@ type NewTeam struct {
 	//     closed - visible to all members of this organization
 	// Default is "secret".
 	Privacy *string `json:"privacy,omitempty"`
+
+	// LDAPDN may be used in GitHub Enterprise when the team membership
+	// is synchronized with LDAP.
+	LDAPDN *string `json:"ldap_dn,omitempty"`
 }
 
 // CreateTeam creates a new team within an organization.
