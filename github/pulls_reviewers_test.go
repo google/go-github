@@ -35,6 +35,28 @@ func TestRequestReviewers(t *testing.T) {
 	}
 }
 
+func TestRequestReviewers_withEmptyReviewers(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league","injustice-league"]}`+"\n")
+		testHeader(t, r, "Accept", mediaTypeTeamReviewPreview)
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	// This returns a PR, unmarshalling of which is tested elsewhere
+	pull, _, err := client.PullRequests.RequestReviewers(context.Background(), "o", "r", 1, ReviewersRequest{Reviewers: []string{}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+	if err != nil {
+		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
+	}
+	want := &PullRequest{Number: Int(1)}
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", pull, want)
+	}
+}
+
 func TestRemoveReviewers(t *testing.T) {
 	setup()
 	defer teardown()
