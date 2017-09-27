@@ -116,9 +116,7 @@ func (s *OrganizationsService) GetTeam(ctx context.Context, team int) (*Team, *R
 
 // NewTeam represents a team to be created or modified.
 type NewTeam struct {
-
-	// The name of the team (Required.)
-	Name         string   `json:"name"`
+	Name         string   `json:"name"` // Name of the team (Required.)
 	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
 	RepoNames    []string `json:"repo_names,omitempty"`
