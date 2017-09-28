@@ -136,9 +136,6 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 //     }
 //
 func ValidatePayload(r *http.Request, secretKey []byte) (payload []byte, err error) {
-	// payloadFormParam is the name of the form parameter that the JSON payload
-	// will be in if a webhook has its content type set to application/x-www-form-urlencoded.
-	const payloadFormParam = "payload"
 	var body []byte // Raw body that GitHub uses to calculate the signature.
 
 	switch ct := r.Header.Get("Content-Type"); ct {
@@ -148,11 +145,16 @@ func ValidatePayload(r *http.Request, secretKey []byte) (payload []byte, err err
 		if err != nil {
 			return nil, err
 		}
+
 		// If the content type is application/json,
 		// the JSON payload is just the original body.
 		payload = body
 
 	case "application/x-www-form-urlencoded":
+		// payloadFormParam is the name of the form parameter that the JSON payload
+		// will be in if a webhook has its content type set to application/x-www-form-urlencoded.
+		const payloadFormParam = "payload"
+
 		var err error
 		body, err = ioutil.ReadAll(r.Body)
 		if err != nil {
