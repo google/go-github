@@ -102,6 +102,9 @@ const (
 
 	// https://developer.github.com/changes/2017-07-26-team-review-request-thor-preview/
 	mediaTypeTeamReviewPreview = "application/vnd.github.thor-preview+json"
+
+	// https://developer.github.com/v3/apps/marketplace/
+	mediaTypeMarketplacePreview = "application/vnd.github.valkyrie-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -143,6 +146,7 @@ type Client struct {
 	Licenses       *LicensesService
 	Migrations     *MigrationService
 	Reactions      *ReactionsService
+	Marketplace    *MarketplaceService
 }
 
 type service struct {
@@ -224,6 +228,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
+	c.Marketplace = (*MarketplaceService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
