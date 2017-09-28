@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -89,13 +90,13 @@ func TestValidatePayload_FormGet(t *testing.T) {
 	signature := "sha1=3374ef144403e8035423b23b02e2c9d7a4c50368"
 	secretKey := []byte("0123456789abcdef")
 
-	req, err := http.NewRequest("GET", "http://localhost/event", nil)
-	q := req.URL.Query()
-	q.Add("payload", payload)
-	req.URL.RawQuery = q.Encode()
+	form := url.Values{}
+	form.Add("payload", payload)
+	req, err := http.NewRequest("POST", "http://localhost/event", strings.NewReader(form.Encode()))
 	if err != nil {
 		t.Fatalf("NewRequest: %v", err)
 	}
+	req.PostForm = form
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set(signatureHeader, signature)
 

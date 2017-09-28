@@ -36,9 +36,6 @@ const (
 	eventTypeHeader = "X-Github-Event"
 	// deliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
 	deliveryIDHeader = "X-Github-Delivery"
-	// payloadFormParam is the name of the form parameter that the JSON payload
-	// will be in if a webhook has its content type set to application/x-www-form-urlencoded
-	payloadFormParam = "payload"
 )
 
 var (
@@ -138,39 +135,47 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 //       // Process payload...
 //     }
 //
-func ValidatePayload(r *http.Request, secretKey []byte) ([]byte, error) {
-	var (
-		jsonPayload []byte // JSON webhook data.
-		rawPayload  []byte // Raw body that GitHub uses to calculate the signature.
-	)
-	switch ct := r.Header.Get("Content-Type"); ct {
-	case "application/x-www-form-urlencoded":
-		// If the content type is application/x-www-form-urlencoded
-		// the json payload will be under the "payload" form param.
-		jsonPayload = []byte(r.FormValue(payloadFormParam))
+func ValidatePayload(r *http.Request, secretKey []byte) (payload []byte, err error) {
+	// payloadFormParam is the name of the form parameter that the JSON payload
+	// will be in if a webhook has its content type set to application/x-www-form-urlencoded.
+	const payloadFormParam = "payload"
+	var body []byte // Raw body that GitHub uses to calculate the signature.
 
-		// GitHub calculates the signature based on the query-escaped
-		// post body. In order to validate, we need to reconstruct the raw body.
-		rawPayload = []byte(payloadFormParam + "=" + url.QueryEscape(string(jsonPayload)))
+	switch ct := r.Header.Get("Content-Type"); ct {
 	case "application/json":
 		var err error
-		jsonPayload, err = ioutil.ReadAll(r.Body)
+		body, err = ioutil.ReadAll(r.Body)
 		if err != nil {
 			return nil, err
 		}
-		// If the content type is application/json then the payload
-		// used to calculate the signature is just the original body.
-		rawPayload = jsonPayload
+		// If the content type is application/json,
+		// the JSON payload is just the original body.
+		payload = body
+
+	case "application/x-www-form-urlencoded":
+		var err error
+		body, err = ioutil.ReadAll(r.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		// If the content type is application/x-www-form-urlencoded,
+		// the JSON payload will be under the "payload" form param.
+		form, err := url.ParseQuery(string(body))
+		if err != nil {
+			return nil, err
+		}
+		payload = []byte(form.Get(payloadFormParam))
 
 	default:
 		return nil, fmt.Errorf("Webhook request has unsupported Content-Type %q", ct)
 	}
 
 	sig := r.Header.Get(signatureHeader)
-	if err := validateSignature(sig, rawPayload, secretKey); err != nil {
+	if err := validateSignature(sig, body, secretKey); err != nil {
 		return nil, err
 	}
-	return jsonPayload, nil
+	return payload, nil
 }
 
 // validateSignature validates the signature for the given payload.
