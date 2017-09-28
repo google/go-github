@@ -18,38 +18,38 @@ type MarketplaceService service
 
 // MarketplacePlan represents a GitHub Apps Marketplace Listing Plan.
 type MarketplacePlan struct {
-	URL                 *string   `json:"url"`
-	AccountsURL         *string   `json:"accounts_url"`
-	ID                  *int      `json:"id"`
-	Name                *string   `json:"name"`
-	Description         *string   `json:"description"`
-	MonthlyPriceInCents *int      `json:"monthly_price_in_cents"`
-	YearlyPriceInCents  *int      `json:"yearly_price_in_cents"`
-	PriceModel          *string   `json:"price_model"`
-	UnitName            *string   `json:"unit_name"`
-	Bullets             *[]string `json:"bullets"`
+	URL                 *string   `json:"url,omitempty"`
+	AccountsURL         *string   `json:"accounts_url,omitempty"`
+	ID                  *int      `json:"id,omitempty"`
+	Name                *string   `json:"name,omitempty"`
+	Description         *string   `json:"description,omitempty"`
+	MonthlyPriceInCents *int      `json:"monthly_price_in_cents,omitempty"`
+	YearlyPriceInCents  *int      `json:"yearly_price_in_cents,omitempty"`
+	PriceModel          *string   `json:"price_model,omitempty"`
+	UnitName            *string   `json:"unit_name,omitempty"`
+	Bullets             *[]string `json:"bullets,omitempty"`
 }
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
-	BillingCycle    *string          `json:"billing_cycle"`
-	NextBillingDate *string          `json:"next_billing_date"`
-	UnitCount       *int             `json:"unit_count"`
-	Plan            *MarketplacePlan `json:"plan"`
+	BillingCycle    *string          `json:"billing_cycle,omitempty"`
+	NextBillingDate *string          `json:"next_billing_date,omitempty"`
+	UnitCount       *int             `json:"unit_count,omitempty"`
+	Plan            *MarketplacePlan `json:"plan,omitempty"`
 }
 
-// MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan
+// MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan.
 type MarketplacePlanAccount struct {
-	URL                      *string              `json:"url"`
-	AccountType              *string              `json:"type"`
-	ID                       *int                 `json:"id"`
-	Login                    *string              `json:"login"`
-	Email                    *string              `json:"email"`
-	OrganizationBillingEmail *string              `json:"organization_billing_email"`
-	MarketplacePurchase      *MarketplacePurchase `json:"marketplace_purchase"`
+	URL                      *string              `json:"url,omitempty"`
+	AccountType              *string              `json:"type,omitempty"`
+	ID                       *int                 `json:"id,omitempty"`
+	Login                    *string              `json:"login,omitempty"`
+	Email                    *string              `json:"email,omitempty"`
+	OrganizationBillingEmail *string              `json:"organization_billing_email,omitempty"`
+	MarketplacePurchase      *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
 }
 
-// ListPlans lists all plans for your Marketplace listing
+// ListPlans lists all plans for your Marketplace listing.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#list-all-plans-for-your-marketplace-listing
 func (s *MarketplaceService) ListPlans(ctx context.Context, stubbed bool, opt *ListOptions) ([]*MarketplacePlan, *Response, error) {
@@ -75,7 +75,7 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, stubbed bool, opt *L
 	return i, resp, nil
 }
 
-// ListPlanAccounts lists all GitHub accounts (user or organization) on a specific plan
+// ListPlanAccounts lists all GitHub accounts (user or organization) on a specific plan.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#list-all-github-accounts-user-or-organization-on-a-specific-plan
 func (s *MarketplaceService) ListPlanAccounts(ctx context.Context, planID int, stubbed bool, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
