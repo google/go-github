@@ -25,11 +25,19 @@ type AdminStats struct {
 	Repos      *RepoStats      `json:"repos,omitempty"`
 }
 
+func (s AdminStats) String() string {
+	return Stringify(s)
+}
+
 // IssueStats represents the number of total, open and closed issues
 type IssueStats struct {
 	TotalIssues  *int `json:"total_issues,omitempty"`
 	OpenIssues   *int `json:"open_issues,omitempty"`
 	ClosedIssues *int `json:"closed_issues,omitempty"`
+}
+
+func (s IssueStats) String() string {
+	return Stringify(s)
 }
 
 // HookStats represents the number of total, active and inactive hooks
@@ -39,11 +47,19 @@ type HookStats struct {
 	InactiveHooks *int `json:"inactive_hooks,omitempty"`
 }
 
+func (s HookStats) String() string {
+	return Stringify(s)
+}
+
 // MilestoneStats represents the number of total, open and close milestones
 type MilestoneStats struct {
 	TotalMilestones  *int `json:"total_milestones,omitempty"`
 	OpenMilestones   *int `json:"open_milestones,omitempty"`
 	ClosedMilestones *int `json:"closed_milestones,omitempty"`
+}
+
+func (s MilestoneStats) String() string {
+	return Stringify(s)
 }
 
 // OrgStats represents the number of total, disabled organizations and the team
@@ -55,6 +71,10 @@ type OrgStats struct {
 	TotalTeamMembers *int `json:"total_team_members,omitempty"`
 }
 
+func (s OrgStats) String() string {
+	return Stringify(s)
+}
+
 // CommentStats represents the number of total comments on commits, gists, issues
 // and pull requests
 type CommentStats struct {
@@ -64,9 +84,17 @@ type CommentStats struct {
 	TotalPullRequestComments *int `json:"total_pull_request_comments,omitempty"`
 }
 
+func (s CommentStats) String() string {
+	return Stringify(s)
+}
+
 // PageStats represents the total number of github pages
 type PageStats struct {
 	TotalPages *int `json:"total_pages,omitempty"`
+}
+
+func (s PageStats) String() string {
+	return Stringify(s)
 }
 
 // UserStats represents the number of total, admin and suspended users
@@ -76,12 +104,21 @@ type UserStats struct {
 	SuspendedUsers *int `json:"suspended_users,omitempty"`
 }
 
+func (s UserStats) String() string {
+	return Stringify(s)
+}
+
 //GistStats represents the number of total, private and public gists
 type GistStats struct {
 	TotalGists   *int `json:"total_gists,omitempty"`
 	PrivateGists *int `json:"private_gists,omitempty"`
 	PublicGists  *int `json:"public_gists,omitempty"`
 }
+
+func (s GistStats) String() string {
+	return Stringify(s)
+}
+
 // PullStats represents the number of total, merged, mergable and unmergeable
 // pull-requests
 type PullStats struct {
@@ -89,6 +126,10 @@ type PullStats struct {
 	MergedPulls     *int `json:"merged_pulls,omitempty"`
 	MergablePulls   *int `json:"mergeable_pulls,omitempty"`
 	UnmergablePulls *int `json:"unmergeable_pulls,omitempty"`
+}
+
+func (s PullStats) String() string {
+	return Stringify(s)
 }
 
 // RepoStats represents the number of total, root, fork, organization repositories
@@ -100,6 +141,10 @@ type RepoStats struct {
 	OrgRepos    *int `json:"org_repos,omitempty"`
 	TotalPushes *int `json:"total_pushes,omitempty"`
 	TotalWikis  *int `json:"total_wikis,omitempty"`
+}
+
+func (s RepoStats) String() string {
+	return Stringify(s)
 }
 
 // GetAdminStats returns a variety of metrics about a Github Enterprise
