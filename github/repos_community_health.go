@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"strings"
 )
 
 // Metric represents the different fields for one file in community health files.
@@ -45,7 +46,8 @@ func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, own
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryCommunityHealthMetricsPreview)
+	acceptHeaders := []string{mediaTypeRepositoryCommunityHealthMetricsPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
 
 	metrics := &CommunityHealthMetrics{}
 	resp, err := s.client.Do(ctx, req, metrics)
