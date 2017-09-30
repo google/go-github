@@ -198,7 +198,6 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 		return nil, nil, err
 	}
 
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -231,6 +230,9 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGitHubAppsPreview)
+
 	var events []*Event
 	resp, err := s.client.Do(ctx, req, &events)
 	if err != nil {
@@ -260,6 +262,9 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when endpoints are fully enabled for GitHub apps.
+	req.Header.Set("Accept", mediaTypeGitHubAppsPreview)
 
 	var events []*Event
 	resp, err := s.client.Do(ctx, req, &events)
