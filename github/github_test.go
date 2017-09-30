@@ -106,6 +106,10 @@ func testHeader(t *testing.T, r *http.Request, header string, want string) {
 	}
 }
 
+func testHeaders(t *testing.T, r *http.Request, header string, want []string) {
+	testHeader(t,r, header, strings.Join(want, ","))
+}
+
 func testURLParseError(t *testing.T, err error) {
 	if err == nil {
 		t.Errorf("Expected error to be returned")
