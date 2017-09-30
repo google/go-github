@@ -21,8 +21,9 @@ type IssuesService service
 //
 // Note: As far as the GitHub API is concerned, every pull request is an issue,
 // but not every issue is a pull request. Some endpoints, events, and webhooks
-// may also return pull requests via this struct. Call issue.IsPullRequest to
-// determine if the issue is a pull request.
+// may also return pull requests via this struct. If PullRequestLinks is nil,
+// this is an issue, and if PullRequestLinks is not nil, this is a pull request.
+// The isPullRequest helper method can be used to check that.
 type Issue struct {
 	ID               *int              `json:"id,omitempty"`
 	Number           *int              `json:"number,omitempty"`
