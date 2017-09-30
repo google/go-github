@@ -102,6 +102,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 
 	mux.HandleFunc("/networks/o/r/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r,"Accept", mediaTypeGitHubAppsPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
