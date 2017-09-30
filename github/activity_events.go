@@ -296,6 +296,9 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when endpoints are fully enabled for GitHub apps.
+	req.Header.Set("Accept", mediaTypeGitHubAppsPreview)
+
 	var events []*Event
 	resp, err := s.client.Do(ctx, req, &events)
 	if err != nil {
