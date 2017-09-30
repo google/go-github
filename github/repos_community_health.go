@@ -8,8 +8,8 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 	"strings"
+	"time"
 )
 
 // Metric represents the different fields for one file in community health files.
