@@ -74,6 +74,9 @@ func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, 
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when endpoints are fully enabled for GitHub apps.
+	req.Header.Set("Accept", mediaTypeGitHubAppsPreview)
+
 	var emoji map[string]string
 	resp, err := c.Do(ctx, req, &emoji)
 	if err != nil {
