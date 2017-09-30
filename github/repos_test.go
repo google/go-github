@@ -255,7 +255,7 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/community/code_of_conduct", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeCodesOfConductPreview, mediaTypeGitHubAppsPreview})
 		fmt.Fprint(w, `{
 						"key": "key",
 						"name": "name",

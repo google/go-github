@@ -320,8 +320,9 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
+	// TODO: remove custom Accept header when this API fully launches
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
 
 	coc := new(CodeOfConduct)
 	resp, err := s.client.Do(ctx, req, coc)
