@@ -517,7 +517,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"u"}],"teams":[{"id":4,"slug":"t"}]},"dismiss_stale_reviews":true},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 

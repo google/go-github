@@ -713,7 +713,8 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
