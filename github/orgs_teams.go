@@ -137,6 +137,10 @@ type NewTeam struct {
 	LDAPDN *string `json:"ldap_dn,omitempty"`
 }
 
+func (s NewTeam) String() string {
+	return Stringify(s)
+}
+
 // CreateTeam creates a new team within an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#create-team
