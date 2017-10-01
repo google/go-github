@@ -61,7 +61,7 @@ func TestMarketplaceService_ListPlansStubbed(t *testing.T) {
 	}
 }
 
-func TestMarketplaceService_ListPlanAccounts(t *testing.T) {
+func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -72,13 +72,57 @@ func TestMarketplaceService_ListPlanAccounts(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	accounts, _, err := client.Marketplace.ListPlanAccounts(context.Background(), 1, false, opt)
+	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(context.Background(), 1, false, opt)
 	if err != nil {
-		t.Errorf("Marketplace.ListPlanAccounts returned error: %v", err)
+		t.Errorf("Marketplace.ListPlanAccountsForPlan returned error: %v", err)
 	}
 
 	want := []*MarketplacePlanAccount{{ID: Int(1)}}
 	if !reflect.DeepEqual(accounts, want) {
-		t.Errorf("Marketplace.ListPlanAccounts returned %+v, want %+v", accounts, want)
+		t.Errorf("Marketplace.ListPlanAccountsForPlan returned %+v, want %+v", accounts, want)
+	}
+}
+
+func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/apps/marketplace_listing/accounts/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeMarketplacePreview)
+		fmt.Fprint(w, `[{"id":1}]`)
+	})
+
+	opt := &ListOptions{Page: 1, PerPage: 2}
+	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(context.Background(), 1, false, opt)
+	if err != nil {
+		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
+	}
+
+	want := []*MarketplacePlanAccount{{ID: Int(1)}}
+	if !reflect.DeepEqual(accounts, want) {
+		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", accounts, want)
+	}
+}
+
+func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/apps/user/marketplace_purchases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeMarketplacePreview)
+		fmt.Fprint(w, `[{"billing_cycle":"monthly"}]`)
+	})
+
+	opt := &ListOptions{Page: 1, PerPage: 2}
+	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(context.Background(), false, opt)
+	if err != nil {
+		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned error: %v", err)
+	}
+
+	want := []*MarketplacePurchase{{BillingCycle: String("monthly")}}
+	if !reflect.DeepEqual(purchases, want) {
+		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
 }

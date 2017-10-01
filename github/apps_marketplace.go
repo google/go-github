@@ -32,10 +32,11 @@ type MarketplacePlan struct {
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
-	BillingCycle    *string          `json:"billing_cycle,omitempty"`
-	NextBillingDate *string          `json:"next_billing_date,omitempty"`
-	UnitCount       *int             `json:"unit_count,omitempty"`
-	Plan            *MarketplacePlan `json:"plan,omitempty"`
+	BillingCycle           *string                 `json:"billing_cycle,omitempty"`
+	NextBillingDate        *string                 `json:"next_billing_date,omitempty"`
+	UnitCount              *int                    `json:"unit_count,omitempty"`
+	Plan                   *MarketplacePlan        `json:"plan,omitempty"`
+	MarketplacePlanAccount *MarketplacePlanAccount `json:"account,omitempty"`
 }
 
 // MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan.
@@ -75,10 +76,10 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, stubbed bool, opt *L
 	return i, resp, nil
 }
 
-// ListPlanAccounts lists all GitHub accounts (user or organization) on a specific plan.
+// ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#list-all-github-accounts-user-or-organization-on-a-specific-plan
-func (s *MarketplaceService) ListPlanAccounts(ctx context.Context, planID int, stubbed bool, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int, stubbed bool, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
 	u, err := addOptions(fmt.Sprintf("%v/plans/%v/accounts", marketplaceURI(stubbed), planID), opt)
 	if err != nil {
 		return nil, nil, err
@@ -93,6 +94,58 @@ func (s *MarketplaceService) ListPlanAccounts(ctx context.Context, planID int, s
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
 	var i []*MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &i)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return i, resp, nil
+}
+
+// ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
+//
+// GitHub API docs: https://developer.github.com/v3/apps/marketplace/#check-if-a-github-account-is-associated-with-any-marketplace-listing
+func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int, stubbed bool, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+	u, err := addOptions(fmt.Sprintf("%v/accounts/%v", marketplaceURI(stubbed), accountID), opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeMarketplacePreview)
+
+	var i []*MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &i)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return i, resp, nil
+}
+
+// ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
+//
+// GitHub API docs: https://developer.github.com/v3/apps/marketplace/#get-a-users-marketplace-purchases
+func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, stubbed bool, opt *ListOptions) ([]*MarketplacePurchase, *Response, error) {
+	u, err := addOptions("apps/user/marketplace_purchases", opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeMarketplacePreview)
+
+	var i []*MarketplacePurchase
 	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
