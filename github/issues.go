@@ -57,7 +57,7 @@ func (i Issue) String() string {
 }
 
 // IsPullRequest reports whether the issue is also a pull request. It uses the
-// method recommended by Github's API documentation, which is to check whether
+// method recommended by GitHub's API documentation, which is to check whether
 // PullRequestLinks is non-nil.
 func (i Issue) IsPullRequest() bool {
 	return i.PullRequestLinks != nil
