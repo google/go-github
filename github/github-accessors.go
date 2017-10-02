@@ -2588,6 +2588,158 @@ func (m *markdownRequest) GetText() string {
 	return *m.Text
 }
 
+// GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetAccountsURL() string {
+	if m == nil || m.AccountsURL == nil {
+		return ""
+	}
+	return *m.AccountsURL
+}
+
+// GetBullets returns the Bullets field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetBullets() []string {
+	if m == nil || m.Bullets == nil {
+		return nil
+	}
+	return *m.Bullets
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetDescription() string {
+	if m == nil || m.Description == nil {
+		return ""
+	}
+	return *m.Description
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetID() int {
+	if m == nil || m.ID == nil {
+		return 0
+	}
+	return *m.ID
+}
+
+// GetMonthlyPriceInCents returns the MonthlyPriceInCents field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetMonthlyPriceInCents() int {
+	if m == nil || m.MonthlyPriceInCents == nil {
+		return 0
+	}
+	return *m.MonthlyPriceInCents
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetName() string {
+	if m == nil || m.Name == nil {
+		return ""
+	}
+	return *m.Name
+}
+
+// GetPriceModel returns the PriceModel field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetPriceModel() string {
+	if m == nil || m.PriceModel == nil {
+		return ""
+	}
+	return *m.PriceModel
+}
+
+// GetUnitName returns the UnitName field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetUnitName() string {
+	if m == nil || m.UnitName == nil {
+		return ""
+	}
+	return *m.UnitName
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetURL() string {
+	if m == nil || m.URL == nil {
+		return ""
+	}
+	return *m.URL
+}
+
+// GetYearlyPriceInCents returns the YearlyPriceInCents field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetYearlyPriceInCents() int {
+	if m == nil || m.YearlyPriceInCents == nil {
+		return 0
+	}
+	return *m.YearlyPriceInCents
+}
+
+// GetAccountType returns the AccountType field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetAccountType() string {
+	if m == nil || m.AccountType == nil {
+		return ""
+	}
+	return *m.AccountType
+}
+
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetEmail() string {
+	if m == nil || m.Email == nil {
+		return ""
+	}
+	return *m.Email
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetID() int {
+	if m == nil || m.ID == nil {
+		return 0
+	}
+	return *m.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetLogin() string {
+	if m == nil || m.Login == nil {
+		return ""
+	}
+	return *m.Login
+}
+
+// GetOrganizationBillingEmail returns the OrganizationBillingEmail field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetOrganizationBillingEmail() string {
+	if m == nil || m.OrganizationBillingEmail == nil {
+		return ""
+	}
+	return *m.OrganizationBillingEmail
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetURL() string {
+	if m == nil || m.URL == nil {
+		return ""
+	}
+	return *m.URL
+}
+
+// GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetBillingCycle() string {
+	if m == nil || m.BillingCycle == nil {
+		return ""
+	}
+	return *m.BillingCycle
+}
+
+// GetNextBillingDate returns the NextBillingDate field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetNextBillingDate() string {
+	if m == nil || m.NextBillingDate == nil {
+		return ""
+	}
+	return *m.NextBillingDate
+}
+
+// GetUnitCount returns the UnitCount field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetUnitCount() int {
+	if m == nil || m.UnitCount == nil {
+		return 0
+	}
+	return *m.UnitCount
+}
+
 // GetText returns the Text field if it's non-nil, zero value otherwise.
 func (m *Match) GetText() string {
 	if m == nil || m.Text == nil {
