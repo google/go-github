@@ -360,7 +360,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/1/invitations", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
 		fmt.Fprint(w, `[
@@ -394,7 +394,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	invitations, _, err := client.Organizations.ListPendingOrgInvitations(context.Background(), 1, opt)
+	invitations, _, err := client.Organizations.ListPendingOrgInvitations(context.Background(), "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
