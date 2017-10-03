@@ -20,11 +20,7 @@ type Team struct {
 	URL         *string `json:"url,omitempty"`
 	Slug        *string `json:"slug,omitempty"`
 
-	// Permission is deprecated when creating or editing a team in an org
-	// using the new GitHub permission model. It no longer identifies the
-	// permission a team has on its repos, but only specifies the default
-	// permission a repo is initially added with. Avoid confusion by
-	// specifying a permission value when calling AddTeamRepo.
+	// Permission specifies the default permission for repositories owned by the team.
 	Permission *string `json:"permission,omitempty"`
 
 	// Privacy identifies the level of privacy this team should have.
@@ -114,10 +110,41 @@ func (s *OrganizationsService) GetTeam(ctx context.Context, team int) (*Team, *R
 	return t, resp, nil
 }
 
+// NewTeam represents a team to be created or modified.
+type NewTeam struct {
+	Name         string   `json:"name"` // Name of the team. (Required.)
+	Description  *string  `json:"description,omitempty"`
+	Maintainers  []string `json:"maintainers,omitempty"`
+	RepoNames    []string `json:"repo_names,omitempty"`
+	ParentTeamID *string  `json:"parent_team_id,omitempty"`
+
+	// Deprecated: Permission is deprecated when creating or editing a team in an org
+	// using the new GitHub permission model. It no longer identifies the
+	// permission a team has on its repos, but only specifies the default
+	// permission a repo is initially added with. Avoid confusion by
+	// specifying a permission value when calling AddTeamRepo.
+	Permission *string `json:"permission,omitempty"`
+
+	// Privacy identifies the level of privacy this team should have.
+	// Possible values are:
+	//     secret - only visible to organization owners and members of this team
+	//     closed - visible to all members of this organization
+	// Default is "secret".
+	Privacy *string `json:"privacy,omitempty"`
+
+	// LDAPDN may be used in GitHub Enterprise when the team membership
+	// is synchronized with LDAP.
+	LDAPDN *string `json:"ldap_dn,omitempty"`
+}
+
+func (s NewTeam) String() string {
+	return Stringify(s)
+}
+
 // CreateTeam creates a new team within an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#create-team
-func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team *Team) (*Team, *Response, error) {
+func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team *NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", u, team)
 	if err != nil {
@@ -139,7 +166,7 @@ func (s *OrganizationsService) CreateTeam(ctx context.Context, org string, team 
 // EditTeam edits a team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#edit-team
-func (s *OrganizationsService) EditTeam(ctx context.Context, id int, team *Team) (*Team, *Response, error) {
+func (s *OrganizationsService) EditTeam(ctx context.Context, id int, team *NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
