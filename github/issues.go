@@ -41,6 +41,10 @@ type Issue struct {
 	ClosedBy         *User             `json:"closed_by,omitempty"`
 	URL              *string           `json:"url,omitempty"`
 	HTMLURL          *string           `json:"html_url,omitempty"`
+	CommentsURL      *string           `json:"comments_url,omitempty"`
+	EventsURL        *string           `json:"events_url,omitempty"`
+	LabelsURL        *string           `json:"labels_url,omitempty"`
+	RepositoryURL    *string           `json:"repository_url,omitempty"`
 	Milestone        *Milestone        `json:"milestone,omitempty"`
 	PullRequestLinks *PullRequestLinks `json:"pull_request,omitempty"`
 	Repository       *Repository       `json:"repository,omitempty"`
