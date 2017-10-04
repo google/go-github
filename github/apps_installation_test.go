@@ -54,6 +54,7 @@ func TestAppsService_AddRepo(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int(1)}}
+	// want := `{"repositories": [{"id":1}]}`
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("AddRepo returned %+v, want %+v", repo, want)
 	}
@@ -63,7 +64,7 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/:%v/repositories/:%v", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/%v/repositories/%v", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 	})
