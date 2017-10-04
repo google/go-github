@@ -3,7 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The demo app shows how to use the github package on Google App Engine.
+// Package demo provides an app that shows how to use the github package on
+// Google App Engine.
 package demo
 
 import (
