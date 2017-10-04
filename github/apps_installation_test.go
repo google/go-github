@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -43,9 +44,17 @@ func TestAppsService_AddRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/:%v/repositories/:%v", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		// testMethod(t, r, "PUT")
+		// testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		v := new(Repository)
+		json.NewDecoder(r.Body).Decode(v)
+
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	repo, _, err := client.Apps.AddRepo(context.Background(), 1, 1)
@@ -60,11 +69,38 @@ func TestAppsService_AddRepo(t *testing.T) {
 	}
 }
 
+// func TestRepositoriesService_Create_org(t *testing.T) {
+// 	setup()
+// 	defer teardown()
+
+// 	input := &Repository{Name: String("n")}
+
+// 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
+// 		v := new(Repository)
+// 		json.NewDecoder(r.Body).Decode(v)
+
+// 		testMethod(t, r, "POST")
+// 		if !reflect.DeepEqual(v, input) {
+// 			t.Errorf("Request body = %+v, want %+v", v, input)
+// 		}
+
+// 		fmt.Fprint(w, `{"id":1}`)
+// 	})
+
+// 	repo, _, err := client.Repositories.Create(context.Background(), "o", input)
+// 	if err != nil {
+// 		t.Errorf("Repositories.Create returned error: %v", err)
+// 	}
+
+// 	want := &Repository{ID: Int(1)}
+// 	if !reflect.DeepEqual(repo, want) {
+// 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
+
 func TestAppsService_RemoveRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/%v/repositories/%v", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 	})
