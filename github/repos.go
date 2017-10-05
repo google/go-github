@@ -322,7 +322,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 
 	// TODO: remove custom Accept header when this API fully launches
 	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeGitHubAppsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	coc := new(CodeOfConduct)
 	resp, err := s.client.Do(ctx, req, coc)
@@ -714,7 +714,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 
 	// TODO: remove custom Accept header when this API fully launches
 	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
@@ -837,7 +837,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 
 	// TODO: remove custom Accept header when this API fully launches
 	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
