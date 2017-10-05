@@ -858,7 +858,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 	})
 
@@ -883,7 +883,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 	})
 
@@ -907,7 +907,7 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/enforce_admins", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		w.WriteHeader(http.StatusNoContent)
 	})
 

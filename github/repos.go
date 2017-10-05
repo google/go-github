@@ -926,7 +926,8 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	headers := strings.Join([]string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}, ", ")
+	req.Header.Set("Accept", headers)
 
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -949,7 +950,8 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	headers := strings.Join([]string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}, ", ")
+	req.Header.Set("Accept", headers)
 
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -971,7 +973,8 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	headers := strings.Join([]string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}, ", ")
+	req.Header.Set("Accept", headers)
 
 	return s.client.Do(ctx, req, nil)
 }
