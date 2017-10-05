@@ -99,6 +99,9 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 	case "WatchEvent":
 		payload = &WatchEvent{}
 	}
+	if e.RawPayload == nil {
+		return nil, fmt.Errorf("e.RawPayload is nil")
+	}
 	err = json.Unmarshal(*e.RawPayload, &payload)
 	return payload, err
 }
