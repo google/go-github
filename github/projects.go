@@ -65,6 +65,8 @@ type ProjectOptions struct {
 	Name string `json:"name,omitempty"`
 	// The body of the project. (Optional.)
 	Body string `json:"body,omitempty"`
+	// State of the project. Either open or closed
+	State string `json:"state,omitempty"`
 }
 
 // UpdateProject updates a repository project.
