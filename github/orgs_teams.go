@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -168,6 +169,8 @@ func (s *OrganizationsService) DeleteTeam(ctx context.Context, team int) (*Respo
 		return nil, err
 	}
 
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -196,6 +199,8 @@ func (s *OrganizationsService) ListTeamMembers(ctx context.Context, team int, op
 	if err != nil {
 		return nil, nil, err
 	}
+
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	var members []*User
 	resp, err := s.client.Do(ctx, req, &members)
@@ -237,7 +242,8 @@ func (s *OrganizationsService) ListTeamRepos(ctx context.Context, team int, opt 
 	}
 
 	// TODO: remove custom Accept header when topics API fully launches.
-	req.Header.Set("Accept", mediaTypeTopicsPreview)
+	headers := strings.Join([]string{mediaTypeTopicsPreview, mediaTypeNestedTeamsPreview}, ", ")
+	req.Header.Set("Accept", headers)
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
@@ -260,7 +266,8 @@ func (s *OrganizationsService) IsTeamRepo(ctx context.Context, team int, owner s
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
+	headers := []string{mediaTypeOrgPermissionRepo, mediaTypeNestedTeamsPreview}
+	req.Header.Set("Accept", strings.Join(headers, ", "))
 
 	repository := new(Repository)
 	resp, err := s.client.Do(ctx, req, repository)
@@ -349,6 +356,8 @@ func (s *OrganizationsService) GetTeamMembership(ctx context.Context, team int, 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	t := new(Membership)
 	resp, err := s.client.Do(ctx, req, t)
