@@ -65,7 +65,11 @@ type ProjectOptions struct {
 	Name string `json:"name,omitempty"`
 	// The body of the project. (Optional.)
 	Body string `json:"body,omitempty"`
-	// State of the project. Either open or closed
+
+	// The following field(s) are only applicable for update.
+	// They should be left with zero values for creation.
+
+	// State of the project. Either "open" or "closed". (Optional.)
 	State string `json:"state,omitempty"`
 }
 
