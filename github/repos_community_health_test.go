@@ -20,7 +20,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeaders(t, r, "Accept", []string{mediaTypeRepositoryCommunityHealthMetricsPreview, mediaTypeGitHubAppsPreview})
+		testHeaders(t, r, "Accept", mediaTypeRepositoryCommunityHealthMetricsPreview, mediaTypeGitHubAppsPreview)
 		fmt.Fprintf(w, `{
 				"health_percentage": 100,
 				"files": {
