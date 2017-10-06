@@ -783,7 +783,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]},"dismiss_stale_reviews":true}`)
 	})
 
@@ -814,7 +814,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		testBody(t, r, `{"dismissal_restrictions":[]}`+"\n")
 		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":true}`)
 	})
@@ -842,7 +842,7 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
+		testHeaders(t, r, "Accept", []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview})
 		w.WriteHeader(http.StatusNoContent)
 	})
 
