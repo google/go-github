@@ -110,8 +110,7 @@ func TestValidatePayload_FormGet(t *testing.T) {
 
 	// check that if payload is invalid we get error
 	req.Header.Set(signatureHeader, "invalid signature")
-	_, err = ValidatePayload(req, nil)
-	if err == nil {
+	if _, err = ValidatePayload(req, nil); err == nil {
 		t.Error("ValidatePayload = nil, want err")
 	}
 }
@@ -141,8 +140,7 @@ func TestValidatePayload_FormPost(t *testing.T) {
 
 	// check that if payload is invalid we get error
 	req.Header.Set(signatureHeader, "invalid signature")
-	_, err = ValidatePayload(req, nil)
-	if err == nil {
+	if _, err = ValidatePayload(req, nil); err == nil {
 		t.Error("ValidatePayload = nil, want err")
 	}
 }
@@ -153,8 +151,7 @@ func TestValidatePayload_InvalidContentType(t *testing.T) {
 		t.Fatalf("NewRequest: %v", err)
 	}
 	req.Header.Set("Content-Type", "invalid content type")
-	_, err = ValidatePayload(req, nil)
-	if err == nil {
+	if _, err = ValidatePayload(req, nil); err == nil {
 		t.Error("ValidatePayload = nil, want err")
 	}
 }
