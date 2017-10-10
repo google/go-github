@@ -275,3 +275,14 @@ func TestIssuesService_Unlock(t *testing.T) {
 		t.Errorf("Issues.Unlock returned error: %v", err)
 	}
 }
+
+func TestIsPullRequest(t *testing.T) {
+	i := new(Issue)
+	if i.IsPullRequest() == true {
+		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
+	}
+	i.PullRequestLinks = &PullRequestLinks{URL: String("http://example.com")}
+	if i.IsPullRequest() == false {
+		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
+	}
+}
