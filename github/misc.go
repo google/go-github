@@ -7,8 +7,8 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 	"net/url"
 )
 

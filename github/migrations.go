@@ -6,9 +6,9 @@
 package github
 
 import (
-	"context"
 	"errors"
 	"fmt"
+	"golang.org/x/net/context"
 	"net/http"
 	"strings"
 )

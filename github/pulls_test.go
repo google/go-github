@@ -6,9 +6,9 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/net/context"
 	"io"
 	"net/http"
 	"reflect"

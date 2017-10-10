@@ -6,9 +6,9 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // Deployment represents a deployment in a repo

@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // PromoteSiteAdmin promotes a user to a site administrator of a GitHub Enterprise instance.

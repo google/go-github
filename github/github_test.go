@@ -7,9 +7,9 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/net/context"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"

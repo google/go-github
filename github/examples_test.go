@@ -6,8 +6,8 @@
 package github_test
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 	"log"
 
 	"github.com/google/go-github/github"
