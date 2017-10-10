@@ -43,7 +43,7 @@ func TestAppsService_AddRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/:%v/repositories/:%v", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/%v/repositories/%v", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 	})
@@ -63,7 +63,7 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/:%v/repositories/:%v", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/%v/repositories/%v", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 	})
