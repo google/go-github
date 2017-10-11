@@ -55,7 +55,7 @@ func (s *AppsService) ListRepos(ctx context.Context, opt *ListOptions) ([]*Repos
 //
 // GitHub API docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
 func (s *AppsService) AddRepo(ctx context.Context, instID int, repoID int) (*Repository, *Response, error) {
-	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
+	u := fmt.Sprintf("/apps/installations/%v/repositories/%v", instID, repoID)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
@@ -63,12 +63,12 @@ func (s *AppsService) AddRepo(ctx context.Context, instID int, repoID int) (*Rep
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+	// req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
-		return nil, resp, err
+		return nil, nil, err
 	}
 
 	return r, resp, nil
@@ -78,7 +78,7 @@ func (s *AppsService) AddRepo(ctx context.Context, instID int, repoID int) (*Rep
 //
 // GitHub docs: https://developer.github.com/v3/apps/installations/#add-repository-to-installation
 func (s *AppsService) RemoveRepo(ctx context.Context, instID int, repoID int) (*Response, error) {
-	u := fmt.Sprintf("app/installations/%v/repositories/%v", instID, repoID)
+	u := fmt.Sprintf("/user/installations/%v/repositories/%v", instID, repoID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err

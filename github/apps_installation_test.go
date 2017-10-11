@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -44,17 +43,10 @@ func TestAppsService_AddRepo(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
-		// testMethod(t, r, "PUT")
-		// testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
-		v := new(Repository)
-		json.NewDecoder(r.Body).Decode(v)
-
+	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-		fmt.Fprint(w, `{"id":1}`)
+		testHeader(t, r, "Accept", mediaTypeV3)
+		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
 	repo, _, err := client.Apps.AddRepo(context.Background(), 1, 1)
@@ -62,51 +54,23 @@ func TestAppsService_AddRepo(t *testing.T) {
 		t.Errorf("Apps.AddRepo returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
-	// want := `{"repositories": [{"id":1}]}`
+	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("AddRepo returned %+v, want %+v", repo, want)
 	}
 }
 
-// func TestRepositoriesService_Create_org(t *testing.T) {
+// func TestAppsService_RemoveRepo(t *testing.T) {
 // 	setup()
 // 	defer teardown()
 
-// 	input := &Repository{Name: String("n")}
-
-// 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-// 		v := new(Repository)
-// 		json.NewDecoder(r.Body).Decode(v)
-
-// 		testMethod(t, r, "POST")
-// 		if !reflect.DeepEqual(v, input) {
-// 			t.Errorf("Request body = %+v, want %+v", v, input)
-// 		}
-
-// 		fmt.Fprint(w, `{"id":1}`)
+// 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+// 		testMethod(t, r, "DELETE")
+// 		testHeader(t, r, "Accept", mediaTypeV3)
 // 	})
 
-// 	repo, _, err := client.Repositories.Create(context.Background(), "o", input)
+// 	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
 // 	if err != nil {
-// 		t.Errorf("Repositories.Create returned error: %v", err)
+// 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
 // 	}
-
-// 	want := &Repository{ID: Int(1)}
-// 	if !reflect.DeepEqual(repo, want) {
-// 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
-
-func TestAppsService_RemoveRepo(t *testing.T) {
-	setup()
-	defer teardown()
-
-	mux.HandleFunc("/app/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
-	})
-
-	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
-	if err != nil {
-		t.Errorf("Apps.RemoveRepo returned error: %v", err)
-	}
-}
+// }
