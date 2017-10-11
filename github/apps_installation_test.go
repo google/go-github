@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+
+	"github.com/google/go-github/github"
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
@@ -60,17 +62,20 @@ func TestAppsService_AddRepo(t *testing.T) {
 	}
 }
 
-// func TestAppsService_RemoveRepo(t *testing.T) {
-// 	setup()
-// 	defer teardown()
+func TestAppsService_RemoveRepo(t *testing.T) {
+	setup()
+	defer teardown()
 
-// 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "DELETE")
-// 		testHeader(t, r, "Accept", mediaTypeV3)
-// 	})
+	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
 
-// 	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
-// 	if err != nil {
-// 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
-// 	}
-// }
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
+
+	_, res := err.(*github.ErrorResponse)
+	if res == true && err != nil {
+		t.Errorf("Apps.RemoveRepo returned error: %v", err)
+	}
+}
