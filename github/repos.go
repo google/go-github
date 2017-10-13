@@ -318,8 +318,9 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
+	// TODO: remove custom Accept header when this API fully launches
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	coc := new(CodeOfConduct)
 	resp, err := s.client.Do(ctx, req, coc)
@@ -710,7 +711,8 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
@@ -832,7 +834,8 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -855,7 +858,8 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -883,7 +887,8 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -905,7 +910,8 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -921,7 +927,8 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -944,7 +951,8 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -966,7 +974,8 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	acceptHeaders := []string{mediaTypeProtectedBranchesPreview, mediaTypeGitHubAppsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	return s.client.Do(ctx, req, nil)
 }

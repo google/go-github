@@ -102,6 +102,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 
 	mux.HandleFunc("/networks/o/r/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -131,6 +132,7 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -160,6 +162,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 
 	mux.HandleFunc("/users/u/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -184,6 +187,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 
 	mux.HandleFunc("/users/u/events/public", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 
@@ -209,6 +213,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 
 	mux.HandleFunc("/users/u/received_events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -233,6 +238,7 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 
 	mux.HandleFunc("/users/u/received_events/public", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		fmt.Fprint(w, `[{"id":"1"},{"id":"2"}]`)
 	})
 

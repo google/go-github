@@ -53,6 +53,7 @@ func TestListEmojis(t *testing.T) {
 
 	mux.HandleFunc("/emojis", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGitHubAppsPreview)
 		fmt.Fprint(w, `{"+1": "+1.png"}`)
 	})
 
