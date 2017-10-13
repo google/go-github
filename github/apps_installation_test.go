@@ -66,14 +66,11 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 
 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
-
-	_, res := err.(*ErrorResponse)
-	if res == true && err != nil {
+	if err != nil {
 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
 	}
 }

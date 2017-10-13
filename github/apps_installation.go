@@ -77,7 +77,7 @@ func (s *AppsService) AddRepo(ctx context.Context, instID, repoID int) (*Reposit
 //
 // GitHub docs: https://developer.github.com/v3/apps/installations/#remove-repository-from-installation
 func (s *AppsService) RemoveRepo(ctx context.Context, instID, repoID int) (*Response, error) {
-	u := fmt.Sprintf("/user/installations/%v/repositories/%v", instID, repoID)
+	u := fmt.Sprintf("/apps/installations/%v/repositories/%v", instID, repoID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
