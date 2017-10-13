@@ -33,17 +33,39 @@ var (
 	server *httptest.Server
 )
 
+const (
+	// baseURLPath is a non-empty Client.BaseURL path to use during tests,
+	// to ensure relative URLs are used for all endpoints. See issue #752.
+	baseURLPath = "/api-v3"
+)
+
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() {
 	// test server
 	mux = http.NewServeMux()
-	server = httptest.NewServer(mux)
+
+	// We want to ensure that tests catch mistakes where the endpoint URL is
+	// specified as absolute rather than relative. It only makes a difference
+	// when there's a non-empty base URL path. So, use that. See issue #752.
+	apiHandler := http.NewServeMux()
+	apiHandler.Handle(baseURLPath+"/", http.StripPrefix(baseURLPath, mux))
+	apiHandler.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintln(os.Stderr, "FAIL: Client.BaseURL path prefix is not preserved in the request URL:")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "\t"+req.URL.String())
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "\tDid you accidentally use an absolute endpoint URL rather than relative?")
+		fmt.Fprintln(os.Stderr, "\tSee https://github.com/google/go-github/issues/752 for information.")
+		http.Error(w, "Client.BaseURL path prefix is not preserved in the request URL.", http.StatusInternalServerError)
+	})
+
+	server = httptest.NewServer(apiHandler)
 
 	// github client configured to use test server
 	client = NewClient(nil)
-	url, _ := url.Parse(server.URL + "/")
+	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
 	client.UploadURL = url
 }
@@ -411,7 +433,7 @@ func TestDo_redirectLoop(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, baseURLPath, http.StatusFound)
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
