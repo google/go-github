@@ -38,3 +38,38 @@ func TestAppsService_ListRepos(t *testing.T) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
 }
+
+func TestAppsService_AddRepository(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
+	})
+
+	repo, _, err := client.Apps.AddRepository(context.Background(), 1, 1)
+	if err != nil {
+		t.Errorf("Apps.AddRepository returned error: %v", err)
+	}
+
+	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
+	}
+}
+
+func TestAppsService_RemoveRepository(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Apps.RemoveRepository(context.Background(), 1, 1)
+	if err != nil {
+		t.Errorf("Apps.RemoveRepository returned error: %v", err)
+	}
+}
