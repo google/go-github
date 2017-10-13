@@ -39,7 +39,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 	}
 }
 
-func TestAppsService_AddRepo(t *testing.T) {
+func TestAppsService_AddRepository(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -49,7 +49,7 @@ func TestAppsService_AddRepo(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
-	repo, _, err := client.Apps.AddRepo(context.Background(), 1, 1)
+	repo, _, err := client.Apps.AddRepository(context.Background(), 1, 1)
 	if err != nil {
 		t.Errorf("Apps.AddRepo returned error: %v", err)
 	}
@@ -60,7 +60,7 @@ func TestAppsService_AddRepo(t *testing.T) {
 	}
 }
 
-func TestAppsService_RemoveRepo(t *testing.T) {
+func TestAppsService_RemoveRepository(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -69,7 +69,7 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
+	_, err := client.Apps.RemoveRepository(context.Background(), 1, 1)
 	if err != nil {
 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
 	}
