@@ -51,12 +51,12 @@ func TestAppsService_AddRepository(t *testing.T) {
 
 	repo, _, err := client.Apps.AddRepository(context.Background(), 1, 1)
 	if err != nil {
-		t.Errorf("Apps.AddRepo returned error: %v", err)
+		t.Errorf("Apps.AddRepository returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("AddRepo returned %+v, want %+v", repo, want)
+		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
 	}
 }
 
@@ -71,6 +71,6 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 
 	_, err := client.Apps.RemoveRepository(context.Background(), 1, 1)
 	if err != nil {
-		t.Errorf("Apps.RemoveRepo returned error: %v", err)
+		t.Errorf("Apps.RemoveRepository returned error: %v", err)
 	}
 }
