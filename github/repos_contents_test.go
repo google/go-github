@@ -98,7 +98,7 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 		fmt.Fprint(w, `[{
 		  "type": "file",
 		  "name": "f",
-		  "download_url": "`+server.URL+`/download/f"
+		  "download_url": "`+server.URL+baseURLPath+`/download/f"
 		}]`)
 	})
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
