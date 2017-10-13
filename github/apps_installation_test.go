@@ -74,4 +74,3 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
 	}
 }
-
