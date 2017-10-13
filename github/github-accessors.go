@@ -2965,9 +2965,9 @@ func (n *NewTeam) GetLDAPDN() string {
 }
 
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetParentTeamID() string {
+func (n *NewTeam) GetParentTeamID() int {
 	if n == nil || n.ParentTeamID == nil {
-		return ""
+		return 0
 	}
 	return *n.ParentTeamID
 }

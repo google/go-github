@@ -117,7 +117,7 @@ type NewTeam struct {
 	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
 	RepoNames    []string `json:"repo_names,omitempty"`
-	ParentTeamID *string  `json:"parent_team_id,omitempty"`
+	ParentTeamID *int     `json:"parent_team_id,omitempty"`
 
 	// Deprecated: Permission is deprecated when creating or editing a team in an org
 	// using the new GitHub permission model. It no longer identifies the
