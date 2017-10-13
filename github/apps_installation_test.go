@@ -45,7 +45,6 @@ func TestAppsService_AddRepository(t *testing.T) {
 
 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
