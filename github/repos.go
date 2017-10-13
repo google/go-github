@@ -232,8 +232,6 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 type RepositoryListAllOptions struct {
 	// ID of the last repository seen
 	Since int `url:"since,omitempty"`
-
-	ListOptions
 }
 
 // ListAll lists all GitHub repositories in the order that they were created.

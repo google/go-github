@@ -145,14 +145,12 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 	mux.HandleFunc("/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since":    "1",
-			"page":     "2",
-			"per_page": "3",
+			"since": "1",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &RepositoryListAllOptions{1, ListOptions{2, 3}}
+	opt := &RepositoryListAllOptions{1}
 	repos, _, err := client.Repositories.ListAll(context.Background(), opt)
 	if err != nil {
 		t.Errorf("Repositories.ListAll returned error: %v", err)
