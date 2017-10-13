@@ -11,8 +11,6 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-
-	"github.com/google/go-github/github"
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
@@ -74,7 +72,7 @@ func TestAppsService_RemoveRepo(t *testing.T) {
 
 	_, err := client.Apps.RemoveRepo(context.Background(), 1, 1)
 
-	_, res := err.(*github.ErrorResponse)
+	_, res := err.(*ErrorResponse)
 	if res == true && err != nil {
 		t.Errorf("Apps.RemoveRepo returned error: %v", err)
 	}
