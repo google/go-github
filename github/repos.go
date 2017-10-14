@@ -562,7 +562,7 @@ type PullRequestReviewsEnforcement struct {
 	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
-	// Specifies if an approved review is required in pull requests including files with a designated code owner.
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 }
 
@@ -574,7 +574,7 @@ type PullRequestReviewsEnforcementRequest struct {
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. (Required)
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
-	// Specifies if an approved review is required in pull requests including files with a designated code owner.
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 }
 
@@ -613,7 +613,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
-	// Specifies if an approved review is required in pull requests including files with a designated code owner.
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 }
 
