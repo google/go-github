@@ -560,6 +560,8 @@ type PullRequestReviewsEnforcement struct {
 	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
@@ -570,6 +572,8 @@ type PullRequestReviewsEnforcementRequest struct {
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. (Required)
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 }
 
 // MarshalJSON implements the json.Marshaler interface.
@@ -579,18 +583,22 @@ func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 		newReq := struct {
 			R []interface{} `json:"dismissal_restrictions"`
 			D bool          `json:"dismiss_stale_reviews"`
+			O bool          `json:"require_code_owner_reviews"`
 		}{
 			R: []interface{}{},
 			D: req.DismissStaleReviews,
+			O: req.RequireCodeOwnerReviews,
 		}
 		return json.Marshal(newReq)
 	}
 	newReq := struct {
 		R *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
 		D bool                          `json:"dismiss_stale_reviews"`
+		O bool                          `json:"require_code_owner_reviews"`
 	}{
 		R: req.DismissalRestrictionsRequest,
 		D: req.DismissStaleReviews,
+		O: req.RequireCodeOwnerReviews,
 	}
 	return json.Marshal(newReq)
 }
@@ -603,6 +611,8 @@ type PullRequestReviewsEnforcementUpdate struct {
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
+	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
