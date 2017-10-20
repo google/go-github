@@ -207,11 +207,22 @@ func addOptions(s string, opt interface{}) (string, error) {
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
+	return newClient(httpClient, defaultBaseURL, uploadBaseURL)
+}
+
+// NewEnterpriseClient returns a new GitHub API client (same as NewClient), except
+// it allows injection of an enterprise URL.
+func NewEnterpriseClient(httpClient *http.Client, enterpriseUrl string) *Client {
+	return newClient(httpClient, enterpriseUrl, enterpriseUrl)
+}
+
+func newClient(httpClient *http.Client, baseUrl string, uploadUrl string) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
-	baseURL, _ := url.Parse(defaultBaseURL)
-	uploadURL, _ := url.Parse(uploadBaseURL)
+
+	baseURL, _ := url.Parse(baseUrl)
+	uploadURL, _ := url.Parse(uploadUrl)
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
 	c.common.client = c
