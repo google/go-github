@@ -186,6 +186,17 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
+func TestNewEnterpriseClient(t *testing.T) {
+	enterpriseUrl := "custom-url"
+	c := NewEnterpriseClient(nil, enterpriseUrl)
+	if got, want := c.BaseURL.String(), enterpriseUrl; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), enterpriseUrl; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
 // Ensure that length of Client.rateLimits is the same as number of fields in RateLimits struct.
 func TestClient_rateLimits(t *testing.T) {
 	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
