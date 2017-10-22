@@ -228,7 +228,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
-	c.Marketplace = (*MarketplaceService)(&c.common)
+	c.Marketplace = &MarketplaceService{client: c}
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
