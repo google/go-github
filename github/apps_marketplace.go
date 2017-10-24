@@ -23,8 +23,6 @@ type MarketplaceService struct {
 	//
 	// GitHub API docs: https://developer.github.com/v3/apps/marketplace/
 	Stubbed bool
-
-	ListOptions
 }
 
 // MarketplacePlan represents a GitHub Apps Marketplace Listing Plan.
