@@ -21,7 +21,7 @@ func TestGitService_GetCommit(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
-		fmt.Fprint(w, `{"sha":"s","message":"m","author":{"name":"n"}}`)
+		fmt.Fprint(w, `{"sha":"s","message":"m","author":{"name":"n", "login":"l"}}`)
 	})
 
 	commit, _, err := client.Git.GetCommit(context.Background(), "o", "r", "s")
@@ -29,7 +29,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s"), Message: String("m"), Author: &CommitAuthor{Name: String("n")}}
+	want := &Commit{SHA: String("s"), Message: String("m"), Author: &CommitAuthor{Name: String("n"), Login: String("l")}}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
