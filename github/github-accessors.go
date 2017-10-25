@@ -460,6 +460,14 @@ func (c *CommitAuthor) GetName() string {
 	return *c.Name
 }
 
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (c *CommitAuthor) GetUsername() string {
+	if c == nil || c.Username == nil {
+		return ""
+	}
+	return *c.Username
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (c *CommitCommentEvent) GetAction() string {
 	if c == nil || c.Action == nil {
