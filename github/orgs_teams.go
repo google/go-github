@@ -198,7 +198,7 @@ func (s *OrganizationsService) ListTeamMembers(ctx context.Context, team int, op
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#get-team-member
 //
 // Deprecated: This API has been marked as deprecated in the Github API docs,
-// OrganisationService.GetTeamMembership method should be used instead.
+// OrganizationsService.GetTeamMembership method should be used instead.
 func (s *OrganizationsService) IsTeamMember(ctx context.Context, team int, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("teams/%v/members/%v", team, user)
 	req, err := s.client.NewRequest("GET", u, nil)
