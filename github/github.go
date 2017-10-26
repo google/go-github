@@ -235,6 +235,23 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
+// NewEnterpriseClient returns a new GitHub API client (same as NewClient),
+// except it allows injection of custom base and upload urls. These urls might
+// be the same, but for flexibility both can be set separately.
+func NewEnterpriseClient(httpClient *http.Client, baseURL string, uploadURL string) *Client {
+	if !strings.HasSuffix(baseURL, "/") {
+		baseURL = baseURL + "/"
+	}
+	if !strings.HasSuffix(uploadURL, "/") {
+		uploadURL = uploadURL + "/"
+	}
+
+	c := NewClient(httpClient)
+	c.BaseURL, _ = url.Parse(baseURL)
+	c.UploadURL, _ = url.Parse(uploadURL)
+	return c
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
