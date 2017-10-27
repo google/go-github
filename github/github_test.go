@@ -198,7 +198,7 @@ func TestNewEnterpriseClient(t *testing.T) {
 	}
 }
 
-func TestNewEnterpriseClient_adssTrailingSlashToURLs(t *testing.T) {
+func TestNewEnterpriseClient_addsTrailingSlashToURLs(t *testing.T) {
 	baseURL := "https://custom-url"
 	uploadURL := "https://custom-upload-url"
 	formattedBaseURL := baseURL + "/"
