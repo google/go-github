@@ -55,7 +55,7 @@ again.
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [golint]: https://github.com/golang/lint
-[golint readme]: https://github.com/golang/lint/blob/master/README
+[golint readme]: https://github.com/golang/lint/blob/master/README.md
 [gocov]: https://github.com/axw/gocov
 [gocov-html]: https://github.com/matm/gocov-html
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
