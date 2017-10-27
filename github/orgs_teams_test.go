@@ -16,7 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListTeams(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -38,12 +38,15 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.ListTeams(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetTeam(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +66,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateTeam(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	input := &Team{Name: String("n"), Privacy: String("closed")}
@@ -92,12 +95,15 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_CreateTeam_invalidOrg(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.CreateTeam(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_EditTeam(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	input := &Team{Name: String("n"), Privacy: String("closed")}
@@ -126,7 +132,7 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteTeam(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
@@ -140,7 +146,7 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_ListTeamMembers(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
@@ -162,7 +168,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +186,7 @@ func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
 
 // ensure that a 404 response is interpreted as "false" and not an error
 func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -200,7 +206,7 @@ func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
 func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -218,12 +224,15 @@ func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamMember_invalidUser(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "%")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_PublicizeMembership(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -238,12 +247,15 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.PublicizeMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ConcealMembership(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -258,12 +270,15 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.ConcealMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListTeamRepos(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
@@ -286,7 +301,7 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -307,7 +322,7 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -328,7 +343,7 @@ func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -349,12 +364,15 @@ func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_invalidOwner(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.IsTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_AddTeamRepo(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	opt := &OrganizationAddTeamRepoOptions{Permission: "admin"}
@@ -378,7 +396,7 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -393,12 +411,15 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.AddTeamRepo(context.Background(), 1, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -413,12 +434,15 @@ func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
+	client, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.RemoveTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetTeamMembership(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -438,7 +462,7 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamMembership(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	opt := &OrganizationAddTeamMembershipOptions{Role: "maintainer"}
@@ -467,7 +491,7 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -482,7 +506,7 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ListUserTeams(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
@@ -504,7 +528,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
-	setup()
+	client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/invitations", func(w http.ResponseWriter, r *http.Request) {
