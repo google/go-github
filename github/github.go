@@ -235,21 +235,35 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
-// NewEnterpriseClient returns a new GitHub API client (same as NewClient),
-// except it allows injection of custom base and upload urls. These urls might
-// be the same, but for flexibility both can be set separately.
-func NewEnterpriseClient(httpClient *http.Client, baseURL string, uploadURL string) *Client {
-	if !strings.HasSuffix(baseURL, "/") {
-		baseURL = baseURL + "/"
+// NewEnterpriseClient returns a new GitHub API client with provided
+// base URL and upload URL (often the same URL).
+// If either URL does not have a trailing slash, one is added automatically.
+// If a nil httpClient is provided, http.DefaultClient will be used.
+//
+// Note that NewEnterpriseClient is a convenience helper only;
+// its behavior is equivalent to using NewClient, followed by setting
+// the BaseURL and UploadURL fields.
+func NewEnterpriseClient(httpClient *http.Client, baseEndpointStr string, uploadEndpointStr string) (*Client, error) {
+	baseURL, err := url.Parse(baseEndpointStr)
+	if err != nil {
+		return nil, err
 	}
-	if !strings.HasSuffix(uploadURL, "/") {
-		uploadURL = uploadURL + "/"
+	if !strings.HasSuffix(baseURL.Path, "/") {
+		baseURL.Path += "/"
+	}
+
+	uploadURL, err := url.Parse(uploadEndpointStr)
+	if err != nil {
+		return nil, err
+	}
+	if !strings.HasSuffix(uploadURL.Path, "/") {
+		uploadURL.Path += "/"
 	}
 
 	c := NewClient(httpClient)
-	c.BaseURL, _ = url.Parse(baseURL)
-	c.UploadURL, _ = url.Parse(uploadURL)
-	return c
+	c.BaseURL = baseURL
+	c.UploadURL = uploadURL
+	return c, nil
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
