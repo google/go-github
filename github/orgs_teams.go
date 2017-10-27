@@ -214,8 +214,8 @@ type OrganizationListTeamMembersOptions struct {
 // ListChildTeams lists child teams for a team.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/teams/#list-child-teams
-func (s *OrganizationsService) ListChildTeams(ctx context.Context, id int, opt *ListOptions) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("teams/%v/teams", id)
+func (s *OrganizationsService) ListChildTeams(ctx context.Context, teamID int, opt *ListOptions) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("teams/%v/teams", teamID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
