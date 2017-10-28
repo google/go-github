@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	// given
@@ -52,7 +52,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommit(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +127,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 }
 
 func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	const sha1 = "01234abcde"
 
@@ -168,7 +168,7 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 }
 
 func TestRepositoriesService_CompareCommits(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/compare/b...h", func(w http.ResponseWriter, r *http.Request) {

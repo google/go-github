@@ -15,7 +15,7 @@ import (
 )
 
 func TestOrganizationsService_ListAll(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	since := 1342004
@@ -38,7 +38,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 }
 
 func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_specifiedUser(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.List(context.Background(), "%", nil)
@@ -88,7 +88,7 @@ func TestOrganizationsService_List_invalidUser(t *testing.T) {
 }
 
 func TestOrganizationsService_Get(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.Get(context.Background(), "%")
@@ -116,7 +116,7 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_GetByID(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/organizations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +136,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &Organization{Login: String("l")}
@@ -165,7 +165,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.Edit(context.Background(), "%", nil)

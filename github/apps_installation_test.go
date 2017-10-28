@@ -14,7 +14,7 @@ import (
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/installation/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 }
 
 func TestAppsService_AddRepository(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +60,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 }
 
 func TestAppsService_RemoveRepository(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {

@@ -68,7 +68,7 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReadme(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/readme", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -91,14 +91,14 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
-	client, teardown := setup()
+	serverBaseURL, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
 		  "type": "file",
 		  "name": "f",
-		  "download_url": "`+server.URL+baseURLPath+`/download/f"
+		  "download_url": "`+serverBaseURL+baseURLPath+`/download/f"
 		}]`)
 	})
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
@@ -123,7 +123,7 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -140,7 +140,7 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -154,7 +154,7 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_File(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -177,7 +177,7 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p#?%/中.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -190,7 +190,7 @@ func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/some directory/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -203,7 +203,7 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/some directory+name/file.go", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -216,7 +216,7 @@ func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 }
 
 func TestRepositoriesService_GetContents_Directory(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -244,7 +244,7 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFile(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -282,7 +282,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateFile(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -322,7 +322,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteFile(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/contents/p", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
@@ -358,7 +358,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 }
 
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")

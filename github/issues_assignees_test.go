@@ -15,7 +15,7 @@ import (
 )
 
 func TestIssuesService_ListAssignees(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/assignees", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 }
 
 func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListAssignees(context.Background(), "%", "r", nil)
@@ -45,7 +45,7 @@ func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_true(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +62,7 @@ func TestIssuesService_IsAssignee_true(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_false(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func TestIssuesService_IsAssignee_false(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_error(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/assignees/u", func(w http.ResponseWriter, r *http.Request) {
@@ -98,7 +98,7 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 }
 
 func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.IsAssignee(context.Background(), "%", "r", "u")
@@ -106,7 +106,7 @@ func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_AddAssignees(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
@@ -135,7 +135,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 }
 
 func TestIssuesService_RemoveAssignees(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {

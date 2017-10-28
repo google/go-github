@@ -14,7 +14,7 @@ import (
 )
 
 func TestIssuesService_ListIssueTimeline(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/timeline", func(w http.ResponseWriter, r *http.Request) {

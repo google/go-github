@@ -14,7 +14,7 @@ import (
 )
 
 func TestAppsService_ListInstallations(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/app/installations", func(w http.ResponseWriter, r *http.Request) {

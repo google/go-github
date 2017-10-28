@@ -15,7 +15,7 @@ import (
 )
 
 func TestPullRequestsService_ListReviews(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.ListReviews(context.Background(), "%", "r", 1, nil)
@@ -50,7 +50,7 @@ func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +70,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 }
 
 func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.GetReview(context.Background(), "%", "r", 1, 1)
@@ -78,7 +78,7 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
@@ -98,7 +98,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.DeletePendingReview(context.Background(), "%", "r", 1, 1)
@@ -106,7 +106,7 @@ func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +129,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -147,7 +147,7 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 }
 
 func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "%", "r", 1, 1, nil)
@@ -155,7 +155,7 @@ func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestReviewRequest{
@@ -188,7 +188,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.CreateReview(context.Background(), "%", "r", 1, &PullRequestReviewRequest{})
@@ -196,7 +196,7 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestReviewRequest{
@@ -228,7 +228,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 }
 
 func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.SubmitReview(context.Background(), "%", "r", 1, 1, &PullRequestReviewRequest{})
@@ -236,7 +236,7 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestReviewDismissalRequest{Message: String("m")}
@@ -265,7 +265,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 }
 
 func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.DismissReview(context.Background(), "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})

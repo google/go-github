@@ -16,7 +16,7 @@ import (
 )
 
 func TestIssuesService_List_all(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,7 @@ func TestIssuesService_List_all(t *testing.T) {
 }
 
 func TestIssuesService_List_owned(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -94,7 +94,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListByOrg(context.Background(), "%", nil)
@@ -102,7 +102,7 @@ func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -139,7 +139,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListByRepo(context.Background(), "%", "r", nil)
@@ -147,7 +147,7 @@ func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Get(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
@@ -175,7 +175,7 @@ func TestIssuesService_Get(t *testing.T) {
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.Get(context.Background(), "%", "r", 1)
@@ -183,7 +183,7 @@ func TestIssuesService_Get_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Create(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &IssueRequest{
@@ -217,7 +217,7 @@ func TestIssuesService_Create(t *testing.T) {
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.Create(context.Background(), "%", "r", nil)
@@ -225,7 +225,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Edit(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &IssueRequest{Title: String("t")}
@@ -254,7 +254,7 @@ func TestIssuesService_Edit(t *testing.T) {
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.Edit(context.Background(), "%", "r", 1, nil)
@@ -262,7 +262,7 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_Lock(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -277,7 +277,7 @@ func TestIssuesService_Lock(t *testing.T) {
 }
 
 func TestIssuesService_Unlock(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {

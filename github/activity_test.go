@@ -13,7 +13,7 @@ import (
 )
 
 func TestActivityService_List(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/feeds", func(w http.ResponseWriter, r *http.Request) {

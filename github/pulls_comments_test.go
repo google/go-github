@@ -16,7 +16,7 @@ import (
 )
 
 func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 }
 
 func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +70,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 }
 
 func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.ListComments(context.Background(), "%", "r", 1, nil)
@@ -78,7 +78,7 @@ func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_GetComment(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +99,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 }
 
 func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.GetComment(context.Background(), "%", "r", 1)
@@ -107,7 +107,7 @@ func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateComment(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestComment{Body: String("b")}
@@ -136,7 +136,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 }
 
 func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.CreateComment(context.Background(), "%", "r", 1, nil)
@@ -144,7 +144,7 @@ func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_EditComment(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestComment{Body: String("b")}
@@ -173,7 +173,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 }
 
 func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.EditComment(context.Background(), "%", "r", 1, nil)
@@ -181,7 +181,7 @@ func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
 }
 
 func TestPullRequestsService_DeleteComment(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -195,7 +195,7 @@ func TestPullRequestsService_DeleteComment(t *testing.T) {
 }
 
 func TestPullRequestsService_DeleteComment_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, err := client.PullRequests.DeleteComment(context.Background(), "%", "r", 1)

@@ -14,7 +14,7 @@ import (
 )
 
 func TestRepositoriesService_ListForks(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +43,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 }
 
 func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Repositories.ListForks(context.Background(), "%", "r", nil)
@@ -51,7 +51,7 @@ func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Repositories.CreateFork(context.Background(), "%", "r", nil)

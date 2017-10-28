@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListCollaborators(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +64,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Repositories.ListCollaborators(context.Background(), "%", "%", nil)
@@ -72,7 +72,7 @@ func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -91,7 +91,7 @@ func TestRepositoriesService_IsCollaborator_True(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -110,7 +110,7 @@ func TestRepositoriesService_IsCollaborator_False(t *testing.T) {
 }
 
 func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Repositories.IsCollaborator(context.Background(), "%", "%", "%")
@@ -118,7 +118,7 @@ func TestRepositoriesService_IsCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestRepositoryService_GetPermissionLevel(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
@@ -144,7 +144,7 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 }
 
 func TestRepositoriesService_AddCollaborator(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
@@ -169,7 +169,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 }
 
 func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, err := client.Repositories.AddCollaborator(context.Background(), "%", "%", "%", nil)
@@ -177,7 +177,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -192,7 +192,7 @@ func TestRepositoriesService_RemoveCollaborator(t *testing.T) {
 }
 
 func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, err := client.Repositories.RemoveCollaborator(context.Background(), "%", "%", "%")

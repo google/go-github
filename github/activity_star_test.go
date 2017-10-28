@@ -15,7 +15,7 @@ import (
 )
 
 func TestActivityService_ListStargazers(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stargazers", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/starred", func(w http.ResponseWriter, r *http.Request) {
@@ -88,7 +88,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 }
 
 func TestActivityService_ListStarred_invalidUser(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListStarred(context.Background(), "%", nil)
@@ -96,7 +96,7 @@ func TestActivityService_ListStarred_invalidUser(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_hasStar(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +114,7 @@ func TestActivityService_IsStarred_hasStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_noStar(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -132,7 +132,7 @@ func TestActivityService_IsStarred_noStar(t *testing.T) {
 }
 
 func TestActivityService_IsStarred_invalidID(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.IsStarred(context.Background(), "%", "%")
@@ -140,7 +140,7 @@ func TestActivityService_IsStarred_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Star(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -154,7 +154,7 @@ func TestActivityService_Star(t *testing.T) {
 }
 
 func TestActivityService_Star_invalidID(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, err := client.Activity.Star(context.Background(), "%", "%")
@@ -162,7 +162,7 @@ func TestActivityService_Star_invalidID(t *testing.T) {
 }
 
 func TestActivityService_Unstar(t *testing.T) {
-	client, teardown := setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/starred/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +176,7 @@ func TestActivityService_Unstar(t *testing.T) {
 }
 
 func TestActivityService_Unstar_invalidID(t *testing.T) {
-	client, teardown := setup()
+	_, _, client, teardown := setup()
 	defer teardown()
 
 	_, err := client.Activity.Unstar(context.Background(), "%", "%")

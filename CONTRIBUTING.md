@@ -25,7 +25,7 @@ again.
      issue that you are planning to work on that bug or feature so that it can
      be assigned to you.
 
-  1. Follow the normal process of [forking][] the project, and setup a new
+  1. Follow the normal process of [forking][] the project, and setup() a new
      branch to work in. It's important that each group of changes be done in
      separate branches in order to ensure that a pull request only includes the
      commits related to that bug or feature.
