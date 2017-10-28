@@ -28,7 +28,7 @@ const (
 	baseURLPath = "/api-v3"
 )
 
-// setup() sets up a test HTTP server along with a github.Client that is
+// setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() (string, *http.ServeMux, *Client, func()) {

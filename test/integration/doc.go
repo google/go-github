@@ -6,6 +6,6 @@
 // Package integration contains integration tests.
 //
 // These tests call the live GitHub API, and therefore require a little more
-// setup() to run. See https://github.com/google/go-github/tree/master/test#integration
+// setup to run. See https://github.com/google/go-github/tree/master/test#integration
 // for more information.
 package integration
