@@ -243,26 +243,26 @@ func NewClient(httpClient *http.Client) *Client {
 // Note that NewEnterpriseClient is a convenience helper only;
 // its behavior is equivalent to using NewClient, followed by setting
 // the BaseURL and UploadURL fields.
-func NewEnterpriseClient(httpClient *http.Client, baseEndpointStr string, uploadEndpointStr string) (*Client, error) {
-	baseURL, err := url.Parse(baseEndpointStr)
+func NewEnterpriseClient(baseEndpointStr, uploadEndpointStr string, httpClient *http.Client) (*Client, error) {
+	baseEndpoint, err := url.Parse(baseEndpointStr)
 	if err != nil {
 		return nil, err
 	}
-	if !strings.HasSuffix(baseURL.Path, "/") {
-		baseURL.Path += "/"
+	if !strings.HasSuffix(baseEndpoint.Path, "/") {
+		baseEndpoint.Path += "/"
 	}
 
-	uploadURL, err := url.Parse(uploadEndpointStr)
+	uploadEndpoint, err := url.Parse(uploadEndpointStr)
 	if err != nil {
 		return nil, err
 	}
-	if !strings.HasSuffix(uploadURL.Path, "/") {
-		uploadURL.Path += "/"
+	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
+		uploadEndpoint.Path += "/"
 	}
 
 	c := NewClient(httpClient)
-	c.BaseURL = baseURL
-	c.UploadURL = uploadURL
+	c.BaseURL = baseEndpoint
+	c.UploadURL = uploadEndpoint
 	return c, nil
 }
 
