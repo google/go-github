@@ -169,6 +169,29 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_ListChildTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{"id":2}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	teams, _, err := client.Organizations.ListChildTeams(context.Background(), 1, opt)
+	if err != nil {
+		t.Errorf("Organizations.ListTeams returned error: %v", err)
+	}
+
+	want := []*Team{{ID: Int(2)}}
+	if !reflect.DeepEqual(teams, want) {
+		t.Errorf("Organizations.ListTeams returned %+v, want %+v", teams, want)
+	}
+}
+
 func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 	setup()
 	defer teardown()
