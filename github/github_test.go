@@ -189,7 +189,11 @@ func TestNewClient(t *testing.T) {
 func TestNewEnterpriseClient(t *testing.T) {
 	baseURL := "https://custom-url/"
 	uploadURL := "https://custom-upload-url/"
-	c, _ := NewEnterpriseClient(baseURL, uploadURL, nil)
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
 	if got, want := c.BaseURL.String(), baseURL; got != want {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
 	}
@@ -204,7 +208,10 @@ func TestNewEnterpriseClient_addsTrailingSlashToURLs(t *testing.T) {
 	formattedBaseURL := baseURL + "/"
 	formattedUploadURL := uploadURL + "/"
 
-	c, _ := NewEnterpriseClient(baseURL, uploadURL, nil)
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
 
 	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
