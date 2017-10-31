@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	libraryVersion = "13"
+	libraryVersion = "14"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github/" + libraryVersion
@@ -102,6 +102,9 @@ const (
 
 	// https://developer.github.com/changes/2017-07-26-team-review-request-thor-preview/
 	mediaTypeTeamReviewPreview = "application/vnd.github.thor-preview+json"
+
+	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
+	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
