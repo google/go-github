@@ -147,9 +147,9 @@ type Client struct {
 	Search         *SearchService
 	Users          *UsersService
 	Licenses       *LicensesService
+	Marketplace    *MarketplaceService
 	Migrations     *MigrationService
 	Reactions      *ReactionsService
-	Marketplace    *MarketplaceService
 }
 
 type service struct {

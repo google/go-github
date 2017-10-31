@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -20,8 +20,6 @@ type MarketplaceService struct {
 	// instead of production endpoints. Stubbed data is fake data that's useful
 	// for testing your GitHub Apps. Stubbed data is hard-coded and will not
 	// change based on actual subscriptions.
-	//
-	// GitHub API docs: https://developer.github.com/v3/apps/marketplace/
 	Stubbed bool
 }
 
@@ -41,17 +39,17 @@ type MarketplacePlan struct {
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
-	BillingCycle           *string                 `json:"billing_cycle,omitempty"`
-	NextBillingDate        *string                 `json:"next_billing_date,omitempty"`
-	UnitCount              *int                    `json:"unit_count,omitempty"`
-	Plan                   *MarketplacePlan        `json:"plan,omitempty"`
-	MarketplacePlanAccount *MarketplacePlanAccount `json:"account,omitempty"`
+	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
+	NextBillingDate *string                 `json:"next_billing_date,omitempty"`
+	UnitCount       *int                    `json:"unit_count,omitempty"`
+	Plan            *MarketplacePlan        `json:"plan,omitempty"`
+	Account         *MarketplacePlanAccount `json:"account,omitempty"`
 }
 
 // MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan.
 type MarketplacePlanAccount struct {
 	URL                      *string              `json:"url,omitempty"`
-	AccountType              *string              `json:"type,omitempty"`
+	Type                     *string              `json:"type,omitempty"`
 	ID                       *int                 `json:"id,omitempty"`
 	Login                    *string              `json:"login,omitempty"`
 	Email                    *string              `json:"email,omitempty"`
@@ -77,13 +75,13 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opt *ListOptions) ([
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
-	var i []*MarketplacePlan
-	resp, err := s.client.Do(ctx, req, &i)
+	var plans []*MarketplacePlan
+	resp, err := s.client.Do(ctx, req, &plans)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return i, resp, nil
+	return plans, resp, nil
 }
 
 // ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
@@ -104,13 +102,13 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
-	var i []*MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &i)
+	var accounts []*MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &accounts)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return i, resp, nil
+	return accounts, resp, nil
 }
 
 // ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
@@ -131,13 +129,13 @@ func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, acc
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
-	var i []*MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &i)
+	var accounts []*MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &accounts)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return i, resp, nil
+	return accounts, resp, nil
 }
 
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
@@ -162,13 +160,13 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
-	var i []*MarketplacePurchase
-	resp, err := s.client.Do(ctx, req, &i)
+	var purchaces []*MarketplacePurchase
+	resp, err := s.client.Do(ctx, req, &purchases)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return i, resp, nil
+	return purchases, resp, nil
 }
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {

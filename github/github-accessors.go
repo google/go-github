@@ -2772,14 +2772,6 @@ func (m *MarketplacePlan) GetYearlyPriceInCents() int {
 	return *m.YearlyPriceInCents
 }
 
-// GetAccountType returns the AccountType field if it's non-nil, zero value otherwise.
-func (m *MarketplacePlanAccount) GetAccountType() string {
-	if m == nil || m.AccountType == nil {
-		return ""
-	}
-	return *m.AccountType
-}
-
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlanAccount) GetEmail() string {
 	if m == nil || m.Email == nil {
@@ -2810,6 +2802,14 @@ func (m *MarketplacePlanAccount) GetOrganizationBillingEmail() string {
 		return ""
 	}
 	return *m.OrganizationBillingEmail
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlanAccount) GetType() string {
+	if m == nil || m.Type == nil {
+		return ""
+	}
+	return *m.Type
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
