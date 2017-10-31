@@ -160,13 +160,13 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
-	var purchaces []*MarketplacePurchase
-	resp, err := s.client.Do(ctx, req, &purchaces)
+	var purchases []*MarketplacePurchase
+	resp, err := s.client.Do(ctx, req, &purchases)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return purchaces, resp, nil
+	return purchases, resp, nil
 }
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {

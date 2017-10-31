@@ -139,8 +139,8 @@ type Client struct {
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
-	Licenses       *LicensesService
 	Issues         *IssuesService
+	Licenses       *LicensesService
 	Marketplace    *MarketplaceService
 	Migrations     *MigrationService
 	Organizations  *OrganizationsService
