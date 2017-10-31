@@ -139,17 +139,17 @@ type Client struct {
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
+	Licenses       *LicensesService
 	Issues         *IssuesService
+	Marketplace    *MarketplaceService
+	Migrations     *MigrationService
 	Organizations  *OrganizationsService
 	Projects       *ProjectsService
 	PullRequests   *PullRequestsService
+	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
 	Users          *UsersService
-	Licenses       *LicensesService
-	Marketplace    *MarketplaceService
-	Migrations     *MigrationService
-	Reactions      *ReactionsService
 }
 
 type service struct {
