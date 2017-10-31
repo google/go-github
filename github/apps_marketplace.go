@@ -161,12 +161,12 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	req.Header.Set("Accept", mediaTypeMarketplacePreview)
 
 	var purchaces []*MarketplacePurchase
-	resp, err := s.client.Do(ctx, req, &purchases)
+	resp, err := s.client.Do(ctx, req, &purchaces)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return purchases, resp, nil
+	return purchaces, resp, nil
 }
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {
