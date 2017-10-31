@@ -73,9 +73,10 @@ func TestPullRequestsService_Get(t *testing.T) {
 	}
 }
 
-func TestPullRequestsService_GetRawDiff(t *testing.T) {
+func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 	_, mux, client, teardown := setup()
 	defer teardown()
+
 	const rawStr = "@@diff content"
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
@@ -84,19 +85,20 @@ func TestPullRequestsService_GetRawDiff(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	ret, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Diff})
+	got, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Diff})
 	if err != nil {
 		t.Fatalf("PullRequests.GetRaw returned error: %v", err)
 	}
-
-	if ret != rawStr {
-		t.Errorf("PullRequests.GetRaw returned %s want %s", ret, rawStr)
+	want := rawStr
+	if got != want {
+		t.Errorf("PullRequests.GetRaw returned %s want %s", got, want)
 	}
 }
 
-func TestPullRequestsService_GetRawPatch(t *testing.T) {
+func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 	_, mux, client, teardown := setup()
 	defer teardown()
+
 	const rawStr = "@@patch content"
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
@@ -105,17 +107,17 @@ func TestPullRequestsService_GetRawPatch(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	ret, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Patch})
+	got, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Patch})
 	if err != nil {
 		t.Fatalf("PullRequests.GetRaw returned error: %v", err)
 	}
-
-	if ret != rawStr {
-		t.Errorf("PullRequests.GetRaw returned %s want %s", ret, rawStr)
+	want := rawStr
+	if got != want {
+		t.Errorf("PullRequests.GetRaw returned %s want %s", got, want)
 	}
 }
 
-func TestPullRequestsService_GetRawInvalid(t *testing.T) {
+func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
 	_, _, client, teardown := setup()
 	defer teardown()
 
