@@ -18,7 +18,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
+	input := &ProjectOptions{Name: "Project Name", Body: "Project body.", State: "open"}
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
