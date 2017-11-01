@@ -193,7 +193,7 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	case "Timestamp":
 		zeroValue = "Timestamp{}"
 	default:
-		zeroValue = `nil`
+		zeroValue = "nil"
 		namedStruct = true
 	}
 
