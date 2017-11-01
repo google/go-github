@@ -985,7 +985,7 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 
 // Topics represents a collection of repository topics.
 type Topics struct {
-	Names []string `json:"names,omitempty"`
+	Names []string `json:"names"`
 }
 
 // ListAllTopics lists topics for a repository.
