@@ -210,6 +210,17 @@ For complete usage of go-github, see the full [package docs][].
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubql]: https://github.com/shurcooL/githubql
 
+### Google App Engine ###
+
+Go on App Engine Classic (which as of this writing uses Go 1.6) can not use
+the `"context"` import and still relies on `"golang.org/x/net/context"`.
+As a result, if you wish to continue to use `go-github` on App Engine Classic,
+you will need to rewrite all the `"context"` imports using the following command:
+
+	gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go
+
+See `with_appengine.go` for more details.
+
 ### Integration Tests ###
 
 You can run integration tests from the `test` directory. See the integration tests [README](test/README.md).
@@ -226,18 +237,6 @@ straightforward.
 
 [roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
 [contributing]: CONTRIBUTING.md
-
-
-## Google App Engine ##
-
-Go on App Engine Classic (which as of this writing uses Go 1.6) can not use
-the `"context"` import and still relies on `"golang.org/x/net/context"`.
-As a result, if you wish to continue to use `go-github` on App Engine Classic,
-you will need to rewrite all the `"context"` imports using the following command:
-
-	gofmt -w -r '"context" -> "golang.org/x/net/context"' *.go
-
-See `with_appengine.go` for more details.
 
 ## License ##
 
