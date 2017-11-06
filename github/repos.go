@@ -1015,8 +1015,10 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 // GitHub API docs: https://developer.github.com/v3/repos/#replace-all-topics-for-a-repository
 func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
-	t := new(Topics)
-	if t.Names = topics; topics == nil {
+	t := &Topics{
+		Names: topics,
+	}
+	if t.Names == nil {
 		t.Names = []string{}
 	}
 	req, err := s.client.NewRequest("PUT", u, t)
