@@ -11,7 +11,7 @@ import (
 )
 
 // AdminStats represents a variety of stats of a Github Enterprise
-// installation
+// installation.
 type AdminStats struct {
 	Issues     *IssueStats     `json:"issues,omitempty"`
 	Hooks      *HookStats      `json:"hooks,omitempty"`
@@ -29,7 +29,7 @@ func (s AdminStats) String() string {
 	return Stringify(s)
 }
 
-// IssueStats represents the number of total, open and closed issues
+// IssueStats represents the number of total, open and closed issues.
 type IssueStats struct {
 	TotalIssues  *int `json:"total_issues,omitempty"`
 	OpenIssues   *int `json:"open_issues,omitempty"`
@@ -40,7 +40,7 @@ func (s IssueStats) String() string {
 	return Stringify(s)
 }
 
-// HookStats represents the number of total, active and inactive hooks
+// HookStats represents the number of total, active and inactive hooks.
 type HookStats struct {
 	TotalHooks    *int `json:"total_hooks,omitempty"`
 	ActiveHooks   *int `json:"active_hooks,omitempty"`
@@ -51,7 +51,7 @@ func (s HookStats) String() string {
 	return Stringify(s)
 }
 
-// MilestoneStats represents the number of total, open and close milestones
+// MilestoneStats represents the number of total, open and close milestones.
 type MilestoneStats struct {
 	TotalMilestones  *int `json:"total_milestones,omitempty"`
 	OpenMilestones   *int `json:"open_milestones,omitempty"`
@@ -63,7 +63,7 @@ func (s MilestoneStats) String() string {
 }
 
 // OrgStats represents the number of total, disabled organizations and the team
-// and team member count
+// and team member count.
 type OrgStats struct {
 	TotalOrgs        *int `json:"total_orgs,omitempty"`
 	DisabledOrgs     *int `json:"disabled_orgs,omitempty"`
@@ -76,7 +76,7 @@ func (s OrgStats) String() string {
 }
 
 // CommentStats represents the number of total comments on commits, gists, issues
-// and pull requests
+// and pull requests.
 type CommentStats struct {
 	TotalCommitComments      *int `json:"total_commit_comments,omitempty"`
 	TotalGistComments        *int `json:"total_gist_comments,omitempty"`
@@ -88,7 +88,7 @@ func (s CommentStats) String() string {
 	return Stringify(s)
 }
 
-// PageStats represents the total number of github pages
+// PageStats represents the total number of github pages.
 type PageStats struct {
 	TotalPages *int `json:"total_pages,omitempty"`
 }
@@ -97,7 +97,7 @@ func (s PageStats) String() string {
 	return Stringify(s)
 }
 
-// UserStats represents the number of total, admin and suspended users
+// UserStats represents the number of total, admin and suspended users.
 type UserStats struct {
 	TotalUsers     *int `json:"total_users,omitempty"`
 	AdminUsers     *int `json:"admin_users,omitempty"`
@@ -108,7 +108,7 @@ func (s UserStats) String() string {
 	return Stringify(s)
 }
 
-//GistStats represents the number of total, private and public gists
+//GistStats represents the number of total, private and public gists.
 type GistStats struct {
 	TotalGists   *int `json:"total_gists,omitempty"`
 	PrivateGists *int `json:"private_gists,omitempty"`
@@ -120,7 +120,7 @@ func (s GistStats) String() string {
 }
 
 // PullStats represents the number of total, merged, mergable and unmergeable
-// pull-requests
+// pull-requests.
 type PullStats struct {
 	TotalPulls      *int `json:"total_pulls,omitempty"`
 	MergedPulls     *int `json:"merged_pulls,omitempty"`
@@ -133,7 +133,7 @@ func (s PullStats) String() string {
 }
 
 // RepoStats represents the number of total, root, fork, organization repositories
-// together with the total number of pushes and wikis
+// together with the total number of pushes and wikis.
 type RepoStats struct {
 	TotalRepos  *int `json:"total_repos,omitempty"`
 	RootRepos   *int `json:"root_repos,omitempty"`
@@ -151,7 +151,7 @@ func (s RepoStats) String() string {
 // installation.
 //
 // Please note that this is only available to site administrators,
-// otherwise it will error with a 404 not found (instead of 401 or 403)
+// otherwise it will error with a 404 not found (instead of 401 or 403).
 //
 // GitHub API docs: https://developer.github.com/v3/enterprise-admin/admin_stats/
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {
