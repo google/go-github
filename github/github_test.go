@@ -1055,7 +1055,7 @@ func TestFormatRateReset(t *testing.T) {
 	}
 }
 
-func TestNamedStructAccessor_noPanic(t *testing.T) {
+func TestNestedStructAccessorNoPanic(t *testing.T) {
 	issue := &Issue{User: nil}
 	got := issue.GetUser().GetPlan().GetName()
 	want := ""
