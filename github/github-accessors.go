@@ -444,6 +444,38 @@ func (c *CombinedStatus) GetTotalCount() int {
 	return *c.TotalCount
 }
 
+// GetTotalCommitComments returns the TotalCommitComments field if it's non-nil, zero value otherwise.
+func (c *CommentStats) GetTotalCommitComments() int {
+	if c == nil || c.TotalCommitComments == nil {
+		return 0
+	}
+	return *c.TotalCommitComments
+}
+
+// GetTotalGistComments returns the TotalGistComments field if it's non-nil, zero value otherwise.
+func (c *CommentStats) GetTotalGistComments() int {
+	if c == nil || c.TotalGistComments == nil {
+		return 0
+	}
+	return *c.TotalGistComments
+}
+
+// GetTotalIssueComments returns the TotalIssueComments field if it's non-nil, zero value otherwise.
+func (c *CommentStats) GetTotalIssueComments() int {
+	if c == nil || c.TotalIssueComments == nil {
+		return 0
+	}
+	return *c.TotalIssueComments
+}
+
+// GetTotalPullRequestComments returns the TotalPullRequestComments field if it's non-nil, zero value otherwise.
+func (c *CommentStats) GetTotalPullRequestComments() int {
+	if c == nil || c.TotalPullRequestComments == nil {
+		return 0
+	}
+	return *c.TotalPullRequestComments
+}
+
 // GetCommentCount returns the CommentCount field if it's non-nil, zero value otherwise.
 func (c *Commit) GetCommentCount() int {
 	if c == nil || c.CommentCount == nil {
@@ -1644,6 +1676,30 @@ func (g *GistFork) GetURL() string {
 	return *g.URL
 }
 
+// GetPrivateGists returns the PrivateGists field if it's non-nil, zero value otherwise.
+func (g *GistStats) GetPrivateGists() int {
+	if g == nil || g.PrivateGists == nil {
+		return 0
+	}
+	return *g.PrivateGists
+}
+
+// GetPublicGists returns the PublicGists field if it's non-nil, zero value otherwise.
+func (g *GistStats) GetPublicGists() int {
+	if g == nil || g.PublicGists == nil {
+		return 0
+	}
+	return *g.PublicGists
+}
+
+// GetTotalGists returns the TotalGists field if it's non-nil, zero value otherwise.
+func (g *GistStats) GetTotalGists() int {
+	if g == nil || g.TotalGists == nil {
+		return 0
+	}
+	return *g.TotalGists
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (g *Gitignore) GetName() string {
 	if g == nil || g.Name == nil {
@@ -1858,6 +1914,30 @@ func (h *Hook) GetURL() string {
 		return ""
 	}
 	return *h.URL
+}
+
+// GetActiveHooks returns the ActiveHooks field if it's non-nil, zero value otherwise.
+func (h *HookStats) GetActiveHooks() int {
+	if h == nil || h.ActiveHooks == nil {
+		return 0
+	}
+	return *h.ActiveHooks
+}
+
+// GetInactiveHooks returns the InactiveHooks field if it's non-nil, zero value otherwise.
+func (h *HookStats) GetInactiveHooks() int {
+	if h == nil || h.InactiveHooks == nil {
+		return 0
+	}
+	return *h.InactiveHooks
+}
+
+// GetTotalHooks returns the TotalHooks field if it's non-nil, zero value otherwise.
+func (h *HookStats) GetTotalHooks() int {
+	if h == nil || h.TotalHooks == nil {
+		return 0
+	}
+	return *h.TotalHooks
 }
 
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.
@@ -2460,6 +2540,30 @@ func (i *IssuesSearchResult) GetTotal() int {
 	return *i.Total
 }
 
+// GetClosedIssues returns the ClosedIssues field if it's non-nil, zero value otherwise.
+func (i *IssueStats) GetClosedIssues() int {
+	if i == nil || i.ClosedIssues == nil {
+		return 0
+	}
+	return *i.ClosedIssues
+}
+
+// GetOpenIssues returns the OpenIssues field if it's non-nil, zero value otherwise.
+func (i *IssueStats) GetOpenIssues() int {
+	if i == nil || i.OpenIssues == nil {
+		return 0
+	}
+	return *i.OpenIssues
+}
+
+// GetTotalIssues returns the TotalIssues field if it's non-nil, zero value otherwise.
+func (i *IssueStats) GetTotalIssues() int {
+	if i == nil || i.TotalIssues == nil {
+		return 0
+	}
+	return *i.TotalIssues
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (k *Key) GetID() int {
 	if k == nil || k.ID == nil {
@@ -2972,6 +3076,30 @@ func (m *MilestoneEvent) GetAction() string {
 	return *m.Action
 }
 
+// GetClosedMilestones returns the ClosedMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetClosedMilestones() int {
+	if m == nil || m.ClosedMilestones == nil {
+		return 0
+	}
+	return *m.ClosedMilestones
+}
+
+// GetOpenMilestones returns the OpenMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetOpenMilestones() int {
+	if m == nil || m.OpenMilestones == nil {
+		return 0
+	}
+	return *m.OpenMilestones
+}
+
+// GetTotalMilestones returns the TotalMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetTotalMilestones() int {
+	if m == nil || m.TotalMilestones == nil {
+		return 0
+	}
+	return *m.TotalMilestones
+}
+
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetBase() string {
 	if n == nil || n.Base == nil {
@@ -3396,6 +3524,38 @@ func (o *OrgBlockEvent) GetAction() string {
 	return *o.Action
 }
 
+// GetDisabledOrgs returns the DisabledOrgs field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetDisabledOrgs() int {
+	if o == nil || o.DisabledOrgs == nil {
+		return 0
+	}
+	return *o.DisabledOrgs
+}
+
+// GetTotalOrgs returns the TotalOrgs field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalOrgs() int {
+	if o == nil || o.TotalOrgs == nil {
+		return 0
+	}
+	return *o.TotalOrgs
+}
+
+// GetTotalTeamMembers returns the TotalTeamMembers field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalTeamMembers() int {
+	if o == nil || o.TotalTeamMembers == nil {
+		return 0
+	}
+	return *o.TotalTeamMembers
+}
+
+// GetTotalTeams returns the TotalTeams field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalTeams() int {
+	if o == nil || o.TotalTeams == nil {
+		return 0
+	}
+	return *o.TotalTeams
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *Page) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -3546,6 +3706,14 @@ func (p *PagesError) GetMessage() string {
 		return ""
 	}
 	return *p.Message
+}
+
+// GetTotalPages returns the TotalPages field if it's non-nil, zero value otherwise.
+func (p *PageStats) GetTotalPages() int {
+	if p == nil || p.TotalPages == nil {
+		return 0
+	}
+	return *p.TotalPages
 }
 
 // GetHookID returns the HookID field if it's non-nil, zero value otherwise.
@@ -4370,6 +4538,38 @@ func (p *pullRequestUpdate) GetTitle() string {
 		return ""
 	}
 	return *p.Title
+}
+
+// GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetMergablePulls() int {
+	if p == nil || p.MergablePulls == nil {
+		return 0
+	}
+	return *p.MergablePulls
+}
+
+// GetMergedPulls returns the MergedPulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetMergedPulls() int {
+	if p == nil || p.MergedPulls == nil {
+		return 0
+	}
+	return *p.MergedPulls
+}
+
+// GetTotalPulls returns the TotalPulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetTotalPulls() int {
+	if p == nil || p.TotalPulls == nil {
+		return 0
+	}
+	return *p.TotalPulls
+}
+
+// GetUnmergablePulls returns the UnmergablePulls field if it's non-nil, zero value otherwise.
+func (p *PullStats) GetUnmergablePulls() int {
+	if p == nil || p.UnmergablePulls == nil {
+		return 0
+	}
+	return *p.UnmergablePulls
 }
 
 // GetCommits returns the Commits field if it's non-nil, zero value otherwise.
@@ -6156,6 +6356,54 @@ func (r *RepositoryTag) GetZipballURL() string {
 	return *r.ZipballURL
 }
 
+// GetForkRepos returns the ForkRepos field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetForkRepos() int {
+	if r == nil || r.ForkRepos == nil {
+		return 0
+	}
+	return *r.ForkRepos
+}
+
+// GetOrgRepos returns the OrgRepos field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetOrgRepos() int {
+	if r == nil || r.OrgRepos == nil {
+		return 0
+	}
+	return *r.OrgRepos
+}
+
+// GetRootRepos returns the RootRepos field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetRootRepos() int {
+	if r == nil || r.RootRepos == nil {
+		return 0
+	}
+	return *r.RootRepos
+}
+
+// GetTotalPushes returns the TotalPushes field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetTotalPushes() int {
+	if r == nil || r.TotalPushes == nil {
+		return 0
+	}
+	return *r.TotalPushes
+}
+
+// GetTotalRepos returns the TotalRepos field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetTotalRepos() int {
+	if r == nil || r.TotalRepos == nil {
+		return 0
+	}
+	return *r.TotalRepos
+}
+
+// GetTotalWikis returns the TotalWikis field if it's non-nil, zero value otherwise.
+func (r *RepoStats) GetTotalWikis() int {
+	if r == nil || r.TotalWikis == nil {
+		return 0
+	}
+	return *r.TotalWikis
+}
+
 // GetContext returns the Context field if it's non-nil, zero value otherwise.
 func (r *RepoStatus) GetContext() string {
 	if r == nil || r.Context == nil {
@@ -7450,6 +7698,30 @@ func (u *UsersSearchResult) GetTotal() int {
 		return 0
 	}
 	return *u.Total
+}
+
+// GetAdminUsers returns the AdminUsers field if it's non-nil, zero value otherwise.
+func (u *UserStats) GetAdminUsers() int {
+	if u == nil || u.AdminUsers == nil {
+		return 0
+	}
+	return *u.AdminUsers
+}
+
+// GetSuspendedUsers returns the SuspendedUsers field if it's non-nil, zero value otherwise.
+func (u *UserStats) GetSuspendedUsers() int {
+	if u == nil || u.SuspendedUsers == nil {
+		return 0
+	}
+	return *u.SuspendedUsers
+}
+
+// GetTotalUsers returns the TotalUsers field if it's non-nil, zero value otherwise.
+func (u *UserStats) GetTotalUsers() int {
+	if u == nil || u.TotalUsers == nil {
+		return 0
+	}
+	return *u.TotalUsers
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
