@@ -28,6 +28,86 @@ func (a *AdminEnforcement) GetURL() string {
 	return *a.URL
 }
 
+// GetComments returns the Comments field.
+func (a *AdminStats) GetComments() *CommentStats {
+	if a == nil {
+		return nil
+	}
+	return a.Comments
+}
+
+// GetGists returns the Gists field.
+func (a *AdminStats) GetGists() *GistStats {
+	if a == nil {
+		return nil
+	}
+	return a.Gists
+}
+
+// GetHooks returns the Hooks field.
+func (a *AdminStats) GetHooks() *HookStats {
+	if a == nil {
+		return nil
+	}
+	return a.Hooks
+}
+
+// GetIssues returns the Issues field.
+func (a *AdminStats) GetIssues() *IssueStats {
+	if a == nil {
+		return nil
+	}
+	return a.Issues
+}
+
+// GetMilestones returns the Milestones field.
+func (a *AdminStats) GetMilestones() *MilestoneStats {
+	if a == nil {
+		return nil
+	}
+	return a.Milestones
+}
+
+// GetOrgs returns the Orgs field.
+func (a *AdminStats) GetOrgs() *OrgStats {
+	if a == nil {
+		return nil
+	}
+	return a.Orgs
+}
+
+// GetPages returns the Pages field.
+func (a *AdminStats) GetPages() *PageStats {
+	if a == nil {
+		return nil
+	}
+	return a.Pages
+}
+
+// GetPulls returns the Pulls field.
+func (a *AdminStats) GetPulls() *PullStats {
+	if a == nil {
+		return nil
+	}
+	return a.Pulls
+}
+
+// GetRepos returns the Repos field.
+func (a *AdminStats) GetRepos() *RepoStats {
+	if a == nil {
+		return nil
+	}
+	return a.Repos
+}
+
+// GetUsers returns the Users field.
+func (a *AdminStats) GetUsers() *UserStats {
+	if a == nil {
+		return nil
+	}
+	return a.Users
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {
@@ -2276,6 +2356,14 @@ func (g *GistFork) GetURL() string {
 	return *g.URL
 }
 
+// GetUser returns the User field.
+func (g *GistFork) GetUser() *User {
+	if g == nil {
+		return nil
+	}
+	return g.User
+}
+
 // GetPrivateGists returns the PrivateGists field if it's non-nil, zero value otherwise.
 func (g *GistStats) GetPrivateGists() int {
 	if g == nil || g.PrivateGists == nil {
@@ -2298,14 +2386,6 @@ func (g *GistStats) GetTotalGists() int {
 		return 0
 	}
 	return *g.TotalGists
-}
-
-// GetUser returns the User field.
-func (g *GistFork) GetUser() *User {
-	if g == nil {
-		return nil
-	}
-	return g.User
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -4132,30 +4212,6 @@ func (m *MilestoneEvent) GetAction() string {
 	return *m.Action
 }
 
-// GetClosedMilestones returns the ClosedMilestones field if it's non-nil, zero value otherwise.
-func (m *MilestoneStats) GetClosedMilestones() int {
-	if m == nil || m.ClosedMilestones == nil {
-		return 0
-	}
-	return *m.ClosedMilestones
-}
-
-// GetOpenMilestones returns the OpenMilestones field if it's non-nil, zero value otherwise.
-func (m *MilestoneStats) GetOpenMilestones() int {
-	if m == nil || m.OpenMilestones == nil {
-		return 0
-	}
-	return *m.OpenMilestones
-}
-
-// GetTotalMilestones returns the TotalMilestones field if it's non-nil, zero value otherwise.
-func (m *MilestoneStats) GetTotalMilestones() int {
-	if m == nil || m.TotalMilestones == nil {
-		return 0
-	}
-	return *m.TotalMilestones
-}
-
 // GetChanges returns the Changes field.
 func (m *MilestoneEvent) GetChanges() *EditChange {
 	if m == nil {
@@ -4202,6 +4258,30 @@ func (m *MilestoneEvent) GetSender() *User {
 		return nil
 	}
 	return m.Sender
+}
+
+// GetClosedMilestones returns the ClosedMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetClosedMilestones() int {
+	if m == nil || m.ClosedMilestones == nil {
+		return 0
+	}
+	return *m.ClosedMilestones
+}
+
+// GetOpenMilestones returns the OpenMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetOpenMilestones() int {
+	if m == nil || m.OpenMilestones == nil {
+		return 0
+	}
+	return *m.OpenMilestones
+}
+
+// GetTotalMilestones returns the TotalMilestones field if it's non-nil, zero value otherwise.
+func (m *MilestoneStats) GetTotalMilestones() int {
+	if m == nil || m.TotalMilestones == nil {
+		return 0
+	}
+	return *m.TotalMilestones
 }
 
 // GetBase returns the Base field if it's non-nil, zero value otherwise.
@@ -4692,38 +4772,6 @@ func (o *OrgBlockEvent) GetAction() string {
 	return *o.Action
 }
 
-// GetDisabledOrgs returns the DisabledOrgs field if it's non-nil, zero value otherwise.
-func (o *OrgStats) GetDisabledOrgs() int {
-	if o == nil || o.DisabledOrgs == nil {
-		return 0
-	}
-	return *o.DisabledOrgs
-}
-
-// GetTotalOrgs returns the TotalOrgs field if it's non-nil, zero value otherwise.
-func (o *OrgStats) GetTotalOrgs() int {
-	if o == nil || o.TotalOrgs == nil {
-		return 0
-	}
-	return *o.TotalOrgs
-}
-
-// GetTotalTeamMembers returns the TotalTeamMembers field if it's non-nil, zero value otherwise.
-func (o *OrgStats) GetTotalTeamMembers() int {
-	if o == nil || o.TotalTeamMembers == nil {
-		return 0
-	}
-	return *o.TotalTeamMembers
-}
-
-// GetTotalTeams returns the TotalTeams field if it's non-nil, zero value otherwise.
-func (o *OrgStats) GetTotalTeams() int {
-	if o == nil || o.TotalTeams == nil {
-		return 0
-	}
-	return *o.TotalTeams
-}
-
 // GetBlockedUser returns the BlockedUser field.
 func (o *OrgBlockEvent) GetBlockedUser() *User {
 	if o == nil {
@@ -4754,6 +4802,38 @@ func (o *OrgBlockEvent) GetSender() *User {
 		return nil
 	}
 	return o.Sender
+}
+
+// GetDisabledOrgs returns the DisabledOrgs field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetDisabledOrgs() int {
+	if o == nil || o.DisabledOrgs == nil {
+		return 0
+	}
+	return *o.DisabledOrgs
+}
+
+// GetTotalOrgs returns the TotalOrgs field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalOrgs() int {
+	if o == nil || o.TotalOrgs == nil {
+		return 0
+	}
+	return *o.TotalOrgs
+}
+
+// GetTotalTeamMembers returns the TotalTeamMembers field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalTeamMembers() int {
+	if o == nil || o.TotalTeamMembers == nil {
+		return 0
+	}
+	return *o.TotalTeamMembers
+}
+
+// GetTotalTeams returns the TotalTeams field if it's non-nil, zero value otherwise.
+func (o *OrgStats) GetTotalTeams() int {
+	if o == nil || o.TotalTeams == nil {
+		return 0
+	}
+	return *o.TotalTeams
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
