@@ -983,15 +983,15 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
-// Topics represents a collection of repository topics.
-type Topics struct {
-	Names []string `json:"names,omitempty"`
+// repositoryTopics represents a collection of repository topics.
+type repositoryTopics struct {
+	Names []string `json:"names"`
 }
 
 // ListAllTopics lists topics for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-all-topics-for-a-repository
-func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string) (*Topics, *Response, error) {
+func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -1001,21 +1001,27 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
-	topics := new(Topics)
+	topics := new(repositoryTopics)
 	resp, err := s.client.Do(ctx, req, topics)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return topics, resp, nil
+	return topics.Names, resp, nil
 }
 
 // ReplaceAllTopics replaces topics for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#replace-all-topics-for-a-repository
-func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics *Topics) (*Topics, *Response, error) {
+func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, topics)
+	t := &repositoryTopics{
+		Names: topics,
+	}
+	if t.Names == nil {
+		t.Names = []string{}
+	}
+	req, err := s.client.NewRequest("PUT", u, t)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1023,11 +1029,11 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
-	t := new(Topics)
+	t = new(repositoryTopics)
 	resp, err := s.client.Do(ctx, req, t)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return t, resp, nil
+	return t.Names, resp, nil
 }
