@@ -1054,3 +1054,12 @@ func TestFormatRateReset(t *testing.T) {
 		t.Errorf("Format is wrong. got: %v, want: %v", got, want)
 	}
 }
+
+func TestNestedStructAccessorNoPanic(t *testing.T) {
+	issue := &Issue{User: nil}
+	got := issue.GetUser().GetPlan().GetName()
+	want := ""
+	if got != want {
+		t.Errorf("Issues.Get.GetUser().GetPlan().GetName() returned %+v, want %+v", got, want)
+	}
+}

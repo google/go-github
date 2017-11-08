@@ -155,7 +155,7 @@ func (t *templateData) dump() error {
 	return ioutil.WriteFile(t.filename, clean, 0644)
 }
 
-func newGetter(receiverType, fieldName, fieldType, zeroValue string) *getter {
+func newGetter(receiverType, fieldName, fieldType, zeroValue string, namedStruct bool) *getter {
 	return &getter{
 		sortVal:      strings.ToLower(receiverType) + "." + strings.ToLower(fieldName),
 		ReceiverVar:  strings.ToLower(receiverType[:1]),
@@ -163,6 +163,7 @@ func newGetter(receiverType, fieldName, fieldType, zeroValue string) *getter {
 		FieldName:    fieldName,
 		FieldType:    fieldType,
 		ZeroValue:    zeroValue,
+		NamedStruct:  namedStruct,
 	}
 }
 
@@ -176,11 +177,12 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 		return
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil"))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, "[]"+eltType, "nil", false))
 }
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
+	var namedStruct = false
 	switch x.String() {
 	case "int":
 		zeroValue = "0"
@@ -190,11 +192,12 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 		zeroValue = "false"
 	case "Timestamp":
 		zeroValue = "Timestamp{}"
-	default: // other structs handled by their receivers directly.
-		return
+	default:
+		zeroValue = "nil"
+		namedStruct = true
 	}
 
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, x.String(), zeroValue))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, x.String(), zeroValue, namedStruct))
 }
 
 func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string) {
@@ -218,7 +221,7 @@ func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string
 
 	fieldType := fmt.Sprintf("map[%v]%v", keyType, valueType)
 	zeroValue := fmt.Sprintf("map[%v]%v{}", keyType, valueType)
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue))
+	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false))
 }
 
 func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldName string) {
@@ -243,7 +246,7 @@ func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldN
 		if xX == "time" && x.Sel.Name == "Duration" {
 			zeroValue = "0"
 		}
-		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue))
+		t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false))
 	default:
 		logf("addSelectorExpr: xX %q, type %q, field %q: unknown x=%+v; skipping.", xX, receiverType, fieldName, x)
 	}
@@ -264,6 +267,7 @@ type getter struct {
 	FieldName    string
 	FieldType    string
 	ZeroValue    string
+	NamedStruct  bool // getter for named struct
 }
 
 type byName []*getter
@@ -288,6 +292,15 @@ import (
 )
 {{end}}
 {{range .Getters}}
+{{if .NamedStruct}}
+// Get{{.FieldName}} returns the {{.FieldName}} field.
+func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() *{{.FieldType}} {
+  if {{.ReceiverVar}} == nil {
+    return {{.ZeroValue}}
+  }
+  return {{.ReceiverVar}}.{{.FieldName}}
+}
+{{else}}
 // Get{{.FieldName}} returns the {{.FieldName}} field if it's non-nil, zero value otherwise.
 func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
   if {{.ReceiverVar}} == nil || {{.ReceiverVar}}.{{.FieldName}} == nil {
@@ -295,5 +308,6 @@ func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
   }
   return *{{.ReceiverVar}}.{{.FieldName}}
 }
+{{end}}
 {{end}}
 `
