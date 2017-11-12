@@ -20,6 +20,8 @@ type MarketplaceService struct {
 	// instead of production endpoints. Stubbed data is fake data that's useful
 	// for testing your GitHub Apps. Stubbed data is hard-coded and will not
 	// change based on actual subscriptions.
+	//
+	// GitHub API docs: https://developer.github.com/v3/apps/marketplace/
 	Stubbed bool
 }
 
