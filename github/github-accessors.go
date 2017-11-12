@@ -500,6 +500,14 @@ func (c *Client) GetLicenses() *LicensesService {
 	return c.Licenses
 }
 
+// GetMarketplace returns the Marketplace field.
+func (c *Client) GetMarketplace() *MarketplaceService {
+	if c == nil {
+		return nil
+	}
+	return c.Marketplace
+}
+
 // GetMigrations returns the Migrations field.
 func (c *Client) GetMigrations() *MigrationService {
 	if c == nil {
@@ -3940,6 +3948,14 @@ func (m *MarketplacePlanAccount) GetLogin() string {
 	return *m.Login
 }
 
+// GetMarketplacePurchase returns the MarketplacePurchase field.
+func (m *MarketplacePlanAccount) GetMarketplacePurchase() *MarketplacePurchase {
+	if m == nil {
+		return nil
+	}
+	return m.MarketplacePurchase
+}
+
 // GetOrganizationBillingEmail returns the OrganizationBillingEmail field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlanAccount) GetOrganizationBillingEmail() string {
 	if m == nil || m.OrganizationBillingEmail == nil {
@@ -3964,6 +3980,14 @@ func (m *MarketplacePlanAccount) GetURL() string {
 	return *m.URL
 }
 
+// GetAccount returns the Account field.
+func (m *MarketplacePurchase) GetAccount() *MarketplacePlanAccount {
+	if m == nil {
+		return nil
+	}
+	return m.Account
+}
+
 // GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetBillingCycle() string {
 	if m == nil || m.BillingCycle == nil {
@@ -3980,12 +4004,28 @@ func (m *MarketplacePurchase) GetNextBillingDate() string {
 	return *m.NextBillingDate
 }
 
+// GetPlan returns the Plan field.
+func (m *MarketplacePurchase) GetPlan() *MarketplacePlan {
+	if m == nil {
+		return nil
+	}
+	return m.Plan
+}
+
 // GetUnitCount returns the UnitCount field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetUnitCount() int {
 	if m == nil || m.UnitCount == nil {
 		return 0
 	}
 	return *m.UnitCount
+}
+
+// Getclient returns the client field.
+func (m *MarketplaceService) Getclient() *Client {
+	if m == nil {
+		return nil
+	}
+	return m.client
 }
 
 // GetText returns the Text field if it's non-nil, zero value otherwise.
