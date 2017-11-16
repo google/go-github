@@ -25,7 +25,7 @@ again.
      issue that you are planning to work on that bug or feature so that it can
      be assigned to you.
 
-  1. Follow the normal process of [forking][] the project, and a new
+  1. Follow the normal process of [forking][] the project, and setup a new
      branch to work in. It's important that each group of changes be done in
      separate branches in order to ensure that a pull request only includes the
      commits related to that bug or feature.
@@ -55,7 +55,7 @@ again.
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [golint]: https://github.com/golang/lint
-[golint readme]: https://github.com/golang/lint/blob/master/README.md
+[golint readme]: https://github.com/golang/lint/blob/master/README
 [gocov]: https://github.com/axw/gocov
 [gocov-html]: https://github.com/matm/gocov-html
 [well-formed commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
