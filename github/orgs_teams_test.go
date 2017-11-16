@@ -69,7 +69,7 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 }
 
 func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +176,7 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 }
 
 func TestOrganizationsService_ListChildTeams(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {

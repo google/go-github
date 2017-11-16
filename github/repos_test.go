@@ -975,7 +975,7 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -1017,7 +1017,7 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
@@ -1039,7 +1039,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 }
 
 func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
