@@ -585,11 +585,11 @@ type PullRequestReviewsEnforcementRequest struct {
 func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 	if req.DismissalRestrictionsRequest == nil {
 		newReq := struct {
-			R []interface{} `json:"dismissal_restrictions"`
-			D bool          `json:"dismiss_stale_reviews"`
-			O bool          `json:"require_code_owner_reviews"`
+			R map[string]string `json:"dismissal_restrictions"`
+			D bool              `json:"dismiss_stale_reviews"`
+			O bool              `json:"require_code_owner_reviews"`
 		}{
-			R: []interface{}{},
+			R: make(map[string]string),
 			D: req.DismissStaleReviews,
 			O: req.RequireCodeOwnerReviews,
 		}
