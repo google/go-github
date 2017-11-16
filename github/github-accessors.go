@@ -4028,6 +4028,14 @@ func (m *MarketplaceService) Getclient() *Client {
 	return m.client
 }
 
+// GetAction return the action field.
+func (m *MarketplacePurchaseEvent) GetAction() string {
+	if m == nil {
+		return ""
+	}
+	return *m.Action
+}
+
 // GetText returns the Text field if it's non-nil, zero value otherwise.
 func (m *Match) GetText() string {
 	if m == nil || m.Text == nil {
