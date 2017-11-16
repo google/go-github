@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	libraryVersion = "13"
+	libraryVersion = "14"
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github/" + libraryVersion
@@ -102,6 +102,12 @@ const (
 
 	// https://developer.github.com/changes/2017-07-26-team-review-request-thor-preview/
 	mediaTypeTeamReviewPreview = "application/vnd.github.thor-preview+json"
+
+	// https://developer.github.com/v3/apps/marketplace/
+	mediaTypeMarketplacePreview = "application/vnd.github.valkyrie-preview+json"
+
+	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
+	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -134,15 +140,16 @@ type Client struct {
 	Git            *GitService
 	Gitignores     *GitignoresService
 	Issues         *IssuesService
+	Licenses       *LicensesService
+	Marketplace    *MarketplaceService
+	Migrations     *MigrationService
 	Organizations  *OrganizationsService
 	Projects       *ProjectsService
 	PullRequests   *PullRequestsService
+	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
 	Users          *UsersService
-	Licenses       *LicensesService
-	Migrations     *MigrationService
-	Reactions      *ReactionsService
 }
 
 type service struct {
@@ -224,6 +231,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
+	c.Marketplace = &MarketplaceService{client: c}
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
