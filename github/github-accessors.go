@@ -7660,6 +7660,14 @@ func (r *Repository) GetHasPages() bool {
 	return *r.HasPages
 }
 
+// GetHasProjects returns the HasProjects field if it's non-nil, zero value otherwise.
+func (r *Repository) GetHasProjects() bool {
+	if r == nil || r.HasProjects == nil {
+		return false
+	}
+	return *r.HasProjects
+}
+
 // GetHasWiki returns the HasWiki field if it's non-nil, zero value otherwise.
 func (r *Repository) GetHasWiki() bool {
 	if r == nil || r.HasWiki == nil {

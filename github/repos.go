@@ -65,6 +65,7 @@ type Repository struct {
 	HasIssues         *bool   `json:"has_issues"`
 	HasWiki           *bool   `json:"has_wiki"`
 	HasPages          *bool   `json:"has_pages"`
+	HasProjects       *bool   `json:"has_projects"`
 	HasDownloads      *bool   `json:"has_downloads"`
 	LicenseTemplate   *string `json:"license_template,omitempty"`
 	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
