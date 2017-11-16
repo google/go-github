@@ -32,7 +32,7 @@ const (
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() (string, *http.ServeMux, *Client, func()) {
-	// test server
+	// mux is the HTTP request multiplexer used with the test server.
 	mux := http.NewServeMux()
 
 	// We want to ensure that tests catch mistakes where the endpoint URL is
@@ -50,9 +50,11 @@ func setup() (string, *http.ServeMux, *Client, func()) {
 		http.Error(w, "Client.BaseURL path prefix is not preserved in the request URL.", http.StatusInternalServerError)
 	})
 
+	// server is a test HTTP server used to provide mock API responses.
 	server := httptest.NewServer(apiHandler)
 
-	// github client configured to use test server
+	// client is the GitHub client being tested and is
+	// configured to use test server
 	client := NewClient(nil)
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
