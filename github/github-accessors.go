@@ -7412,6 +7412,14 @@ func (r *Repository) GetAllowSquashMerge() bool {
 	return *r.AllowSquashMerge
 }
 
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (r *Repository) GetArchived() bool {
+	if r == nil || r.Archived == nil {
+		return false
+	}
+	return *r.Archived
+}
+
 // GetArchiveURL returns the ArchiveURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetArchiveURL() string {
 	if r == nil || r.ArchiveURL == nil {
