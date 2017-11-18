@@ -31,9 +31,9 @@ const (
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
-func setup() (string, *http.ServeMux, *Client, func()) {
+func setup() (serverURL string, mux *http.ServeMux, client *Client, teardown func()) {
 	// mux is the HTTP request multiplexer used with the test server.
-	mux := http.NewServeMux()
+	mux = http.NewServeMux()
 
 	// We want to ensure that tests catch mistakes where the endpoint URL is
 	// specified as absolute rather than relative. It only makes a difference
@@ -55,7 +55,7 @@ func setup() (string, *http.ServeMux, *Client, func()) {
 
 	// client is the GitHub client being tested and is
 	// configured to use test server
-	client := NewClient(nil)
+	client = NewClient(nil)
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
 	client.UploadURL = url
