@@ -3988,6 +3988,14 @@ func (m *MarketplacePurchase) GetAccount() *MarketplacePlanAccount {
 	return m.Account
 }
 
+// GetAction return the action field.
+func (m *MarketplacePurchaseEvent) GetAction() string {
+	if m == nil {
+		return ""
+	}
+	return *m.Action
+}
+
 // GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetBillingCycle() string {
 	if m == nil || m.BillingCycle == nil {
