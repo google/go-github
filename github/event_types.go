@@ -7,6 +7,8 @@
 
 package github
 
+import "time"
+
 // CommitCommentEvent is triggered when a commit comment is created.
 // The Webhook event name is "commit_comment".
 //
@@ -266,6 +268,19 @@ type LabelEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// MarketplacePurchaseEvent is triggered when a user purchases, cancels, or changes
+// their GitHub Marketplace plan.
+// Webhook event name "marketplace_purchase".
+//
+// Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
+type MarketplacePurchaseEvent struct {
+	Action                      *string              `json:"action"`
+	EffectiveDate               *time.Time           `json:"effective_date"`
+	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase"`
+	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase"`
+	Sender                      *User                `json:"sender,omitempty"`
 }
 
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
