@@ -1040,7 +1040,7 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
-	NewOwner string `json:"new_owner,omitempty"`
+	NewOwner string `json:"new_owner"`
 	TeamID   []int  `json:"team_id,omitempty"`
 }
 
