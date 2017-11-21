@@ -274,11 +274,14 @@ type LabelEvent struct {
 //
 // Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
 type MarketplacePurchaseEvent struct {
-	Action                      *string              `json:"action"`
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
 	EffectiveDate               *Timestamp           `json:"effective_date"`
 	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase"`
 	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase"`
 	Sender                      *User                `json:"sender,omitempty"`
+	Installation                *Installation        `json:"installation,omitempty"`
 }
 
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
