@@ -1053,10 +1053,10 @@ type TransferRequest struct {
 // in a successful request.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#transfer-a-repository
-func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer *TransferRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/transfer", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, transfer)
+	req, err := s.client.NewRequest("POST", u, &transfer)
 	if err != nil {
 		return nil, nil, err
 	}

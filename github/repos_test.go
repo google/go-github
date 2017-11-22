@@ -1046,11 +1046,11 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &TransferRequest{NewOwner: "a", TeamID: []int{123}}
+	input := TransferRequest{NewOwner: "a", TeamID: []int{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
-		v := new(TransferRequest)
-		json.NewDecoder(r.Body).Decode(v)
+		var v TransferRequest
+		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeRepositoryTransferPreview)
