@@ -39,7 +39,7 @@ type Repository struct {
 	SSHURL           *string          `json:"ssh_url,omitempty"`
 	SVNURL           *string          `json:"svn_url,omitempty"`
 	Language         *string          `json:"language,omitempty"`
-	Fork             *bool            `json:"fork"`
+	Fork             *bool            `json:"fork,omitempty"`
 	ForksCount       *int             `json:"forks_count,omitempty"`
 	NetworkCount     *int             `json:"network_count,omitempty"`
 	OpenIssuesCount  *int             `json:"open_issues_count,omitempty"`
@@ -61,18 +61,18 @@ type Repository struct {
 	License *License `json:"license,omitempty"`
 
 	// Additional mutable fields when creating and editing a repository
-	Private           *bool   `json:"private"`
-	HasIssues         *bool   `json:"has_issues"`
-	HasWiki           *bool   `json:"has_wiki"`
-	HasPages          *bool   `json:"has_pages"`
+	Private           *bool   `json:"private,omitempty"`
+	HasIssues         *bool   `json:"has_issues,omitempty"`
+	HasWiki           *bool   `json:"has_wiki,omitempty"`
+	HasPages          *bool   `json:"has_pages,omitempty"`
 	HasProjects       *bool   `json:"has_projects,omitempty"`
-	HasDownloads      *bool   `json:"has_downloads"`
+	HasDownloads      *bool   `json:"has_downloads,omitempty"`
 	LicenseTemplate   *string `json:"license_template,omitempty"`
 	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
 	Archived          *bool   `json:"archived,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
-	TeamID *int `json:"team_id"`
+	TeamID *int `json:"team_id,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
@@ -405,7 +405,7 @@ type Contributor struct {
 	EventsURL         *string `json:"events_url,omitempty"`
 	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
 	Type              *string `json:"type,omitempty"`
-	SiteAdmin         *bool   `json:"site_admin"`
+	SiteAdmin         *bool   `json:"site_admin,omitempty"`
 	Contributions     *int    `json:"contributions,omitempty"`
 }
 
