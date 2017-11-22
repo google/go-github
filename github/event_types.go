@@ -268,6 +268,24 @@ type LabelEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// MarketplacePurchaseEvent is triggered when a user purchases, cancels, or changes
+// their GitHub Marketplace plan.
+// Webhook event name "marketplace_purchase".
+//
+// Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
+type MarketplacePurchaseEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "purchased", "cancelled", "changed".
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	EffectiveDate               *Timestamp           `json:"effective_date,omitempty"`
+	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
+	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase,omitempty"`
+	Sender                      *User                `json:"sender,omitempty"`
+	Installation                *Installation        `json:"installation,omitempty"`
+}
+
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
 // The Webhook event name is "member".
 //
