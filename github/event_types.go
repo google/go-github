@@ -274,6 +274,8 @@ type LabelEvent struct {
 //
 // Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
 type MarketplacePurchaseEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "purchased", "cancelled", "changed".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
