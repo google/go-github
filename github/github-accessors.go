@@ -4020,6 +4020,54 @@ func (m *MarketplacePurchase) GetUnitCount() int {
 	return *m.UnitCount
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseEvent) GetAction() string {
+	if m == nil || m.Action == nil {
+		return ""
+	}
+	return *m.Action
+}
+
+// GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseEvent) GetEffectiveDate() Timestamp {
+	if m == nil || m.EffectiveDate == nil {
+		return Timestamp{}
+	}
+	return *m.EffectiveDate
+}
+
+// GetInstallation returns the Installation field.
+func (m *MarketplacePurchaseEvent) GetInstallation() *Installation {
+	if m == nil {
+		return nil
+	}
+	return m.Installation
+}
+
+// GetMarketplacePurchase returns the MarketplacePurchase field.
+func (m *MarketplacePurchaseEvent) GetMarketplacePurchase() *MarketplacePurchase {
+	if m == nil {
+		return nil
+	}
+	return m.MarketplacePurchase
+}
+
+// GetPreviousMarketplacePurchase returns the PreviousMarketplacePurchase field.
+func (m *MarketplacePurchaseEvent) GetPreviousMarketplacePurchase() *MarketplacePurchase {
+	if m == nil {
+		return nil
+	}
+	return m.PreviousMarketplacePurchase
+}
+
+// GetSender returns the Sender field.
+func (m *MarketplacePurchaseEvent) GetSender() *User {
+	if m == nil {
+		return nil
+	}
+	return m.Sender
+}
+
 // Getclient returns the client field.
 func (m *MarketplaceService) Getclient() *Client {
 	if m == nil {

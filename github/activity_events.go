@@ -56,6 +56,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &IssuesEvent{}
 	case "LabelEvent":
 		payload = &LabelEvent{}
+	case "MarketplacePurchaseEvent":
+		payload = &MarketplacePurchaseEvent{}
 	case "MemberEvent":
 		payload = &MemberEvent{}
 	case "MembershipEvent":

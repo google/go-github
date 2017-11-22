@@ -211,6 +211,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "label",
 		},
 		{
+			payload:     &MarketplacePurchaseEvent{},
+			messageType: "marketplace_purchase",
+		},
+		{
 			payload:     &MemberEvent{},
 			messageType: "member",
 		},
