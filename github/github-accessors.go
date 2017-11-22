@@ -428,150 +428,6 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
-// GetActivity returns the Activity field.
-func (c *Client) GetActivity() *ActivityService {
-	if c == nil {
-		return nil
-	}
-	return c.Activity
-}
-
-// GetAdmin returns the Admin field.
-func (c *Client) GetAdmin() *AdminService {
-	if c == nil {
-		return nil
-	}
-	return c.Admin
-}
-
-// GetApps returns the Apps field.
-func (c *Client) GetApps() *AppsService {
-	if c == nil {
-		return nil
-	}
-	return c.Apps
-}
-
-// GetAuthorizations returns the Authorizations field.
-func (c *Client) GetAuthorizations() *AuthorizationsService {
-	if c == nil {
-		return nil
-	}
-	return c.Authorizations
-}
-
-// GetGists returns the Gists field.
-func (c *Client) GetGists() *GistsService {
-	if c == nil {
-		return nil
-	}
-	return c.Gists
-}
-
-// GetGit returns the Git field.
-func (c *Client) GetGit() *GitService {
-	if c == nil {
-		return nil
-	}
-	return c.Git
-}
-
-// GetGitignores returns the Gitignores field.
-func (c *Client) GetGitignores() *GitignoresService {
-	if c == nil {
-		return nil
-	}
-	return c.Gitignores
-}
-
-// GetIssues returns the Issues field.
-func (c *Client) GetIssues() *IssuesService {
-	if c == nil {
-		return nil
-	}
-	return c.Issues
-}
-
-// GetLicenses returns the Licenses field.
-func (c *Client) GetLicenses() *LicensesService {
-	if c == nil {
-		return nil
-	}
-	return c.Licenses
-}
-
-// GetMarketplace returns the Marketplace field.
-func (c *Client) GetMarketplace() *MarketplaceService {
-	if c == nil {
-		return nil
-	}
-	return c.Marketplace
-}
-
-// GetMigrations returns the Migrations field.
-func (c *Client) GetMigrations() *MigrationService {
-	if c == nil {
-		return nil
-	}
-	return c.Migrations
-}
-
-// GetOrganizations returns the Organizations field.
-func (c *Client) GetOrganizations() *OrganizationsService {
-	if c == nil {
-		return nil
-	}
-	return c.Organizations
-}
-
-// GetProjects returns the Projects field.
-func (c *Client) GetProjects() *ProjectsService {
-	if c == nil {
-		return nil
-	}
-	return c.Projects
-}
-
-// GetPullRequests returns the PullRequests field.
-func (c *Client) GetPullRequests() *PullRequestsService {
-	if c == nil {
-		return nil
-	}
-	return c.PullRequests
-}
-
-// GetReactions returns the Reactions field.
-func (c *Client) GetReactions() *ReactionsService {
-	if c == nil {
-		return nil
-	}
-	return c.Reactions
-}
-
-// GetRepositories returns the Repositories field.
-func (c *Client) GetRepositories() *RepositoriesService {
-	if c == nil {
-		return nil
-	}
-	return c.Repositories
-}
-
-// GetSearch returns the Search field.
-func (c *Client) GetSearch() *SearchService {
-	if c == nil {
-		return nil
-	}
-	return c.Search
-}
-
-// GetUsers returns the Users field.
-func (c *Client) GetUsers() *UsersService {
-	if c == nil {
-		return nil
-	}
-	return c.Users
-}
-
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CodeOfConduct) GetBody() string {
 	if c == nil || c.Body == nil {
@@ -4066,14 +3922,6 @@ func (m *MarketplacePurchaseEvent) GetSender() *User {
 		return nil
 	}
 	return m.Sender
-}
-
-// Getclient returns the client field.
-func (m *MarketplaceService) Getclient() *Client {
-	if m == nil {
-		return nil
-	}
-	return m.client
 }
 
 // GetText returns the Text field if it's non-nil, zero value otherwise.
@@ -8898,14 +8746,6 @@ func (r *RepoStatus) GetURL() string {
 		return ""
 	}
 	return *r.URL
-}
-
-// Getclient returns the client field.
-func (s *service) Getclient() *Client {
-	if s == nil {
-		return nil
-	}
-	return s.client
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
