@@ -277,9 +277,9 @@ type MarketplacePurchaseEvent struct {
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	EffectiveDate               *Timestamp           `json:"effective_date"`
-	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase"`
-	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase"`
+	EffectiveDate               *Timestamp           `json:"effective_date,omitempty"`
+	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
+	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase,omitempty"`
 	Sender                      *User                `json:"sender,omitempty"`
 	Installation                *Installation        `json:"installation,omitempty"`
 }
