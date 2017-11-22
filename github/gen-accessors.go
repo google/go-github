@@ -37,14 +37,26 @@ var (
 
 	sourceTmpl = template.Must(template.New("source").Parse(source))
 
-	// blacklist lists which "struct.method" combos to not generate.
-	blacklist = map[string]bool{
+	// this blacklist lists structs for which we don't want to generate
+	// accessors.
+	blacklistStructMethod = map[string]bool{
 		"RepositoryContent.GetContent":    true,
 		"Client.GetBaseURL":               true,
 		"Client.GetUploadURL":             true,
 		"ErrorResponse.GetResponse":       true,
 		"RateLimitError.GetResponse":      true,
 		"AbuseRateLimitError.GetResponse": true,
+	}
+	// this blacklist lists structs for which we don't want to generate
+	// accessors.
+	blacklistStruct = map[string]bool{
+		"Client":  true,
+		"service": true,
+	}
+	// this blacklist lists fields for which we don't want to generate
+	// accessors.
+	blacklistField = map[string]bool{
+		"client": true,
 	}
 )
 
@@ -106,7 +118,18 @@ func (t *templateData) processAST(f *ast.File) error {
 				}
 
 				fieldName := field.Names[0]
-				if key := fmt.Sprintf("%v.Get%v", ts.Name, fieldName); blacklist[key] {
+				// check in blacklist if the ts.Name struct is blacklisted
+				if key := fmt.Sprintf("%v", ts.Name); blacklistStruct[key] {
+					logf("Struct %v blacklisted; skipping.", key)
+					continue
+				}
+				// check in blacklist if the field is blacklisted
+				if key := fmt.Sprintf("%v", fieldName); blacklistField[key] {
+					logf("Field %v is blacklisted; skipping.", key)
+					continue
+				}
+				// check for "struct.method" in blacklist
+				if key := fmt.Sprintf("%v.Get%v", ts.Name, fieldName); blacklistStructMethod[key] {
 					logf("Method %v blacklisted; skipping.", key)
 					continue
 				}
