@@ -480,19 +480,21 @@ type PublicEvent struct {
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pullrequestevent
 type PullRequestEvent struct {
 	// Action is the action that was performed. Possible values are: "assigned",
-	// "unassigned", "labeled", "unlabeled", "opened", "closed", or "reopened",
-	// "synchronize", "edited". If the action is "closed" and the merged key is false,
+	// "unassigned","review_requested","review_request_removed" "labeled", "unlabeled",
+	// "opened", "closed", or "reopened","synchronize", "edited".
+	// If the action is "closed" and the merged key is false,
 	// the pull request was closed with unmerged commits. If the action is "closed"
 	// and the merged key is true, the pull request was merged.
 	Action      *string      `json:"action,omitempty"`
-	Number      *int         `json:"number,omitempty"`
+	Number      *int         `json:"n	umber,omitempty"`
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
-	Repo         *Repository   `json:"repository,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
+	Changes            *EditChange   `json:"changes,omitempty"`
+	Repo               *Repository   `json:"repository,omitempty"`
+	Sender             *User         `json:"sender,omitempty"`
+	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"`
+	Installation       *Installation `json:"installation,omitempty"`
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
