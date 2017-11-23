@@ -1039,3 +1039,38 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 
 	return t.Names, resp, nil
 }
+
+// TransferRequest represents a request to transfer a repository.
+type TransferRequest struct {
+	NewOwner string `json:"new_owner"`
+	TeamID   []int  `json:"team_id,omitempty"`
+}
+
+// Transfer transfers a repository from one account or organization to another.
+//
+// This method might return an *AcceptedError and a status code of
+// 202. This is because this is the status that GitHub returns to signify that
+// it has now scheduled the transfer of the repository in a background task.
+// A follow up request, after a delay of a second or so, should result
+// in a successful request.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#transfer-a-repository
+func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/transfer", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, &transfer)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeRepositoryTransferPreview)
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}

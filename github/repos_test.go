@@ -1041,3 +1041,33 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }
+
+func TestRepositoriesService_Transfer(t *testing.T) {
+	setup()
+	defer teardown()
+
+	input := TransferRequest{NewOwner: "a", TeamID: []int{123}}
+
+	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
+		var v TransferRequest
+		json.NewDecoder(r.Body).Decode(&v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryTransferPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
+	})
+
+	got, _, err := client.Repositories.Transfer(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.Transfer returned error: %v", err)
+	}
+
+	want := &Repository{Owner: &User{Login: String("a")}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
+	}
+}
