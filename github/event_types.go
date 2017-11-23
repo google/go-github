@@ -490,9 +490,12 @@ type PullRequestEvent struct {
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes            *EditChange   `json:"changes,omitempty"`
-	Repo               *Repository   `json:"repository,omitempty"`
-	Sender             *User         `json:"sender,omitempty"`
+	Changes *EditChange `json:"changes,omitempty"`
+	Repo    *Repository `json:"repository,omitempty"`
+	Sender  *User       `json:"sender,omitempty"`
+	// According to Github API Docs,
+	// Deliveries for review_requested and review_request_removed events
+	// will have an additional field called requested_reviewers.
 	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"`
 	Installation       *Installation `json:"installation,omitempty"`
 }
