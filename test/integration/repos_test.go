@@ -118,8 +118,8 @@ func TestRepositories_EditBranches(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
 			DismissalRestrictionsRequest: &github.DismissalRestrictionsRequest{
-				Users: []string{},
-				Teams: []string{},
+				Users: &[]string{},
+				Teams: &[]string{},
 			},
 			DismissStaleReviews: true,
 		},
