@@ -479,9 +479,9 @@ type PublicEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pullrequestevent
 type PullRequestEvent struct {
-	// Action is the action that was performed. Possible values are: "assigned",
-	// "unassigned","review_requested","review_request_removed" "labeled", "unlabeled",
-	// "opened", "closed", or "reopened","synchronize", "edited".
+	// Action is the action that was performed. Possible values are:
+	// "assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled",
+	// "opened", "closed", "reopened", "synchronize", "edited".
 	// If the action is "closed" and the merged key is false,
 	// the pull request was closed with unmerged commits. If the action is "closed"
 	// and the merged key is true, the pull request was merged.
@@ -490,13 +490,10 @@ type PullRequestEvent struct {
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes *EditChange `json:"changes,omitempty"`
-	Repo    *Repository `json:"repository,omitempty"`
-	Sender  *User       `json:"sender,omitempty"`
-	// According to Github API Docs,
-	// Deliveries for review_requested and review_request_removed events
-	// will have an additional field called requested_reviewers.
-	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"`
+	Changes            *EditChange   `json:"changes,omitempty"`
+	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"` // Populated in "review_requested", "review_request_removed" event deliveries.
+	Repo               *Repository   `json:"repository,omitempty"`
+	Sender             *User         `json:"sender,omitempty"`
 	Installation       *Installation `json:"installation,omitempty"`
 }
 
