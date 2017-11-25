@@ -10,6 +10,7 @@ import (
 	"golang.org/x/net/context"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -123,6 +124,63 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Repositories.GetCommit returned \n%+v, want \n%+v", commit, want)
+	}
+}
+
+func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
+	setup()
+	defer teardown()
+
+	const rawStr = "@@diff content"
+
+	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Diff)
+		fmt.Fprint(w, rawStr)
+	})
+
+	got, _, err := client.Repositories.GetCommitRaw(context.Background(), "o", "r", "s", RawOptions{Type: Diff})
+	if err != nil {
+		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+	}
+	want := rawStr
+	if got != want {
+		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+	}
+}
+
+func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
+	setup()
+	defer teardown()
+
+	const rawStr = "@@patch content"
+
+	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Patch)
+		fmt.Fprint(w, rawStr)
+	})
+
+	got, _, err := client.Repositories.GetCommitRaw(context.Background(), "o", "r", "s", RawOptions{Type: Patch})
+	if err != nil {
+		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+	}
+	want := rawStr
+	if got != want {
+		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+	}
+}
+
+func TestRepositoriesService_GetCommitRaw_invalid(t *testing.T) {
+	setup()
+	defer teardown()
+
+	_, _, err := client.Repositories.GetCommitRaw(context.Background(), "o", "r", "s", RawOptions{100})
+	if err == nil {
+		t.Fatal("Repositories.GetCommitRaw should return error")
+	}
+	if !strings.Contains(err.Error(), "unsupported raw type") {
+		t.Error("Repositories.GetCommitRaw should return unsupported raw type error")
 	}
 }
 

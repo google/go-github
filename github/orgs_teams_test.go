@@ -11,6 +11,7 @@ import (
 	"golang.org/x/net/context"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -21,6 +22,7 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -48,7 +50,8 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com"}`)
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
@@ -62,17 +65,42 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 	}
 }
 
+func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
+		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
+	})
+
+	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Organizations.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"),
+		Parent: &Team{ID: Int(2), Name: String("n"), Description: String("d")},
+	}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
 func TestOrganizationsService_CreateTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -100,12 +128,13 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 	setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: "n", Privacy: String("closed")}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -131,11 +160,35 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 	})
 
 	_, err := client.Organizations.DeleteTeam(context.Background(), 1)
 	if err != nil {
 		t.Errorf("Organizations.DeleteTeam returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ListChildTeams(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{"id":2}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	teams, _, err := client.Organizations.ListChildTeams(context.Background(), 1, opt)
+	if err != nil {
+		t.Errorf("Organizations.ListTeams returned error: %v", err)
+	}
+
+	want := []*Team{{ID: Int(2)}}
+	if !reflect.DeepEqual(teams, want) {
+		t.Errorf("Organizations.ListTeams returned %+v, want %+v", teams, want)
 	}
 }
 
@@ -145,6 +198,7 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -268,7 +322,8 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
+		acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeNestedTeamsPreview}
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -291,7 +346,8 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepo)
+		acceptHeaders := []string{mediaTypeOrgPermissionRepo, mediaTypeNestedTeamsPreview}
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -423,6 +479,7 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
@@ -487,6 +544,7 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "1"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})

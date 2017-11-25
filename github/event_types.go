@@ -268,6 +268,24 @@ type LabelEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// MarketplacePurchaseEvent is triggered when a user purchases, cancels, or changes
+// their GitHub Marketplace plan.
+// Webhook event name "marketplace_purchase".
+//
+// Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
+type MarketplacePurchaseEvent struct {
+	// Action is the action that was performed. Possible values are:
+	// "purchased", "cancelled", "changed".
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	EffectiveDate               *Timestamp           `json:"effective_date,omitempty"`
+	MarketplacePurchase         *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
+	PreviousMarketplacePurchase *MarketplacePurchase `json:"previous_marketplace_purchase,omitempty"`
+	Sender                      *User                `json:"sender,omitempty"`
+	Installation                *Installation        `json:"installation,omitempty"`
+}
+
 // MemberEvent is triggered when a user is added as a collaborator to a repository.
 // The Webhook event name is "member".
 //
@@ -461,9 +479,10 @@ type PublicEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pullrequestevent
 type PullRequestEvent struct {
-	// Action is the action that was performed. Possible values are: "assigned",
-	// "unassigned", "labeled", "unlabeled", "opened", "closed", or "reopened",
-	// "synchronize", "edited". If the action is "closed" and the merged key is false,
+	// Action is the action that was performed. Possible values are:
+	// "assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled",
+	// "opened", "closed", "reopened", "synchronize", "edited".
+	// If the action is "closed" and the merged key is false,
 	// the pull request was closed with unmerged commits. If the action is "closed"
 	// and the merged key is true, the pull request was merged.
 	Action      *string      `json:"action,omitempty"`
@@ -471,10 +490,11 @@ type PullRequestEvent struct {
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
-	Repo         *Repository   `json:"repository,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
+	Changes            *EditChange   `json:"changes,omitempty"`
+	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"` // Populated in "review_requested", "review_request_removed" event deliveries.
+	Repo               *Repository   `json:"repository,omitempty"`
+	Sender             *User         `json:"sender,omitempty"`
+	Installation       *Installation `json:"installation,omitempty"`
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
