@@ -50,13 +50,7 @@ var (
 	// this blacklist lists structs for which we don't want to generate
 	// accessors.
 	blacklistStruct = map[string]bool{
-		"Client":  true,
-		"service": true,
-	}
-	// this blacklist lists fields for which we don't want to generate
-	// accessors.
-	blacklistField = map[string]bool{
-		"client": true,
+		"Client": true,
 	}
 )
 
@@ -107,6 +101,16 @@ func (t *templateData) processAST(f *ast.File) error {
 			if !ok {
 				continue
 			}
+			// skip unexported identifiers
+			if !ts.Name.IsExported() {
+				logf("Struct %v is unexported; skipping.", ts.Name)
+				continue
+			}
+			// check in blacklist if the ts.Name struct is blacklisted
+			if key := fmt.Sprintf("%v", ts.Name); blacklistStruct[key] {
+				logf("Struct %v blacklisted; skipping.", key)
+				continue
+			}
 			st, ok := ts.Type.(*ast.StructType)
 			if !ok {
 				continue
@@ -118,14 +122,9 @@ func (t *templateData) processAST(f *ast.File) error {
 				}
 
 				fieldName := field.Names[0]
-				// check in blacklist if the ts.Name struct is blacklisted
-				if key := fmt.Sprintf("%v", ts.Name); blacklistStruct[key] {
-					logf("Struct %v blacklisted; skipping.", key)
-					continue
-				}
-				// check in blacklist if the field is blacklisted
-				if key := fmt.Sprintf("%v", fieldName); blacklistField[key] {
-					logf("Field %v is blacklisted; skipping.", key)
+				// skip unexported identifiers
+				if !fieldName.IsExported() {
+					logf("Field %v is unexported; skipping.", fieldName)
 					continue
 				}
 				// check for "struct.method" in blacklist

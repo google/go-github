@@ -1244,38 +1244,6 @@ func (c *ContributorStats) GetTotal() int {
 	return *c.Total
 }
 
-// GetAuthor returns the Author field.
-func (c *createCommit) GetAuthor() *CommitAuthor {
-	if c == nil {
-		return nil
-	}
-	return c.Author
-}
-
-// GetCommitter returns the Committer field.
-func (c *createCommit) GetCommitter() *CommitAuthor {
-	if c == nil {
-		return nil
-	}
-	return c.Committer
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *createCommit) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetTree returns the Tree field if it's non-nil, zero value otherwise.
-func (c *createCommit) GetTree() string {
-	if c == nil || c.Tree == nil {
-		return ""
-	}
-	return *c.Tree
-}
-
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CreateEvent) GetDescription() string {
 	if c == nil || c.Description == nil {
@@ -1338,62 +1306,6 @@ func (c *CreateEvent) GetSender() *User {
 		return nil
 	}
 	return c.Sender
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (c *createRefRequest) GetRef() string {
-	if c == nil || c.Ref == nil {
-		return ""
-	}
-	return *c.Ref
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (c *createRefRequest) GetSHA() string {
-	if c == nil || c.SHA == nil {
-		return ""
-	}
-	return *c.SHA
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *createTagRequest) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetObject returns the Object field if it's non-nil, zero value otherwise.
-func (c *createTagRequest) GetObject() string {
-	if c == nil || c.Object == nil {
-		return ""
-	}
-	return *c.Object
-}
-
-// GetTag returns the Tag field if it's non-nil, zero value otherwise.
-func (c *createTagRequest) GetTag() string {
-	if c == nil || c.Tag == nil {
-		return ""
-	}
-	return *c.Tag
-}
-
-// GetTagger returns the Tagger field.
-func (c *createTagRequest) GetTagger() *CommitAuthor {
-	if c == nil {
-		return nil
-	}
-	return c.Tagger
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (c *createTagRequest) GetType() string {
-	if c == nil || c.Type == nil {
-		return ""
-	}
-	return *c.Type
 }
 
 // GetInstallation returns the Installation field.
@@ -3674,30 +3586,6 @@ func (l *License) GetURL() string {
 		return ""
 	}
 	return *l.URL
-}
-
-// GetContext returns the Context field if it's non-nil, zero value otherwise.
-func (m *markdownRequest) GetContext() string {
-	if m == nil || m.Context == nil {
-		return ""
-	}
-	return *m.Context
-}
-
-// GetMode returns the Mode field if it's non-nil, zero value otherwise.
-func (m *markdownRequest) GetMode() string {
-	if m == nil || m.Mode == nil {
-		return ""
-	}
-	return *m.Mode
-}
-
-// GetText returns the Text field if it's non-nil, zero value otherwise.
-func (m *markdownRequest) GetText() string {
-	if m == nil || m.Text == nil {
-		return ""
-	}
-	return *m.Text
 }
 
 // GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.
@@ -6412,46 +6300,6 @@ func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
 	return *p.DismissStaleReviews
 }
 
-// GetBase returns the Base field if it's non-nil, zero value otherwise.
-func (p *pullRequestUpdate) GetBase() string {
-	if p == nil || p.Base == nil {
-		return ""
-	}
-	return *p.Base
-}
-
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
-func (p *pullRequestUpdate) GetBody() string {
-	if p == nil || p.Body == nil {
-		return ""
-	}
-	return *p.Body
-}
-
-// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
-func (p *pullRequestUpdate) GetMaintainerCanModify() bool {
-	if p == nil || p.MaintainerCanModify == nil {
-		return false
-	}
-	return *p.MaintainerCanModify
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (p *pullRequestUpdate) GetState() string {
-	if p == nil || p.State == nil {
-		return ""
-	}
-	return *p.State
-}
-
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (p *pullRequestUpdate) GetTitle() string {
-	if p == nil || p.Title == nil {
-		return ""
-	}
-	return *p.Title
-}
-
 // GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.
 func (p *PullStats) GetMergablePulls() int {
 	if p == nil || p.MergablePulls == nil {
@@ -8900,22 +8748,6 @@ func (s *StarredRepository) GetStarredAt() Timestamp {
 	return *s.StarredAt
 }
 
-// GetExcludeAttachments returns the ExcludeAttachments field if it's non-nil, zero value otherwise.
-func (s *startMigration) GetExcludeAttachments() bool {
-	if s == nil || s.ExcludeAttachments == nil {
-		return false
-	}
-	return *s.ExcludeAttachments
-}
-
-// GetLockRepositories returns the LockRepositories field if it's non-nil, zero value otherwise.
-func (s *startMigration) GetLockRepositories() bool {
-	if s == nil || s.LockRepositories == nil {
-		return false
-	}
-	return *s.LockRepositories
-}
-
 // GetCommit returns the Commit field.
 func (s *StatusEvent) GetCommit() *RepositoryCommit {
 	if s == nil {
@@ -9722,22 +9554,6 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
-}
-
-// GetForce returns the Force field if it's non-nil, zero value otherwise.
-func (u *updateRefRequest) GetForce() bool {
-	if u == nil || u.Force == nil {
-		return false
-	}
-	return *u.Force
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (u *updateRefRequest) GetSHA() string {
-	if u == nil || u.SHA == nil {
-		return ""
-	}
-	return *u.SHA
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
