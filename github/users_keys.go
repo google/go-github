@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // Key represents a public SSH key used to authenticate a user or deploy script.

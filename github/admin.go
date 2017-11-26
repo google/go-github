@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // AdminService handles communication with the admin related methods of the

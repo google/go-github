@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // ListFollowers lists the followers for a user. Passing the empty string will

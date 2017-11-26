@@ -6,7 +6,7 @@
 package github
 
 import (
-	"context"
+	"golang.org/x/net/context"
 	"net/http"
 	"testing"
 )

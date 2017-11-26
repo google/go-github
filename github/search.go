@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 
 	qs "github.com/google/go-querystring/query"
 )

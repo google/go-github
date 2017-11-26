@@ -5,11 +5,7 @@
 
 package github
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
+import "golang.org/x/net/context"
 
 // AppsService provides access to the installation related functions
 // in the GitHub API.

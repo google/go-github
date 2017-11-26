@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // RepositoryInvitation represents an invitation to collaborate on a repo.

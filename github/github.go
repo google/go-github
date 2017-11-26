@@ -9,10 +9,10 @@ package github
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"golang.org/x/net/context"
 	"io"
 	"io/ioutil"
 	"net/http"

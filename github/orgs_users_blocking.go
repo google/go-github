@@ -6,8 +6,8 @@
 package github
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 )
 
 // ListBlockedUsers lists all the users blocked by an organization.

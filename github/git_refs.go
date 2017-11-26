@@ -6,10 +6,10 @@
 package github
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"golang.org/x/net/context"
 	"strings"
 )
 

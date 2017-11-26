@@ -5,7 +5,7 @@
 
 package github
 
-import "context"
+import "golang.org/x/net/context"
 
 // ActivityService handles communication with the activity related
 // methods of the GitHub API.

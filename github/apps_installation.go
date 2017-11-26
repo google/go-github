@@ -5,10 +5,8 @@
 
 package github
 
-import (
-	"context"
-	"fmt"
-)
+import "golang.org/x/net/context"
+
 
 // Installation represents a GitHub Apps installation.
 type Installation struct {

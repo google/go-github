@@ -6,10 +6,10 @@
 package github
 
 import (
-	"context"
 	"fmt"
-	"strings"
-	"time"
+	"golang.org/x/net/context"
+  "strings"
+  "time"
 )
 
 // Team represents a team within a GitHub organization. Teams are used to
