@@ -19,7 +19,7 @@ import (
 )
 
 func TestRepositoriesService_ListReleases(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +60,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/latest", func(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/tags/foo", func(w http.ResponseWriter, r *http.Request) {
@@ -100,7 +100,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &RepositoryRelease{Name: String("v1.0")}
@@ -128,7 +128,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &RepositoryRelease{Name: String("n")}
@@ -155,7 +155,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -169,7 +169,7 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
@@ -190,7 +190,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -209,7 +209,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -235,7 +235,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -255,7 +255,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -281,7 +281,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ReleaseAsset{Name: String("n")}
@@ -308,7 +308,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
@@ -322,7 +322,7 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {

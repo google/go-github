@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListKeys(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -37,12 +37,15 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 }
 
 func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.ListKeys(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_GetKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -62,12 +65,15 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 }
 
 func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.GetKey(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_CreateKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -96,12 +102,15 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.CreateKey(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_EditKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -130,12 +139,15 @@ func TestRepositoriesService_EditKey(t *testing.T) {
 }
 
 func TestRepositoriesService_EditKey_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.EditKey(context.Background(), "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_DeleteKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -149,6 +161,9 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Repositories.DeleteKey(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }

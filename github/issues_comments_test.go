@@ -16,7 +16,7 @@ import (
 )
 
 func TestIssuesService_ListComments_allIssues(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 }
 
 func TestIssuesService_ListComments_specificIssue(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -70,12 +70,15 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 }
 
 func TestIssuesService_ListComments_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.ListComments(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_GetComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -96,12 +99,15 @@ func TestIssuesService_GetComment(t *testing.T) {
 }
 
 func TestIssuesService_GetComment_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.GetComment(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_CreateComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &IssueComment{Body: String("b")}
@@ -130,12 +136,15 @@ func TestIssuesService_CreateComment(t *testing.T) {
 }
 
 func TestIssuesService_CreateComment_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.CreateComment(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_EditComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &IssueComment{Body: String("b")}
@@ -164,12 +173,15 @@ func TestIssuesService_EditComment(t *testing.T) {
 }
 
 func TestIssuesService_EditComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.EditComment(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_DeleteComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -183,6 +195,9 @@ func TestIssuesService_DeleteComment(t *testing.T) {
 }
 
 func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Issues.DeleteComment(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }

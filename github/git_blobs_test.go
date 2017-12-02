@@ -15,7 +15,7 @@ import (
 )
 
 func TestGitService_GetBlob(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/blobs/s", func(w http.ResponseWriter, r *http.Request) {
@@ -44,12 +44,15 @@ func TestGitService_GetBlob(t *testing.T) {
 }
 
 func TestGitService_GetBlob_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Git.GetBlob(context.Background(), "%", "%", "%")
 	testURLParseError(t, err)
 }
 
 func TestGitService_CreateBlob(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Blob{
@@ -93,6 +96,9 @@ func TestGitService_CreateBlob(t *testing.T) {
 }
 
 func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Git.CreateBlob(context.Background(), "%", "%", &Blob{})
 	testURLParseError(t, err)
 }

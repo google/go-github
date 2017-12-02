@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListComments(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -38,12 +38,15 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.ListComments(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_ListCommitComments(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -66,12 +69,15 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.ListCommitComments(context.Background(), "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_CreateComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &RepositoryComment{Body: String("b")}
@@ -100,12 +106,15 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.CreateComment(context.Background(), "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_GetComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -126,12 +135,15 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 }
 
 func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.GetComment(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_UpdateComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &RepositoryComment{Body: String("b")}
@@ -160,12 +172,15 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Repositories.UpdateComment(context.Background(), "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_DeleteComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -179,6 +194,9 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Repositories.DeleteComment(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }

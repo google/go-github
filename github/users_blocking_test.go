@@ -14,7 +14,7 @@ import (
 )
 
 func TestUsersService_ListBlockedUsers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/blocks", func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 }
 
 func TestUsersService_IsBlocked(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func TestUsersService_IsBlocked(t *testing.T) {
 }
 
 func TestUsersService_BlockUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +74,7 @@ func TestUsersService_BlockUser(t *testing.T) {
 }
 
 func TestUsersService_UnblockUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/blocks/u", func(w http.ResponseWriter, r *http.Request) {

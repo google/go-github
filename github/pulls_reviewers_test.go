@@ -14,7 +14,7 @@ import (
 )
 
 func TestRequestReviewers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func TestRequestReviewers(t *testing.T) {
 }
 
 func TestRemoveReviewers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,7 @@ func TestRemoveReviewers(t *testing.T) {
 }
 
 func TestListReviewers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
@@ -86,7 +86,7 @@ func TestListReviewers(t *testing.T) {
 }
 
 func TestListReviewers_withOptions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
