@@ -67,6 +67,9 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int, opt *ListOption
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+
 	var r struct {
 		Repositories []*Repository `json:"repositories"`
 	}

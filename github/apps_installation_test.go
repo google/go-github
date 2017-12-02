@@ -45,6 +45,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 
 	mux.HandleFunc("/user/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
