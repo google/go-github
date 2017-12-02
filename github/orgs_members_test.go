@@ -16,7 +16,7 @@ import (
 )
 
 func TestOrganizationsService_ListMembers(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members", func(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +47,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.ListMembers(context.Background(), "%", nil)
@@ -55,7 +55,7 @@ func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_ListMembers_public(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members", func(w http.ResponseWriter, r *http.Request) {
@@ -76,7 +76,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 }
 
 func TestOrganizationsService_IsMember(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +95,7 @@ func TestOrganizationsService_IsMember(t *testing.T) {
 
 // ensure that a 404 response is interpreted as "false" and not an error
 func TestOrganizationsService_IsMember_notMember(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -115,7 +115,7 @@ func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
 func TestOrganizationsService_IsMember_error(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -133,7 +133,7 @@ func TestOrganizationsService_IsMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.IsMember(context.Background(), "%", "u")
@@ -141,7 +141,7 @@ func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_IsPublicMember(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -160,7 +160,7 @@ func TestOrganizationsService_IsPublicMember(t *testing.T) {
 
 // ensure that a 404 response is interpreted as "false" and not an error
 func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +180,7 @@ func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
 func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -198,7 +198,7 @@ func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Organizations.IsPublicMember(context.Background(), "%", "u")
@@ -206,7 +206,7 @@ func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveMember(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -220,7 +220,7 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, err := client.Organizations.RemoveMember(context.Background(), "%", "u")
@@ -228,7 +228,7 @@ func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/memberships/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -256,7 +256,7 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -276,7 +276,7 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -296,7 +296,7 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Membership{State: String("active")}
@@ -325,7 +325,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 }
 
 func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Membership{State: String("active")}
@@ -354,7 +354,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -369,7 +369,7 @@ func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {

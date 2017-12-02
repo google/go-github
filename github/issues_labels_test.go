@@ -15,7 +15,7 @@ import (
 )
 
 func TestIssuesService_ListLabels(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 }
 
 func TestIssuesService_ListLabels_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListLabels(context.Background(), "%", "%", nil)
@@ -45,7 +45,7 @@ func TestIssuesService_ListLabels_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_GetLabel(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +65,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 }
 
 func TestIssuesService_GetLabel_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.GetLabel(context.Background(), "%", "%", "%")
@@ -73,7 +73,7 @@ func TestIssuesService_GetLabel_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_CreateLabel(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Label{Name: String("n")}
@@ -102,7 +102,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 }
 
 func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.CreateLabel(context.Background(), "%", "%", nil)
@@ -110,7 +110,7 @@ func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_EditLabel(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Label{Name: String("z")}
@@ -139,7 +139,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 }
 
 func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.EditLabel(context.Background(), "%", "%", "%", nil)
@@ -147,7 +147,7 @@ func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_DeleteLabel(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
@@ -161,7 +161,7 @@ func TestIssuesService_DeleteLabel(t *testing.T) {
 }
 
 func TestIssuesService_DeleteLabel_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, err := client.Issues.DeleteLabel(context.Background(), "%", "%", "%")
@@ -169,7 +169,7 @@ func TestIssuesService_DeleteLabel_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsByIssue(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
@@ -194,7 +194,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsByIssue_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListLabelsByIssue(context.Background(), "%", "%", 1, nil)
@@ -202,7 +202,7 @@ func TestIssuesService_ListLabelsByIssue_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_AddLabelsToIssue(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []string{"a", "b"}
@@ -231,7 +231,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 }
 
 func TestIssuesService_AddLabelsToIssue_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.AddLabelsToIssue(context.Background(), "%", "%", 1, nil)
@@ -239,7 +239,7 @@ func TestIssuesService_AddLabelsToIssue_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels/l", func(w http.ResponseWriter, r *http.Request) {
@@ -253,7 +253,7 @@ func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
 }
 
 func TestIssuesService_RemoveLabelForIssue_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, err := client.Issues.RemoveLabelForIssue(context.Background(), "%", "%", 1, "%")
@@ -261,7 +261,7 @@ func TestIssuesService_RemoveLabelForIssue_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []string{"a", "b"}
@@ -290,7 +290,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 }
 
 func TestIssuesService_ReplaceLabelsForIssue_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ReplaceLabelsForIssue(context.Background(), "%", "%", 1, nil)
@@ -298,7 +298,7 @@ func TestIssuesService_ReplaceLabelsForIssue_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
@@ -312,7 +312,7 @@ func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
 }
 
 func TestIssuesService_RemoveLabelsForIssue_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, err := client.Issues.RemoveLabelsForIssue(context.Background(), "%", "%", 1)
@@ -320,7 +320,7 @@ func TestIssuesService_RemoveLabelsForIssue_invalidOwner(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/milestones/1/labels", func(w http.ResponseWriter, r *http.Request) {
@@ -342,7 +342,7 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 }
 
 func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Issues.ListLabelsForMilestone(context.Background(), "%", "%", 1, nil)

@@ -15,7 +15,7 @@ import (
 )
 
 func TestGitService_GetTree(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +47,7 @@ func TestGitService_GetTree(t *testing.T) {
 }
 
 func TestGitService_GetTree_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Git.GetTree(context.Background(), "%", "%", "%", false)
@@ -55,7 +55,7 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 }
 
 func TestGitService_CreateTree(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []TreeEntry{
@@ -121,7 +121,7 @@ func TestGitService_CreateTree(t *testing.T) {
 }
 
 func TestGitService_CreateTree_Content(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []TreeEntry{
@@ -189,7 +189,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 }
 
 func TestGitService_CreateTree_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Git.CreateTree(context.Background(), "%", "%", "", nil)

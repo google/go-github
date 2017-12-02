@@ -15,7 +15,7 @@ import (
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Users.ListKeys(context.Background(), "%", nil)
@@ -65,7 +65,7 @@ func TestUsersService_ListKeys_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetKey(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +85,7 @@ func TestUsersService_GetKey(t *testing.T) {
 }
 
 func TestUsersService_CreateKey(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -114,7 +114,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 }
 
 func TestUsersService_DeleteKey(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {

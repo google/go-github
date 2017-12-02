@@ -15,7 +15,7 @@ import (
 )
 
 func TestActivityService_ListEvents(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func TestActivityService_ListEvents(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryEvents(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/events", func(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +63,7 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListRepositoryEvents(context.Background(), "%", "%", nil)
@@ -71,7 +71,7 @@ func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
 }
 
 func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/events", func(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +95,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 }
 
 func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListIssueEventsForRepository(context.Background(), "%", "%", nil)
@@ -103,7 +103,7 @@ func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T)
 }
 
 func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/networks/o/r/events", func(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +127,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 }
 
 func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListEventsForRepoNetwork(context.Background(), "%", "%", nil)
@@ -135,7 +135,7 @@ func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
 }
 
 func TestActivityService_ListEventsForOrganization(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/events", func(w http.ResponseWriter, r *http.Request) {
@@ -159,7 +159,7 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 }
 
 func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListEventsForOrganization(context.Background(), "%", nil)
@@ -167,7 +167,7 @@ func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
 }
 
 func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events", func(w http.ResponseWriter, r *http.Request) {
@@ -191,7 +191,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 }
 
 func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/public", func(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +211,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 }
 
 func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListEventsPerformedByUser(context.Background(), "%", false, nil)
@@ -219,7 +219,7 @@ func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
 }
 
 func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/received_events", func(w http.ResponseWriter, r *http.Request) {
@@ -243,7 +243,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 }
 
 func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/received_events/public", func(w http.ResponseWriter, r *http.Request) {
@@ -263,7 +263,7 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 }
 
 func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Activity.ListEventsReceivedByUser(context.Background(), "%", false, nil)
@@ -271,7 +271,7 @@ func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
 }
 
 func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/orgs/o", func(w http.ResponseWriter, r *http.Request) {

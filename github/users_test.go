@@ -57,7 +57,7 @@ func TestUser_marshall(t *testing.T) {
 }
 
 func TestUsersService_Get_authenticatedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +77,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_specifiedUser(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u", func(w http.ResponseWriter, r *http.Request) {
@@ -97,7 +97,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
-	_, _, client, teardown := setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Users.Get(context.Background(), "%")
@@ -105,7 +105,7 @@ func TestUsersService_Get_invalidUser(t *testing.T) {
 }
 
 func TestUsersService_GetByID(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/1", func(w http.ResponseWriter, r *http.Request) {
@@ -125,7 +125,7 @@ func TestUsersService_GetByID(t *testing.T) {
 }
 
 func TestUsersService_Edit(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &User{Name: String("n")}
@@ -154,7 +154,7 @@ func TestUsersService_Edit(t *testing.T) {
 }
 
 func TestUsersService_ListAll(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +176,7 @@ func TestUsersService_ListAll(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -197,7 +197,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 }
 
 func TestUsersService_ListInvitations_withOptions(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -215,7 +215,7 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 	}
 }
 func TestUsersService_AcceptInvitation(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -230,7 +230,7 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 }
 
 func TestUsersService_DeclineInvitation(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {

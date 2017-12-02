@@ -9,7 +9,7 @@ import (
 )
 
 func TestAdminService_GetAdminStats(t *testing.T) {
-	_, mux, client, teardown := setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/enterprise/stats/all", func(w http.ResponseWriter, r *http.Request) {
