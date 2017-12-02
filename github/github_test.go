@@ -54,7 +54,7 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 	server := httptest.NewServer(apiHandler)
 
 	// client is the GitHub client being tested and is
-	// configured to use test server
+	// configured to use test server.
 	client = NewClient(nil)
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
