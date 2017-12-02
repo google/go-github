@@ -5812,6 +5812,14 @@ func (p *PullRequest) GetAssignee() *User {
 	return p.Assignee
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetAuthorAssociation() string {
+	if p == nil || p.AuthorAssociation == nil {
+		return ""
+	}
+	return *p.AuthorAssociation
+}
+
 // GetBase returns the Base field.
 func (p *PullRequest) GetBase() *PullRequestBranch {
 	if p == nil {
