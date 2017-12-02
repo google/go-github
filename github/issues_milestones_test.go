@@ -15,7 +15,7 @@ import (
 )
 
 func TestIssuesService_ListMilestones(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
@@ -42,12 +42,15 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 }
 
 func TestIssuesService_ListMilestones_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.ListMilestones(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_GetMilestone(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
@@ -67,12 +70,15 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 }
 
 func TestIssuesService_GetMilestone_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.GetMilestone(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_CreateMilestone(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Milestone{Title: String("t")}
@@ -101,12 +107,15 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 }
 
 func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.CreateMilestone(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_EditMilestone(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Milestone{Title: String("t")}
@@ -135,12 +144,15 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 }
 
 func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Issues.EditMilestone(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestIssuesService_DeleteMilestone(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
@@ -154,6 +166,9 @@ func TestIssuesService_DeleteMilestone(t *testing.T) {
 }
 
 func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Issues.DeleteMilestone(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }

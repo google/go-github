@@ -15,7 +15,7 @@ import (
 )
 
 func TestMigrationService_StartImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{
@@ -50,7 +50,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 }
 
 func TestMigrationService_ImportProgress(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +70,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 }
 
 func TestMigrationService_UpdateImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{
@@ -105,7 +105,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 }
 
 func TestMigrationService_CommitAuthors(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import/authors", func(w http.ResponseWriter, r *http.Request) {
@@ -128,7 +128,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 }
 
 func TestMigrationService_MapCommitAuthor(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &SourceImportAuthor{Name: String("n"), Email: String("e")}
@@ -157,7 +157,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 }
 
 func TestMigrationService_SetLFSPreference(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{UseLFS: String("opt_in")}
@@ -187,7 +187,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 }
 
 func TestMigrationService_LargeFiles(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import/large_files", func(w http.ResponseWriter, r *http.Request) {
@@ -210,7 +210,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 }
 
 func TestMigrationService_CancelImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {

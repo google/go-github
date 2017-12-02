@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/referrers", func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +43,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/traffic/popular/paths", func(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficViews(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/traffic/views", func(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +109,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 }
 
 func TestRepositoriesService_ListTrafficClones(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/traffic/clones", func(w http.ResponseWriter, r *http.Request) {

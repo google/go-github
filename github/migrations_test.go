@@ -15,7 +15,7 @@ import (
 )
 
 func TestMigrationService_StartMigration(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 }
 
 func TestMigrationService_ListMigrations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 }
 
 func TestMigrationService_MigrationStatus(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +82,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 }
 
 func TestMigrationService_MigrationArchiveURL(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 }
 
 func TestMigrationService_DeleteMigration(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,7 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 }
 
 func TestMigrationService_UnlockRepo(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {

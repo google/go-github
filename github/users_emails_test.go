@@ -15,7 +15,7 @@ import (
 )
 
 func TestUsersService_ListEmails(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +41,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 }
 
 func TestUsersService_AddEmails(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []string{"new@example.com"}
@@ -73,7 +73,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 }
 
 func TestUsersService_DeleteEmails(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := []string{"user@example.com"}

@@ -14,7 +14,7 @@ import (
 )
 
 func TestAppsService_Get_authenticatedApp(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/app", func(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,7 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 }
 
 func TestAppsService_Get_specifiedApp(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/apps/a", func(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,7 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 }
 
 func TestAppsService_ListInstallations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/app/installations", func(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +82,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 }
 
 func TestAppsService_GetInstallation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -103,7 +103,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 }
 
 func TestAppsService_ListUserInstallations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/installations", func(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +129,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 }
 
 func TestAppsService_CreateInstallationToken(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {

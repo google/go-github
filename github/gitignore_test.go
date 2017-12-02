@@ -14,7 +14,7 @@ import (
 )
 
 func TestGitignoresService_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/gitignore/templates", func(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func TestGitignoresService_List(t *testing.T) {
 }
 
 func TestGitignoresService_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/gitignore/templates/name", func(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +54,9 @@ func TestGitignoresService_Get(t *testing.T) {
 }
 
 func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Gitignores.Get(context.Background(), "%")
 	testURLParseError(t, err)
 }

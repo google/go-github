@@ -15,7 +15,7 @@ import (
 )
 
 func TestGitService_GetRef_singleRef(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 }
 
 func TestGitService_GetRef_multipleRefs(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +95,7 @@ func TestGitService_GetRef_multipleRefs(t *testing.T) {
 }
 
 func TestGitService_GetRefs_singleRef(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -138,7 +138,7 @@ func TestGitService_GetRefs_singleRef(t *testing.T) {
 }
 
 func TestGitService_GetRefs_multipleRefs(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -188,7 +188,7 @@ func TestGitService_GetRefs_multipleRefs(t *testing.T) {
 
 // TestGitService_GetRefs_noRefs tests for behaviour resulting from an unexpected GH response. This should never actually happen.
 func TestGitService_GetRefs_noRefs(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -205,7 +205,7 @@ func TestGitService_GetRefs_noRefs(t *testing.T) {
 }
 
 func TestGitService_ListRefs(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
@@ -264,7 +264,7 @@ func TestGitService_ListRefs(t *testing.T) {
 }
 
 func TestGitService_ListRefs_options(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/t", func(w http.ResponseWriter, r *http.Request) {
@@ -286,7 +286,7 @@ func TestGitService_ListRefs_options(t *testing.T) {
 }
 
 func TestGitService_CreateRef(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	args := &createRefRequest{
@@ -350,7 +350,7 @@ func TestGitService_CreateRef(t *testing.T) {
 }
 
 func TestGitService_UpdateRef(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	args := &updateRefRequest{
@@ -410,7 +410,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 }
 
 func TestGitService_DeleteRef(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {

@@ -17,7 +17,7 @@ import (
 )
 
 func TestPullRequestsService_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
@@ -46,12 +46,15 @@ func TestPullRequestsService_List(t *testing.T) {
 }
 
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.List(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
@@ -71,7 +74,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_diff(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	const rawStr = "@@diff content"
@@ -93,7 +96,7 @@ func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_patch(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	const rawStr = "@@patch content"
@@ -115,7 +118,7 @@ func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 }
 
 func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
-	setup()
+	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{100})
@@ -128,7 +131,7 @@ func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_headAndBase(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
@@ -158,7 +161,7 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_urlFields(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
@@ -197,12 +200,15 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 }
 
 func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.Get(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_Create(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &NewPullRequest{Title: String("t")}
@@ -231,12 +237,15 @@ func TestPullRequestsService_Create(t *testing.T) {
 }
 
 func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.Create(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_Edit(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	tests := []struct {
@@ -289,12 +298,15 @@ func TestPullRequestsService_Edit(t *testing.T) {
 }
 
 func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.Edit(context.Background(), "%", "r", 1, &PullRequest{})
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_ListCommits(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -352,7 +364,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 }
 
 func TestPullRequestsService_ListFiles(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/files", func(w http.ResponseWriter, r *http.Request) {
@@ -414,7 +426,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 }
 
 func TestPullRequestsService_IsMerged(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
@@ -434,7 +446,7 @@ func TestPullRequestsService_IsMerged(t *testing.T) {
 }
 
 func TestPullRequestsService_Merge(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(w http.ResponseWriter, r *http.Request) {
@@ -465,7 +477,7 @@ func TestPullRequestsService_Merge(t *testing.T) {
 
 // Test that different merge options produce expected PUT requests. See issue https://github.com/google/go-github/issues/500.
 func TestPullRequestsService_Merge_options(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	tests := []struct {

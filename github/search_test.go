@@ -15,7 +15,7 @@ import (
 )
 
 func TestSearchService_Repositories(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +48,7 @@ func TestSearchService_Repositories(t *testing.T) {
 }
 
 func TestSearchService_Commits(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +79,7 @@ func TestSearchService_Commits(t *testing.T) {
 }
 
 func TestSearchService_Issues(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -112,7 +112,7 @@ func TestSearchService_Issues(t *testing.T) {
 }
 
 func TestSearchService_Issues_withQualifiers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +141,7 @@ func TestSearchService_Issues_withQualifiers(t *testing.T) {
 }
 
 func TestSearchService_Users(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
@@ -174,7 +174,7 @@ func TestSearchService_Users(t *testing.T) {
 }
 
 func TestSearchService_Code(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
@@ -207,7 +207,7 @@ func TestSearchService_Code(t *testing.T) {
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {

@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListDeployments(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeployment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/deployments/3", func(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeployment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &DeploymentRequest{Ref: String("1111"), Task: String("deploy"), TransientEnvironment: Bool(true)}
@@ -88,7 +88,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 }
 
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
@@ -110,7 +110,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 }
 
 func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
@@ -131,7 +131,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &DeploymentStatusRequest{State: String("inactive"), Description: String("deploy"), AutoInactive: Bool(false)}
