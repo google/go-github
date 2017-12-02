@@ -15,7 +15,7 @@ import (
 )
 
 func TestAuthorizationsService_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestAuthorizationsService_List(t *testing.T) {
 }
 
 func TestAuthorizationsService_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/authorizations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func TestAuthorizationsService_Get(t *testing.T) {
 }
 
 func TestAuthorizationsService_Create(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &AuthorizationRequest{
@@ -88,7 +88,7 @@ func TestAuthorizationsService_Create(t *testing.T) {
 }
 
 func TestAuthorizationsService_GetOrCreateForApp(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &AuthorizationRequest{
@@ -119,7 +119,7 @@ func TestAuthorizationsService_GetOrCreateForApp(t *testing.T) {
 }
 
 func TestAuthorizationsService_GetOrCreateForApp_Fingerprint(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &AuthorizationRequest{
@@ -151,7 +151,7 @@ func TestAuthorizationsService_GetOrCreateForApp_Fingerprint(t *testing.T) {
 }
 
 func TestAuthorizationsService_Edit(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &AuthorizationUpdateRequest{
@@ -182,7 +182,7 @@ func TestAuthorizationsService_Edit(t *testing.T) {
 }
 
 func TestAuthorizationsService_Delete(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/authorizations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -197,7 +197,7 @@ func TestAuthorizationsService_Delete(t *testing.T) {
 }
 
 func TestAuthorizationsService_Check(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
@@ -217,7 +217,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 }
 
 func TestAuthorizationsService_Reset(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
@@ -237,7 +237,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 }
 
 func TestAuthorizationsService_Revoke(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
@@ -252,7 +252,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 }
 
 func TestListGrants(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/grants", func(w http.ResponseWriter, r *http.Request) {
@@ -272,7 +272,7 @@ func TestListGrants(t *testing.T) {
 }
 
 func TestListGrants_withOptions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/grants", func(w http.ResponseWriter, r *http.Request) {
@@ -290,7 +290,7 @@ func TestListGrants_withOptions(t *testing.T) {
 }
 
 func TestGetGrant(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
@@ -310,7 +310,7 @@ func TestGetGrant(t *testing.T) {
 }
 
 func TestDeleteGrant(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
@@ -324,7 +324,7 @@ func TestDeleteGrant(t *testing.T) {
 }
 
 func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
@@ -345,7 +345,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 }
 
 func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {

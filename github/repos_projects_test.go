@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListProjects(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 }
 
 func TestRepositoriesService_CreateProject(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}

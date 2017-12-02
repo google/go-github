@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_Merge(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &RepositoryMergeRequest{

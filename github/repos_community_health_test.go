@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/community/profile", func(w http.ResponseWriter, r *http.Request) {

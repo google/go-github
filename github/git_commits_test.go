@@ -15,7 +15,7 @@ import (
 )
 
 func TestGitService_GetCommit(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
@@ -36,12 +36,15 @@ func TestGitService_GetCommit(t *testing.T) {
 }
 
 func TestGitService_GetCommit_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Git.GetCommit(context.Background(), "%", "%", "%")
 	testURLParseError(t, err)
 }
 
 func TestGitService_CreateCommit(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Commit{
@@ -79,6 +82,9 @@ func TestGitService_CreateCommit(t *testing.T) {
 }
 
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Git.CreateCommit(context.Background(), "%", "%", &Commit{})
 	testURLParseError(t, err)
 }

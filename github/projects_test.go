@@ -15,7 +15,7 @@ import (
 )
 
 func TestProjectsService_UpdateProject(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body.", State: "open"}
@@ -45,7 +45,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 }
 
 func TestProjectsService_GetProject(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +66,7 @@ func TestProjectsService_GetProject(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProject(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -81,7 +81,7 @@ func TestProjectsService_DeleteProject(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectColumns(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
@@ -104,7 +104,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectColumn(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -125,7 +125,7 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectColumn(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
@@ -155,7 +155,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectColumn(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
@@ -185,7 +185,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectColumn(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -200,7 +200,7 @@ func TestProjectsService_DeleteProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectColumn(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectColumnMoveOptions{Position: "after:12345"}
@@ -223,7 +223,7 @@ func TestProjectsService_MoveProjectColumn(t *testing.T) {
 }
 
 func TestProjectsService_ListProjectCards(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
@@ -246,7 +246,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 }
 
 func TestProjectsService_GetProjectCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
@@ -267,7 +267,7 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_CreateProjectCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectCardOptions{
@@ -300,7 +300,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_UpdateProjectCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectCardOptions{
@@ -333,7 +333,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_DeleteProjectCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
@@ -348,7 +348,7 @@ func TestProjectsService_DeleteProjectCard(t *testing.T) {
 }
 
 func TestProjectsService_MoveProjectCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &ProjectCardMoveOptions{Position: "after:12345"}

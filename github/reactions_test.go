@@ -13,7 +13,7 @@ import (
 )
 
 func TestReactionsService_ListCommentReactions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_CreateCommentReaction(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,7 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueReactions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +77,7 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 }
 
 func TestReactionsService_CreateIssueReaction(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +99,7 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -120,7 +120,7 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -142,7 +142,7 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -163,7 +163,7 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 }
 
 func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
@@ -185,7 +185,7 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 }
 
 func TestReactionsService_DeleteReaction(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/reactions/1", func(w http.ResponseWriter, r *http.Request) {

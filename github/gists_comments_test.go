@@ -15,7 +15,7 @@ import (
 )
 
 func TestGistsService_ListComments(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -37,12 +37,15 @@ func TestGistsService_ListComments(t *testing.T) {
 }
 
 func TestGistsService_ListComments_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Gists.ListComments(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestGistsService_GetComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
@@ -62,12 +65,15 @@ func TestGistsService_GetComment(t *testing.T) {
 }
 
 func TestGistsService_GetComment_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Gists.GetComment(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }
 
 func TestGistsService_CreateComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &GistComment{ID: Int(1), Body: String("b")}
@@ -96,12 +102,15 @@ func TestGistsService_CreateComment(t *testing.T) {
 }
 
 func TestGistsService_CreateComment_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Gists.CreateComment(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestGistsService_EditComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &GistComment{ID: Int(1), Body: String("b")}
@@ -130,12 +139,15 @@ func TestGistsService_EditComment(t *testing.T) {
 }
 
 func TestGistsService_EditComment_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Gists.EditComment(context.Background(), "%", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestGistsService_DeleteComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
@@ -149,6 +161,9 @@ func TestGistsService_DeleteComment(t *testing.T) {
 }
 
 func TestGistsService_DeleteComment_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Gists.DeleteComment(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }

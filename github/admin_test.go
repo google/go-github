@@ -15,7 +15,7 @@ import (
 )
 
 func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &UserLDAPMapping{
@@ -48,7 +48,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 }
 
 func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &TeamLDAPMapping{

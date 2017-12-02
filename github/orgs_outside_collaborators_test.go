@@ -14,7 +14,7 @@ import (
 )
 
 func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/outside_collaborators", func(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +42,9 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 }
 
 func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.ListOutsideCollaborators(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }

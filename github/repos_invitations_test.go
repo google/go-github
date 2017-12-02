@@ -14,7 +14,7 @@ import (
 )
 
 func TestRepositoriesService_ListInvitations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/invitations", func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 }
 
 func TestRepositoriesService_DeleteInvitation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/invitations/2", func(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +53,7 @@ func TestRepositoriesService_DeleteInvitation(t *testing.T) {
 }
 
 func TestRepositoriesService_UpdateInvitation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/invitations/2", func(w http.ResponseWriter, r *http.Request) {
