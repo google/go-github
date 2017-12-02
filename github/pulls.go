@@ -51,6 +51,7 @@ type PullRequest struct {
 	Assignees           []*User    `json:"assignees,omitempty"`
 	Milestone           *Milestone `json:"milestone,omitempty"`
 	MaintainerCanModify *bool      `json:"maintainer_can_modify,omitempty"`
+	AuthorAssociation   *string    `json:"author_association,omitempty"`
 
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
