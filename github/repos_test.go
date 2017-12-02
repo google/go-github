@@ -1061,7 +1061,7 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 }
 
 func TestRepositoriesService_Transfer(t *testing.T) {
-	setup()
+	_, mux, client, teardown := setup()
 	defer teardown()
 
 	input := TransferRequest{NewOwner: "a", TeamID: []int{123}}
