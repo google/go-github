@@ -8565,7 +8565,7 @@ func (r *RepoStatus) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepoStatus) GetID() int {
+func (r *RepoStatus) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}

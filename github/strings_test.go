@@ -117,7 +117,7 @@ func TestString(t *testing.T) {
 		{PushEvent{PushID: Int(1)}, `github.PushEvent{PushID:1}`},
 		{Reference{Ref: String("r")}, `github.Reference{Ref:"r"}`},
 		{ReleaseAsset{ID: Int(1)}, `github.ReleaseAsset{ID:1}`},
-		{RepoStatus{ID: Int(1)}, `github.RepoStatus{ID:1}`},
+		{RepoStatus{ID: Int64(1)}, `github.RepoStatus{ID:1}`},
 		{RepositoryComment{ID: Int(1)}, `github.RepositoryComment{ID:1}`},
 		{RepositoryCommit{SHA: String("s")}, `github.RepositoryCommit{SHA:"s"}`},
 		{RepositoryContent{Name: String("n")}, `github.RepositoryContent{Name:"n"}`},
