@@ -8564,12 +8564,12 @@ func (r *RepoStatus) GetDescription() string {
 	return *r.Description
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepoStatus) GetID() int64 {
-	if r == nil || r.ID == nil {
-		return 0
+// GetID returns the ID field.
+func (r *RepoStatus) GetID() *int64 {
+	if r == nil {
+		return nil
 	}
-	return *r.ID
+	return r.ID
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
