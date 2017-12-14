@@ -42,6 +42,33 @@ The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
 https://developer.github.com/v3/.
 
+
+A basic unauthenticated program might look something like:
+
+```go
+import (
+	"context"
+	"github.com/google/go-github/github"
+)
+
+func FetchOrganizations(username string) ([]*Authorization, error) {
+	ctx := context.Background()
+	client := github.NewClient(nil)
+
+	// list all organizations for user "willnorris"
+	orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
+
+	if err != nil {
+		return nil, err
+	}
+	return orgs, err
+}
+```
+
+For more sample code snippets, head over to the
+[examples](https://github.com/google/go-github/tree/master/example) directory.
+
+
 ### Authentication ###
 
 The go-github library does not directly handle authentication. Instead, when
