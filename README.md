@@ -22,6 +22,7 @@ Construct a new GitHub client, then use the various services on the client to
 access different parts of the GitHub API. For example:
 
 ```go
+ctx = context.Background()
 client := github.NewClient(nil)
 
 // list all organizations for user "willnorris"
@@ -31,6 +32,7 @@ orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
 Some API methods have optional parameters that can be passed. For example:
 
 ```go
+ctx = context.Background()
 client := github.NewClient(nil)
 
 // list public repositories for org "github"
@@ -43,30 +45,12 @@ the structure of the GitHub API documentation at
 https://developer.github.com/v3/.
 
 
-A basic unauthenticated program might look something like:
-
-```go
-import (
-	"context"
-	"github.com/google/go-github/github"
-)
-
-func FetchOrganizations(username string) ([]*Authorization, error) {
-	ctx := context.Background()
-	client := github.NewClient(nil)
-
-	// list all organizations for user "willnorris"
-	orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
-
-	if err != nil {
-		return nil, err
-	}
-	return orgs, err
-}
-```
+NOTE: The [context](https://godoc.org/context) package is being used to provide
+request scoped values to the API calls. If case there is no context available,
+then `context.Background()` can be used as a starting point.
 
 For more sample code snippets, head over to the
-[examples](https://github.com/google/go-github/tree/master/example) directory.
+[example](https://github.com/google/go-github/tree/master/example) directory.
 
 
 ### Authentication ###
