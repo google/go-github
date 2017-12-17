@@ -48,3 +48,33 @@ func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) 
 	_, _, err := client.Organizations.ListOutsideCollaborators(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
+
+func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.RemoveOutsideCollaborator returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator returned error: %v", err)
+	}
+}

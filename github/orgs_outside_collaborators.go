@@ -69,7 +69,7 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#convert-member-to-outside-collaborator
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
-	u := fmt.Sprintf("/orgs/%v/outside_collaborators/%v", org, user)
+	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
