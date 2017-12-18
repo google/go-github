@@ -64,6 +64,38 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNotFound)
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusNotFound {
+		t.Errorf("Organizations.RemoveOutsideCollaborator_NonMember returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusUnprocessableEntity)
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusUnprocessableEntity {
+		t.Errorf("Organizations.RemoveOutsideCollaborator_Member returned error: %v", err)
+	}
+}
+
 func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -76,5 +108,37 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMember(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusForbidden)
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
+	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusForbidden {
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator_NonMember returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ConvertMemberToOutsideCollaborator_LastOwner(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusForbidden)
+	}
+	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
+
+	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
+	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusForbidden {
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator_LastOwner returned error: %v", err)
 	}
 }
