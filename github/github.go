@@ -912,7 +912,7 @@ func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error
 	*req2 = *req
 	req2.Header = make(http.Header, len(req.Header))
 	for k, s := range req.Header {
-		req2.Header[k] = append([]string{}, s...)
+		req2.Header[k] = append([]string(nil), s...)
 	}
 
 	req2.SetBasicAuth(t.Username, t.Password)
