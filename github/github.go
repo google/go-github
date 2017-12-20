@@ -859,10 +859,8 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 	//
 	// Since we are going to modify only req.URL here, we only need a deep copy
 	// of req.URL.
-	// shallow copy of request
 	req2 := new(http.Request)
 	*req2 = *req
-	// deep copy of request URL
 	req2.URL = new(url.URL)
 	*req2.URL = *req.URL
 
@@ -910,10 +908,8 @@ func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error
 	//
 	// Since we are going to modify only req.Header here, we only need a deep copy
 	// of req.Header.
-	// shallow copy of the struct
 	req2 := new(http.Request)
 	*req2 = *req
-	// deep copy of the Header
 	req2.Header = make(http.Header, len(req.Header))
 	for k, s := range req.Header {
 		req2.Header[k] = append([]string(nil), s...)
