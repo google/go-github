@@ -856,14 +856,21 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 	// To set extra querystring params, we must make a copy of the Request so
 	// that we don't modify the Request we were given. This is required by the
 	// specification of http.RoundTripper.
-	req = cloneRequest(req)
-	q := req.URL.Query()
+	//
+	// Since we are going to modify only req.URL here, we only need a deep copy
+	// of req.URL.
+	req2 := new(http.Request)
+	*req2 = *req
+	req2.URL = new(url.URL)
+	*req2.URL = *req.URL
+
+	q := req2.URL.Query()
 	q.Set("client_id", t.ClientID)
 	q.Set("client_secret", t.ClientSecret)
-	req.URL.RawQuery = q.Encode()
+	req2.URL.RawQuery = q.Encode()
 
 	// Make the HTTP request.
-	return t.transport().RoundTrip(req)
+	return t.transport().RoundTrip(req2)
 }
 
 // Client returns an *http.Client that makes requests which are subject to the
@@ -895,12 +902,24 @@ type BasicAuthTransport struct {
 
 // RoundTrip implements the RoundTripper interface.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req = cloneRequest(req) // per RoundTrip contract
-	req.SetBasicAuth(t.Username, t.Password)
-	if t.OTP != "" {
-		req.Header.Set(headerOTP, t.OTP)
+	// To set extra headers, we must make a copy of the Request so
+	// that we don't modify the Request we were given. This is required by the
+	// specification of http.RoundTripper.
+	//
+	// Since we are going to modify only req.Header here, we only need a deep copy
+	// of req.Header.
+	req2 := new(http.Request)
+	*req2 = *req
+	req2.Header = make(http.Header, len(req.Header))
+	for k, s := range req.Header {
+		req2.Header[k] = append([]string(nil), s...)
 	}
-	return t.transport().RoundTrip(req)
+
+	req2.SetBasicAuth(t.Username, t.Password)
+	if t.OTP != "" {
+		req2.Header.Set(headerOTP, t.OTP)
+	}
+	return t.transport().RoundTrip(req2)
 }
 
 // Client returns an *http.Client that makes requests that are authenticated
@@ -914,20 +933,6 @@ func (t *BasicAuthTransport) transport() http.RoundTripper {
 		return t.Transport
 	}
 	return http.DefaultTransport
-}
-
-// cloneRequest returns a clone of the provided *http.Request. The clone is a
-// shallow copy of the struct and its Header map.
-func cloneRequest(r *http.Request) *http.Request {
-	// shallow copy of the struct
-	r2 := new(http.Request)
-	*r2 = *r
-	// deep copy of the Header
-	r2.Header = make(http.Header, len(r.Header))
-	for k, s := range r.Header {
-		r2.Header[k] = append([]string(nil), s...)
-	}
-	return r2
 }
 
 // formatRateReset formats d to look like "[rate reset in 2s]" or
