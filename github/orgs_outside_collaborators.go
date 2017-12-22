@@ -66,6 +66,8 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 // ConvertMemberToOutsideCollaborator reduces the permission level of a member of the
 // organization to that of an outside collaborator. Therefore, they will only
 // have access to the repositories that their current team membership allows.
+// Responses for converting a non-member or the last owner to an outside collaborator
+// are listed in GitHub API docs.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#convert-member-to-outside-collaborator
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
