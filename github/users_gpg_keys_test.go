@@ -31,7 +31,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Int(1), PrimaryKeyID: Int(2)}}
+	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
@@ -52,7 +52,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Int(1), PrimaryKeyID: Int(2)}}
+	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
@@ -81,7 +81,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Int(1)}
+	want := &GPGKey{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", key, want)
 	}
@@ -120,7 +120,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Int(1)}
+	want := &GPGKey{ID: Int64(1)}
 	if !reflect.DeepEqual(gpgKey, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", gpgKey, want)
 	}

@@ -30,7 +30,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
 
-	want := []*RepoStatus{{ID: Int(1)}}
+	want := []*RepoStatus{{ID: Int64(1)}}
 	if !reflect.DeepEqual(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
@@ -66,7 +66,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateStatus returned error: %v", err)
 	}
 
-	want := &RepoStatus{ID: Int(1)}
+	want := &RepoStatus{ID: Int64(1)}
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}
@@ -96,7 +96,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
 	}
 
-	want := &CombinedStatus{State: String("success"), Statuses: []RepoStatus{{ID: Int(1)}}}
+	want := &CombinedStatus{State: String("success"), Statuses: []RepoStatus{{ID: Int64(1)}}}
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}

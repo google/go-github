@@ -190,8 +190,8 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 	}
 
 	want := []*Label{
-		{Name: String("a"), ID: Int(1)},
-		{Name: String("b"), ID: Int(2)},
+		{Name: String("a"), ID: Int64(1)},
+		{Name: String("b"), ID: Int64(2)},
 	}
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)

@@ -19,7 +19,7 @@ func TestUser_marshall(t *testing.T) {
 
 	u := &User{
 		Login:       String("l"),
-		ID:          Int(1),
+		ID:          Int64(1),
 		URL:         String("u"),
 		AvatarURL:   String("a"),
 		GravatarID:  String("g"),
@@ -70,7 +70,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: Int(1)}
+	want := &User{ID: Int64(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -90,7 +90,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: Int(1)}
+	want := &User{ID: Int64(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -118,7 +118,7 @@ func TestUsersService_GetByID(t *testing.T) {
 		t.Fatalf("Users.GetByID returned error: %v", err)
 	}
 
-	want := &User{ID: Int(1)}
+	want := &User{ID: Int64(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.GetByID returned %+v, want %+v", user, want)
 	}
@@ -147,7 +147,7 @@ func TestUsersService_Edit(t *testing.T) {
 		t.Errorf("Users.Edit returned error: %v", err)
 	}
 
-	want := &User{ID: Int(1)}
+	want := &User{ID: Int64(1)}
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
 	}
@@ -169,7 +169,7 @@ func TestUsersService_ListAll(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(2)}}
+	want := []*User{{ID: Int64(2)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
@@ -190,7 +190,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
 	}
 
-	want := []*RepositoryInvitation{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*RepositoryInvitation{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
 	}
