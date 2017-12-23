@@ -19,6 +19,7 @@ type Tag struct {
 	Tagger       *CommitAuthor          `json:"tagger,omitempty"`
 	Object       *GitObject             `json:"object,omitempty"`
 	Verification *SignatureVerification `json:"verification,omitempty"`
+	NodeID	   *string		  `json:"node_id,omitempty"`
 }
 
 // createTagRequest represents the body of a CreateTag request. This is mostly
@@ -42,8 +43,9 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeGitSigningPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	tag := new(Tag)
 	resp, err := s.client.Do(ctx, req, tag)
@@ -72,6 +74,9 @@ func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, t
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	
 	t := new(Tag)
 	resp, err := s.client.Do(ctx, req, t)
 	return t, resp, err
