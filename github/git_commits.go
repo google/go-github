@@ -36,6 +36,7 @@ type Commit struct {
 	// is only populated for requests that fetch GitHub data like
 	// Pulls.ListCommits, Repositories.ListCommits, etc.
 	CommentCount *int `json:"comment_count,omitempty"`
+	NodeID	    *string		  `json:"node_id,omitempty"`
 }
 
 func (c Commit) String() string {
@@ -67,8 +68,9 @@ func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeGitSigningPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	c := new(Commit)
 	resp, err := s.client.Do(ctx, req, c)
@@ -123,6 +125,9 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	
 	c := new(Commit)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {
