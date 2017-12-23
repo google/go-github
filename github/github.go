@@ -111,6 +111,9 @@ const (
 
 	// https://developer.github.com/changes/2017-11-09-repository-transfer-api-preview/
 	mediaTypeRepositoryTransferPreview = "application/vnd.github.nightshade-preview+json"
+
+	// https://developer.github.com/changes/2017-12-19-graphql-node-id/
+	mediaTypeGraphQLNodeIDPreview = "application/vnd.github.jean-grey-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
