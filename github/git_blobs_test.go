@@ -22,6 +22,11 @@ func TestGitService_GetBlob(t *testing.T) {
 		if m := "GET"; m != r.Method {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
+
+		if m := mediaTypeGraphQLNodeIDPreview; m != r.Header.Get("Accept") {
+			t.Errorf("Request accept header = %v, want %v", r.Header.Get("Accept"), m)
+		}
+
 		fmt.Fprint(w, `{
 			  "sha": "s",
 			  "content": "blob content"
@@ -70,6 +75,10 @@ func TestGitService_CreateBlob(t *testing.T) {
 			t.Errorf("Request method = %v, want %v", r.Method, m)
 		}
 
+		if m := mediaTypeGraphQLNodeIDPreview; m != r.Header.Get("Accept") {
+			t.Errorf("Request accept header = %v, want %v", r.Header.Get("Accept"), m)
+		}
+		
 		want := input
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Git.CreateBlob request body: %+v, want %+v", v, want)
