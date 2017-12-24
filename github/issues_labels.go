@@ -82,6 +82,9 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner string, repo stri
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+
 	l := new(Label)
 	resp, err := s.client.Do(ctx, req, l)
 	if err != nil {

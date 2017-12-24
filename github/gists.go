@@ -209,7 +209,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 	if err != nil {
 		return nil, nil, err
 	}
-	
+
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
 
