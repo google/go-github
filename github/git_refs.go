@@ -18,7 +18,7 @@ type Reference struct {
 	Ref    *string    `json:"ref"`
 	URL    *string    `json:"url"`
 	Object *GitObject `json:"object"`
-	NodeID *string	  `json:"node_id,omitempty"`
+	NodeID *string    `json:"node_id,omitempty"`
 }
 
 func (r Reference) String() string {
@@ -208,7 +208,7 @@ func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, r
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	r := new(Reference)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {

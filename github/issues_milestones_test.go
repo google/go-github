@@ -20,7 +20,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-    	testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{
 			"state":     "closed",
 			"sort":      "due_date",

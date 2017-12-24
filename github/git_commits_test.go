@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -60,7 +61,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
-		
+
 		want := &createCommit{
 			Message: input.Message,
 			Tree:    String("t"),

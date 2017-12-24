@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -54,7 +55,7 @@ type Issue struct {
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
 	TextMatches []TextMatch `json:"text_matches,omitempty"`
-	NodeID	   *string		  `json:"node_id,omitempty"`
+	NodeID      *string     `json:"node_id,omitempty"`
 }
 
 func (i Issue) String() string {
@@ -292,7 +293,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	i := new(Issue)
 	resp, err := s.client.Do(ctx, req, i)
 	if err != nil {

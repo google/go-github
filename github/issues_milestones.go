@@ -28,7 +28,7 @@ type Milestone struct {
 	UpdatedAt    *time.Time `json:"updated_at,omitempty"`
 	ClosedAt     *time.Time `json:"closed_at,omitempty"`
 	DueOn        *time.Time `json:"due_on,omitempty"`
-	NodeID	     *string	`json:"node_id,omitempty"`
+	NodeID       *string    `json:"node_id,omitempty"`
 }
 
 func (m Milestone) String() string {
@@ -136,7 +136,7 @@ func (s *IssuesService) EditMilestone(ctx context.Context, owner string, repo st
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	m := new(Milestone)
 	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {

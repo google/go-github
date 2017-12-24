@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Tag represents a tag object.
@@ -19,7 +20,7 @@ type Tag struct {
 	Tagger       *CommitAuthor          `json:"tagger,omitempty"`
 	Object       *GitObject             `json:"object,omitempty"`
 	Verification *SignatureVerification `json:"verification,omitempty"`
-	NodeID	   *string		  `json:"node_id,omitempty"`
+	NodeID       *string                `json:"node_id,omitempty"`
 }
 
 // createTagRequest represents the body of a CreateTag request. This is mostly
@@ -76,7 +77,7 @@ func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, t
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	t := new(Tag)
 	resp, err := s.client.Do(ctx, req, t)
 	return t, resp, err

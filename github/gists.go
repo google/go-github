@@ -30,7 +30,7 @@ type Gist struct {
 	GitPushURL  *string                   `json:"git_push_url,omitempty"`
 	CreatedAt   *time.Time                `json:"created_at,omitempty"`
 	UpdatedAt   *time.Time                `json:"updated_at,omitempty"`
-	NodeID	    *string		  `json:"node_id,omitempty"`
+	NodeID      *string                   `json:"node_id,omitempty"`
 }
 
 func (g Gist) String() string {
@@ -61,7 +61,7 @@ type GistCommit struct {
 	User         *User        `json:"user,omitempty"`
 	ChangeStatus *CommitStats `json:"change_status,omitempty"`
 	CommittedAt  *Timestamp   `json:"committed_at,omitempty"`
-	NodeID	   *string		  `json:"node_id,omitempty"`
+	NodeID       *string      `json:"node_id,omitempty"`
 }
 
 func (gc GistCommit) String() string {
@@ -75,7 +75,7 @@ type GistFork struct {
 	ID        *string    `json:"id,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
-    NodeID	   *string	 `json:"node_id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
 }
 
 func (gf GistFork) String() string {
@@ -209,6 +209,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 	if err != nil {
 		return nil, nil, err
 	}
+	
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
 

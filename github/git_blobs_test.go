@@ -78,7 +78,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 		if m := mediaTypeGraphQLNodeIDPreview; m != r.Header.Get("Accept") {
 			t.Errorf("Request accept header = %v, want %v", r.Header.Get("Accept"), m)
 		}
-		
+
 		want := input
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Git.CreateBlob request body: %+v, want %+v", v, want)

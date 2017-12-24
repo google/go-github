@@ -17,7 +17,7 @@ type Blob struct {
 	SHA      *string `json:"sha,omitempty"`
 	Size     *int    `json:"size,omitempty"`
 	URL      *string `json:"url,omitempty"`
-	NodeID	    *string		  `json:"node_id,omitempty"`
+	NodeID   *string `json:"node_id,omitempty"`
 }
 
 // GetBlob fetchs a blob from a repo given a SHA.
@@ -50,7 +50,7 @@ func (s *GitService) CreateBlob(ctx context.Context, owner string, repo string, 
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	t := new(Blob)
 	resp, err := s.client.Do(ctx, req, t)
 	return t, resp, err

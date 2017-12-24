@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 // Deployment represents a deployment in a repo
@@ -26,7 +27,7 @@ type Deployment struct {
 	UpdatedAt     *Timestamp      `json:"updated_at,omitempty"`
 	StatusesURL   *string         `json:"statuses_url,omitempty"`
 	RepositoryURL *string         `json:"repository_url,omitempty"`
-	NodeID	   *string		  `json:"node_id,omitempty"`
+	NodeID        *string         `json:"node_id,omitempty"`
 }
 
 // DeploymentRequest represents a deployment request
@@ -148,7 +149,7 @@ type DeploymentStatus struct {
 	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
 	DeploymentURL *string    `json:"deployment_url,omitempty"`
 	RepositoryURL *string    `json:"repository_url,omitempty"`
-	NodeID	   *string	 `json:"node_id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request

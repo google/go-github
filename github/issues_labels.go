@@ -12,11 +12,11 @@ import (
 
 // Label represents a GitHub label on an Issue
 type Label struct {
-	ID    *int    `json:"id,omitempty"`
-	URL   *string `json:"url,omitempty"`
-	Name  *string `json:"name,omitempty"`
-	Color *string `json:"color,omitempty"`
-	NodeID	 *string `json:"node_id,omitempty"`
+	ID     *int    `json:"id,omitempty"`
+	URL    *string `json:"url,omitempty"`
+	Name   *string `json:"name,omitempty"`
+	Color  *string `json:"color,omitempty"`
+	NodeID *string `json:"node_id,omitempty"`
 }
 
 func (l Label) String() string {
@@ -237,7 +237,7 @@ func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
-	
+
 	var labels []*Label
 	resp, err := s.client.Do(ctx, req, &labels)
 	if err != nil {
