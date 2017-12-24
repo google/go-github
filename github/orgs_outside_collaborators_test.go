@@ -75,8 +75,10 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
 	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusNotFound {
-		t.Errorf("Organizations.RemoveOutsideCollaborator_NonMember returned error: %v", err)
+	if err, ok := err.(*ErrorResponse); !ok {
+		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
+	} else if err.Response.StatusCode != http.StatusNotFound {
+		t.Errorf("Organizations.RemoveOutsideCollaborator did not return 404 status code")
 	}
 }
 
@@ -91,8 +93,10 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
 	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusUnprocessableEntity {
-		t.Errorf("Organizations.RemoveOutsideCollaborator_Member returned error: %v", err)
+	if err, ok := err.(*ErrorResponse); !ok {
+		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
+	} else if err.Response.StatusCode != http.StatusUnprocessableEntity {
+		t.Errorf("Organizations.RemoveOutsideCollaborator did not return 422 status code")
 	}
 }
 
@@ -122,7 +126,9 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
 	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
-	if err, ok := err.(*ErrorResponse); !ok || err.Response.StatusCode != http.StatusForbidden {
-		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator_NonMember returned error: %v", err)
+	if err, ok := err.(*ErrorResponse); !ok {
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
+	} else if err.Response.StatusCode != http.StatusForbidden {
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return 403 Status code")
 	}
 }
