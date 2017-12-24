@@ -22,22 +22,20 @@ Construct a new GitHub client, then use the various services on the client to
 access different parts of the GitHub API. For example:
 
 ```go
-ctx = context.Background()
 client := github.NewClient(nil)
 
 // list all organizations for user "willnorris"
-orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
+orgs, _, err := client.Organizations.List(context.Background(), "willnorris", nil)
 ```
 
 Some API methods have optional parameters that can be passed. For example:
 
 ```go
-ctx = context.Background()
 client := github.NewClient(nil)
 
 // list public repositories for org "github"
 opt := &github.RepositoryListByOrgOptions{Type: "public"}
-repos, _, err := client.Repositories.ListByOrg(ctx, "github", opt)
+repos, _, err := client.Repositories.ListByOrg(context.Background(), "github", opt)
 ```
 
 The services of a client divide the API into logical chunks and correspond to
@@ -45,9 +43,10 @@ the structure of the GitHub API documentation at
 https://developer.github.com/v3/.
 
 
-NOTE: The [context](https://godoc.org/context) package is being used to provide
-request scoped values to the API calls. If case there is no context available,
-then `context.Background()` can be used as a starting point.
+NOTE: Using the [context](https://godoc.org/context) package, one can easily
+pass cancelation signals and deadlines to various services of the client for
+handling a request. In case there is no context available, then `context.Background()`
+can be used as a starting point.
 
 For more sample code snippets, head over to the
 [example](https://github.com/google/go-github/tree/master/example) directory.

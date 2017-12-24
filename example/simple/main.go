@@ -6,26 +6,20 @@
 // The simple command demonstrates a simple functionality which
 // prompts the user for a GitHub username and lists all the public
 // organization memberships of the specified username.
-
 package main
 
 import (
 	"context"
 	"fmt"
+
 	"github.com/google/go-github/github"
 )
 
 // Fetch all the public organizations' membership of a user.
 //
 func FetchOrganizations(username string) ([]*github.Organization, error) {
-	ctx := context.Background()
 	client := github.NewClient(nil)
-
-	orgs, _, err := client.Organizations.List(ctx, username, nil)
-
-	if err != nil {
-		return nil, err
-	}
+	orgs, _, err := client.Organizations.List(context.Background(), username, nil)
 	return orgs, err
 }
 
