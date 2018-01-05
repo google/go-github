@@ -129,6 +129,6 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 	if err, ok := err.(*ErrorResponse); !ok {
 		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusForbidden {
-		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return 403 Status code")
+		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return 403 status code")
 	}
 }
