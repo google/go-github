@@ -51,11 +51,11 @@ type Issue struct {
 	Repository       *Repository       `json:"repository,omitempty"`
 	Reactions        *Reactions        `json:"reactions,omitempty"`
 	Assignees        []*User           `json:"assignees,omitempty"`
+	NodeID           *string           `json:"node_id,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
 	TextMatches []TextMatch `json:"text_matches,omitempty"`
-	NodeID      *string     `json:"node_id,omitempty"`
 }
 
 func (i Issue) String() string {

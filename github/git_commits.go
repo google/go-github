@@ -32,12 +32,12 @@ type Commit struct {
 	HTMLURL      *string                `json:"html_url,omitempty"`
 	URL          *string                `json:"url,omitempty"`
 	Verification *SignatureVerification `json:"verification,omitempty"`
+	NodeID       *string                `json:"node_id,omitempty"`
 
 	// CommentCount is the number of GitHub comments on the commit. This
 	// is only populated for requests that fetch GitHub data like
 	// Pulls.ListCommits, Repositories.ListCommits, etc.
-	CommentCount *int    `json:"comment_count,omitempty"`
-	NodeID       *string `json:"node_id,omitempty"`
+	CommentCount *int `json:"comment_count,omitempty"`
 }
 
 func (c Commit) String() string {
