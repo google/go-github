@@ -20,6 +20,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
 	})
@@ -50,6 +51,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"url":"u", "name": "n", "color": "c"}`)
 	})
 
@@ -83,6 +85,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -120,6 +123,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -174,6 +178,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name":"a","id":1},{"name":"b","id":2}]`)
 	})
@@ -212,6 +217,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -271,6 +277,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -325,6 +332,7 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/milestones/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"name": "a"},{"name": "b"}]`)
 	})

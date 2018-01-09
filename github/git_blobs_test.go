@@ -19,9 +19,9 @@ func TestGitService_GetBlob(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/blobs/s", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
+
 		fmt.Fprint(w, `{
 			  "sha": "s",
 			  "content": "blob content"
@@ -66,9 +66,8 @@ func TestGitService_CreateBlob(t *testing.T) {
 		v := new(Blob)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 
 		want := input
 		if !reflect.DeepEqual(v, want) {

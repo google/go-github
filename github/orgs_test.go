@@ -21,6 +21,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	since := 1342004
 	mux.HandleFunc("/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"since": "1342004"})
 		fmt.Fprint(w, `[{"id":4314092}]`)
 	})
@@ -43,6 +44,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/orgs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -63,6 +65,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/orgs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
@@ -93,6 +96,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
@@ -121,6 +125,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
@@ -146,6 +151,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
