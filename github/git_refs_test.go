@@ -20,6 +20,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -62,6 +63,7 @@ func TestGitService_GetRef_multipleRefs(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `
 		  [
 		    {
@@ -100,6 +102,7 @@ func TestGitService_GetRefs_singleRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -143,6 +146,7 @@ func TestGitService_GetRefs_multipleRefs(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `
 		  [
 		    {
@@ -193,6 +197,7 @@ func TestGitService_GetRefs_noRefs(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, "[]")
 	})
 
@@ -210,6 +215,7 @@ func TestGitService_ListRefs(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `
 		  [
 		    {
@@ -269,6 +275,7 @@ func TestGitService_ListRefs_options(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/t", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"ref": "r"}]`)
 	})
@@ -299,6 +306,7 @@ func TestGitService_CreateRef(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, args) {
 			t.Errorf("Request body = %+v, want %+v", v, args)
 		}
@@ -363,6 +371,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, args) {
 			t.Errorf("Request body = %+v, want %+v", v, args)
 		}

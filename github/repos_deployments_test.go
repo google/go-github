@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -20,6 +21,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"environment": "test"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -42,6 +44,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/deployments/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id":3}`)
 	})
 
@@ -63,12 +66,13 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 
 	input := &DeploymentRequest{Ref: String("1111"), Task: String("deploy"), TransientEnvironment: Bool(true)}
 
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DeploymentRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeDeploymentStatusPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -93,6 +97,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -113,9 +118,10 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeDeploymentStatusPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":4}`)
 	})
 
@@ -136,12 +142,13 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 
 	input := &DeploymentStatusRequest{State: String("inactive"), Description: String("deploy"), AutoInactive: Bool(false)}
 
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DeploymentStatusRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeDeploymentStatusPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
