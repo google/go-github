@@ -491,6 +491,7 @@ type PullRequestEvent struct {
 
 	// The following fields are only populated by Webhook events.
 	Changes            *EditChange   `json:"changes,omitempty"`
+	RequestedReviewer  *User         `json:"requested_reviewer,omitempty"`  // Populated in "review_requested", "review_request_removed" event deliveries.
 	RequestedReviewers []*User       `json:"requested_reviewers,omitempty"` // Populated in "review_requested", "review_request_removed" event deliveries.
 	Repo               *Repository   `json:"repository,omitempty"`
 	Sender             *User         `json:"sender,omitempty"`
