@@ -25,7 +25,6 @@ import (
 	"sort"
 	"strings"
 	"text/template"
-	"time"
 )
 
 const (
@@ -71,7 +70,7 @@ func main() {
 	for pkgName, pkg := range pkgs {
 		t := &templateData{
 			filename: pkgName + fileSuffix,
-			Year:     time.Now().Year(),
+			Year:     2017,
 			Package:  pkgName,
 			Imports:  map[string]string{},
 		}
