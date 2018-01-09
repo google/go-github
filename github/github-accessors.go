@@ -380,6 +380,14 @@ func (b *Blob) GetEncoding() string {
 	return *b.Encoding
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (b *Blob) GetNodeID() string {
+	if b == nil || b.NodeID == nil {
+		return ""
+	}
+	return *b.NodeID
+}
+
 // GetSHA returns the SHA field if it's non-nil, zero value otherwise.
 func (b *Blob) GetSHA() string {
 	if b == nil || b.SHA == nil {
@@ -634,6 +642,14 @@ func (c *Commit) GetMessage() string {
 		return ""
 	}
 	return *c.Message
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *Commit) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
 }
 
 // GetSHA returns the SHA field if it's non-nil, zero value otherwise.
@@ -1396,6 +1412,14 @@ func (d *Deployment) GetID() int {
 	return *d.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *Deployment) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
 func (d *Deployment) GetRef() string {
 	if d == nil || d.Ref == nil {
@@ -1594,6 +1618,14 @@ func (d *DeploymentStatus) GetID() int {
 		return 0
 	}
 	return *d.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
 }
 
 // GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
@@ -1948,6 +1980,14 @@ func (g *Gist) GetID() string {
 	return *g.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (g *Gist) GetNodeID() string {
+	if g == nil || g.NodeID == nil {
+		return ""
+	}
+	return *g.NodeID
+}
+
 // GetOwner returns the Owner field.
 func (g *Gist) GetOwner() *User {
 	if g == nil {
@@ -2026,6 +2066,14 @@ func (g *GistCommit) GetCommittedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *g.CommittedAt
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (g *GistCommit) GetNodeID() string {
+	if g == nil || g.NodeID == nil {
+		return ""
+	}
+	return *g.NodeID
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -2114,6 +2162,14 @@ func (g *GistFork) GetID() string {
 		return ""
 	}
 	return *g.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (g *GistFork) GetNodeID() string {
+	if g == nil || g.NodeID == nil {
+		return ""
+	}
+	return *g.NodeID
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -2876,6 +2932,14 @@ func (i *Issue) GetMilestone() *Milestone {
 	return i.Milestone
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *Issue) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (i *Issue) GetNumber() int {
 	if i == nil || i.Number == nil {
@@ -3402,6 +3466,14 @@ func (l *Label) GetName() string {
 		return ""
 	}
 	return *l.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (l *Label) GetNodeID() string {
+	if l == nil || l.NodeID == nil {
+		return ""
+	}
+	return *l.NodeID
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -4132,6 +4204,14 @@ func (m *Milestone) GetLabelsURL() string {
 	return *m.LabelsURL
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (m *Milestone) GetNodeID() string {
+	if m == nil || m.NodeID == nil {
+		return ""
+	}
+	return *m.NodeID
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (m *Milestone) GetNumber() int {
 	if m == nil || m.Number == nil {
@@ -4602,6 +4682,14 @@ func (o *Organization) GetName() string {
 		return ""
 	}
 	return *o.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (o *Organization) GetNodeID() string {
+	if o == nil || o.NodeID == nil {
+		return ""
+	}
+	return *o.NodeID
 }
 
 // GetOwnedPrivateRepos returns the OwnedPrivateRepos field if it's non-nil, zero value otherwise.
@@ -6956,6 +7044,14 @@ func (r *Reactions) GetURL() string {
 	return *r.URL
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Reference) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetObject returns the Object field.
 func (r *Reference) GetObject() *GitObject {
 	if r == nil {
@@ -8930,6 +9026,14 @@ func (t *Tag) GetMessage() string {
 		return ""
 	}
 	return *t.Message
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (t *Tag) GetNodeID() string {
+	if t == nil || t.NodeID == nil {
+		return ""
+	}
+	return *t.NodeID
 }
 
 // GetObject returns the Object field.

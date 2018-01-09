@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 // Deployment represents a deployment in a repo
@@ -26,6 +27,7 @@ type Deployment struct {
 	UpdatedAt     *Timestamp      `json:"updated_at,omitempty"`
 	StatusesURL   *string         `json:"statuses_url,omitempty"`
 	RepositoryURL *string         `json:"repository_url,omitempty"`
+	NodeID        *string         `json:"node_id,omitempty"`
 }
 
 // DeploymentRequest represents a deployment request
@@ -74,6 +76,9 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+
 	var deployments []*Deployment
 	resp, err := s.client.Do(ctx, req, &deployments)
 	if err != nil {
@@ -93,6 +98,9 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
 
 	deployment := new(Deployment)
 	resp, err := s.client.Do(ctx, req, deployment)
@@ -114,8 +122,9 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when deployment support fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(Deployment)
 	resp, err := s.client.Do(ctx, req, d)
@@ -140,6 +149,7 @@ type DeploymentStatus struct {
 	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
 	DeploymentURL *string    `json:"deployment_url,omitempty"`
 	RepositoryURL *string    `json:"repository_url,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request
@@ -166,6 +176,9 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+
 	var statuses []*DeploymentStatus
 	resp, err := s.client.Do(ctx, req, &statuses)
 	if err != nil {
@@ -186,8 +199,9 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when deployment support fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(DeploymentStatus)
 	resp, err := s.client.Do(ctx, req, d)
@@ -209,8 +223,9 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when deployment support fully launches
-	req.Header.Set("Accept", mediaTypeDeploymentStatusPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(DeploymentStatus)
 	resp, err := s.client.Do(ctx, req, d)
