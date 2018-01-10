@@ -42,7 +42,6 @@ The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
 https://developer.github.com/v3/.
 
-
 NOTE: Using the [context](https://godoc.org/context) package, one can easily
 pass cancelation signals and deadlines to various services of the client for
 handling a request. In case there is no context available, then `context.Background()`
@@ -50,7 +49,6 @@ can be used as a starting point.
 
 For more sample code snippets, head over to the
 [example](https://github.com/google/go-github/tree/master/example) directory.
-
 
 ### Authentication ###
 

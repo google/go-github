@@ -2,7 +2,7 @@
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-//
+
 // The simple command demonstrates a simple functionality which
 // prompts the user for a GitHub username and lists all the public
 // organization memberships of the specified username.
@@ -35,6 +35,6 @@ func main() {
 	}
 
 	for i, organization := range organizations {
-		fmt.Printf("%v. %v\n", i+1, *organization.Login)
+		fmt.Printf("%v. %v\n", i+1, organization.GetLogin())
 	}
 }
