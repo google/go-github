@@ -19,9 +19,7 @@ func TestGitService_GetTree(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/git/trees/s", func(w http.ResponseWriter, r *http.Request) {
-		if m := "GET"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			  "sha": "s",
 			  "tree": [ { "type": "blob" } ]
@@ -71,9 +69,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		v := new(createTree)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 
 		want := &createTree{
 			BaseTree: "b",
@@ -136,9 +132,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 		v := new(createTree)
 		json.NewDecoder(r.Body).Decode(v)
 
-		if m := "POST"; m != r.Method {
-			t.Errorf("Request method = %v, want %v", r.Method, m)
-		}
+		testMethod(t, r, "POST")
 
 		want := &createTree{
 			BaseTree: "b",
