@@ -6085,7 +6085,7 @@ func (p *PullRequestEvent) GetInstallation() *Installation {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (p *PullRequestEvent) GetNumber() int64 {
+func (p *PullRequestEvent) GetNumber() int {
 	if p == nil || p.Number == nil {
 		return 0
 	}
