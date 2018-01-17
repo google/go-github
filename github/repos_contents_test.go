@@ -90,6 +90,48 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	}
 }
 
+func TestResositoriesService_GetReadmeCustom_html(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	const htmlStr = `<p>go-github is a Go client library for accessing the <a href="https://developer.github.com/v3/">GitHub API v3</a>.`
+	mux.HandleFunc("/repos/o/r/readme", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3HTML)
+		fmt.Fprint(w, htmlStr)
+	})
+
+	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{}, RepositoryContentMediaType(2))
+	if err != nil {
+		t.Errorf("Repositories.GetReadmeCustom returned error: %v", err)
+	}
+	want := htmlStr
+	if got != want {
+		t.Errorf("Repositories.GetReadmeCustom returned %+v, want %+v", got, want)
+	}
+}
+
+func TestResositoriesService_GetReadmeCustom_raw(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	const rawStr = `#\n\ngo-github is a Go client library for accessing the [GitHub API v3][].`
+	mux.HandleFunc("/repos/o/r/readme", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Raw)
+		fmt.Fprint(w, rawStr)
+	})
+
+	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{}, RepositoryContentMediaType(1))
+	if err != nil {
+		t.Errorf("Repositories.GetReadmeCustom returned error: %v", err)
+	}
+	want := rawStr
+	if got != want {
+		t.Errorf("Repositories.GetReadmeCustom returned %+v, want %+v", got, want)
+	}
+}
+
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 	client, mux, serverURL, teardown := setup()
 	defer teardown()

@@ -9,6 +9,7 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -52,6 +53,14 @@ type RepositoryContentFileOptions struct {
 	Author    *CommitAuthor `json:"author,omitempty"`
 	Committer *CommitAuthor `json:"committer,omitempty"`
 }
+
+type RepositoryContentMediaType uint8
+
+const (
+	Object RepositoryContentMediaType = iota
+	Raw
+	HTML
+)
 
 // RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
 // branch, or tag
@@ -104,6 +113,46 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 		return nil, resp, err
 	}
 	return readme, resp, nil
+}
+
+// GetReadme gets the Readme file for the repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#get-the-readme
+func (s *RepositoriesService) GetReadmeCustom(ctx context.Context, owner, repo string, opt *RepositoryContentGetOptions, mediaType RepositoryContentMediaType) (string, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return "", nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	switch mediaType {
+	case Raw:
+		req.Header.Set("Accept", mediaTypeV3Raw)
+	case HTML:
+		req.Header.Set("Accept", mediaTypeV3HTML)
+	case Object:
+		req.Header.Set("Accept", mediaTypeV3Object)
+		repoContent, resp, err := s.GetReadme(ctx, owner, repo, opt)
+		if err != nil {
+			return "", nil, err
+		}
+		content, err := repoContent.GetContent()
+		return content, resp, err
+	default:
+		return "", nil, fmt.Errorf("Unsupported custom media type %d", mediaType)
+	}
+
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
+	if err != nil {
+		return "", resp, err
+	}
+	return buf.String(), resp, nil
 }
 
 // DownloadContents returns an io.ReadCloser that reads the contents of the

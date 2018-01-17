@@ -43,6 +43,9 @@ const (
 	mediaTypeV3Diff            = "application/vnd.github.v3.diff"
 	mediaTypeV3Patch           = "application/vnd.github.v3.patch"
 	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
+	mediaTypeV3Raw             = "application/vnd.github.v3.raw"
+	mediaTypeV3HTML            = "application/vnd.github.v3.html"
+	mediaTypeV3Object          = "application/vnd.github.v3.object"
 
 	// Media Type values to access preview APIs
 
