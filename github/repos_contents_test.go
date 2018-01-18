@@ -101,7 +101,7 @@ func TestResositoriesService_GetReadmeCustom_html(t *testing.T) {
 		fmt.Fprint(w, htmlStr)
 	})
 
-	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{}, RepositoryContentMediaType(2))
+	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{MediaType: HTML})
 	if err != nil {
 		t.Errorf("Repositories.GetReadmeCustom returned error: %v", err)
 	}
@@ -122,7 +122,7 @@ func TestResositoriesService_GetReadmeCustom_raw(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{}, RepositoryContentMediaType(1))
+	got, _, err := client.Repositories.GetReadmeCustom(context.Background(), "o", "r", &RepositoryContentGetOptions{MediaType: Raw})
 	if err != nil {
 		t.Errorf("Repositories.GetReadmeCustom returned error: %v", err)
 	}
@@ -406,7 +406,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
-	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{})
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentParameters{})
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}

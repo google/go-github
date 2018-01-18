@@ -62,10 +62,16 @@ const (
 	HTML
 )
 
-// RepositoryContentGetOptions represents an optional ref parameter, which can be a SHA,
+// RepositoryContentParameters represents an optional ref parameter, which can be a SHA,
 // branch, or tag
-type RepositoryContentGetOptions struct {
+type RepositoryContentParameters struct {
 	Ref string `url:"ref,omitempty"`
+}
+
+// RepositoryContentGetOptions represents the optional custom media type and ref parameters.
+type RepositoryContentGetOptions struct {
+	Params    RepositoryContentParameters
+	MediaType RepositoryContentMediaType
 }
 
 // String converts RepositoryContent to a string. It's primarily for testing.
@@ -118,9 +124,9 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // GetReadme gets the Readme file for the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-the-readme
-func (s *RepositoriesService) GetReadmeCustom(ctx context.Context, owner, repo string, opt *RepositoryContentGetOptions, mediaType RepositoryContentMediaType) (string, *Response, error) {
+func (s *RepositoriesService) GetReadmeCustom(ctx context.Context, owner, repo string, opt *RepositoryContentGetOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opt.Params)
 	if err != nil {
 		return "", nil, err
 	}
@@ -130,7 +136,7 @@ func (s *RepositoriesService) GetReadmeCustom(ctx context.Context, owner, repo s
 		return "", nil, err
 	}
 
-	switch mediaType {
+	switch opt.MediaType {
 	case Raw:
 		req.Header.Set("Accept", mediaTypeV3Raw)
 	case HTML:
@@ -144,7 +150,7 @@ func (s *RepositoriesService) GetReadmeCustom(ctx context.Context, owner, repo s
 		content, err := repoContent.GetContent()
 		return content, resp, err
 	default:
-		return "", nil, fmt.Errorf("Unsupported custom media type %d", mediaType)
+		return "", nil, fmt.Errorf("Unsupported custom media type %d", opt.MediaType)
 	}
 
 	var buf bytes.Buffer
@@ -286,7 +292,7 @@ const (
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentParameters) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
 		u += fmt.Sprintf("/%s", opt.Ref)
