@@ -5812,6 +5812,14 @@ func (p *PullRequest) GetMilestone() *Milestone {
 	return p.Milestone
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetNumber() int {
 	if p == nil || p.Number == nil {
