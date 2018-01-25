@@ -33,7 +33,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Repositori es.ListCollaborators returned %+v, want %+v", users, want)
 	}
@@ -58,7 +58,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}

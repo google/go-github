@@ -33,7 +33,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleases returned error: %v", err)
 	}
-	want := []*RepositoryRelease{{ID: Int(1)}}
+	want := []*RepositoryRelease{{ID: Int64(1)}}
 	if !reflect.DeepEqual(releases, want) {
 		t.Errorf("Repositories.ListReleases returned %+v, want %+v", releases, want)
 	}
@@ -53,7 +53,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int(1), Author: &User{Login: String("l")}}
+	want := &RepositoryRelease{ID: Int64(1), Author: &User{Login: String("l")}}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
@@ -73,7 +73,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 		t.Errorf("Repositories.GetLatestRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int(3)}
+	want := &RepositoryRelease{ID: Int64(3)}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetLatestRelease returned %+v, want %+v", release, want)
 	}
@@ -93,7 +93,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 		t.Errorf("Repositories.GetReleaseByTag returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Int(13)}
+	want := &RepositoryRelease{ID: Int64(13)}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetReleaseByTag returned %+v, want %+v", release, want)
 	}
@@ -121,7 +121,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		t.Errorf("Repositories.CreateRelease returned error: %v", err)
 	}
 
-	want := &RepositoryRelease{ID: Int(1)}
+	want := &RepositoryRelease{ID: Int64(1)}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.CreateRelease returned %+v, want %+v", release, want)
 	}
@@ -148,7 +148,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.EditRelease returned error: %v", err)
 	}
-	want := &RepositoryRelease{ID: Int(1)}
+	want := &RepositoryRelease{ID: Int64(1)}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.EditRelease returned = %+v, want %+v", release, want)
 	}
@@ -183,7 +183,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleaseAssets returned error: %v", err)
 	}
-	want := []*ReleaseAsset{{ID: Int(1)}}
+	want := []*ReleaseAsset{{ID: Int64(1)}}
 	if !reflect.DeepEqual(assets, want) {
 		t.Errorf("Repositories.ListReleaseAssets returned %+v, want %+v", assets, want)
 	}
@@ -202,7 +202,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Int(1)}
+	want := &ReleaseAsset{ID: Int64(1)}
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.GetReleaseAsset returned %+v, want %+v", asset, want)
 	}
@@ -301,7 +301,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.EditReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Int(1)}
+	want := &ReleaseAsset{ID: Int64(1)}
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.EditReleaseAsset returned = %+v, want %+v", asset, want)
 	}
@@ -346,7 +346,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Int(1)}
+	want := &ReleaseAsset{ID: Int64(1)}
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.UploadReleaseAssert returned %+v, want %+v", asset, want)
 	}

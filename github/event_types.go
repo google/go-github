@@ -392,7 +392,7 @@ type PageBuildEvent struct {
 	Build *PagesBuild `json:"build,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	ID           *int          `json:"id,omitempty"`
+	ID           *int64        `json:"id,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -405,7 +405,7 @@ type PingEvent struct {
 	// Random string of GitHub zen.
 	Zen *string `json:"zen,omitempty"`
 	// The ID of the webhook that triggered the ping.
-	HookID *int `json:"hook_id,omitempty"`
+	HookID *int64 `json:"hook_id,omitempty"`
 	// The webhook configuration.
 	Hook         *Hook         `json:"hook,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
@@ -434,7 +434,7 @@ type ProjectEvent struct {
 type ProjectCardEvent struct {
 	Action      *string            `json:"action,omitempty"`
 	Changes     *ProjectCardChange `json:"changes,omitempty"`
-	AfterID     *int               `json:"after_id,omitempty"`
+	AfterID     *int64             `json:"after_id,omitempty"`
 	ProjectCard *ProjectCard       `json:"project_card,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -451,7 +451,7 @@ type ProjectCardEvent struct {
 type ProjectColumnEvent struct {
 	Action        *string              `json:"action,omitempty"`
 	Changes       *ProjectColumnChange `json:"changes,omitempty"`
-	AfterID       *int                 `json:"after_id,omitempty"`
+	AfterID       *int64               `json:"after_id,omitempty"`
 	ProjectColumn *ProjectColumn       `json:"project_column,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -541,7 +541,7 @@ type PullRequestReviewCommentEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID       *int              `json:"push_id,omitempty"`
+	PushID       *int64            `json:"push_id,omitempty"`
 	Head         *string           `json:"head,omitempty"`
 	Ref          *string           `json:"ref,omitempty"`
 	Size         *int              `json:"size,omitempty"`
@@ -593,7 +593,7 @@ func (p PushEventCommit) String() string {
 
 // PushEventRepository represents the repo object in a PushEvent payload.
 type PushEventRepository struct {
-	ID              *int                `json:"id,omitempty"`
+	ID              *int64              `json:"id,omitempty"`
 	Name            *string             `json:"name,omitempty"`
 	FullName        *string             `json:"full_name,omitempty"`
 	Owner           *PushEventRepoOwner `json:"owner,omitempty"`
@@ -683,7 +683,7 @@ type StatusEvent struct {
 	Branches    []*Branch `json:"branches,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	ID           *int              `json:"id,omitempty"`
+	ID           *int64            `json:"id,omitempty"`
 	Name         *string           `json:"name,omitempty"`
 	Context      *string           `json:"context,omitempty"`
 	Commit       *RepositoryCommit `json:"commit,omitempty"`

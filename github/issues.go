@@ -26,7 +26,7 @@ type IssuesService service
 // this is an issue, and if PullRequestLinks is not nil, this is a pull request.
 // The IsPullRequest helper method can be used to check that.
 type Issue struct {
-	ID               *int              `json:"id,omitempty"`
+	ID               *int64            `json:"id,omitempty"`
 	Number           *int              `json:"number,omitempty"`
 	State            *string           `json:"state,omitempty"`
 	Locked           *bool             `json:"locked,omitempty"`

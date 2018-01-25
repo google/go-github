@@ -203,7 +203,7 @@ func TestUsers_Keys(t *testing.T) {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
 
-	var id int
+	var id int64
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
 			id = *k.ID

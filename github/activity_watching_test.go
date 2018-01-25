@@ -32,7 +32,7 @@ func TestActivityService_ListWatchers(t *testing.T) {
 		t.Errorf("Activity.ListWatchers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watchers, want) {
 		t.Errorf("Activity.ListWatchers returned %+v, want %+v", watchers, want)
 	}
@@ -55,7 +55,7 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
@@ -78,7 +78,7 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}

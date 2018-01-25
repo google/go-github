@@ -88,7 +88,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*IssueEvent{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
@@ -301,7 +301,7 @@ func TestActivityService_EventParsePayload_typed(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PushEvent{PushID: Int(1)}
+	want := &PushEvent{PushID: Int64(1)}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
@@ -338,7 +338,7 @@ func TestActivityService_EventParsePayload_installation(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PullRequestEvent{Installation: &Installation{ID: Int(1)}}
+	want := &PullRequestEvent{Installation: &Installation{ID: Int64(1)}}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)

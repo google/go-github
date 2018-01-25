@@ -150,11 +150,11 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 		Number: Int(1),
 		Head: &PullRequestBranch{
 			Ref:  String("r2"),
-			Repo: &Repository{ID: Int(2)},
+			Repo: &Repository{ID: Int64(2)},
 		},
 		Base: &PullRequestBranch{
 			Ref:  String("r1"),
-			Repo: &Repository{ID: Int(1)},
+			Repo: &Repository{ID: Int64(1)},
 		},
 	}
 	if !reflect.DeepEqual(pull, want) {
