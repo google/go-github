@@ -5212,6 +5212,14 @@ func (p *Project) GetName() string {
 	return *p.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *Project) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (p *Project) GetNumber() int {
 	if p == nil || p.Number == nil {
@@ -5290,6 +5298,14 @@ func (p *ProjectCard) GetID() int64 {
 		return 0
 	}
 	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetNote returns the Note field if it's non-nil, zero value otherwise.
@@ -5402,6 +5418,14 @@ func (p *ProjectColumn) GetName() string {
 		return ""
 	}
 	return *p.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectColumn) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
@@ -6980,6 +7004,14 @@ func (r *Reaction) GetID() int64 {
 	return *r.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Reaction) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetUser returns the User field.
 func (r *Reaction) GetUser() *User {
 	if r == nil {
@@ -7138,6 +7170,14 @@ func (r *ReleaseAsset) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *ReleaseAsset) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
@@ -8498,6 +8538,14 @@ func (r *RepositoryRelease) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
