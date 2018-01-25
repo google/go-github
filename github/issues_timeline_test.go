@@ -33,7 +33,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
 	}
 
-	want := []*Timeline{{ID: Int(1)}}
+	want := []*Timeline{{ID: Int64(1)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Issues.ListIssueTimeline = %+v, want %+v", events, want)
 	}

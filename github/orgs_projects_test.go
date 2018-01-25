@@ -31,7 +31,7 @@ func TestOrganizationsService_ListProjects(t *testing.T) {
 		t.Errorf("Organizations.ListProjects returned error: %v", err)
 	}
 
-	want := []*Project{{ID: Int(1)}}
+	want := []*Project{{ID: Int64(1)}}
 	if !reflect.DeepEqual(projects, want) {
 		t.Errorf("Organizations.ListProjects returned %+v, want %+v", projects, want)
 	}
@@ -61,7 +61,7 @@ func TestOrganizationsService_CreateProject(t *testing.T) {
 		t.Errorf("Organizations.CreateProject returned error: %v", err)
 	}
 
-	want := &Project{ID: Int(1)}
+	want := &Project{ID: Int64(1)}
 	if !reflect.DeepEqual(project, want) {
 		t.Errorf("Organizations.CreateProject returned %+v, want %+v", project, want)
 	}

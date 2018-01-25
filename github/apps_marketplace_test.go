@@ -34,7 +34,7 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 		t.Errorf("Marketplace.ListPlans returned error: %v", err)
 	}
 
-	want := []*MarketplacePlan{{ID: Int(1)}}
+	want := []*MarketplacePlan{{ID: Int64(1)}}
 	if !reflect.DeepEqual(plans, want) {
 		t.Errorf("Marketplace.ListPlans returned %+v, want %+v", plans, want)
 	}
@@ -57,7 +57,7 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlan{{ID: Int(1)}}
+	want := []*MarketplacePlan{{ID: Int64(1)}}
 	if !reflect.DeepEqual(plans, want) {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned %+v, want %+v", plans, want)
 	}
@@ -80,7 +80,7 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int(1)}}
+	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned %+v, want %+v", accounts, want)
 	}
@@ -103,7 +103,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int(1)}}
+	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned %+v, want %+v", accounts, want)
 	}
@@ -126,7 +126,7 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int(1)}}
+	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", accounts, want)
 	}
@@ -149,7 +149,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int(1)}}
+	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned %+v, want %+v", accounts, want)
 	}

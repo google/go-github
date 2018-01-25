@@ -31,7 +31,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
 	}
 
-	want := []*RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*RepositoryComment{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -62,7 +62,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
 	}
 
-	want := []*RepositoryComment{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*RepositoryComment{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
@@ -99,7 +99,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 		t.Errorf("Repositories.CreateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Int(1)}
+	want := &RepositoryComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -128,7 +128,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 		t.Errorf("Repositories.GetComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Int(1)}
+	want := &RepositoryComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -165,7 +165,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		t.Errorf("Repositories.UpdateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Int(1)}
+	want := &RepositoryComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.UpdateComment returned %+v, want %+v", comment, want)
 	}

@@ -40,7 +40,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
@@ -69,7 +69,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
@@ -414,14 +414,14 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	createdAt := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
-			ID:        Int(1),
+			ID:        Int64(1),
 			Login:     String("monalisa"),
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
 			CreatedAt: &createdAt,
 			Inviter: &User{
 				Login:             String("other_user"),
-				ID:                Int(1),
+				ID:                Int64(1),
 				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
 				GravatarID:        String(""),
 				URL:               String("https://api.github.com/users/other_user"),

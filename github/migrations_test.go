@@ -159,7 +159,7 @@ var migrationJSON = []byte(`{
 }`)
 
 var wantMigration = &Migration{
-	ID:                 Int(79),
+	ID:                 Int64(79),
 	GUID:               String("0b989ba4-242f-11e5-81e1-c7b6966d2516"),
 	State:              String("pending"),
 	LockRepositories:   Bool(true),
@@ -169,7 +169,7 @@ var wantMigration = &Migration{
 	UpdatedAt:          String("2015-07-06T15:33:38-07:00"),
 	Repositories: []*Repository{
 		{
-			ID:          Int(1296269),
+			ID:          Int64(1296269),
 			Name:        String("Hello-World"),
 			FullName:    String("octocat/Hello-World"),
 			Description: String("This your first repo!"),

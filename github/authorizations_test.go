@@ -30,7 +30,7 @@ func TestAuthorizationsService_List(t *testing.T) {
 		t.Errorf("Authorizations.List returned error: %v", err)
 	}
 
-	want := []*Authorization{{ID: Int(1)}}
+	want := []*Authorization{{ID: Int64(1)}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.List returned %+v, want %+v", *got[0].ID, *want[0].ID)
 	}
@@ -50,7 +50,7 @@ func TestAuthorizationsService_Get(t *testing.T) {
 		t.Errorf("Authorizations.Get returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.Get returned auth %+v, want %+v", got, want)
 	}
@@ -81,7 +81,7 @@ func TestAuthorizationsService_Create(t *testing.T) {
 		t.Errorf("Authorizations.Create returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorization.Create returned %+v, want %+v", got, want)
 	}
@@ -112,7 +112,7 @@ func TestAuthorizationsService_GetOrCreateForApp(t *testing.T) {
 		t.Errorf("Authorizations.GetOrCreateForApp returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorization.GetOrCreateForApp returned %+v, want %+v", got, want)
 	}
@@ -144,7 +144,7 @@ func TestAuthorizationsService_GetOrCreateForApp_Fingerprint(t *testing.T) {
 		t.Errorf("Authorizations.GetOrCreateForApp returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorization.GetOrCreateForApp returned %+v, want %+v", got, want)
 	}
@@ -175,7 +175,7 @@ func TestAuthorizationsService_Edit(t *testing.T) {
 		t.Errorf("Authorizations.Edit returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorization.Update returned %+v, want %+v", got, want)
 	}
@@ -210,7 +210,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 		t.Errorf("Authorizations.Check returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.Check returned auth %+v, want %+v", got, want)
 	}
@@ -230,7 +230,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.Reset returned auth %+v, want %+v", got, want)
 	}
@@ -265,7 +265,7 @@ func TestListGrants(t *testing.T) {
 		t.Errorf("OAuthAuthorizations.ListGrants returned error: %v", err)
 	}
 
-	want := []*Grant{{ID: Int(1)}}
+	want := []*Grant{{ID: Int64(1)}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("OAuthAuthorizations.ListGrants = %+v, want %+v", got, want)
 	}
@@ -303,7 +303,7 @@ func TestGetGrant(t *testing.T) {
 		t.Errorf("OAuthAuthorizations.GetGrant returned error: %v", err)
 	}
 
-	want := &Grant{ID: Int(1)}
+	want := &Grant{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("OAuthAuthorizations.GetGrant = %+v, want %+v", got, want)
 	}
@@ -338,7 +338,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 		t.Errorf("Authorizations.CreateImpersonation returned error: %+v", err)
 	}
 
-	want := &Authorization{ID: Int(1)}
+	want := &Authorization{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
 	}

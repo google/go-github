@@ -35,7 +35,7 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListOutsideCollaborators returned %+v, want %+v", members, want)
 	}

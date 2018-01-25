@@ -40,7 +40,7 @@ func TestSearchService_Repositories(t *testing.T) {
 	want := &RepositoriesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Repositories:      []Repository{{ID: Int(1)}, {ID: Int(2)}},
+		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -166,7 +166,7 @@ func TestSearchService_Users(t *testing.T) {
 	want := &UsersSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Users:             []User{{ID: Int(1)}, {ID: Int(2)}},
+		Users:             []User{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)

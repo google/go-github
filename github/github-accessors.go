@@ -149,7 +149,7 @@ func (a *App) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (a *App) GetID() int {
+func (a *App) GetID() int64 {
 	if a == nil || a.ID == nil {
 		return 0
 	}
@@ -213,7 +213,7 @@ func (a *Authorization) GetHashedToken() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (a *Authorization) GetID() int {
+func (a *Authorization) GetID() int64 {
 	if a == nil || a.ID == nil {
 		return 0
 	}
@@ -1165,7 +1165,7 @@ func (c *Contributor) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *Contributor) GetID() int {
+func (c *Contributor) GetID() int64 {
 	if c == nil || c.ID == nil {
 		return 0
 	}
@@ -1405,7 +1405,7 @@ func (d *Deployment) GetEnvironment() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (d *Deployment) GetID() int {
+func (d *Deployment) GetID() int64 {
 	if d == nil || d.ID == nil {
 		return 0
 	}
@@ -1613,7 +1613,7 @@ func (d *DeploymentStatus) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (d *DeploymentStatus) GetID() int {
+func (d *DeploymentStatus) GetID() int64 {
 	if d == nil || d.ID == nil {
 		return 0
 	}
@@ -2029,7 +2029,7 @@ func (g *GistComment) GetCreatedAt() time.Time {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (g *GistComment) GetID() int {
+func (g *GistComment) GetID() int64 {
 	if g == nil || g.ID == nil {
 		return 0
 	}
@@ -2349,7 +2349,7 @@ func (g *GPGKey) GetExpiresAt() time.Time {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (g *GPGKey) GetID() int {
+func (g *GPGKey) GetID() int64 {
 	if g == nil || g.ID == nil {
 		return 0
 	}
@@ -2365,7 +2365,7 @@ func (g *GPGKey) GetKeyID() string {
 }
 
 // GetPrimaryKeyID returns the PrimaryKeyID field if it's non-nil, zero value otherwise.
-func (g *GPGKey) GetPrimaryKeyID() int {
+func (g *GPGKey) GetPrimaryKeyID() int64 {
 	if g == nil || g.PrimaryKeyID == nil {
 		return 0
 	}
@@ -2397,7 +2397,7 @@ func (g *Grant) GetCreatedAt() Timestamp {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (g *Grant) GetID() int {
+func (g *Grant) GetID() int64 {
 	if g == nil || g.ID == nil {
 		return 0
 	}
@@ -2437,7 +2437,7 @@ func (h *Hook) GetCreatedAt() time.Time {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (h *Hook) GetID() int {
+func (h *Hook) GetID() int64 {
 	if h == nil || h.ID == nil {
 		return 0
 	}
@@ -2693,7 +2693,7 @@ func (i *Installation) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (i *Installation) GetID() int {
+func (i *Installation) GetID() int64 {
 	if i == nil || i.ID == nil {
 		return 0
 	}
@@ -2797,7 +2797,7 @@ func (i *Invitation) GetEmail() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (i *Invitation) GetID() int {
+func (i *Invitation) GetID() int64 {
 	if i == nil || i.ID == nil {
 		return 0
 	}
@@ -2901,7 +2901,7 @@ func (i *Issue) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (i *Issue) GetID() int {
+func (i *Issue) GetID() int64 {
 	if i == nil || i.ID == nil {
 		return 0
 	}
@@ -3045,7 +3045,7 @@ func (i *IssueComment) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (i *IssueComment) GetID() int {
+func (i *IssueComment) GetID() int64 {
 	if i == nil || i.ID == nil {
 		return 0
 	}
@@ -3197,7 +3197,7 @@ func (i *IssueEvent) GetEvent() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (i *IssueEvent) GetID() int {
+func (i *IssueEvent) GetID() int64 {
 	if i == nil || i.ID == nil {
 		return 0
 	}
@@ -3405,7 +3405,7 @@ func (i *IssueStats) GetTotalIssues() int {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (k *Key) GetID() int {
+func (k *Key) GetID() int64 {
 	if k == nil || k.ID == nil {
 		return 0
 	}
@@ -3453,7 +3453,7 @@ func (l *Label) GetColor() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (l *Label) GetID() int {
+func (l *Label) GetID() int64 {
 	if l == nil || l.ID == nil {
 		return 0
 	}
@@ -3685,7 +3685,7 @@ func (m *MarketplacePlan) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (m *MarketplacePlan) GetID() int {
+func (m *MarketplacePlan) GetID() int64 {
 	if m == nil || m.ID == nil {
 		return 0
 	}
@@ -3749,7 +3749,7 @@ func (m *MarketplacePlanAccount) GetEmail() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (m *MarketplacePlanAccount) GetID() int {
+func (m *MarketplacePlanAccount) GetID() int64 {
 	if m == nil || m.ID == nil {
 		return 0
 	}
@@ -4093,7 +4093,7 @@ func (m *Migration) GetGUID() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (m *Migration) GetID() int {
+func (m *Migration) GetID() int64 {
 	if m == nil || m.ID == nil {
 		return 0
 	}
@@ -4189,7 +4189,7 @@ func (m *Milestone) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (m *Milestone) GetID() int {
+func (m *Milestone) GetID() int64 {
 	if m == nil || m.ID == nil {
 		return 0
 	}
@@ -4405,7 +4405,7 @@ func (n *NewTeam) GetLDAPDN() string {
 }
 
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetParentTeamID() int {
+func (n *NewTeam) GetParentTeamID() int64 {
 	if n == nil || n.ParentTeamID == nil {
 		return 0
 	}
@@ -4637,7 +4637,7 @@ func (o *Organization) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (o *Organization) GetID() int {
+func (o *Organization) GetID() int64 {
 	if o == nil || o.ID == nil {
 		return 0
 	}
@@ -4957,7 +4957,7 @@ func (p *PageBuildEvent) GetBuild() *PagesBuild {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PageBuildEvent) GetID() int {
+func (p *PageBuildEvent) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5117,7 +5117,7 @@ func (p *PingEvent) GetHook() *Hook {
 }
 
 // GetHookID returns the HookID field if it's non-nil, zero value otherwise.
-func (p *PingEvent) GetHookID() int {
+func (p *PingEvent) GetHookID() int64 {
 	if p == nil || p.HookID == nil {
 		return 0
 	}
@@ -5197,7 +5197,7 @@ func (p *Project) GetCreator() *User {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *Project) GetID() int {
+func (p *Project) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5245,7 +5245,7 @@ func (p *Project) GetURL() string {
 }
 
 // GetColumnID returns the ColumnID field if it's non-nil, zero value otherwise.
-func (p *ProjectCard) GetColumnID() int {
+func (p *ProjectCard) GetColumnID() int64 {
 	if p == nil || p.ColumnID == nil {
 		return 0
 	}
@@ -5285,7 +5285,7 @@ func (p *ProjectCard) GetCreator() *User {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProjectCard) GetID() int {
+func (p *ProjectCard) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5325,7 +5325,7 @@ func (p *ProjectCardEvent) GetAction() string {
 }
 
 // GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
-func (p *ProjectCardEvent) GetAfterID() int {
+func (p *ProjectCardEvent) GetAfterID() int64 {
 	if p == nil || p.AfterID == nil {
 		return 0
 	}
@@ -5389,7 +5389,7 @@ func (p *ProjectColumn) GetCreatedAt() Timestamp {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProjectColumn) GetID() int {
+func (p *ProjectColumn) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5429,7 +5429,7 @@ func (p *ProjectColumnEvent) GetAction() string {
 }
 
 // GetAfterID returns the AfterID field if it's non-nil, zero value otherwise.
-func (p *ProjectColumnEvent) GetAfterID() int {
+func (p *ProjectColumnEvent) GetAfterID() int64 {
 	if p == nil || p.AfterID == nil {
 		return 0
 	}
@@ -5733,7 +5733,7 @@ func (p *PullRequest) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetID() int {
+func (p *PullRequest) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5981,7 +5981,7 @@ func (p *PullRequestComment) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PullRequestComment) GetID() int {
+func (p *PullRequestComment) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -5989,7 +5989,7 @@ func (p *PullRequestComment) GetID() int {
 }
 
 // GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
-func (p *PullRequestComment) GetInReplyTo() int {
+func (p *PullRequestComment) GetInReplyTo() int64 {
 	if p == nil || p.InReplyTo == nil {
 		return 0
 	}
@@ -6205,7 +6205,7 @@ func (p *PullRequestReview) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PullRequestReview) GetID() int {
+func (p *PullRequestReview) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -6565,7 +6565,7 @@ func (p *PushEvent) GetPusher() *User {
 }
 
 // GetPushID returns the PushID field if it's non-nil, zero value otherwise.
-func (p *PushEvent) GetPushID() int {
+func (p *PushEvent) GetPushID() int64 {
 	if p == nil || p.PushID == nil {
 		return 0
 	}
@@ -6813,7 +6813,7 @@ func (p *PushEventRepository) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PushEventRepository) GetID() int {
+func (p *PushEventRepository) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
@@ -6973,7 +6973,7 @@ func (r *Reaction) GetContent() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *Reaction) GetID() int {
+func (r *Reaction) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -7117,7 +7117,7 @@ func (r *ReleaseAsset) GetDownloadCount() int {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *ReleaseAsset) GetID() int {
+func (r *ReleaseAsset) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -7573,7 +7573,7 @@ func (r *Repository) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *Repository) GetID() int {
+func (r *Repository) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -7869,7 +7869,7 @@ func (r *Repository) GetTagsURL() string {
 }
 
 // GetTeamID returns the TeamID field if it's non-nil, zero value otherwise.
-func (r *Repository) GetTeamID() int {
+func (r *Repository) GetTeamID() int64 {
 	if r == nil || r.TeamID == nil {
 		return 0
 	}
@@ -7949,7 +7949,7 @@ func (r *RepositoryComment) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepositoryComment) GetID() int {
+func (r *RepositoryComment) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -8253,7 +8253,7 @@ func (r *RepositoryInvitation) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepositoryInvitation) GetID() int {
+func (r *RepositoryInvitation) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -8485,7 +8485,7 @@ func (r *RepositoryRelease) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepositoryRelease) GetID() int {
+func (r *RepositoryRelease) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -8677,7 +8677,7 @@ func (r *RepoStatus) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (r *RepoStatus) GetID() int {
+func (r *RepoStatus) GetID() int64 {
 	if r == nil || r.ID == nil {
 		return 0
 	}
@@ -8765,7 +8765,7 @@ func (s *Source) GetActor() *User {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (s *Source) GetID() int {
+func (s *Source) GetID() int64 {
 	if s == nil || s.ID == nil {
 		return 0
 	}
@@ -8789,7 +8789,7 @@ func (s *SourceImportAuthor) GetEmail() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (s *SourceImportAuthor) GetID() int {
+func (s *SourceImportAuthor) GetID() int64 {
 	if s == nil || s.ID == nil {
 		return 0
 	}
@@ -8901,7 +8901,7 @@ func (s *StatusEvent) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (s *StatusEvent) GetID() int {
+func (s *StatusEvent) GetID() int64 {
 	if s == nil || s.ID == nil {
 		return 0
 	}
@@ -9101,7 +9101,7 @@ func (t *Team) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (t *Team) GetID() int {
+func (t *Team) GetID() int64 {
 	if t == nil || t.ID == nil {
 		return 0
 	}
@@ -9309,7 +9309,7 @@ func (t *TeamLDAPMapping) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (t *TeamLDAPMapping) GetID() int {
+func (t *TeamLDAPMapping) GetID() int64 {
 	if t == nil || t.ID == nil {
 		return 0
 	}
@@ -9461,7 +9461,7 @@ func (t *Timeline) GetEvent() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (t *Timeline) GetID() int {
+func (t *Timeline) GetID() int64 {
 	if t == nil || t.ID == nil {
 		return 0
 	}
@@ -9821,7 +9821,7 @@ func (u *User) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (u *User) GetID() int {
+func (u *User) GetID() int64 {
 	if u == nil || u.ID == nil {
 		return 0
 	}
@@ -10061,7 +10061,7 @@ func (u *UserLDAPMapping) GetGravatarID() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (u *UserLDAPMapping) GetID() int {
+func (u *UserLDAPMapping) GetID() int64 {
 	if u == nil || u.ID == nil {
 		return 0
 	}

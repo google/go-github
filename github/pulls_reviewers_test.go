@@ -70,12 +70,12 @@ func TestListReviewers(t *testing.T) {
 		Users: []*User{
 			{
 				Login: String("octocat"),
-				ID:    Int(1),
+				ID:    Int64(1),
 			},
 		},
 		Teams: []*Team{
 			{
-				ID:   Int(1),
+				ID:   Int64(1),
 				Name: String("Justice League"),
 			},
 		},

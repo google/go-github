@@ -32,7 +32,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int(4314092)}}
+	want := []*Organization{{ID: Int64(4314092)}}
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.ListAll returned %+v, want %+v", orgs, want)
 	}
@@ -53,7 +53,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -76,7 +76,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -105,7 +105,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
+	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
@@ -134,7 +134,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 		t.Fatalf("Organizations.GetByID returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
+	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
 	}
@@ -164,7 +164,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
 
-	want := &Organization{ID: Int(1)}
+	want := &Organization{ID: Int64(1)}
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}

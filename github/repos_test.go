@@ -31,7 +31,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
 	}
@@ -67,7 +67,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
 	}
@@ -95,7 +95,7 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
 	}
@@ -130,7 +130,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", repos, want)
 	}
@@ -162,7 +162,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 		t.Errorf("Repositories.ListAll returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Repositories.ListAll returned %+v, want %+v", repos, want)
 	}
@@ -191,7 +191,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1)}
+	want := &Repository{ID: Int64(1)}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
@@ -220,7 +220,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1)}
+	want := &Repository{ID: Int64(1)}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
@@ -250,7 +250,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
 	}
@@ -303,7 +303,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 		t.Fatalf("Repositories.GetByID returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
+	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.GetByID returned %+v, want %+v", repo, want)
 	}
@@ -332,7 +332,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		t.Errorf("Repositories.Edit returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1)}
+	want := &Repository{ID: Int64(1)}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Edit returned %+v, want %+v", repo, want)
 	}
@@ -430,7 +430,7 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 		t.Errorf("Repositories.ListTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Int(1)}}
+	want := []*Team{{ID: Int64(1)}}
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Repositories.ListTeams returned %+v, want %+v", teams, want)
 	}
@@ -549,10 +549,10 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			DismissStaleReviews: true,
 			DismissalRestrictions: DismissalRestrictions{
 				Users: []*User{
-					{Login: String("u"), ID: Int(3)},
+					{Login: String("u"), ID: Int64(3)},
 				},
 				Teams: []*Team{
-					{Slug: String("t"), ID: Int(4)},
+					{Slug: String("t"), ID: Int64(4)},
 				},
 			},
 			RequireCodeOwnerReviews: true,
@@ -563,10 +563,10 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
-				{Login: String("u"), ID: Int(1)},
+				{Login: String("u"), ID: Int64(1)},
 			},
 			Teams: []*Team{
-				{Slug: String("t"), ID: Int(2)},
+				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
 	}
@@ -623,20 +623,20 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			DismissStaleReviews: true,
 			DismissalRestrictions: DismissalRestrictions{
 				Users: []*User{
-					{Login: String("uu"), ID: Int(3)},
+					{Login: String("uu"), ID: Int64(3)},
 				},
 				Teams: []*Team{
-					{Slug: String("tt"), ID: Int(4)},
+					{Slug: String("tt"), ID: Int64(4)},
 				},
 			},
 			RequireCodeOwnerReviews: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
-				{Login: String("u"), ID: Int(1)},
+				{Login: String("u"), ID: Int64(1)},
 			},
 			Teams: []*Team{
-				{Slug: String("t"), ID: Int(2)},
+				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
 	}
@@ -770,10 +770,10 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		DismissStaleReviews: true,
 		DismissalRestrictions: DismissalRestrictions{
 			Users: []*User{
-				{Login: String("u"), ID: Int(1)},
+				{Login: String("u"), ID: Int64(1)},
 			},
 			Teams: []*Team{
-				{Slug: String("t"), ID: Int(2)},
+				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
 		RequireCodeOwnerReviews: true,
@@ -816,10 +816,10 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		DismissStaleReviews: true,
 		DismissalRestrictions: DismissalRestrictions{
 			Users: []*User{
-				{Login: String("u"), ID: Int(1)},
+				{Login: String("u"), ID: Int64(1)},
 			},
 			Teams: []*Team{
-				{Slug: String("t"), ID: Int(2)},
+				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
 		RequireCodeOwnerReviews: true,
@@ -1064,7 +1064,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := TransferRequest{NewOwner: "a", TeamID: []int{123}}
+	input := TransferRequest{NewOwner: "a", TeamID: []int64{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		var v TransferRequest

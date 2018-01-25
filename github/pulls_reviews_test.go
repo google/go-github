@@ -33,8 +33,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	}
 
 	want := []*PullRequestReview{
-		{ID: Int(1)},
-		{ID: Int(2)},
+		{ID: Int64(1)},
+		{ID: Int64(2)},
 	}
 	if !reflect.DeepEqual(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
@@ -63,7 +63,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int(1)}
+	want := &PullRequestReview{ID: Int64(1)}
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
@@ -91,7 +91,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int(1)}
+	want := &PullRequestReview{ID: Int64(1)}
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
@@ -120,8 +120,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{
-		{ID: Int(1)},
-		{ID: Int(2)},
+		{ID: Int64(1)},
+		{ID: Int64(2)},
 	}
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
@@ -181,7 +181,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int(1)}
+	want := &PullRequestReview{ID: Int64(1)}
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
@@ -221,7 +221,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int(1)}
+	want := &PullRequestReview{ID: Int64(1)}
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
@@ -258,7 +258,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Int(1)}
+	want := &PullRequestReview{ID: Int64(1)}
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}

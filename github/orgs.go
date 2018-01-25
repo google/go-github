@@ -20,7 +20,7 @@ type OrganizationsService service
 // Organization represents a GitHub organization account.
 type Organization struct {
 	Login             *string    `json:"login,omitempty"`
-	ID                *int       `json:"id,omitempty"`
+	ID                *int64     `json:"id,omitempty"`
 	AvatarURL         *string    `json:"avatar_url,omitempty"`
 	HTMLURL           *string    `json:"html_url,omitempty"`
 	Name              *string    `json:"name,omitempty"`
@@ -167,7 +167,7 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 // GetByID fetches an organization.
 //
 // Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
-func (s *OrganizationsService) GetByID(ctx context.Context, id int) (*Organization, *Response, error) {
+func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
 	u := fmt.Sprintf("organizations/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

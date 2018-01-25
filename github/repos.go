@@ -20,7 +20,7 @@ type RepositoriesService service
 
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID               *int             `json:"id,omitempty"`
+	ID               *int64           `json:"id,omitempty"`
 	Owner            *User            `json:"owner,omitempty"`
 	Name             *string          `json:"name,omitempty"`
 	FullName         *string          `json:"full_name,omitempty"`
@@ -72,7 +72,7 @@ type Repository struct {
 	Archived          *bool   `json:"archived,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
-	TeamID *int `json:"team_id,omitempty"`
+	TeamID *int64 `json:"team_id,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
@@ -233,7 +233,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 // RepositoriesService.ListAll method.
 type RepositoryListAllOptions struct {
 	// ID of the last repository seen
-	Since int `url:"since,omitempty"`
+	Since int64 `url:"since,omitempty"`
 }
 
 // ListAll lists all GitHub repositories in the order that they were created.
@@ -335,7 +335,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 // GetByID fetches a repository.
 //
 // Note: GetByID uses the undocumented GitHub API endpoint /repositories/:id.
-func (s *RepositoriesService) GetByID(ctx context.Context, id int) (*Repository, *Response, error) {
+func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repositories/%d", id)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 // Contributor represents a repository contributor
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
-	ID                *int    `json:"id,omitempty"`
+	ID                *int64  `json:"id,omitempty"`
 	AvatarURL         *string `json:"avatar_url,omitempty"`
 	GravatarID        *string `json:"gravatar_id,omitempty"`
 	URL               *string `json:"url,omitempty"`
@@ -1042,8 +1042,8 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
-	NewOwner string `json:"new_owner"`
-	TeamID   []int  `json:"team_id,omitempty"`
+	NewOwner string  `json:"new_owner"`
+	TeamID   []int64 `json:"team_id,omitempty"`
 }
 
 // Transfer transfers a repository from one account or organization to another.

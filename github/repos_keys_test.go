@@ -30,7 +30,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int64(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -58,7 +58,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int(1)}
+	want := &Key{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -95,7 +95,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int(1)}
+	want := &Key{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -132,7 +132,7 @@ func TestRepositoriesService_EditKey(t *testing.T) {
 		t.Errorf("Repositories.EditKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int(1)}
+	want := &Key{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.EditKey returned %+v, want %+v", key, want)
 	}
