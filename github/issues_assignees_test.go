@@ -30,7 +30,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 		t.Errorf("Issues.ListAssignees returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(assignees, want) {
 		t.Errorf("Issues.ListAssignees returned %+v, want %+v", assignees, want)
 	}

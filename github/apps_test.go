@@ -28,7 +28,7 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
 
-	want := &App{ID: Int(1)}
+	want := &App{ID: Int64(1)}
 	if !reflect.DeepEqual(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", app, want)
 	}
@@ -75,7 +75,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int(1)}}
+	want := []*Installation{{ID: Int64(1)}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
 	}
@@ -96,7 +96,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 		t.Errorf("Apps.GetInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int(1)}
+	want := &Installation{ID: Int64(1)}
 	if !reflect.DeepEqual(installation, want) {
 		t.Errorf("Apps.GetInstallation returned %+v, want %+v", installation, want)
 	}
@@ -122,7 +122,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 		t.Errorf("Apps.ListUserInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int(1)}}
+	want := []*Installation{{ID: Int64(1)}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListUserInstallations returned %+v, want %+v", installations, want)
 	}

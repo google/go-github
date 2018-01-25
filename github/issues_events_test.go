@@ -32,7 +32,7 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 		t.Errorf("Issues.ListIssueEvents returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Int(1)}}
+	want := []*IssueEvent{{ID: Int64(1)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Issues.ListIssueEvents returned %+v, want %+v", events, want)
 	}
@@ -57,7 +57,7 @@ func TestIssuesService_ListRepositoryEvents(t *testing.T) {
 		t.Errorf("Issues.ListRepositoryEvents returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Int(1)}}
+	want := []*IssueEvent{{ID: Int64(1)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Issues.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
@@ -77,7 +77,7 @@ func TestIssuesService_GetEvent(t *testing.T) {
 		t.Errorf("Issues.GetEvent returned error: %v", err)
 	}
 
-	want := &IssueEvent{ID: Int(1)}
+	want := &IssueEvent{ID: Int64(1)}
 	if !reflect.DeepEqual(event, want) {
 		t.Errorf("Issues.GetEvent returned %+v, want %+v", event, want)
 	}

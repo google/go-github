@@ -119,8 +119,8 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		t.Errorf("CommitAuthors returned error: %v", err)
 	}
 	want := []*SourceImportAuthor{
-		{ID: Int(1), Name: String("a")},
-		{ID: Int(2), Name: String("b")},
+		{ID: Int64(1), Name: String("a")},
+		{ID: Int64(2), Name: String("b")},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CommitAuthors = %+v, want %+v", got, want)
@@ -150,7 +150,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	if err != nil {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
 	}
-	want := &SourceImportAuthor{ID: Int(1)}
+	want := &SourceImportAuthor{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("MapCommitAuthor = %+v, want %+v", got, want)
 	}
