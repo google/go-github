@@ -240,13 +240,13 @@ straightforward.
 
 ## Versioning ##
 
-In general, go-github follows [semver](http://semver.org/) as closely as we can
-for tagging releases of the package. For self-contained libraries, the
+In general, go-github follows [semver](https://semver.org/) as closely as we
+can for tagging releases of the package. For self-contained libraries, the
 application of semantic versioning is relatively straightforward and generally
-understood. But because go-github is a client library for the GitHub API,
-which itself changes behavior, and because we are typically pretty aggressive
-about implementing preview features of the GitHub API, we've adopted the
-following versioning policy:
+understood. But because go-github is a client library for the GitHub API, which
+itself changes behavior, and because we are typically pretty aggressive about
+implementing preview features of the GitHub API, we've adopted the following
+versioning policy:
 
 * We increment the **major version** with any incompatible change to
 	non-preview functionality, including changes to the exported Go API surface
