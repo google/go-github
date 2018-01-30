@@ -238,6 +238,29 @@ straightforward.
 [roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
 [contributing]: CONTRIBUTING.md
 
+## Versioning ##
+
+In general, go-github follows [semver](https://semver.org/) as closely as we
+can for tagging releases of the package. For self-contained libraries, the
+application of semantic versioning is relatively straightforward and generally
+understood. But because go-github is a client library for the GitHub API, which
+itself changes behavior, and because we are typically pretty aggressive about
+implementing preview features of the GitHub API, we've adopted the following
+versioning policy:
+
+* We increment the **major version** with any incompatible change to
+	non-preview functionality, including changes to the exported Go API surface
+	or behavior of the API.
+* We increment the **minor version** with any backwards-compatible changes to
+	functionality, as well as any changes to preview functionality in the GitHub
+	API. GitHub makes no guarantee about the stability of preview functionality,
+	so neither do we consider it a stable part of the go-github API.
+* We increment the **patch version** with any backwards-compatible bug fixes.
+
+Preview functionality may take the form of entire methods or simply additional
+data returned from an otherwise non-preview method. Refer to the GitHub API
+documentation for details on preview functionality.
+
 ## License ##
 
 This library is distributed under the BSD-style license found in the [LICENSE](./LICENSE)
