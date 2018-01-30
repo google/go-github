@@ -243,7 +243,7 @@ straightforward.
 In general, go-github follows [semver](http://semver.org/) as closely as we can
 for tagging releases of the package. For self-contained libraries, the
 application of semantic versioning is relatively straightforward and generally
-understood.  But because go-github is a client library for the GitHub API,
+understood. But because go-github is a client library for the GitHub API,
 which itself changes behavior, and because we are typically pretty aggressive
 about implementing preview features of the GitHub API, we've adopted the
 following versioning policy:
@@ -258,9 +258,8 @@ following versioning policy:
 * We increment the **patch version** with any backwards-compatible bug fixes.
 
 Preview functionality may take the form of entire methods or simply additional
-data returned from an otherwise non-preview method.  We do our best to call out
-which portions of a method's behavior and/or data are part of a GitHub Preview
-in the appropriate Go doc.
+data returned from an otherwise non-preview method. Refer to the GitHub API
+documentation for details on preview functionality.
 
 ## License ##
 
