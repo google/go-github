@@ -113,6 +113,9 @@ const (
 
 	// https://developer.github.com/changes/2017-12-19-graphql-node-id/
 	mediaTypeGraphQLNodeIDPreview = "application/vnd.github.jean-grey-preview+json"
+
+	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
+	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

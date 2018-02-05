@@ -297,3 +297,44 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 	}
 	return pendingInvitations, resp, nil
 }
+
+// CreateOrgInvitationOptions specifies the parameters to the OrganizationService.Invite
+// method.
+type CreateOrgInvitationOptions struct {
+	InviteeID *int    `json:"invitee_id,omitempty"`
+	Email     *string `json:"email,omitempty"`
+	// Specify role for new member. Can be one of:
+	// * admin - Organization owners with full administrative rights to the
+	// 	 organization and complete access to all repositories and teams.
+	// * direct_member - Non-owner organization members with ability to see
+	//   other members and join teams by invitation.
+	// * billing_manager - Non-owner organization members with ability to
+	//   manage the billing settings of your organization.
+	Role   *string `json:"role"`
+	TeamID []int   `json:"team_ids"`
+}
+
+// CreateOrgInvitation Invite people to an organization by using their GitHub user ID or their email address.
+// In order to create invitations in an organization,
+// the authenticated user must be an organization owner.
+//
+// https://developer.github.com/v3/orgs/members/#create-organization-invitation
+func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opt *CreateOrgInvitationOptions) ([]*Invitation, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/invitations", org)
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeOrganizationInvitationPreview)
+
+	var invitations []*Invitation
+	resp, err := s.client.Do(ctx, req, &invitations)
+	if err != nil {
+		return nil, resp, err
+	}
+	return invitations, resp, nil
+
+}

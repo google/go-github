@@ -444,3 +444,40 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 }
+
+func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	input := &CreateOrgInvitationOptions{
+		Email: String("octocat@github.com"),
+		Role:  String("direct_member"),
+		TeamID: []int{
+			12,
+			26,
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
+		v := new(CreateOrgInvitationOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprintln(w, `[{"email": "octocat@github.com"}]`)
+
+	})
+
+	invitations, _, err := client.Organizations.CreateOrgInvitation(context.Background(), "o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateOrgInvitation returned error: %v", err)
+	}
+
+	want := []*Invitation{&Invitation{Email: String("octocat@github.com")}}
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
+	}
+}
