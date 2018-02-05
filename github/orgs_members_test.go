@@ -400,7 +400,9 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
       						"received_events_url": "https://api.github.com/users/other_user/received_events/privacy",
       						"type": "User",
       						"site_admin": false
-    					}
+						},
+						"team_count": 2,
+						"invitation_team_url": "https://api.github.com/organizations/2/invitations/1/teams"	  	
   				}
 			]`)
 	})
@@ -438,6 +440,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 				Type:              String("User"),
 				SiteAdmin:         Bool(false),
 			},
+			TeamCount:         Int64(2),
+			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
 		}}
 
 	if !reflect.DeepEqual(invitations, want) {
