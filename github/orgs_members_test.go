@@ -455,7 +455,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	input := &CreateOrgInvitationOptions{
 		Email: String("octocat@github.com"),
 		Role:  String("direct_member"),
-		TeamID: []int{
+		TeamID: []int64{
 			12,
 			26,
 		},
@@ -483,5 +483,52 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	want := []*Invitation{&Invitation{Email: String("octocat@github.com")}}
 	if !reflect.DeepEqual(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
+	}
+}
+
+func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/invitations/22/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1"})
+		fmt.Fprint(w, `[
+			{
+				"id": 1,
+				"url": "https://api.github.com/teams/1",
+				"name": "Justice League",
+				"slug": "justice-league",
+				"description": "A great team.",
+				"privacy": "closed",
+				"permission": "admin",
+				"members_url": "https://api.github.com/teams/1/members{/member}",
+				"repositories_url": "https://api.github.com/teams/1/repos"
+			  }
+			]`)
+	})
+
+	opt := &ListOptions{Page: 1}
+	invitations, _, err := client.Organizations.ListOrgInvitationTeams(context.Background(), "o", "22", opt)
+	if err != nil {
+		t.Errorf("Organizations.ListOrgInvitationTeams returned error: %v", err)
+	}
+
+	want := []*Team{
+		{
+			ID:              Int64(1),
+			URL:             String("https://api.github.com/teams/1"),
+			Name:            String("Justice League"),
+			Slug:            String("justice-league"),
+			Description:     String("A great team."),
+			Privacy:         String("closed"),
+			Permission:      String("admin"),
+			MembersURL:      String("https://api.github.com/teams/1/members{/member}"),
+			RepositoriesURL: String("https://api.github.com/teams/1/repos"),
+		},
+	}
+
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Organizations.ListOrgInvitationTeams returned %+v, want %+v", invitations, want)
 	}
 }
