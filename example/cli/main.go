@@ -11,10 +11,10 @@ func main() {
 		fmt.Println("Unauthorized: No token present")
 		return
 	}
-	name := os.Args[1:]
-	if len(name) == 0 {
+	if len(os.Args[1:]) == 0 {
 		fmt.Println("No name: New repos must be given a name")
 		return
 	}
+	name := os.Args[1:][0]
 	fmt.Println(name)
 }
