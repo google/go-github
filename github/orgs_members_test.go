@@ -480,7 +480,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		t.Errorf("Organizations.CreateOrgInvitation returned error: %v", err)
 	}
 
-	want := []*Invitation{&Invitation{Email: String("octocat@github.com")}}
+	want := []*Invitation{{Email: String("octocat@github.com")}}
 	if !reflect.DeepEqual(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
