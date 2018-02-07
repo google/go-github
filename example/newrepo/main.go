@@ -4,13 +4,15 @@
 // license that can be found in the LICENSE file.
 
 // The newrepo command utilizes go-github as a cli tool for
-// creating new repositories.
-
+// creating new repositories. It takes an auth token as
+// an enviroment variable and creates the new repo under
+// the account affiliated with that token.
 package main
 
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -22,22 +24,20 @@ func main() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	name := strings.Join(os.Args[1:], "-")
 	if token == "" {
-		fmt.Println("Unauthorized: No token present")
-		return
+		log.Fatal("Unauthorized: No token present")
 	}
 	if name == "" {
-		fmt.Println("No name: New repos must be given a name")
-		return
+		log.Fatal("No name: New repos must be given a name")
 	}
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
-	repo := &github.Repository{Name: github.String(name)}
+	r := &github.Repository{Name: github.String(name)}
 
-	repo, _, err := client.Repositories.Create(ctx, "", repo)
+	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Fatal(err)
 	}
-	fmt.Println("Sucsesfully created new repo: ", *repo.Name)
+	fmt.Printf("Successfully created new repo: %v\n", repo.GetName())
 }
