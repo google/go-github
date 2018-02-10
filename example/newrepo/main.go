@@ -20,7 +20,9 @@ import (
 	"golang.org/x/oauth2"
 )
 
-var repoName = flag.String("repo", "", "Name of repo to create in authenticated user's GitHub account.")
+var name = flag.String("name", "", "Name of repo to create in authenticated user's GitHub account.")
+var description = flag.String("description", "", "Description of created repo.")
+var private = flag.Bool("private", false, "Will created repo be private.")
 
 func main() {
 	flag.Parse()
@@ -28,7 +30,7 @@ func main() {
 	if token == "" {
 		log.Fatal("Unauthorized: No token present")
 	}
-	if *repoName == "" {
+	if *name == "" {
 		log.Fatal("No name: New repos must be given a name")
 	}
 	ctx := context.Background()
@@ -36,7 +38,9 @@ func main() {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	r := &github.Repository{Name: github.String(*repoName)}
+	r := &github.Repository{Name: github.String(*name)}
+	r.Private = github.Bool(*private)
+	r.Description = github.String(*description)
 	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
 		log.Fatal(err)
