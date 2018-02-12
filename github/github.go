@@ -113,6 +113,9 @@ const (
 
 	// https://developer.github.com/changes/2017-12-19-graphql-node-id/
 	mediaTypeGraphQLNodeIDPreview = "application/vnd.github.jean-grey-preview+json"
+
+	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
+	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -155,6 +158,7 @@ type Client struct {
 	Repositories   *RepositoriesService
 	Search         *SearchService
 	Users          *UsersService
+	Teams          *TeamsService
 }
 
 type service struct {
@@ -245,6 +249,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
+	c.Teams = (*TeamsService)(&c.common)
 	return c
 }
 
