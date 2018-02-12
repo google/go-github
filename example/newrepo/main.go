@@ -40,9 +40,7 @@ func main() {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	r := &github.Repository{Name: github.String(*name)}
-	r.Private = github.Bool(*private)
-	r.Description = github.String(*description)
+	r := &github.Repository{Name: name, Private: private, Description: description}
 	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
 		log.Fatal(err)
