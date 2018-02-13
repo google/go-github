@@ -444,3 +444,49 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 }
+
+func TestOrganizationsService_PublicizeMembership(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Organizations.PublicizeMembership(context.Background(), "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.PublicizeMembership returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, err := client.Organizations.PublicizeMembership(context.Background(), "%", "u")
+	testURLParseError(t, err)
+}
+
+func TestOrganizationsService_ConcealMembership(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Organizations.ConcealMembership(context.Background(), "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.ConcealMembership returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, err := client.Organizations.ConcealMembership(context.Background(), "%", "u")
+	testURLParseError(t, err)
+}
