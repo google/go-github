@@ -26,6 +26,10 @@ type DiscussionComment struct {
 	URL           *string    `json:"url,omitempty"`
 }
 
+func (c DiscussionComment) String() string {
+	return Stringify(c)
+}
+
 // DiscussionCommentListOptions specifies optional parameters to the
 // TeamServices.ListComments method
 type DiscussionCommentListOptions struct {

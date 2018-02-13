@@ -31,6 +31,10 @@ type TeamDiscussion struct {
 	URL           *string    `json:"url,omitempty"`
 }
 
+func (d TeamDiscussion) String() string {
+	return Stringify(d)
+}
+
 // DiscussionListOptions specifies optional parameters to the
 // TeamServices.ListDiscussions method
 type DiscussionListOptions struct {
