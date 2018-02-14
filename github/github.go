@@ -157,8 +157,8 @@ type Client struct {
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
-	Users          *UsersService
 	Teams          *TeamsService
+	Users          *UsersService
 }
 
 type service struct {
@@ -248,8 +248,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
-	c.Users = (*UsersService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
+	c.Users = (*UsersService)(&c.common)
 	return c
 }
 

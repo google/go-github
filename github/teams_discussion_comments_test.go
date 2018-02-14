@@ -123,7 +123,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 
 	want := &DiscussionComment{Number: Int64(4)}
 	if !reflect.DeepEqual(comment, want) {
-		t.Errorf("ITeams.GetComment returned %+v, want %+v", comment, want)
+		t.Errorf("Teams.GetComment returned %+v, want %+v", comment, want)
 	}
 }
 

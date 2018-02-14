@@ -132,7 +132,7 @@ func TestTeamsService_GetDiscussion(t *testing.T) {
 
 	want := &TeamDiscussion{Number: Int64(3)}
 	if !reflect.DeepEqual(discussion, want) {
-		t.Errorf("ITeams.GetDiscussion returned %+v, want %+v", discussion, want)
+		t.Errorf("Teams.GetDiscussion returned %+v, want %+v", discussion, want)
 	}
 }
 
