@@ -108,22 +108,12 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
 	}
 
-	// TODO: This test fails with 422 Validation Failed [{Resource: Field: Code: Message:}].
-	//       Someone familiar with protection requests needs to come up with
-	//       a valid protection request that doesn't give 422 error.
+	// GitHub API docs: https://developer.github.com/v3/repos/branches/#update-branch-protection
+	// As we can see from the docs, we need to set nil to disable it.
 	protectionRequest := &github.ProtectionRequest{
-		RequiredStatusChecks: &github.RequiredStatusChecks{
-			Strict:   true,
-			Contexts: []string{"continuous-integration"},
-		},
-		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			DismissalRestrictionsRequest: &github.DismissalRestrictionsRequest{
-				Users: []string{},
-				Teams: []string{},
-			},
-			DismissStaleReviews: true,
-		},
-		EnforceAdmins: true,
+		RequiredStatusChecks:       nil,
+		RequiredPullRequestReviews: nil,
+		EnforceAdmins:              true,
 		// TODO: Only organization repositories can have users and team restrictions.
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
