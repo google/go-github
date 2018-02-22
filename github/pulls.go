@@ -29,6 +29,7 @@ type PullRequest struct {
 	UpdatedAt           *time.Time `json:"updated_at,omitempty"`
 	ClosedAt            *time.Time `json:"closed_at,omitempty"`
 	MergedAt            *time.Time `json:"merged_at,omitempty"`
+	Labels              []*Label   `json:"labels,omitempty"`
 	User                *User      `json:"user,omitempty"`
 	Merged              *bool      `json:"merged,omitempty"`
 	Mergeable           *bool      `json:"mergeable,omitempty"`
