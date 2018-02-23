@@ -9,6 +9,7 @@ import (
 	"context"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -16,9 +17,10 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
@@ -37,9 +39,10 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
@@ -59,9 +62,10 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
@@ -80,9 +84,10 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/issues/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
@@ -102,9 +107,10 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
@@ -123,9 +129,10 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
@@ -145,9 +152,10 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
@@ -166,9 +174,10 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))

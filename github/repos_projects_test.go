@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -18,9 +19,10 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -43,9 +45,10 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
 
+	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
