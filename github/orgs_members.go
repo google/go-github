@@ -301,8 +301,11 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 // CreateOrgInvitationOptions specifies the parameters to the OrganizationService.Invite
 // method.
 type CreateOrgInvitationOptions struct {
-	InviteeID *int64  `json:"invitee_id,omitempty"`
-	Email     *string `json:"email,omitempty"`
+	// GitHub user ID for the person you are inviting. Not required if you provide Email.
+	InviteeID *int64 `json:"invitee_id,omitempty"`
+	// Email address of the person you are inviting, which can be an existing GitHub user.
+	// Not required if you provide InviteeID
+	Email *string `json:"email,omitempty"`
 	// Specify role for new member. Can be one of:
 	// * admin - Organization owners with full administrative rights to the
 	// 	 organization and complete access to all repositories and teams.
@@ -310,11 +313,12 @@ type CreateOrgInvitationOptions struct {
 	//   other members and join teams by invitation.
 	// * billing_manager - Non-owner organization members with ability to
 	//   manage the billing settings of your organization.
+	// Default is "direct_member".
 	Role   *string `json:"role"`
 	TeamID []int64 `json:"team_ids"`
 }
 
-// CreateOrgInvitation Invite people to an organization by using their GitHub user ID or their email address.
+// CreateOrgInvitation invites people to an organization by using their GitHub user ID or their email address.
 // In order to create invitations in an organization,
 // the authenticated user must be an organization owner.
 //
@@ -336,15 +340,14 @@ func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org stri
 		return nil, resp, err
 	}
 	return invitations, resp, nil
-
 }
 
-// ListOrgInvitationTeams List all teams associated with an invitation. In order to see invitations in an organization,
+// ListOrgInvitationTeams lists all teams associated with an invitation. In order to see invitations in an organization,
 // the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#list-organization-invitation-teams
-func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org string, invitationid string, opt *ListOptions) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/invitations/%v/teams", org, invitationid)
+func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, invitationID string, opt *ListOptions) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/invitations/%v/teams", org, invitationID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -354,6 +357,9 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org s
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeOrganizationInvitationPreview)
 
 	var orgInvitationTeams []*Team
 	resp, err := s.client.Do(ctx, req, &orgInvitationTeams)

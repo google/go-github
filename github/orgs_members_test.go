@@ -493,6 +493,7 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 	mux.HandleFunc("/orgs/o/invitations/22/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
+		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
 		fmt.Fprint(w, `[
 			{
 				"id": 1,
