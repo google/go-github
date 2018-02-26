@@ -2861,7 +2861,7 @@ func (i *Invitation) GetRole() string {
 }
 
 // GetTeamCount returns the TeamCount field if it's non-nil, zero value otherwise.
-func (i *Invitation) GetTeamCount() int64 {
+func (i *Invitation) GetTeamCount() int {
 	if i == nil || i.TeamCount == nil {
 		return 0
 	}

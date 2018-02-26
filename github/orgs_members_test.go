@@ -440,7 +440,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 				Type:              String("User"),
 				SiteAdmin:         Bool(false),
 			},
-			TeamCount:         Int64(2),
+			TeamCount:         Int(2),
 			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
 		}}
 
