@@ -56,7 +56,7 @@ type Invitation struct {
 	Role              *string    `json:"role,omitempty"`
 	CreatedAt         *time.Time `json:"created_at,omitempty"`
 	Inviter           *User      `json:"inviter,omitempty"`
-	TeamCount         *int    `json:"team_count"`
+	TeamCount         *int       `json:"team_count"`
 	InvitationTeamURL *string    `json:"invitation_team_url"`
 }
 
