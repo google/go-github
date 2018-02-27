@@ -1324,6 +1324,30 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetEmail() string {
+	if c == nil || c.Email == nil {
+		return ""
+	}
+	return *c.Email
+}
+
+// GetInviteeID returns the InviteeID field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
+	if c == nil || c.InviteeID == nil {
+		return 0
+	}
+	return *c.InviteeID
+}
+
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
+func (c *CreateOrgInvitationOptions) GetRole() string {
+	if c == nil || c.Role == nil {
+		return ""
+	}
+	return *c.Role
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -2804,6 +2828,14 @@ func (i *Invitation) GetID() int64 {
 	return *i.ID
 }
 
+// GetInvitationTeamURL returns the InvitationTeamURL field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetInvitationTeamURL() string {
+	if i == nil || i.InvitationTeamURL == nil {
+		return ""
+	}
+	return *i.InvitationTeamURL
+}
+
 // GetInviter returns the Inviter field.
 func (i *Invitation) GetInviter() *User {
 	if i == nil {
@@ -2826,6 +2858,14 @@ func (i *Invitation) GetRole() string {
 		return ""
 	}
 	return *i.Role
+}
+
+// GetTeamCount returns the TeamCount field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetTeamCount() int {
+	if i == nil || i.TeamCount == nil {
+		return 0
+	}
+	return *i.TeamCount
 }
 
 // GetAssignee returns the Assignee field.
