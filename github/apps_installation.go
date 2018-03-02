@@ -10,9 +10,9 @@ import (
 	"fmt"
 )
 
-// InstallationPermissions Lists the permissions for metadata, contents, issues and single file for an installation.
+// InstallationPermissions lists the permissions for metadata, contents, issues and single file for an installation.
 type InstallationPermissions struct {
-	MetaData   *string `json:"metadata,omitempty"`
+	Metadata   *string `json:"metadata,omitempty"`
 	Contents   *string `json:"contents,omitempty"`
 	Issues     *string `json:"issues,omitempty"`
 	SingleFile *string `json:"single_file,omitempty"`
@@ -30,7 +30,7 @@ type Installation struct {
 	TargetType          *string                  `json:"target_type,omitempty"`
 	SingleFileName      *string                  `json:"single_file_name,omitempty"`
 	RepositorySelection *string                  `json:"repository_selection,omitempty"`
-	Events              *[]string                `json:"events,omitempty"`
+	Events              []string                 `json:"events,omitempty"`
 	Permissions         *InstallationPermissions `json:"permissions,omitempty"`
 }
 

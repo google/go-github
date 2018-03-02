@@ -100,11 +100,11 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		SingleFileName:      String("config.yml"),
 		RepositorySelection: String("selected"),
 		Permissions: &InstallationPermissions{
-			MetaData:   String("read"),
+			Metadata:   String("read"),
 			Contents:   String("read"),
 			Issues:     String("write"),
 			SingleFile: String("write")},
-		Events: &[]string{"push", "pull_request"},
+		Events: []string{"push", "pull_request"},
 	}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
