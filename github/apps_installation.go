@@ -10,18 +10,28 @@ import (
 	"fmt"
 )
 
+// InstallationPermissions Lists the permissions for metadata, contents, issues and single file for an installation.
+type InstallationPermissions struct {
+	MetaData   *string `json:"metadata,omitempty"`
+	Contents   *string `json:"contents,omitempty"`
+	Issues     *string `json:"issues,omitempty"`
+	SingleFile *string `json:"single_file,omitempty"`
+}
+
 // Installation represents a GitHub Apps installation.
 type Installation struct {
-	ID                  *int64  `json:"id,omitempty"`
-	AppID               *int64  `json:"app_id,omitempty"`
-	TargetID            *int64  `json:"target_id,omitempty"`
-	Account             *User   `json:"account,omitempty"`
-	AccessTokensURL     *string `json:"access_tokens_url,omitempty"`
-	RepositoriesURL     *string `json:"repositories_url,omitempty"`
-	HTMLURL             *string `json:"html_url,omitempty"`
-	TargetType          *string `json:"target_type,omitempty"`
-	SingleFileName      *string `json:"single_file,omitempty"`
-	RepositorySelection *string `json:"repository_selection,omitempty"`
+	ID                  *int64                   `json:"id,omitempty"`
+	AppID               *int64                   `json:"app_id,omitempty"`
+	TargetID            *int64                   `json:"target_id,omitempty"`
+	Account             *User                    `json:"account,omitempty"`
+	AccessTokensURL     *string                  `json:"access_tokens_url,omitempty"`
+	RepositoriesURL     *string                  `json:"repositories_url,omitempty"`
+	HTMLURL             *string                  `json:"html_url,omitempty"`
+	TargetType          *string                  `json:"target_type,omitempty"`
+	SingleFileName      *string                  `json:"single_file_name,omitempty"`
+	RepositorySelection *string                  `json:"repository_selection,omitempty"`
+	Events              *[]string                `json:"events,omitempty"`
+	Permissions         *InstallationPermissions `json:"permissions,omitempty"`
 }
 
 func (i Installation) String() string {
