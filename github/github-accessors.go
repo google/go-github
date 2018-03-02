@@ -2740,6 +2740,22 @@ func (i *Installation) GetRepositoriesURL() string {
 	return *i.RepositoriesURL
 }
 
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (i *Installation) GetRepositorySelection() string {
+	if i == nil || i.RepositorySelection == nil {
+		return ""
+	}
+	return *i.RepositorySelection
+}
+
+// GetSingleFileName returns the SingleFileName field if it's non-nil, zero value otherwise.
+func (i *Installation) GetSingleFileName() string {
+	if i == nil || i.SingleFileName == nil {
+		return ""
+	}
+	return *i.SingleFileName
+}
+
 // GetTargetID returns the TargetID field if it's non-nil, zero value otherwise.
 func (i *Installation) GetTargetID() int64 {
 	if i == nil || i.TargetID == nil {
