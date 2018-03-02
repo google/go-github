@@ -66,7 +66,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `[{"id":1, "app_id":1, "target_id":1}]`)
+		fmt.Fprint(w, `[{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}]`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -75,7 +75,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1)}}
+	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
 	}
@@ -88,7 +88,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
-		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1}`)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
 	installation, _, err := client.Apps.GetInstallation(context.Background(), 1)
@@ -96,7 +96,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 		t.Errorf("Apps.GetInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1)}
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
 	if !reflect.DeepEqual(installation, want) {
 		t.Errorf("Apps.GetInstallation returned %+v, want %+v", installation, want)
 	}
@@ -113,7 +113,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `{"installations":[{"id":1, "app_id":1, "target_id":1}]}`)
+		fmt.Fprint(w, `{"installations":[{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}]}`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -122,7 +122,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 		t.Errorf("Apps.ListUserInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1)}}
+	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListUserInstallations returned %+v, want %+v", installations, want)
 	}

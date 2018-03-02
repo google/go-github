@@ -19,6 +19,7 @@ type Installation struct {
 	AccessTokensURL *string `json:"access_tokens_url,omitempty"`
 	RepositoriesURL *string `json:"repositories_url,omitempty"`
 	HTMLURL         *string `json:"html_url,omitempty"`
+	TargetType      *string `json:"target_type,omitempty"`
 }
 
 func (i Installation) String() string {
