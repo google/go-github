@@ -66,7 +66,24 @@ func TestAppsService_ListInstallations(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `[{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}]`)
+		fmt.Fprint(w, `[{
+                                   "id":1,
+                                   "app_id":1,
+                                   "target_id":1,
+                                   "target_type": "Organization",
+                                   "permissions": {
+                                       "metadata": "read",
+                                       "contents": "read",
+                                       "issues": "write",
+                                       "single_file": "write"
+                                   },
+                                  "events": [
+                                      "push",
+                                      "pull_request"
+                                  ],
+                                 "single_file_name": "config.yml",
+                                 "repository_selection": "selected"}]`,
+		)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -75,7 +92,20 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}}
+	want := []*Installation{{
+		ID:                  Int64(1),
+		AppID:               Int64(1),
+		TargetID:            Int64(1),
+		TargetType:          String("Organization"),
+		SingleFileName:      String("config.yml"),
+		RepositorySelection: String("selected"),
+		Permissions: &InstallationPermissions{
+			MetaData:   String("read"),
+			Contents:   String("read"),
+			Issues:     String("write"),
+			SingleFile: String("write")},
+		Events: &[]string{"push", "pull_request"},
+	}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
 	}
