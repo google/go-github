@@ -2740,6 +2740,14 @@ func (i *Installation) GetRepositoriesURL() string {
 	return *i.RepositoriesURL
 }
 
+// GetTargetID returns the TargetID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetTargetID() int64 {
+	if i == nil || i.TargetID == nil {
+		return 0
+	}
+	return *i.TargetID
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (i *InstallationEvent) GetAction() string {
 	if i == nil || i.Action == nil {
