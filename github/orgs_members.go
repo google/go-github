@@ -323,7 +323,7 @@ type CreateOrgInvitationOptions struct {
 // the authenticated user must be an organization owner.
 //
 // https://developer.github.com/v3/orgs/members/#create-organization-invitation
-func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opt *CreateOrgInvitationOptions) ([]*Invitation, *Response, error) {
+func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opt *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 
 	req, err := s.client.NewRequest("POST", u, opt)
@@ -334,12 +334,12 @@ func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org stri
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeOrganizationInvitationPreview)
 
-	var invitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &invitations)
+	var invitation *Invitation
+	resp, err := s.client.Do(ctx, req, &invitation)
 	if err != nil {
 		return nil, resp, err
 	}
-	return invitations, resp, nil
+	return invitation, resp, nil
 }
 
 // ListOrgInvitationTeams lists all teams associated with an invitation. In order to see invitations in an organization,
