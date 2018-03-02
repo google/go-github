@@ -2716,14 +2716,6 @@ func (i *Installation) GetAppID() int64 {
 	return *i.AppID
 }
 
-// GetEvents returns the Events field if it's non-nil, zero value otherwise.
-func (i *Installation) GetEvents() []string {
-	if i == nil || i.Events == nil {
-		return nil
-	}
-	return *i.Events
-}
-
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (i *Installation) GetHTMLURL() string {
 	if i == nil || i.HTMLURL == nil {
@@ -2828,12 +2820,12 @@ func (i *InstallationPermissions) GetIssues() string {
 	return *i.Issues
 }
 
-// GetMetaData returns the MetaData field if it's non-nil, zero value otherwise.
-func (i *InstallationPermissions) GetMetaData() string {
-	if i == nil || i.MetaData == nil {
+// GetMetadata returns the Metadata field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetMetadata() string {
+	if i == nil || i.Metadata == nil {
 		return ""
 	}
-	return *i.MetaData
+	return *i.Metadata
 }
 
 // GetSingleFile returns the SingleFile field if it's non-nil, zero value otherwise.
