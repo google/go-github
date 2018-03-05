@@ -99,9 +99,6 @@ const (
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
 
-	// https://developer.github.com/changes/2017-07-26-team-review-request-thor-preview/
-	mediaTypeTeamReviewPreview = "application/vnd.github.thor-preview+json"
-
 	// https://developer.github.com/v3/apps/marketplace/
 	mediaTypeMarketplacePreview = "application/vnd.github.valkyrie-preview+json"
 
@@ -113,6 +110,9 @@ const (
 
 	// https://developer.github.com/changes/2017-12-19-graphql-node-id/
 	mediaTypeGraphQLNodeIDPreview = "application/vnd.github.jean-grey-preview+json"
+
+	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
+	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
 
 	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
 	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"

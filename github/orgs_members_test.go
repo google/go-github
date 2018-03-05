@@ -400,7 +400,9 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
       						"received_events_url": "https://api.github.com/users/other_user/received_events/privacy",
       						"type": "User",
       						"site_admin": false
-    					}
+						},
+						"team_count": 2,
+						"invitation_team_url": "https://api.github.com/organizations/2/invitations/1/teams"	  	
   				}
 			]`)
 	})
@@ -438,6 +440,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 				Type:              String("User"),
 				SiteAdmin:         Bool(false),
 			},
+			TeamCount:         Int(2),
+			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
 		}}
 
 	if !reflect.DeepEqual(invitations, want) {
@@ -489,4 +493,89 @@ func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
 
 	_, err := client.Organizations.ConcealMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
+}
+
+func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	input := &CreateOrgInvitationOptions{
+		Email: String("octocat@github.com"),
+		Role:  String("direct_member"),
+		TeamID: []int64{
+			12,
+			26,
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
+		v := new(CreateOrgInvitationOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprintln(w, `{"email": "octocat@github.com"}`)
+
+	})
+
+	invitations, _, err := client.Organizations.CreateOrgInvitation(context.Background(), "o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateOrgInvitation returned error: %v", err)
+	}
+
+	want := &Invitation{Email: String("octocat@github.com")}
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
+	}
+}
+
+func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/invitations/22/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1"})
+		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
+		fmt.Fprint(w, `[
+			{
+				"id": 1,
+				"url": "https://api.github.com/teams/1",
+				"name": "Justice League",
+				"slug": "justice-league",
+				"description": "A great team.",
+				"privacy": "closed",
+				"permission": "admin",
+				"members_url": "https://api.github.com/teams/1/members{/member}",
+				"repositories_url": "https://api.github.com/teams/1/repos"
+			  }
+			]`)
+	})
+
+	opt := &ListOptions{Page: 1}
+	invitations, _, err := client.Organizations.ListOrgInvitationTeams(context.Background(), "o", "22", opt)
+	if err != nil {
+		t.Errorf("Organizations.ListOrgInvitationTeams returned error: %v", err)
+	}
+
+	want := []*Team{
+		{
+			ID:              Int64(1),
+			URL:             String("https://api.github.com/teams/1"),
+			Name:            String("Justice League"),
+			Slug:            String("justice-league"),
+			Description:     String("A great team."),
+			Privacy:         String("closed"),
+			Permission:      String("admin"),
+			MembersURL:      String("https://api.github.com/teams/1/members{/member}"),
+			RepositoriesURL: String("https://api.github.com/teams/1/repos"),
+		},
+	}
+
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Organizations.ListOrgInvitationTeams returned %+v, want %+v", invitations, want)
+	}
 }
