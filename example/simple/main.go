@@ -11,6 +11,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/github"
 )
@@ -30,8 +31,7 @@ func main() {
 
 	organizations, err := FetchOrganizations(username)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Unable to fetch organizations: %v", err)
 	}
 
 	for i, organization := range organizations {
