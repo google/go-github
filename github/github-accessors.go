@@ -5980,12 +5980,12 @@ func (p *PullRequest) GetPatchURL() string {
 	return *p.PatchURL
 }
 
-// GetRequestedReviewer returns the RequestedReviewer field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetRequestedReviewer() string {
-	if p == nil || p.RequestedReviewer == nil {
-		return ""
+// GetRequestedReviewers returns the RequestedReviewers field.
+func (p *PullRequest) GetRequestedReviewers() *User {
+	if p == nil {
+		return nil
 	}
-	return *p.RequestedReviewer
+	return p.RequestedReviewers
 }
 
 // GetReviewCommentsURL returns the ReviewCommentsURL field if it's non-nil, zero value otherwise.
@@ -6266,6 +6266,14 @@ func (p *PullRequestEvent) GetRepo() *Repository {
 		return nil
 	}
 	return p.Repo
+}
+
+// GetRequestedReviewer returns the RequestedReviewer field.
+func (p *PullRequestEvent) GetRequestedReviewer() *User {
+	if p == nil {
+		return nil
+	}
+	return p.RequestedReviewer
 }
 
 // GetSender returns the Sender field.
