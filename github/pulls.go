@@ -55,6 +55,7 @@ type PullRequest struct {
 	MaintainerCanModify *bool      `json:"maintainer_can_modify,omitempty"`
 	AuthorAssociation   *string    `json:"author_association,omitempty"`
 	NodeID              *string    `json:"node_id,omitempty"`
+	RequestedReviewers  *User      `json:"requested_reviewers,omitempty"` // Populated in "review_requested", "review_request_removed"
 
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
