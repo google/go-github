@@ -687,7 +687,7 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-	case r.StatusCode == http.StatusForbidden && errorResponse.DocumentationURL == "https://developer.github.com/v3/#abuse-rate-limits":
+	case r.StatusCode == http.StatusForbidden && strings.HasPrefix(errorResponse.Message, "You have triggered an abuse detection mechanism"):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
