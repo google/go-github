@@ -5980,6 +5980,14 @@ func (p *PullRequest) GetPatchURL() string {
 	return *p.PatchURL
 }
 
+// GetRequestedReviewer returns the RequestedReviewer field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetRequestedReviewer() string {
+	if p == nil || p.RequestedReviewer == nil {
+		return ""
+	}
+	return *p.RequestedReviewer
+}
+
 // GetReviewCommentsURL returns the ReviewCommentsURL field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetReviewCommentsURL() string {
 	if p == nil || p.ReviewCommentsURL == nil {
