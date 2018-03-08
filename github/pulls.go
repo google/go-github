@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -118,7 +119,8 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var pulls []*PullRequest
 	resp, err := s.client.Do(ctx, req, &pulls)
@@ -140,7 +142,8 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	pull := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, pull)
@@ -198,7 +201,8 @@ func (s *PullRequestsService) Create(ctx context.Context, owner string, repo str
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, p)
@@ -247,7 +251,8 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, p)
