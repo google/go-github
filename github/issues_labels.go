@@ -8,15 +8,18 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Label represents a GitHub label on an Issue
 type Label struct {
-	ID     *int64  `json:"id,omitempty"`
-	URL    *string `json:"url,omitempty"`
-	Name   *string `json:"name,omitempty"`
-	Color  *string `json:"color,omitempty"`
-	NodeID *string `json:"node_id,omitempty"`
+	ID          *int64  `json:"id,omitempty"`
+	URL         *string `json:"url,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Color       *string `json:"color,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Default     *bool   `json:"default,omitempty"`
+	NodeID      *string `json:"node_id,omitempty"`
 }
 
 func (l Label) String() string {
@@ -39,7 +42,8 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var labels []*Label
 	resp, err := s.client.Do(ctx, req, &labels)
@@ -61,7 +65,8 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner string, repo string,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	label := new(Label)
 	resp, err := s.client.Do(ctx, req, label)
@@ -83,7 +88,8 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner string, repo stri
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	l := new(Label)
 	resp, err := s.client.Do(ctx, req, l)
@@ -105,7 +111,8 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner string, repo string
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	l := new(Label)
 	resp, err := s.client.Do(ctx, req, l)
@@ -144,7 +151,8 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, rep
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var labels []*Label
 	resp, err := s.client.Do(ctx, req, &labels)
@@ -166,7 +174,8 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var l []*Label
 	resp, err := s.client.Do(ctx, req, &l)
@@ -183,9 +192,14 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner string, repo string, number int, label string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels/%v", owner, repo, number, label)
 	req, err := s.client.NewRequest("DELETE", u, nil)
+
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -200,7 +214,8 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner string,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var l []*Label
 	resp, err := s.client.Do(ctx, req, &l)
@@ -220,6 +235,10 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner string, 
 	if err != nil {
 		return nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -239,7 +258,8 @@ func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGraphQLNodeIDPreview)
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var labels []*Label
 	resp, err := s.client.Do(ctx, req, &labels)
