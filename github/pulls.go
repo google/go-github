@@ -57,7 +57,7 @@ type PullRequest struct {
 	MaintainerCanModify *bool      `json:"maintainer_can_modify,omitempty"`
 	AuthorAssociation   *string    `json:"author_association,omitempty"`
 	NodeID              *string    `json:"node_id,omitempty"`
-	RequestedReviewers  *User      `json:"requested_reviewers,omitempty"` // These are the current requested reviewers of the pull request
+	RequestedReviewers  *[]User    `json:"requested_reviewers,omitempty"` // These are the current requested reviewers of the pull request
 
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
