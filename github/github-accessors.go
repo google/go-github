@@ -5996,14 +5996,6 @@ func (p *PullRequest) GetPatchURL() string {
 	return *p.PatchURL
 }
 
-// GetRequestedReviewers returns the RequestedReviewers field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetRequestedReviewers() []User {
-	if p == nil || p.RequestedReviewers == nil {
-		return nil
-	}
-	return *p.RequestedReviewers
-}
-
 // GetReviewCommentsURL returns the ReviewCommentsURL field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetReviewCommentsURL() string {
 	if p == nil || p.ReviewCommentsURL == nil {
