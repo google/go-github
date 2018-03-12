@@ -495,6 +495,7 @@ type PullRequestEvent struct {
 	Repo               *Repository   `json:"repository,omitempty"`
 	Sender             *User         `json:"sender,omitempty"`
 	Installation       *Installation `json:"installation,omitempty"`
+	Label              *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
