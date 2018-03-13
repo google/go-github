@@ -1,9 +1,10 @@
 sudo: false
 language: go
 go:
-  - 1.9.x
-  - 1.8.x
-  - 1.7.x
+  - "1.10.x"
+  - "1.9.x"
+  - "1.8.x"
+  - "1.7.x"
   - master
 matrix:
   allow_failures:
