@@ -6268,6 +6268,14 @@ func (p *PullRequestEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetLabel returns the Label field.
+func (p *PullRequestEvent) GetLabel() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Label
+}
+
 // GetDiffURL returns the DiffURL field if it's non-nil, zero value otherwise.
 func (p *PullRequestLinks) GetDiffURL() string {
 	if p == nil || p.DiffURL == nil {
