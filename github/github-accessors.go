@@ -6236,6 +6236,14 @@ func (p *PullRequestEvent) GetInstallation() *Installation {
 	return p.Installation
 }
 
+// GetLabel returns the Label field.
+func (p *PullRequestEvent) GetLabel() *Label {
+	if p == nil {
+		return nil
+	}
+	return p.Label
+}
+
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
 func (p *PullRequestEvent) GetNumber() int {
 	if p == nil || p.Number == nil {
@@ -6266,14 +6274,6 @@ func (p *PullRequestEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
-}
-
-// GetLabel returns the Label field.
-func (p *PullRequestEvent) GetLabel() *Label {
-	if p == nil {
-		return nil
-	}
-	return p.Label
 }
 
 // GetDiffURL returns the DiffURL field if it's non-nil, zero value otherwise.
