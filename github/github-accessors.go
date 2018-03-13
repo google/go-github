@@ -6269,7 +6269,7 @@ func (p *PullRequestEvent) GetSender() *User {
 }
 
 // GetLabel returns the Label field.
-func (p *PullRequestEvent) GetLabel() *User {
+func (p *PullRequestEvent) GetLabel() *Label {
 	if p == nil {
 		return nil
 	}
