@@ -490,11 +490,14 @@ type PullRequestEvent struct {
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes           *EditChange   `json:"changes,omitempty"`
-	RequestedReviewer *User         `json:"requested_reviewer,omitempty"` // Populated in "review_requested", "review_request_removed" event deliveries. A request for multiple users to review at once is split into multiple requests, each with a single, different RequestedReviewer.
+	Changes *EditChange `json:"changes,omitempty"`
+	// RequestedReviewer is populated in "review_requested", "review_request_removed" event deliveries. A request for
+	// multiple users to review at once is split into multiple requests, each with a single, different RequestedReviewer.
+	RequestedReviewer *User         `json:"requested_reviewer,omitempty"`
 	Repo              *Repository   `json:"repository,omitempty"`
 	Sender            *User         `json:"sender,omitempty"`
 	Installation      *Installation `json:"installation,omitempty"`
+	Label             *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
