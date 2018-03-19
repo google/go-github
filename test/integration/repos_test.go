@@ -128,7 +128,6 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Repositories.UpdateBranchProtection() returned error: %v", err)
 	}
 
-	enforcementURL := "https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"
 	want := &github.Protection{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
@@ -138,7 +137,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 			DismissStaleReviews: true,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
-			URL:     github.String(enforcementURL),
+			URL:     github.String("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
 			Enabled: true,
 		},
 		Restrictions: nil,
