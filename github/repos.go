@@ -571,7 +571,9 @@ type PullRequestReviewsEnforcement struct {
 // enforcement of a protected branch. It is separate from PullRequestReviewsEnforcement above
 // because the request structure is different from the response structure.
 type PullRequestReviewsEnforcementRequest struct {
-	// Specifies which users and teams should be allowed to dismiss pull request reviews. Can be nil to disable the restrictions.
+	// Specifies which users and teams should be allowed to dismiss pull request reviews.
+	// User and team dismissal restrictions are only available for
+	// organization-owned repositories. Must be nil for personal repositories.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. (Required)
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
@@ -629,10 +631,11 @@ type DismissalRestrictions struct {
 // restriction to allows only specific users or teams to dimiss pull request reviews. It is
 // separate from DismissalRestrictions above because the request structure is
 // different from the response structure.
+// Note: Both Users and Teams must be nil, or both must be non-nil.
 type DismissalRestrictionsRequest struct {
-	// The list of user logins who can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or []string{} otherwise.)
+	// The list of user logins who can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Users *[]string `json:"users,omitempty"`
-	// The list of team slugs which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or []string{} otherwise.)
+	// The list of team slugs which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Teams *[]string `json:"teams,omitempty"`
 }
 
