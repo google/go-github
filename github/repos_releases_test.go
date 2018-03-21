@@ -220,10 +220,9 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{defaultMediaType, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
 		fmt.Fprint(w, "Hello World")
@@ -247,10 +246,9 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{defaultMediaType, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", defaultMediaType)
 		http.Redirect(w, r, "/yo", http.StatusFound)
 	})
 
@@ -268,10 +266,9 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{defaultMediaType, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", defaultMediaType)
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprint(w, `{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}`)
 	})
