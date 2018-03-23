@@ -251,8 +251,6 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 	if err != nil {
 		return nil, "", err
 	}
-
-	// TODO: remove custom Accept header when APIs fully launch.
 	req.Header.Set("Accept", defaultMediaType)
 
 	s.client.clientMu.Lock()
