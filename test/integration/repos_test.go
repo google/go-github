@@ -108,19 +108,12 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("Branch %v of repo %v is already protected", "master", *repo.Name)
 	}
 
-	// TODO: This test fails with 422 Validation Failed [{Resource: Field: Code: Message:}].
-	//       Someone familiar with protection requests needs to come up with
-	//       a valid protection request that doesn't give 422 error.
 	protectionRequest := &github.ProtectionRequest{
 		RequiredStatusChecks: &github.RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
-			DismissalRestrictionsRequest: &github.DismissalRestrictionsRequest{
-				Users: []string{},
-				Teams: []string{},
-			},
 			DismissStaleReviews: true,
 		},
 		EnforceAdmins: true,
@@ -141,13 +134,10 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcement{
-			DismissalRestrictions: github.DismissalRestrictions{
-				Users: []*github.User{},
-				Teams: []*github.Team{},
-			},
 			DismissStaleReviews: true,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
+			URL:     github.String("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
 			Enabled: true,
 		},
 		Restrictions: nil,
