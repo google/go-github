@@ -587,8 +587,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
 			DismissStaleReviews: true,
 			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-				Users: []string{"uu"},
-				Teams: []string{"tt"},
+				Users: &[]string{"uu"},
+				Teams: &[]string{"tt"},
 			},
 		},
 		Restrictions: &BranchRestrictionsRequest{
@@ -790,8 +790,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 
 	input := &PullRequestReviewsEnforcementUpdate{
 		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-			Users: []string{"u"},
-			Teams: []string{"t"},
+			Users: &[]string{"u"},
+			Teams: &[]string{"t"},
 		},
 	}
 
@@ -942,14 +942,45 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
 	req := PullRequestReviewsEnforcementRequest{}
 
-	json, err := json.Marshal(req)
+	got, err := json.Marshal(req)
 	if err != nil {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
-	want := `{"dismissal_restrictions":[],"dismiss_stale_reviews":false,"require_code_owner_reviews":false}`
-	if want != string(json) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(json), want)
+	want := `{"dismiss_stale_reviews":false,"require_code_owner_reviews":false}`
+	if want != string(got) {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
+	}
+
+	req = PullRequestReviewsEnforcementRequest{
+		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{},
+	}
+
+	got, err = json.Marshal(req)
+	if err != nil {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
+	}
+
+	want = `{"dismissal_restrictions":{},"dismiss_stale_reviews":false,"require_code_owner_reviews":false}`
+	if want != string(got) {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
+	}
+
+	req = PullRequestReviewsEnforcementRequest{
+		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+			Users: &[]string{},
+			Teams: &[]string{},
+		},
+	}
+
+	got, err = json.Marshal(req)
+	if err != nil {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
+	}
+
+	want = `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false}`
+	if want != string(got) {
+		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
 	}
 }
 
