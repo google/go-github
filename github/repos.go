@@ -566,6 +566,8 @@ type PullRequestReviewsEnforcement struct {
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
+	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
+	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
@@ -578,6 +580,8 @@ type PullRequestReviewsEnforcementRequest struct {
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
+	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
+	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
 // MarshalJSON implements the json.Marshaler interface.
@@ -588,10 +592,12 @@ func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 			R []interface{} `json:"dismissal_restrictions"`
 			D bool          `json:"dismiss_stale_reviews"`
 			O bool          `json:"require_code_owner_reviews"`
+			C int           `json:"required_approving_review_count"`
 		}{
 			R: []interface{}{},
 			D: req.DismissStaleReviews,
 			O: req.RequireCodeOwnerReviews,
+			C: req.RequiredApprovingReviewCount,
 		}
 		return json.Marshal(newReq)
 	}
@@ -599,10 +605,12 @@ func (req PullRequestReviewsEnforcementRequest) MarshalJSON() ([]byte, error) {
 		R *DismissalRestrictionsRequest `json:"dismissal_restrictions"`
 		D bool                          `json:"dismiss_stale_reviews"`
 		O bool                          `json:"require_code_owner_reviews"`
+		C int                           `json:"required_approving_review_count"`
 	}{
 		R: req.DismissalRestrictionsRequest,
 		D: req.DismissStaleReviews,
 		O: req.RequireCodeOwnerReviews,
+		C: req.RequiredApprovingReviewCount,
 	}
 	return json.Marshal(newReq)
 }
@@ -617,6 +625,8 @@ type PullRequestReviewsEnforcementUpdate struct {
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
+	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
+	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
