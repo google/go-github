@@ -555,7 +555,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					{Slug: String("t"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews: true,
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: 3,
 		},
 		EnforceAdmins: &AdminEnforcement{
 			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
@@ -629,7 +630,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					{Slug: String("tt"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews: true,
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: 3,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
@@ -776,7 +778,8 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
-		RequireCodeOwnerReviews: true,
+		RequireCodeOwnerReviews:      true,
+		RequiredApprovingReviewCount: 3,
 	}
 
 	if !reflect.DeepEqual(enforcement, want) {
@@ -822,7 +825,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
-		RequireCodeOwnerReviews: true,
+		RequireCodeOwnerReviews:      true,
+		RequiredApprovingReviewCount: 3,
 	}
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
@@ -851,7 +855,8 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 			Users: []*User{},
 			Teams: []*Team{},
 		},
-		RequireCodeOwnerReviews: true,
+		RequireCodeOwnerReviews:      true,
+		RequiredApprovingReviewCount: 3,
 	}
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
