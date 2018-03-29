@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	qs "github.com/google/go-querystring/query"
 )
@@ -48,10 +49,10 @@ type SearchOptions struct {
 	ListOptions
 }
 
-// Common search parameters
+// Common search parameters.
 type searchParameters struct {
 	Query        string
-	RepositoryID string
+	RepositoryID int64
 }
 
 // RepositoriesSearchResult represents the result of a repositories search.
@@ -207,9 +208,9 @@ func (l LabelResult) String() string {
 // Labels searches labels via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-labels
-func (s *SearchService) Labels(ctx context.Context, repositoryID string, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
+func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
-	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: repositoryID, Query: query}, opt, result)
+	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: repoID, Query: query}, opt, result)
 	return result, resp, err
 }
 
@@ -221,8 +222,8 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		return nil, err
 	}
 	params.Set("q", parameters.Query)
-	if parameters.RepositoryID != "" {
-		params.Set("repository_id", parameters.RepositoryID)
+	if parameters.RepositoryID != 0 {
+		params.Set("repository_id", strconv.FormatInt(parameters.RepositoryID, 10))
 	}
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 

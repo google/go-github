@@ -55,7 +55,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
-		fmt.Fprint(w, `{"url":"u", "name": "n", "color": "c"}`)
+		fmt.Fprint(w, `{"url":"u", "name": "n", "color": "c", "description": "d"}`)
 	})
 
 	label, _, err := client.Issues.GetLabel(context.Background(), "o", "r", "n")
@@ -63,7 +63,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 		t.Errorf("Issues.GetLabel returned error: %v", err)
 	}
 
-	want := &Label{URL: String("u"), Name: String("n"), Color: String("c")}
+	want := &Label{URL: String("u"), Name: String("n"), Color: String("c"), Description: String("d")}
 	if !reflect.DeepEqual(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}

@@ -274,7 +274,7 @@ func TestSearchService_Labels(t *testing.T) {
 	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"repository_id": "some-repo",
+			"repository_id": "1234",
 			"q":             "blah",
 			"sort":          "updated",
 			"order":         "desc",
@@ -286,7 +286,7 @@ func TestSearchService_Labels(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Labels(context.Background(), "some-repo", "blah", opts)
+	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}

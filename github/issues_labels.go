@@ -192,7 +192,6 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner string, repo
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner string, repo string, number int, label string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels/%v", owner, repo, number, label)
 	req, err := s.client.NewRequest("DELETE", u, nil)
-
 	if err != nil {
 		return nil, err
 	}
