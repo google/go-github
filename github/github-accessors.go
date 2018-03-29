@@ -6588,6 +6588,14 @@ func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest()
 	return p.DismissalRestrictionsRequest
 }
 
+// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementRequest) GetRequiredApprovingReviewCount() int {
+	if p == nil || p.RequiredApprovingReviewCount == nil {
+		return 0
+	}
+	return *p.RequiredApprovingReviewCount
+}
+
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
 func (p *PullRequestReviewsEnforcementUpdate) GetDismissalRestrictionsRequest() *DismissalRestrictionsRequest {
 	if p == nil {
@@ -6602,6 +6610,14 @@ func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
 		return false
 	}
 	return *p.DismissStaleReviews
+}
+
+// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementUpdate) GetRequiredApprovingReviewCount() int {
+	if p == nil || p.RequiredApprovingReviewCount == nil {
+		return 0
+	}
+	return *p.RequiredApprovingReviewCount
 }
 
 // GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.

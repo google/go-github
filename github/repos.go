@@ -582,7 +582,7 @@ type PullRequestReviewsEnforcementRequest struct {
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
-	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
+	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
 // PullRequestReviewsEnforcementUpdate represents request to patch the pull request review
@@ -595,8 +595,9 @@ type PullRequestReviewsEnforcementUpdate struct {
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
-	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
-	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
+	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
+	// Valid values are 1 - 6.
+	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
