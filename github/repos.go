@@ -581,7 +581,8 @@ type PullRequestReviewsEnforcementRequest struct {
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
-	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged
+	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
+	// Can be omitted.
 	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
@@ -596,7 +597,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
-	// Valid values are 1 - 6.
+	// Valid values are 1 - 6. Can be omitted.
 	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
