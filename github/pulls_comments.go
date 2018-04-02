@@ -87,8 +87,8 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner string, re
 // GetComment fetches the specified pull request comment.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#get-a-single-comment
-func (s *PullRequestsService) GetComment(ctx context.Context, owner string, repo string, number int) (*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
+func (s *PullRequestsService) GetComment(ctx context.Context, owner string, repo string, commentID int64) (*PullRequestComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -126,10 +126,11 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner string, r
 }
 
 // EditComment updates a pull request comment.
+// A non-nil comment.Body must be provided. Other comment fields should be left nil.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#edit-a-comment
-func (s *PullRequestsService) EditComment(ctx context.Context, owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
+func (s *PullRequestsService) EditComment(ctx context.Context, owner string, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -147,8 +148,8 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner string, rep
 // DeleteComment deletes a pull request comment.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#delete-a-comment
-func (s *PullRequestsService) DeleteComment(ctx context.Context, owner string, repo string, number int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, number)
+func (s *PullRequestsService) DeleteComment(ctx context.Context, owner string, repo string, commentID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%d", owner, repo, commentID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
