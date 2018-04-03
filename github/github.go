@@ -487,18 +487,25 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 
 	err = CheckResponse(resp)
 	if err != nil {
-		// even though there was an error, we still return the response
-		// in case the caller wants to inspect it further
-		return response, err
+		// Even though there was an error, we still return the response
+		// in case the caller wants to inspect it further.
+		// However, if the error is AcceptedError, decode it below before
+		// returning from this function and closing the response body.
+		if _, ok := err.(*AcceptedError); !ok {
+			return response, err
+		}
 	}
 
 	if v != nil {
 		if w, ok := v.(io.Writer); ok {
 			io.Copy(w, resp.Body)
 		} else {
-			err = json.NewDecoder(resp.Body).Decode(v)
-			if err == io.EOF {
-				err = nil // ignore EOF errors caused by empty response body
+			decErr := json.NewDecoder(resp.Body).Decode(v)
+			if decErr == io.EOF {
+				decErr = nil // ignore EOF errors caused by empty response body
+			}
+			if decErr != nil {
+				err = decErr
 			}
 		}
 	}
