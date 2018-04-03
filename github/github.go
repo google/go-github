@@ -113,6 +113,9 @@ const (
 
 	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
 	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
+
+	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
+	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -154,6 +157,7 @@ type Client struct {
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
+	Teams          *TeamsService
 	Users          *UsersService
 }
 
@@ -244,6 +248,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
+	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
 }
