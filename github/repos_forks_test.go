@@ -72,6 +72,30 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testFormValues(t, r, values{"organization": "o"})
+		// This response indicates the fork will happen asynchronously.
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	opt := &RepositoryCreateForkOptions{Organization: "o"}
+	repo, _, err := client.Repositories.CreateFork(context.Background(), "o", "r", opt)
+	if _, ok := err.(*AcceptedError); !ok {
+		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
+	}
+
+	want := &Repository{ID: Int64(1)}
+	if !reflect.DeepEqual(repo, want) {
+		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
+	}
+}
+
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
