@@ -113,6 +113,9 @@ const (
 
 	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
 	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
+
+	// https://developer.github.com/changes/2018-03-21-hovercard-api-preview/
+	mediaTypeHovercardPreview = "application/vnd.github.hagar-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

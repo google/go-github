@@ -153,6 +153,29 @@ func TestUsersService_Edit(t *testing.T) {
 	}
 }
 
+func TestUsersService_GetContextualInfo(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/hovercard", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeHovercardPreview)
+		testFormValues(t, r, values{"subject_type": "repository", "subject_id": "20180408"})
+		fmt.Fprint(w, `{"contexts": [{"message":"Owns this repository", "octicon": "repo"}]}`)
+	})
+
+	opt := &UserContextualInfoOptions{SubjectType: "repository", SubjectID: "20180408"}
+	usercontext, _, err := client.Users.GetContextualInfo(context.Background(), "u", opt)
+	if err != nil {
+		t.Errorf("Users.GetContextualInfo returned error: %v", err)
+	}
+
+	want := []*UserContext{{Message: String("Owns this repository"), Octicon: String("repo")}}
+	if !reflect.DeepEqual(usercontext, want) {
+		t.Errorf("Users.GetContextualInfo returned %+v, want %+v", usercontext, want)
+	}
+}
+
 func TestUsersService_ListAll(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

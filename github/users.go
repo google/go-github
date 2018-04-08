@@ -134,6 +134,55 @@ func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, 
 	return uResp, resp, nil
 }
 
+// UserContextualInfoOptions specifies optional parameters to the UsersService.GetContextualInfo
+// method.
+type UserContextualInfoOptions struct {
+	// SubjectType specifies the additional information to be received about the hovercard.
+	// Possible values are : organization, repository, issue, pull_request.
+	SubjectType string `url:"subject_type,omitempty"`
+
+	// SubjectID specifies the ID for the SubjectType.
+	SubjectID string `url:"subject_id,omitempty"`
+}
+
+// UserContext represents the contextual information about user.
+type UserContext struct {
+	Message *string `url:"message,omitempty"`
+	Octicon *string `url:"octicon,omitempty"`
+}
+
+// UserContextualInfoResponse holds the parsed response from GetContextualInfo.
+type UserContextualInfoResponse struct {
+	Contexts []*UserContext `url:"contexts,omitempty"`
+}
+
+// GetContextualInfo fetches contextual information about user.
+//
+// GitHub API docs: https://developer.github.com/v3/users/#get-contextual-information-about-a-user
+func (s *UsersService) GetContextualInfo(ctx context.Context, user string, opt *UserContextualInfoOptions) ([]*UserContext, *Response, error) {
+	u := fmt.Sprintf("users/%v/hovercard", user)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	//TODO : remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeHovercardPreview)
+
+	contextResp := new(UserContextualInfoResponse)
+	resp, err := s.client.Do(ctx, req, contextResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return contextResp.Contexts, resp, nil
+}
+
 // UserListOptions specifies optional parameters to the UsersService.ListAll
 // method.
 type UserListOptions struct {
