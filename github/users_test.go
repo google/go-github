@@ -164,7 +164,7 @@ func TestUsersService_GetContextualInfo(t *testing.T) {
 		fmt.Fprint(w, `{"contexts": [{"message":"Owns this repository", "octicon": "repo"}]}`)
 	})
 
-	opt := &UserContextualInfoOptions{SubjectType: "repository", SubjectID: "20180408"}
+	opt := &HovercardOptions{SubjectType: "repository", SubjectID: "20180408"}
 	usercontext, _, err := client.Users.GetContextualInfo(context.Background(), "u", opt)
 	if err != nil {
 		t.Errorf("Users.GetContextualInfo returned error: %v", err)
