@@ -3156,6 +3156,14 @@ func (i *Issue) GetUser() *User {
 	return i.User
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (i *IssueComment) GetAuthorAssociation() string {
+	if i == nil || i.AuthorAssociation == nil {
+		return ""
+	}
+	return *i.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (i *IssueComment) GetBody() string {
 	if i == nil || i.Body == nil {
@@ -6114,6 +6122,14 @@ func (p *PullRequestBranch) GetUser() *User {
 		return nil
 	}
 	return p.User
+}
+
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetAuthorAssociation() string {
+	if p == nil || p.AuthorAssociation == nil {
+		return ""
+	}
+	return *p.AuthorAssociation
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
