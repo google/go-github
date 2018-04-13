@@ -92,5 +92,6 @@ func ExamplePullRequestsService_Create() {
 		fmt.Println(err)
 		return
 	}
+
 	fmt.Printf("PR created: %s\n", *pr.HTMLURL)
 }
