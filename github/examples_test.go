@@ -29,7 +29,11 @@ func ExampleClient_Markdown() {
 }
 
 func ExampleRepositoriesService_GetReadme() {
-	client := github.NewClient(nil)
+	ctx := context.Background()
+	token := "MyGitHubTokenThatIDontStoreInMyScripts"
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
 
 	readme, _, err := client.Repositories.GetReadme(context.Background(), "google", "go-github", nil)
 	if err != nil {
@@ -47,7 +51,11 @@ func ExampleRepositoriesService_GetReadme() {
 }
 
 func ExampleRepositoriesService_List() {
-	client := github.NewClient(nil)
+	ctx := context.Background()
+	token := "MyGitHubTokenThatIDontStoreInMyScripts"
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
 
 	user := "willnorris"
 	opt := &github.RepositoryListOptions{Type: "owner", Sort: "updated", Direction: "desc"}
@@ -61,7 +69,12 @@ func ExampleRepositoriesService_List() {
 }
 
 func ExampleUsersService_ListAll() {
-	client := github.NewClient(nil)
+	ctx := context.Background()
+	token := "MyGitHubTokenThatIDontStoreInMyScripts"
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
+
 	opts := &github.UserListOptions{}
 	for {
 		users, _, err := client.Users.ListAll(context.Background(), opts)
