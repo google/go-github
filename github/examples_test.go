@@ -11,7 +11,6 @@ import (
 	"log"
 
 	"github.com/google/go-github/github"
-	"golang.org/x/oauth2"
 )
 
 func ExampleClient_Markdown() {
@@ -78,11 +77,7 @@ func ExampleUsersService_ListAll() {
 
 func ExamplePullRequestsService_Create() {
 	// In this example we're creating a PR and displaying the HTML url at the end.
-	ctx := context.Background()
-	token := "MyGitHubTokenThatIDontStoreInMyScripts"
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client := github.NewClient(nil)
 
 	newPR := &github.NewPullRequest{
 		Title:               github.String("My awesome pull request"),
@@ -92,7 +87,7 @@ func ExamplePullRequestsService_Create() {
 		MaintainerCanModify: github.Bool(true),
 	}
 
-	pr, _, err := client.PullRequests.Create(ctx, "myOrganization", "myRepository", newPR)
+	pr, _, err := client.PullRequests.Create(context.Background(), "myOrganization", "myRepository", newPR)
 	if err != nil {
 		fmt.Println(err)
 		return
