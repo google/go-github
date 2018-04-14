@@ -93,5 +93,5 @@ func ExamplePullRequestsService_Create() {
 		return
 	}
 
-	fmt.Printf("PR created: %s\n", *pr.HTMLURL)
+	fmt.Printf("PR created: %s\n", pr.GetHTMLURL())
 }
