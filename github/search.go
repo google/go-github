@@ -52,7 +52,7 @@ type SearchOptions struct {
 // Common search parameters.
 type searchParameters struct {
 	Query        string
-	RepositoryID int64
+	RepositoryID *int64 // Sent if non-nil.
 }
 
 // RepositoriesSearchResult represents the result of a repositories search.
@@ -185,9 +185,9 @@ func (s *SearchService) Code(ctx context.Context, query string, opt *SearchOptio
 
 // LabelsSearchResult represents the result of a code search.
 type LabelsSearchResult struct {
-	Total             *int          `json:"total_count,omitempty"`
-	IncompleteResults *bool         `json:"incomplete_results,omitempty"`
-	Labels            []LabelResult `json:"items,omitempty"`
+	Total             *int           `json:"total_count,omitempty"`
+	IncompleteResults *bool          `json:"incomplete_results,omitempty"`
+	Labels            []*LabelResult `json:"items,omitempty"`
 }
 
 // LabelResult represents a single search result.
@@ -208,7 +208,7 @@ func (l LabelResult) String() string {
 // Labels searches labels via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-labels
-func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
+func (s *SearchService) Labels(ctx context.Context, repoID *int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
 	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: repoID, Query: query}, opt, result)
 	return result, resp, err
@@ -222,8 +222,8 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		return nil, err
 	}
 	params.Set("q", parameters.Query)
-	if parameters.RepositoryID != 0 {
-		params.Set("repository_id", strconv.FormatInt(parameters.RepositoryID, 10))
+	if parameters.RepositoryID != nil {
+		params.Set("repository_id", strconv.FormatInt(*parameters.RepositoryID, 10))
 	}
 	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
 
@@ -242,7 +242,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		// TODO: remove custom Accept header when this API fully launches.
 		req.Header.Set("Accept", mediaTypeTopicsPreview)
 	case searchType == "labels":
-		// Accept header for search labels based on label description preview endpoint
+		// Accept header for search labels based on label description preview endpoint.
 		// TODO: remove custom Accept header when this API fully launches.
 		req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
 	case opt != nil && opt.TextMatch:

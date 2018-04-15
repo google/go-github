@@ -285,8 +285,9 @@ func TestSearchService_Labels(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id": 1234, "name":"bug", "description": "some text"},{"id": 4567, "name":"feature"}]}`)
 	})
 
+	repoID := int64(1234)
 	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
+	result, _, err := client.Search.Labels(context.Background(), &repoID, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}
@@ -294,7 +295,7 @@ func TestSearchService_Labels(t *testing.T) {
 	want := &LabelsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Labels: []LabelResult{
+		Labels: []*LabelResult{
 			{ID: Int64(1234), Name: String("bug"), Description: String("some text")},
 			{ID: Int64(4567), Name: String("feature")},
 		},
