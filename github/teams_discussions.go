@@ -7,10 +7,11 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
-// TeamDiscussion represents a GitHub dicussion in a team
+// TeamDiscussion represents a GitHub dicussion in a team.
 type TeamDiscussion struct {
 	Author        *User      `json:"author,omitempty"`
 	Body          *string    `json:"body,omitempty"`
@@ -36,7 +37,7 @@ func (d TeamDiscussion) String() string {
 }
 
 // DiscussionListOptions specifies optional parameters to the
-// TeamServices.ListDiscussions method
+// TeamServices.ListDiscussions method.
 type DiscussionListOptions struct {
 	// Sorts the discussion by the date they were created.
 	// Accepted values are asc and desc. Default is desc.
@@ -99,6 +100,10 @@ func (s *TeamsService) GetDiscussion(ctx context.Context, team, id int64) (*Team
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#create-a-discussion
 func (s *TeamsService) CreateDiscussion(ctx context.Context, team int64, discussion *TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	if discussion == nil {
+		return nil, nil, errors.New("discussion must be provided")
+	}
+
 	u := fmt.Sprintf("teams/%v/discussions", team)
 	req, err := s.client.NewRequest("POST", u, discussion)
 	if err != nil {
@@ -123,6 +128,10 @@ func (s *TeamsService) CreateDiscussion(ctx context.Context, team int64, discuss
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
 func (s *TeamsService) EditDiscussion(ctx context.Context, team, id int64, discussion *TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	if discussion == nil {
+		return nil, nil, errors.New("discussion must be provided")
+	}
+
 	u := fmt.Sprintf("teams/%v/discussions/%v", team, id)
 	req, err := s.client.NewRequest("PATCH", u, discussion)
 	if err != nil {

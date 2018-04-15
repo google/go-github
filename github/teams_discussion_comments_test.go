@@ -157,6 +157,16 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	}
 }
 
+func TestTeamsService_CreateCommentWithNilComment(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Teams.CreateComment(context.Background(), 2, 3, nil)
+	if err == nil {
+		t.Errorf("Teams.CreateComment must return error with nil DiscussionComment")
+	}
+}
+
 func TestTeamsService_EditComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -184,6 +194,16 @@ func TestTeamsService_EditComment(t *testing.T) {
 	want := &DiscussionComment{Number: Int64(4)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditComment returned %+v, want %+v", comment, want)
+	}
+}
+
+func TestTeamsService_EditCommentWithNilComment(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Teams.EditComment(context.Background(), 2, 3, 4, nil)
+	if err == nil {
+		t.Errorf("Teams.EditComment must return error with nil DiscussionComment")
 	}
 }
 

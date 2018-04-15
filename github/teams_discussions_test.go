@@ -166,6 +166,16 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 	}
 }
 
+func TestTeamsService_CreateDiscussionWithNilDiscussion(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Teams.CreateDiscussion(context.Background(), 2, nil)
+	if err == nil {
+		t.Errorf("Teams.CreateDiscussion must return error with nil Discussion")
+	}
+}
+
 func TestTeamsService_EditDiscussion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -193,6 +203,16 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 	want := &TeamDiscussion{Number: Int64(3)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditDiscussion returned %+v, want %+v", comment, want)
+	}
+}
+
+func TestTeamsService_EditDiscussionWithNilDiscussion(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Teams.EditDiscussion(context.Background(), 2, 3, nil)
+	if err == nil {
+		t.Errorf("Teams.EditDiscussion must return error with nil Discussion")
 	}
 }
 

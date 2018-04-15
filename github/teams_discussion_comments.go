@@ -7,10 +7,11 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
-// DiscussionComment represents a GitHub dicussion in a team
+// DiscussionComment represents a GitHub dicussion in a team.
 type DiscussionComment struct {
 	Author        *User      `json:"author,omitempty"`
 	Body          *string    `json:"body,omitempty"`
@@ -31,7 +32,7 @@ func (c DiscussionComment) String() string {
 }
 
 // DiscussionCommentListOptions specifies optional parameters to the
-// TeamServices.ListComments method
+// TeamServices.ListComments method.
 type DiscussionCommentListOptions struct {
 	// Sorts the discussion comments by the date they were created.
 	// Accepted values are asc and desc. Default is desc.
@@ -94,6 +95,10 @@ func (s *TeamsService) GetComment(ctx context.Context, team, discussion, id int6
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
 func (s *TeamsService) CreateComment(ctx context.Context, team, discussion int64, comment *DiscussionComment) (*DiscussionComment, *Response, error) {
+	if comment == nil {
+		return nil, nil, errors.New("comment must be provided")
+	}
+
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments", team, discussion)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
@@ -118,6 +123,10 @@ func (s *TeamsService) CreateComment(ctx context.Context, team, discussion int64
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#edit-a-comment
 func (s *TeamsService) EditComment(ctx context.Context, team, discussion, id int64, comment *DiscussionComment) (*DiscussionComment, *Response, error) {
+	if comment == nil {
+		return nil, nil, errors.New("comment must be provided")
+	}
+
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", team, discussion, id)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
