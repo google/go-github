@@ -208,9 +208,9 @@ func (l LabelResult) String() string {
 // Labels searches labels via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-labels
-func (s *SearchService) Labels(ctx context.Context, repoID *int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
+func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
-	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: repoID, Query: query}, opt, result)
+	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: &repoID, Query: query}, opt, result)
 	return result, resp, err
 }
 

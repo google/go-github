@@ -285,9 +285,8 @@ func TestSearchService_Labels(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id": 1234, "name":"bug", "description": "some text"},{"id": 4567, "name":"feature"}]}`)
 	})
 
-	repoID := int64(1234)
 	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Labels(context.Background(), &repoID, "blah", opts)
+	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}
