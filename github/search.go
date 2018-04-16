@@ -205,7 +205,7 @@ func (l LabelResult) String() string {
 	return Stringify(l)
 }
 
-// Labels searches labels via various criteria.
+// Labels searches labels in the repository with ID repoID via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-labels
 func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
