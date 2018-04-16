@@ -59,6 +59,35 @@ func ExampleRepositoriesService_List() {
 	fmt.Printf("Recently updated repositories by %q: %v", user, github.Stringify(repos))
 }
 
+func ExampleRepositoriesService_CreateFile() {
+	// In this example we're creating a new file in a repository using the
+	// Contents API. Only 1 file per commit can be managed through that API
+
+	// Note that authentication is needed here as you are performing a modification
+	// so you will need to modify the example to provide an oauth client to
+	// github.NewClient() instead of nil. See the following documentation for more
+	// information on how to authenticate with the client:
+	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	client := github.NewClient(nil)
+
+	ctx := context.Background()
+	fileContent := []byte("This is the content of my file\n\nand the 2nd line of it")
+
+	// Note: the files need to be absent from the repository as you are not
+	// specifying a SHA reference here
+	opts := github.RepositoryContentFileOptions{
+		Message:   github.String("This is my commit message"),
+		Content:   fileContent,
+		Branch:    github.String("master"),
+		Committer: &github.CommitAuthor{Name: github.String("FirstName LastName"), Email: github.String("user@example.com")},
+	}
+	_, _, err := client.Repositories.CreateFile(ctx, "myOrganization", "myRepository", "myNewFile.md", &opts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
 func ExampleUsersService_ListAll() {
 	client := github.NewClient(nil)
 	opts := &github.UserListOptions{}
