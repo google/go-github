@@ -73,8 +73,8 @@ func ExampleRepositoriesService_CreateFile() {
 	ctx := context.Background()
 	fileContent := []byte("This is the content of my file\n\nand the 2nd line of it")
 
-	// Note: the file need to be absent from the repository as you are not
-	// specifying a SHA reference here
+	// Note: the file needs to be absent from the repository as you are not
+	// specifying a SHA reference here.
 	opts := github.RepositoryContentFileOptions{
 		Message:   github.String("This is my commit message"),
 		Content:   fileContent,
