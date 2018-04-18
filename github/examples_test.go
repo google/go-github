@@ -113,18 +113,15 @@ func ExampleOrganizationsService_ListTeams() {
 	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
-	teamName := "Developpers team"
+	teamName := "Developers team"
 	ctx := context.Background()
 	opts := &github.ListOptions{}
 
 	for {
-		teams, _, err := client.Organizations.ListTeams(ctx, "myOrganization", opts)
+		teams, resp, err := client.Organizations.ListTeams(ctx, "myOrganization", opts)
 		if err != nil {
 			fmt.Println(err)
 			return
-		}
-		if len(teams) == 0 {
-			break
 		}
 		for _, t := range teams {
 			if *t.Name == teamName {
@@ -132,7 +129,10 @@ func ExampleOrganizationsService_ListTeams() {
 				return
 			}
 		}
-		opts.Page++
+		if opts.Page == resp.LastPage {
+			break
+		}
+		opts.Page = resp.NextPage
 	}
 
 	fmt.Printf("Team \"%s\" was not found", teamName)
