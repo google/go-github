@@ -101,3 +101,40 @@ func ExamplePullRequestsService_Create() {
 
 	fmt.Printf("PR created: %s\n", pr.GetHTMLURL())
 }
+
+func ExampleOrganizationsService_ListTeams() {
+	// This example shows how to get a team ID corresponding to a given team name
+
+	// Note that authentication is needed here as you are performing a lookup on
+	// an organization's administrative configurationC, so you will need to modify
+	// the example to provide an oauth client to github.NewClient() instead of nil.
+	// See the following documentation for more // information on how to
+	// authenticate with the client:
+	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	client := github.NewClient(nil)
+
+	teamID := int64(-1)
+	teamName := "Developpers team"
+	ctx := context.Background()
+	opts := &github.ListOptions{}
+
+	for {
+		teams, _, err := client.Organizations.ListTeams(ctx, "myOrganization", opts)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		if len(teams) == 0 {
+			break
+		}
+		for _, t := range teams {
+			if *t.Name == teamName {
+				teamID = *t.ID
+				break
+			}
+		}
+		opts.Page++
+	}
+	fmt.Printf("Team \"%s\" has ID %d", teamName, teamID)
+	return
+}
