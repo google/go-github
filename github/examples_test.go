@@ -113,7 +113,6 @@ func ExampleOrganizationsService_ListTeams() {
 	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
-	teamID := int64(-1)
 	teamName := "Developpers team"
 	ctx := context.Background()
 	opts := &github.ListOptions{}
@@ -129,16 +128,12 @@ func ExampleOrganizationsService_ListTeams() {
 		}
 		for _, t := range teams {
 			if *t.Name == teamName {
-				teamID = *t.ID
-				break
+				fmt.Printf("Team \"%s\" has ID %d", teamName, *t.ID)
+				return
 			}
 		}
 		opts.Page++
 	}
 
-	if teamID == -1 {
-		fmt.Printf("Team \"%s\" was not found", teamName)
-	} else {
-		fmt.Printf("Team \"%s\" has ID %d", teamName, teamID)
-	}
+	fmt.Printf("Team \"%s\" was not found", teamName)
 }
