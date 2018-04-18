@@ -103,13 +103,13 @@ func ExamplePullRequestsService_Create() {
 }
 
 func ExampleOrganizationsService_ListTeams() {
-	// This example shows how to get a team ID corresponding to a given team name
+	// This example shows how to get a team ID corresponding to a given team name.
 
 	// Note that authentication is needed here as you are performing a lookup on
-	// an organization's administrative configurationC, so you will need to modify
+	// an organization's administrative configuration, so you will need to modify
 	// the example to provide an oauth client to github.NewClient() instead of nil.
-	// See the following documentation for more // information on how to
-	// authenticate with the client:
+	// See the following documentation for more information on how to authenticate
+	// with the client:
 	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
 	client := github.NewClient(nil)
 
@@ -135,6 +135,10 @@ func ExampleOrganizationsService_ListTeams() {
 		}
 		opts.Page++
 	}
-	fmt.Printf("Team \"%s\" has ID %d", teamName, teamID)
-	return
+
+	if teamID == -1 {
+		fmt.Printf("Team \"%s\" was not found", teamName)
+	} else {
+		fmt.Printf("Team \"%s\" has ID %d", teamName, teamID)
+	}
 }
