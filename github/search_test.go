@@ -266,3 +266,40 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
 }
+
+func TestSearchService_Labels(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"repository_id": "1234",
+			"q":             "blah",
+			"sort":          "updated",
+			"order":         "desc",
+			"page":          "2",
+			"per_page":      "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id": 1234, "name":"bug", "description": "some text"},{"id": 4567, "name":"feature"}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
+	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
+	if err != nil {
+		t.Errorf("Search.Code returned error: %v", err)
+	}
+
+	want := &LabelsSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(false),
+		Labels: []*LabelResult{
+			{ID: Int64(1234), Name: String("bug"), Description: String("some text")},
+			{ID: Int64(4567), Name: String("feature")},
+		},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Labels returned %+v, want %+v", result, want)
+	}
+}
