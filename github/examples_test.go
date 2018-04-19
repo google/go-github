@@ -125,7 +125,7 @@ func ExampleOrganizationsService_ListTeams() {
 		}
 		for _, t := range teams {
 			if t.GetName() == teamName {
-				fmt.Printf("Team %q has ID %d", teamName, t.GetID())
+				fmt.Printf("Team %q has ID %d\n", teamName, t.GetID())
 				return
 			}
 		}
@@ -135,5 +135,5 @@ func ExampleOrganizationsService_ListTeams() {
 		opts.Page = resp.NextPage
 	}
 
-	fmt.Printf("Team %q was not found", teamName)
+	fmt.Printf("Team %q was not found\n", teamName)
 }
