@@ -675,7 +675,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 }
 
 // Ensure *AbuseRateLimitError is returned when the response indicates that
-// the client has triggered an abuse detection mechanism on github enterprise.
+// the client has triggered an abuse detection mechanism on GitHub Enterprise.
 func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -685,7 +685,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 		w.WriteHeader(http.StatusForbidden)
 		// When the abuse rate limit error is of the "temporarily blocked from content creation" type,
 		// there is no "Retry-After" header.
-		// This response returns a documentation url like the one returned for github enterprise, this
+		// This response returns a documentation url like the one returned for GitHub Enterprise, this
 		// url changes between versions but follows roughly the same format.
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.",
