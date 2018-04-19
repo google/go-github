@@ -674,6 +674,40 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 	}
 }
 
+// Ensure *AbuseRateLimitError is returned when the response indicates that
+// the client has triggered an abuse detection mechanism on GitHub Enterprise.
+func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		// When the abuse rate limit error is of the "temporarily blocked from content creation" type,
+		// there is no "Retry-After" header.
+		// This response returns a documentation url like the one returned for GitHub Enterprise, this
+		// url changes between versions but follows roughly the same format.
+		fmt.Fprintln(w, `{
+   "message": "You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.",
+   "documentation_url": "https://developer.github.com/enterprise/2.12/v3/#abuse-rate-limits"
+}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	_, err := client.Do(context.Background(), req, nil)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	abuseRateLimitErr, ok := err.(*AbuseRateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+	}
+	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
+		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+}
+
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly.
 func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	client, mux, _, teardown := setup()
