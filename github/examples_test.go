@@ -129,7 +129,7 @@ func ExampleOrganizationsService_ListTeams() {
 				return
 			}
 		}
-		if opts.Page == resp.LastPage {
+		if resp.NextPage == 0 {
 			break
 		}
 		opts.Page = resp.NextPage
