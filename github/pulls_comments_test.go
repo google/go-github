@@ -55,7 +55,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
-		fmt.Fprint(w, `[{"id":1, "pull_request_review_id": 42}]`)
+		fmt.Fprint(w, `[{"id":1, "pull_request_review_id":42}]`)
 	})
 
 	pulls, _, err := client.PullRequests.ListComments(context.Background(), "o", "r", 1, nil)
