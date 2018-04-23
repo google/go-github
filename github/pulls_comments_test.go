@@ -63,7 +63,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []*PullRequestComment{{ID: Int64(1), PullRequestReviewID: Int(42)}}
+	want := []*PullRequestComment{{ID: Int64(1), PullRequestReviewID: Int64(42)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
