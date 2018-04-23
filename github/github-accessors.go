@@ -6308,6 +6308,14 @@ func (p *PullRequestComment) GetPosition() int {
 	return *p.Position
 }
 
+// GetPullRequestReviewID returns the PullRequestReviewID field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetPullRequestReviewID() int {
+	if p == nil || p.PullRequestReviewID == nil {
+		return 0
+	}
+	return *p.PullRequestReviewID
+}
+
 // GetPullRequestURL returns the PullRequestURL field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetPullRequestURL() string {
 	if p == nil || p.PullRequestURL == nil {
