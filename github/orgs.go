@@ -75,7 +75,7 @@ func (p Plan) String() string {
 // OrganizationsService.ListAll method.
 type OrganizationsListOptions struct {
 	// Since filters Organizations by ID.
-	Since int `url:"since,omitempty"`
+	Since int64 `url:"since,omitempty"`
 
 	ListOptions
 }
