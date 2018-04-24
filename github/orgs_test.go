@@ -18,7 +18,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	since := 1342004
+	since := int64(1342004)
 	mux.HandleFunc("/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
