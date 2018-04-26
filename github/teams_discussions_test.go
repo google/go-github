@@ -140,7 +140,7 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &TeamDiscussion{Title: String("c_t"), Body: String("c_b")}
+	input := TeamDiscussion{Title: String("c_t"), Body: String("c_b")}
 
 	mux.HandleFunc("/teams/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
@@ -148,7 +148,7 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -166,21 +166,11 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 	}
 }
 
-func TestTeamsService_CreateDiscussionWithNilDiscussion(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Teams.CreateDiscussion(context.Background(), 2, nil)
-	if err == nil {
-		t.Errorf("Teams.CreateDiscussion must return error with nil Discussion")
-	}
-}
-
 func TestTeamsService_EditDiscussion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &TeamDiscussion{Title: String("e_t"), Body: String("e_b")}
+	input := TeamDiscussion{Title: String("e_t"), Body: String("e_b")}
 
 	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
@@ -188,7 +178,7 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -203,16 +193,6 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 	want := &TeamDiscussion{Number: Int64(3)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditDiscussion returned %+v, want %+v", comment, want)
-	}
-}
-
-func TestTeamsService_EditDiscussionWithNilDiscussion(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Teams.EditDiscussion(context.Background(), 2, 3, nil)
-	if err == nil {
-		t.Errorf("Teams.EditDiscussion must return error with nil Discussion")
 	}
 }
 

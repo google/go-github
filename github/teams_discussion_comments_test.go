@@ -131,7 +131,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &DiscussionComment{Body: String("c")}
+	input := DiscussionComment{Body: String("c")}
 
 	mux.HandleFunc("/teams/2/discussions/3/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
@@ -139,7 +139,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -157,21 +157,11 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	}
 }
 
-func TestTeamsService_CreateCommentWithNilComment(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Teams.CreateComment(context.Background(), 2, 3, nil)
-	if err == nil {
-		t.Errorf("Teams.CreateComment must return error with nil DiscussionComment")
-	}
-}
-
 func TestTeamsService_EditComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &DiscussionComment{Body: String("e")}
+	input := DiscussionComment{Body: String("e")}
 
 	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
@@ -179,7 +169,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -194,16 +184,6 @@ func TestTeamsService_EditComment(t *testing.T) {
 	want := &DiscussionComment{Number: Int64(4)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditComment returned %+v, want %+v", comment, want)
-	}
-}
-
-func TestTeamsService_EditCommentWithNilComment(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Teams.EditComment(context.Background(), 2, 3, 4, nil)
-	if err == nil {
-		t.Errorf("Teams.EditComment must return error with nil DiscussionComment")
 	}
 }
 

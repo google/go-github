@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"errors"
 	"fmt"
 )
 
@@ -43,8 +42,8 @@ type DiscussionCommentListOptions struct {
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#list-comments
-func (s *TeamsService) ListComments(ctx context.Context, team, discussion int64, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments", team, discussion)
+func (s *TeamsService) ListComments(ctx context.Context, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("teams/%v/discussions/%v/comments", teamID, discussionNumber)
 	u, err := addOptions(u, options)
 	if err != nil {
 		return nil, nil, err
@@ -71,8 +70,8 @@ func (s *TeamsService) ListComments(ctx context.Context, team, discussion int64,
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#get-a-single-comment
-func (s *TeamsService) GetComment(ctx context.Context, team, discussion, id int64) (*DiscussionComment, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", team, discussion, id)
+func (s *TeamsService) GetComment(ctx context.Context, teamID int64, discussionNumber, commentNumber int) (*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", teamID, discussionNumber, commentNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -94,12 +93,8 @@ func (s *TeamsService) GetComment(ctx context.Context, team, discussion, id int6
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
-func (s *TeamsService) CreateComment(ctx context.Context, team, discussion int64, comment *DiscussionComment) (*DiscussionComment, *Response, error) {
-	if comment == nil {
-		return nil, nil, errors.New("comment must be provided")
-	}
-
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments", team, discussion)
+func (s *TeamsService) CreateComment(ctx context.Context, teamID int64, discsusionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("teams/%v/discussions/%v/comments", teamID, discsusionNumber)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -122,12 +117,8 @@ func (s *TeamsService) CreateComment(ctx context.Context, team, discussion int64
 // User is allowed to edit body of a comment only.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#edit-a-comment
-func (s *TeamsService) EditComment(ctx context.Context, team, discussion, id int64, comment *DiscussionComment) (*DiscussionComment, *Response, error) {
-	if comment == nil {
-		return nil, nil, errors.New("comment must be provided")
-	}
-
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", team, discussion, id)
+func (s *TeamsService) EditComment(ctx context.Context, teamID int64, discussionNumber, commentNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", teamID, discussionNumber, commentNumber)
 	req, err := s.client.NewRequest("PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
@@ -149,8 +140,8 @@ func (s *TeamsService) EditComment(ctx context.Context, team, discussion, id int
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#delete-a-comment
-func (s *TeamsService) DeleteComment(ctx context.Context, team, discussion, id int64) (*Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", team, discussion, id)
+func (s *TeamsService) DeleteComment(ctx context.Context, teamID int64, discussionNumber, commentNumber int) (*Response, error) {
+	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v", teamID, discussionNumber, commentNumber)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
