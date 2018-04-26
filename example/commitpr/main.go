@@ -67,7 +67,7 @@ func getRef() (ref *github.Reference, err error) {
 	// be created.
 	if *commitBranch != *baseBranch {
 		if *baseBranch == "" {
-			log.Fatal("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
+			return nil, errors.New("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
 		}
 		var baseRef *github.Reference
 		if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*baseBranch); err != nil {
