@@ -63,21 +63,24 @@ func getRef() (ref *github.Reference, err error) {
 	if ref, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*commitBranch); err == nil {
 		return ref, nil
 	}
+
 	// We consider that an error means the branch has not been found and needs to
 	// be created.
-	if *commitBranch != *baseBranch {
-		if *baseBranch == "" {
-			return nil, errors.New("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
-		}
-		var baseRef *github.Reference
-		if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*baseBranch); err != nil {
-			return nil, err
-		}
-		newRef := &github.Reference{Ref: github.String("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
-		ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
-		return ref, err
+	if *commitBranch == *baseBranch {
+		return nil, errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
 	}
-	return nil, errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
+
+	if *baseBranch == "" {
+		return nil, errors.New("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
+	}
+
+	var baseRef *github.Reference
+	if baseRef, _, err = client.Git.GetRef(ctx, *sourceOwner, *sourceRepo, "refs/heads/"+*baseBranch); err != nil {
+		return nil, err
+	}
+	newRef := &github.Reference{Ref: github.String("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
+	ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
+	return ref, err
 }
 
 // getTree generates the tree to commit based on the given files and the commit
