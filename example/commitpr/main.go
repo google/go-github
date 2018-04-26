@@ -75,11 +75,9 @@ func getRef() (ref *github.Reference, err error) {
 		}
 		newRef := &github.Reference{Ref: github.String("refs/heads/" + *commitBranch), Object: &github.GitObject{SHA: baseRef.Object.SHA}}
 		ref, _, err = client.Git.CreateRef(ctx, *sourceOwner, *sourceRepo, newRef)
-	} else {
-		err = errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
+		return ref, err
 	}
-
-	return ref, err
+	return nil, errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
 }
 
 // getTree generates the tree to commit based on the given files and the commit
