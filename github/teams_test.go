@@ -96,7 +96,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
+	input := NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
@@ -104,7 +104,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -126,7 +126,7 @@ func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Teams.CreateTeam(context.Background(), "%", nil)
+	_, _, err := client.Teams.CreateTeam(context.Background(), "%", NewTeam{})
 	testURLParseError(t, err)
 }
 
@@ -134,7 +134,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", Privacy: String("closed")}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
@@ -142,7 +142,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 
 		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 

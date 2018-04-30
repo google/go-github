@@ -148,7 +148,7 @@ func (s NewTeam) String() string {
 // CreateTeam creates a new team within an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#create-team
-func (s *TeamsService) CreateTeam(ctx context.Context, org string, team *NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest("POST", u, team)
 	if err != nil {
@@ -170,7 +170,7 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team *NewTeam
 // EditTeam edits a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#edit-team
-func (s *TeamsService) EditTeam(ctx context.Context, id int64, team *NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, team)
 	if err != nil {
