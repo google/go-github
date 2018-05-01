@@ -76,6 +76,9 @@ type CommitsComparison struct {
 	BehindBy     *int    `json:"behind_by,omitempty"`
 	TotalCommits *int    `json:"total_commits,omitempty"`
 
+	DiffURL  *string `json:"diff_url,omitempty"`
+	PatchURL *string `json:"patch_url,omitempty"`
+
 	Commits []RepositoryCommit `json:"commits,omitempty"`
 
 	Files []CommitFile `json:"files,omitempty"`
