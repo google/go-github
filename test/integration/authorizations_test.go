@@ -5,9 +5,10 @@
 
 // +build integration
 
-package tests
+package integration
 
 import (
+	"context"
 	"math/rand"
 	"os"
 	"strconv"
@@ -31,7 +32,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 
 	client := getUserPassClient(t)
 
-	auths, resp, err := client.Authorizations.List(nil)
+	auths, resp, err := client.Authorizations.List(context.Background(), nil)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -39,7 +40,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 
 	authReq := generatePersonalAuthTokenRequest()
 
-	createdAuth, resp, err := client.Authorizations.Create(authReq)
+	createdAuth, resp, err := client.Authorizations.Create(context.Background(), authReq)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 201)
 
@@ -47,7 +48,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 		t.Fatal("Returned Authorization does not match the requested Authorization.")
 	}
 
-	auths, resp, err = client.Authorizations.List(nil)
+	auths, resp, err = client.Authorizations.List(context.Background(), nil)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -59,7 +60,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 	authUpdate := new(github.AuthorizationUpdateRequest)
 	authUpdate.Note = github.String("Updated note: " + randString())
 
-	updatedAuth, resp, err := client.Authorizations.Edit(*createdAuth.ID, authUpdate)
+	updatedAuth, resp, err := client.Authorizations.Edit(context.Background(), *createdAuth.ID, authUpdate)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -68,7 +69,7 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 	}
 
 	// Verify that the Get operation also reflects the update
-	retrievedAuth, resp, err := client.Authorizations.Get(*createdAuth.ID)
+	retrievedAuth, resp, err := client.Authorizations.Get(context.Background(), *createdAuth.ID)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -77,19 +78,19 @@ func TestAuthorizationsBasicOperations(t *testing.T) {
 	}
 
 	// Now, let's delete...
-	resp, err = client.Authorizations.Delete(*createdAuth.ID)
+	resp, err = client.Authorizations.Delete(context.Background(), *createdAuth.ID)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 204)
 
 	// Verify that we can no longer retrieve the auth
-	retrievedAuth, resp, err = client.Authorizations.Get(*createdAuth.ID)
+	retrievedAuth, resp, err = client.Authorizations.Get(context.Background(), *createdAuth.ID)
 	if err == nil {
 		t.Fatal("Should have failed due to 404")
 	}
 	failIfNotStatusCode(t, resp, 404)
 
 	// Verify that our count reset back to the initial value
-	auths, resp, err = client.Authorizations.List(nil)
+	auths, resp, err = client.Authorizations.List(context.Background(), nil)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -114,7 +115,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 
 	authRequest := generateAppAuthTokenRequest(clientID, clientSecret)
 
-	createdAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(clientID, authRequest)
+	createdAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 201)
 
@@ -125,7 +126,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 
 	// Let's try the same request again, this time it should return the same
 	// auth instead of creating a new one
-	secondAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(clientID, authRequest)
+	secondAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -135,7 +136,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	}
 
 	// Verify the token
-	appAuth, resp, err := appAuthenticatedClient.Authorizations.Check(clientID, *createdAuth.Token)
+	appAuth, resp, err := appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *createdAuth.Token)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -145,19 +146,19 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	}
 
 	// Let's verify that we get a 404 for a non-existent token
-	_, resp, err = appAuthenticatedClient.Authorizations.Check(clientID, InvalidTokenValue)
+	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, InvalidTokenValue)
 	if err == nil {
 		t.Fatal("An error should have been returned because of the invalid token.")
 	}
 	failIfNotStatusCode(t, resp, 404)
 
 	// Let's reset the token
-	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(clientID, *createdAuth.Token)
+	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, *createdAuth.Token)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
 	// Let's verify that we get a 404 for a non-existent token
-	_, resp, err = appAuthenticatedClient.Authorizations.Reset(clientID, InvalidTokenValue)
+	_, resp, err = appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, InvalidTokenValue)
 	if err == nil {
 		t.Fatal("An error should have been returned because of the invalid token.")
 	}
@@ -174,19 +175,19 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	}
 
 	// Verify that the original token is now invalid
-	_, resp, err = appAuthenticatedClient.Authorizations.Check(clientID, *createdAuth.Token)
+	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *createdAuth.Token)
 	if err == nil {
 		t.Fatal("The original token should be invalid.")
 	}
 	failIfNotStatusCode(t, resp, 404)
 
 	// Check that the reset token is valid
-	_, resp, err = appAuthenticatedClient.Authorizations.Check(clientID, *resetAuth.Token)
+	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *resetAuth.Token)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
 	// Let's revoke the token
-	resp, err = appAuthenticatedClient.Authorizations.Revoke(clientID, *resetAuth.Token)
+	resp, err = appAuthenticatedClient.Authorizations.Revoke(context.Background(), clientID, *resetAuth.Token)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 204)
 
@@ -195,7 +196,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	time.Sleep(time.Second * 2)
 
 	// Now, the reset token should also be invalid
-	_, resp, err = appAuthenticatedClient.Authorizations.Check(clientID, *resetAuth.Token)
+	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *resetAuth.Token)
 	if err == nil {
 		t.Fatal("The reset token should be invalid.")
 	}

@@ -15,7 +15,7 @@ import (
 )
 
 func TestSearchService_Repositories(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestSearchService_Repositories(t *testing.T) {
 	want := &RepositoriesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Repositories:      []Repository{{ID: Int(1)}, {ID: Int(2)}},
+		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -48,7 +48,7 @@ func TestSearchService_Repositories(t *testing.T) {
 }
 
 func TestSearchService_Commits(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +59,7 @@ func TestSearchService_Commits(t *testing.T) {
 			"order": "desc",
 		})
 
-		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"hash":"random_hash1"},{"hash":"random_hash2"}]}`)
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"sha":"random_hash1"},{"sha":"random_hash2"}]}`)
 	})
 
 	opts := &SearchOptions{Sort: "author-date", Order: "desc"}
@@ -71,7 +71,7 @@ func TestSearchService_Commits(t *testing.T) {
 	want := &CommitsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Commits:           []*CommitResult{{Hash: String("random_hash1")}, {Hash: String("random_hash2")}},
+		Commits:           []*CommitResult{{SHA: String("random_hash1")}, {SHA: String("random_hash2")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
@@ -79,7 +79,7 @@ func TestSearchService_Commits(t *testing.T) {
 }
 
 func TestSearchService_Issues(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -111,8 +111,37 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 }
 
+func TestSearchService_Issues_withQualifiers(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"q": "gopher is:issue label:bug language:go",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
+	})
+
+	opts := &SearchOptions{}
+	result, _, err := client.Search.Issues(context.Background(), "gopher is:issue label:bug language:go", opts)
+	if err != nil {
+		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	want := &IssuesSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(true),
+		Issues:            []Issue{{Number: Int(1)}, {Number: Int(2)}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
+	}
+}
+
 func TestSearchService_Users(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/users", func(w http.ResponseWriter, r *http.Request) {
@@ -137,7 +166,7 @@ func TestSearchService_Users(t *testing.T) {
 	want := &UsersSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Users:             []User{{ID: Int(1)}, {ID: Int(2)}},
+		Users:             []User{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
@@ -145,7 +174,7 @@ func TestSearchService_Users(t *testing.T) {
 }
 
 func TestSearchService_Code(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
@@ -178,7 +207,7 @@ func TestSearchService_Code(t *testing.T) {
 }
 
 func TestSearchService_CodeTextMatch(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/search/code", func(w http.ResponseWriter, r *http.Request) {
@@ -235,5 +264,42 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearchService_Labels(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/labels", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"repository_id": "1234",
+			"q":             "blah",
+			"sort":          "updated",
+			"order":         "desc",
+			"page":          "2",
+			"per_page":      "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id": 1234, "name":"bug", "description": "some text"},{"id": 4567, "name":"feature"}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
+	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
+	if err != nil {
+		t.Errorf("Search.Code returned error: %v", err)
+	}
+
+	want := &LabelsSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(false),
+		Labels: []*LabelResult{
+			{ID: Int64(1234), Name: String("bug"), Description: String("some text")},
+			{ID: Int64(4567), Name: String("feature")},
+		},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Labels returned %+v, want %+v", result, want)
 	}
 }

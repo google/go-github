@@ -15,7 +15,7 @@ import (
 )
 
 func TestMigrationService_StartMigration(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +40,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 }
 
 func TestMigrationService_ListMigrations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 }
 
 func TestMigrationService_MigrationStatus(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +82,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 }
 
 func TestMigrationService_MigrationArchiveURL(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 }
 
 func TestMigrationService_DeleteMigration(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,7 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 }
 
 func TestMigrationService_UnlockRepo(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {
@@ -159,7 +159,7 @@ var migrationJSON = []byte(`{
 }`)
 
 var wantMigration = &Migration{
-	ID:                 Int(79),
+	ID:                 Int64(79),
 	GUID:               String("0b989ba4-242f-11e5-81e1-c7b6966d2516"),
 	State:              String("pending"),
 	LockRepositories:   Bool(true),
@@ -169,7 +169,7 @@ var wantMigration = &Migration{
 	UpdatedAt:          String("2015-07-06T15:33:38-07:00"),
 	Repositories: []*Repository{
 		{
-			ID:          Int(1296269),
+			ID:          Int64(1296269),
 			Name:        String("Hello-World"),
 			FullName:    String("octocat/Hello-World"),
 			Description: String("This your first repo!"),

@@ -15,7 +15,7 @@ import (
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -30,14 +30,14 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int64(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 }
 
 func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/keys", func(w http.ResponseWriter, r *http.Request) {
@@ -50,19 +50,22 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Int(1)}}
+	want := []*Key{{ID: Int64(1)}}
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Users.ListKeys(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestUsersService_GetKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {
@@ -75,14 +78,14 @@ func TestUsersService_GetKey(t *testing.T) {
 		t.Errorf("Users.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int(1)}
+	want := &Key{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 }
 
 func TestUsersService_CreateKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Key{Key: String("k"), Title: String("t")}
@@ -104,14 +107,14 @@ func TestUsersService_CreateKey(t *testing.T) {
 		t.Errorf("Users.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Int(1)}
+	want := &Key{ID: Int64(1)}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 }
 
 func TestUsersService_DeleteKey(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/keys/1", func(w http.ResponseWriter, r *http.Request) {

@@ -59,6 +59,35 @@ func ExampleRepositoriesService_List() {
 	fmt.Printf("Recently updated repositories by %q: %v", user, github.Stringify(repos))
 }
 
+func ExampleRepositoriesService_CreateFile() {
+	// In this example we're creating a new file in a repository using the
+	// Contents API. Only 1 file per commit can be managed through that API.
+
+	// Note that authentication is needed here as you are performing a modification
+	// so you will need to modify the example to provide an oauth client to
+	// github.NewClient() instead of nil. See the following documentation for more
+	// information on how to authenticate with the client:
+	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	client := github.NewClient(nil)
+
+	ctx := context.Background()
+	fileContent := []byte("This is the content of my file\nand the 2nd line of it")
+
+	// Note: the file needs to be absent from the repository as you are not
+	// specifying a SHA reference here.
+	opts := &github.RepositoryContentFileOptions{
+		Message:   github.String("This is my commit message"),
+		Content:   fileContent,
+		Branch:    github.String("master"),
+		Committer: &github.CommitAuthor{Name: github.String("FirstName LastName"), Email: github.String("user@example.com")},
+	}
+	_, _, err := client.Repositories.CreateFile(ctx, "myOrganization", "myRepository", "myNewFile.md", opts)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
 func ExampleUsersService_ListAll() {
 	client := github.NewClient(nil)
 	opts := &github.UserListOptions{}
@@ -73,4 +102,67 @@ func ExampleUsersService_ListAll() {
 		opts.Since = *users[len(users)-1].ID
 		// Process users...
 	}
+}
+
+func ExamplePullRequestsService_Create() {
+	// In this example we're creating a PR and displaying the HTML url at the end.
+
+	// Note that authentication is needed here as you are performing a modification
+	// so you will need to modify the example to provide an oauth client to
+	// github.NewClient() instead of nil. See the following documentation for more
+	// information on how to authenticate with the client:
+	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	client := github.NewClient(nil)
+
+	newPR := &github.NewPullRequest{
+		Title:               github.String("My awesome pull request"),
+		Head:                github.String("branch_to_merge"),
+		Base:                github.String("master"),
+		Body:                github.String("This is the description of the PR created with the package `github.com/google/go-github/github`"),
+		MaintainerCanModify: github.Bool(true),
+	}
+
+	pr, _, err := client.PullRequests.Create(context.Background(), "myOrganization", "myRepository", newPR)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Printf("PR created: %s\n", pr.GetHTMLURL())
+}
+
+func ExampleOrganizationsService_ListTeams() {
+	// This example shows how to get a team ID corresponding to a given team name.
+
+	// Note that authentication is needed here as you are performing a lookup on
+	// an organization's administrative configuration, so you will need to modify
+	// the example to provide an oauth client to github.NewClient() instead of nil.
+	// See the following documentation for more information on how to authenticate
+	// with the client:
+	// https://godoc.org/github.com/google/go-github/github#hdr-Authentication
+	client := github.NewClient(nil)
+
+	teamName := "Developers team"
+	ctx := context.Background()
+	opts := &github.ListOptions{}
+
+	for {
+		teams, resp, err := client.Organizations.ListTeams(ctx, "myOrganization", opts)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for _, t := range teams {
+			if t.GetName() == teamName {
+				fmt.Printf("Team %q has ID %d\n", teamName, t.GetID())
+				return
+			}
+		}
+		if resp.NextPage == 0 {
+			break
+		}
+		opts.Page = resp.NextPage
+	}
+
+	fmt.Printf("Team %q was not found\n", teamName)
 }

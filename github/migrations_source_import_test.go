@@ -15,7 +15,7 @@ import (
 )
 
 func TestMigrationService_StartImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{
@@ -50,7 +50,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 }
 
 func TestMigrationService_ImportProgress(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +70,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 }
 
 func TestMigrationService_UpdateImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{
@@ -105,7 +105,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 }
 
 func TestMigrationService_CommitAuthors(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import/authors", func(w http.ResponseWriter, r *http.Request) {
@@ -119,8 +119,8 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		t.Errorf("CommitAuthors returned error: %v", err)
 	}
 	want := []*SourceImportAuthor{
-		{ID: Int(1), Name: String("a")},
-		{ID: Int(2), Name: String("b")},
+		{ID: Int64(1), Name: String("a")},
+		{ID: Int64(2), Name: String("b")},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CommitAuthors = %+v, want %+v", got, want)
@@ -128,7 +128,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 }
 
 func TestMigrationService_MapCommitAuthor(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &SourceImportAuthor{Name: String("n"), Email: String("e")}
@@ -150,14 +150,14 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	if err != nil {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
 	}
-	want := &SourceImportAuthor{ID: Int(1)}
+	want := &SourceImportAuthor{ID: Int64(1)}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("MapCommitAuthor = %+v, want %+v", got, want)
 	}
 }
 
 func TestMigrationService_SetLFSPreference(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Import{UseLFS: String("opt_in")}
@@ -187,7 +187,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 }
 
 func TestMigrationService_LargeFiles(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import/large_files", func(w http.ResponseWriter, r *http.Request) {
@@ -210,7 +210,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 }
 
 func TestMigrationService_CancelImport(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {

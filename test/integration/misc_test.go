@@ -5,15 +5,16 @@
 
 // +build integration
 
-package tests
+package integration
 
 import (
+	"context"
 	"testing"
 	"time"
 )
 
 func TestEmojis(t *testing.T) {
-	emoji, _, err := client.ListEmojis()
+	emoji, _, err := client.ListEmojis(context.Background())
 	if err != nil {
 		t.Fatalf("ListEmojis returned error: %v", err)
 	}
@@ -28,7 +29,7 @@ func TestEmojis(t *testing.T) {
 }
 
 func TestAPIMeta(t *testing.T) {
-	meta, _, err := client.APIMeta()
+	meta, _, err := client.APIMeta(context.Background())
 	if err != nil {
 		t.Fatalf("APIMeta returned error: %v", err)
 	}
@@ -47,7 +48,7 @@ func TestAPIMeta(t *testing.T) {
 }
 
 func TestRateLimits(t *testing.T) {
-	limits, _, err := client.RateLimits()
+	limits, _, err := client.RateLimits(context.Background())
 	if err != nil {
 		t.Fatalf("RateLimits returned error: %v", err)
 	}
@@ -63,5 +64,16 @@ func TestRateLimits(t *testing.T) {
 
 	if limits.Core.Reset.Time.Before(time.Now().Add(-1 * time.Minute)) {
 		t.Errorf("Core.Reset is more than 1 minute in the past; that doesn't seem right.")
+	}
+}
+
+func TestListServiceHooks(t *testing.T) {
+	hooks, _, err := client.ListServiceHooks(context.Background())
+	if err != nil {
+		t.Fatalf("ListServiceHooks returned error: %v", err)
+	}
+
+	if len(hooks) == 0 {
+		t.Fatalf("ListServiceHooks returned no hooks")
 	}
 }

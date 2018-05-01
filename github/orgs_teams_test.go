@@ -11,16 +11,18 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
 
 func TestOrganizationsService_ListTeams(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -31,24 +33,28 @@ func TestOrganizationsService_ListTeams(t *testing.T) {
 		t.Errorf("Organizations.ListTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Int(1)}}
+	want := []*Team{{ID: Int64(1)}}
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Organizations.ListTeams returned %+v, want %+v", teams, want)
 	}
 }
 
 func TestOrganizationsService_ListTeams_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.ListTeams(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetTeam(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p"}`)
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
 	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
@@ -56,23 +62,48 @@ func TestOrganizationsService_GetTeam(t *testing.T) {
 		t.Errorf("Organizations.GetTeam returned error: %v", err)
 	}
 
-	want := &Team{ID: Int(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p")}
+	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestOrganizationService_GetTeam_nestedTeams(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
+		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
+	})
+
+	team, _, err := client.Organizations.GetTeam(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Organizations.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"),
+		Parent: &Team{ID: Int64(2), Name: String("n"), Description: String("d")},
+	}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Organizations.GetTeam returned %+v, want %+v", team, want)
 	}
 }
 
 func TestOrganizationsService_CreateTeam(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: "n", Privacy: String("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -85,27 +116,31 @@ func TestOrganizationsService_CreateTeam(t *testing.T) {
 		t.Errorf("Organizations.CreateTeam returned error: %v", err)
 	}
 
-	want := &Team{ID: Int(1)}
+	want := &Team{ID: Int64(1)}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Organizations.CreateTeam returned %+v, want %+v", team, want)
 	}
 }
 
 func TestOrganizationsService_CreateTeam_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.CreateTeam(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_EditTeam(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Team{Name: String("n"), Privacy: String("closed")}
+	input := &NewTeam{Name: "n", Privacy: String("closed")}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Team)
+		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -119,18 +154,19 @@ func TestOrganizationsService_EditTeam(t *testing.T) {
 		t.Errorf("Organizations.EditTeam returned error: %v", err)
 	}
 
-	want := &Team{ID: Int(1)}
+	want := &Team{ID: Int64(1)}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Organizations.EditTeam returned %+v, want %+v", team, want)
 	}
 }
 
 func TestOrganizationsService_DeleteTeam(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 	})
 
 	_, err := client.Organizations.DeleteTeam(context.Background(), 1)
@@ -139,12 +175,36 @@ func TestOrganizationsService_DeleteTeam(t *testing.T) {
 	}
 }
 
+func TestOrganizationsService_ListChildTeams(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w, `[{"id":2}]`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	teams, _, err := client.Organizations.ListChildTeams(context.Background(), 1, opt)
+	if err != nil {
+		t.Errorf("Organizations.ListTeams returned error: %v", err)
+	}
+
+	want := []*Team{{ID: Int64(2)}}
+	if !reflect.DeepEqual(teams, want) {
+		t.Errorf("Organizations.ListTeams returned %+v, want %+v", teams, want)
+	}
+}
+
 func TestOrganizationsService_ListTeamMembers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -155,14 +215,14 @@ func TestOrganizationsService_ListTeamMembers(t *testing.T) {
 		t.Errorf("Organizations.ListTeamMembers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListTeamMembers returned %+v, want %+v", members, want)
 	}
 }
 
 func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +240,7 @@ func TestOrganizationsService_IsTeamMember_true(t *testing.T) {
 
 // ensure that a 404 response is interpreted as "false" and not an error
 func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -200,7 +260,7 @@ func TestOrganizationsService_IsTeamMember_false(t *testing.T) {
 // ensure that a 400 response is interpreted as an actual error, and not simply
 // as "false" like the above case of a 404
 func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -218,12 +278,15 @@ func TestOrganizationsService_IsTeamMember_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamMember_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.IsTeamMember(context.Background(), 1, "%")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_PublicizeMembership(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -238,12 +301,15 @@ func TestOrganizationsService_PublicizeMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_PublicizeMembership_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.PublicizeMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ConcealMembership(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
@@ -258,16 +324,21 @@ func TestOrganizationsService_ConcealMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ConcealMembership_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.ConcealMembership(context.Background(), "%", "u")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_ListTeamRepos(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeNestedTeamsPreview}
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -278,19 +349,20 @@ func TestOrganizationsService_ListTeamRepos(t *testing.T) {
 		t.Errorf("Organizations.ListTeamRepos returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListTeamRepos returned %+v, want %+v", members, want)
 	}
 }
 
 func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeOrgPermissionRepo)
+		acceptHeaders := []string{mediaTypeOrgPermissionRepo, mediaTypeNestedTeamsPreview}
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -299,14 +371,14 @@ func TestOrganizationsService_IsTeamRepo_true(t *testing.T) {
 		t.Errorf("Organizations.IsTeamRepo returned error: %v", err)
 	}
 
-	want := &Repository{ID: Int(1)}
+	want := &Repository{ID: Int64(1)}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Organizations.IsTeamRepo returned %+v, want %+v", repo, want)
 	}
 }
 
 func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -327,7 +399,7 @@ func TestOrganizationsService_IsTeamRepo_false(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -348,12 +420,15 @@ func TestOrganizationsService_IsTeamRepo_error(t *testing.T) {
 }
 
 func TestOrganizationsService_IsTeamRepo_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.IsTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_AddTeamRepo(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	opt := &OrganizationAddTeamRepoOptions{Permission: "admin"}
@@ -377,7 +452,7 @@ func TestOrganizationsService_AddTeamRepo(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -392,12 +467,15 @@ func TestOrganizationsService_AddTeamRepo_noAccess(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamRepo_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.AddTeamRepo(context.Background(), 1, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -412,16 +490,20 @@ func TestOrganizationsService_RemoveTeamRepo(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.RemoveTeamRepo(context.Background(), 1, "%", "r")
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetTeamMembership(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
@@ -437,7 +519,7 @@ func TestOrganizationsService_GetTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_AddTeamMembership(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	opt := &OrganizationAddTeamMembershipOptions{Role: "maintainer"}
@@ -466,7 +548,7 @@ func TestOrganizationsService_AddTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
@@ -481,11 +563,12 @@ func TestOrganizationsService_RemoveTeamMembership(t *testing.T) {
 }
 
 func TestOrganizationsService_ListUserTeams(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "1"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -496,20 +579,19 @@ func TestOrganizationsService_ListUserTeams(t *testing.T) {
 		t.Errorf("Organizations.ListUserTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Int(1)}}
+	want := []*Team{{ID: Int64(1)}}
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Organizations.ListUserTeams returned %+v, want %+v", teams, want)
 	}
 }
 
 func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
-		testHeader(t, r, "Accept", mediaTypeOrgMembershipPreview)
 		fmt.Fprint(w, `[
 				{
     					"id": 1,
@@ -549,14 +631,14 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 	createdAt := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
-			ID:        Int(1),
+			ID:        Int64(1),
 			Login:     String("monalisa"),
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
 			CreatedAt: &createdAt,
 			Inviter: &User{
 				Login:             String("other_user"),
-				ID:                Int(1),
+				ID:                Int64(1),
 				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
 				GravatarID:        String(""),
 				URL:               String("https://api.github.com/users/other_user"),

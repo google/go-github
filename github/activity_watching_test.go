@@ -15,7 +15,7 @@ import (
 )
 
 func TestActivityService_ListWatchers(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscribers", func(w http.ResponseWriter, r *http.Request) {
@@ -32,14 +32,14 @@ func TestActivityService_ListWatchers(t *testing.T) {
 		t.Errorf("Activity.ListWatchers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Int(1)}}
+	want := []*User{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watchers, want) {
 		t.Errorf("Activity.ListWatchers returned %+v, want %+v", watchers, want)
 	}
 }
 
 func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/user/subscriptions", func(w http.ResponseWriter, r *http.Request) {
@@ -55,14 +55,14 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 }
 
 func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/subscriptions", func(w http.ResponseWriter, r *http.Request) {
@@ -78,14 +78,14 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListWatched returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int(1)}}
+	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 }
 
 func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +105,7 @@ func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 }
 
 func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
@@ -125,7 +125,7 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 }
 
 func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
@@ -140,7 +140,7 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 }
 
 func TestActivityService_SetRepositorySubscription(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Subscription{Subscribed: Bool(true)}
@@ -169,7 +169,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 }
 
 func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {

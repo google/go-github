@@ -15,7 +15,7 @@ import (
 )
 
 func TestRepositoriesService_ListContributorsStats(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stats/contributors", func(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	want := []*ContributorStats{
 		{
 			Author: &Contributor{
-				ID: Int(1),
+				ID: Int64(1),
 			},
 			Total: Int(135),
 			Weeks: []WeeklyStats{
@@ -69,7 +69,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCommitActivity(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stats/commit_activity", func(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +105,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 }
 
 func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stats/code_frequency", func(w http.ResponseWriter, r *http.Request) {
@@ -131,7 +131,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 }
 
 func TestRepositoriesService_Participation(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stats/participation", func(w http.ResponseWriter, r *http.Request) {
@@ -181,7 +181,7 @@ func TestRepositoriesService_Participation(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPunchCard(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/stats/punch_card", func(w http.ResponseWriter, r *http.Request) {

@@ -12,7 +12,7 @@ import (
 )
 
 func TestUsersService_PromoteSiteAdmin(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +27,7 @@ func TestUsersService_PromoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_DemoteSiteAdmin(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/site_admin", func(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func TestUsersService_DemoteSiteAdmin(t *testing.T) {
 }
 
 func TestUsersService_Suspend(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func TestUsersService_Suspend(t *testing.T) {
 }
 
 func TestUsersService_Unsuspend(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {

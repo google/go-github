@@ -15,7 +15,7 @@ import (
 )
 
 func TestActivityService_ListEvents(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func TestActivityService_ListEvents(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryEvents(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/events", func(w http.ResponseWriter, r *http.Request) {
@@ -63,12 +63,15 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 }
 
 func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListRepositoryEvents(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/events", func(w http.ResponseWriter, r *http.Request) {
@@ -85,19 +88,22 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*IssueEvent{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
 }
 
 func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListIssueEventsForRepository(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/networks/o/r/events", func(w http.ResponseWriter, r *http.Request) {
@@ -121,12 +127,15 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 }
 
 func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListEventsForRepoNetwork(context.Background(), "%", "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsForOrganization(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/events", func(w http.ResponseWriter, r *http.Request) {
@@ -150,12 +159,15 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 }
 
 func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListEventsForOrganization(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events", func(w http.ResponseWriter, r *http.Request) {
@@ -179,7 +191,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 }
 
 func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/public", func(w http.ResponseWriter, r *http.Request) {
@@ -199,12 +211,15 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 }
 
 func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListEventsPerformedByUser(context.Background(), "%", false, nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/received_events", func(w http.ResponseWriter, r *http.Request) {
@@ -228,7 +243,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 }
 
 func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/received_events/public", func(w http.ResponseWriter, r *http.Request) {
@@ -248,12 +263,15 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 }
 
 func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Activity.ListEventsReceivedByUser(context.Background(), "%", false, nil)
 	testURLParseError(t, err)
 }
 
 func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/users/u/events/orgs/o", func(w http.ResponseWriter, r *http.Request) {
@@ -283,7 +301,7 @@ func TestActivityService_EventParsePayload_typed(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PushEvent{PushID: Int(1)}
+	want := &PushEvent{PushID: Int64(1)}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
@@ -320,7 +338,7 @@ func TestActivityService_EventParsePayload_installation(t *testing.T) {
 		t.Fatalf("Unmarshal Event returned error: %v", err)
 	}
 
-	want := &PullRequestEvent{Installation: &Installation{ID: Int(1)}}
+	want := &PullRequestEvent{Installation: &Installation{ID: Int64(1)}}
 	got, err := event.ParsePayload()
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)

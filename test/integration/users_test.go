@@ -5,9 +5,10 @@
 
 // +build integration
 
-package tests
+package integration
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -17,7 +18,7 @@ import (
 
 func TestUsers_Get(t *testing.T) {
 	// list all users
-	users, _, err := client.Users.ListAll(nil)
+	users, _, err := client.Users.ListAll(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Users.ListAll returned error: %v", err)
 	}
@@ -32,7 +33,7 @@ func TestUsers_Get(t *testing.T) {
 	}
 
 	// get individual user
-	u, _, err := client.Users.Get("octocat")
+	u, _, err := client.Users.Get(context.Background(), "octocat")
 	if err != nil {
 		t.Fatalf("Users.Get('octocat') returned error: %v", err)
 	}
@@ -50,7 +51,7 @@ func TestUsers_Update(t *testing.T) {
 		return
 	}
 
-	u, _, err := client.Users.Get("")
+	u, _, err := client.Users.Get(context.Background(), "")
 	if err != nil {
 		t.Fatalf("Users.Get('') returned error: %v", err)
 	}
@@ -69,13 +70,13 @@ func TestUsers_Update(t *testing.T) {
 	testLoc := fmt.Sprintf("test-%d", rand.Int())
 	u.Location = &testLoc
 
-	_, _, err = client.Users.Edit(u)
+	_, _, err = client.Users.Edit(context.Background(), u)
 	if err != nil {
 		t.Fatalf("Users.Update returned error: %v", err)
 	}
 
 	// refetch user and check location value
-	u, _, err = client.Users.Get("")
+	u, _, err = client.Users.Get(context.Background(), "")
 	if err != nil {
 		t.Fatalf("Users.Get('') returned error: %v", err)
 	}
@@ -86,7 +87,7 @@ func TestUsers_Update(t *testing.T) {
 
 	// set location back to the original value
 	u.Location = &location
-	_, _, err = client.Users.Edit(u)
+	_, _, err = client.Users.Edit(context.Background(), u)
 	if err != nil {
 		t.Fatalf("Users.Edit returned error: %v", err)
 	}
@@ -97,7 +98,7 @@ func TestUsers_Emails(t *testing.T) {
 		return
 	}
 
-	emails, _, err := client.Users.ListEmails(nil)
+	emails, _, err := client.Users.ListEmails(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -116,13 +117,13 @@ EmailLoop:
 	}
 
 	// Add new address
-	_, _, err = client.Users.AddEmails([]string{email})
+	_, _, err = client.Users.AddEmails(context.Background(), []string{email})
 	if err != nil {
 		t.Fatalf("Users.AddEmails() returned error: %v", err)
 	}
 
 	// List emails again and verify new email is present
-	emails, _, err = client.Users.ListEmails(nil)
+	emails, _, err = client.Users.ListEmails(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -140,13 +141,13 @@ EmailLoop:
 	}
 
 	// Remove new address
-	_, err = client.Users.DeleteEmails([]string{email})
+	_, err = client.Users.DeleteEmails(context.Background(), []string{email})
 	if err != nil {
 		t.Fatalf("Users.DeleteEmails() returned error: %v", err)
 	}
 
 	// List emails again and verify new email was removed
-	emails, _, err = client.Users.ListEmails(nil)
+	emails, _, err = client.Users.ListEmails(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Users.ListEmails() returned error: %v", err)
 	}
@@ -159,7 +160,7 @@ EmailLoop:
 }
 
 func TestUsers_Keys(t *testing.T) {
-	keys, _, err := client.Users.ListKeys("willnorris", nil)
+	keys, _, err := client.Users.ListKeys(context.Background(), "willnorris", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('willnorris') returned error: %v", err)
 	}
@@ -174,7 +175,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// TODO: make this integration test work for any authenticated user.
-	keys, _, err = client.Users.ListKeys("", nil)
+	keys, _, err = client.Users.ListKeys(context.Background(), "", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
@@ -188,7 +189,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Add new key
-	_, _, err = client.Users.CreateKey(&github.Key{
+	_, _, err = client.Users.CreateKey(context.Background(), &github.Key{
 		Title: github.String("go-github test key"),
 		Key:   github.String(key),
 	})
@@ -197,12 +198,12 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// List keys again and verify new key is present
-	keys, _, err = client.Users.ListKeys("", nil)
+	keys, _, err = client.Users.ListKeys(context.Background(), "", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}
 
-	var id int
+	var id int64
 	for _, k := range keys {
 		if k.Key != nil && *k.Key == key {
 			id = *k.ID
@@ -215,7 +216,7 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Verify that fetching individual key works
-	k, _, err := client.Users.GetKey(id)
+	k, _, err := client.Users.GetKey(context.Background(), id)
 	if err != nil {
 		t.Fatalf("Users.GetKey(%q) returned error: %v", id, err)
 	}
@@ -224,13 +225,13 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Remove test key
-	_, err = client.Users.DeleteKey(id)
+	_, err = client.Users.DeleteKey(context.Background(), id)
 	if err != nil {
 		t.Fatalf("Users.DeleteKey(%d) returned error: %v", id, err)
 	}
 
 	// List keys again and verify test key was removed
-	keys, _, err = client.Users.ListKeys("", nil)
+	keys, _, err = client.Users.ListKeys(context.Background(), "", nil)
 	if err != nil {
 		t.Fatalf("Users.ListKeys('') returned error: %v", err)
 	}

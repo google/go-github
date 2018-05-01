@@ -15,7 +15,7 @@ import (
 )
 
 func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &UserLDAPMapping{
@@ -39,7 +39,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 	}
 
 	want := &UserLDAPMapping{
-		ID:     Int(1),
+		ID:     Int64(1),
 		LDAPDN: String("uid=asdf,ou=users,dc=github,dc=com"),
 	}
 	if !reflect.DeepEqual(mapping, want) {
@@ -48,7 +48,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 }
 
 func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &TeamLDAPMapping{
@@ -72,7 +72,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 	}
 
 	want := &TeamLDAPMapping{
-		ID:     Int(1),
+		ID:     Int64(1),
 		LDAPDN: String("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
 	}
 	if !reflect.DeepEqual(mapping, want) {

@@ -16,7 +16,7 @@ import (
 )
 
 func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -42,20 +42,20 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []*PullRequestComment{{ID: Int(1)}}
+	want := []*PullRequestComment{{ID: Int64(1)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
 }
 
 func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
-		fmt.Fprint(w, `[{"id":1}]`)
+		fmt.Fprint(w, `[{"id":1, "pull_request_review_id":42}]`)
 	})
 
 	pulls, _, err := client.PullRequests.ListComments(context.Background(), "o", "r", 1, nil)
@@ -63,19 +63,22 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []*PullRequestComment{{ID: Int(1)}}
+	want := []*PullRequestComment{{ID: Int64(1), PullRequestReviewID: Int64(42)}}
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
 }
 
 func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.ListComments(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_GetComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -89,19 +92,22 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 		t.Errorf("PullRequests.GetComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Int(1)}
+	want := &PullRequestComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.GetComment returned %+v, want %+v", comment, want)
 	}
 }
 
 func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.GetComment(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_CreateComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestComment{Body: String("b")}
@@ -123,19 +129,22 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		t.Errorf("PullRequests.CreateComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Int(1)}
+	want := &PullRequestComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.CreateComment returned %+v, want %+v", comment, want)
 	}
 }
 
 func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.CreateComment(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_EditComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &PullRequestComment{Body: String("b")}
@@ -157,19 +166,22 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 		t.Errorf("PullRequests.EditComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Int(1)}
+	want := &PullRequestComment{ID: Int64(1)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.EditComment returned %+v, want %+v", comment, want)
 	}
 }
 
 func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.PullRequests.EditComment(context.Background(), "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestPullRequestsService_DeleteComment(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
@@ -183,6 +195,9 @@ func TestPullRequestsService_DeleteComment(t *testing.T) {
 }
 
 func TestPullRequestsService_DeleteComment_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.PullRequests.DeleteComment(context.Background(), "%", "r", 1)
 	testURLParseError(t, err)
 }

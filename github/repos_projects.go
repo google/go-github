@@ -1,4 +1,4 @@
-// Copyright 2016 The go-github AUTHORS. All rights reserved.
+// Copyright 2017 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -8,12 +8,22 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
+
+// ProjectListOptions specifies the optional parameters to the
+// OrganizationsService.ListProjects and RepositoriesService.ListProjects methods.
+type ProjectListOptions struct {
+	// Indicates the state of the projects to return. Can be either open, closed, or all. Default: open
+	State string `url:"state,omitempty"`
+
+	ListOptions
+}
 
 // ListProjects lists the projects for a repo.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-repository-projects
-func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Project, *Response, error) {
+func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo string, opt *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/projects", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -25,10 +35,11 @@ func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	projects := []*Project{}
+	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -47,8 +58,9 @@ func (s *RepositoriesService) CreateProject(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	project := &Project{}
 	resp, err := s.client.Do(ctx, req, project)

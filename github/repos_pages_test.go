@@ -14,7 +14,7 @@ import (
 )
 
 func TestRepositoriesService_GetPagesInfo(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 }
 
 func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +43,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		fmt.Fprint(w, `[{"url":"u","status":"s","commit":"c"}]`)
 	})
 
-	pages, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r")
+	pages, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
@@ -54,8 +54,26 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[]`)
+	})
+
+	_, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pages/builds/latest", func(w http.ResponseWriter, r *http.Request) {
@@ -75,7 +93,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_GetPageBuild(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pages/builds/1", func(w http.ResponseWriter, r *http.Request) {
@@ -95,7 +113,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 }
 
 func TestRepositoriesService_RequestPageBuild(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {

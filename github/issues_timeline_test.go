@@ -14,7 +14,7 @@ import (
 )
 
 func TestIssuesService_ListIssueTimeline(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/issues/1/timeline", func(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
 	}
 
-	want := []*Timeline{{ID: Int(1)}}
+	want := []*Timeline{{ID: Int64(1)}}
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Issues.ListIssueTimeline = %+v, want %+v", events, want)
 	}

@@ -5,7 +5,7 @@
 
 // +build integration
 
-package tests
+package integration
 
 import (
 	"context"
@@ -63,7 +63,7 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 	var repoName string
 	for {
 		repoName = fmt.Sprintf("test-%d", rand.Int())
-		_, resp, err := client.Repositories.Get(owner, repoName)
+		_, resp, err := client.Repositories.Get(context.Background(), owner, repoName)
 		if err != nil {
 			if resp.StatusCode == http.StatusNotFound {
 				// found a non-existent repo, perfect
@@ -75,7 +75,7 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 	}
 
 	// create the repository
-	repo, _, err := client.Repositories.Create("", &github.Repository{Name: github.String(repoName), AutoInit: github.Bool(autoinit)})
+	repo, _, err := client.Repositories.Create(context.Background(), "", &github.Repository{Name: github.String(repoName), AutoInit: github.Bool(autoinit)})
 	if err != nil {
 		return nil, err
 	}

@@ -15,7 +15,7 @@ import (
 )
 
 func TestOrganizationsService_ListHooks(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/hooks", func(w http.ResponseWriter, r *http.Request) {
@@ -31,19 +31,22 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 		t.Errorf("Organizations.ListHooks returned error: %v", err)
 	}
 
-	want := []*Hook{{ID: Int(1)}, {ID: Int(2)}}
+	want := []*Hook{{ID: Int64(1)}, {ID: Int64(2)}}
 	if !reflect.DeepEqual(hooks, want) {
 		t.Errorf("Organizations.ListHooks returned %+v, want %+v", hooks, want)
 	}
 }
 
 func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.ListHooks(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_GetHook(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -56,19 +59,22 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 		t.Errorf("Organizations.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int(1)}
+	want := &Hook{ID: Int64(1)}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Organizations.GetHook returned %+v, want %+v", hook, want)
 	}
 }
 
 func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.GetHook(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_EditHook(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	input := &Hook{Name: String("t")}
@@ -90,19 +96,22 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 		t.Errorf("Organizations.EditHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Int(1)}
+	want := &Hook{ID: Int64(1)}
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Organizations.EditHook returned %+v, want %+v", hook, want)
 	}
 }
 
 func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, _, err := client.Organizations.EditHook(context.Background(), "%", 1, nil)
 	testURLParseError(t, err)
 }
 
 func TestOrganizationsService_PingHook(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/hooks/1/pings", func(w http.ResponseWriter, r *http.Request) {
@@ -116,7 +125,7 @@ func TestOrganizationsService_PingHook(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteHook(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs/o/hooks/1", func(w http.ResponseWriter, r *http.Request) {
@@ -130,6 +139,9 @@ func TestOrganizationsService_DeleteHook(t *testing.T) {
 }
 
 func TestOrganizationsService_DeleteHook_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
 	_, err := client.Organizations.DeleteHook(context.Background(), "%", 1)
 	testURLParseError(t, err)
 }
