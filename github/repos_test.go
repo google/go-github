@@ -686,7 +686,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					{Slug: String("tt"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews:      true,
+			RequireCodeOwnerReviews: true,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
