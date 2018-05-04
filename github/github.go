@@ -111,8 +111,16 @@ const (
 	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
 	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
 
+
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeRequiredApprovingReviewsPreview = "application/vnd.github.luke-cage-preview+json"
+
+	// https://developer.github.com/changes/2018-02-22-label-description-search-preview/
+	mediaTypeLabelDescriptionSearchPreview = "application/vnd.github.symmetra-preview+json"
+
+	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
+	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
+
 )
 
 // A Client manages communication with the GitHub API.
@@ -154,6 +162,7 @@ type Client struct {
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
+	Teams          *TeamsService
 	Users          *UsersService
 }
 
@@ -244,6 +253,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
+	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
 }
@@ -487,18 +497,25 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 
 	err = CheckResponse(resp)
 	if err != nil {
-		// even though there was an error, we still return the response
-		// in case the caller wants to inspect it further
-		return response, err
+		// Even though there was an error, we still return the response
+		// in case the caller wants to inspect it further.
+		// However, if the error is AcceptedError, decode it below before
+		// returning from this function and closing the response body.
+		if _, ok := err.(*AcceptedError); !ok {
+			return response, err
+		}
 	}
 
 	if v != nil {
 		if w, ok := v.(io.Writer); ok {
 			io.Copy(w, resp.Body)
 		} else {
-			err = json.NewDecoder(resp.Body).Decode(v)
-			if err == io.EOF {
-				err = nil // ignore EOF errors caused by empty response body
+			decErr := json.NewDecoder(resp.Body).Decode(v)
+			if decErr == io.EOF {
+				decErr = nil // ignore EOF errors caused by empty response body
+			}
+			if decErr != nil {
+				err = decErr
 			}
 		}
 	}
@@ -687,7 +704,7 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-	case r.StatusCode == http.StatusForbidden && errorResponse.DocumentationURL == "https://developer.github.com/v3/#abuse-rate-limits":
+	case r.StatusCode == http.StatusForbidden && strings.HasSuffix(errorResponse.DocumentationURL, "/v3/#abuse-rate-limits"):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,

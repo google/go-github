@@ -134,7 +134,7 @@ func TestAPIMeta(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "verifiable_password_authentication": true}`)
+		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "verifiable_password_authentication": true}`)
 	})
 
 	meta, _, err := client.APIMeta(context.Background())
@@ -143,9 +143,10 @@ func TestAPIMeta(t *testing.T) {
 	}
 
 	want := &APIMeta{
-		Hooks: []string{"h"},
-		Git:   []string{"g"},
-		Pages: []string{"p"},
+		Hooks:    []string{"h"},
+		Git:      []string{"g"},
+		Pages:    []string{"p"},
+		Importer: []string{"i"},
 		VerifiablePasswordAuthentication: Bool(true),
 	}
 	if !reflect.DeepEqual(want, meta) {
