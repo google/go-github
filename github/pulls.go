@@ -63,6 +63,8 @@ type PullRequest struct {
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
 
+	// ActiveLockReason is populated only when LockReason is provided while locking the pull request
+	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
 	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
 }
 

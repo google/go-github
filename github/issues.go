@@ -57,6 +57,8 @@ type Issue struct {
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
 	TextMatches []TextMatch `json:"text_matches,omitempty"`
 
+	// ActiveLockReason is populated only when LockReason is provided while locking the issue
+	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
 	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
 }
 
@@ -315,7 +317,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 type LockIssueOptions struct {
 	// LockReason specifies the reason to lock this issue.
 	// Providing a lock reason can help make it clearer to contributors why an issue
-	// was locked. Possible values are: off-topic, too heated, resolved, spam
+	// was locked. Possible values are: "off-topic", "too heated", "resolved", and "spam".
 	LockReason string `json:"lock_reason,omitempty"`
 }
 

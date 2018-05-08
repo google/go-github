@@ -39,7 +39,7 @@ type IssueEvent struct {
 	//
 	//     locked
 	//       The Actor locked the issue.
-	//       lock_reason holds reason of locking the issue if provided while locking
+	//       LockReason holds the reason of locking the issue (if provided while locking).
 	//
 	//     renamed
 	//       The Actor changed the issue title from Rename.From to Rename.To.

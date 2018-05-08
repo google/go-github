@@ -297,7 +297,7 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
+		testHeader(t, r, "Accept", mediaTypeLockReasonPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
