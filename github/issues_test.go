@@ -20,7 +20,8 @@ func TestIssuesService_List_all(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -57,7 +58,8 @@ func TestIssuesService_List_owned(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -79,7 +81,8 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -109,7 +112,8 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -155,7 +159,8 @@ func TestIssuesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -281,7 +286,24 @@ func TestIssuesService_Lock(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Issues.Lock(context.Background(), "o", "r", 1); err != nil {
+	if _, err := client.Issues.Lock(context.Background(), "o", "r", 1, nil); err != nil {
+		t.Errorf("Issues.Lock returned error: %v", err)
+	}
+}
+
+func TestIssuesService_LockWithReason(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	opt := &LockIssueOptions{LockReason: "off-topic"}
+
+	if _, err := client.Issues.Lock(context.Background(), "o", "r", 1, opt); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
 }

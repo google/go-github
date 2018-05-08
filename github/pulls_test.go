@@ -20,7 +20,8 @@ func TestPullRequestsService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -59,7 +60,8 @@ func TestPullRequestsService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+		mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -281,7 +283,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 
 	for i, tt := range tests {
 		madeRequest := false
-		acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+		acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview,
+			mediaTypeLockReasonPreview}
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
 			testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
