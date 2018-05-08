@@ -57,7 +57,7 @@ type Issue struct {
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
 	TextMatches []TextMatch `json:"text_matches,omitempty"`
 
-	// ActiveLockReason is populated only when LockReason is provided while locking the issue
+	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
 	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
 	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
 }
