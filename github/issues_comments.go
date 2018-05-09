@@ -19,9 +19,12 @@ type IssueComment struct {
 	Reactions *Reactions `json:"reactions,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-	HTMLURL   *string    `json:"html_url,omitempty"`
-	IssueURL  *string    `json:"issue_url,omitempty"`
+	// AuthorAssociation is the comment author's relationship to the issue's repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	AuthorAssociation *string `json:"author_association,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
+	IssueURL          *string `json:"issue_url,omitempty"`
 }
 
 func (i IssueComment) String() string {

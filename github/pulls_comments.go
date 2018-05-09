@@ -13,22 +13,26 @@ import (
 
 // PullRequestComment represents a comment left on a pull request.
 type PullRequestComment struct {
-	ID               *int64     `json:"id,omitempty"`
-	InReplyTo        *int64     `json:"in_reply_to,omitempty"`
-	Body             *string    `json:"body,omitempty"`
-	Path             *string    `json:"path,omitempty"`
-	DiffHunk         *string    `json:"diff_hunk,omitempty"`
-	Position         *int       `json:"position,omitempty"`
-	OriginalPosition *int       `json:"original_position,omitempty"`
-	CommitID         *string    `json:"commit_id,omitempty"`
-	OriginalCommitID *string    `json:"original_commit_id,omitempty"`
-	User             *User      `json:"user,omitempty"`
-	Reactions        *Reactions `json:"reactions,omitempty"`
-	CreatedAt        *time.Time `json:"created_at,omitempty"`
-	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
-	URL              *string    `json:"url,omitempty"`
-	HTMLURL          *string    `json:"html_url,omitempty"`
-	PullRequestURL   *string    `json:"pull_request_url,omitempty"`
+	ID                  *int64     `json:"id,omitempty"`
+	InReplyTo           *int64     `json:"in_reply_to,omitempty"`
+	Body                *string    `json:"body,omitempty"`
+	Path                *string    `json:"path,omitempty"`
+	DiffHunk            *string    `json:"diff_hunk,omitempty"`
+	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
+	Position            *int       `json:"position,omitempty"`
+	OriginalPosition    *int       `json:"original_position,omitempty"`
+	CommitID            *string    `json:"commit_id,omitempty"`
+	OriginalCommitID    *string    `json:"original_commit_id,omitempty"`
+	User                *User      `json:"user,omitempty"`
+	Reactions           *Reactions `json:"reactions,omitempty"`
+	CreatedAt           *time.Time `json:"created_at,omitempty"`
+	UpdatedAt           *time.Time `json:"updated_at,omitempty"`
+	// AuthorAssociation is the comment author's relationship to the pull request's repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	AuthorAssociation *string `json:"author_association,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
+	PullRequestURL    *string `json:"pull_request_url,omitempty"`
 }
 
 func (p PullRequestComment) String() string {

@@ -134,14 +134,14 @@ func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, 
 	return uResp, resp, nil
 }
 
-// HovercardOptions specifies optional parameters to the UsersService.GetContextualInfo
+// HovercardOptions specifies optional parameters to the UsersService.GetHovercard
 // method.
 type HovercardOptions struct {
 	// SubjectType specifies the additional information to be received about the hovercard.
-	// Possible values are: organization, repository, issue, pull_request. (Required.)
+	// Possible values are: organization, repository, issue, pull_request. (Required when using subject_id.)
 	SubjectType string `url:"subject_type"`
 
-	// SubjectID specifies the ID for the SubjectType. (Required.)
+	// SubjectID specifies the ID for the SubjectType. (Required when using subject_type.)
 	SubjectID string `url:"subject_id"`
 }
 
@@ -151,15 +151,15 @@ type UserContext struct {
 	Octicon *string `json:"octicon,omitempty"`
 }
 
-// Hovercard holds the parsed response from GetContextualInfo.
+// Hovercard holds the parsed response from GetHovercard.
 type Hovercard struct {
 	Contexts []*UserContext `json:"contexts,omitempty"`
 }
 
-// GetContextualInfo fetches contextual information about user.
-//
+// GetHovercard fetches contextual information about user. It requires authentication
+// via Basic Auth or via OAuth with the repo scope.
 // GitHub API docs: https://developer.github.com/v3/users/#get-contextual-information-about-a-user
-func (s *UsersService) GetContextualInfo(ctx context.Context, user string, opt *HovercardOptions) ([]*UserContext, *Response, error) {
+func (s *UsersService) GetHovercard(ctx context.Context, user string, opt *HovercardOptions) (*Hovercard, *Response, error) {
 	u := fmt.Sprintf("users/%v/hovercard", user)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -174,13 +174,13 @@ func (s *UsersService) GetContextualInfo(ctx context.Context, user string, opt *
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeHovercardPreview)
 
-	uci := new(Hovercard)
-	resp, err := s.client.Do(ctx, req, uci)
+	hc := new(Hovercard)
+	resp, err := s.client.Do(ctx, req, hc)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return uci.Contexts, resp, nil
+	return hc, resp, nil
 }
 
 // UserListOptions specifies optional parameters to the UsersService.ListAll
@@ -189,6 +189,9 @@ type UserListOptions struct {
 	// ID of the last user seen
 	Since int64 `url:"since,omitempty"`
 
+	// Note: Pagination is powered exclusively by the Since parameter,
+	// ListOptions.Page has no effect.
+	// ListOptions.PerPage controls an undocumented GitHub API parameter.
 	ListOptions
 }
 

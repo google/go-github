@@ -153,7 +153,7 @@ func TestUsersService_Edit(t *testing.T) {
 	}
 }
 
-func TestUsersService_GetContextualInfo(t *testing.T) {
+func TestUsersService_GetHovercard(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -165,14 +165,14 @@ func TestUsersService_GetContextualInfo(t *testing.T) {
 	})
 
 	opt := &HovercardOptions{SubjectType: "repository", SubjectID: "20180408"}
-	usercontext, _, err := client.Users.GetContextualInfo(context.Background(), "u", opt)
+	hovercard, _, err := client.Users.GetHovercard(context.Background(), "u", opt)
 	if err != nil {
-		t.Errorf("Users.GetContextualInfo returned error: %v", err)
+		t.Errorf("Users.GetHovercard returned error: %v", err)
 	}
 
-	want := []*UserContext{{Message: String("Owns this repository"), Octicon: String("repo")}}
-	if !reflect.DeepEqual(usercontext, want) {
-		t.Errorf("Users.GetContextualInfo returned %+v, want %+v", usercontext, want)
+	want := &Hovercard{Contexts: []*UserContext{{Message: String("Owns this repository"), Octicon: String("repo")}}}
+	if !reflect.DeepEqual(hovercard, want) {
+		t.Errorf("Users.GetHovercard returned %+v, want %+v", hovercard, want)
 	}
 }
 
