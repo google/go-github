@@ -436,6 +436,158 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetApp returns the App field.
+func (c *CheckRun) GetApp() *App {
+	if c == nil {
+		return nil
+	}
+	return c.App
+}
+
+// GetCheckSuite returns the CheckSuite field.
+func (c *CheckRun) GetCheckSuite() *CheckSuite {
+	if c == nil {
+		return nil
+	}
+	return c.CheckSuite
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetCompletedAt() time.Time {
+	if c == nil || c.CompletedAt == nil {
+		return time.Time{}
+	}
+	return *c.CompletedAt
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetConclusion() string {
+	if c == nil || c.Conclusion == nil {
+		return ""
+	}
+	return *c.Conclusion
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetExternalID() int64 {
+	if c == nil || c.ExternalID == nil {
+		return 0
+	}
+	return *c.ExternalID
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetHeadSHA() string {
+	if c == nil || c.HeadSHA == nil {
+		return ""
+	}
+	return *c.HeadSHA
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetOutput returns the Output field.
+func (c *CheckRun) GetOutput() *CheckRunOutput {
+	if c == nil {
+		return nil
+	}
+	return c.Output
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetStartedAt() time.Time {
+	if c == nil || c.StartedAt == nil {
+		return time.Time{}
+	}
+	return *c.StartedAt
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetAnnotationsCount returns the AnnotationsCount field if it's non-nil, zero value otherwise.
+func (c *CheckRunOutput) GetAnnotationsCount() int64 {
+	if c == nil || c.AnnotationsCount == nil {
+		return 0
+	}
+	return *c.AnnotationsCount
+}
+
+// GetAnnotationsURL returns the AnnotationsURL field if it's non-nil, zero value otherwise.
+func (c *CheckRunOutput) GetAnnotationsURL() string {
+	if c == nil || c.AnnotationsURL == nil {
+		return ""
+	}
+	return *c.AnnotationsURL
+}
+
+// GetSummary returns the Summary field if it's non-nil, zero value otherwise.
+func (c *CheckRunOutput) GetSummary() string {
+	if c == nil || c.Summary == nil {
+		return ""
+	}
+	return *c.Summary
+}
+
+// GetText returns the Text field if it's non-nil, zero value otherwise.
+func (c *CheckRunOutput) GetText() string {
+	if c == nil || c.Text == nil {
+		return ""
+	}
+	return *c.Text
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CheckRunOutput) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CodeOfConduct) GetBody() string {
 	if c == nil || c.Body == nil {
