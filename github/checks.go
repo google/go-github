@@ -40,7 +40,7 @@ type CheckRunOutput struct {
 	Title            *string            `json:"title,omitempty"`
 	Summary          *string            `json:"summary,omitempty"`
 	Text             *string            `json:"text,omitempty"`
-	AnnotationsCount *int64             `json:"annotations_count,omitempty"`
+	AnnotationsCount *int               `json:"annotations_count,omitempty"`
 	AnnotationsURL   *string            `json:"annotations_url,omitempty"`
 	Annotations      []*CheckAnnotation `json:"annotations,omitempty"`
 	Images           []*CheckImage      `json:"images,omitempty"`
@@ -50,8 +50,8 @@ type CheckRunOutput struct {
 type CheckAnnotation struct {
 	FileName     *string `json:"filename,omitempty"`
 	BlobHRef     *string `json:"blob_href,omitempty"`
-	StartLine    *int64  `json:"start_line,omitempty"`
-	EndLine      *int64  `json:"end_line,omitempty"`
+	StartLine    *int    `json:"start_line,omitempty"`
+	EndLine      *int    `json:"end_line,omitempty"`
 	WarningLevel *string `json:"warning_level,omitempty"`
 	Message      *string `json:"message,omitempty"`
 	Title        *string `json:"title,omitempty"`
