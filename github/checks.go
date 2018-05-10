@@ -54,7 +54,7 @@ func (c CheckRun) String() string {
 	return Stringify(c)
 }
 
-// GetCheckRun gets a check-run for a repo
+// GetCheckRun gets a check-run for a repository
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-single-check-run
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, id int64) (*CheckRun, *Response, error) {
