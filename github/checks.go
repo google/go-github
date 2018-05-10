@@ -17,7 +17,7 @@ import (
 // GitHub API docs: https://developer.github.com/v3/checks/
 type ChecksService service
 
-// CheckRun represents a GitHub check run on a repository associated with a GitHub app
+// CheckRun represents a GitHub check run on a repository associated with a GitHub app.
 type CheckRun struct {
 	ID           *int64          `json:"id,omitempty"`
 	HeadSHA      *string         `json:"head_sha,omitempty"`
