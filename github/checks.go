@@ -112,7 +112,7 @@ type CreateCheckRunOptions struct {
 
 // CreateCheckRun Creates a check run for repository.
 //
-//GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
 func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt *CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opt)
