@@ -38,11 +38,32 @@ type CheckRun struct {
 
 // CheckRunOutput represents the output of a CheckRun
 type CheckRunOutput struct {
-	Title            *string `json:"title,omitempty"`
-	Summary          *string `json:"summary,omitempty"`
-	Text             *string `json:"text,omitempty"`
-	AnnotationsCount *int64  `json:"annotations_count,omitempty"`
-	AnnotationsURL   *string `json:"annotations_url,omitempty"`
+	Title            *string            `json:"title,omitempty"`
+	Summary          *string            `json:"summary,omitempty"`
+	Text             *string            `json:"text,omitempty"`
+	AnnotationsCount *int64             `json:"annotations_count,omitempty"`
+	AnnotationsURL   *string            `json:"annotations_url,omitempty"`
+	Annotations      []*CheckAnnotation `json:"annotations,omitempty"`
+	Images           []*CheckImage      `json:"images,omitempty"`
+}
+
+// CheckAnnotation represents an annotation object for a CheckRun output
+type CheckAnnotation struct {
+	FileName     *string `json:"filename,omitempty"`
+	BlobHRef     *string `json:"blob_href,omitempty"`
+	StartLine    *int64  `json:"start_line,omitempty"`
+	EndLine      *int64  `json:"end_line,omitempty"`
+	WarningLevel *string `json:"warning_level,omitempty"`
+	Message      *string `json:"message,omitempty"`
+	Title        *string `json:"title,omitempty"`
+	RawDetails   *string `json:"raw_details,omitempty"`
+}
+
+// CheckImage represents an image object for a CheckRun output
+type CheckImage struct {
+	Alt      *string `json:"alt,omitempty"`
+	ImageURL *string `json:"image_url,omitempty"`
+	Caption  *string `json:"caption,omitempty"`
 }
 
 // CheckSuite represents a suite of check runs
@@ -60,6 +81,41 @@ func (c CheckRun) String() string {
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, id int64) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	acceptHeaders := []string{mediaTypeCheckRunsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+
+	checkRun := new(CheckRun)
+	resp, err := s.client.Do(ctx, req, checkRun)
+	if err != nil {
+		return nil, resp, err
+	}
+	return checkRun, resp, nil
+}
+
+// CreateCheckRunOptions sets up parameters need to create a CheckRun
+type CreateCheckRunOptions struct {
+	Name        *string         `json:"name,omitempty"`
+	HeadBranch  *string         `json:"head_branch,omitempty"`
+	HeadSHA     *string         `json:"head_sha,omitempty"`
+	DetailsURL  *string         `json:"details_url,omitempty"`
+	ExternalID  *int64          `json:"external_id,omitempty"`
+	Status      *string         `json:"status,omitempty"`
+	Conclusion  *string         `json:"conclusion,omitempty"`
+	StartedAt   *time.Time      `json:"started_at,omitempty"`
+	CompletedAt *time.Time      `json:"completed_at,omitempty"`
+	Output      *CheckRunOutput `json:"output,omitempty"`
+}
+
+// CreateCheckRun Creates a check run for repository
+//
+//GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt *CreateCheckRunOptions) (*CheckRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
