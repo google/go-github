@@ -62,10 +62,11 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testCreateCheckRun",
+                        "head_sha":"deadbeef",
 			"status": "in_progress",
-			"conclusion": "null",
+			"conclusion": null,
 			"started_at": "2018-05-04T01:14:52Z",
-			"completed_at": "null",
+			"completed_at": null,
                         "output":{"title": "Mighty test report", "summary":"", "text":""}}`)
 	})
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
@@ -84,16 +85,20 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 
 	checkRun, _, err := client.Checks.CreateCheckRun(context.Background(), "o", "r", checkRunOpt)
 	if err != nil {
-		t.Errorf("Checks.GetCheckRun return error: %v", err)
+		t.Errorf("Checks.CreateCheckRun return error: %v", err)
 	}
 
 	want := &CheckRun{
-		ID:         Int64(1),
-		Status:     String("in_progress"),
-		Conclusion: String("null"),
-		StartedAt:  &startedAt,
-		HeadSHA:    String("deadbeef"),
-		Name:       String("testCreateCheckRun"),
+		ID:        Int64(1),
+		Status:    String("in_progress"),
+		StartedAt: &startedAt,
+		HeadSHA:   String("deadbeef"),
+		Name:      String("testCreateCheckRun"),
+		Output: &CheckRunOutput{
+			Title:   String("Mighty test report"),
+			Summary: String(""),
+			Text:    String(""),
+		},
 	}
 	if !reflect.DeepEqual(checkRun, want) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
