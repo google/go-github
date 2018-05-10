@@ -445,7 +445,7 @@ func (c *CheckAnnotation) GetBlobHRef() string {
 }
 
 // GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetEndLine() int64 {
+func (c *CheckAnnotation) GetEndLine() int {
 	if c == nil || c.EndLine == nil {
 		return 0
 	}
@@ -477,7 +477,7 @@ func (c *CheckAnnotation) GetRawDetails() string {
 }
 
 // GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetStartLine() int64 {
+func (c *CheckAnnotation) GetStartLine() int {
 	if c == nil || c.StartLine == nil {
 		return 0
 	}
@@ -629,7 +629,7 @@ func (c *CheckRun) GetURL() string {
 }
 
 // GetAnnotationsCount returns the AnnotationsCount field if it's non-nil, zero value otherwise.
-func (c *CheckRunOutput) GetAnnotationsCount() int64 {
+func (c *CheckRunOutput) GetAnnotationsCount() int {
 	if c == nil || c.AnnotationsCount == nil {
 		return 0
 	}
