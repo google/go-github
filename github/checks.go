@@ -78,8 +78,8 @@ func (c CheckRun) String() string {
 // GetCheckRun gets a check-run for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-single-check-run
-func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, id int64) (*CheckRun, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, id)
+func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, checkRunID int64) (*CheckRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
