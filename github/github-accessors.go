@@ -436,6 +436,94 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetBlobHRef() string {
+	if c == nil || c.BlobHRef == nil {
+		return ""
+	}
+	return *c.BlobHRef
+}
+
+// GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetEndLine() int64 {
+	if c == nil || c.EndLine == nil {
+		return 0
+	}
+	return *c.EndLine
+}
+
+// GetFileName returns the FileName field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetFileName() string {
+	if c == nil || c.FileName == nil {
+		return ""
+	}
+	return *c.FileName
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetRawDetails returns the RawDetails field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetRawDetails() string {
+	if c == nil || c.RawDetails == nil {
+		return ""
+	}
+	return *c.RawDetails
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetStartLine() int64 {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
+// GetWarningLevel returns the WarningLevel field if it's non-nil, zero value otherwise.
+func (c *CheckAnnotation) GetWarningLevel() string {
+	if c == nil || c.WarningLevel == nil {
+		return ""
+	}
+	return *c.WarningLevel
+}
+
+// GetAlt returns the Alt field if it's non-nil, zero value otherwise.
+func (c *CheckImage) GetAlt() string {
+	if c == nil || c.Alt == nil {
+		return ""
+	}
+	return *c.Alt
+}
+
+// GetCaption returns the Caption field if it's non-nil, zero value otherwise.
+func (c *CheckImage) GetCaption() string {
+	if c == nil || c.Caption == nil {
+		return ""
+	}
+	return *c.Caption
+}
+
+// GetImageURL returns the ImageURL field if it's non-nil, zero value otherwise.
+func (c *CheckImage) GetImageURL() string {
+	if c == nil || c.ImageURL == nil {
+		return ""
+	}
+	return *c.ImageURL
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -1410,6 +1498,86 @@ func (c *ContributorStats) GetTotal() int {
 		return 0
 	}
 	return *c.Total
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetCompletedAt() time.Time {
+	if c == nil || c.CompletedAt == nil {
+		return time.Time{}
+	}
+	return *c.CompletedAt
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetConclusion() string {
+	if c == nil || c.Conclusion == nil {
+		return ""
+	}
+	return *c.Conclusion
+}
+
+// GetDetailsURL returns the DetailsURL field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetDetailsURL() string {
+	if c == nil || c.DetailsURL == nil {
+		return ""
+	}
+	return *c.DetailsURL
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetExternalID() int64 {
+	if c == nil || c.ExternalID == nil {
+		return 0
+	}
+	return *c.ExternalID
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetHeadBranch() string {
+	if c == nil || c.HeadBranch == nil {
+		return ""
+	}
+	return *c.HeadBranch
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetHeadSHA() string {
+	if c == nil || c.HeadSHA == nil {
+		return ""
+	}
+	return *c.HeadSHA
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetOutput returns the Output field.
+func (c *CreateCheckRunOptions) GetOutput() *CheckRunOutput {
+	if c == nil {
+		return nil
+	}
+	return c.Output
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetStartedAt() time.Time {
+	if c == nil || c.StartedAt == nil {
+		return time.Time{}
+	}
+	return *c.StartedAt
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CreateCheckRunOptions) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
