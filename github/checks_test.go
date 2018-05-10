@@ -42,8 +42,8 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 		ID:          Int64(1),
 		Status:      String("completed"),
 		Conclusion:  String("neutral"),
-		StartedAt:   &startedAt,
-		CompletedAt: &completeAt,
+		StartedAt:   &Timestamp{startedAt},
+		CompletedAt: &Timestamp{completeAt},
 		Name:        String("testCheckRun"),
 	}
 	if !reflect.DeepEqual(checkRun, want) {
@@ -75,7 +75,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 		Name:       String("testCreateCheckRun"),
 		HeadSHA:    String("deadbeef"),
 		Status:     String("in_progress"),
-		StartedAt:  &startedAt,
+		StartedAt:  &Timestamp{startedAt},
 		Output: &CheckRunOutput{
 			Title:   String("Mighty test report"),
 			Summary: String(""),
@@ -91,7 +91,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	want := &CheckRun{
 		ID:        Int64(1),
 		Status:    String("in_progress"),
-		StartedAt: &startedAt,
+		StartedAt: &Timestamp{startedAt},
 		HeadSHA:   String("deadbeef"),
 		Name:      String("testCreateCheckRun"),
 		Output: &CheckRunOutput{

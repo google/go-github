@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 )
 
 // ChecksService provides access to the the Checks API in the
@@ -27,8 +26,8 @@ type CheckRun struct {
 	HTMLURL      *string         `json:"html_url,omitempty"`
 	Status       *string         `json:"status,omitempty"`
 	Conclusion   *string         `json:"conclusion,omitempty"`
-	StartedAt    *time.Time      `json:"started_at,omitempty"`
-	CompletedAt  *time.Time      `json:"completed_at,omitempty"`
+	StartedAt    *Timestamp      `json:"started_at,omitempty"`
+	CompletedAt  *Timestamp      `json:"completed_at,omitempty"`
 	Output       *CheckRunOutput `json:"output,omitempty"`
 	Name         *string         `json:"name,omitempty"`
 	CheckSuite   *CheckSuite     `json:"check_suite,omitempty"`
@@ -106,8 +105,8 @@ type CreateCheckRunOptions struct {
 	ExternalID  *int64          `json:"external_id,omitempty"`
 	Status      *string         `json:"status,omitempty"`
 	Conclusion  *string         `json:"conclusion,omitempty"`
-	StartedAt   *time.Time      `json:"started_at,omitempty"`
-	CompletedAt *time.Time      `json:"completed_at,omitempty"`
+	StartedAt   *Timestamp      `json:"started_at,omitempty"`
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"`
 	Output      *CheckRunOutput `json:"output,omitempty"`
 }
 

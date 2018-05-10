@@ -541,9 +541,9 @@ func (c *CheckRun) GetCheckSuite() *CheckSuite {
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
-func (c *CheckRun) GetCompletedAt() time.Time {
+func (c *CheckRun) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.CompletedAt
 }
@@ -605,9 +605,9 @@ func (c *CheckRun) GetOutput() *CheckRunOutput {
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
-func (c *CheckRun) GetStartedAt() time.Time {
+func (c *CheckRun) GetStartedAt() Timestamp {
 	if c == nil || c.StartedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.StartedAt
 }
@@ -1501,9 +1501,9 @@ func (c *ContributorStats) GetTotal() int {
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetCompletedAt() time.Time {
+func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.CompletedAt
 }
@@ -1565,9 +1565,9 @@ func (c *CreateCheckRunOptions) GetOutput() *CheckRunOutput {
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetStartedAt() time.Time {
+func (c *CreateCheckRunOptions) GetStartedAt() Timestamp {
 	if c == nil || c.StartedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.StartedAt
 }
