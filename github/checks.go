@@ -36,7 +36,7 @@ type CheckRun struct {
 	PullRequests []*PullRequest  `json:"pull_requests,omitempty"`
 }
 
-// CheckRunOutput represents the output of a CheckRun
+// CheckRunOutput represents the output of a CheckRun.
 type CheckRunOutput struct {
 	Title            *string            `json:"title,omitempty"`
 	Summary          *string            `json:"summary,omitempty"`
@@ -47,7 +47,7 @@ type CheckRunOutput struct {
 	Images           []*CheckImage      `json:"images,omitempty"`
 }
 
-// CheckAnnotation represents an annotation object for a CheckRun output
+// CheckAnnotation represents an annotation object for a CheckRun output.
 type CheckAnnotation struct {
 	FileName     *string `json:"filename,omitempty"`
 	BlobHRef     *string `json:"blob_href,omitempty"`
@@ -59,14 +59,14 @@ type CheckAnnotation struct {
 	RawDetails   *string `json:"raw_details,omitempty"`
 }
 
-// CheckImage represents an image object for a CheckRun output
+// CheckImage represents an image object for a CheckRun output.
 type CheckImage struct {
 	Alt      *string `json:"alt,omitempty"`
 	ImageURL *string `json:"image_url,omitempty"`
 	Caption  *string `json:"caption,omitempty"`
 }
 
-// CheckSuite represents a suite of check runs
+// CheckSuite represents a suite of check runs.
 type CheckSuite struct {
 	ID *int64 `json:"id,omitempty"`
 }
@@ -75,7 +75,7 @@ func (c CheckRun) String() string {
 	return Stringify(c)
 }
 
-// GetCheckRun gets a check-run for a repository
+// GetCheckRun gets a check-run for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-single-check-run
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, id int64) (*CheckRun, *Response, error) {
@@ -96,7 +96,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 	return checkRun, resp, nil
 }
 
-// CreateCheckRunOptions sets up parameters need to create a CheckRun
+// CreateCheckRunOptions sets up parameters need to create a CheckRun.
 type CreateCheckRunOptions struct {
 	Name        *string         `json:"name,omitempty"`
 	HeadBranch  *string         `json:"head_branch,omitempty"`
@@ -110,7 +110,7 @@ type CreateCheckRunOptions struct {
 	Output      *CheckRunOutput `json:"output,omitempty"`
 }
 
-// CreateCheckRun Creates a check run for repository
+// CreateCheckRun Creates a check run for repository.
 //
 //GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
 func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt *CreateCheckRunOptions) (*CheckRun, *Response, error) {
