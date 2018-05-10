@@ -93,6 +93,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return checkRun, resp, nil
 }
 
@@ -128,5 +129,6 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return checkRun, resp, nil
 }
