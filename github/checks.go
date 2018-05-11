@@ -96,16 +96,16 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 
 // CreateCheckRunOptions sets up parameters need to create a CheckRun.
 type CreateCheckRunOptions struct {
-	Name        string          `json:"name"`        // The name of the check (e.g., "code-coverage").(Required.)
-	HeadBranch  string          `json:"head_branch"` // The name of the branch to perform a check against.(Required.)
-	HeadSHA     string          `json:"head_sha"`    // The SHA of the commit.(Required.)
-	DetailsURL  *string         `json:"details_url,omitempty"`
-	ExternalID  *int64          `json:"external_id,omitempty"`
-	Status      *string         `json:"status,omitempty"`
-	Conclusion  *string         `json:"conclusion,omitempty"` // Required if you provide a status of completed.
-	StartedAt   *Timestamp      `json:"started_at,omitempty"`
-	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // Required if you provide conclusion.
-	Output      *CheckRunOutput `json:"output,omitempty"`       // Optionally provide descriptive details about the run.
+	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
+	HeadBranch  string          `json:"head_branch"`            // The name of the branch to perform a check against.(Required.)
+	HeadSHA     string          `json:"head_sha"`               // The SHA of the commit.(Required.)
+	DetailsURL  *string         `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
+	ExternalID  *int64          `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
+	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of queued, in_progress, or completed. Default: queued. (Optional.)
+	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of success, failure, neutral, cancelled, timed_out, or action_required.(Optional. Required if you provide a status of completed.)
+	StartedAt   *Timestamp      `json:"started_at,omitempty"`   // The time that the check run began in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.(Optional.)
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. (Optional. Required if you provide conclusion.)
+	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run.(Optional)
 }
 
 // CreateCheckRun Creates a check run for repository.
