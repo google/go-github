@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// ChecksService provides access to the the Checks API in the
+// ChecksService provides access to the Checks API in the
 // GitHub API.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/
