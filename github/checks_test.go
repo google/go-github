@@ -129,7 +129,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunAnnotations return error: %v", err)
 	}
 
-	want := []*CheckAnnotation{{
+	want := []*CheckRunAnnotation{{
 		FileName:     String("README.md"),
 		BlobHRef:     String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
 		StartLine:    Int(2),

@@ -436,94 +436,6 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
-// GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetBlobHRef() string {
-	if c == nil || c.BlobHRef == nil {
-		return ""
-	}
-	return *c.BlobHRef
-}
-
-// GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetEndLine() int {
-	if c == nil || c.EndLine == nil {
-		return 0
-	}
-	return *c.EndLine
-}
-
-// GetFileName returns the FileName field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetFileName() string {
-	if c == nil || c.FileName == nil {
-		return ""
-	}
-	return *c.FileName
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetRawDetails returns the RawDetails field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetRawDetails() string {
-	if c == nil || c.RawDetails == nil {
-		return ""
-	}
-	return *c.RawDetails
-}
-
-// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetStartLine() int {
-	if c == nil || c.StartLine == nil {
-		return 0
-	}
-	return *c.StartLine
-}
-
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetTitle() string {
-	if c == nil || c.Title == nil {
-		return ""
-	}
-	return *c.Title
-}
-
-// GetWarningLevel returns the WarningLevel field if it's non-nil, zero value otherwise.
-func (c *CheckAnnotation) GetWarningLevel() string {
-	if c == nil || c.WarningLevel == nil {
-		return ""
-	}
-	return *c.WarningLevel
-}
-
-// GetAlt returns the Alt field if it's non-nil, zero value otherwise.
-func (c *CheckImage) GetAlt() string {
-	if c == nil || c.Alt == nil {
-		return ""
-	}
-	return *c.Alt
-}
-
-// GetCaption returns the Caption field if it's non-nil, zero value otherwise.
-func (c *CheckImage) GetCaption() string {
-	if c == nil || c.Caption == nil {
-		return ""
-	}
-	return *c.Caption
-}
-
-// GetImageURL returns the ImageURL field if it's non-nil, zero value otherwise.
-func (c *CheckImage) GetImageURL() string {
-	if c == nil || c.ImageURL == nil {
-		return ""
-	}
-	return *c.ImageURL
-}
-
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -626,6 +538,94 @@ func (c *CheckRun) GetURL() string {
 		return ""
 	}
 	return *c.URL
+}
+
+// GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetBlobHRef() string {
+	if c == nil || c.BlobHRef == nil {
+		return ""
+	}
+	return *c.BlobHRef
+}
+
+// GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetEndLine() int {
+	if c == nil || c.EndLine == nil {
+		return 0
+	}
+	return *c.EndLine
+}
+
+// GetFileName returns the FileName field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetFileName() string {
+	if c == nil || c.FileName == nil {
+		return ""
+	}
+	return *c.FileName
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetRawDetails returns the RawDetails field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetRawDetails() string {
+	if c == nil || c.RawDetails == nil {
+		return ""
+	}
+	return *c.RawDetails
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetStartLine() int {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
+// GetWarningLevel returns the WarningLevel field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetWarningLevel() string {
+	if c == nil || c.WarningLevel == nil {
+		return ""
+	}
+	return *c.WarningLevel
+}
+
+// GetAlt returns the Alt field if it's non-nil, zero value otherwise.
+func (c *CheckRunImage) GetAlt() string {
+	if c == nil || c.Alt == nil {
+		return ""
+	}
+	return *c.Alt
+}
+
+// GetCaption returns the Caption field if it's non-nil, zero value otherwise.
+func (c *CheckRunImage) GetCaption() string {
+	if c == nil || c.Caption == nil {
+		return ""
+	}
+	return *c.Caption
+}
+
+// GetImageURL returns the ImageURL field if it's non-nil, zero value otherwise.
+func (c *CheckRunImage) GetImageURL() string {
+	if c == nil || c.ImageURL == nil {
+		return ""
+	}
+	return *c.ImageURL
 }
 
 // GetAnnotationsCount returns the AnnotationsCount field if it's non-nil, zero value otherwise.

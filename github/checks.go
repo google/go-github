@@ -36,17 +36,17 @@ type CheckRun struct {
 
 // CheckRunOutput represents the output of a CheckRun.
 type CheckRunOutput struct {
-	Title            *string            `json:"title,omitempty"`
-	Summary          *string            `json:"summary,omitempty"`
-	Text             *string            `json:"text,omitempty"`
-	AnnotationsCount *int               `json:"annotations_count,omitempty"`
-	AnnotationsURL   *string            `json:"annotations_url,omitempty"`
-	Annotations      []*CheckAnnotation `json:"annotations,omitempty"`
-	Images           []*CheckImage      `json:"images,omitempty"`
+	Title            *string               `json:"title,omitempty"`
+	Summary          *string               `json:"summary,omitempty"`
+	Text             *string               `json:"text,omitempty"`
+	AnnotationsCount *int                  `json:"annotations_count,omitempty"`
+	AnnotationsURL   *string               `json:"annotations_url,omitempty"`
+	Annotations      []*CheckRunAnnotation `json:"annotations,omitempty"`
+	Images           []*CheckRunImage      `json:"images,omitempty"`
 }
 
-// CheckAnnotation represents an annotation object for a CheckRun output.
-type CheckAnnotation struct {
+// CheckRunAnnotation represents an annotation object for a CheckRun output.
+type CheckRunAnnotation struct {
 	FileName     *string `json:"filename,omitempty"`
 	BlobHRef     *string `json:"blob_href,omitempty"`
 	StartLine    *int    `json:"start_line,omitempty"`
@@ -57,8 +57,8 @@ type CheckAnnotation struct {
 	RawDetails   *string `json:"raw_details,omitempty"`
 }
 
-// CheckImage represents an image object for a CheckRun output.
-type CheckImage struct {
+// CheckRunImage represents an image object for a CheckRun output.
+type CheckRunImage struct {
 	Alt      *string `json:"alt,omitempty"`
 	ImageURL *string `json:"image_url,omitempty"`
 	Caption  *string `json:"caption,omitempty"`
@@ -132,7 +132,7 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 // ListCheckRunAnnotations List the annotations for a check run.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-annotations-for-a-check-run
-func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner string, repo string, checkRunID int64, opt *ListOptions) ([]*CheckAnnotation, *Response, error) {
+func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner string, repo string, checkRunID int64, opt *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -146,11 +146,11 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner strin
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	var checkAnnotations []*CheckAnnotation
-	resp, err := s.client.Do(ctx, req, &checkAnnotations)
+	var checkRunAnnotations []*CheckRunAnnotation
+	resp, err := s.client.Do(ctx, req, &checkRunAnnotations)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return checkAnnotations, resp, nil
+	return checkRunAnnotations, resp, nil
 }
