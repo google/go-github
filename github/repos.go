@@ -584,7 +584,6 @@ type PullRequestReviewsEnforcementRequest struct {
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
 	// Valid values are 1-6.
-	// Can be omitted.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count,omitempty"`
 }
 
@@ -600,7 +599,6 @@ type PullRequestReviewsEnforcementUpdate struct {
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
 	// Valid values are 1 - 6.
-	// Can be omitted.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count,omitempty"`
 }
 
