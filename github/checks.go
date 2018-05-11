@@ -84,8 +84,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeCheckRunsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	checkRun := new(CheckRun)
 	resp, err := s.client.Do(ctx, req, checkRun)
@@ -120,8 +119,7 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeCheckRunsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	checkRun := new(CheckRun)
 	resp, err := s.client.Do(ctx, req, checkRun)
