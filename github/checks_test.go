@@ -70,10 +70,10 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
                         "output":{"title": "Mighty test report", "summary":"", "text":""}}`)
 	})
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
-	checkRunOpt := &CreateCheckRunOptions{
-		HeadBranch: String("master"),
-		Name:       String("testCreateCheckRun"),
-		HeadSHA:    String("deadbeef"),
+	checkRunOpt := CreateCheckRunOptions{
+		HeadBranch: "master",
+		Name:       "testCreateCheckRun",
+		HeadSHA:    "deadbeef",
 		Status:     String("in_progress"),
 		StartedAt:  &Timestamp{startedAt},
 		Output: &CheckRunOutput{

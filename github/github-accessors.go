@@ -1532,30 +1532,6 @@ func (c *CreateCheckRunOptions) GetExternalID() int64 {
 	return *c.ExternalID
 }
 
-// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetHeadBranch() string {
-	if c == nil || c.HeadBranch == nil {
-		return ""
-	}
-	return *c.HeadBranch
-}
-
-// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetHeadSHA() string {
-	if c == nil || c.HeadSHA == nil {
-		return ""
-	}
-	return *c.HeadSHA
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
 // GetOutput returns the Output field.
 func (c *CreateCheckRunOptions) GetOutput() *CheckRunOutput {
 	if c == nil {

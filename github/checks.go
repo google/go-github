@@ -96,22 +96,22 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 
 // CreateCheckRunOptions sets up parameters need to create a CheckRun.
 type CreateCheckRunOptions struct {
-	Name        *string         `json:"name,omitempty"`
-	HeadBranch  *string         `json:"head_branch,omitempty"`
-	HeadSHA     *string         `json:"head_sha,omitempty"`
+	Name        string          `json:"name"`        // The name of the check (e.g., "code-coverage").(Required.)
+	HeadBranch  string          `json:"head_branch"` // The name of the branch to perform a check against.(Required.)
+	HeadSHA     string          `json:"head_sha"`    // The SHA of the commit.(Required.)
 	DetailsURL  *string         `json:"details_url,omitempty"`
 	ExternalID  *int64          `json:"external_id,omitempty"`
 	Status      *string         `json:"status,omitempty"`
-	Conclusion  *string         `json:"conclusion,omitempty"`
+	Conclusion  *string         `json:"conclusion,omitempty"` // Required if you provide a status of completed.
 	StartedAt   *Timestamp      `json:"started_at,omitempty"`
-	CompletedAt *Timestamp      `json:"completed_at,omitempty"`
-	Output      *CheckRunOutput `json:"output,omitempty"`
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // Required if you provide conclusion.
+	Output      *CheckRunOutput `json:"output,omitempty"`       // Optionally provide descriptive details about the run.
 }
 
 // CreateCheckRun Creates a check run for repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
-func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt *CreateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
