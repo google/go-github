@@ -128,3 +128,29 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 
 	return checkRun, resp, nil
 }
+
+// ListCheckRunAnnotations List the annotations for a check run.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-annotations-for-a-check-run
+func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner string, repo string, checkRunID int64, opt *ListOptions) ([]*CheckAnnotation, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	var checkAnnotations []*CheckAnnotation
+	resp, err := s.client.Do(ctx, req, &checkAnnotations)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkAnnotations, resp, nil
+}

@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"strings"
 	"testing"
 	"time"
 )
@@ -19,10 +18,9 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeCheckRunsPreview}
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testCheckRun",
@@ -55,10 +53,9 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeCheckRunsPreview}
 	mux.HandleFunc("/repos/o/r/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testCreateCheckRun",
@@ -102,5 +99,48 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checkRun, want) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
+	}
+}
+
+func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-runs/1/annotations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		testFormValues(t, r, values{
+			"page": "1",
+		})
+		fmt.Fprint(w, `[{
+		                           "filename": "README.md",
+		                           "blob_href": "https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
+		                           "start_line": 2,
+		                           "end_line": 2,
+		                           "warning_level": "warning",
+		                           "message": "Check your spelling for 'banaas'.",
+                                           "title": "Spell check",
+		                           "raw_details": "Do you mean 'bananas' or 'banana'?"}]`,
+		)
+	})
+
+	checkRunAnnotations, _, err := client.Checks.ListCheckRunAnnotations(context.Background(), "o", "r", 1, &ListOptions{Page: 1})
+	if err != nil {
+		t.Errorf("Checks.ListCheckRunAnnotations return error: %v", err)
+	}
+
+	want := []*CheckAnnotation{{
+		FileName:     String("README.md"),
+		BlobHRef:     String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
+		StartLine:    Int(2),
+		EndLine:      Int(2),
+		WarningLevel: String("warning"),
+		Message:      String("Check your spelling for 'banaas'."),
+		RawDetails:   String("Do you mean 'bananas' or 'banana'?"),
+		Title:        String("Spell check"),
+	}}
+
+	if !reflect.DeepEqual(checkRunAnnotations, want) {
+		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
 	}
 }
