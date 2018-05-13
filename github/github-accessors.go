@@ -4300,20 +4300,20 @@ func (l *ListCheckRunsOptions) GetFilter() string {
 	return *l.Filter
 }
 
-// GetListOptions returns the ListOptions field.
-func (l *ListCheckRunsOptions) GetListOptions() *ListOptions {
-	if l == nil {
-		return nil
-	}
-	return l.ListOptions
-}
-
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (l *ListCheckRunsOptions) GetStatus() string {
 	if l == nil || l.Status == nil {
 		return ""
 	}
 	return *l.Status
+}
+
+// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+func (l *ListCheckRunsResults) GetTotal() int {
+	if l == nil || l.Total == nil {
+		return 0
+	}
+	return *l.Total
 }
 
 // GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.

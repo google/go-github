@@ -191,17 +191,23 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner strin
 
 // ListCheckRunsOptions Optional parameters to list check runs.
 type ListCheckRunsOptions struct {
-	CheckName *string `json:"check_name,omitempty"` //Returns check runs with the specified name.
-	Status    *string `json:"status,omitempty"`     //Returns check runs with the specified status. Can be one of queued, in_progress, or completed.
-	Filter    *string `json:"filter,omitempty"`     //Filters check runs by their completed_at timestamp. Can be one of latest (returning the most recent check runs) or all. Default: latest
+	CheckName *string `url:"check_name,omitempty"` //Returns check runs with the specified name.
+	Status    *string `url:"status,omitempty"`     //Returns check runs with the specified status. Can be one of queued, in_progress, or completed.
+	Filter    *string `url:"filter,omitempty"`     //Filters check runs by their completed_at timestamp. Can be one of latest (returning the most recent check runs) or all. Default: latest
 
-	ListOptions *ListOptions
+	ListOptions
+}
+
+// ListCheckRunsResults represents the result of a check run list.
+type ListCheckRunsResults struct {
+	Total     *int       `json:"total_count,omitempty"`
+	CheckRuns []CheckRun `json:"check_runs,omitempty"`
 }
 
 // ListCheckRunsForRef List check runs for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/list-check-runs-for-a-specific-ref
-func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, repo string, ref string, opt ListCheckRunsOptions) ([]*CheckRun, *Response, error) {
+func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, repo string, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -215,11 +221,11 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, r
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	var checkRun []*CheckRun
-	resp, err := s.client.Do(ctx, req, &checkRun)
+	var checkRunResults *ListCheckRunsResults
+	resp, err := s.client.Do(ctx, req, &checkRunResults)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return checkRun, resp, nil
+	return checkRunResults, resp, nil
 }
