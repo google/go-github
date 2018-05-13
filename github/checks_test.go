@@ -251,3 +251,55 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunsForRef returned %+v, want %+v", checkRuns, want)
 	}
 }
+
+func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-suites/1/check-runs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		testFormValues(t, r, values{
+			"check_name": "testing",
+			"page":       "1",
+			"status":     "completed",
+			"filter":     "all",
+		})
+		fmt.Fprint(w, `{"total_count":1,
+                                "check_runs": [{
+                                    "id": 1,
+                                    "head_sha": "deadbeef",
+                                    "status": "completed",
+                                    "conclusion": "neutral",
+                                    "started_at": "2018-05-04T01:14:52Z",
+                                    "completed_at": "2018-05-04T01:14:52Z"}]}`,
+		)
+	})
+
+	opt := &ListCheckRunsOptions{
+		CheckName:   String("testing"),
+		Status:      String("completed"),
+		Filter:      String("all"),
+		ListOptions: ListOptions{Page: 1},
+	}
+	checkRuns, _, err := client.Checks.ListCheckRunsCheckSuite(context.Background(), "o", "r", 1, opt)
+	if err != nil {
+		t.Errorf("Checks.ListCheckRunsCheckSuite return error: %v", err)
+	}
+	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
+	want := &ListCheckRunsResults{
+		Total: Int(1),
+		CheckRuns: []CheckRun{{
+			ID:          Int64(1),
+			Status:      String("completed"),
+			StartedAt:   &Timestamp{startedAt},
+			CompletedAt: &Timestamp{startedAt},
+			Conclusion:  String("neutral"),
+			HeadSHA:     String("deadbeef"),
+		}},
+	}
+
+	if !reflect.DeepEqual(checkRuns, want) {
+		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
+	}
+}

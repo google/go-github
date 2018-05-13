@@ -229,3 +229,29 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, r
 
 	return checkRunResults, resp, nil
 }
+
+// ListCheckRunsCheckSuite Lists check runs for a check suite.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-in-a-check-suite
+func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/check-runs", owner, repo, checkSuiteID)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	var checkRunResults *ListCheckRunsResults
+	resp, err := s.client.Do(ctx, req, &checkRunResults)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkRunResults, resp, nil
+}
