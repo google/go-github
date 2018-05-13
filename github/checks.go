@@ -20,7 +20,7 @@ type ChecksService service
 type CheckRun struct {
 	ID           *int64          `json:"id,omitempty"`
 	HeadSHA      *string         `json:"head_sha,omitempty"`
-	ExternalID   *int64          `json:"external_id,omitempty"`
+	ExternalID   *string         `json:"external_id,omitempty"`
 	URL          *string         `json:"url,omitempty"`
 	HTMLURL      *string         `json:"html_url,omitempty"`
 	Status       *string         `json:"status,omitempty"`

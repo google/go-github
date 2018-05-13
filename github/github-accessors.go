@@ -469,9 +469,9 @@ func (c *CheckRun) GetConclusion() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (c *CheckRun) GetExternalID() int64 {
+func (c *CheckRun) GetExternalID() string {
 	if c == nil || c.ExternalID == nil {
-		return 0
+		return ""
 	}
 	return *c.ExternalID
 }
