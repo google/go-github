@@ -1525,9 +1525,9 @@ func (c *CreateCheckRunOptions) GetDetailsURL() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (c *CreateCheckRunOptions) GetExternalID() int64 {
+func (c *CreateCheckRunOptions) GetExternalID() string {
 	if c == nil || c.ExternalID == nil {
-		return 0
+		return ""
 	}
 	return *c.ExternalID
 }
@@ -10538,6 +10538,70 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetCompletedAt() Timestamp {
+	if u == nil || u.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *u.CompletedAt
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetConclusion() string {
+	if u == nil || u.Conclusion == nil {
+		return ""
+	}
+	return *u.Conclusion
+}
+
+// GetDetailsURL returns the DetailsURL field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetDetailsURL() string {
+	if u == nil || u.DetailsURL == nil {
+		return ""
+	}
+	return *u.DetailsURL
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetExternalID() string {
+	if u == nil || u.ExternalID == nil {
+		return ""
+	}
+	return *u.ExternalID
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetHeadBranch() string {
+	if u == nil || u.HeadBranch == nil {
+		return ""
+	}
+	return *u.HeadBranch
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetHeadSHA() string {
+	if u == nil || u.HeadSHA == nil {
+		return ""
+	}
+	return *u.HeadSHA
+}
+
+// GetOutput returns the Output field.
+func (u *UpdateCheckRunOptions) GetOutput() *CheckRunOutput {
+	if u == nil {
+		return nil
+	}
+	return u.Output
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (u *UpdateCheckRunOptions) GetStatus() string {
+	if u == nil || u.Status == nil {
+		return ""
+	}
+	return *u.Status
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.

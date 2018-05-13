@@ -100,7 +100,7 @@ type CreateCheckRunOptions struct {
 	HeadBranch  string          `json:"head_branch"`            // The name of the branch to perform a check against.(Required.)
 	HeadSHA     string          `json:"head_sha"`               // The SHA of the commit.(Required.)
 	DetailsURL  *string         `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
-	ExternalID  *int64          `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
+	ExternalID  *string         `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
 	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of queued, in_progress, or completed. Default: queued. (Optional.)
 	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of success, failure, neutral, cancelled, timed_out, or action_required.(Optional. Required if you provide a status of completed.)
 	StartedAt   *Timestamp      `json:"started_at,omitempty"`   // The time that the check run began in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.(Optional.)
@@ -114,6 +114,40 @@ type CreateCheckRunOptions struct {
 func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	checkRun := new(CheckRun)
+	resp, err := s.client.Do(ctx, req, checkRun)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkRun, resp, nil
+}
+
+// UpdateCheckRunOptions sets up parameters need to create a CheckRun.
+type UpdateCheckRunOptions struct {
+	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
+	HeadBranch  *string         `json:"head_branch"`            // The name of the branch to perform a check against.(Optional.)
+	HeadSHA     *string         `json:"head_sha"`               // The SHA of the commit.(Optional.)
+	DetailsURL  *string         `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
+	ExternalID  *string         `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
+	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of queued, in_progress, or completed. Default: queued. (Optional.)
+	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of success, failure, neutral, cancelled, timed_out, or action_required.(Optional. Required if you provide a status of completed.)
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. (Optional. Required if you provide conclusion.)
+	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run.(Optional)
+}
+
+// UpdateCheckRun Updates a check run for a specific commit in a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
+func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner string, repo string, checkRunID int64, opt UpdateCheckRunOptions) (*CheckRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
+	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
