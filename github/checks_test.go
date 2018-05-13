@@ -144,3 +144,57 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
 	}
 }
+func TestChecksService_UpdateCheckRun(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		fmt.Fprint(w, `{
+			"id": 1,
+                        "name":"testUpdateCheckRun",
+                        "head_sha":"deadbeef",
+			"status": "completed",
+			"conclusion": "neutral",
+			"started_at": "2018-05-04T01:14:52Z",
+			"completed_at": "2018-05-04T01:14:52Z",
+                        "output":{"title": "Mighty test report", "summary":"There are 0 failures, 2 warnings and 1 notice", "text":"You may have misspelled some words."}}`)
+	})
+	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
+	updateCheckRunOpt := UpdateCheckRunOptions{
+		HeadBranch:  String("master"),
+		Name:        "testUpdateCheckRun",
+		HeadSHA:     String("deadbeef"),
+		Status:      String("completed"),
+		CompletedAt: &Timestamp{startedAt},
+		Output: &CheckRunOutput{
+			Title:   String("Mighty test report"),
+			Summary: String("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    String("You may have misspelled some words."),
+		},
+	}
+
+	checkRun, _, err := client.Checks.UpdateCheckRun(context.Background(), "o", "r", 1, updateCheckRunOpt)
+	if err != nil {
+		t.Errorf("Checks.CreateCheckRun return error: %v", err)
+	}
+
+	want := &CheckRun{
+		ID:          Int64(1),
+		Status:      String("completed"),
+		StartedAt:   &Timestamp{startedAt},
+		CompletedAt: &Timestamp{startedAt},
+		Conclusion:  String("neutral"),
+		HeadSHA:     String("deadbeef"),
+		Name:        String("testUpdateCheckRun"),
+		Output: &CheckRunOutput{
+			Title:   String("Mighty test report"),
+			Summary: String("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    String("You may have misspelled some words."),
+		},
+	}
+	if !reflect.DeepEqual(checkRun, want) {
+		t.Errorf("Checks.UpdateCheckRun return %+v, want %+v", checkRun, want)
+	}
+}
