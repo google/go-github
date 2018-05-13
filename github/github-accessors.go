@@ -4284,6 +4284,38 @@ func (l *License) GetURL() string {
 	return *l.URL
 }
 
+// GetCheckName returns the CheckName field if it's non-nil, zero value otherwise.
+func (l *ListCheckRunsOptions) GetCheckName() string {
+	if l == nil || l.CheckName == nil {
+		return ""
+	}
+	return *l.CheckName
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (l *ListCheckRunsOptions) GetFilter() string {
+	if l == nil || l.Filter == nil {
+		return ""
+	}
+	return *l.Filter
+}
+
+// GetListOptions returns the ListOptions field.
+func (l *ListCheckRunsOptions) GetListOptions() *ListOptions {
+	if l == nil {
+		return nil
+	}
+	return l.ListOptions
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (l *ListCheckRunsOptions) GetStatus() string {
+	if l == nil || l.Status == nil {
+		return ""
+	}
+	return *l.Status
+}
+
 // GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlan) GetAccountsURL() string {
 	if m == nil || m.AccountsURL == nil {
