@@ -94,7 +94,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 	return checkRun, resp, nil
 }
 
-// CreateCheckRunOptions sets up parameters need to create a CheckRun.
+// CreateCheckRunOptions sets up parameters needed to create a CheckRun.
 type CreateCheckRunOptions struct {
 	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
 	HeadBranch  string          `json:"head_branch"`            // The name of the branch to perform a check against.(Required.)
@@ -129,7 +129,7 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 	return checkRun, resp, nil
 }
 
-// UpdateCheckRunOptions sets up parameters need to create a CheckRun.
+// UpdateCheckRunOptions sets up parameters needed to update a CheckRun.
 type UpdateCheckRunOptions struct {
 	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
 	HeadBranch  *string         `json:"head_branch"`            // The name of the branch to perform a check against.(Optional.)
@@ -144,7 +144,7 @@ type UpdateCheckRunOptions struct {
 
 // UpdateCheckRun Updates a check run for a specific commit in a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#update-a-check-run
 func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner string, repo string, checkRunID int64, opt UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("PATCH", u, opt)
@@ -187,4 +187,39 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner strin
 	}
 
 	return checkRunAnnotations, resp, nil
+}
+
+// ListCheckRunsOptions Optional parameters to list check runs.
+type ListCheckRunsOptions struct {
+	CheckName *string `json:"check_name,omitempty"` //Returns check runs with the specified name.
+	Status    *string `json:"status,omitempty"`     //Returns check runs with the specified status. Can be one of queued, in_progress, or completed.
+	Filter    *string `json:"filter,omitempty"`     //Filters check runs by their completed_at timestamp. Can be one of latest (returning the most recent check runs) or all. Default: latest
+
+	ListOptions *ListOptions
+}
+
+// ListCheckRunsForRef List check runs for a specific ref.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/runs/list-check-runs-for-a-specific-ref
+func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, repo string, ref string, opt ListCheckRunsOptions) ([]*CheckRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, ref)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	var checkRun []*CheckRun
+	resp, err := s.client.Do(ctx, req, &checkRun)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkRun, resp, nil
 }
