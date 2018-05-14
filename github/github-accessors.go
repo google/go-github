@@ -668,12 +668,84 @@ func (c *CheckRunOutput) GetTitle() string {
 	return *c.Title
 }
 
+// GetAfterSHA returns the AfterSHA field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetAfterSHA() string {
+	if c == nil || c.AfterSHA == nil {
+		return ""
+	}
+	return *c.AfterSHA
+}
+
+// GetApp returns the App field.
+func (c *CheckSuite) GetApp() *App {
+	if c == nil {
+		return nil
+	}
+	return c.App
+}
+
+// GetBeforeSHA returns the BeforeSHA field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetBeforeSHA() string {
+	if c == nil || c.BeforeSHA == nil {
+		return ""
+	}
+	return *c.BeforeSHA
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetConclusion() string {
+	if c == nil || c.Conclusion == nil {
+		return ""
+	}
+	return *c.Conclusion
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetHeadBranch() string {
+	if c == nil || c.HeadBranch == nil {
+		return ""
+	}
+	return *c.HeadBranch
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetHeadSHA() string {
+	if c == nil || c.HeadSHA == nil {
+		return ""
+	}
+	return *c.HeadSHA
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetID() int64 {
 	if c == nil || c.ID == nil {
 		return 0
 	}
 	return *c.ID
+}
+
+// GetRepository returns the Repository field.
+func (c *CheckSuite) GetRepository() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repository
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

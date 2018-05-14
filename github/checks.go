@@ -66,10 +66,24 @@ type CheckRunImage struct {
 
 // CheckSuite represents a suite of check runs.
 type CheckSuite struct {
-	ID *int64 `json:"id,omitempty"`
+	ID           *int64         `json:"id,omitempty"`
+	HeadBranch   *string        `json:"head_branch,omitempty"`
+	HeadSHA      *string        `json:"head_sha,omitempty"`
+	URL          *string        `json:"url,omitempty"`
+	BeforeSHA    *string        `json:"before,omitempty"`
+	AfterSHA     *string        `json:"after,omitempty"`
+	Status       *string        `json:"status,omitempty"`
+	Conclusion   *string        `json:"conclusion,omitempty"`
+	App          *App           `json:"app,omitempty"`
+	Repository   *Repository    `json:"repository,omitempty"`
+	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
 }
 
 func (c CheckRun) String() string {
+	return Stringify(c)
+}
+
+func (c CheckSuite) String() string {
 	return Stringify(c)
 }
 
@@ -92,6 +106,27 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 	}
 
 	return checkRun, resp, nil
+}
+
+// GetCheckSuite Gets a single check suite.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#get-a-single-check-suite
+func (s *ChecksService) GetCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites/%v", owner, repo, checkSuiteID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	checkSuite := new(CheckSuite)
+	resp, err := s.client.Do(ctx, req, checkSuite)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkSuite, resp, nil
 }
 
 // CreateCheckRunOptions sets up parameters needed to create a CheckRun.

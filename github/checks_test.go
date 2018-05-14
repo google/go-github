@@ -49,6 +49,40 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	}
 }
 
+func TestChecksService_GetCheckSuite(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-suites/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		fmt.Fprint(w, `{
+			"id": 1,
+                        "head_branch":"master",
+			"head_sha": "deadbeef",
+			"conclusion": "neutral",
+                        "before": "deadbeefb",
+                        "after": "deadbeefa",
+			"status": "completed"}`)
+	})
+	checkSuite, _, err := client.Checks.GetCheckSuite(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Checks.GetCheckSuite return error: %v", err)
+	}
+	want := &CheckSuite{
+		ID:         Int64(1),
+		HeadBranch: String("master"),
+		HeadSHA:    String("deadbeef"),
+		AfterSHA:   String("deadbeefa"),
+		BeforeSHA:  String("deadbeefb"),
+		Status:     String("completed"),
+		Conclusion: String("neutral"),
+	}
+	if !reflect.DeepEqual(checkSuite, want) {
+		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
+	}
+}
+
 func TestChecksService_CreateCheckRun(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
