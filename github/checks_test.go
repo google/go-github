@@ -337,3 +337,54 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
 	}
 }
+
+func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/commits/master/check-suites", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		testFormValues(t, r, values{
+			"check_name": "testing",
+			"page":       "1",
+			"filter":     "all",
+		})
+		fmt.Fprint(w, `{"total_count":1,
+                                "check_suites": [{
+                                    "id": 1,
+                                    "head_sha": "deadbeef",
+                                    "head_branch": "master",
+                                    "status": "completed",
+                                    "conclusion": "neutral",
+                                    "before": "deadbeefb",
+                                    "after": "deadbeefa"}]}`,
+		)
+	})
+
+	opt := &ListCheckSuiteOptions{
+		CheckName:   String("testing"),
+		Filter:      String("all"),
+		ListOptions: ListOptions{Page: 1},
+	}
+	checkSuites, _, err := client.Checks.ListCheckSuitesForRef(context.Background(), "o", "r", "master", opt)
+	if err != nil {
+		t.Errorf("Checks.ListCheckSuitesForRef return error: %v", err)
+	}
+	want := &ListCheckSuiteResults{
+		Total: Int(1),
+		CheckSuites: []CheckSuite{{
+			ID:         Int64(1),
+			Status:     String("completed"),
+			Conclusion: String("neutral"),
+			HeadSHA:    String("deadbeef"),
+			HeadBranch: String("master"),
+			BeforeSHA:  String("deadbeefb"),
+			AfterSHA:   String("deadbeefa"),
+		}},
+	}
+
+	if !reflect.DeepEqual(checkSuites, want) {
+		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
+	}
+}

@@ -4388,6 +4388,30 @@ func (l *ListCheckRunsResults) GetTotal() int {
 	return *l.Total
 }
 
+// GetCheckName returns the CheckName field if it's non-nil, zero value otherwise.
+func (l *ListCheckSuiteOptions) GetCheckName() string {
+	if l == nil || l.CheckName == nil {
+		return ""
+	}
+	return *l.CheckName
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (l *ListCheckSuiteOptions) GetFilter() string {
+	if l == nil || l.Filter == nil {
+		return ""
+	}
+	return *l.Filter
+}
+
+// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+func (l *ListCheckSuiteResults) GetTotal() int {
+	if l == nil || l.Total == nil {
+		return 0
+	}
+	return *l.Total
+}
+
 // GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlan) GetAccountsURL() string {
 	if m == nil || m.AccountsURL == nil {

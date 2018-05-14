@@ -290,3 +290,43 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner strin
 
 	return checkRunResults, resp, nil
 }
+
+// ListCheckSuiteOptions Optional parameters to list check suites.
+type ListCheckSuiteOptions struct {
+	CheckName *string `url:"check_name,omitempty"` //Filters checks suites by the name of the check run``.
+	Filter    *string `url:"filter,omitempty"`     //Filters check suites by GitHub App id.
+
+	ListOptions
+}
+
+// ListCheckSuiteResults represents the result of a check run list.
+type ListCheckSuiteResults struct {
+	Total       *int         `json:"total_count,omitempty"`
+	CheckSuites []CheckSuite `json:"check_suites,omitempty"`
+}
+
+// ListCheckSuitesForRef List check suite for a specific ref.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
+func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner string, repo string, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, ref)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	var checkSuiteResults *ListCheckSuiteResults
+	resp, err := s.client.Do(ctx, req, &checkSuiteResults)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkSuiteResults, resp, nil
+}
