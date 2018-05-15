@@ -400,3 +400,29 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner string, repo
 
 	return checkSuite, resp, nil
 }
+
+// RequestCheckSuiteOptions sets up the parameters for a request check suite endpoint.
+type RequestCheckSuiteOptions struct {
+	HeadSHA string `url:"head_sha"` // The sha of the head commit.(Required.)
+}
+
+// RequestCheckSuite Triggers GitHub to create a new check suite, without pushing new code to a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#request-check-suites
+func (s *ChecksService) RequestCheckSuite(ctx context.Context, owner string, repo string, opt RequestCheckSuiteOptions) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suite-requests", owner, repo)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, err
+}
