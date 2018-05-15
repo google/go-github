@@ -812,6 +812,54 @@ func (c *CheckSuite) GetURL() string {
 	return *c.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *CheckSuiteEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetCheckSuite returns the CheckSuite field.
+func (c *CheckSuiteEvent) GetCheckSuite() *CheckSuite {
+	if c == nil {
+		return nil
+	}
+	return c.CheckSuite
+}
+
+// GetInstallation returns the Installation field.
+func (c *CheckSuiteEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetOrg returns the Org field.
+func (c *CheckSuiteEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetRepo returns the Repo field.
+func (c *CheckSuiteEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *CheckSuiteEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
+}
+
 // GetPreferenceList returns the PreferenceList field.
 func (c *CheckSuitePreferenceOptions) GetPreferenceList() *PreferenceList {
 	if c == nil {
