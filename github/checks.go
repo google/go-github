@@ -373,3 +373,30 @@ func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner stri
 
 	return checkSuitePrefResults, resp, nil
 }
+
+// CreateCheckSuiteOptions  sets up parameters to manually create a check suites
+type CreateCheckSuiteOptions struct {
+	HeadSHA    string  `json:"head_sha"`              //The sha of the head commit. (Required.)
+	HeadBranch *string `json:"head_branch,omitempty"` //The name of the head branch where the code changes are implemented.
+}
+
+// CreateCheckSuite Manually create a check suite for repository.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#create-a-check-suite
+func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner string, repo string, opt CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites", owner, repo)
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	checkSuite := new(CheckSuite)
+	resp, err := s.client.Do(ctx, req, checkSuite)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkSuite, resp, nil
+}

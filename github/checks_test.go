@@ -418,3 +418,44 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
 	}
 }
+
+func TestChecksService_CreateCheckSuite(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-suites", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		fmt.Fprint(w, `{
+			"id": 2,
+                        "head_branch":"master",
+                        "head_sha":"deadbeef",
+			"status": "completed",
+			"conclusion": "neutral",
+                        "before": "deadbeefb",
+                        "after": "deadbeefa"}`)
+	})
+
+	checkSuiteOpt := CreateCheckSuiteOptions{
+		HeadSHA:    "deadbeef",
+		HeadBranch: String("master"),
+	}
+
+	checkSuite, _, err := client.Checks.CreateCheckSuite(context.Background(), "o", "r", checkSuiteOpt)
+	if err != nil {
+		t.Errorf("Checks.CreateCheckSuite return error: %v", err)
+	}
+
+	want := &CheckSuite{
+		ID:         Int64(2),
+		Status:     String("completed"),
+		HeadSHA:    String("deadbeef"),
+		HeadBranch: String("master"),
+		Conclusion: String("neutral"),
+		BeforeSHA:  String("deadbeefb"),
+		AfterSHA:   String("deadbeefa"),
+	}
+	if !reflect.DeepEqual(checkSuite, want) {
+		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
+	}
+}

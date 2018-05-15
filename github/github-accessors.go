@@ -1668,6 +1668,14 @@ func (c *CreateCheckRunOptions) GetStatus() string {
 	return *c.Status
 }
 
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (c *CreateCheckSuiteOptions) GetHeadBranch() string {
+	if c == nil || c.HeadBranch == nil {
+		return ""
+	}
+	return *c.HeadBranch
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CreateEvent) GetDescription() string {
 	if c == nil || c.Description == nil {
