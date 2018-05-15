@@ -364,6 +364,22 @@ func (a *AuthorizationUpdateRequest) GetNoteURL() string {
 	return *a.NoteURL
 }
 
+// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+func (a *AutoTriggerCheck) GetAppID() int64 {
+	if a == nil || a.AppID == nil {
+		return 0
+	}
+	return *a.AppID
+}
+
+// GetSetting returns the Setting field if it's non-nil, zero value otherwise.
+func (a *AutoTriggerCheck) GetSetting() bool {
+	if a == nil || a.Setting == nil {
+		return false
+	}
+	return *a.Setting
+}
+
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
 func (b *Blob) GetContent() string {
 	if b == nil || b.Content == nil {
@@ -746,6 +762,30 @@ func (c *CheckSuite) GetURL() string {
 		return ""
 	}
 	return *c.URL
+}
+
+// GetPreferenceList returns the PreferenceList field.
+func (c *CheckSuitePreferenceOptions) GetPreferenceList() *PreferenceList {
+	if c == nil {
+		return nil
+	}
+	return c.PreferenceList
+}
+
+// GetPreferences returns the Preferences field.
+func (c *CheckSuitePreferenceResults) GetPreferences() *PreferenceList {
+	if c == nil {
+		return nil
+	}
+	return c.Preferences
+}
+
+// GetRepository returns the Repository field.
+func (c *CheckSuitePreferenceResults) GetRepository() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repository
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

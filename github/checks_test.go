@@ -388,3 +388,33 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
 	}
 }
+
+func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
+	})
+	p := &PreferenceList{
+		AutoTriggerChecks: []AutoTriggerCheck{{
+			AppID:   Int64(2),
+			Setting: Bool(false),
+		}},
+	}
+	opt := CheckSuitePreferenceOptions{PreferenceList: p}
+	prefResults, _, err := client.Checks.SetCheckSuitePreferences(context.Background(), "o", "r", opt)
+	if err != nil {
+		t.Errorf("Checks.SetCheckSuitePreferences return error: %v", err)
+	}
+
+	want := &CheckSuitePreferenceResults{
+		Preferences: p,
+	}
+
+	if !reflect.DeepEqual(prefResults, want) {
+		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
+	}
+}

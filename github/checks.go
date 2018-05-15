@@ -330,3 +330,46 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner string,
 
 	return checkSuiteResults, resp, nil
 }
+
+// AutoTriggerCheck Enables or disables automatic creation of CheckSuite events upon pushes to the repository.
+type AutoTriggerCheck struct {
+	AppID   *int64 `json:"app_id,omitempty"`  // The id of the GitHub App. (Required.)
+	Setting *bool  `json:"setting,omitempty"` // Set to true to enable automatic creation of CheckSuite events upon pushes to the repository, or false to disable them. Default: true (Required.)
+}
+
+// CheckSuitePreferenceOptions Set options for check suite preferences for a repository.
+type CheckSuitePreferenceOptions struct {
+	PreferenceList *PreferenceList `json:"auto_trigger_checks,omitempty"` // An array of auto trigger checks that can be set for a check suite in a repository.
+}
+
+// CheckSuitePreferenceResults Represents the results of the preference set operation.
+type CheckSuitePreferenceResults struct {
+	Preferences *PreferenceList `json:"preferences,omitempty"`
+	Repository  *Repository     `json:"repository,omitempty"`
+}
+
+// PreferenceList Represents a list of auto trigger checks for  repository
+type PreferenceList struct {
+	AutoTriggerChecks []AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // An array of auto trigger checks that can be set for a check suite in a repository.
+}
+
+// SetCheckSuitePreferences Changes the default automatic flow when creating check suites.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#set-preferences-for-check-suites-on-a-repository
+func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner string, repo string, opt CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
+	req, err := s.client.NewRequest("PATCH", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	var checkSuitePrefResults *CheckSuitePreferenceResults
+	resp, err := s.client.Do(ctx, req, &checkSuitePrefResults)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return checkSuitePrefResults, resp, nil
+}
