@@ -620,6 +620,54 @@ func (c *CheckRunAnnotation) GetWarningLevel() string {
 	return *c.WarningLevel
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *CheckRunEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetCheckRun returns the CheckRun field.
+func (c *CheckRunEvent) GetCheckRun() *CheckRun {
+	if c == nil {
+		return nil
+	}
+	return c.CheckRun
+}
+
+// GetInstallation returns the Installation field.
+func (c *CheckRunEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetOrg returns the Org field.
+func (c *CheckRunEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetRepo returns the Repo field.
+func (c *CheckRunEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *CheckRunEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
+}
+
 // GetAlt returns the Alt field if it's non-nil, zero value otherwise.
 func (c *CheckRunImage) GetAlt() string {
 	if c == nil || c.Alt == nil {

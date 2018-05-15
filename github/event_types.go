@@ -7,6 +7,21 @@
 
 package github
 
+// CheckRunEvent is triggered when a check run is created, updated, or rerequested.
+// The Webhook event name is "check_run".
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#checkrunevent
+type CheckRunEvent struct {
+	CheckRun *CheckRun `json:"check_run,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Action       *string       `json:"action,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // CommitCommentEvent is triggered when a commit comment is created.
 // The Webhook event name is "commit_comment".
 //
