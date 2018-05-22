@@ -90,7 +90,7 @@ func (c CheckSuite) String() string {
 // GetCheckRun gets a check-run for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-single-check-run
-func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo string, checkRunID int64) (*CheckRun, *Response, error) {
+func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -108,10 +108,10 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner string, repo stri
 	return checkRun, resp, nil
 }
 
-// GetCheckSuite Gets a single check suite.
+// GetCheckSuite gets a single check suite.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#get-a-single-check-suite
-func (s *ChecksService) GetCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
+func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v", owner, repo, checkSuiteID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -131,22 +131,22 @@ func (s *ChecksService) GetCheckSuite(ctx context.Context, owner string, repo st
 
 // CreateCheckRunOptions sets up parameters needed to create a CheckRun.
 type CreateCheckRunOptions struct {
-	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
-	HeadBranch  string          `json:"head_branch"`            // The name of the branch to perform a check against.(Required.)
-	HeadSHA     string          `json:"head_sha"`               // The SHA of the commit.(Required.)
+	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage"). (Required.)
+	HeadBranch  string          `json:"head_branch"`            // The name of the branch to perform a check against. (Required.)
+	HeadSHA     string          `json:"head_sha"`               // The SHA of the commit. (Required.)
 	DetailsURL  *string         `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
 	ExternalID  *string         `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
-	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of queued, in_progress, or completed. Default: queued. (Optional.)
-	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of success, failure, neutral, cancelled, timed_out, or action_required.(Optional. Required if you provide a status of completed.)
-	StartedAt   *Timestamp      `json:"started_at,omitempty"`   // The time that the check run began in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.(Optional.)
-	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. (Optional. Required if you provide conclusion.)
-	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run.(Optional)
+	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of "queued", "in_progress", or "completed". Default: "queued". (Optional.)
+	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of "success", "failure", "neutral", "cancelled", "timed_out", or "action_required". (Optional. Required if you provide a status of "completed".)
+	StartedAt   *Timestamp      `json:"started_at,omitempty"`   // The time that the check run began. (Optional.)
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed. (Optional. Required if you provide conclusion.)
+	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run. (Optional)
 }
 
-// CreateCheckRun Creates a check run for repository.
+// CreateCheckRun creates a check run for repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
-func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo string, opt CreateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opt CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
@@ -166,21 +166,21 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner string, repo s
 
 // UpdateCheckRunOptions sets up parameters needed to update a CheckRun.
 type UpdateCheckRunOptions struct {
-	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage").(Required.)
-	HeadBranch  *string         `json:"head_branch"`            // The name of the branch to perform a check against.(Optional.)
-	HeadSHA     *string         `json:"head_sha"`               // The SHA of the commit.(Optional.)
+	Name        string          `json:"name"`                   // The name of the check (e.g., "code-coverage"). (Required.)
+	HeadBranch  *string         `json:"head_branch,omitempty"`  // The name of the branch to perform a check against. (Optional.)
+	HeadSHA     *string         `json:"head_sha,omitempty"`     // The SHA of the commit. (Optional.)
 	DetailsURL  *string         `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
 	ExternalID  *string         `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
-	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of queued, in_progress, or completed. Default: queued. (Optional.)
-	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of success, failure, neutral, cancelled, timed_out, or action_required.(Optional. Required if you provide a status of completed.)
-	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. (Optional. Required if you provide conclusion.)
-	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run.(Optional)
+	Status      *string         `json:"status,omitempty"`       // The current status. Can be one of "queued", "in_progress", or "completed". Default: "queued". (Optional.)
+	Conclusion  *string         `json:"conclusion,omitempty"`   // Can be one of "success", "failure", "neutral", "cancelled", "timed_out", or "action_required". (Optional. Required if you provide a status of "completed".)
+	CompletedAt *Timestamp      `json:"completed_at,omitempty"` // The time the check completed. (Optional. Required if you provide conclusion.)
+	Output      *CheckRunOutput `json:"output,omitempty"`       // Provide descriptive details about the run. (Optional)
 }
 
-// UpdateCheckRun Updates a check run for a specific commit in a repository.
+// UpdateCheckRun updates a check run for a specific commit in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#update-a-check-run
-func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner string, repo string, checkRunID int64, opt UpdateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opt UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
@@ -198,10 +198,10 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner string, repo s
 	return checkRun, resp, nil
 }
 
-// ListCheckRunAnnotations List the annotations for a check run.
+// ListCheckRunAnnotations lists the annotations for a check run.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-annotations-for-a-check-run
-func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner string, repo string, checkRunID int64, opt *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
+func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opt *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -224,25 +224,25 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner strin
 	return checkRunAnnotations, resp, nil
 }
 
-// ListCheckRunsOptions Optional parameters to list check runs.
+// ListCheckRunsOptions represents parameters to list check runs.
 type ListCheckRunsOptions struct {
-	CheckName *string `url:"check_name,omitempty"` //Returns check runs with the specified name.
-	Status    *string `url:"status,omitempty"`     //Returns check runs with the specified status. Can be one of queued, in_progress, or completed.
-	Filter    *string `url:"filter,omitempty"`     //Filters check runs by their completed_at timestamp. Can be one of latest (returning the most recent check runs) or all. Default: latest
+	CheckName *string `url:"check_name,omitempty"` // Returns check runs with the specified name.
+	Status    *string `url:"status,omitempty"`     // Returns check runs with the specified status. Can be one of "queued", "in_progress", or "completed".
+	Filter    *string `url:"filter,omitempty"`     // Filters check runs by their completed_at timestamp. Can be one of "latest" (returning the most recent check runs) or "all". Default: "latest"
 
 	ListOptions
 }
 
 // ListCheckRunsResults represents the result of a check run list.
 type ListCheckRunsResults struct {
-	Total     *int       `json:"total_count,omitempty"`
-	CheckRuns []CheckRun `json:"check_runs,omitempty"`
+	Total     *int        `json:"total_count,omitempty"`
+	CheckRuns []*CheckRun `json:"check_runs,omitempty"`
 }
 
-// ListCheckRunsForRef List check runs for a specific ref.
+// ListCheckRunsForRef lists check runs for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/list-check-runs-for-a-specific-ref
-func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, repo string, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo string, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -265,10 +265,10 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner string, r
 	return checkRunResults, resp, nil
 }
 
-// ListCheckRunsCheckSuite Lists check runs for a check suite.
+// ListCheckRunsCheckSuite lists check runs for a check suite.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-in-a-check-suite
-func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner string, repo string, checkSuiteID int64, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/check-runs", owner, repo, checkSuiteID)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -291,24 +291,24 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner strin
 	return checkRunResults, resp, nil
 }
 
-// ListCheckSuiteOptions Optional parameters to list check suites.
+// ListCheckSuiteOptions represents  parameters to list check suites.
 type ListCheckSuiteOptions struct {
-	CheckName *string `url:"check_name,omitempty"` //Filters checks suites by the name of the check run``.
-	Filter    *string `url:"filter,omitempty"`     //Filters check suites by GitHub App id.
+	CheckName *string `url:"check_name,omitempty"` // Filters checks suites by the name of the check run.
+	Filter    *string `url:"filter,omitempty"`     // Filters check suites by GitHub App id.
 
 	ListOptions
 }
 
 // ListCheckSuiteResults represents the result of a check run list.
 type ListCheckSuiteResults struct {
-	Total       *int         `json:"total_count,omitempty"`
-	CheckSuites []CheckSuite `json:"check_suites,omitempty"`
+	Total       *int          `json:"total_count,omitempty"`
+	CheckSuites []*CheckSuite `json:"check_suites,omitempty"`
 }
 
-// ListCheckSuitesForRef List check suite for a specific ref.
+// ListCheckSuitesForRef lists check suite for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
-func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner string, repo string, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
+func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo string, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -331,15 +331,15 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner string,
 	return checkSuiteResults, resp, nil
 }
 
-// AutoTriggerCheck Enables or disables automatic creation of CheckSuite events upon pushes to the repository.
+// AutoTriggerCheck enables or disables automatic creation of CheckSuite events upon pushes to the repository.
 type AutoTriggerCheck struct {
 	AppID   *int64 `json:"app_id,omitempty"`  // The id of the GitHub App. (Required.)
-	Setting *bool  `json:"setting,omitempty"` // Set to true to enable automatic creation of CheckSuite events upon pushes to the repository, or false to disable them. Default: true (Required.)
+	Setting *bool  `json:"setting,omitempty"` // Set to "true" to enable automatic creation of CheckSuite events upon pushes to the repository, or "false" to disable them. Default: "true" (Required.)
 }
 
 // CheckSuitePreferenceOptions Set options for check suite preferences for a repository.
 type CheckSuitePreferenceOptions struct {
-	PreferenceList *PreferenceList `json:"auto_trigger_checks,omitempty"` // An array of auto trigger checks that can be set for a check suite in a repository.
+	PreferenceList *PreferenceList `json:"auto_trigger_checks,omitempty"` // A list of auto trigger checks that can be set for a check suite in a repository.
 }
 
 // CheckSuitePreferenceResults Represents the results of the preference set operation.
@@ -350,13 +350,13 @@ type CheckSuitePreferenceResults struct {
 
 // PreferenceList Represents a list of auto trigger checks for  repository
 type PreferenceList struct {
-	AutoTriggerChecks []AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // An array of auto trigger checks that can be set for a check suite in a repository.
+	AutoTriggerChecks []AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
 
 // SetCheckSuitePreferences Changes the default automatic flow when creating check suites.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#set-preferences-for-check-suites-on-a-repository
-func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner string, repo string, opt CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
+func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opt CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
@@ -374,16 +374,16 @@ func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner stri
 	return checkSuitePrefResults, resp, nil
 }
 
-// CreateCheckSuiteOptions  sets up parameters to manually create a check suites
+// CreateCheckSuiteOptions sets up parameters to manually create a check suites
 type CreateCheckSuiteOptions struct {
-	HeadSHA    string  `json:"head_sha"`              //The sha of the head commit. (Required.)
-	HeadBranch *string `json:"head_branch,omitempty"` //The name of the head branch where the code changes are implemented.
+	HeadSHA    string  `json:"head_sha"`              // The sha of the head commit. (Required.)
+	HeadBranch *string `json:"head_branch,omitempty"` // The name of the head branch where the code changes are implemented.
 }
 
-// CreateCheckSuite Manually create a check suite for repository.
+// CreateCheckSuite Manually creates a check suite for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#create-a-check-suite
-func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner string, repo string, opt CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
+func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opt CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
@@ -403,20 +403,20 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner string, repo
 
 // RequestCheckSuiteOptions sets up the parameters for a request check suite endpoint.
 type RequestCheckSuiteOptions struct {
-	HeadSHA string `url:"head_sha"` // The sha of the head commit.(Required.)
+	HeadSHA string `json:"head_sha"` // The sha of the head commit. (Required.)
 }
 
-// RequestCheckSuite Triggers GitHub to create a new check suite, without pushing new code to a repository.
+// RequestCheckSuite triggers GitHub to create a new check suite, without pushing new code to a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#request-check-suites
-func (s *ChecksService) RequestCheckSuite(ctx context.Context, owner string, repo string, opt RequestCheckSuiteOptions) (*Response, error) {
+func (s *ChecksService) RequestCheckSuite(ctx context.Context, owner, repo string, opt RequestCheckSuiteOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suite-requests", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}

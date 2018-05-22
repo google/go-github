@@ -271,7 +271,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
 		Total: Int(1),
-		CheckRuns: []CheckRun{{
+		CheckRuns: []*CheckRun{{
 			ID:          Int64(1),
 			Status:      String("completed"),
 			StartedAt:   &Timestamp{startedAt},
@@ -323,7 +323,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
 		Total: Int(1),
-		CheckRuns: []CheckRun{{
+		CheckRuns: []*CheckRun{{
 			ID:          Int64(1),
 			Status:      String("completed"),
 			StartedAt:   &Timestamp{startedAt},
@@ -373,7 +373,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	}
 	want := &ListCheckSuiteResults{
 		Total: Int(1),
-		CheckSuites: []CheckSuite{{
+		CheckSuites: []*CheckSuite{{
 			ID:         Int64(1),
 			Status:     String("completed"),
 			Conclusion: String("neutral"),
@@ -465,11 +465,8 @@ func TestChecksService_RequestCheckSuite(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/check-suite-requests", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testFormValues(t, r, values{
-			"head_sha": "deadbeef",
-		})
 	})
 	opt := RequestCheckSuiteOptions{
 		HeadSHA: "deadbeef",
