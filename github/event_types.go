@@ -7,13 +7,13 @@
 
 package github
 
-// CheckRunEvent is triggered when a check run is created, updated, or rerequested.
+// CheckRunEvent is triggered when a check run is "created", "updated", or "re-requested".
 // The Webhook event name is "check_run".
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checkrunevent
 type CheckRunEvent struct {
 	CheckRun *CheckRun `json:"check_run,omitempty"`
-	//The action performed. Can be created, updated or rerequested.
+	// The action performed. Can be "created", "updated" or "re-requested".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -23,13 +23,13 @@ type CheckRunEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// CheckSuiteEvent is triggered when a check suite is completed, requested, or rerequested.
+// CheckSuiteEvent is triggered when a check suite is "completed", "requested", or "re-requested".
 // The Webhook event name is "check_suite".
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checksuiteevent
 type CheckSuiteEvent struct {
 	CheckSuite *CheckSuite `json:"check_suite,omitempty"`
-	// The action performed. Can be completed, requested or rerequested.
+	// The action performed. Can be "completed", "requested" or "re-requested".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
