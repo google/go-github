@@ -348,7 +348,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		testFormValues(t, r, values{
 			"check_name": "testing",
 			"page":       "1",
-			"filter":     "all",
+			"app_id":     "2",
 		})
 		fmt.Fprint(w, `{"total_count":1,
                                 "check_suites": [{
@@ -364,7 +364,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 
 	opt := &ListCheckSuiteOptions{
 		CheckName:   String("testing"),
-		Filter:      String("all"),
+		AppID:       Int(2),
 		ListOptions: ListOptions{Page: 1},
 	}
 	checkSuites, _, err := client.Checks.ListCheckSuitesForRef(context.Background(), "o", "r", "master", opt)
@@ -399,7 +399,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
 	})
 	p := &PreferenceList{
-		AutoTriggerChecks: []AutoTriggerCheck{{
+		AutoTriggerChecks: []*AutoTriggerCheck{{
 			AppID:   Int64(2),
 			Setting: Bool(false),
 		}},

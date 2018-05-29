@@ -241,7 +241,7 @@ type ListCheckRunsResults struct {
 
 // ListCheckRunsForRef lists check runs for a specific ref.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/runs/list-check-runs-for-a-specific-ref
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-for-a-specific-ref
 func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, ref)
 	u, err := addOptions(u, opt)
@@ -294,7 +294,7 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 // ListCheckSuiteOptions represents parameters to list check suites.
 type ListCheckSuiteOptions struct {
 	CheckName *string `url:"check_name,omitempty"` // Filters checks suites by the name of the check run.
-	Filter    *string `url:"filter,omitempty"`     // Filters check suites by GitHub App id.
+	AppID     *int    `url:"app_id,omitempty"`     // Filters check suites by GitHub App id.
 
 	ListOptions
 }
@@ -350,7 +350,7 @@ type CheckSuitePreferenceResults struct {
 
 // PreferenceList represents a list of auto trigger checks for  repository
 type PreferenceList struct {
-	AutoTriggerChecks []AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
+	AutoTriggerChecks []*AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
 
 // SetCheckSuitePreferences Changes the default automatic flow when creating check suites.
