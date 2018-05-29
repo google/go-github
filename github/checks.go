@@ -242,7 +242,7 @@ type ListCheckRunsResults struct {
 // ListCheckRunsForRef lists check runs for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/list-check-runs-for-a-specific-ref
-func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo string, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -291,7 +291,7 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 	return checkRunResults, resp, nil
 }
 
-// ListCheckSuiteOptions represents  parameters to list check suites.
+// ListCheckSuiteOptions represents parameters to list check suites.
 type ListCheckSuiteOptions struct {
 	CheckName *string `url:"check_name,omitempty"` // Filters checks suites by the name of the check run.
 	Filter    *string `url:"filter,omitempty"`     // Filters check suites by GitHub App id.
@@ -308,7 +308,7 @@ type ListCheckSuiteResults struct {
 // ListCheckSuitesForRef lists check suite for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
-func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo string, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
+func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, ref)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -342,13 +342,13 @@ type CheckSuitePreferenceOptions struct {
 	PreferenceList *PreferenceList `json:"auto_trigger_checks,omitempty"` // A list of auto trigger checks that can be set for a check suite in a repository.
 }
 
-// CheckSuitePreferenceResults Represents the results of the preference set operation.
+// CheckSuitePreferenceResults represents the results of the preference set operation.
 type CheckSuitePreferenceResults struct {
 	Preferences *PreferenceList `json:"preferences,omitempty"`
 	Repository  *Repository     `json:"repository,omitempty"`
 }
 
-// PreferenceList Represents a list of auto trigger checks for  repository
+// PreferenceList represents a list of auto trigger checks for  repository
 type PreferenceList struct {
 	AutoTriggerChecks []AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
