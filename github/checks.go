@@ -337,7 +337,7 @@ type AutoTriggerCheck struct {
 	Setting *bool  `json:"setting,omitempty"` // Set to "true" to enable automatic creation of CheckSuite events upon pushes to the repository, or "false" to disable them. Default: "true" (Required.)
 }
 
-// CheckSuitePreferenceOptions Set options for check suite preferences for a repository.
+// CheckSuitePreferenceOptions set options for check suite preferences for a repository.
 type CheckSuitePreferenceOptions struct {
 	PreferenceList *PreferenceList `json:"auto_trigger_checks,omitempty"` // A list of auto trigger checks that can be set for a check suite in a repository.
 }
@@ -353,7 +353,7 @@ type PreferenceList struct {
 	AutoTriggerChecks []*AutoTriggerCheck `json:"auto_trigger_checks,omitempty"` // A slice of auto trigger checks that can be set for a check suite in a repository.
 }
 
-// SetCheckSuitePreferences Changes the default automatic flow when creating check suites.
+// SetCheckSuitePreferences changes the default automatic flow when creating check suites.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#set-preferences-for-check-suites-on-a-repository
 func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opt CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
@@ -380,7 +380,7 @@ type CreateCheckSuiteOptions struct {
 	HeadBranch *string `json:"head_branch,omitempty"` // The name of the head branch where the code changes are implemented.
 }
 
-// CreateCheckSuite Manually creates a check suite for a repository.
+// CreateCheckSuite manually creates a check suite for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#create-a-check-suite
 func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opt CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
