@@ -536,34 +536,34 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
-							"required_status_checks":{
-								"strict":true,
-								"contexts":["continuous-integration"]
-							},
-							"required_pull_request_reviews":{
-								"dismissal_restrictions":{
-									"users":[{
-										"id":3,
-										"login":"u"
-									}],
-									"teams":[{
-										"id":4,
-										"slug":"t"
-									}]
-								},
-								"dismiss_stale_reviews":true,
-								"require_code_owner_reviews":true,
-								"required_approving_review_count":1
-								},
-								"enforce_admins":{
-									"url":"/repos/o/r/branches/b/protection/enforce_admins",
-									"enabled":true
-								},
-								"restrictions":{
-									"users":[{"id":1,"login":"u"}],
-									"teams":[{"id":2,"slug":"t"}]
-								}
-							}`)
+				"required_status_checks":{
+					"strict":true,
+					"contexts":["continuous-integration"]
+				},
+				"required_pull_request_reviews":{
+					"dismissal_restrictions":{
+						"users":[{
+							"id":3,
+							"login":"u"
+						}],
+						"teams":[{
+							"id":4,
+							"slug":"t"
+						}]
+					},
+					"dismiss_stale_reviews":true,
+					"require_code_owner_reviews":true,
+					"required_approving_review_count":1
+					},
+					"enforce_admins":{
+						"url":"/repos/o/r/branches/b/protection/enforce_admins",
+						"enabled":true
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}]
+					}
+				}`)
 	})
 
 	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
@@ -641,29 +641,29 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
-							"required_status_checks":{
-								"strict":true,
-								"contexts":["continuous-integration"]
-							},
-							"required_pull_request_reviews":{
-								"dismissal_restrictions":{
-									"users":[{
-										"id":3,
-										"login":"uu"
-									}],
-									"teams":[{
-										"id":4,
-										"slug":"tt"
-									}]
-								},
-								"dismiss_stale_reviews":true,
-								"require_code_owner_reviews":true
-							},
-							"restrictions":{
-								"users":[{"id":1,"login":"u"}],
-								"teams":[{"id":2,"slug":"t"}]
-							}
-						}`)
+			"required_status_checks":{
+				"strict":true,
+				"contexts":["continuous-integration"]
+			},
+			"required_pull_request_reviews":{
+				"dismissal_restrictions":{
+					"users":[{
+						"id":3,
+						"login":"uu"
+					}],
+					"teams":[{
+						"id":4,
+						"slug":"tt"
+					}]
+				},
+				"dismiss_stale_reviews":true,
+				"require_code_owner_reviews":true
+			},
+			"restrictions":{
+				"users":[{"id":1,"login":"u"}],
+				"teams":[{"id":2,"slug":"t"}]
+			}
+		}`)
 	})
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), "o", "r", "b", input)
@@ -820,14 +820,14 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
-							"dismissal_restrictions":{
-								"users":[{"id":1,"login":"u"}],
-								"teams":[{"id":2,"slug":"t"}]
-							},
-							"dismiss_stale_reviews":true,
-							"require_code_owner_reviews":true,
-							"required_approving_review_count":1
-						}`)
+			"dismissal_restrictions":{
+				"users":[{"id":1,"login":"u"}],
+				"teams":[{"id":2,"slug":"t"}]
+			},
+			"dismiss_stale_reviews":true,
+			"require_code_owner_reviews":true,
+			"required_approving_review_count":1
+		}`)
 	})
 
 	enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(context.Background(), "o", "r", "b")
@@ -876,14 +876,14 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
-							"dismissal_restrictions":{
-								"users":[{"id":1,"login":"u"}],
-								"teams":[{"id":2,"slug":"t"}]
-							},
-							"dismiss_stale_reviews":true,
-							"require_code_owner_reviews":true,
-							"required_approving_review_count":3
-						}`)
+			"dismissal_restrictions":{
+				"users":[{"id":1,"login":"u"}],
+				"teams":[{"id":2,"slug":"t"}]
+			},
+			"dismiss_stale_reviews":true,
+			"require_code_owner_reviews":true,
+			"required_approving_review_count":3
+		}`)
 	})
 
 	enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(context.Background(), "o", "r", "b", input)
