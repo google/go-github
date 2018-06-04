@@ -10188,6 +10188,14 @@ func (t *Tree) GetSHA() string {
 	return *t.SHA
 }
 
+// GetTruncated returns the Truncated field if it's non-nil, zero value otherwise.
+func (t *Tree) GetTruncated() bool {
+	if t == nil || t.Truncated == nil {
+		return false
+	}
+	return *t.Truncated
+}
+
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
 func (t *TreeEntry) GetContent() string {
 	if t == nil || t.Content == nil {
