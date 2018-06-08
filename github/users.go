@@ -99,7 +99,7 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 // GetAuth fetches the authenticated user
 // GitHub API docs: https://developer.github.com/v3/users/#get-a-single-user
 func (s *UsersService) GetAuth(ctx context.Context) (*User, *Response, error) {
-	return Get(ctx, "")
+	return s.Get(ctx, "")
 }
 
 // GetByID fetches a user.
