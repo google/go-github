@@ -102,7 +102,6 @@ func (s *UsersService) GetAuth(ctx context.Context) (*User, *Response, error) {
 	return Get(ctx, "")
 }
 
-
 // GetByID fetches a user.
 //
 // Note: GetByID uses the undocumented GitHub API endpoint /user/:id.
