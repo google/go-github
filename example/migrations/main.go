@@ -28,7 +28,7 @@ func fetchAllUserMigrations() ([]*github.UserMigration, error) {
 }
 
 func main() {
-	migrations, err := FetchAllUserMigrations()
+	migrations, err := fetchAllUserMigrations()
 	if err != nil {
 		fmt.Printf("Error %v\n", err)
 		return
