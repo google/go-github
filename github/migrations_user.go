@@ -1,4 +1,4 @@
-// Copyright 2016 The go-github AUTHORS. All rights reserved.
+// Copyright 2018 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -67,7 +67,7 @@ type startUserMigration struct {
 // StartUserMigration starts the generation of a migration archive.
 // repos is a slice of repository names to migrate.
 //
-// GitHub API docs: https://developer.github.com/v3/migration/migrations/#start-a-migration
+// GitHub API docs: https://developer.github.com/v3/migrations/users/#start-a-user-migration
 func (s *MigrationService) StartUserMigration(ctx context.Context, repos []string, opt *UserMigrationOptions) (*UserMigration, *Response, error) {
 	u := "user/migrations"
 
@@ -96,7 +96,7 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 
 // ListUserMigrations lists the most recent migrations.
 //
-// GitHub API docs: https://developer.github.com/v3/migration/migrations/#get-a-list-of-migrations
+// GitHub API docs: https://developer.github.com/v3/migrations/users/#get-a-list-of-user-migrations
 func (s *MigrationService) ListUserMigrations(ctx context.Context) ([]*UserMigration, *Response, error) {
 	u := "user/migrations"
 
@@ -141,7 +141,7 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 	return m, resp, nil
 }
 
-// UserMigrationArchiveURL get the URL for specific migration archive.
+// UserMigrationArchiveURL gets the URL for a specific migration archive.
 // id is the migration ID.
 //
 // GitHub API docs: https://developer.github.com/v3/migrations/users/#download-a-user-migration-archive
@@ -175,8 +175,8 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 	return loc, nil
 }
 
-// DeleteUserMigration will delete previous migration archive
-// id is the migration ID
+// DeleteUserMigration will delete a previous migration archive.
+// id is the migration ID.
 //
 // GitHub API docs: https://developer.github.com/v3/migrations/users/#delete-a-user-migration-archive
 func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*Response, error) {
@@ -193,8 +193,8 @@ func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*
 	return s.client.Do(ctx, req, nil)
 }
 
-// UnlockUserRepository will unlock repo that was locked for migration.
-// id is migration ID
+// UnlockUserRepository will unlock a repo that was locked for migration.
+// id is migration ID.
 // You should unlock each migrated repository and delete them when the migration
 // is complete and you no longer need the source data.
 //
