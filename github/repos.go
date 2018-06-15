@@ -216,10 +216,6 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
