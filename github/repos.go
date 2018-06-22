@@ -199,7 +199,7 @@ type RepositoryListByOrgOptions struct {
 
 	ListOptions
 }
-
+uu
 // ListByOrg lists the repositories for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-organization-repositories
@@ -565,7 +565,7 @@ type PullRequestReviewsEnforcement struct {
 	DismissStaleReviews bool `json:"dismiss_stale_reviews,omitempty"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
-
+	// RequiredApprovingReviewCount specifies the number of reviewers required to approve pull requests, this will be a number between 1 and 6.
 	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
