@@ -199,7 +199,7 @@ type RepositoryListByOrgOptions struct {
 
 	ListOptions
 }
-uu
+
 // ListByOrg lists the repositories for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-organization-repositories
@@ -701,7 +701,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	req.Header.Set("Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
@@ -766,7 +766,7 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	req.Header.Set("Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
@@ -823,7 +823,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	req.Header.Set("Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -846,7 +846,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 	}
 
 	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
+	req.Header.Set("Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)

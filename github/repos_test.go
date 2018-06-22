@@ -531,8 +531,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"u"}],"teams":[{"id":4,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		testHeader(t, r, "Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
+		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"u"}],"teams":[{"id":4,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count": 2},"enforce_admins":{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
@@ -555,7 +555,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					{Slug: String("t"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews: true,
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: Int(2),
 		},
 		EnforceAdmins: &AdminEnforcement{
 			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
@@ -605,8 +606,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"uu"}],"teams":[{"id":4,"slug":"tt"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
+		testHeader(t, r, "Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
+		fmt.Fprintf(w, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"dismissal_restrictions":{"users":[{"id":3,"login":"uu"}],"teams":[{"id":4,"slug":"tt"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":2},"restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]}}`)
 	})
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), "o", "r", "b", input)
@@ -629,7 +630,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					{Slug: String("tt"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews: true,
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: Int(2),
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
@@ -757,8 +759,8 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}`)
+		testHeader(t, r, "Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
+		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count": 2}`)
 	})
 
 	enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(context.Background(), "o", "r", "b")
@@ -776,7 +778,8 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
-		RequireCodeOwnerReviews: true,
+		RequireCodeOwnerReviews:      true,
+		RequiredApprovingReviewCount: Int(2),
 	}
 
 	if !reflect.DeepEqual(enforcement, want) {
@@ -803,8 +806,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
-		testHeader(t, r, "Accept", mediaTypeProtectedBranchesPreview)
-		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}`)
+		testHeader(t, r, "Accept", mediaTypeMultipleApprovingReviewsForProtectedBranches)
+		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[{"id":1,"login":"u"}],"teams":[{"id":2,"slug":"t"}]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count": 2}`)
 	})
 
 	enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(context.Background(), "o", "r", "b", input)
@@ -822,7 +825,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
-		RequireCodeOwnerReviews: true,
+		RequireCodeOwnerReviews:      true,
+		RequiredApprovingReviewCount: Int(2),
 	}
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
