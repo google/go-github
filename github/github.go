@@ -119,6 +119,8 @@ const (
 
 	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
 	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
+
+	mediaMultipleApprovingReviewsForProtectedBranches = "application/vnd.github.luke-cage-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

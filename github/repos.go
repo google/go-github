@@ -560,11 +560,13 @@ type RequiredStatusChecks struct {
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
 	// Specifies which users and teams can dismiss pull request reviews.
-	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
+	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
-	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
+	DismissStaleReviews bool `json:"dismiss_stale_reviews,omitempty"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
-	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews"`
+	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
+
+	RequiredApprovingReviewCount *int `json:"required_approving_review_count,omitempty"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
