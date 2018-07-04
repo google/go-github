@@ -178,3 +178,66 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
 }
+
+func TestAppsService_FindOrganizationInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
+	})
+
+	installation, _, err := client.Apps.FindOrganizationInstallation(context.Background(), "o")
+	if err != nil {
+		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
+	}
+}
+
+func TestAppsService_FindRepositoryInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
+	})
+
+	installation, _, err := client.Apps.FindRepositoryInstallation(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
+	}
+}
+
+func TestAppsService_FindUserInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "User"}`)
+	})
+
+	installation, _, err := client.Apps.FindUserInstallation(context.Background(), "u")
+	if err != nil {
+		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("User")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
+	}
+}
