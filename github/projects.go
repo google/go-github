@@ -151,7 +151,7 @@ func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int6
 	if err != nil {
 		return nil, resp, err
 	}
-
+	fmt.Println(columns)
 	return columns, resp, nil
 }
 
