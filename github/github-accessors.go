@@ -5580,6 +5580,14 @@ func (p *Project) GetURL() string {
 	return *p.URL
 }
 
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetArchived() bool {
+	if p == nil || p.Archived == nil {
+		return false
+	}
+	return *p.Archived
+}
+
 // GetColumnID returns the ColumnID field if it's non-nil, zero value otherwise.
 func (p *ProjectCard) GetColumnID() int64 {
 	if p == nil || p.ColumnID == nil {
