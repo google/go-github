@@ -19,7 +19,6 @@ func TestLicensesService_List(t *testing.T) {
 
 	mux.HandleFunc("/licenses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		fmt.Fprint(w, `[{"key":"mit","name":"MIT","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","featured":true}]`)
 	})
 
@@ -46,7 +45,6 @@ func TestLicensesService_Get(t *testing.T) {
 
 	mux.HandleFunc("/licenses/mit", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		fmt.Fprint(w, `{"key":"mit","name":"MIT"}`)
 	})
 
