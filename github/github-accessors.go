@@ -6364,12 +6364,12 @@ func (p *PullRequestComment) GetID() int64 {
 	return *p.ID
 }
 
-// GetInReplyToID returns the InReplyToID field if it's non-nil, zero value otherwise.
-func (p *PullRequestComment) GetInReplyToID() int64 {
-	if p == nil || p.InReplyToID == nil {
+// GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetInReplyTo() int64 {
+	if p == nil || p.InReplyTo == nil {
 		return 0
 	}
-	return *p.InReplyToID
+	return *p.InReplyTo
 }
 
 // GetOriginalCommitID returns the OriginalCommitID field if it's non-nil, zero value otherwise.
