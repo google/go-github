@@ -294,7 +294,7 @@ type ProjectCard struct {
 // ProjectCardListOptions specifies the optional parameters to the
 // ProjectsService.ListProjectCards method.
 type ProjectCardListOptions struct {
-	// ArchivedState is used to list all,archived, or not_archived project cards.
+	// ArchivedState is used to list all, archived, or not_archived project cards.
 	// Defaults to not_archived when you omit this parameter.
 	ArchivedState string `url:"archived_state,omitempty"`
 
