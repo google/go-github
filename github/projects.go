@@ -296,7 +296,7 @@ type ProjectCard struct {
 type ProjectCardListOptions struct {
 	// ArchivedState is used to list all, archived, or not_archived project cards.
 	// Defaults to not_archived when you omit this parameter.
-	ArchivedState string `url:"archived_state,omitempty"`
+	ArchivedState *string `url:"archived_state,omitempty"`
 
 	ListOptions
 }
@@ -365,7 +365,7 @@ type ProjectCardOptions struct {
 	ContentType string `json:"content_type,omitempty"`
 	// Use true to archive a project card.
 	// Specify false if you need to restore a previously archived project card.
-	Archived bool `json:"archived,omitempty"`
+	Archived *bool `json:"archived,omitempty"`
 }
 
 // CreateProjectCard creates a card in the specified column of a GitHub Project.
