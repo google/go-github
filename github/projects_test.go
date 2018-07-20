@@ -244,7 +244,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 	})
 
 	opt := &ProjectCardListOptions{
-		ArchivedState: "all",
+		ArchivedState: String("all"),
 		ListOptions:   ListOptions{Page: 2}}
 	cards, _, err := client.Projects.ListProjectCards(context.Background(), 1, opt)
 	if err != nil {

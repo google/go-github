@@ -5732,6 +5732,22 @@ func (p *ProjectCardEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetArchivedState returns the ArchivedState field if it's non-nil, zero value otherwise.
+func (p *ProjectCardListOptions) GetArchivedState() string {
+	if p == nil || p.ArchivedState == nil {
+		return ""
+	}
+	return *p.ArchivedState
+}
+
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (p *ProjectCardOptions) GetArchived() bool {
+	if p == nil || p.Archived == nil {
+		return false
+	}
+	return *p.Archived
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectColumn) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
