@@ -237,11 +237,15 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
-		testFormValues(t, r, values{"page": "2"})
+		testFormValues(t, r, values{
+			"archived_state": "all",
+			"page":           "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &ProjectCardListOptions{
+		ArchivedState: String("all"),
+		ListOptions:   ListOptions{Page: 2}}
 	cards, _, err := client.Projects.ListProjectCards(context.Background(), 1, opt)
 	if err != nil {
 		t.Errorf("Projects.ListProjectCards returned error: %v", err)
@@ -329,7 +333,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1, "archived":false}`)
 	})
 
 	card, _, err := client.Projects.UpdateProjectCard(context.Background(), 1, input)
@@ -337,7 +341,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 		t.Errorf("Projects.UpdateProjectCard returned error: %v", err)
 	}
 
-	want := &ProjectCard{ID: Int64(1)}
+	want := &ProjectCard{ID: Int64(1), Archived: Bool(false)}
 	if !reflect.DeepEqual(card, want) {
 		t.Errorf("Projects.UpdateProjectCard returned %+v, want %+v", card, want)
 	}
