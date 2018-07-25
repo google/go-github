@@ -1508,12 +1508,28 @@ func (c *CommunityHealthFiles) GetContributing() *Metric {
 	return c.Contributing
 }
 
+// GetIssueTemplate returns the IssueTemplate field.
+func (c *CommunityHealthFiles) GetIssueTemplate() *Metric {
+	if c == nil {
+		return nil
+	}
+	return c.IssueTemplate
+}
+
 // GetLicense returns the License field.
 func (c *CommunityHealthFiles) GetLicense() *Metric {
 	if c == nil {
 		return nil
 	}
 	return c.License
+}
+
+// GetPullRequestTemplate returns the PullRequestTemplate field.
+func (c *CommunityHealthFiles) GetPullRequestTemplate() *Metric {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequestTemplate
 }
 
 // GetReadme returns the Readme field.
