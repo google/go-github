@@ -55,7 +55,5 @@ func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, own
 		return nil, resp, err
 	}
 
-	fmt.Println("COUCOU")
-
 	return metrics, resp, nil
 }
