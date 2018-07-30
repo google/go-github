@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestAppsService_Get_authenticatedApp(t *testing.T) {
@@ -82,7 +83,9 @@ func TestAppsService_ListInstallations(t *testing.T) {
                                       "pull_request"
                                   ],
                                  "single_file_name": "config.yml",
-                                 "repository_selection": "selected"}]`,
+                                 "repository_selection": "selected",
+                                 "created_at": "2018-01-01T00:00:00Z",
+                                 "updated_at": "2018-01-01T00:00:00Z"}]`,
 		)
 	})
 
@@ -92,6 +95,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
+	date := time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)
 	want := []*Installation{{
 		ID:                  Int64(1),
 		AppID:               Int64(1),
@@ -104,7 +108,9 @@ func TestAppsService_ListInstallations(t *testing.T) {
 			Contents:   String("read"),
 			Issues:     String("write"),
 			SingleFile: String("write")},
-		Events: []string{"push", "pull_request"},
+		Events:    []string{"push", "pull_request"},
+		CreatedAt: &date,
+		UpdatedAt: &date,
 	}}
 	if !reflect.DeepEqual(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
@@ -176,5 +182,68 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	want := &InstallationToken{Token: String("t")}
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
+	}
+}
+
+func TestAppsService_FindOrganizationInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
+	})
+
+	installation, _, err := client.Apps.FindOrganizationInstallation(context.Background(), "o")
+	if err != nil {
+		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
+	}
+}
+
+func TestAppsService_FindRepositoryInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
+	})
+
+	installation, _, err := client.Apps.FindRepositoryInstallation(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
+	}
+}
+
+func TestAppsService_FindUserInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/users/u/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "User"}`)
+	})
+
+	installation, _, err := client.Apps.FindUserInstallation(context.Background(), "u")
+	if err != nil {
+		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("User")}
+	if !reflect.DeepEqual(installation, want) {
+		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
 	}
 }

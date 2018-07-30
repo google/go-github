@@ -45,9 +45,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2015-03-09-licenses-api/
-	mediaTypeLicensesPreview = "application/vnd.github.drax-preview+json"
-
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
@@ -113,6 +110,15 @@ const (
 
 	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
 	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
+
+	// https://developer.github.com/changes/2018-02-22-label-description-search-preview/
+	mediaTypeLabelDescriptionSearchPreview = "application/vnd.github.symmetra-preview+json"
+
+	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
+	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
+
+	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
+	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -141,6 +147,7 @@ type Client struct {
 	Admin          *AdminService
 	Apps           *AppsService
 	Authorizations *AuthorizationsService
+	Checks         *ChecksService
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
@@ -154,6 +161,7 @@ type Client struct {
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
 	Search         *SearchService
+	Teams          *TeamsService
 	Users          *UsersService
 }
 
@@ -231,6 +239,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Admin = (*AdminService)(&c.common)
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
+	c.Checks = (*ChecksService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
@@ -244,6 +253,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
+	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
 }
@@ -694,7 +704,7 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-	case r.StatusCode == http.StatusForbidden && errorResponse.DocumentationURL == "https://developer.github.com/v3/#abuse-rate-limits":
+	case r.StatusCode == http.StatusForbidden && strings.HasSuffix(errorResponse.DocumentationURL, "/v3/#abuse-rate-limits"):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
