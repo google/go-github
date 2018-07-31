@@ -96,9 +96,6 @@ const (
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
 
-	// https://developer.github.com/v3/apps/marketplace/
-	mediaTypeMarketplacePreview = "application/vnd.github.valkyrie-preview+json"
-
 	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
 	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
 
