@@ -224,13 +224,14 @@ You can run integration tests from the `test` directory. See the integration tes
 This library is being initially developed for an internal application at
 Google, so API methods will likely be implemented in the order that they are
 needed by that application. You can track the status of implementation in
-[this Google spreadsheet][roadmap]. Eventually, I would like to cover the entire
-GitHub API, so contributions are of course [always welcome][contributing]. The
-calling pattern is pretty well established, so adding new methods is relatively
-straightforward.
+[this Google spreadsheet][roadmap]. 
 
 [roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
-[contributing]: CONTRIBUTING.md
+
+## Contributing ##
+I would like to cover the entire GitHub API but contributions are of course always welcome. The
+calling pattern is pretty well established, so adding new methods is relatively
+straightforward. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
 
 ## Versioning ##
 
