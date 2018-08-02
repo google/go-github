@@ -553,6 +553,12 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts"`
 }
 
+// RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
+type RequiredStatusChecksRequest struct {
+	Strict   *bool    `json:"strict,omitempty"`
+	Contexts []string `json:"contexts,omitempty"`
+}
+
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
 	// Specifies which users and teams can dismiss pull request reviews.
@@ -785,6 +791,25 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeProtectedBranchesPreview)
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#update-required-status-checks-of-protected-branch
+func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	req, err := s.client.NewRequest("PATCH", u, sreq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sc := new(RequiredStatusChecks)
+	resp, err := s.client.Do(ctx, req, sc)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sc, resp, nil
 }
 
 // License gets the contents of a repository's license if one is detected.

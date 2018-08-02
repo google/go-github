@@ -9764,6 +9764,14 @@ func (r *RepoStatus) GetURL() string {
 	return *r.URL
 }
 
+// GetStrict returns the Strict field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecksRequest) GetStrict() bool {
+	if r == nil || r.Strict == nil {
+		return false
+	}
+	return *r.Strict
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (s *ServiceHook) GetName() string {
 	if s == nil || s.Name == nil {
