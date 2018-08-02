@@ -726,6 +726,41 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &RequiredStatusChecksRequest{
+		Strict:   Bool(true),
+		Contexts: []string{"continuous-integration"},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RequiredStatusChecksRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		testHeader(t, r, "Accept", mediaTypeV3)
+		fmt.Fprintf(w, `{"strict":true,"contexts":["continuous-integration"]}`)
+	})
+
+	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+	}
+
+	want := &RequiredStatusChecks{
+		Strict:   true,
+		Contexts: []string{"continuous-integration"},
+	}
+	if !reflect.DeepEqual(statusChecks, want) {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+	}
+}
+
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
