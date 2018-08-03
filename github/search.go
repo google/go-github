@@ -221,11 +221,10 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	if err != nil {
 		return nil, err
 	}
-	params.Set("q", parameters.Query)
 	if parameters.RepositoryID != nil {
 		params.Set("repository_id", strconv.FormatInt(*parameters.RepositoryID, 10))
 	}
-	u := fmt.Sprintf("search/%s?%s", searchType, params.Encode())
+	u := fmt.Sprintf("search/%s?q=%s&%s", searchType, parameters.Query, params.Encode())
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
