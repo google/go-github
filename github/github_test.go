@@ -800,7 +800,7 @@ func TestCheckResponse(t *testing.T) {
 			CreatedAt *Timestamp `json:"created_at,omitempty"`
 		}{
 			Reason:    "dmca",
-			CreatedAt: &Timestamp{time.Date(2016, time.July, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
 	}
 	if !reflect.DeepEqual(err, want) {
