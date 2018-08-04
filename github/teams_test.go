@@ -400,7 +400,7 @@ func TestTeamsService_ListPendingTeamInvitations(t *testing.T) {
     					"login": "monalisa",
     					"email": "octocat@github.com",
     					"role": "direct_member",
-						"created_at": "2017-01-21T00:00:00Z",
+    					"created_at": "2017-01-21T00:00:00Z",
     					"inviter": {
       						"login": "other_user",
       						"id": 1,
@@ -430,7 +430,7 @@ func TestTeamsService_ListPendingTeamInvitations(t *testing.T) {
 		t.Errorf("Teams.ListPendingTeamInvitations returned error: %v", err)
 	}
 
-	createdAt := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
+	createdAt := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:        Int64(1),
