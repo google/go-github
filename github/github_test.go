@@ -511,7 +511,7 @@ func TestDo_rateLimit(t *testing.T) {
 	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
 	if resp.Rate.Reset.UTC() != reset {
 		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
 	}
@@ -543,7 +543,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	if got, want := resp.Rate.Remaining, 59; got != want {
 		t.Errorf("Client rate remaining = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
 	if resp.Rate.Reset.UTC() != reset {
 		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
 	}
@@ -582,7 +582,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Remaining, 0; got != want {
 		t.Errorf("rateLimitErr rate remaining = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC)
+	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
 	if rateLimitErr.Rate.Reset.UTC() != reset {
 		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
 	}
@@ -800,7 +800,7 @@ func TestCheckResponse(t *testing.T) {
 			CreatedAt *Timestamp `json:"created_at,omitempty"`
 		}{
 			Reason:    "dmca",
-			CreatedAt: &Timestamp{time.Date(2016, 3, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
 	}
 	if !reflect.DeepEqual(err, want) {
@@ -901,12 +901,12 @@ func TestRateLimits(t *testing.T) {
 		Core: &Rate{
 			Limit:     2,
 			Remaining: 1,
-			Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 53, 0, time.UTC).Local()},
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC).Local()},
 		},
 		Search: &Rate{
 			Limit:     3,
 			Remaining: 2,
-			Reset:     Timestamp{time.Date(2013, 7, 1, 17, 47, 54, 0, time.UTC).Local()},
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
 	}
 	if !reflect.DeepEqual(rate, want) {
