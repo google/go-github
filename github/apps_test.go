@@ -95,7 +95,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
-	date := time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)
+	date := time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)
 	want := []*Installation{{
 		ID:                  Int64(1),
 		AppID:               Int64(1),

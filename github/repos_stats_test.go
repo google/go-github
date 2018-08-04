@@ -54,7 +54,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 			Total: Int(135),
 			Weeks: []WeeklyStats{
 				{
-					Week:      &Timestamp{time.Date(2013, 05, 05, 00, 00, 00, 0, time.UTC).Local()},
+					Week:      &Timestamp{time.Date(2013, time.May, 05, 00, 00, 00, 0, time.UTC).Local()},
 					Additions: Int(6898),
 					Deletions: Int(77),
 					Commits:   Int(10),
@@ -95,7 +95,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 		{
 			Days:  []int{0, 3, 26, 20, 39, 1, 0},
 			Total: Int(89),
-			Week:  &Timestamp{time.Date(2012, 05, 06, 05, 00, 00, 0, time.UTC).Local()},
+			Week:  &Timestamp{time.Date(2012, time.May, 06, 05, 00, 00, 0, time.UTC).Local()},
 		},
 	}
 
@@ -120,7 +120,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 	}
 
 	want := []*WeeklyStats{{
-		Week:      &Timestamp{time.Date(2011, 04, 17, 00, 00, 00, 0, time.UTC).Local()},
+		Week:      &Timestamp{time.Date(2011, time.April, 17, 00, 00, 00, 0, time.UTC).Local()},
 		Additions: Int(1124),
 		Deletions: Int(-435),
 	}}

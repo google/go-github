@@ -34,8 +34,8 @@ func TestActivityService_ListNotification(t *testing.T) {
 	opt := &NotificationListOptions{
 		All:           true,
 		Participating: true,
-		Since:         time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC),
-		Before:        time.Date(2007, 03, 04, 15, 04, 05, 0, time.UTC),
+		Since:         time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC),
+		Before:        time.Date(2007, time.March, 04, 15, 04, 05, 0, time.UTC),
 	}
 	notifications, _, err := client.Activity.ListNotifications(context.Background(), opt)
 	if err != nil {
@@ -80,7 +80,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	_, err := client.Activity.MarkNotificationsRead(context.Background(), time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC))
+	_, err := client.Activity.MarkNotificationsRead(context.Background(), time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
@@ -98,7 +98,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 		w.WriteHeader(http.StatusResetContent)
 	})
 
-	_, err := client.Activity.MarkRepositoryNotificationsRead(context.Background(), "o", "r", time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC))
+	_, err := client.Activity.MarkRepositoryNotificationsRead(context.Background(), "o", "r", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}

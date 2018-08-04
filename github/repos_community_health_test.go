@@ -54,7 +54,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 		t.Errorf("Repositories.GetCommunityHealthMetrics returned error: %v", err)
 	}
 
-	updatedAt := time.Date(2017, 02, 28, 0, 0, 0, 0, time.UTC)
+	updatedAt := time.Date(2017, time.February, 28, 0, 0, 0, 0, time.UTC)
 	want := &CommunityHealthMetrics{
 		HealthPercentage: Int(100),
 		UpdatedAt:        &updatedAt,

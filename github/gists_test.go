@@ -338,7 +338,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		URL:         String("https://api.github.com/gists/1/1"),
 		Version:     String("1"),
 		User:        &User{ID: Int64(1)},
-		CommittedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
+		CommittedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
 		ChangeStatus: &CommitStats{
 			Additions: Int(180),
 			Deletions: Int(0),
@@ -529,8 +529,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		URL:       String("https://api.github.com/gists/1"),
 		ID:        String("1"),
 		User:      &User{ID: Int64(1)},
-		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2013, 1, 1, 00, 00, 00, 0, time.UTC)}}}
+		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 00, 00, 00, 0, time.UTC)}}}
 
 	if !reflect.DeepEqual(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)

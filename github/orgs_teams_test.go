@@ -628,7 +628,7 @@ func TestOrganizationsService_ListPendingTeamInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingTeamInvitations returned error: %v", err)
 	}
 
-	createdAt := time.Date(2017, 01, 21, 0, 0, 0, 0, time.UTC)
+	createdAt := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:        Int64(1),

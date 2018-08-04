@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	referenceTime = time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)
+	referenceTime = time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)
 	unixOrigin    = time.Unix(0, 0).In(time.UTC)
 )
 

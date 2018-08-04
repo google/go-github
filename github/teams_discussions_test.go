@@ -97,7 +97,7 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 			BodyVersion:   String("version"),
 			CommentsCount: Int64(1),
 			CommentsURL:   String("https://api.github.com/teams/2/discussions/3/comments"),
-			CreatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			LastEditedAt:  nil,
 			HTMLURL:       String("https://github.com/orgs/1/teams/2/discussions/3"),
 			NodeID:        String("node"),
@@ -106,7 +106,7 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 			Private:       Bool(false),
 			TeamURL:       String("https://api.github.com/teams/2"),
 			Title:         String("test"),
-			UpdatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			UpdatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			URL:           String("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
