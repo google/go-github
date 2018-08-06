@@ -57,8 +57,8 @@ type Installation struct {
 	RepositorySelection *string                  `json:"repository_selection,omitempty"`
 	Events              []string                 `json:"events,omitempty"`
 	Permissions         *InstallationPermissions `json:"permissions,omitempty"`
-	CreatedAt           *time.Time               `json:"created_at,omitempty"`
-	UpdatedAt           *time.Time               `json:"updated_at,omitempty"`
+	CreatedAt           *Timestamp               `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp               `json:"updated_at,omitempty"`
 }
 
 func (i Installation) String() string {
