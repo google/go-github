@@ -3357,9 +3357,9 @@ func (i *Installation) GetAppID() int64 {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *Installation) GetCreatedAt() time.Time {
+func (i *Installation) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -3429,9 +3429,9 @@ func (i *Installation) GetTargetType() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (i *Installation) GetUpdatedAt() time.Time {
+func (i *Installation) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.UpdatedAt
 }
