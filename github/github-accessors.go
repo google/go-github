@@ -5628,14 +5628,6 @@ func (o *Organization) GetNodeID() string {
 	return *o.NodeID
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (o *Organization) GetNodeID() string {
-	if o == nil || o.NodeID == nil {
-		return ""
-	}
-	return *o.NodeID
-}
-
 // GetOwnedPrivateRepos returns the OwnedPrivateRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetOwnedPrivateRepos() int {
 	if o == nil || o.OwnedPrivateRepos == nil {

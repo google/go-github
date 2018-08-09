@@ -44,7 +44,6 @@ type Organization struct {
 	BillingEmail      *string    `json:"billing_email,omitempty"`
 	Type              *string    `json:"type,omitempty"`
 	Plan              *Plan      `json:"plan,omitempty"`
-	NodeID            *string    `json:"node_id,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
