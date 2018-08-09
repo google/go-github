@@ -43,7 +43,7 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &ProjectOptions{Name: "Project Name", Body: "Project body."}
+	input := &ProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
 
 	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {

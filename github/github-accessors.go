@@ -6140,6 +6140,14 @@ func (p *Project) GetBody() string {
 	return *p.Body
 }
 
+// GetColumnsURL returns the ColumnsURL field if it's non-nil, zero value otherwise.
+func (p *Project) GetColumnsURL() string {
+	if p == nil || p.ColumnsURL == nil {
+		return ""
+	}
+	return *p.ColumnsURL
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *Project) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
@@ -6154,6 +6162,14 @@ func (p *Project) GetCreator() *User {
 		return nil
 	}
 	return p.Creator
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (p *Project) GetHTMLURL() string {
+	if p == nil || p.HTMLURL == nil {
+		return ""
+	}
+	return *p.HTMLURL
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -6194,6 +6210,14 @@ func (p *Project) GetOwnerURL() string {
 		return ""
 	}
 	return *p.OwnerURL
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (p *Project) GetState() string {
+	if p == nil || p.State == nil {
+		return ""
+	}
+	return *p.State
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -6380,6 +6404,14 @@ func (p *ProjectCardOptions) GetArchived() bool {
 	return *p.Archived
 }
 
+// GetCardsURL returns the CardsURL field if it's non-nil, zero value otherwise.
+func (p *ProjectColumn) GetCardsURL() string {
+	if p == nil || p.CardsURL == nil {
+		return ""
+	}
+	return *p.CardsURL
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectColumn) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
@@ -6426,6 +6458,14 @@ func (p *ProjectColumn) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *ProjectColumn) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -6546,6 +6586,46 @@ func (p *ProjectEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetOrganizationPermission returns the OrganizationPermission field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetOrganizationPermission() string {
+	if p == nil || p.OrganizationPermission == nil {
+		return ""
+	}
+	return *p.OrganizationPermission
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetPublic() bool {
+	if p == nil || p.Public == nil {
+		return false
+	}
+	return *p.Public
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetState() string {
+	if p == nil || p.State == nil {
+		return ""
+	}
+	return *p.State
 }
 
 // GetEnforceAdmins returns the EnforceAdmins field.
