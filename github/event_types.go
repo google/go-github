@@ -631,6 +631,7 @@ func (p PushEventCommit) String() string {
 // PushEventRepository represents the repo object in a PushEvent payload.
 type PushEventRepository struct {
 	ID              *int64              `json:"id,omitempty"`
+	NodeID          *string             `json:"node_id,omitempty"`
 	Name            *string             `json:"name,omitempty"`
 	FullName        *string             `json:"full_name,omitempty"`
 	Owner           *PushEventRepoOwner `json:"owner,omitempty"`

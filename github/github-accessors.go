@@ -7916,6 +7916,14 @@ func (p *PushEventRepository) GetName() string {
 	return *p.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetOpenIssuesCount returns the OpenIssuesCount field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetOpenIssuesCount() int {
 	if p == nil || p.OpenIssuesCount == nil {
