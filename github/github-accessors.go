@@ -8772,6 +8772,14 @@ func (r *Repository) GetNetworkCount() int {
 	return *r.NetworkCount
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Repository) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetNotificationsURL returns the NotificationsURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetNotificationsURL() string {
 	if r == nil || r.NotificationsURL == nil {
