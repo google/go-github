@@ -11156,6 +11156,14 @@ func (u *User) GetName() string {
 	return *u.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (u *User) GetNodeID() string {
+	if u == nil || u.NodeID == nil {
+		return ""
+	}
+	return *u.NodeID
+}
+
 // GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
 func (u *User) GetOrganizationsURL() string {
 	if u == nil || u.OrganizationsURL == nil {
