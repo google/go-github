@@ -656,7 +656,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					}]
 				},
 				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true
+				"require_code_owner_reviews":true,
+				"required_approving_review_count":2
 			},
 			"restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -685,7 +686,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					{Slug: String("tt"), ID: Int64(4)},
 				},
 			},
-			RequireCodeOwnerReviews: true,
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: 2,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
