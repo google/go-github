@@ -3612,6 +3612,14 @@ func (i *Invitation) GetTeamCount() int {
 	return *i.TeamCount
 }
 
+// GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
+func (i *Issue) GetActiveLockReason() string {
+	if i == nil || i.ActiveLockReason == nil {
+		return ""
+	}
+	return *i.ActiveLockReason
+}
+
 // GetAssignee returns the Assignee field.
 func (i *Issue) GetAssignee() *User {
 	if i == nil {
@@ -4010,6 +4018,14 @@ func (i *IssueEvent) GetLabel() *Label {
 		return nil
 	}
 	return i.Label
+}
+
+// GetLockReason returns the LockReason field if it's non-nil, zero value otherwise.
+func (i *IssueEvent) GetLockReason() string {
+	if i == nil || i.LockReason == nil {
+		return ""
+	}
+	return *i.LockReason
 }
 
 // GetMilestone returns the Milestone field.
@@ -6634,6 +6650,14 @@ func (p *PublicEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetActiveLockReason() string {
+	if p == nil || p.ActiveLockReason == nil {
+		return ""
+	}
+	return *p.ActiveLockReason
 }
 
 // GetAdditions returns the Additions field if it's non-nil, zero value otherwise.
