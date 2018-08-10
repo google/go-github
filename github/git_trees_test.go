@@ -22,7 +22,8 @@ func TestGitService_GetTree(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			  "sha": "s",
-			  "tree": [ { "type": "blob" } ]
+			  "tree": [ { "type": "blob" } ],
+			  "truncated": true
 			}`)
 	})
 
@@ -38,6 +39,7 @@ func TestGitService_GetTree(t *testing.T) {
 				Type: String("blob"),
 			},
 		},
+		Truncated: Bool(true),
 	}
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Tree.Get returned %+v, want %+v", *tree, want)
@@ -109,6 +111,7 @@ func TestGitService_CreateTree(t *testing.T) {
 				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 			},
 		},
+		nil,
 	}
 
 	if !reflect.DeepEqual(*tree, want) {
@@ -175,6 +178,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 				URL:  String("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
+		nil,
 	}
 
 	if !reflect.DeepEqual(*tree, want) {

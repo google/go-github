@@ -45,9 +45,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2015-03-09-licenses-api/
-	mediaTypeLicensesPreview = "application/vnd.github.drax-preview+json"
-
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
@@ -99,9 +96,6 @@ const (
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
 
-	// https://developer.github.com/v3/apps/marketplace/
-	mediaTypeMarketplacePreview = "application/vnd.github.valkyrie-preview+json"
-
 	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
 	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
 
@@ -122,6 +116,12 @@ const (
 
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeMultipleApprovingReviewsForProtectedBranches = "application/vnd.github.luke-cage-preview+json"
+
+	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
+	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"
+
+	// https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/
+	mediaTypePreReceiveHooksPreview = "application/vnd.github.eye-scream-preview"
 )
 
 // A Client manages communication with the GitHub API.
@@ -150,6 +150,7 @@ type Client struct {
 	Admin          *AdminService
 	Apps           *AppsService
 	Authorizations *AuthorizationsService
+	Checks         *ChecksService
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
@@ -241,6 +242,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Admin = (*AdminService)(&c.common)
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
+	c.Checks = (*ChecksService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
