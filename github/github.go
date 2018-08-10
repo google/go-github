@@ -114,7 +114,7 @@ const (
 	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
 	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
 
-  // https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
+	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
 	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"
 
 	// https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/
