@@ -111,6 +111,9 @@ const (
 	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
 	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
 
+	// https://developer.github.com/changes/2018-03-21-hovercard-api-preview/
+	mediaTypeHovercardPreview = "application/vnd.github.hagar-preview+json"
+
 	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
 	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
 
