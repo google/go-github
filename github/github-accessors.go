@@ -7957,7 +7957,7 @@ func (p *PushEventRepository) GetOrganization() string {
 }
 
 // GetOwner returns the Owner field.
-func (p *PushEventRepository) GetOwner() *PushEventRepoOwner {
+func (p *PushEventRepository) GetOwner() *User {
 	if p == nil {
 		return nil
 	}
