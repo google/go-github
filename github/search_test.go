@@ -111,23 +111,69 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 }
 
-func TestSearchService_Issues_withQualifiers(t *testing.T) {
+func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	const q = "gopher is:issue label:bug language:go pushed:>=2018-01-01 stars:>=200"
+
+	var requestURI string
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"q": "gopher is:issue label:bug language:go",
+			"q": q,
 		})
+		requestURI = r.RequestURI
 
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
 	})
 
 	opts := &SearchOptions{}
-	result, _, err := client.Search.Issues(context.Background(), "gopher is:issue label:bug language:go", opts)
+	result, _, err := client.Search.Issues(context.Background(), q, opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	if want := "/api-v3/search/issues?q=gopher+is:issue+label:bug+language:go+pushed:%3E=2018-01-01+stars:%3E=200"; requestURI != want {
+		t.Fatalf("URI encoding failed: got %v, want %v", requestURI, want)
+	}
+
+	want := &IssuesSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(true),
+		Issues:            []Issue{{Number: Int(1)}, {Number: Int(2)}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
+	}
+}
+
+func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	const q = "gopher is:issue label:bug language:go pushed:>=2018-01-01 stars:>=200"
+
+	var requestURI string
+	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"q":    q,
+			"sort": "forks",
+		})
+		requestURI = r.RequestURI
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks"}
+	result, _, err := client.Search.Issues(context.Background(), q, opts)
+	if err != nil {
+		t.Errorf("Search.Issues returned error: %v", err)
+	}
+
+	if want := "/api-v3/search/issues?q=gopher+is:issue+label:bug+language:go+pushed:%3E=2018-01-01+stars:%3E=200&sort=forks"; requestURI != want {
+		t.Fatalf("URI encoding failed: got %v, want %v", requestURI, want)
 	}
 
 	want := &IssuesSearchResult{

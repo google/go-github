@@ -147,6 +147,7 @@ func TestAPIMeta(t *testing.T) {
 		Git:      []string{"g"},
 		Pages:    []string{"p"},
 		Importer: []string{"i"},
+
 		VerifiablePasswordAuthentication: Bool(true),
 	}
 	if !reflect.DeepEqual(want, meta) {
