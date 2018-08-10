@@ -19,7 +19,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -41,7 +41,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -77,7 +77,7 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -113,7 +113,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -238,7 +238,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -294,7 +294,6 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 
 	mux.HandleFunc("/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeLicensesPreview)
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
@@ -724,6 +723,41 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checks, want) {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
+	}
+}
+
+func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &RequiredStatusChecksRequest{
+		Strict:   Bool(true),
+		Contexts: []string{"continuous-integration"},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RequiredStatusChecksRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		testHeader(t, r, "Accept", mediaTypeV3)
+		fmt.Fprintf(w, `{"strict":true,"contexts":["continuous-integration"]}`)
+	})
+
+	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+	}
+
+	want := &RequiredStatusChecks{
+		Strict:   true,
+		Contexts: []string{"continuous-integration"},
+	}
+	if !reflect.DeepEqual(statusChecks, want) {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
 	}
 }
 

@@ -56,15 +56,26 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		r := RepositoryContent{Encoding: tt.encoding, Content: tt.content}
 		got, err := r.GetContent()
 		if err != nil && !tt.wantErr {
-			t.Errorf("RepositoryContent(%q, %q) returned unexpected error: %v", tt.encoding, tt.content, err)
+			t.Errorf("RepositoryContent(%s, %s) returned unexpected error: %v",
+				stringOrNil(tt.encoding), stringOrNil(tt.content), err)
 		}
 		if err == nil && tt.wantErr {
-			t.Errorf("RepositoryContent(%q, %q) did not return unexpected error", tt.encoding, tt.content)
+			t.Errorf("RepositoryContent(%s, %s) did not return unexpected error",
+				stringOrNil(tt.encoding), stringOrNil(tt.content))
 		}
 		if want := tt.want; got != want {
 			t.Errorf("RepositoryContent.GetContent returned %+v, want %+v", got, want)
 		}
 	}
+}
+
+// stringOrNil converts a potentially null string pointer to string.
+// For non-nil input pointer, the returned string is enclosed in double-quotes.
+func stringOrNil(s *string) string {
+	if s == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("%q", *s)
 }
 
 func TestRepositoriesService_GetReadme(t *testing.T) {

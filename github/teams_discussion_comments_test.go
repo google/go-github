@@ -91,13 +91,13 @@ func TestTeamsService_ListComments(t *testing.T) {
 			Body:          String("comment"),
 			BodyHTML:      String("<p>comment</p>"),
 			BodyVersion:   String("version"),
-			CreatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			LastEditedAt:  nil,
 			DiscussionURL: String("https://api.github.com/teams/2/discussions/3"),
 			HTMLURL:       String("https://github.com/orgs/1/teams/2/discussions/3/comments/4"),
 			NodeID:        String("node"),
-			Number:        Int64(4),
-			UpdatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			Number:        Int(4),
+			UpdatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			URL:           String("https://api.github.com/teams/2/discussions/3/comments/4"),
 		},
 	}
@@ -121,7 +121,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 		t.Errorf("Teams.GetComment returned error: %v", err)
 	}
 
-	want := &DiscussionComment{Number: Int64(4)}
+	want := &DiscussionComment{Number: Int(4)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -151,7 +151,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		t.Errorf("Teams.CreateComment returned error: %v", err)
 	}
 
-	want := &DiscussionComment{Number: Int64(4)}
+	want := &DiscussionComment{Number: Int(4)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -181,7 +181,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 		t.Errorf("Teams.EditComment returned error: %v", err)
 	}
 
-	want := &DiscussionComment{Number: Int64(4)}
+	want := &DiscussionComment{Number: Int(4)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditComment returned %+v, want %+v", comment, want)
 	}

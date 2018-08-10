@@ -20,6 +20,7 @@ type UsersService service
 type User struct {
 	Login             *string    `json:"login,omitempty"`
 	ID                *int64     `json:"id,omitempty"`
+	NodeID            *string    `json:"node_id,omitempty"`
 	AvatarURL         *string    `json:"avatar_url,omitempty"`
 	HTMLURL           *string    `json:"html_url,omitempty"`
 	GravatarID        *string    `json:"gravatar_id,omitempty"`

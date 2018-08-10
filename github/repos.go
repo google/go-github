@@ -20,6 +20,7 @@ type RepositoriesService service
 // Repository represents a GitHub repository.
 type Repository struct {
 	ID               *int64           `json:"id,omitempty"`
+	NodeID           *string          `json:"node_id,omitempty"`
 	Owner            *User            `json:"owner,omitempty"`
 	Name             *string          `json:"name,omitempty"`
 	FullName         *string          `json:"full_name,omitempty"`
@@ -178,7 +179,7 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opt *Reposi
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*Repository
@@ -216,7 +217,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *Re
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*Repository
@@ -297,7 +298,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 	// TODO: remove custom Accept header when the license support fully launches
 	// https://developer.github.com/v3/licenses/#get-a-repositorys-license
-	acceptHeaders := []string{mediaTypeLicensesPreview, mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	repository := new(Repository)
@@ -340,10 +341,6 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when the license support fully launches
-	// https://developer.github.com/v3/licenses/#get-a-repositorys-license
-	req.Header.Set("Accept", mediaTypeLicensesPreview)
 
 	repository := new(Repository)
 	resp, err := s.client.Do(ctx, req, repository)
@@ -555,6 +552,12 @@ type RequiredStatusChecks struct {
 	// The list of status checks to require in order to merge into this
 	// branch. (Required; use []string{} instead of nil for empty list.)
 	Contexts []string `json:"contexts"`
+}
+
+// RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
+type RequiredStatusChecksRequest struct {
+	Strict   *bool    `json:"strict,omitempty"`
+	Contexts []string `json:"contexts,omitempty"`
 }
 
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
@@ -791,6 +794,25 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
+// UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#update-required-status-checks-of-protected-branch
+func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	req, err := s.client.NewRequest("PATCH", u, sreq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sc := new(RequiredStatusChecks)
+	resp, err := s.client.Do(ctx, req, sc)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sc, resp, nil
+}
+
 // License gets the contents of a repository's license if one is detected.
 //
 // GitHub API docs: https://developer.github.com/v3/licenses/#get-the-contents-of-a-repositorys-license
@@ -1018,7 +1040,7 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
 	NewOwner string  `json:"new_owner"`
-	TeamID   []int64 `json:"team_id,omitempty"`
+	TeamID   []int64 `json:"team_ids,omitempty"`
 }
 
 // Transfer transfers a repository from one account or organization to another.
