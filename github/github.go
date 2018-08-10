@@ -111,9 +111,6 @@ const (
 	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
 	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
 
-	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
-	mediaTypeMultipleApprovingReviewsForProtectedBranches = "application/vnd.github.luke-cage-preview+json"
-
 	// https://developer.github.com/changes/2018-03-21-hovercard-api-preview/
 	mediaTypeHovercardPreview = "application/vnd.github.hagar-preview+json"
 

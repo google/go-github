@@ -656,7 +656,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 					}]
 				},
 				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true
+				"require_code_owner_reviews":true,
+				"required_approving_review_count":2
 			},
 			"restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -686,7 +687,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 				},
 			},
 			RequireCodeOwnerReviews:      true,
-			RequiredApprovingReviewCount: Int(2),
+			RequiredApprovingReviewCount: 2,
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
