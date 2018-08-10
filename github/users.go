@@ -145,19 +145,21 @@ type HovercardOptions struct {
 	SubjectID string `url:"subject_id"`
 }
 
+
+// Hovercard represents hovercard information about a user.
+type Hovercard struct {
+	Contexts []*UserContext `json:"contexts,omitempty"`
+}
+
 // UserContext represents the contextual information about user.
 type UserContext struct {
 	Message *string `json:"message,omitempty"`
 	Octicon *string `json:"octicon,omitempty"`
 }
 
-// Hovercard holds the parsed response from GetHovercard.
-type Hovercard struct {
-	Contexts []*UserContext `json:"contexts,omitempty"`
-}
-
 // GetHovercard fetches contextual information about user. It requires authentication
 // via Basic Auth or via OAuth with the repo scope.
+//
 // GitHub API docs: https://developer.github.com/v3/users/#get-contextual-information-about-a-user
 func (s *UsersService) GetHovercard(ctx context.Context, user string, opt *HovercardOptions) (*Hovercard, *Response, error) {
 	u := fmt.Sprintf("users/%v/hovercard", user)
