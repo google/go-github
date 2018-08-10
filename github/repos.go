@@ -20,6 +20,7 @@ type RepositoriesService service
 // Repository represents a GitHub repository.
 type Repository struct {
 	ID               *int64           `json:"id,omitempty"`
+	NodeID           *string          `json:"node_id,omitempty"`
 	Owner            *User            `json:"owner,omitempty"`
 	Name             *string          `json:"name,omitempty"`
 	FullName         *string          `json:"full_name,omitempty"`
