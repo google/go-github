@@ -7452,6 +7452,14 @@ func (p *PullRequestReviewRequest) GetEvent() string {
 	return *p.Event
 }
 
+// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcement) GetRequiredApprovingReviewCount() int {
+	if p == nil || p.RequiredApprovingReviewCount == nil {
+		return 0
+	}
+	return *p.RequiredApprovingReviewCount
+}
+
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
 func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest() *DismissalRestrictionsRequest {
 	if p == nil {
