@@ -134,7 +134,8 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Contexts: []string{"continuous-integration"},
 		},
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcement{
-			DismissStaleReviews: true,
+			DismissStaleReviews:          true,
+			RequiredApprovingReviewCount: 0,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
 			URL:     github.String("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
