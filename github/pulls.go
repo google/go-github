@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -61,6 +62,10 @@ type PullRequest struct {
 
 	Head *PullRequestBranch `json:"head,omitempty"`
 	Base *PullRequestBranch `json:"base,omitempty"`
+
+	// ActiveLockReason is populated only when LockReason is provided while locking the pull request.
+	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
+	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
 }
 
 func (p PullRequest) String() string {
@@ -118,7 +123,8 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
+	acceptHeaders := []string{mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var pulls []*PullRequest
 	resp, err := s.client.Do(ctx, req, &pulls)
@@ -140,7 +146,8 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
+	acceptHeaders := []string{mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	pull := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, pull)
@@ -247,7 +254,8 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
+	acceptHeaders := []string{mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, p)
