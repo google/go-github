@@ -114,6 +114,9 @@ const (
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeMultipleApprovingReviewsForProtectedBranches = "application/vnd.github.luke-cage-preview+json"
 
+	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
+	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
+
 	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
 	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"
 
