@@ -23,7 +23,6 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/gists", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{
 			"since": since,
 		})
@@ -48,7 +47,6 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
@@ -79,7 +77,6 @@ func TestGistsService_ListAll(t *testing.T) {
 
 	mux.HandleFunc("/gists/public", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{
 			"since": since,
 		})
@@ -106,7 +103,6 @@ func TestGistsService_ListStarred(t *testing.T) {
 
 	mux.HandleFunc("/gists/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{
 			"since": since,
 		})
@@ -131,7 +127,6 @@ func TestGistsService_Get(t *testing.T) {
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id": "1"}`)
 	})
 
@@ -160,7 +155,6 @@ func TestGistsService_GetRevision(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id": "1"}`)
 	})
 
@@ -200,7 +194,6 @@ func TestGistsService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -253,7 +246,6 @@ func TestGistsService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -308,7 +300,6 @@ func TestGistsService_ListCommits(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, nil)
 		fmt.Fprint(w, `
 		  [
@@ -338,7 +329,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		URL:         String("https://api.github.com/gists/1/1"),
 		Version:     String("1"),
 		User:        &User{ID: Int64(1)},
-		CommittedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
+		CommittedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
 		ChangeStatus: &CommitStats{
 			Additions: Int(180),
 			Deletions: Int(0),
@@ -356,7 +347,6 @@ func TestGistsService_ListCommits_withOptions(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -485,7 +475,6 @@ func TestGistsService_Fork(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		fmt.Fprint(w, `{"id": "2"}`)
 	})
 
@@ -506,7 +495,6 @@ func TestGistsService_ListForks(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGraphQLNodeIDPreview)
 		testFormValues(t, r, nil)
 		fmt.Fprint(w, `
 		  [
@@ -529,8 +517,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		URL:       String("https://api.github.com/gists/1"),
 		ID:        String("1"),
 		User:      &User{ID: Int64(1)},
-		CreatedAt: &Timestamp{time.Date(2010, 1, 1, 00, 00, 00, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2013, 1, 1, 00, 00, 00, 0, time.UTC)}}}
+		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 00, 00, 00, 0, time.UTC)}}}
 
 	if !reflect.DeepEqual(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
