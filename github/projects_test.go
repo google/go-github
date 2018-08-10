@@ -21,10 +21,9 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 
 	input := &ProjectOptions{Name: "Project Name", Body: "Project body.", State: "open"}
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -50,10 +49,9 @@ func TestProjectsService_GetProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -87,7 +85,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
+	acceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
@@ -111,10 +109,9 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -135,10 +132,9 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -166,10 +162,9 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 
 	input := &ProjectColumnOptions{Name: "Column Name"}
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -233,10 +228,9 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{
 			"archived_state": "all",
 			"page":           "2"})
@@ -261,10 +255,9 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -288,10 +281,9 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 		ContentType: "Issue",
 	}
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -322,10 +314,9 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 		ContentType: "Issue",
 	}
 
-	acceptHeaders := []string{mediaTypeProjectsPreview, mediaTypeGraphQLNodeIDPreview}
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)

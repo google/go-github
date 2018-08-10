@@ -156,7 +156,7 @@ func (s *IssuesService) listIssues(ctx context.Context, u string, opt *IssueList
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLabelDescriptionSearchPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var issues []*Issue
@@ -224,7 +224,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLabelDescriptionSearchPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var issues []*Issue
@@ -247,7 +247,7 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLabelDescriptionSearchPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	issue := new(Issue)
@@ -270,8 +270,7 @@ func (s *IssuesService) Create(ctx context.Context, owner string, repo string, i
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
 
 	i := new(Issue)
 	resp, err := s.client.Do(ctx, req, i)
@@ -293,8 +292,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeGraphQLNodeIDPreview, mediaTypeLabelDescriptionSearchPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
 
 	i := new(Issue)
 	resp, err := s.client.Do(ctx, req, i)
