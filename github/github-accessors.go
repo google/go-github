@@ -164,6 +164,14 @@ func (a *App) GetName() string {
 	return *a.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (a *App) GetNodeID() string {
+	if a == nil || a.NodeID == nil {
+		return ""
+	}
+	return *a.NodeID
+}
+
 // GetOwner returns the Owner field.
 func (a *App) GetOwner() *User {
 	if a == nil {
@@ -7900,6 +7908,14 @@ func (p *PushEventRepository) GetName() string {
 	return *p.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetOpenIssuesCount returns the OpenIssuesCount field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetOpenIssuesCount() int {
 	if p == nil || p.OpenIssuesCount == nil {
@@ -8770,6 +8786,14 @@ func (r *Repository) GetNetworkCount() int {
 		return 0
 	}
 	return *r.NetworkCount
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *Repository) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetNotificationsURL returns the NotificationsURL field if it's non-nil, zero value otherwise.
@@ -11146,6 +11170,14 @@ func (u *User) GetName() string {
 		return ""
 	}
 	return *u.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (u *User) GetNodeID() string {
+	if u == nil || u.NodeID == nil {
+		return ""
+	}
+	return *u.NodeID
 }
 
 // GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
