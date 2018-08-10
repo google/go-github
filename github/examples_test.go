@@ -131,7 +131,7 @@ func ExamplePullRequestsService_Create() {
 	fmt.Printf("PR created: %s\n", pr.GetHTMLURL())
 }
 
-func ExampleOrganizationsService_ListTeams() {
+func ExampleTeamsService_ListTeams() {
 	// This example shows how to get a team ID corresponding to a given team name.
 
 	// Note that authentication is needed here as you are performing a lookup on
@@ -147,7 +147,7 @@ func ExampleOrganizationsService_ListTeams() {
 	opts := &github.ListOptions{}
 
 	for {
-		teams, resp, err := client.Organizations.ListTeams(ctx, "myOrganization", opts)
+		teams, resp, err := client.Teams.ListTeams(ctx, "myOrganization", opts)
 		if err != nil {
 			fmt.Println(err)
 			return
