@@ -2373,7 +2373,7 @@ func (d *DiscussionComment) GetNodeID() string {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (d *DiscussionComment) GetNumber() int64 {
+func (d *DiscussionComment) GetNumber() int {
 	if d == nil || d.Number == nil {
 		return 0
 	}
@@ -10413,7 +10413,7 @@ func (t *TeamDiscussion) GetBodyVersion() string {
 }
 
 // GetCommentsCount returns the CommentsCount field if it's non-nil, zero value otherwise.
-func (t *TeamDiscussion) GetCommentsCount() int64 {
+func (t *TeamDiscussion) GetCommentsCount() int {
 	if t == nil || t.CommentsCount == nil {
 		return 0
 	}
@@ -10461,7 +10461,7 @@ func (t *TeamDiscussion) GetNodeID() string {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (t *TeamDiscussion) GetNumber() int64 {
+func (t *TeamDiscussion) GetNumber() int {
 	if t == nil || t.Number == nil {
 		return 0
 	}
