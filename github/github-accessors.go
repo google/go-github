@@ -11348,6 +11348,22 @@ func (u *User) GetURL() string {
 	return *u.URL
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (u *UserContext) GetMessage() string {
+	if u == nil || u.Message == nil {
+		return ""
+	}
+	return *u.Message
+}
+
+// GetOcticon returns the Octicon field if it's non-nil, zero value otherwise.
+func (u *UserContext) GetOcticon() string {
+	if u == nil || u.Octicon == nil {
+		return ""
+	}
+	return *u.Octicon
+}
+
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (u *UserEmail) GetEmail() string {
 	if u == nil || u.Email == nil {
