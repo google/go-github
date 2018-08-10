@@ -146,7 +146,6 @@ type HovercardOptions struct {
 	SubjectID string `url:"subject_id"`
 }
 
-
 // Hovercard represents hovercard information about a user.
 type Hovercard struct {
 	Contexts []*UserContext `json:"contexts,omitempty"`
