@@ -111,6 +111,9 @@ const (
 	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
 	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
 
+	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
+	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
+
 	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
 	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"
 
