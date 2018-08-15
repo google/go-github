@@ -1860,6 +1860,14 @@ func (d *DiscussionComment) GetURL() string {
 	return *d.URL
 }
 
+// GetReactions returns the Reactions field.
+func (d *DiscussionComment) GetReactions() *Reactions {
+	if d == nil {
+		return nil
+	}
+	return d.Reactions
+}
+
 // GetTeams returns the Teams field if it's non-nil, zero value otherwise.
 func (d *DismissalRestrictionsRequest) GetTeams() []string {
 	if d == nil || d.Teams == nil {
@@ -9802,6 +9810,14 @@ func (t *TeamDiscussion) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetReactions returns the Reactions field.
+func (t *TeamDiscussion) GetReactions() *Reactions {
+	if t == nil {
+		return nil
+	}
+	return t.Reactions
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

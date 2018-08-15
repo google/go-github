@@ -193,6 +193,96 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 	}
 }
 
+func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
+	mux.HandleFunc("/teams/1/discussions/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+	})
+
+	got, _, err := client.Reactions.ListTeamDiscussionReactions(context.Background(), 1, 1, nil)
+	if err != nil {
+		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
+	}
+	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+		t.Errorf("ListTeamDiscussionReactions = %+v, want %+v", got, want)
+	}
+}
+
+func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
+	mux.HandleFunc("/teams/1/discussions/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+	})
+
+	got, _, err := client.Reactions.CreateTeamDiscussionReaction(context.Background(), 1, 1, "+1")
+	if err != nil {
+		t.Errorf("CreateTeamDiscussionReaction returned error: %v", err)
+	}
+	want := &Reaction{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("CreateTeamDiscussionReaction = %+v, want %+v", got, want)
+	}
+}
+
+func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
+	mux.HandleFunc("/teams/1/discussions/1/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+	})
+
+	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(context.Background(), 1, 1, 1, nil)
+	if err != nil {
+		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
+	}
+	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+		t.Errorf("ListTeamDiscussionCommentReactions = %+v, want %+v", got, want)
+	}
+}
+
+func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
+	mux.HandleFunc("/teams/1/discussions/1/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
+
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
+	})
+
+	got, _, err := client.Reactions.CreateTeamDiscussionCommentReaction(context.Background(), 1, 1, 1, "+1")
+	if err != nil {
+		t.Errorf("CreateTeamDiscussionCommentReaction returned error: %v", err)
+	}
+	want := &Reaction{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("CreateTeamDiscussionCommentReaction = %+v, want %+v", got, want)
+	}
+}
+
 func TestReactionsService_DeleteReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
