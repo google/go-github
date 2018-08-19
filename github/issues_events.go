@@ -44,6 +44,10 @@ type IssueEvent struct {
 	//     renamed
 	//       The Actor changed the issue title from Rename.From to Rename.To.
 	//
+	//     dismissed_review
+	//       The Actor dismissed a review.
+	//       DismissedReview holds the state, review_id, dismissal_message (if applicable) & dismissal_commit_id (if applicable)
+	//
 	//     mentioned
 	//       Someone unspecified @mentioned the Actor [sic] in an issue comment body.
 	//
@@ -68,13 +72,14 @@ type IssueEvent struct {
 	Issue     *Issue     `json:"issue,omitempty"`
 
 	// Only present on certain events; see above.
-	Assignee   *User      `json:"assignee,omitempty"`
-	Assigner   *User      `json:"assigner,omitempty"`
-	CommitID   *string    `json:"commit_id,omitempty"`
-	Milestone  *Milestone `json:"milestone,omitempty"`
-	Label      *Label     `json:"label,omitempty"`
-	Rename     *Rename    `json:"rename,omitempty"`
-	LockReason *string    `json:"lock_reason,omitempty"`
+	Assignee        *User            `json:"assignee,omitempty"`
+	Assigner        *User            `json:"assigner,omitempty"`
+	CommitID        *string          `json:"commit_id,omitempty"`
+	Milestone       *Milestone       `json:"milestone,omitempty"`
+	Label           *Label           `json:"label,omitempty"`
+	Rename          *Rename          `json:"rename,omitempty"`
+	LockReason      *string          `json:"lock_reason,omitempty"`
+	DismissedReview *DismissedReview `json:"dismissed_review,omitempty"`
 }
 
 // ListIssueEvents lists events for the specified issue.
@@ -154,5 +159,17 @@ type Rename struct {
 }
 
 func (r Rename) String() string {
+	return Stringify(r)
+}
+
+// DismissedReview contains details for 'dismissed_review' events
+type DismissedReview struct {
+	State             *string `json:"state,omitempty"`
+	ReviewID          *int    `json:"review_id,omitempty"`
+	DismissalMessage  *string `json:"dismissal_message,ommitempty"`
+	DismissalCommitID *string `json:"dismissal_commit_id,omitempty"`
+}
+
+func (r DismissedReview) String() string {
 	return Stringify(r)
 }
