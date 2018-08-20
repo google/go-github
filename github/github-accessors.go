@@ -1844,6 +1844,14 @@ func (d *DiscussionComment) GetNumber() int64 {
 	return *d.Number
 }
 
+// GetReactions returns the Reactions field.
+func (d *DiscussionComment) GetReactions() *Reactions {
+	if d == nil {
+		return nil
+	}
+	return d.Reactions
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (d *DiscussionComment) GetUpdatedAt() Timestamp {
 	if d == nil || d.UpdatedAt == nil {
@@ -1858,14 +1866,6 @@ func (d *DiscussionComment) GetURL() string {
 		return ""
 	}
 	return *d.URL
-}
-
-// GetReactions returns the Reactions field.
-func (d *DiscussionComment) GetReactions() *Reactions {
-	if d == nil {
-		return nil
-	}
-	return d.Reactions
 }
 
 // GetTeams returns the Teams field if it's non-nil, zero value otherwise.
@@ -9780,6 +9780,14 @@ func (t *TeamDiscussion) GetPrivate() bool {
 	return *t.Private
 }
 
+// GetReactions returns the Reactions field.
+func (t *TeamDiscussion) GetReactions() *Reactions {
+	if t == nil {
+		return nil
+	}
+	return t.Reactions
+}
+
 // GetTeamURL returns the TeamURL field if it's non-nil, zero value otherwise.
 func (t *TeamDiscussion) GetTeamURL() string {
 	if t == nil || t.TeamURL == nil {
@@ -9810,14 +9818,6 @@ func (t *TeamDiscussion) GetURL() string {
 		return ""
 	}
 	return *t.URL
-}
-
-// GetReactions returns the Reactions field.
-func (t *TeamDiscussion) GetReactions() *Reactions {
-	if t == nil {
-		return nil
-	}
-	return t.Reactions
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
