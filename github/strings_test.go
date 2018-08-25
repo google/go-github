@@ -54,11 +54,11 @@ func TestStringify(t *testing.T) {
 
 		// actual GitHub structs
 		{
-			Timestamp{time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)},
+			Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
-			&Timestamp{time.Date(2006, 01, 02, 15, 04, 05, 0, time.UTC)},
+			&Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{

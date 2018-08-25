@@ -95,18 +95,18 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 			Body:          String("test"),
 			BodyHTML:      String("<p>test</p>"),
 			BodyVersion:   String("version"),
-			CommentsCount: Int64(1),
+			CommentsCount: Int(1),
 			CommentsURL:   String("https://api.github.com/teams/2/discussions/3/comments"),
-			CreatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			LastEditedAt:  nil,
 			HTMLURL:       String("https://github.com/orgs/1/teams/2/discussions/3"),
 			NodeID:        String("node"),
-			Number:        Int64(3),
+			Number:        Int(3),
 			Pinned:        Bool(false),
 			Private:       Bool(false),
 			TeamURL:       String("https://api.github.com/teams/2"),
 			Title:         String("test"),
-			UpdatedAt:     &Timestamp{time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)},
+			UpdatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			URL:           String("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
@@ -130,7 +130,7 @@ func TestTeamsService_GetDiscussion(t *testing.T) {
 		t.Errorf("Teams.GetDiscussion returned error: %v", err)
 	}
 
-	want := &TeamDiscussion{Number: Int64(3)}
+	want := &TeamDiscussion{Number: Int(3)}
 	if !reflect.DeepEqual(discussion, want) {
 		t.Errorf("Teams.GetDiscussion returned %+v, want %+v", discussion, want)
 	}
@@ -160,7 +160,7 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 		t.Errorf("Teams.CreateDiscussion returned error: %v", err)
 	}
 
-	want := &TeamDiscussion{Number: Int64(3)}
+	want := &TeamDiscussion{Number: Int(3)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.CreateDiscussion returned %+v, want %+v", comment, want)
 	}
@@ -190,7 +190,7 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 		t.Errorf("Teams.EditDiscussion returned error: %v", err)
 	}
 
-	want := &TeamDiscussion{Number: Int64(3)}
+	want := &TeamDiscussion{Number: Int(3)}
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditDiscussion returned %+v, want %+v", comment, want)
 	}
