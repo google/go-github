@@ -271,8 +271,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
@@ -295,8 +294,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -322,8 +320,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
@@ -343,8 +340,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeGraphQLNodeIDPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
