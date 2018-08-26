@@ -12,7 +12,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/github"
+import "github.com/google/go-github/github/v17"
 ```
 
 Construct a new GitHub client, then use the various services on the client to
