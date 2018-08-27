@@ -4,7 +4,7 @@
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-go-github requires Go version 1.8 or greater.
+go-github requires Go version 1.9 or greater.
 
 If you're interested in using the [GraphQL API v4][], the recommended library is
 [shurcooL/githubv4][].
@@ -12,7 +12,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/github"
+import "github.com/google/go-github/github/v18"
 ```
 
 Construct a new GitHub client, then use the various services on the client to
