@@ -20,11 +20,12 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	defer teardown()
 
 	input := &ProjectOptions{
-		Name:  String("Project Name"),
-		Body:  String("Project body."),
-		State: String("open"),
+		Name:   String("Project Name"),
+		Body:   String("Project body."),
+		State:  String("open"),
+		Public: Bool(true),
+
 		OrganizationPermission: String("read"),
-		Public:                 Bool(true),
 	}
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
