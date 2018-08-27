@@ -467,7 +467,7 @@ func TestChecksService_RequestCheckSuite(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/check-suite-requests", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testBody(t, r, "{\"head_sha\":\"deadbeef\"}"+"\n")
+		testBody(t, r, `{"head_sha":"deadbeef"}`+"\n")
 	})
 	opt := RequestCheckSuiteOptions{
 		HeadSHA: "deadbeef",
