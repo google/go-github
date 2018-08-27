@@ -20,9 +20,9 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	defer teardown()
 
 	input := &ProjectOptions{
-		Name:  String("Project Name"),
-		Body:  String("Project body."),
-		State: String("open"),
+		Name:                   String("Project Name"),
+		Body:                   String("Project body."),
+		State:                  String("open"),
 		OrganizationPermission: String("read"),
 		Public:                 Bool(true),
 	}
