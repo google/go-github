@@ -411,12 +411,8 @@ type RequestCheckSuiteOptions struct {
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#request-check-suites
 func (s *ChecksService) RequestCheckSuite(ctx context.Context, owner, repo string, opt RequestCheckSuiteOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suite-requests", owner, repo)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, err
-	}
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, err
 	}
