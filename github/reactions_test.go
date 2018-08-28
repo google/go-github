@@ -188,7 +188,7 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/discussions/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/teams/1/discussions/2/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
@@ -196,7 +196,7 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListTeamDiscussionReactions(context.Background(), 1, 1, nil)
+	got, _, err := client.Reactions.ListTeamDiscussionReactions(context.Background(), 1, 2, nil)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
@@ -209,7 +209,7 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/discussions/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/teams/1/discussions/2/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
@@ -217,7 +217,7 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateTeamDiscussionReaction(context.Background(), 1, 1, "+1")
+	got, _, err := client.Reactions.CreateTeamDiscussionReaction(context.Background(), 1, 2, "+1")
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionReaction returned error: %v", err)
 	}
@@ -231,7 +231,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/discussions/1/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/teams/1/discussions/2/comments/3/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
@@ -239,7 +239,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(context.Background(), 1, 1, 1, nil)
+	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(context.Background(), 1, 2, 3, nil)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
 	}
@@ -252,7 +252,7 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/discussions/1/comments/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/teams/1/discussions/2/comments/3/reactions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
@@ -260,7 +260,7 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateTeamDiscussionCommentReaction(context.Background(), 1, 1, 1, "+1")
+	got, _, err := client.Reactions.CreateTeamDiscussionCommentReaction(context.Background(), 1, 2, 3, "+1")
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionCommentReaction returned error: %v", err)
 	}
