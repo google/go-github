@@ -204,8 +204,8 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
-	:= []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
-	if want !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListTeamDiscussionReactions = %+v, want %+v", got, want)
 	}
 }
