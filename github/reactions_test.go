@@ -28,7 +28,8 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -71,7 +72,8 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListIssueReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueReactions = %+v, want %+v", got, want)
 	}
 }
@@ -114,7 +116,8 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListIssueCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -157,7 +160,8 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListPullRequestCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListPullRequestCommentReactions = %+v, want %+v", got, want)
 	}
 }
@@ -200,7 +204,8 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	:= []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if want !reflect.DeepEqual(got, want) {
 		t.Errorf("ListTeamDiscussionReactions = %+v, want %+v", got, want)
 	}
 }
@@ -243,7 +248,8 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
 	}
-	if want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}; !reflect.DeepEqual(got, want) {
+	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListTeamDiscussionCommentReactions = %+v, want %+v", got, want)
 	}
 }
