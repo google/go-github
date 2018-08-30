@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/http/httputil"
 	"net/url"
 	"os"
 	"path"
@@ -826,6 +827,34 @@ func TestCheckResponse_noBody(t *testing.T) {
 	}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestCheckResponse_errorBody(t *testing.T) {
+	// Use httptest webserver to get response body
+	// in a standard EOF-based ReadCloser
+	apiHandler := http.NewServeMux()
+	apiHandler.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, `{"message":"m",
+			"errors": [{"resource": "r", "field": "f", "code": "c"}],
+			"block": {"reason": "dmca", "created_at": "2016-03-17T15:39:46Z"}}`)
+	})
+	s := httptest.NewServer(apiHandler)
+	defer s.Close()
+	res, err := http.Get(s.URL)
+	if err != nil {
+		t.Fatalf("Failed to get %q: %s", s.URL, err)
+	}
+
+	crErr := CheckResponse(res).(*ErrorResponse)
+	if crErr == nil {
+		t.Error("Expected error response.")
+	}
+
+	_, rErr := httputil.DumpResponse(res, true)
+	if rErr != nil {
+		t.Errorf("Failed to dump response: %s", rErr)
 	}
 }
 
