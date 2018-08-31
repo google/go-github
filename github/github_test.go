@@ -858,6 +858,29 @@ func TestCheckResponse_errorBody(t *testing.T) {
 	}
 }
 
+func TestGetRepository_errorBody(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/test/test", func(w http.ResponseWriter, req *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintln(w, `{
+  "message": "Not Found",
+  "documentation_url": "https://developer.github.com/v3/repos/#get"
+}`)
+	})
+
+	_, res, err := client.Repositories.Get(context.Background(), "test", "test")
+	if err == nil {
+		t.Fatal("Expected error, given nil")
+	}
+
+	_, rErr := httputil.DumpResponse(res.Response, true)
+	if rErr != nil {
+		t.Errorf("Failed to dump response: %s", rErr)
+	}
+}
+
 func TestParseBooleanResponse_true(t *testing.T) {
 	result, err := parseBoolResponse(nil)
 	if err != nil {
