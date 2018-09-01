@@ -400,3 +400,20 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 
 	return checkSuite, resp, nil
 }
+
+// ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#rerequest-check-suite
+func (s *ChecksService) ReRequestCheckSuite(ctx context.Context, owner, repo string, CheckSuiteID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/rerequest", owner, repo, CheckSuiteID)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	resp, err := s.client.Do(ctx, req, nil)
+	return resp, err
+}

@@ -459,3 +459,21 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 }
+
+func TestChecksService_ReRequestCheckSuite(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		w.WriteHeader(http.StatusCreated)
+	})
+	resp, err := client.Checks.ReRequestCheckSuite(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
+	}
+	if resp.StatusCode != 201 {
+		t.Errorf("Checks.ReRequestCheckSuite return %+v, want 201", resp.StatusCode)
+	}
+}
