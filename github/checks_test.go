@@ -459,24 +459,3 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 }
-
-func TestChecksService_RequestCheckSuite(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/repos/o/r/check-suite-requests", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testBody(t, r, `{"head_sha":"deadbeef"}`+"\n")
-	})
-	opt := RequestCheckSuiteOptions{
-		HeadSHA: "deadbeef",
-	}
-	resp, err := client.Checks.RequestCheckSuite(context.Background(), "o", "r", opt)
-	if err != nil {
-		t.Errorf("Checks.RequestCheckSuite return error: %v", err)
-	}
-	if resp.StatusCode != 200 {
-		t.Errorf("Checks.RequestCheckSuite return %+v, want 200", resp.StatusCode)
-	}
-}
