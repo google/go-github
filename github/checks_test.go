@@ -473,7 +473,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 	if err != nil {
 		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
 	}
-	if resp.StatusCode != 201 {
-		t.Errorf("Checks.ReRequestCheckSuite return %+v, want 201", resp.StatusCode)
+	if got, want := resp.StatusCode, http.StatusCreated; got != want {
+		t.Errorf("Checks.ReRequestCheckSuite = %v, want %v", got, want)
 	}
 }
