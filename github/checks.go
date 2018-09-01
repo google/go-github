@@ -47,7 +47,7 @@ type CheckRunOutput struct {
 
 // CheckRunAnnotation represents an annotation object for a CheckRun output.
 type CheckRunAnnotation struct {
-	FileName     *string `json:"filename,omitempty"`
+	Path         *string `json:"path,omitempty"`
 	BlobHRef     *string `json:"blob_href,omitempty"`
 	StartLine    *int    `json:"start_line,omitempty"`
 	EndLine      *int    `json:"end_line,omitempty"`

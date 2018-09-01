@@ -580,20 +580,20 @@ func (c *CheckRunAnnotation) GetEndLine() int {
 	return *c.EndLine
 }
 
-// GetFileName returns the FileName field if it's non-nil, zero value otherwise.
-func (c *CheckRunAnnotation) GetFileName() string {
-	if c == nil || c.FileName == nil {
-		return ""
-	}
-	return *c.FileName
-}
-
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetMessage() string {
 	if c == nil || c.Message == nil {
 		return ""
 	}
 	return *c.Message
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
 }
 
 // GetRawDetails returns the RawDetails field if it's non-nil, zero value otherwise.
