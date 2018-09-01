@@ -564,6 +564,14 @@ func (c *CheckRun) GetURL() string {
 	return *c.URL
 }
 
+// GetAnnotationLevel returns the AnnotationLevel field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetAnnotationLevel() string {
+	if c == nil || c.AnnotationLevel == nil {
+		return ""
+	}
+	return *c.AnnotationLevel
+}
+
 // GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetBlobHRef() string {
 	if c == nil || c.BlobHRef == nil {
@@ -618,14 +626,6 @@ func (c *CheckRunAnnotation) GetTitle() string {
 		return ""
 	}
 	return *c.Title
-}
-
-// GetWarningLevel returns the WarningLevel field if it's non-nil, zero value otherwise.
-func (c *CheckRunAnnotation) GetWarningLevel() string {
-	if c == nil || c.WarningLevel == nil {
-		return ""
-	}
-	return *c.WarningLevel
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

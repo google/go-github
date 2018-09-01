@@ -151,7 +151,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		                           "blob_href": "https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
 		                           "start_line": 2,
 		                           "end_line": 2,
-		                           "warning_level": "warning",
+		                           "annotation_level": "warning",
 		                           "message": "Check your spelling for 'banaas'.",
                                            "title": "Spell check",
 		                           "raw_details": "Do you mean 'bananas' or 'banana'?"}]`,
@@ -164,14 +164,14 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	}
 
 	want := []*CheckRunAnnotation{{
-		Path:         String("README.md"),
-		BlobHRef:     String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
-		StartLine:    Int(2),
-		EndLine:      Int(2),
-		WarningLevel: String("warning"),
-		Message:      String("Check your spelling for 'banaas'."),
-		RawDetails:   String("Do you mean 'bananas' or 'banana'?"),
-		Title:        String("Spell check"),
+		Path:            String("README.md"),
+		BlobHRef:        String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
+		StartLine:       Int(2),
+		EndLine:         Int(2),
+		AnnotationLevel: String("warning"),
+		Message:         String("Check your spelling for 'banaas'."),
+		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
+		Title:           String("Spell check"),
 	}}
 
 	if !reflect.DeepEqual(checkRunAnnotations, want) {
