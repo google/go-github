@@ -147,11 +147,11 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 			"page": "1",
 		})
 		fmt.Fprint(w, `[{
-		                           "filename": "README.md",
+		                           "path": "README.md",
 		                           "blob_href": "https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md",
 		                           "start_line": 2,
 		                           "end_line": 2,
-		                           "warning_level": "warning",
+		                           "annotation_level": "warning",
 		                           "message": "Check your spelling for 'banaas'.",
                                            "title": "Spell check",
 		                           "raw_details": "Do you mean 'bananas' or 'banana'?"}]`,
@@ -164,14 +164,14 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	}
 
 	want := []*CheckRunAnnotation{{
-		FileName:     String("README.md"),
-		BlobHRef:     String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
-		StartLine:    Int(2),
-		EndLine:      Int(2),
-		WarningLevel: String("warning"),
-		Message:      String("Check your spelling for 'banaas'."),
-		RawDetails:   String("Do you mean 'bananas' or 'banana'?"),
-		Title:        String("Spell check"),
+		Path:            String("README.md"),
+		BlobHRef:        String("https://github.com/octocat/Hello-World/blob/837db83be4137ca555d9a5598d0a1ea2987ecfee/README.md"),
+		StartLine:       Int(2),
+		EndLine:         Int(2),
+		AnnotationLevel: String("warning"),
+		Message:         String("Check your spelling for 'banaas'."),
+		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
+		Title:           String("Spell check"),
 	}}
 
 	if !reflect.DeepEqual(checkRunAnnotations, want) {
@@ -460,23 +460,20 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	}
 }
 
-func TestChecksService_RequestCheckSuite(t *testing.T) {
+func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/check-suite-requests", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testBody(t, r, `{"head_sha":"deadbeef"}`+"\n")
+		w.WriteHeader(http.StatusCreated)
 	})
-	opt := RequestCheckSuiteOptions{
-		HeadSHA: "deadbeef",
-	}
-	resp, err := client.Checks.RequestCheckSuite(context.Background(), "o", "r", opt)
+	resp, err := client.Checks.ReRequestCheckSuite(context.Background(), "o", "r", 1)
 	if err != nil {
-		t.Errorf("Checks.RequestCheckSuite return error: %v", err)
+		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
 	}
-	if resp.StatusCode != 200 {
-		t.Errorf("Checks.RequestCheckSuite return %+v, want 200", resp.StatusCode)
+	if got, want := resp.StatusCode, http.StatusCreated; got != want {
+		t.Errorf("Checks.ReRequestCheckSuite = %v, want %v", got, want)
 	}
 }

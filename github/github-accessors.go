@@ -564,6 +564,14 @@ func (c *CheckRun) GetURL() string {
 	return *c.URL
 }
 
+// GetAnnotationLevel returns the AnnotationLevel field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetAnnotationLevel() string {
+	if c == nil || c.AnnotationLevel == nil {
+		return ""
+	}
+	return *c.AnnotationLevel
+}
+
 // GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetBlobHRef() string {
 	if c == nil || c.BlobHRef == nil {
@@ -580,20 +588,20 @@ func (c *CheckRunAnnotation) GetEndLine() int {
 	return *c.EndLine
 }
 
-// GetFileName returns the FileName field if it's non-nil, zero value otherwise.
-func (c *CheckRunAnnotation) GetFileName() string {
-	if c == nil || c.FileName == nil {
-		return ""
-	}
-	return *c.FileName
-}
-
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetMessage() string {
 	if c == nil || c.Message == nil {
 		return ""
 	}
 	return *c.Message
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
 }
 
 // GetRawDetails returns the RawDetails field if it's non-nil, zero value otherwise.
@@ -618,14 +626,6 @@ func (c *CheckRunAnnotation) GetTitle() string {
 		return ""
 	}
 	return *c.Title
-}
-
-// GetWarningLevel returns the WarningLevel field if it's non-nil, zero value otherwise.
-func (c *CheckRunAnnotation) GetWarningLevel() string {
-	if c == nil || c.WarningLevel == nil {
-		return ""
-	}
-	return *c.WarningLevel
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
