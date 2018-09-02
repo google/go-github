@@ -47,14 +47,14 @@ type CheckRunOutput struct {
 
 // CheckRunAnnotation represents an annotation object for a CheckRun output.
 type CheckRunAnnotation struct {
-	FileName     *string `json:"filename,omitempty"`
-	BlobHRef     *string `json:"blob_href,omitempty"`
-	StartLine    *int    `json:"start_line,omitempty"`
-	EndLine      *int    `json:"end_line,omitempty"`
-	WarningLevel *string `json:"warning_level,omitempty"`
-	Message      *string `json:"message,omitempty"`
-	Title        *string `json:"title,omitempty"`
-	RawDetails   *string `json:"raw_details,omitempty"`
+	Path            *string `json:"path,omitempty"`
+	BlobHRef        *string `json:"blob_href,omitempty"`
+	StartLine       *int    `json:"start_line,omitempty"`
+	EndLine         *int    `json:"end_line,omitempty"`
+	AnnotationLevel *string `json:"annotation_level,omitempty"`
+	Message         *string `json:"message,omitempty"`
+	Title           *string `json:"title,omitempty"`
+	RawDetails      *string `json:"raw_details,omitempty"`
 }
 
 // CheckRunImage represents an image object for a CheckRun output.
@@ -401,18 +401,13 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 	return checkSuite, resp, nil
 }
 
-// RequestCheckSuiteOptions sets up the parameters for a request check suite endpoint.
-type RequestCheckSuiteOptions struct {
-	HeadSHA string `json:"head_sha"` // The sha of the head commit. (Required.)
-}
-
-// RequestCheckSuite triggers GitHub to create a new check suite, without pushing new code to a repository.
+// ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/suites/#request-check-suites
-func (s *ChecksService) RequestCheckSuite(ctx context.Context, owner, repo string, opt RequestCheckSuiteOptions) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/check-suite-requests", owner, repo)
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#rerequest-check-suite
+func (s *ChecksService) ReRequestCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/rerequest", owner, repo, checkSuiteID)
 
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
