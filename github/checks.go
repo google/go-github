@@ -19,6 +19,7 @@ type ChecksService service
 // CheckRun represents a GitHub check run on a repository associated with a GitHub app.
 type CheckRun struct {
 	ID           *int64          `json:"id,omitempty"`
+	NodeID       *string         `json:"node_id,omitempty"`
 	HeadSHA      *string         `json:"head_sha,omitempty"`
 	ExternalID   *string         `json:"external_id,omitempty"`
 	URL          *string         `json:"url,omitempty"`
@@ -67,6 +68,7 @@ type CheckRunImage struct {
 // CheckSuite represents a suite of check runs.
 type CheckSuite struct {
 	ID           *int64         `json:"id,omitempty"`
+	NodeID       *string        `json:"node_id,omitempty"`
 	HeadBranch   *string        `json:"head_branch,omitempty"`
 	HeadSHA      *string        `json:"head_sha,omitempty"`
 	URL          *string        `json:"url,omitempty"`
