@@ -532,6 +532,14 @@ func (c *CheckRun) GetName() string {
 	return *c.Name
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
 // GetOutput returns the Output field.
 func (c *CheckRun) GetOutput() *CheckRunOutput {
 	if c == nil {
@@ -794,6 +802,14 @@ func (c *CheckSuite) GetID() int64 {
 		return 0
 	}
 	return *c.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
 }
 
 // GetRepository returns the Repository field.
