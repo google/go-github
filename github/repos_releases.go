@@ -125,13 +125,37 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 	return release, resp, nil
 }
 
+// repositoryReleaseRequest is a subset of RepositoryRelease and
+// is used internally by CreateRelease and EditRelease to pass
+// only the known fields for these endpoints.
+//
+// See https://github.com/google/go-github/issues/992 for more
+// information.
+type repositoryReleaseRequest struct {
+	TagName         *string `json:"tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Body            *string `json:"body,omitempty"`
+	Draft           *bool   `json:"draft,omitempty"`
+	Prerelease      *bool   `json:"prerelease,omitempty"`
+}
+
 // CreateRelease adds a new release for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#create-a-release
 func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, release)
+	releaseReq := &repositoryReleaseRequest{
+		TagName:         release.TagName,
+		TargetCommitish: release.TargetCommitish,
+		Name:            release.Name,
+		Body:            release.Body,
+		Draft:           release.Draft,
+		Prerelease:      release.Prerelease,
+	}
+
+	req, err := s.client.NewRequest("POST", u, releaseReq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -150,7 +174,16 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
-	req, err := s.client.NewRequest("PATCH", u, release)
+	releaseReq := &repositoryReleaseRequest{
+		TagName:         release.TagName,
+		TargetCommitish: release.TargetCommitish,
+		Name:            release.Name,
+		Body:            release.Body,
+		Draft:           release.Draft,
+		Prerelease:      release.Prerelease,
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, releaseReq)
 	if err != nil {
 		return nil, nil, err
 	}
