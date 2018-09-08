@@ -7252,6 +7252,14 @@ func (p *PullRequestEvent) GetAction() string {
 	return *p.Action
 }
 
+// GetAssignee returns the Assignee field.
+func (p *PullRequestEvent) GetAssignee() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Assignee
+}
+
 // GetChanges returns the Changes field.
 func (p *PullRequestEvent) GetChanges() *EditChange {
 	if p == nil {
