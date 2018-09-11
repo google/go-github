@@ -19,24 +19,26 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	ID              *int64         `json:"id,omitempty"`
-	TagName         *string        `json:"tag_name,omitempty"`
-	TargetCommitish *string        `json:"target_commitish,omitempty"`
-	Name            *string        `json:"name,omitempty"`
-	Body            *string        `json:"body,omitempty"`
-	Draft           *bool          `json:"draft,omitempty"`
-	Prerelease      *bool          `json:"prerelease,omitempty"`
-	CreatedAt       *Timestamp     `json:"created_at,omitempty"`
-	PublishedAt     *Timestamp     `json:"published_at,omitempty"`
-	URL             *string        `json:"url,omitempty"`
-	HTMLURL         *string        `json:"html_url,omitempty"`
-	AssetsURL       *string        `json:"assets_url,omitempty"`
-	Assets          []ReleaseAsset `json:"assets,omitempty"`
-	UploadURL       *string        `json:"upload_url,omitempty"`
-	ZipballURL      *string        `json:"zipball_url,omitempty"`
-	TarballURL      *string        `json:"tarball_url,omitempty"`
-	Author          *User          `json:"author,omitempty"`
-	NodeID          *string        `json:"node_id,omitempty"`
+	TagName         *string `json:"tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Body            *string `json:"body,omitempty"`
+	Draft           *bool   `json:"draft,omitempty"`
+	Prerelease      *bool   `json:"prerelease,omitempty"`
+
+	// The following fields are not used in CreateRelease or EditRelease:
+	ID          *int64         `json:"id,omitempty"`
+	CreatedAt   *Timestamp     `json:"created_at,omitempty"`
+	PublishedAt *Timestamp     `json:"published_at,omitempty"`
+	URL         *string        `json:"url,omitempty"`
+	HTMLURL     *string        `json:"html_url,omitempty"`
+	AssetsURL   *string        `json:"assets_url,omitempty"`
+	Assets      []ReleaseAsset `json:"assets,omitempty"`
+	UploadURL   *string        `json:"upload_url,omitempty"`
+	ZipballURL  *string        `json:"zipball_url,omitempty"`
+	TarballURL  *string        `json:"tarball_url,omitempty"`
+	Author      *User          `json:"author,omitempty"`
+	NodeID      *string        `json:"node_id,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
@@ -142,6 +144,9 @@ type repositoryReleaseRequest struct {
 
 // CreateRelease adds a new release for a repository.
 //
+// Note that only a subset of the release fields are used.
+// See RepositoryRelease for more information.
+//
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#create-a-release
 func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
@@ -169,6 +174,9 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 }
 
 // EditRelease edits a repository release.
+//
+// Note that only a subset of the release fields are used.
+// See RepositoryRelease for more information.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#edit-a-release
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
