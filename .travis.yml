@@ -4,13 +4,13 @@ go:
   - "1.11.x"
   - "1.10.x"
   - "1.9.x"
-  - tip
+  - master
 env:
   global:
     - GO111MODULE=on
 matrix:
   allow_failures:
-    - go: tip
+    - go: master
   fast_finish: true
 env:
   secure: "IrnPmy/rkIP6Nrbqji+u7MCAibQlA6WvPLEllmDQ2yZP/uIe3wLwwYbTu9BOkgzoLA+f8PA6u3pp/RhY/rtaM4NzHAO2nVfGIv9UHUQ3NGq0DYS6rODjVKhq7vkhELoagRewyqFVN4rE0LnExkknRMgjQfRke6/DA7u7Xm8JyhY=" # COVERALLS_TOKEN
