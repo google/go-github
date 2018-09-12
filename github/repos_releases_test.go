@@ -103,15 +103,31 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &RepositoryRelease{Name: String("v1.0")}
+	input := &RepositoryRelease{
+		Name: String("v1.0"),
+		// Fields to be removed:
+		ID:          Int64(2),
+		CreatedAt:   &Timestamp{referenceTime},
+		PublishedAt: &Timestamp{referenceTime},
+		URL:         String("http://url/"),
+		HTMLURL:     String("http://htmlurl/"),
+		AssetsURL:   String("http://assetsurl/"),
+		Assets:      []ReleaseAsset{{ID: Int64(5)}},
+		UploadURL:   String("http://uploadurl/"),
+		ZipballURL:  String("http://zipballurl/"),
+		TarballURL:  String("http://tarballurl/"),
+		Author:      &User{Name: String("octocat")},
+		NodeID:      String("nodeid"),
+	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryRelease)
+		v := new(repositoryReleaseRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &repositoryReleaseRequest{Name: String("v1.0")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -131,15 +147,31 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &RepositoryRelease{Name: String("n")}
+	input := &RepositoryRelease{
+		Name: String("n"),
+		// Fields to be removed:
+		ID:          Int64(2),
+		CreatedAt:   &Timestamp{referenceTime},
+		PublishedAt: &Timestamp{referenceTime},
+		URL:         String("http://url/"),
+		HTMLURL:     String("http://htmlurl/"),
+		AssetsURL:   String("http://assetsurl/"),
+		Assets:      []ReleaseAsset{{ID: Int64(5)}},
+		UploadURL:   String("http://uploadurl/"),
+		ZipballURL:  String("http://zipballurl/"),
+		TarballURL:  String("http://tarballurl/"),
+		Author:      &User{Name: String("octocat")},
+		NodeID:      String("nodeid"),
+	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryRelease)
+		v := new(repositoryReleaseRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &repositoryReleaseRequest{Name: String("n")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"id":1}`)
 	})
