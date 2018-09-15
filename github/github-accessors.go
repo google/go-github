@@ -6180,6 +6180,78 @@ func (p *PreReceiveHook) GetName() string {
 	return *p.Name
 }
 
+// GetHref returns the Href field if it's non-nil, zero value otherwise.
+func (p *PRLink) GetHref() string {
+	if p == nil || p.Href == nil {
+		return ""
+	}
+	return *p.Href
+}
+
+// GetComments returns the Comments field.
+func (p *PRLinks) GetComments() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Comments
+}
+
+// GetCommits returns the Commits field.
+func (p *PRLinks) GetCommits() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Commits
+}
+
+// GetHTML returns the HTML field.
+func (p *PRLinks) GetHTML() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.HTML
+}
+
+// GetIssue returns the Issue field.
+func (p *PRLinks) GetIssue() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Issue
+}
+
+// GetReviewComment returns the ReviewComment field.
+func (p *PRLinks) GetReviewComment() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.ReviewComment
+}
+
+// GetReviewComments returns the ReviewComments field.
+func (p *PRLinks) GetReviewComments() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.ReviewComments
+}
+
+// GetSelf returns the Self field.
+func (p *PRLinks) GetSelf() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Self
+}
+
+// GetStatuses returns the Statuses field.
+func (p *PRLinks) GetStatuses() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Statuses
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (p *Project) GetBody() string {
 	if p == nil || p.Body == nil {
@@ -6906,6 +6978,14 @@ func (p *PullRequest) GetIssueURL() string {
 		return ""
 	}
 	return *p.IssueURL
+}
+
+// GetLinks returns the Links field.
+func (p *PullRequest) GetLinks() *PRLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
 }
 
 // GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
