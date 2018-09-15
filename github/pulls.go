@@ -82,16 +82,21 @@ type PullRequestBranch struct {
 	User  *User       `json:"user,omitempty"`
 }
 
-// PRLinks represents the "_links" object from the pull request payload.
+// PRLink represents a single link object from Github pull request _links
+type PRLink struct {
+	Href *string `json:"href,omitempty"`
+}
+
+// PRLinks represents the "_links" object in a Github pull request.
 type PRLinks struct {
-	URL               *string `json:"url,omitempty"`
-	HTMLURL           *string `json:"html_url,omitempty"`
-	IssueURL          *string `json:"issue_url,omitempty"`
-	CommentsURL       *string `json:"comments_url,omitempty"`
-	ReviewCommentsURL *string `json:"review_comments_url,omitempty"`
-	ReviewCommentURL  *string `json:"review_comment_url,omitempty"`
-	CommitsURL        *string `json:"commits_url,omitempty"`
-	StatusesURL       *string `json:"statuses_url,omitempty"`
+	Self           *PRLink `json:"self,omitempty"`
+	HTML           *PRLink `json:"html,omitempty"`
+	Issue          *PRLink `json:"issue,omitempty"`
+	Comments       *PRLink `json:"comments,omitempty"`
+	ReviewComments *PRLink `json:"review_comments,omitempty"`
+	ReviewComment  *PRLink `json:"review_comment,omitempty"`
+	Commits        *PRLink `json:"commits,omitempty"`
+	Statuses       *PRLink `json:"statuses,omitempty"`
 }
 
 // PullRequestListOptions specifies the optional parameters to the
