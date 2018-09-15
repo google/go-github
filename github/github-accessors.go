@@ -5732,6 +5732,14 @@ func (o *Organization) GetTotalPrivateRepos() int {
 	return *o.TotalPrivateRepos
 }
 
+// GetTwoFactorRequirementEnabled returns the TwoFactorRequirementEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetTwoFactorRequirementEnabled() bool {
+	if o == nil || o.TwoFactorRequirementEnabled == nil {
+		return false
+	}
+	return *o.TwoFactorRequirementEnabled
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (o *Organization) GetType() string {
 	if o == nil || o.Type == nil {
