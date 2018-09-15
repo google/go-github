@@ -6180,12 +6180,12 @@ func (p *PreReceiveHook) GetName() string {
 	return *p.Name
 }
 
-// GetHref returns the Href field if it's non-nil, zero value otherwise.
-func (p *PRLink) GetHref() string {
-	if p == nil || p.Href == nil {
+// GetHRef returns the HRef field if it's non-nil, zero value otherwise.
+func (p *PRLink) GetHRef() string {
+	if p == nil || p.HRef == nil {
 		return ""
 	}
-	return *p.Href
+	return *p.HRef
 }
 
 // GetComments returns the Comments field.

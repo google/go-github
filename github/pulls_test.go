@@ -164,21 +164,21 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 		Number: Int(1),
 		Links: &PRLinks{
 			Self: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
 			}, HTML: &PRLink{
-				Href: String("https://github.com/octocat/Hello-World/pull/1347"),
+				HRef: String("https://github.com/octocat/Hello-World/pull/1347"),
 			}, Issue: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
 			}, Comments: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
 			}, ReviewComments: &PRLink{
 				String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
 			}, ReviewComment: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 			}, Commits: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
 			}, Statuses: &PRLink{
-				Href: String("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 			},
 		},
 	}

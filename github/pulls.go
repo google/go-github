@@ -75,7 +75,7 @@ func (p PullRequest) String() string {
 
 // PRLink represents a single link object from Github pull request _links.
 type PRLink struct {
-	Href *string `json:"href,omitempty"`
+	HRef *string `json:"href,omitempty"`
 }
 
 // PRLinks represents the "_links" object in a Github pull request.
