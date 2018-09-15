@@ -92,6 +92,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &PullRequestReviewCommentEvent{}
 	case "PushEvent":
 		payload = &PushEvent{}
+	case "RepositoryDispatch":
+		payload = &RepositoryDispatchEvent{}
 	case "ReleaseEvent":
 		payload = &ReleaseEvent{}
 	case "RepositoryEvent":
