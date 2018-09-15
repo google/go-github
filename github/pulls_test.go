@@ -172,7 +172,7 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 			}, Comments: &PRLink{
 				HRef: String("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
 			}, ReviewComments: &PRLink{
-				String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
 			}, ReviewComment: &PRLink{
 				HRef: String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 			}, Commits: &PRLink{
