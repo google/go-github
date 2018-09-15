@@ -44,8 +44,6 @@ type Organization struct {
 	BillingEmail                    *string    `json:"billing_email,omitempty"`
 	Type                            *string    `json:"type,omitempty"`
 	Plan                            *Plan      `json:"plan,omitempty"`
-	// TwoFactorRequirementEnabled is only returned if you are an authenticated 
-	// organization owner with the admin:org scope.
 	TwoFactorRequirementEnabled     *bool      `json:"two_factor_requirement_enabled,omitempty"`
 
 	// API URLs
