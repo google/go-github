@@ -82,7 +82,7 @@ type PullRequestBranch struct {
 	User  *User       `json:"user,omitempty"`
 }
 
-// PRLink represents a single link object from Github pull request _links
+// PRLink represents a single link object from Github pull request _links.
 type PRLink struct {
 	Href *string `json:"href,omitempty"`
 }
