@@ -687,6 +687,20 @@ type ReleaseEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// RepositoryDispatchEvent is triggered when a message is dispatched via the API.
+// The Webhook event name is "repository_dispatch"
+//
+// GitHub API docs: TBD
+type RepositoryDispatchEvent struct {
+	// The action performed. Can be "created", "updated" or "re-requested".
+	Action *string `json:"action,omitempty"`
+	Branch *string `json:"branch,omitempty"`
+	SHA    *string `json:"sha,omitempty"`
+ 	// The following fields are only populated by Webhook events.
+	Repository *Repository `json:"repository,omitempty"`
+	Sender     *User       `json:"sender,omitempty"`
+}
+
 // RepositoryEvent is triggered when a repository is created.
 // The Webhook event name is "repository".
 //
