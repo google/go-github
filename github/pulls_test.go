@@ -164,6 +164,59 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_Get_links(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"number":1,
+			"_links":{
+				"self":{"href":"https://api.github.com/repos/octocat/Hello-World/pulls/1347"},
+				"html":{"href":"https://github.com/octocat/Hello-World/pull/1347"},
+				"issue":{"href":"https://api.github.com/repos/octocat/Hello-World/issues/1347"},
+				"comments":{"href":"https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"},
+				"review_comments":{"href":"https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"},
+				"review_comment":{"href":"https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"},
+				"commits":{"href":"https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"},
+				"statuses":{"href":"https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"}
+				}
+			}`)
+	})
+
+	pull, _, err := client.PullRequests.Get(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("PullRequests.Get returned error: %v", err)
+	}
+
+	want := &PullRequest{
+		Number: Int(1),
+		Links: &PRLinks{
+			Self: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+			}, HTML: &PRLink{
+				Href: String("https://github.com/octocat/Hello-World/pull/1347"),
+			}, Issue: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+			}, Comments: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
+			}, ReviewComments: &PRLink{
+				String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+			}, ReviewComment: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+			}, Commits: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
+			}, Statuses: &PRLink{
+				Href: String("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
+	}
+}
+
 func TestPullRequestsService_Get_urlFields(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

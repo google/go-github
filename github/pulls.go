@@ -60,8 +60,9 @@ type PullRequest struct {
 	NodeID              *string    `json:"node_id,omitempty"`
 	RequestedReviewers  []*User    `json:"requested_reviewers,omitempty"`
 
-	Head *PullRequestBranch `json:"head,omitempty"`
-	Base *PullRequestBranch `json:"base,omitempty"`
+	Links *PRLinks           `json:"_links,omitempty"`
+	Head  *PullRequestBranch `json:"head,omitempty"`
+	Base  *PullRequestBranch `json:"base,omitempty"`
 
 	// ActiveLockReason is populated only when LockReason is provided while locking the pull request.
 	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
@@ -79,6 +80,23 @@ type PullRequestBranch struct {
 	SHA   *string     `json:"sha,omitempty"`
 	Repo  *Repository `json:"repo,omitempty"`
 	User  *User       `json:"user,omitempty"`
+}
+
+// PRLink represents a single link object from Github pull request _links.
+type PRLink struct {
+	Href *string `json:"href,omitempty"`
+}
+
+// PRLinks represents the "_links" object in a Github pull request.
+type PRLinks struct {
+	Self           *PRLink `json:"self,omitempty"`
+	HTML           *PRLink `json:"html,omitempty"`
+	Issue          *PRLink `json:"issue,omitempty"`
+	Comments       *PRLink `json:"comments,omitempty"`
+	ReviewComments *PRLink `json:"review_comments,omitempty"`
+	ReviewComment  *PRLink `json:"review_comment,omitempty"`
+	Commits        *PRLink `json:"commits,omitempty"`
+	Statuses       *PRLink `json:"statuses,omitempty"`
 }
 
 // PullRequestListOptions specifies the optional parameters to the
