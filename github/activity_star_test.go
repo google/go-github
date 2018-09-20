@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -45,7 +46,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeStarringPreview)
+		testHeader(t, r, "Accept", strings.Join([]string{mediaTypeStarringPreview, mediaTypeTopicsPreview}, ", "))
 		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":1}}]`)
 	})
 
@@ -66,7 +67,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeStarringPreview)
+		testHeader(t, r, "Accept", strings.Join([]string{mediaTypeStarringPreview, mediaTypeTopicsPreview}, ", "))
 		testFormValues(t, r, values{
 			"sort":      "created",
 			"direction": "asc",
