@@ -3884,6 +3884,14 @@ func (i *IssueComment) GetIssueURL() string {
 	return *i.IssueURL
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *IssueComment) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
 // GetReactions returns the Reactions field.
 func (i *IssueComment) GetReactions() *Reactions {
 	if i == nil {
