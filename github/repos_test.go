@@ -172,15 +172,19 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Repository{Name: String("n")}
+	input := &Repository{
+		Name:     String("n"),
+		Archived: Bool(true), // not passed along.
+	}
 
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Repository)
+		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &createRepoRequest{Name: String("n")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
 		fmt.Fprint(w, `{"id":1}`)
@@ -201,15 +205,19 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Repository{Name: String("n")}
+	input := &Repository{
+		Name:     String("n"),
+		Archived: Bool(true), // not passed along.
+	}
 
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Repository)
+		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		want := &createRepoRequest{Name: String("n")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
 		fmt.Fprint(w, `{"id":1}`)
@@ -224,14 +232,6 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
-}
-
-func TestRepositoriesService_Create_invalidOrg(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Repositories.Create(context.Background(), "%", nil)
-	testURLParseError(t, err)
 }
 
 func TestRepositoriesService_Get(t *testing.T) {
