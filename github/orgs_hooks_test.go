@@ -45,6 +45,36 @@ func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestOrganizationsService_CreateHook(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &Hook{Name: String("t"), CreatedAt: &referenceTime}
+
+	mux.HandleFunc("/orgs/o/hooks", func(w http.ResponseWriter, r *http.Request) {
+		v := new(createHookRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		want := &createHookRequest{Name: String("t")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	hook, _, err := client.Organizations.CreateHook(context.Background(), "o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateHook returned error: %v", err)
+	}
+
+	want := &Hook{ID: Int64(1)}
+	if !reflect.DeepEqual(hook, want) {
+		t.Errorf("Organizations.CreateHook returned %+v, want %+v", hook, want)
+	}
+}
+
 func TestOrganizationsService_GetHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

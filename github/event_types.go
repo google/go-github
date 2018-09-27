@@ -519,6 +519,7 @@ type PullRequestEvent struct {
 	// the pull request was closed with unmerged commits. If the action is "closed"
 	// and the merged key is true, the pull request was merged.
 	Action      *string      `json:"action,omitempty"`
+	Assignee    *User        `json:"assignee,omitempty"`
 	Number      *int         `json:"number,omitempty"`
 	PullRequest *PullRequest `json:"pull_request,omitempty"`
 
@@ -532,6 +533,10 @@ type PullRequestEvent struct {
 	Sender            *User         `json:"sender,omitempty"`
 	Installation      *Installation `json:"installation,omitempty"`
 	Label             *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Organization *Organization `json:"organization,omitempty"`
 }
 
 // PullRequestReviewEvent is triggered when a review is submitted on a pull
