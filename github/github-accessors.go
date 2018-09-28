@@ -5556,6 +5556,14 @@ func (o *Organization) GetCreatedAt() time.Time {
 	return *o.CreatedAt
 }
 
+// GetDefaultRepoPermission returns the DefaultRepoPermission field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoPermission() string {
+	if o == nil || o.DefaultRepoPermission == nil {
+		return ""
+	}
+	return *o.DefaultRepoPermission
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (o *Organization) GetDescription() string {
 	if o == nil || o.Description == nil {
@@ -5650,6 +5658,14 @@ func (o *Organization) GetLogin() string {
 		return ""
 	}
 	return *o.Login
+}
+
+// GetMembersCanCreateRepos returns the MembersCanCreateRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreateRepos() bool {
+	if o == nil || o.MembersCanCreateRepos == nil {
+		return false
+	}
+	return *o.MembersCanCreateRepos
 }
 
 // GetMembersURL returns the MembersURL field if it's non-nil, zero value otherwise.
