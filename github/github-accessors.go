@@ -5564,6 +5564,14 @@ func (o *Organization) GetDefaultRepoPermission() string {
 	return *o.DefaultRepoPermission
 }
 
+// GetDefaultRepoSettings returns the DefaultRepoSettings field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoSettings() string {
+	if o == nil || o.DefaultRepoSettings == nil {
+		return ""
+	}
+	return *o.DefaultRepoSettings
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (o *Organization) GetDescription() string {
 	if o == nil || o.Description == nil {

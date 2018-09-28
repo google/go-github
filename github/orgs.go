@@ -48,7 +48,11 @@ type Organization struct {
 
 	// DefaultRepoPermission can be one of: "read", "write", "admin", or "none". (Default: "read").
 	// It is only used in OrganizationsService.Edit.
-	DefaultRepoPermission *string `json:"default_repository_settings,omitempty"`
+	DefaultRepoPermission *string `json:"default_repository_permission,omitempty"`
+	// DefaultRepoSettings can be one of: "read", "write", "admin", or "none". (Default: "read").
+	// It is only used in OrganizationsService.Get.
+	DefaultRepoSettings *string `json:"default_repository_settings,omitempty"`
+
 	// MembersCanCreateRepos default value is true and is only used in Organizations.Edit.
 	MembersCanCreateRepos *bool `json:"members_can_create_repositories,omitempty"`
 
