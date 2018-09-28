@@ -46,9 +46,13 @@ type Organization struct {
 	Plan                        *Plan      `json:"plan,omitempty"`
 	TwoFactorRequirementEnabled *bool      `json:"two_factor_requirement_enabled,omitempty"`
 
-	// DefaultRepoPermission can be one of: "read", "write", "admin", or "none". (Default: "read").
+	// DefaultRepoPermissionEdit can be one of: "read", "write", "admin", or "none". (Default: "read").
 	// It is only used in OrganizationsService.Edit.
-	DefaultRepoPermission *string `json:"default_repository_settings,omitempty"`
+	DefaultRepoPermissionEdit *string `json:"default_repository_permission,omitempty"`
+	// DefaultRepoPermissionGet can be one of: "read", "write", "admin", or "none". (Default: "read").
+	// It is only used in OrganizationsService.Get.
+	DefaultRepoPermissionGet *string `json:"default_repository_settings,omitempty"`
+
 	// MembersCanCreateRepos default value is true and is only used in Organizations.Edit.
 	MembersCanCreateRepos *bool `json:"members_can_create_repositories,omitempty"`
 
