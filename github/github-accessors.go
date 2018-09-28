@@ -5556,12 +5556,20 @@ func (o *Organization) GetCreatedAt() time.Time {
 	return *o.CreatedAt
 }
 
-// GetDefaultRepoPermission returns the DefaultRepoPermission field if it's non-nil, zero value otherwise.
-func (o *Organization) GetDefaultRepoPermission() string {
-	if o == nil || o.DefaultRepoPermission == nil {
+// GetDefaultRepoPermissionEdit returns the DefaultRepoPermissionEdit field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoPermissionEdit() string {
+	if o == nil || o.DefaultRepoPermissionEdit == nil {
 		return ""
 	}
-	return *o.DefaultRepoPermission
+	return *o.DefaultRepoPermissionEdit
+}
+
+// GetDefaultRepoPermissionGet returns the DefaultRepoPermissionGet field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoPermissionGet() string {
+	if o == nil || o.DefaultRepoPermissionGet == nil {
+		return ""
+	}
+	return *o.DefaultRepoPermissionGet
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
