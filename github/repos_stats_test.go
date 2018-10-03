@@ -209,3 +209,28 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 		t.Errorf("RepositoriesService.ListPunchCard returned %+v, want %+v", card, want)
 	}
 }
+
+func TestRepositoriesService_AcceptedError(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/stats/contributors", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// This response indicates the fork will happen asynchronously.
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	stats, _, err := client.Repositories.ListContributorsStats(context.Background(), "o", "r")
+	if err == nil {
+		t.Errorf("RepositoriesService.AcceptedError should have returned an error")
+	}
+
+	if _, ok := err.(*AcceptedError); !ok {
+		t.Errorf("RepositoriesService.AcceptedError returned an AcceptedError: %v", err)
+	}
+
+	if stats != nil {
+		t.Errorf("RepositoriesService.AcceptedError expected stats to be nil: %v", stats)
+	}
+}

@@ -3884,6 +3884,14 @@ func (i *IssueComment) GetIssueURL() string {
 	return *i.IssueURL
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *IssueComment) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
 // GetReactions returns the Reactions field.
 func (i *IssueComment) GetReactions() *Reactions {
 	if i == nil {
@@ -5548,6 +5556,22 @@ func (o *Organization) GetCreatedAt() time.Time {
 	return *o.CreatedAt
 }
 
+// GetDefaultRepoPermission returns the DefaultRepoPermission field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoPermission() string {
+	if o == nil || o.DefaultRepoPermission == nil {
+		return ""
+	}
+	return *o.DefaultRepoPermission
+}
+
+// GetDefaultRepoSettings returns the DefaultRepoSettings field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDefaultRepoSettings() string {
+	if o == nil || o.DefaultRepoSettings == nil {
+		return ""
+	}
+	return *o.DefaultRepoSettings
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (o *Organization) GetDescription() string {
 	if o == nil || o.Description == nil {
@@ -5644,6 +5668,14 @@ func (o *Organization) GetLogin() string {
 	return *o.Login
 }
 
+// GetMembersCanCreateRepos returns the MembersCanCreateRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreateRepos() bool {
+	if o == nil || o.MembersCanCreateRepos == nil {
+		return false
+	}
+	return *o.MembersCanCreateRepos
+}
+
 // GetMembersURL returns the MembersURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersURL() string {
 	if o == nil || o.MembersURL == nil {
@@ -5730,6 +5762,14 @@ func (o *Organization) GetTotalPrivateRepos() int {
 		return 0
 	}
 	return *o.TotalPrivateRepos
+}
+
+// GetTwoFactorRequirementEnabled returns the TwoFactorRequirementEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetTwoFactorRequirementEnabled() bool {
+	if o == nil || o.TwoFactorRequirementEnabled == nil {
+		return false
+	}
+	return *o.TwoFactorRequirementEnabled
 }
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
@@ -6178,6 +6218,78 @@ func (p *PreReceiveHook) GetName() string {
 		return ""
 	}
 	return *p.Name
+}
+
+// GetHRef returns the HRef field if it's non-nil, zero value otherwise.
+func (p *PRLink) GetHRef() string {
+	if p == nil || p.HRef == nil {
+		return ""
+	}
+	return *p.HRef
+}
+
+// GetComments returns the Comments field.
+func (p *PRLinks) GetComments() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Comments
+}
+
+// GetCommits returns the Commits field.
+func (p *PRLinks) GetCommits() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Commits
+}
+
+// GetHTML returns the HTML field.
+func (p *PRLinks) GetHTML() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.HTML
+}
+
+// GetIssue returns the Issue field.
+func (p *PRLinks) GetIssue() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Issue
+}
+
+// GetReviewComment returns the ReviewComment field.
+func (p *PRLinks) GetReviewComment() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.ReviewComment
+}
+
+// GetReviewComments returns the ReviewComments field.
+func (p *PRLinks) GetReviewComments() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.ReviewComments
+}
+
+// GetSelf returns the Self field.
+func (p *PRLinks) GetSelf() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Self
+}
+
+// GetStatuses returns the Statuses field.
+func (p *PRLinks) GetStatuses() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Statuses
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -6908,6 +7020,14 @@ func (p *PullRequest) GetIssueURL() string {
 	return *p.IssueURL
 }
 
+// GetLinks returns the Links field.
+func (p *PullRequest) GetLinks() *PRLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
+}
+
 // GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetMaintainerCanModify() bool {
 	if p == nil || p.MaintainerCanModify == nil {
@@ -7290,6 +7410,14 @@ func (p *PullRequestEvent) GetNumber() int {
 		return 0
 	}
 	return *p.Number
+}
+
+// GetOrganization returns the Organization field.
+func (p *PullRequestEvent) GetOrganization() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Organization
 }
 
 // GetPullRequest returns the PullRequest field.
