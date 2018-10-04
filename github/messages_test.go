@@ -291,6 +291,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "repository",
 		},
 		{
+			payload:     &RepositoryVulnerabilityAlertEvent{},
+			messageType: "repository_vulnerability_alert",
+		},
+		{
 			payload:     &StatusEvent{},
 			messageType: "status",
 		},
