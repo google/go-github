@@ -714,7 +714,7 @@ type RepositoryEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#repositoryvulnerabilityalertevent
 type RepositoryVulnerabilityAlertEvent struct {
-	// Action is the action that was performed. This can be: "create", "dismiss", "resolve"
+	// Action is the action that was performed. This can be: "create", "dismiss", "resolve".
 	Action *string `json:"action,omitempty"`
 
 	//The security alert of the vulnerable dependency.
