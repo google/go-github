@@ -168,7 +168,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"token":"t"}`)
