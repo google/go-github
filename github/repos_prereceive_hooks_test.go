@@ -79,7 +79,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &PreReceiveHook{Name: String("t")}
+	input := &PreReceiveHook{}
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PreReceiveHook)

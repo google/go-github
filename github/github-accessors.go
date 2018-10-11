@@ -3140,14 +3140,6 @@ func (h *Hook) GetID() int64 {
 	return *h.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (h *Hook) GetName() string {
-	if h == nil || h.Name == nil {
-		return ""
-	}
-	return *h.Name
-}
-
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (h *Hook) GetUpdatedAt() time.Time {
 	if h == nil || h.UpdatedAt == nil {
