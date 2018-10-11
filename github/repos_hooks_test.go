@@ -18,14 +18,14 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Hook{Name: String("t"), CreatedAt: &referenceTime}
+	input := &Hook{CreatedAt: &referenceTime}
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createHookRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		want := &createHookRequest{Name: String("t")}
+		want := &createHookRequest{}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -107,7 +107,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Hook{Name: String("t")}
+	input := &Hook{}
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Hook)
