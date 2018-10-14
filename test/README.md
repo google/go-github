@@ -54,7 +54,7 @@ This test sends real network traffic to the GitHub API and will exhaust the
 default unregistered rate limit (60 requests per hour) very quickly.
 Additionally, some data is only returned for authenticated API calls. Unlike
 the integration tests above, these tests only read data, so it's less
-imperitive that these be run using a dedicated test account (though you still
+imperative that these be run using a dedicated test account (though you still
 really should).
 
 Run the fields tool using:
