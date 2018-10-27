@@ -12,7 +12,8 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v18/github"
+import "github.com/google/go-github/v18/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/github" // with go modules disabled
 ```
 
 Construct a new GitHub client, then use the various services on the client to
