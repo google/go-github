@@ -10100,6 +10100,14 @@ func (s *ServiceHook) GetName() string {
 	return *s.Name
 }
 
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (s *SignaturesProtectedBranch) GetURL() string {
+	if s == nil || s.URL == nil {
+		return ""
+	}
+	return *s.URL
+}
+
 // GetPayload returns the Payload field if it's non-nil, zero value otherwise.
 func (s *SignatureVerification) GetPayload() string {
 	if s == nil || s.Payload == nil {
