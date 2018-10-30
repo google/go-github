@@ -2292,6 +2292,14 @@ func (d *DeploymentStatusRequest) GetDescription() string {
 	return *d.Description
 }
 
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatusRequest) GetEnvironment() string {
+	if d == nil || d.Environment == nil {
+		return ""
+	}
+	return *d.Environment
+}
+
 // GetEnvironmentURL returns the EnvironmentURL field if it's non-nil, zero value otherwise.
 func (d *DeploymentStatusRequest) GetEnvironmentURL() string {
 	if d == nil || d.EnvironmentURL == nil {
