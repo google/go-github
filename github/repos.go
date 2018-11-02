@@ -698,11 +698,11 @@ type DismissalRestrictionsRequest struct {
 	Teams *[]string `json:"teams,omitempty"`
 }
 
-// SignaturesProtectedBranch represents the protection status of a individual branch.
+// SignaturesProtectedBranch represents the protection status of an individual branch.
 type SignaturesProtectedBranch struct {
 	URL *string `json:"url,omitempty"`
 	// Commits pushed to matching branches must have verified signatures.
-	Enabled bool `json:"strict"`
+	Enabled bool `json:"strict,omitempty"`
 }
 
 // ListBranches lists branches for the specified repository.
@@ -857,7 +857,7 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
-// GetSignaturesProtectedBranch get required signatures of protected branch
+// GetSignaturesProtectedBranch gets required signatures of protected branch.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#get-required-signatures-of-protected-branch
 func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
@@ -879,11 +879,11 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 	return p, resp, nil
 }
 
-// AddSignatureProtectedBranch Require signed commits to a protected branch.
+// RequireSignaturesOnProtectedBranch makes signed commits required on a protected branch.
 // It requires admin access and branch protection to be enabled.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#add-required-signatures-of-protected-branch
-func (s *RepositoriesService) AddSignatureProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
+func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -902,10 +902,10 @@ func (s *RepositoriesService) AddSignatureProtectedBranch(ctx context.Context, o
 	return r, resp, err
 }
 
-// RemoveSignatureProtectedBranch removes required signed commits on a given branch.
+// OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-required-signatures-of-protected-branch
-func (s *RepositoriesService) RemoveSignatureProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
+func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, branch)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

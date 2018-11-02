@@ -1090,9 +1090,9 @@ func TestRepositoriesService_AddSignatureProtectedBranch(t *testing.T) {
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
 	})
 
-	signature, _, err := client.Repositories.AddSignatureProtectedBranch(context.Background(), "o", "r", "b")
+	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
 	if err != nil {
-		t.Errorf("Repositories.AddSignatureProtectedBranch returned error: %v", err)
+		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
 	}
 
 	want := &SignaturesProtectedBranch{
@@ -1100,7 +1100,7 @@ func TestRepositoriesService_AddSignatureProtectedBranch(t *testing.T) {
 		Enabled: false,
 	}
 	if !reflect.DeepEqual(signature, want) {
-		t.Errorf("Repositories.AddSignatureProtectedBranch returned %+v, want %+v", signature, want)
+		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
 	}
 }
 
@@ -1114,9 +1114,9 @@ func TestRepositoriesService_RemoveSignatureProtectedBranch(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.RemoveSignatureProtectedBranch(context.Background(), "o", "r", "b")
+	_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
 	if err != nil {
-		t.Errorf("Repositories.RemoveSignatureProtectedBranch returned error: %v", err)
+		t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
 	}
 }
 
