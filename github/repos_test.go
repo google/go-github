@@ -1072,7 +1072,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 
 	want := &SignaturesProtectedBranch{
-		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		URL: String("/repos/o/r/branches/b/protection/required_signatures"),
 	}
 
 	if !reflect.DeepEqual(signature, want) {
@@ -1096,7 +1096,7 @@ func TestRepositoriesService_AddSignatureProtectedBranch(t *testing.T) {
 	}
 
 	want := &SignaturesProtectedBranch{
-		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		URL: String("/repos/o/r/branches/b/protection/required_signatures"),
 	}
 
 	if !reflect.DeepEqual(signature, want) {
