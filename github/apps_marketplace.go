@@ -38,6 +38,7 @@ type MarketplacePlan struct {
 	UnitName            *string   `json:"unit_name,omitempty"`
 	Bullets             *[]string `json:"bullets,omitempty"`
 	State               *string   `json:"state,omitempty"`
+	HasFreeTrial        *bool     `json:"has_free_trial,omitempty"`
 }
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
