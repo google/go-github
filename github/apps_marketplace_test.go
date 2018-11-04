@@ -192,3 +192,53 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
 }
+
+func TestMarketplaceService_GetAccountMarketplaceListingAssociation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/marketplace_listing/accounts/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"marketplace_pending_change" : {"id": 77}}`)
+	})
+
+	client.Marketplace.Stubbed = false
+	account, _, err := client.Marketplace.GetAccountMarketplaceListingAssociation(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Marketplace.GetAccountMarketplaceListingAssociation returned error: %v", err)
+	}
+	want := &MarketplacePlanAccount{
+		MarketplacePendingChange: &MarketplacePendingChange{
+			ID: Int64(77),
+		},
+	}
+
+	if !reflect.DeepEqual(account, want) {
+		t.Errorf("Marketplace.GetAccountMarketplaceListingAssociation returned %+v, want %+v", account, want)
+	}
+}
+
+func TestMarketplaceService_Stubbed_GetAccountMarketplaceListingAssociation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/marketplace_listing/stubbed/accounts/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"marketplace_pending_change": {"id" : 77}}`)
+	})
+
+	client.Marketplace.Stubbed = true
+	account, _, err := client.Marketplace.GetAccountMarketplaceListingAssociation(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Marketplace.GetAccountMarketplaceListingAssociation returned error: %v", err)
+	}
+	want := &MarketplacePlanAccount{
+		MarketplacePendingChange: &MarketplacePendingChange{
+			ID: Int64(77),
+		},
+	}
+
+	if !reflect.DeepEqual(account, want) {
+		t.Errorf("Marketplace.GetAccountMarketplaceListingAssociation returned %+v, want %+v", account, want)
+	}
+}

@@ -37,6 +37,7 @@ type MarketplacePlan struct {
 	PriceModel          *string   `json:"price_model,omitempty"`
 	UnitName            *string   `json:"unit_name,omitempty"`
 	Bullets             *[]string `json:"bullets,omitempty"`
+	State               *string   `json:"state,omitempty"`
 }
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
@@ -46,17 +47,28 @@ type MarketplacePurchase struct {
 	UnitCount       *int                    `json:"unit_count,omitempty"`
 	Plan            *MarketplacePlan        `json:"plan,omitempty"`
 	Account         *MarketplacePlanAccount `json:"account,omitempty"`
+	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
+	FreeTrialEndsOn *string                 `json:"free_trial_ends_on,omitempty"`
+}
+
+// MarketplacePendingChange represents a pending change to a Github Apps Marketplace Plan
+type MarketplacePendingChange struct {
+	EffectiveDate *string          `json:"effective_date,omitempty"`
+	UnitCount     *int             `json:"unit_count,omitempty"`
+	ID            *int64           `json:"id,omitempty"`
+	Plan          *MarketplacePlan `json:"plan,omitempty"`
 }
 
 // MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan.
 type MarketplacePlanAccount struct {
-	URL                      *string              `json:"url,omitempty"`
-	Type                     *string              `json:"type,omitempty"`
-	ID                       *int64               `json:"id,omitempty"`
-	Login                    *string              `json:"login,omitempty"`
-	Email                    *string              `json:"email,omitempty"`
-	OrganizationBillingEmail *string              `json:"organization_billing_email,omitempty"`
-	MarketplacePurchase      *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
+	URL                      *string                   `json:"url,omitempty"`
+	Type                     *string                   `json:"type,omitempty"`
+	ID                       *int64                    `json:"id,omitempty"`
+	Login                    *string                   `json:"login,omitempty"`
+	Email                    *string                   `json:"email,omitempty"`
+	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
+	MarketplacePurchase      *MarketplacePurchase      `json:"marketplace_purchase,omitempty"`
+	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
 }
 
 // ListPlans lists all plans for your Marketplace listing.
@@ -157,6 +169,27 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	}
 
 	return purchases, resp, nil
+}
+
+// GetAccountMarketplaceListingAssociation returns the Github Marketplace plan actively subscribed to by the specified account.
+//
+// Github API docs: https://developer.github.com/v3/apps/marketplace/#check-if-a-github-account-is-associated-with-any-marketplace-listing
+func (s *MarketplaceService) GetAccountMarketplaceListingAssociation(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
+	uri := fmt.Sprintf("marketplace_listing/accounts/%v", accountID)
+	if s.Stubbed {
+		uri = fmt.Sprintf("marketplace_listing/stubbed/accounts/%v", accountID)
+	}
+	req, err := s.client.NewRequest("GET", uri, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	account := new(MarketplacePlanAccount)
+	resp, err := s.client.Do(ctx, req, account)
+	if err != nil {
+		return nil, resp, err
+	}
+	return account, resp, nil
 }
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {
