@@ -35,6 +35,8 @@ type MarketplacePlan struct {
 	MonthlyPriceInCents *int      `json:"monthly_price_in_cents,omitempty"`
 	YearlyPriceInCents  *int      `json:"yearly_price_in_cents,omitempty"`
 	PriceModel          *string   `json:"price_model,omitempty"`
+	HasFreeTrial        *bool     `json:"has_free_trial,omitempty"`
+	State               *string   `json:"state,omitempty"`
 	UnitName            *string   `json:"unit_name,omitempty"`
 	Bullets             *[]string `json:"bullets,omitempty"`
 }
@@ -44,19 +46,29 @@ type MarketplacePurchase struct {
 	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
 	NextBillingDate *string                 `json:"next_billing_date,omitempty"`
 	UnitCount       *int                    `json:"unit_count,omitempty"`
+	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
+	FreeTrialEndsOn *string                 `json:"free_trial_ends_on,omitempty"`
 	Plan            *MarketplacePlan        `json:"plan,omitempty"`
 	Account         *MarketplacePlanAccount `json:"account,omitempty"`
 }
 
 // MarketplacePlanAccount represents a GitHub Account (user or organization) on a specific plan.
 type MarketplacePlanAccount struct {
-	URL                      *string              `json:"url,omitempty"`
-	Type                     *string              `json:"type,omitempty"`
-	ID                       *int64               `json:"id,omitempty"`
-	Login                    *string              `json:"login,omitempty"`
-	Email                    *string              `json:"email,omitempty"`
-	OrganizationBillingEmail *string              `json:"organization_billing_email,omitempty"`
-	MarketplacePurchase      *MarketplacePurchase `json:"marketplace_purchase,omitempty"`
+	URL                      *string                   `json:"url,omitempty"`
+	Type                     *string                   `json:"type,omitempty"`
+	ID                       *int64                    `json:"id,omitempty"`
+	Login                    *string                   `json:"login,omitempty"`
+	Email                    *string                   `json:"email,omitempty"`
+	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
+	MarketplacePendingChange *MarketPlacePendingChange `json:"marketplace_pending_change,omitempty"`
+	MarketplacePurchase      *MarketplacePurchase      `json:"marketplace_purchase,omitempty"`
+}
+
+type MarketPlacePendingChange struct {
+	EffectiveDate *string          `json:"effective_date,omitempty"`
+	UnitCount     *int             `json:"unit_count,omitempty"`
+	ID            *int             `json:"id,omitempty"`
+	Plan          *MarketplacePlan `json:"plan,omitempty"`
 }
 
 // ListPlans lists all plans for your Marketplace listing.
