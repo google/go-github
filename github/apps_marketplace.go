@@ -167,29 +167,7 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 	if err != nil {
 		return nil, resp, err
 	}
-
 	return purchases, resp, nil
-}
-
-// GetAccountMarketplaceListingAssociation returns the Github Marketplace plan actively subscribed to by the specified account.
-//
-// Github API docs: https://developer.github.com/v3/apps/marketplace/#check-if-a-github-account-is-associated-with-any-marketplace-listing
-func (s *MarketplaceService) GetAccountMarketplaceListingAssociation(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
-	uri := fmt.Sprintf("marketplace_listing/accounts/%v", accountID)
-	if s.Stubbed {
-		uri = fmt.Sprintf("marketplace_listing/stubbed/accounts/%v", accountID)
-	}
-	req, err := s.client.NewRequest("GET", uri, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	account := new(MarketplacePlanAccount)
-	resp, err := s.client.Do(ctx, req, account)
-	if err != nil {
-		return nil, resp, err
-	}
-	return account, resp, nil
 }
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {
