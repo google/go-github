@@ -1066,13 +1066,13 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	})
 
 	signature, _, err := client.Repositories.GetSignaturesProtectedBranch(context.Background(), "o", "r", "b")
-
 	if err != nil {
 		t.Errorf("Repositories.GetSignaturesProtectedBranch returned error: %v", err)
 	}
 
 	want := &SignaturesProtectedBranch{
-		URL: String("/repos/o/r/branches/b/protection/required_signatures"),
+		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		Enabled: Bool(false),
 	}
 
 	if !reflect.DeepEqual(signature, want) {
@@ -1080,7 +1080,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_AddSignatureProtectedBranch(t *testing.T) {
+func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1095,8 +1095,9 @@ func TestRepositoriesService_AddSignatureProtectedBranch(t *testing.T) {
 		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
 	}
 
-	want := &SignaturesProtectedBranch{
-		URL: String("/repos/o/r/branches/b/protection/required_signatures"),
+	want := SignaturesProtectedBranch{
+		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		Enabled: Bool(false),
 	}
 
 	if !reflect.DeepEqual(signature, want) {
