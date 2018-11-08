@@ -1087,7 +1087,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
-		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
+		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
 	})
 
 	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
@@ -1095,9 +1095,9 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
 	}
 
-	want := SignaturesProtectedBranch{
+	want := &SignaturesProtectedBranch{
 		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
-		Enabled: Bool(false),
+		Enabled: Bool(true),
 	}
 
 	if !reflect.DeepEqual(signature, want) {

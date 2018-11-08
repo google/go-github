@@ -702,7 +702,7 @@ type DismissalRestrictionsRequest struct {
 type SignaturesProtectedBranch struct {
 	URL *string `json:"url,omitempty"`
 	// Commits pushed to matching branches must have verified signatures.
-	Enabled *bool `json:"strict,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // ListBranches lists branches for the specified repository.
