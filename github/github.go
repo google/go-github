@@ -524,16 +524,21 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		return response, err
 	}
 
-	if v != nil {
-		if w, ok := v.(io.Writer); ok {
-			io.Copy(w, resp.Body)
-		} else {
-			decErr := json.NewDecoder(resp.Body).Decode(v)
-			if decErr == io.EOF {
-				decErr = nil // ignore EOF errors caused by empty response body
-			}
-			if decErr != nil {
-				err = decErr
+	var bodyBytes []byte
+	bodyBytes, err = ioutil.ReadAll(resp.Body)
+	if err == io.EOF {
+		err = nil // ignore EOF errors caused by empty response body
+	} else if err == nil && len(bodyBytes) > 0 {
+		// Restore the io.ReadCloser to its original state
+		resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+		if v != nil {
+			if w, ok := v.(io.Writer); ok {
+				w.Write(bodyBytes)
+			} else {
+				decErr := json.Unmarshal(bodyBytes, v)
+				if decErr != nil {
+					err = decErr
+				}
 			}
 		}
 	}

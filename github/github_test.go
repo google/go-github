@@ -20,6 +20,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -755,6 +757,37 @@ func TestDo_noContent(t *testing.T) {
 	_, err := client.Do(context.Background(), req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
+func TestDo_rereadBody(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	type foo struct {
+		Bar string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"Bar":"baz"}`)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	respBody := new(foo)
+	resp, _ := client.Do(context.Background(), req, respBody)
+
+	want := &foo{"baz"}
+	if !reflect.DeepEqual(respBody, want) {
+		t.Errorf("Response body = %v, want %v", respBody, want)
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	assert.Nil(t, err)
+	err = json.Unmarshal(bytes, respBody)
+	assert.Nil(t, err)
+	if !reflect.DeepEqual(respBody, want) {
+		t.Errorf("Response body = %v, want %v", respBody, want)
 	}
 }
 
