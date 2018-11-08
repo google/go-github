@@ -1105,7 +1105,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_RemoveSignatureProtectedBranch(t *testing.T) {
+func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
