@@ -125,6 +125,9 @@ const (
 
 	// https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/
 	mediaTypePreReceiveHooksPreview = "application/vnd.github.eye-scream-preview"
+
+	// https://developer.github.com/changes/2018-02-22-protected-branches-required-signatures/
+	mediaTypeSignaturePreview = "application/vnd.github.zzzax-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

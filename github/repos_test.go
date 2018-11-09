@@ -1055,6 +1055,72 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
+	})
+
+	signature, _, err := client.Repositories.GetSignaturesProtectedBranch(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetSignaturesProtectedBranch returned error: %v", err)
+	}
+
+	want := &SignaturesProtectedBranch{
+		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		Enabled: Bool(false),
+	}
+
+	if !reflect.DeepEqual(signature, want) {
+		t.Errorf("Repositories.GetSignaturesProtectedBranch returned %+v, want %+v", signature, want)
+	}
+}
+
+func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
+	})
+
+	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
+	}
+
+	want := &SignaturesProtectedBranch{
+		URL:     String("/repos/o/r/branches/b/protection/required_signatures"),
+		Enabled: Bool(true),
+	}
+
+	if !reflect.DeepEqual(signature, want) {
+		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
+	}
+}
+
+func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
+	}
+}
+
 func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
 	req := PullRequestReviewsEnforcementRequest{}
 
