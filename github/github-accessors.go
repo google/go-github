@@ -1292,6 +1292,14 @@ func (c *CommitFile) GetPatch() string {
 	return *c.Patch
 }
 
+// GetPreviousFilename returns the PreviousFilename field if it's non-nil, zero value otherwise.
+func (c *CommitFile) GetPreviousFilename() string {
+	if c == nil || c.PreviousFilename == nil {
+		return ""
+	}
+	return *c.PreviousFilename
+}
+
 // GetRawURL returns the RawURL field if it's non-nil, zero value otherwise.
 func (c *CommitFile) GetRawURL() string {
 	if c == nil || c.RawURL == nil {
