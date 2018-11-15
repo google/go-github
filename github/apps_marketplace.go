@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // MarketplaceService handles communication with the marketplace related
@@ -54,7 +55,7 @@ type MarketplacePurchase struct {
 
 // MarketplacePendingChange represents a pending change to a Github Apps Marketplace Plan
 type MarketplacePendingChange struct {
-	EffectiveDate *string          `json:"effective_date,omitempty"`
+	EffectiveDate *time.Time       `json:"effective_date,omitempty"`
 	UnitCount     *int             `json:"unit_count,omitempty"`
 	ID            *int64           `json:"id,omitempty"`
 	Plan          *MarketplacePlan `json:"plan,omitempty"`
