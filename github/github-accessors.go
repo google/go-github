@@ -4644,6 +4644,38 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 	return *l.Total
 }
 
+// GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
+func (m *MarketplacePendingChange) GetEffectiveDate() time.Time {
+	if m == nil || m.EffectiveDate == nil {
+		return time.Time{}
+	}
+	return *m.EffectiveDate
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePendingChange) GetID() int64 {
+	if m == nil || m.ID == nil {
+		return 0
+	}
+	return *m.ID
+}
+
+// GetPlan returns the Plan field.
+func (m *MarketplacePendingChange) GetPlan() *MarketplacePlan {
+	if m == nil {
+		return nil
+	}
+	return m.Plan
+}
+
+// GetUnitCount returns the UnitCount field if it's non-nil, zero value otherwise.
+func (m *MarketplacePendingChange) GetUnitCount() int {
+	if m == nil || m.UnitCount == nil {
+		return 0
+	}
+	return *m.UnitCount
+}
+
 // GetAccountsURL returns the AccountsURL field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlan) GetAccountsURL() string {
 	if m == nil || m.AccountsURL == nil {
@@ -4666,6 +4698,14 @@ func (m *MarketplacePlan) GetDescription() string {
 		return ""
 	}
 	return *m.Description
+}
+
+// GetHasFreeTrial returns the HasFreeTrial field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetHasFreeTrial() bool {
+	if m == nil || m.HasFreeTrial == nil {
+		return false
+	}
+	return *m.HasFreeTrial
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -4698,6 +4738,14 @@ func (m *MarketplacePlan) GetPriceModel() string {
 		return ""
 	}
 	return *m.PriceModel
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetState() string {
+	if m == nil || m.State == nil {
+		return ""
+	}
+	return *m.State
 }
 
 // GetUnitName returns the UnitName field if it's non-nil, zero value otherwise.
@@ -4748,6 +4796,14 @@ func (m *MarketplacePlanAccount) GetLogin() string {
 	return *m.Login
 }
 
+// GetMarketplacePendingChange returns the MarketplacePendingChange field.
+func (m *MarketplacePlanAccount) GetMarketplacePendingChange() *MarketplacePendingChange {
+	if m == nil {
+		return nil
+	}
+	return m.MarketplacePendingChange
+}
+
 // GetMarketplacePurchase returns the MarketplacePurchase field.
 func (m *MarketplacePlanAccount) GetMarketplacePurchase() *MarketplacePurchase {
 	if m == nil {
@@ -4796,12 +4852,28 @@ func (m *MarketplacePurchase) GetBillingCycle() string {
 	return *m.BillingCycle
 }
 
+// GetFreeTrialEndsOn returns the FreeTrialEndsOn field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetFreeTrialEndsOn() string {
+	if m == nil || m.FreeTrialEndsOn == nil {
+		return ""
+	}
+	return *m.FreeTrialEndsOn
+}
+
 // GetNextBillingDate returns the NextBillingDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetNextBillingDate() string {
 	if m == nil || m.NextBillingDate == nil {
 		return ""
 	}
 	return *m.NextBillingDate
+}
+
+// GetOnFreeTrial returns the OnFreeTrial field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetOnFreeTrial() bool {
+	if m == nil || m.OnFreeTrial == nil {
+		return false
+	}
+	return *m.OnFreeTrial
 }
 
 // GetPlan returns the Plan field.
