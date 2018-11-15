@@ -53,7 +53,7 @@ type MarketplacePurchase struct {
 	FreeTrialEndsOn *string                 `json:"free_trial_ends_on,omitempty"`
 }
 
-// MarketplacePendingChange represents a pending change to a Github Apps Marketplace Plan
+// MarketplacePendingChange represents a pending change to a GitHub Apps Marketplace Plan.
 type MarketplacePendingChange struct {
 	EffectiveDate *time.Time       `json:"effective_date,omitempty"`
 	UnitCount     *int             `json:"unit_count,omitempty"`
