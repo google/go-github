@@ -366,7 +366,7 @@ type ProjectCardOptions struct {
 	// The ID (not Number) of the Issue to associate with this card.
 	// Note and ContentID are mutually exclusive.
 	ContentID int64 `json:"content_id,omitempty"`
-	// The type of content to associate with this card. Possible values are: "Issue".
+	// The type of content to associate with this card. Possible values are: "Issue" and "PullRequest".
 	ContentType string `json:"content_type,omitempty"`
 	// Use true to archive a project card.
 	// Specify false if you need to restore a previously archived project card.
