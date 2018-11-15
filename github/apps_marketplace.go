@@ -28,22 +28,24 @@ type MarketplaceService struct {
 
 // MarketplacePlan represents a GitHub Apps Marketplace Listing Plan.
 type MarketplacePlan struct {
-	URL                 *string   `json:"url,omitempty"`
-	AccountsURL         *string   `json:"accounts_url,omitempty"`
-	ID                  *int64    `json:"id,omitempty"`
-	Name                *string   `json:"name,omitempty"`
-	Description         *string   `json:"description,omitempty"`
-	MonthlyPriceInCents *int      `json:"monthly_price_in_cents,omitempty"`
-	YearlyPriceInCents  *int      `json:"yearly_price_in_cents,omitempty"`
-	PriceModel          *string   `json:"price_model,omitempty"`
-	UnitName            *string   `json:"unit_name,omitempty"`
-	Bullets             *[]string `json:"bullets,omitempty"`
-	State               *string   `json:"state,omitempty"`
-	HasFreeTrial        *bool     `json:"has_free_trial,omitempty"`
+	URL                 *string `json:"url,omitempty"`
+	AccountsURL         *string `json:"accounts_url,omitempty"`
+	ID                  *int64  `json:"id,omitempty"`
+	Name                *string `json:"name,omitempty"`
+	Description         *string `json:"description,omitempty"`
+	MonthlyPriceInCents *int    `json:"monthly_price_in_cents,omitempty"`
+	YearlyPriceInCents  *int    `json:"yearly_price_in_cents,omitempty"`
+	// The pricing model for this listing.  Can be one of "flat-rate", "per-unit", or "free".
+	PriceModel   *string   `json:"price_model,omitempty"`
+	UnitName     *string   `json:"unit_name,omitempty"`
+	Bullets      *[]string `json:"bullets,omitempty"`
+	State        *string   `json:"state,omitempty"`
+	HasFreeTrial *bool     `json:"has_free_trial,omitempty"`
 }
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
+	// BillingCycle can be one of the values "yearly", "monthly" or nil.
 	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
 	NextBillingDate *string                 `json:"next_billing_date,omitempty"`
 	UnitCount       *int                    `json:"unit_count,omitempty"`
