@@ -4645,9 +4645,9 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 }
 
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
-func (m *MarketplacePendingChange) GetEffectiveDate() time.Time {
+func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *m.EffectiveDate
 }
@@ -4853,17 +4853,17 @@ func (m *MarketplacePurchase) GetBillingCycle() string {
 }
 
 // GetFreeTrialEndsOn returns the FreeTrialEndsOn field if it's non-nil, zero value otherwise.
-func (m *MarketplacePurchase) GetFreeTrialEndsOn() string {
+func (m *MarketplacePurchase) GetFreeTrialEndsOn() Timestamp {
 	if m == nil || m.FreeTrialEndsOn == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *m.FreeTrialEndsOn
 }
 
 // GetNextBillingDate returns the NextBillingDate field if it's non-nil, zero value otherwise.
-func (m *MarketplacePurchase) GetNextBillingDate() string {
+func (m *MarketplacePurchase) GetNextBillingDate() Timestamp {
 	if m == nil || m.NextBillingDate == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *m.NextBillingDate
 }
