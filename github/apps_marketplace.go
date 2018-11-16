@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // MarketplaceService handles communication with the marketplace related
@@ -36,28 +35,29 @@ type MarketplacePlan struct {
 	MonthlyPriceInCents *int    `json:"monthly_price_in_cents,omitempty"`
 	YearlyPriceInCents  *int    `json:"yearly_price_in_cents,omitempty"`
 	// The pricing model for this listing.  Can be one of "flat-rate", "per-unit", or "free".
-	PriceModel   *string   `json:"price_model,omitempty"`
-	UnitName     *string   `json:"unit_name,omitempty"`
-	Bullets      *[]string `json:"bullets,omitempty"`
-	State        *string   `json:"state,omitempty"`
-	HasFreeTrial *bool     `json:"has_free_trial,omitempty"`
+	PriceModel *string   `json:"price_model,omitempty"`
+	UnitName   *string   `json:"unit_name,omitempty"`
+	Bullets    *[]string `json:"bullets,omitempty"`
+	// State can be one of the values "draft" or "published"
+	State        *string `json:"state,omitempty"`
+	HasFreeTrial *bool   `json:"has_free_trial,omitempty"`
 }
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
 	// BillingCycle can be one of the values "yearly", "monthly" or nil.
 	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
-	NextBillingDate *string                 `json:"next_billing_date,omitempty"`
+	NextBillingDate *Timestamp              `json:"next_billing_date,omitempty"`
 	UnitCount       *int                    `json:"unit_count,omitempty"`
 	Plan            *MarketplacePlan        `json:"plan,omitempty"`
 	Account         *MarketplacePlanAccount `json:"account,omitempty"`
 	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
-	FreeTrialEndsOn *string                 `json:"free_trial_ends_on,omitempty"`
+	FreeTrialEndsOn *Timestamp              `json:"free_trial_ends_on,omitempty"`
 }
 
 // MarketplacePendingChange represents a pending change to a GitHub Apps Marketplace Plan.
 type MarketplacePendingChange struct {
-	EffectiveDate *time.Time       `json:"effective_date,omitempty"`
+	EffectiveDate *Timestamp       `json:"effective_date,omitempty"`
 	UnitCount     *int             `json:"unit_count,omitempty"`
 	ID            *int64           `json:"id,omitempty"`
 	Plan          *MarketplacePlan `json:"plan,omitempty"`
