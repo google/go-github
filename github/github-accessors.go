@@ -11596,6 +11596,14 @@ func (u *User) GetTotalPrivateRepos() int {
 	return *u.TotalPrivateRepos
 }
 
+// GetTwoFactorAuthentication returns the TwoFactorAuthentication field if it's non-nil, zero value otherwise.
+func (u *User) GetTwoFactorAuthentication() bool {
+	if u == nil || u.TwoFactorAuthentication == nil {
+		return false
+	}
+	return *u.TwoFactorAuthentication
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (u *User) GetType() string {
 	if u == nil || u.Type == nil {
