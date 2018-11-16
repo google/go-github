@@ -38,7 +38,7 @@ type MarketplacePlan struct {
 	PriceModel *string   `json:"price_model,omitempty"`
 	UnitName   *string   `json:"unit_name,omitempty"`
 	Bullets    *[]string `json:"bullets,omitempty"`
-	// State can be one of the values "draft" or "published"
+	// State can be one of the values "draft" or "published".
 	State        *string `json:"state,omitempty"`
 	HasFreeTrial *bool   `json:"has_free_trial,omitempty"`
 }
