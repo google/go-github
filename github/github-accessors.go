@@ -188,6 +188,22 @@ func (a *App) GetUpdatedAt() time.Time {
 	return *a.UpdatedAt
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (a *AppAuthorizationEvent) GetAction() string {
+	if a == nil || a.Action == nil {
+		return ""
+	}
+	return *a.Action
+}
+
+// GetSender returns the Sender field.
+func (a *AppAuthorizationEvent) GetSender() *User {
+	if a == nil {
+		return nil
+	}
+	return a.Sender
+}
+
 // GetApp returns the App field.
 func (a *Authorization) GetApp() *AuthorizationApp {
 	if a == nil {

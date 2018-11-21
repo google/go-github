@@ -810,3 +810,14 @@ type WatchEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// AppAuthorizationEvent is triggered when a user's authorization for a
+// GitHub Application is revoked.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
+type AppAuthorizationEvent struct {
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Sender *User `json:"sender,omitempty"`
+}
