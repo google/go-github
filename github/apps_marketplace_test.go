@@ -111,7 +111,7 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 
 	mux.HandleFunc("/marketplace_listing/accounts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{"id":1}]`)
+		fmt.Fprint(w, `[{"id":1, "marketplace_pending_change": {"id": 77}}]`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -121,7 +121,7 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
+	want := []*MarketplacePlanAccount{{ID: Int64(1), MarketplacePendingChange: &MarketplacePendingChange{ID: Int64(77)}}}
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", accounts, want)
 	}
