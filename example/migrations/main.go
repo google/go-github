@@ -11,7 +11,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-github/v18/github"
+
+	"github.com/google/go-github/v19/github"
 	"golang.org/x/oauth2"
 )
 

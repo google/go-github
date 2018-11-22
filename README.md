@@ -12,7 +12,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v18/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v19/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -225,7 +225,7 @@ You can run integration tests from the `test` directory. See the integration tes
 This library is being initially developed for an internal application at
 Google, so API methods will likely be implemented in the order that they are
 needed by that application. You can track the status of implementation in
-[this Google spreadsheet][roadmap]. 
+[this Google spreadsheet][roadmap].
 
 [roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
 
