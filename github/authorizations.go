@@ -436,7 +436,7 @@ func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, usernam
 
 // RevokedAppAuthorizationEvent checks if authorization for an application has been revoked.
 //
-// Note if your GitHub App continues to use a revoked access token,
+// NOTE: if your GitHub App continues to use a revoked access token,
 // it will receive the 401 Bad Credentials error.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
