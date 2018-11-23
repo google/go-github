@@ -357,3 +357,20 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 		t.Errorf("Authorizations.DeleteImpersonation returned error: %+v", err)
 	}
 }
+
+func TestActivityService_RevokedAppAuthorizationEvent(t *testing.T) {
+	raw := []byte(`{"type": "RevokedAppAuthorizationEvent","payload":{"action": "revoked"}}`)
+	var event *Event
+	if err := json.Unmarshal(raw, &event); err != nil {
+		t.Fatalf("Unmarshal Event returned error: %v", err)
+	}
+
+	want := map[string]interface{}{"action": "revoked"}
+	got, err := event.ParsePayload()
+	if err != nil {
+		t.Fatalf("ParsePayload returned unexpected error: %v", err)
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Event.ParsePayload returned %+v, want %+v", got, want)
+	}
+}
