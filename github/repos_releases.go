@@ -39,6 +39,7 @@ type RepositoryRelease struct {
 	TarballURL  *string        `json:"tarball_url,omitempty"`
 	Author      *User          `json:"author,omitempty"`
 	NodeID      *string        `json:"node_id,omitempty"`
+	BodyHTML    *string        `json:"body_html,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
@@ -115,6 +116,7 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 
 func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) (*RepositoryRelease, *Response, error) {
 	req, err := s.client.NewRequest("GET", url, nil)
+
 	if err != nil {
 		return nil, nil, err
 	}

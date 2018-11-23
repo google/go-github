@@ -36,7 +36,7 @@ const (
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
 
-	mediaTypeV3                = "application/vnd.github.v3+json"
+	mediaTypeV3                = "application/vnd.github.full+json"
 	defaultMediaType           = "application/octet-stream"
 	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
 	mediaTypeV3Diff            = "application/vnd.github.v3.diff"
