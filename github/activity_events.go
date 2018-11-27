@@ -30,8 +30,13 @@ func (e Event) String() string {
 
 // ParsePayload parses the event payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
+//
+// Keep the event names of this switch statement in lexicographical
+// sorted order.
 func (e *Event) ParsePayload() (payload interface{}, err error) {
 	switch *e.Type {
+	case "AppAuthorizationEvent":
+		payload = &AppAuthorizationEvent{}
 	case "CheckRunEvent":
 		payload = &CheckRunEvent{}
 	case "CheckSuiteEvent":
@@ -48,8 +53,6 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &DeploymentStatusEvent{}
 	case "ForkEvent":
 		payload = &ForkEvent{}
-	case "AppAuthorizationEvent":
-		payload = &AppAuthorizationEvent{}
 	case "GollumEvent":
 		payload = &GollumEvent{}
 	case "InstallationEvent":
