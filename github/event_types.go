@@ -7,18 +7,6 @@
 
 package github
 
-// AppAuthorizationEvent is triggered when a user's authorization for a
-// GitHub Application is revoked.
-//
-// GitHub API docs: https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
-type AppAuthorizationEvent struct {
-	// The action performed. Can be "revoked".
-	Action *string `json:"action,omitempty"`
-
-	// The following fields are only populated by Webhook events.
-	Sender *User `json:"sender,omitempty"`
-}
-
 // CheckRunEvent is triggered when a check run is "created", "updated", or "re-requested".
 // The Webhook event name is "check_run".
 //
@@ -149,6 +137,18 @@ type ForkEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// GitHubAppAuthorizationEvent is triggered when a user's authorization for a
+// GitHub Application is revoked.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
+type GitHubAppAuthorizationEvent struct {
+	// The action performed. Can be "revoked".
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Sender *User `json:"sender,omitempty"`
 }
 
 // Page represents a single Wiki page.

@@ -188,22 +188,6 @@ func (a *App) GetUpdatedAt() time.Time {
 	return *a.UpdatedAt
 }
 
-// GetAction returns the Action field if it's non-nil, zero value otherwise.
-func (a *AppAuthorizationEvent) GetAction() string {
-	if a == nil || a.Action == nil {
-		return ""
-	}
-	return *a.Action
-}
-
-// GetSender returns the Sender field.
-func (a *AppAuthorizationEvent) GetSender() *User {
-	if a == nil {
-		return nil
-	}
-	return a.Sender
-}
-
 // GetApp returns the App field.
 func (a *Authorization) GetApp() *AuthorizationApp {
 	if a == nil {
@@ -2946,6 +2930,22 @@ func (g *GistStats) GetTotalGists() int {
 		return 0
 	}
 	return *g.TotalGists
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (g *GitHubAppAuthorizationEvent) GetAction() string {
+	if g == nil || g.Action == nil {
+		return ""
+	}
+	return *g.Action
+}
+
+// GetSender returns the Sender field.
+func (g *GitHubAppAuthorizationEvent) GetSender() *User {
+	if g == nil {
+		return nil
+	}
+	return g.Sender
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
