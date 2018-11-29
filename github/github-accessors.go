@@ -2932,6 +2932,22 @@ func (g *GistStats) GetTotalGists() int {
 	return *g.TotalGists
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (g *GitHubAppAuthorizationEvent) GetAction() string {
+	if g == nil || g.Action == nil {
+		return ""
+	}
+	return *g.Action
+}
+
+// GetSender returns the Sender field.
+func (g *GitHubAppAuthorizationEvent) GetSender() *User {
+	if g == nil {
+		return nil
+	}
+	return g.Sender
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (g *Gitignore) GetName() string {
 	if g == nil || g.Name == nil {
