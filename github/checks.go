@@ -150,7 +150,7 @@ type CreateCheckRunOptions struct {
 type CheckRunAction struct {
 	Label       string `json:"label"`       // The text to be displayed on a button in the web UI. The maximum size is 20 characters. (Required.)
 	Description string `json:"description"` // A short explanation of what this action would do. The maximum size is 40 characters. (Required.)
-	Identifier  string `json:"identifier,omitempty"`  // A reference for the action on the integrator's system. The maximum size is 20 characters. (Required.)
+	Identifier  string `json:"identifier"`  // A reference for the action on the integrator's system. The maximum size is 20 characters. (Required.)
 }
 
 // CreateCheckRun creates a check run for repository.
