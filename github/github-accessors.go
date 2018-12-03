@@ -676,6 +676,14 @@ func (c *CheckRunEvent) GetRepo() *Repository {
 	return c.Repo
 }
 
+// GetRequestedAction returns the RequestedAction field.
+func (c *CheckRunEvent) GetRequestedAction() *RequestedAction {
+	if c == nil {
+		return nil
+	}
+	return c.RequestedAction
+}
+
 // GetSender returns the Sender field.
 func (c *CheckRunEvent) GetSender() *User {
 	if c == nil {
