@@ -492,6 +492,14 @@ func (c *CheckRun) GetConclusion() string {
 	return *c.Conclusion
 }
 
+// GetDetailsURL returns the DetailsURL field if it's non-nil, zero value otherwise.
+func (c *CheckRun) GetDetailsURL() string {
+	if c == nil || c.DetailsURL == nil {
+		return ""
+	}
+	return *c.DetailsURL
+}
+
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
 func (c *CheckRun) GetExternalID() string {
 	if c == nil || c.ExternalID == nil {

@@ -24,6 +24,7 @@ type CheckRun struct {
 	ExternalID   *string         `json:"external_id,omitempty"`
 	URL          *string         `json:"url,omitempty"`
 	HTMLURL      *string         `json:"html_url,omitempty"`
+	DetailsURL   *string         `json:"details_url,omitempty"`
 	Status       *string         `json:"status,omitempty"`
 	Conclusion   *string         `json:"conclusion,omitempty"`
 	StartedAt    *Timestamp      `json:"started_at,omitempty"`
