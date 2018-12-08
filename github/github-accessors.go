@@ -4108,6 +4108,14 @@ func (i *IssueEvent) GetMilestone() *Milestone {
 	return i.Milestone
 }
 
+// GetProjectCard returns the ProjectCard field.
+func (i *IssueEvent) GetProjectCard() *ProjectCard {
+	if i == nil {
+		return nil
+	}
+	return i.ProjectCard
+}
+
 // GetRename returns the Rename field.
 func (i *IssueEvent) GetRename() *Rename {
 	if i == nil {
