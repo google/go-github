@@ -68,8 +68,7 @@ func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	c := new(Commit)
 	resp, err := s.client.Do(ctx, req, c)

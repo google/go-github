@@ -43,8 +43,7 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
+	req.Header.Set("Accept", mediaTypeV3)
 
 	tag := new(Tag)
 	resp, err := s.client.Do(ctx, req, tag)

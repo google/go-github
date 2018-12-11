@@ -20,7 +20,7 @@ func TestGitService_GetTag(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/tags/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 

@@ -20,7 +20,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
 	})
@@ -43,7 +43,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/users/u/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
 	})
 
@@ -72,7 +72,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -107,7 +107,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		json.NewDecoder(r.Body).Decode(&gpgKey)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 		if gpgKey.ArmoredPublicKey == nil || *gpgKey.ArmoredPublicKey != input {
 			t.Errorf("gpgKey = %+v, want %q", gpgKey, input)
 		}
@@ -132,7 +132,7 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 
 	mux.HandleFunc("/user/gpg_keys/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
+		testHeader(t, r, "Accept", mediaTypeV3)
 	})
 
 	_, err := client.Users.DeleteGPGKey(context.Background(), 1)
