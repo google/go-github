@@ -68,8 +68,6 @@ func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, s
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	c := new(Commit)
 	resp, err := s.client.Do(ctx, req, c)
 	if err != nil {

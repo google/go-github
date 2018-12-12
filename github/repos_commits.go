@@ -128,8 +128,6 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	var commits []*RepositoryCommit
 	resp, err := s.client.Do(ctx, req, &commits)
 	if err != nil {
@@ -150,8 +148,6 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeV3)
 
 	commit := new(RepositoryCommit)
 	resp, err := s.client.Do(ctx, req, commit)

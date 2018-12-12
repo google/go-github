@@ -43,8 +43,6 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	tag := new(Tag)
 	resp, err := s.client.Do(ctx, req, tag)
 	return tag, resp, err

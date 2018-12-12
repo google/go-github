@@ -62,8 +62,6 @@ func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opt *ListOp
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	var keys []*GPGKey
 	resp, err := s.client.Do(ctx, req, &keys)
 	if err != nil {
@@ -83,8 +81,6 @@ func (s *UsersService) GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Respo
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeV3)
 
 	key := &GPGKey{}
 	resp, err := s.client.Do(ctx, req, key)
@@ -108,8 +104,6 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	key := &GPGKey{}
 	resp, err := s.client.Do(ctx, req, key)
 	if err != nil {
@@ -129,8 +123,6 @@ func (s *UsersService) DeleteGPGKey(ctx context.Context, id int64) (*Response, e
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeV3)
 
 	return s.client.Do(ctx, req, nil)
 }

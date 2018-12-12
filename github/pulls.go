@@ -303,8 +303,6 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, rep
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeV3)
-
 	var commits []*RepositoryCommit
 	resp, err := s.client.Do(ctx, req, &commits)
 	if err != nil {
