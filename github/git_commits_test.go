@@ -20,7 +20,6 @@ func TestGitService_GetCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
 		fmt.Fprint(w, `{"sha":"s","message":"m","author":{"name":"n"}}`)
 	})
 
