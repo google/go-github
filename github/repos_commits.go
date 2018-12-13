@@ -128,9 +128,6 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
-
 	var commits []*RepositoryCommit
 	resp, err := s.client.Do(ctx, req, &commits)
 	if err != nil {
@@ -151,9 +148,6 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeGitSigningPreview)
 
 	commit := new(RepositoryCommit)
 	resp, err := s.client.Do(ctx, req, commit)

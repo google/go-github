@@ -63,9 +63,6 @@ const (
 	// https://developer.github.com/changes/2016-05-12-reactions-api-preview/
 	mediaTypeReactionsPreview = "application/vnd.github.squirrel-girl-preview"
 
-	// https://developer.github.com/changes/2016-04-04-git-signing-api-preview/
-	mediaTypeGitSigningPreview = "application/vnd.github.cryptographer-preview+json"
-
 	// https://developer.github.com/changes/2016-05-23-timeline-preview-api/
 	mediaTypeTimelinePreview = "application/vnd.github.mockingbird-preview+json"
 

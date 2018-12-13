@@ -22,7 +22,6 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 	// given
 	mux.HandleFunc("/repos/o/r/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
 		testFormValues(t, r,
 			values{
 				"sha":    "s",
@@ -58,7 +57,6 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeGitSigningPreview)
 		fmt.Fprintf(w, `{
 		  "sha": "s",
 		  "commit": { "message": "m" },
