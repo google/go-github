@@ -239,9 +239,6 @@ func (s *UsersService) ListInvitations(ctx context.Context, opt *ListOptions) ([
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
-
 	invites := []*RepositoryInvitation{}
 	resp, err := s.client.Do(ctx, req, &invites)
 	if err != nil {
@@ -262,9 +259,6 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -278,9 +272,6 @@ func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInvitationsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
