@@ -204,7 +204,6 @@ func TestUsersService_ListInvitations(t *testing.T) {
 
 	mux.HandleFunc("/user/repository_invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
 
@@ -228,7 +227,6 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 		testFormValues(t, r, values{
 			"page": "2",
 		})
-		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
 
@@ -243,7 +241,6 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -258,7 +255,6 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 
 	mux.HandleFunc("/user/repository_invitations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeRepositoryInvitationsPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
