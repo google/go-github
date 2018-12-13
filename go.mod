@@ -1,7 +1,8 @@
-module github.com/google/go-github/v19
+module github.com/google/go-github/v20
 
 require (
 	github.com/golang/protobuf v1.2.0 // indirect
+	github.com/google/go-github v17.0.0+incompatible // indirect
 	github.com/google/go-querystring v1.0.0
 	golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac
 	golang.org/x/net v0.0.0-20180826012351-8a410e7b638d // indirect
