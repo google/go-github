@@ -6605,9 +6605,9 @@ func (p *ProjectCard) GetPreviousColumnName() string {
 }
 
 // GetProjectID returns the ProjectID field if it's non-nil, zero value otherwise.
-func (p *ProjectCard) GetProjectID() string {
+func (p *ProjectCard) GetProjectID() int64 {
 	if p == nil || p.ProjectID == nil {
-		return ""
+		return 0
 	}
 	return *p.ProjectID
 }

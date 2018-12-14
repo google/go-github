@@ -298,7 +298,7 @@ type ProjectCard struct {
 	ColumnID *int64 `json:"column_id,omitempty"`
 
 	// The following fields are only populated by Events API.
-	ProjectID          *string `json:"project_id,omitempty"`
+	ProjectID          *int64  `json:"project_id,omitempty"`
 	ProjectURL         *string `json:"project_url,omitempty"`
 	ColumnName         *string `json:"column_name,omitempty"`
 	PreviousColumnName *string `json:"previous_column_name,omitempty"` // Populated in "moved_columns_in_project" event deliveries.
