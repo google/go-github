@@ -6940,6 +6940,22 @@ func (p *ProjectOptions) GetState() string {
 	return *p.State
 }
 
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (p *ProjectPermissionLevel) GetPermission() string {
+	if p == nil || p.Permission == nil {
+		return ""
+	}
+	return *p.Permission
+}
+
+// GetUser returns the User field.
+func (p *ProjectPermissionLevel) GetUser() *User {
+	if p == nil {
+		return nil
+	}
+	return p.User
+}
+
 // GetEnforceAdmins returns the EnforceAdmins field.
 func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	if p == nil {

@@ -382,3 +382,140 @@ func TestProjectsService_MoveProjectCard(t *testing.T) {
 		t.Errorf("Projects.MoveProjectCard returned error: %v", err)
 	}
 }
+
+func TestProjectsService_AddProjectCollaborator(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	opt := &ProjectCollaboratorOptions{
+		Permission: "admin",
+	}
+
+	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+
+		v := &ProjectCollaboratorOptions{}
+		json.NewDecoder(r.Body).Decode(v)
+		if !reflect.DeepEqual(v, opt) {
+			t.Errorf("Request body = %+v, want %+v", v, opt)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Projects.AddProjectCollaborator(context.Background(), 1, "u", opt)
+	if err != nil {
+		t.Errorf("Projects.AddProjectCollaborator returned error: %v", err)
+	}
+}
+
+func TestProjectsService_AddCollaborator_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, err := client.Projects.AddProjectCollaborator(context.Background(), 1, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestProjectsService_RemoveCollaborator(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Projects.RemoveProjectCollaborator(context.Background(), 1, "u")
+	if err != nil {
+		t.Errorf("Projects.RemoveProjectCollaborator returned error: %v", err)
+	}
+}
+
+func TestProjectsService_RemoveCollaborator_invalidUser(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, err := client.Projects.RemoveProjectCollaborator(context.Background(), 1, "%")
+	testURLParseError(t, err)
+}
+
+func TestProjectsService_ListCollaborators(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	opt := &ListCollaboratorOptions{
+		ListOptions: ListOptions{Page: 2},
+	}
+	users, _, err := client.Projects.ListProjectCollaborators(context.Background(), 1, opt)
+	if err != nil {
+		t.Errorf("Projects.ListProjectCollaborators returned error: %v", err)
+	}
+
+	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
+	if !reflect.DeepEqual(users, want) {
+		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
+	}
+}
+
+func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		testFormValues(t, r, values{"affiliation": "all", "page": "2"})
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	opt := &ListCollaboratorOptions{
+		ListOptions: ListOptions{Page: 2},
+		Affiliation: "all",
+	}
+	users, _, err := client.Projects.ListProjectCollaborators(context.Background(), 1, opt)
+	if err != nil {
+		t.Errorf("Projects.ListProjectCollaborators returned error: %v", err)
+	}
+
+	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
+	if !reflect.DeepEqual(users, want) {
+		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
+	}
+}
+
+func TestProjectsService_GetPermissionLevel(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/projects/1/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
+		fmt.Fprintf(w, `{"permission":"admin","user":{"login":"u"}}`)
+	})
+
+	ppl, _, err := client.Projects.ReviewProjectCollaboratorPermission(context.Background(), 1, "u")
+	if err != nil {
+		t.Errorf("Projects.ReviewProjectCollaboratorPermission returned error: %v", err)
+	}
+
+	want := &ProjectPermissionLevel{
+		Permission: String("admin"),
+		User: &User{
+			Login: String("u"),
+		},
+	}
+
+	if !reflect.DeepEqual(ppl, want) {
+		t.Errorf("Projects.ReviewProjectCollaboratorPermission returned %+v, want %+v", ppl, want)
+	}
+}
