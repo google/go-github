@@ -6532,6 +6532,14 @@ func (p *ProjectCard) GetColumnID() int64 {
 	return *p.ColumnID
 }
 
+// GetColumnName returns the ColumnName field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetColumnName() string {
+	if p == nil || p.ColumnName == nil {
+		return ""
+	}
+	return *p.ColumnName
+}
+
 // GetColumnURL returns the ColumnURL field if it's non-nil, zero value otherwise.
 func (p *ProjectCard) GetColumnURL() string {
 	if p == nil || p.ColumnURL == nil {
@@ -6586,6 +6594,30 @@ func (p *ProjectCard) GetNote() string {
 		return ""
 	}
 	return *p.Note
+}
+
+// GetPreviousColumnName returns the PreviousColumnName field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetPreviousColumnName() string {
+	if p == nil || p.PreviousColumnName == nil {
+		return ""
+	}
+	return *p.PreviousColumnName
+}
+
+// GetProjectID returns the ProjectID field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetProjectID() int64 {
+	if p == nil || p.ProjectID == nil {
+		return 0
+	}
+	return *p.ProjectID
+}
+
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectCard) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
