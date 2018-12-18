@@ -296,6 +296,12 @@ type ProjectCard struct {
 
 	// The following fields are only populated by Webhook events.
 	ColumnID *int64 `json:"column_id,omitempty"`
+
+	// The following fields are only populated by Events API.
+	ProjectID          *int64  `json:"project_id,omitempty"`
+	ProjectURL         *string `json:"project_url,omitempty"`
+	ColumnName         *string `json:"column_name,omitempty"`
+	PreviousColumnName *string `json:"previous_column_name,omitempty"` // Populated in "moved_columns_in_project" event deliveries.
 }
 
 // ProjectCardListOptions specifies the optional parameters to the
