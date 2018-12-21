@@ -3612,6 +3612,30 @@ func (i *InstallationToken) GetToken() string {
 	return *i.Token
 }
 
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (i *Interaction) GetExpiresAt() Timestamp {
+	if i == nil || i.ExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *i.ExpiresAt
+}
+
+// GetLimit returns the Limit field if it's non-nil, zero value otherwise.
+func (i *Interaction) GetLimit() string {
+	if i == nil || i.Limit == nil {
+		return ""
+	}
+	return *i.Limit
+}
+
+// GetOrigin returns the Origin field if it's non-nil, zero value otherwise.
+func (i *Interaction) GetOrigin() string {
+	if i == nil || i.Origin == nil {
+		return ""
+	}
+	return *i.Origin
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (i *Invitation) GetCreatedAt() time.Time {
 	if i == nil || i.CreatedAt == nil {
