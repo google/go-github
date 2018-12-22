@@ -5,16 +5,24 @@
 
 package github
 
-// InteractionsService handles communication with the repo and org related
+// InteractionsService handles communication with the repository and organization related
 // methods of the GitHub API.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/
 type InteractionsService service
 
-// Interaction represents the interaction restrictions
-// for repository and organisation
+// Interaction represents the interaction restrictions for repository and organization.
 type Interaction struct {
-	Limit     *string    `json:"limit,omitempty"`
-	Origin    *string    `json:"origin,omitempty"`
+	// Specifies the group of GitHub users who can
+	// comment, open issues, or create pull requests for the given repository.
+	// Possible values are: "existing_users", "contributors_only" and "collaborators_only".
+	Limit *string `json:"limit,omitempty"`
+
+	// Origin specifies the type of the resource to interact with.
+	// Possible values are: "repository" and "organization".
+	Origin *string `json:"origin,omitempty"`
+
+	// ExpiresAt specifies the time after which the interaction restrictions expire.
+	// The default expiry time is 24 hours from the time restriction is created.
 	ExpiresAt *Timestamp `json:"expires_at,omitempty"`
 }
