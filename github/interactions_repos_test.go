@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestInteractionsService_GetInteractions(t *testing.T) {
+func TestInteractionsService_GetRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -24,18 +24,18 @@ func TestInteractionsService_GetInteractions(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
-	repoInteractions, _, err := client.Interactions.GetInteractions(context.Background(), "o", "r")
+	repoInteractions, _, err := client.Interactions.GetRestrictions(context.Background(), "o", "r")
 	if err != nil {
-		t.Errorf("Interactions.GetInteractions returned error: %v", err)
+		t.Errorf("Interactions.GetRestrictions returned error: %v", err)
 	}
 
 	want := &Interaction{Origin: String("repository")}
 	if !reflect.DeepEqual(repoInteractions, want) {
-		t.Errorf("Interactions.GetInteractions returned %+v, want %+v", repoInteractions, want)
+		t.Errorf("Interactions.GetRestrictions returned %+v, want %+v", repoInteractions, want)
 	}
 }
 
-func TestInteractionsService_UpdateInteractions(t *testing.T) {
+func TestInteractionsService_UpdateRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -53,18 +53,18 @@ func TestInteractionsService_UpdateInteractions(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
-	repoInteractions, _, err := client.Interactions.UpdateInteractions(context.Background(), "o", "r", input)
+	repoInteractions, _, err := client.Interactions.UpdateRestrictions(context.Background(), "o", "r", input)
 	if err != nil {
-		t.Errorf("Interactions.UpdateInteractions returned error: %v", err)
+		t.Errorf("Interactions.UpdateRestrictions returned error: %v", err)
 	}
 
 	want := &Interaction{Origin: String("repository")}
 	if !reflect.DeepEqual(repoInteractions, want) {
-		t.Errorf("Interactions.UpdateInteractions returned %+v, want %+v", repoInteractions, want)
+		t.Errorf("Interactions.UpdateRestrictions returned %+v, want %+v", repoInteractions, want)
 	}
 }
 
-func TestInteractionsService_RemoveInteractions(t *testing.T) {
+func TestInteractionsService_RemoveRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -73,8 +73,8 @@ func TestInteractionsService_RemoveInteractions(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeRepositoryInteractionsPreview)
 	})
 
-	_, err := client.Interactions.RemoveInteractions(context.Background(), "o", "r")
+	_, err := client.Interactions.RemoveRestrictions(context.Background(), "o", "r")
 	if err != nil {
-		t.Errorf("Interactions.RemoveInteractions returned error: %v", err)
+		t.Errorf("Interactions.RemoveRestrictions returned error: %v", err)
 	}
 }
