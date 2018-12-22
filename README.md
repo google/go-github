@@ -12,7 +12,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v20/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v21/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
