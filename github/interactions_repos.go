@@ -55,3 +55,19 @@ func (s *InteractionsService) UpdateInteractions(ctx context.Context, owner stri
 
 	return repositoryInteractions, resp, nil
 }
+
+// RemoveInteractions removes the interaction restrictions for a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/interactions/repos/#remove-interaction-restrictions-for-a-repository
+func (s *InteractionsService) RemoveInteractions(ctx context.Context, owner string, repo string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
+
+	return s.client.Do(ctx, req, nil)
+}

@@ -63,3 +63,18 @@ func TestInteractionsService_UpdateInteractions(t *testing.T) {
 		t.Errorf("Interactions.UpdateInteractions returned %+v, want %+v", repoInteractions, want)
 	}
 }
+
+func TestInteractionsService_RemoveInteractions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeRepositoryInteractionsPreview)
+	})
+
+	_, err := client.Interactions.RemoveInteractions(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Interactions.RemoveInteractions returned error: %v", err)
+	}
+}
