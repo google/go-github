@@ -55,11 +55,11 @@ func TestInteractionsService_UpdateInteractions(t *testing.T) {
 
 	repoInteractions, _, err := client.Interactions.UpdateInteractions(context.Background(), "o", "r", input)
 	if err != nil {
-		t.Errorf("Interactions.GetInteractions returned error: %v", err)
+		t.Errorf("Interactions.UpdateInteractions returned error: %v", err)
 	}
 
 	want := &Interaction{Origin: String("repository")}
 	if !reflect.DeepEqual(repoInteractions, want) {
-		t.Errorf("Interactions.GetInteractions returned %+v, want %+v", repoInteractions, want)
+		t.Errorf("Interactions.UpdateInteractions returned %+v, want %+v", repoInteractions, want)
 	}
 }
