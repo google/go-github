@@ -16,7 +16,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/google/go-github/v20/github"
+	"github.com/google/go-github/v21/github"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
