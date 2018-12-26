@@ -189,7 +189,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("content_references/11/attachments", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/content_references/11/attachments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
