@@ -388,7 +388,7 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 	defer teardown()
 
 	opt := &ProjectCollaboratorOptions{
-		Permission: "admin",
+		Permission: String("admin"),
 	}
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
@@ -480,7 +480,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 
 	opt := &ListCollaboratorOptions{
 		ListOptions: ListOptions{Page: 2},
-		Affiliation: "all",
+		Affiliation: String("all"),
 	}
 	users, _, err := client.Projects.ListProjectCollaborators(context.Background(), 1, opt)
 	if err != nil {

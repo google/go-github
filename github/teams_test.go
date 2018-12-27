@@ -472,14 +472,10 @@ func TestTeamsService_ListProjects(t *testing.T) {
 	mux.HandleFunc("/teams/1/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(acceptHeaders, ", "))
-		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ListTeamProjectsOptions{
-		ListOptions: ListOptions{Page: 2},
-	}
-	projects, _, err := client.Teams.ListTeamProjects(context.Background(), 1, opt)
+	projects, _, err := client.Teams.ListTeamProjects(context.Background(), 1)
 	if err != nil {
 		t.Errorf("Teams.ListTeamProjects returned error: %v", err)
 	}
@@ -517,7 +513,7 @@ func TestTeamsService_AddTeamProject(t *testing.T) {
 	defer teardown()
 
 	opt := &TeamProjectOptions{
-		Permission: "admin",
+		Permission: String("admin"),
 	}
 
 	acceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}

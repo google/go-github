@@ -4692,6 +4692,14 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 	return *l.Total
 }
 
+// GetAffiliation returns the Affiliation field if it's non-nil, zero value otherwise.
+func (l *ListCollaboratorOptions) GetAffiliation() string {
+	if l == nil || l.Affiliation == nil {
+		return ""
+	}
+	return *l.Affiliation
+}
+
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
@@ -6714,6 +6722,14 @@ func (p *ProjectCardOptions) GetArchived() bool {
 		return false
 	}
 	return *p.Archived
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (p *ProjectCollaboratorOptions) GetPermission() string {
+	if p == nil || p.Permission == nil {
+		return ""
+	}
+	return *p.Permission
 }
 
 // GetCardsURL returns the CardsURL field if it's non-nil, zero value otherwise.
@@ -11090,6 +11106,14 @@ func (t *TeamLDAPMapping) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (t *TeamProjectOptions) GetPermission() string {
+	if t == nil || t.Permission == nil {
+		return ""
+	}
+	return *t.Permission
 }
 
 // GetFragment returns the Fragment field if it's non-nil, zero value otherwise.

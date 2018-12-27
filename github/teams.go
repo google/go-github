@@ -356,29 +356,11 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opt *ListOptions) ([]*
 	return teams, resp, nil
 }
 
-type ListTeamProjectsOptions struct {
-	// Affiliation specifies how collaborators should be filtered by their affiliation.
-	// Possible values are:
-	//     outside - All outside collaborators of an organization-owned repository
-	//     direct - All collaborators with permissions to an organization-owned repository,
-	//              regardless of organization membership status
-	//     all - All collaborators the authenticated user can see
-	//
-	// Default value is "all".
-	Affiliation string `url:"affiliation,omitempty"`
-
-	ListOptions
-}
-
-// ListTeamProjects lists the organization projects for a team
+// ListTeamProjects lists the organization projects for a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-projects
-func (s *TeamsService) ListTeamProjects(ctx context.Context, id int64, opt *ListTeamProjectsOptions) ([]*Project, *Response, error) {
+func (s *TeamsService) ListTeamProjects(ctx context.Context, id int64) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("teams/%v/projects", id)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -402,7 +384,7 @@ func (s *TeamsService) ListTeamProjects(ctx context.Context, id int64, opt *List
 // permissions for an organization project.
 //
 // Github API docs: https://developer.github.com/v3/teams/#review-a-team-project
-func (s *TeamsService) ReviewTeamProjects(ctx context.Context, id int64, projectID int64) (*Project, *Response, error) {
+func (s *TeamsService) ReviewTeamProjects(ctx context.Context, id, projectID int64) (*Project, *Response, error) {
 	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -413,7 +395,7 @@ func (s *TeamsService) ReviewTeamProjects(ctx context.Context, id int64, project
 	acceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	var projects *Project
+	projects := &Project{}
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -422,25 +404,24 @@ func (s *TeamsService) ReviewTeamProjects(ctx context.Context, id int64, project
 	return projects, resp, nil
 }
 
+// TeamProjectOptions specifies the optional parameters to the
+// TeamsService.AddTeamProject method.
 type TeamProjectOptions struct {
 	// Permission specifies the permission to grant to the team for this project.
 	// Possible values are:
-	//     read - team members can read, but not write to or administer this project.
-	//     write - team members can read and write, but not administer this project.
-	//     admin - team members can read, write and administer this project.
+	//     "read" - team members can read, but not write to or administer this project.
+	//     "write" - team members can read and write, but not administer this project.
+	//     "admin" - team members can read, write and administer this project.
 	//
-	// Default: the team's permission attribute will be used to determine what permission
-	// to grant the team on this project. Note that, if you choose not to pass any parameters,
-	// you'll need to set Content-Length to zero when calling out to this endpoint.
-	Permission string `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 }
 
-// AddTeamProject Adds an organization project to a team. To add a project to a team or
+// AddTeamProject adds an organization project to a team. To add a project to a team or
 // update the team's permission on a project, the authenticated user must have admin
 // permissions for the project.
 //
-// Github API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
-func (s *TeamsService) AddTeamProject(ctx context.Context, id int64, projectID int64, opt *TeamProjectOptions) (*Response, error) {
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
+func (s *TeamsService) AddTeamProject(ctx context.Context, id, projectID int64, opt *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
@@ -456,11 +437,11 @@ func (s *TeamsService) AddTeamProject(ctx context.Context, id int64, projectID i
 
 // RemoveTeamProject removes an organization project from a team. An organization owner or
 // a team maintainer can remove any project from the team. To remove a project from a team
-// as an organization member, the authenticated user must have read access to both the team
-// and project, or admin access to the team or project.
+// as an organization member, the authenticated user must have "read" access to both the team
+// and project, or "admin" access to the team or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
-// Github API docs: https://developer.github.com/v3/teams/#remove-team-project
+// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-project
 func (s *TeamsService) RemoveTeamProject(ctx context.Context, id int64, projectID int64) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
