@@ -189,12 +189,11 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64) (*I
 	return t, resp, nil
 }
 
-// Create a new attachment on user comment containing a url
+// Create a new attachment on user comment containing a url.
 //
-// Github API docs: https://developer.github.com/v3/apps/#create-a-content-attachment
+// GitHub API docs: https://developer.github.com/v3/apps/#create-a-content-attachment
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
-	fmt.Println(u)
 	payload := &Attachment{Title: String(title), Body: String(body)}
 	req, err := s.client.NewRequest("POST", u, payload)
 	if err != nil {
