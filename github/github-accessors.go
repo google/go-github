@@ -3613,7 +3613,7 @@ func (i *InstallationToken) GetToken() string {
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
-func (i *Interaction) GetExpiresAt() Timestamp {
+func (i *InteractionRestriction) GetExpiresAt() Timestamp {
 	if i == nil || i.ExpiresAt == nil {
 		return Timestamp{}
 	}
@@ -3621,7 +3621,7 @@ func (i *Interaction) GetExpiresAt() Timestamp {
 }
 
 // GetLimit returns the Limit field if it's non-nil, zero value otherwise.
-func (i *Interaction) GetLimit() string {
+func (i *InteractionRestriction) GetLimit() string {
 	if i == nil || i.Limit == nil {
 		return ""
 	}
@@ -3629,7 +3629,7 @@ func (i *Interaction) GetLimit() string {
 }
 
 // GetOrigin returns the Origin field if it's non-nil, zero value otherwise.
-func (i *Interaction) GetOrigin() string {
+func (i *InteractionRestriction) GetOrigin() string {
 	if i == nil || i.Origin == nil {
 		return ""
 	}

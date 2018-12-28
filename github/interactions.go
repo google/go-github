@@ -11,8 +11,8 @@ package github
 // GitHub API docs: https://developer.github.com/v3/interactions/
 type InteractionsService service
 
-// Interaction represents the interaction restrictions for repository and organization.
-type Interaction struct {
+// InteractionRestriction represents the interaction restrictions for repository and organization.
+type InteractionRestriction struct {
 	// Specifies the group of GitHub users who can
 	// comment, open issues, or create pull requests for the given repository.
 	// Possible values are: "existing_users", "contributors_only" and "collaborators_only".

@@ -29,7 +29,7 @@ func TestInteractionsService_GetRestrictions(t *testing.T) {
 		t.Errorf("Interactions.GetRestrictions returned error: %v", err)
 	}
 
-	want := &Interaction{Origin: String("repository")}
+	want := &InteractionRestriction{Origin: String("repository")}
 	if !reflect.DeepEqual(repoInteractions, want) {
 		t.Errorf("Interactions.GetRestrictions returned %+v, want %+v", repoInteractions, want)
 	}
@@ -39,10 +39,10 @@ func TestInteractionsService_UpdateRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Interaction{Limit: String("existing_users")}
+	input := &InteractionRestriction{Limit: String("existing_users")}
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Interaction)
+		v := new(InteractionRestriction)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
@@ -58,7 +58,7 @@ func TestInteractionsService_UpdateRestrictions(t *testing.T) {
 		t.Errorf("Interactions.UpdateRestrictions returned error: %v", err)
 	}
 
-	want := &Interaction{Origin: String("repository")}
+	want := &InteractionRestriction{Origin: String("repository")}
 	if !reflect.DeepEqual(repoInteractions, want) {
 		t.Errorf("Interactions.UpdateRestrictions returned %+v, want %+v", repoInteractions, want)
 	}

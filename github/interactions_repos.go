@@ -13,7 +13,7 @@ import (
 // GetRestrictions fetches the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#get-interaction-restrictions-for-a-repository
-func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo string) (*Interaction, *Response, error) {
+func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo s
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
 
-	repositoryInteractions := new(Interaction)
+	repositoryInteractions := new(InteractionRestriction)
 
 	resp, err := s.client.Do(ctx, req, repositoryInteractions)
 	if err != nil {
@@ -36,7 +36,7 @@ func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo s
 // UpdateRestrictions adds or updates the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#add-or-update-interaction-restrictions-for-a-repository
-func (s *InteractionsService) UpdateRestrictions(ctx context.Context, owner, repo string, interaction *Interaction) (*Interaction, *Response, error) {
+func (s *InteractionsService) UpdateRestrictions(ctx context.Context, owner, repo string, interaction *InteractionRestriction) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *InteractionsService) UpdateRestrictions(ctx context.Context, owner, rep
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
 
-	repositoryInteractions := new(Interaction)
+	repositoryInteractions := new(InteractionRestriction)
 
 	resp, err := s.client.Do(ctx, req, repositoryInteractions)
 	if err != nil {
