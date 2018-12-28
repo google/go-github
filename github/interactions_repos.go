@@ -56,10 +56,10 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 	return repositoryInteractions, resp, nil
 }
 
-// RemoveRestrictionsForRepo removes the interaction restrictions for a repository.
+// RemoveRestrictionsFromRepo removes the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#remove-interaction-restrictions-for-a-repository
-func (s *InteractionsService) RemoveRestrictionsForRepo(ctx context.Context, owner, repo string) (*Response, error) {
+func (s *InteractionsService) RemoveRestrictionsFromRepo(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

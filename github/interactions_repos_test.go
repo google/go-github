@@ -73,8 +73,8 @@ func TestInteractionsService_RemoveRestrictionsForRepo(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeRepositoryInteractionsPreview)
 	})
 
-	_, err := client.Interactions.RemoveRestrictionsForRepo(context.Background(), "o", "r")
+	_, err := client.Interactions.RemoveRestrictionsFromRepo(context.Background(), "o", "r")
 	if err != nil {
-		t.Errorf("Interactions.RemoveRestrictionsForRepo returned error: %v", err)
+		t.Errorf("Interactions.RemoveRestrictionsFromRepo returned error: %v", err)
 	}
 }
