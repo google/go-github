@@ -383,7 +383,7 @@ func (s *TeamsService) ListTeamProjects(ctx context.Context, teamID int64) ([]*P
 // ReviewTeamProjects checks whether a team has read, write, or admin
 // permissions for an organization project.
 //
-// Github API docs: https://developer.github.com/v3/teams/#review-a-team-project
+// GitHub API docs: https://developer.github.com/v3/teams/#review-a-team-project
 func (s *TeamsService) ReviewTeamProjects(ctx context.Context, teamID, projectID int64) (*Project, *Response, error) {
 	u := fmt.Sprintf("teams/%v/projects/%v", teamID, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
