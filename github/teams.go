@@ -359,8 +359,8 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opt *ListOptions) ([]*
 // ListTeamProjects lists the organization projects for a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-projects
-func (s *TeamsService) ListTeamProjects(ctx context.Context, id int64) ([]*Project, *Response, error) {
-	u := fmt.Sprintf("teams/%v/projects", id)
+func (s *TeamsService) ListTeamProjects(ctx context.Context, teamID int64) ([]*Project, *Response, error) {
+	u := fmt.Sprintf("teams/%v/projects", teamID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -384,8 +384,8 @@ func (s *TeamsService) ListTeamProjects(ctx context.Context, id int64) ([]*Proje
 // permissions for an organization project.
 //
 // Github API docs: https://developer.github.com/v3/teams/#review-a-team-project
-func (s *TeamsService) ReviewTeamProjects(ctx context.Context, id, projectID int64) (*Project, *Response, error) {
-	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
+func (s *TeamsService) ReviewTeamProjects(ctx context.Context, teamID, projectID int64) (*Project, *Response, error) {
+	u := fmt.Sprintf("teams/%v/projects/%v", teamID, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -421,8 +421,8 @@ type TeamProjectOptions struct {
 // permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
-func (s *TeamsService) AddTeamProject(ctx context.Context, id, projectID int64, opt *TeamProjectOptions) (*Response, error) {
-	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
+func (s *TeamsService) AddTeamProject(ctx context.Context, teamID, projectID int64, opt *TeamProjectOptions) (*Response, error) {
+	u := fmt.Sprintf("teams/%v/projects/%v", teamID, projectID)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
@@ -442,8 +442,8 @@ func (s *TeamsService) AddTeamProject(ctx context.Context, id, projectID int64, 
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#remove-team-project
-func (s *TeamsService) RemoveTeamProject(ctx context.Context, id int64, projectID int64) (*Response, error) {
-	u := fmt.Sprintf("teams/%v/projects/%v", id, projectID)
+func (s *TeamsService) RemoveTeamProject(ctx context.Context, teamID int64, projectID int64) (*Response, error) {
+	u := fmt.Sprintf("teams/%v/projects/%v", teamID, projectID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
