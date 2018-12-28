@@ -10,10 +10,10 @@ import (
 	"fmt"
 )
 
-// GetRestrictions fetches the interaction restrictions for a repository.
+// GetRestrictionsForRepo fetches the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#get-interaction-restrictions-for-a-repository
-func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -33,10 +33,10 @@ func (s *InteractionsService) GetRestrictions(ctx context.Context, owner, repo s
 	return repositoryInteractions, resp, nil
 }
 
-// UpdateRestrictions adds or updates the interaction restrictions for a repository.
+// UpdateRestrictionsForRepo adds or updates the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#add-or-update-interaction-restrictions-for-a-repository
-func (s *InteractionsService) UpdateRestrictions(ctx context.Context, owner, repo string, interaction *InteractionRestriction) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo string, interaction *InteractionRestriction) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {
@@ -56,10 +56,10 @@ func (s *InteractionsService) UpdateRestrictions(ctx context.Context, owner, rep
 	return repositoryInteractions, resp, nil
 }
 
-// RemoveRestrictions removes the interaction restrictions for a repository.
+// RemoveRestrictionsForRepo removes the interaction restrictions for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#remove-interaction-restrictions-for-a-repository
-func (s *InteractionsService) RemoveRestrictions(ctx context.Context, owner, repo string) (*Response, error) {
+func (s *InteractionsService) RemoveRestrictionsForRepo(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
