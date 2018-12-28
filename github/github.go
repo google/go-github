@@ -125,6 +125,9 @@ const (
 
 	// https://developer.github.com/changes/2018-09-05-project-card-events/
 	mediaTypeProjectCardDetailsPreview = "application/vnd.github.starfox-preview+json"
+
+	// https://developer.github.com/changes/2018-12-18-interactions-preview/
+	mediaTypeRepositoryInteractionsPreview = "application/vnd.github.sombra-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -157,6 +160,7 @@ type Client struct {
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
+	Interactions   *InteractionsService
 	Issues         *IssuesService
 	Licenses       *LicensesService
 	Marketplace    *MarketplaceService
@@ -249,6 +253,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
+	c.Interactions = (*InteractionsService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Marketplace = &MarketplaceService{client: c}
