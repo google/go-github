@@ -64,7 +64,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 	}
 }
 
-func TestInteractionsService_RemoveRestrictionsForRepo(t *testing.T) {
+func TestInteractionsService_RemoveRestrictionsFromRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
