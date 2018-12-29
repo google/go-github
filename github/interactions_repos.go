@@ -21,7 +21,7 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
+	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	repositoryInteractions := new(InteractionRestriction)
 
@@ -44,7 +44,7 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
+	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	repositoryInteractions := new(InteractionRestriction)
 
@@ -67,7 +67,7 @@ func (s *InteractionsService) RemoveRestrictionsFromRepo(ctx context.Context, ow
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryInteractionsPreview)
+	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
