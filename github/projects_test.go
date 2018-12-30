@@ -15,6 +15,73 @@ import (
 	"testing"
 )
 
+func TestProject_marshall(t *testing.T) {
+	testJSONMarshal(t, &Project{}, "{}")
+
+	u := &Project{
+		ID:         Int64(1),
+		URL:        String("u"),
+		HTMLURL:    String("h"),
+		ColumnsURL: String("c"),
+		OwnerURL:   String("o"),
+		Name:       String("n"),
+		Body:       String("b"),
+		Number:     Int(1),
+		State:      String("s"),
+		CreatedAt:  &Timestamp{referenceTime},
+		UpdatedAt:  &Timestamp{referenceTime},
+		NodeID:     String("n"),
+		Creator: &User{
+			Login:       String("l"),
+			ID:          Int64(1),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+	}
+	want := `{
+		"id": 1,
+		"url": "u",
+		"html_url": "h",
+		"columns_url": "c",
+		"owner_url": "o",
+		"name": "n",
+		"body": "b",
+		"number": 1,
+		"state": "s",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"node_id": "n",
+		"creator": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		}
+	}`
+	testJSONMarshal(t, u, want)
+}
 func TestProjectsService_UpdateProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
