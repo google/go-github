@@ -1,4 +1,4 @@
-// Copyright 2018 The go-github AUTHORS. All rights reserved.
+// Copyright 2019 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -53,7 +53,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"organization"}`)
 	})
 
-	organizationInteractions, _, err := client.Interactions.UpdateRestrictionsForOrg(context.Background(), "o", input)
+	organizationInteractions, _, err := client.Interactions.UpdateRestrictionsForOrg(context.Background(), "o", input.GetLimit())
 	if err != nil {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned error: %v", err)
 	}

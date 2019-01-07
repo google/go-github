@@ -35,9 +35,16 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 
 // UpdateRestrictionsForRepo adds or updates the interaction restrictions for a repository.
 //
+// limit specifies the group of GitHub users who can comment, open issues, or create pull requests
+// for the given repository.
+// Possible values are: "existing_users", "contributors_only", "collaborators_only".
+//
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#add-or-update-interaction-restrictions-for-a-repository
-func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo string, interaction *InteractionRestriction) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
+	
+	interaction := &InteractionRestriction{Limit: String(limit)}
+
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {
 		return nil, nil, err

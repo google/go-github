@@ -1,4 +1,4 @@
-// Copyright 2018 The go-github AUTHORS. All rights reserved.
+// Copyright 2019 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -35,9 +35,16 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 
 // UpdateRestrictionsForOrg adds or updates the interaction restrictions for an organization.
 //
+// limit specifies the group of GitHub users who can comment, open issues, or create pull requests
+// in public repositories for the given organization.
+// Possible values are: "existing_users", "contributors_only", "collaborators_only".
+//
 // GitHub API docs: https://developer.github.com/v3/interactions/orgs/#add-or-update-interaction-restrictions-for-an-organization
-func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization string, interaction *InteractionRestriction) (*InteractionRestriction, *Response, error) {
+func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
+	
+	interaction := &InteractionRestriction{Limit: String(limit)}
+
 	req, err := s.client.NewRequest("PUT", u, interaction)
 	if err != nil {
 		return nil, nil, err
