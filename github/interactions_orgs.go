@@ -42,7 +42,7 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 // GitHub API docs: https://developer.github.com/v3/interactions/orgs/#add-or-update-interaction-restrictions-for-an-organization
 func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
-	
+
 	interaction := &InteractionRestriction{Limit: String(limit)}
 
 	req, err := s.client.NewRequest("PUT", u, interaction)

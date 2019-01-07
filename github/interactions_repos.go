@@ -42,7 +42,7 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 // GitHub API docs: https://developer.github.com/v3/interactions/repos/#add-or-update-interaction-restrictions-for-a-repository
 func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
-	
+
 	interaction := &InteractionRestriction{Limit: String(limit)}
 
 	req, err := s.client.NewRequest("PUT", u, interaction)
