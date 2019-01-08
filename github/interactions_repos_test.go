@@ -53,7 +53,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
-	repoInteractions, _, err := client.Interactions.UpdateRestrictionsForRepo(context.Background(), "o", "r", input)
+	repoInteractions, _, err := client.Interactions.UpdateRestrictionsForRepo(context.Background(), "o", "r", input.GetLimit())
 	if err != nil {
 		t.Errorf("Interactions.UpdateRestrictionsForRepo returned error: %v", err)
 	}
