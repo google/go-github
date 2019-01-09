@@ -117,8 +117,10 @@ type Timeline struct {
 	// An object containing rename details including 'from' and 'to' attributes.
 	// Only provided for 'renamed' events.
 	Rename *Rename `json:"rename,omitempty"`
-	// The ProjectCard object is part of the starfox-preview,
-	// and will only be included when you pass the custom media type.
+	// A 'project_card' object that includes the 'id', 'url', 'project_id',
+	// 'project_url', 'column_name', and 'previous_column_name' (The name of the column
+	// that the card was listed in prior to 'column_name'. Only returned for
+	// 'moved_columns_in_project' events).
 	ProjectCard *ProjectCard `json:"project_card,omitempty"`
 }
 
