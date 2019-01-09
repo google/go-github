@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -116,6 +117,9 @@ type Timeline struct {
 	// An object containing rename details including 'from' and 'to' attributes.
 	// Only provided for 'renamed' events.
 	Rename *Rename `json:"rename,omitempty"`
+	// The ProjectCard object is part of the starfox-preview,
+	// and will only be included when you pass the custom media type.
+	ProjectCard *ProjectCard `json:"project_card,omitempty"`
 }
 
 // Source represents a reference's source.
@@ -141,7 +145,8 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTimelinePreview)
+	acceptHeaders := []string{mediaTypeTimelinePreview, mediaTypeProjectCardDetailsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var events []*Timeline
 	resp, err := s.client.Do(ctx, req, &events)

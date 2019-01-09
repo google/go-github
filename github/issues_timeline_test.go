@@ -19,7 +19,6 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/timeline", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTimelinePreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",

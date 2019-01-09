@@ -11244,6 +11244,14 @@ func (t *Timeline) GetMilestone() *Milestone {
 	return t.Milestone
 }
 
+// GetProjectCard returns the ProjectCard field.
+func (t *Timeline) GetProjectCard() *ProjectCard {
+	if t == nil {
+		return nil
+	}
+	return t.ProjectCard
+}
+
 // GetRename returns the Rename field.
 func (t *Timeline) GetRename() *Rename {
 	if t == nil {
