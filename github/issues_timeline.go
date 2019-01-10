@@ -116,11 +116,7 @@ type Timeline struct {
 	Source *Source `json:"source,omitempty"`
 	// An object containing rename details including 'from' and 'to' attributes.
 	// Only provided for 'renamed' events.
-	Rename *Rename `json:"rename,omitempty"`
-	// A 'project_card' object that includes the 'id', 'url', 'project_id',
-	// 'project_url', 'column_name', and 'previous_column_name' (The name of the column
-	// that the card was listed in prior to 'column_name'. Only returned for
-	// 'moved_columns_in_project' events).
+	Rename      *Rename      `json:"rename,omitempty"`
 	ProjectCard *ProjectCard `json:"project_card,omitempty"`
 }
 
