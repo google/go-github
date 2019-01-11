@@ -147,7 +147,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	return err
 }
 
-// createPR creates a pull requesit. Based on: https://godoc.org/github.com/google/go-github/github#example-PullRequestsService-Create
+// createPR creates a pull request. Based on: https://godoc.org/github.com/google/go-github/github#example-PullRequestsService-Create
 func createPR() (err error) {
 	if *prSubject == "" {
 		return errors.New("missing `-pr-title` flag; skipping PR creation")
