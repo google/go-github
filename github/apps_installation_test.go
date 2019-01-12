@@ -69,8 +69,9 @@ func TestAppsService_AddRepository(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
@@ -89,8 +90,9 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/apps/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/installations/1/repositories/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
