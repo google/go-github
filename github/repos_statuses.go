@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func (r RepoStatus) String() string {
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
 func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref string, opt *ListOptions) ([]*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, ref)
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, url.QueryEscape(ref))
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -69,7 +70,7 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#create-a-status
 func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, ref)
+	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, url.QueryEscape(ref))
 	req, err := s.client.NewRequest("POST", u, status)
 	if err != nil {
 		return nil, nil, err
@@ -108,7 +109,7 @@ func (s CombinedStatus) String() string {
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
 func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo, ref string, opt *ListOptions) (*CombinedStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, ref)
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, url.QueryEscape(ref))
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
