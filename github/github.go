@@ -191,7 +191,8 @@ type ListOptions struct {
 
 // UploadOptions specifies the parameters to methods that support uploads.
 type UploadOptions struct {
-	Name string `url:"name,omitempty"`
+	Name      string `url:"name,omitempty"`
+	MediaType string `url:"-"`
 }
 
 // RawType represents type of raw format of a request instead of JSON.
