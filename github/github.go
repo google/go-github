@@ -192,6 +192,7 @@ type ListOptions struct {
 // UploadOptions specifies the parameters to methods that support uploads.
 type UploadOptions struct {
 	Name      string `url:"name,omitempty"`
+	Label     string `url:"label,omitempty"`
 	MediaType string `url:"-"`
 }
 
