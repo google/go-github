@@ -9700,6 +9700,14 @@ func (r *RepositoryContent) GetSize() int {
 	return *r.Size
 }
 
+// GetTarget returns the Target field if it's non-nil, zero value otherwise.
+func (r *RepositoryContent) GetTarget() string {
+	if r == nil || r.Target == nil {
+		return ""
+	}
+	return *r.Target
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (r *RepositoryContent) GetType() string {
 	if r == nil || r.Type == nil {
