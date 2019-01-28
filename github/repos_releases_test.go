@@ -354,34 +354,58 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
+	var (
+		defaultUploadOptions     = &UploadOptions{Name: "n"}
+		defaultExpectedFormValue = values{"name": "n"}
+		mediaTypeTextPlain       = "text/plain; charset=utf-8"
+	)
 	uploadTests := []struct {
-		uploadOpts        *UploadOptions
-		fileName          string
-		expectedMediaType string
+		uploadOpts         *UploadOptions
+		fileName           string
+		expectedFormValues values
+		expectedMediaType  string
 	}{
 		// No file extension and no explicit media type.
 		{
-			&UploadOptions{Name: "n"},
+			defaultUploadOptions,
 			"upload",
+			defaultExpectedFormValue,
 			defaultMediaType,
 		},
 		// File extension and no explicit media type.
 		{
-			&UploadOptions{Name: "n"},
+			defaultUploadOptions,
 			"upload.txt",
-			"text/plain; charset=utf-8",
+			defaultExpectedFormValue,
+			mediaTypeTextPlain,
 		},
 		// No file extension and explicit media type.
 		{
 			&UploadOptions{Name: "n", MediaType: "image/png"},
 			"upload",
+			defaultExpectedFormValue,
 			"image/png",
 		},
 		// File extension and explicit media type.
 		{
 			&UploadOptions{Name: "n", MediaType: "image/png"},
 			"upload.png",
+			defaultExpectedFormValue,
 			"image/png",
+		},
+		// Label provided.
+		{
+			&UploadOptions{Name: "n", Label: "l"},
+			"upload.txt",
+			values{"name": "n", "label": "l"},
+			mediaTypeTextPlain,
+		},
+		// No label provided.
+		{
+			defaultUploadOptions,
+			"upload.txt",
+			defaultExpectedFormValue,
+			mediaTypeTextPlain,
 		},
 	}
 
@@ -394,7 +418,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			testMethod(t, r, "POST")
 			testHeader(t, r, "Content-Type", test.expectedMediaType)
 			testHeader(t, r, "Content-Length", "12")
-			testFormValues(t, r, values{"name": "n"})
+			testFormValues(t, r, test.expectedFormValues)
 			testBody(t, r, "Upload me !\n")
 
 			fmt.Fprintf(w, `{"id":1}`)
