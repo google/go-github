@@ -10388,6 +10388,22 @@ func (s *Source) GetID() int64 {
 	return *s.ID
 }
 
+// GetIssue returns the Issue field.
+func (s *Source) GetIssue() *Issue {
+	if s == nil {
+		return nil
+	}
+	return s.Issue
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (s *Source) GetType() string {
+	if s == nil || s.Type == nil {
+		return ""
+	}
+	return *s.Type
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (s *Source) GetURL() string {
 	if s == nil || s.URL == nil {
