@@ -50,7 +50,7 @@ func TestUsersService_Suspend(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.Suspend(context.Background(), "u")
+	_, err := client.Users.Suspend(context.Background(), "u", "test")
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
