@@ -40,17 +40,16 @@ func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Respo
 
 // userSuspendOptions represents the reason a user is being suspended.
 type userSuspendOptions struct {
-	Reason string `json:"reason,omitempty"`
+	Reason *string `json:"reason,omitempty"`
 }
 
 // Suspend a user on a GitHub Enterprise instance.
 //
 // GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#suspend-a-user
-func (s *UsersService) Suspend(ctx context.Context, user string, reason string) (*Response, error) {
+func (s *UsersService) Suspend(ctx context.Context, user string, opt *userSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
-	opts := &userSuspendOptions{Reason: reason}
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
 	}

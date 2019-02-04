@@ -7,7 +7,9 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -50,7 +52,32 @@ func TestUsersService_Suspend(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.Suspend(context.Background(), "u", "test")
+	opt := &userSuspendOptions{}
+	_, err := client.Users.Suspend(context.Background(), "u", opt)
+	if err != nil {
+		t.Errorf("Users.Suspend returned error: %v", err)
+	}
+}
+
+func TestUsersServiceReason_Suspend(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &userSuspendOptions{Reason: String("test")}
+
+	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
+		v := new(userSuspendOptions)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Users.Suspend(context.Background(), "u", input)
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
