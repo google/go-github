@@ -52,8 +52,7 @@ func TestUsersService_Suspend(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	opt := &userSuspendOptions{}
-	_, err := client.Users.Suspend(context.Background(), "u", opt)
+	_, err := client.Users.Suspend(context.Background(), "u", nil)
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
@@ -63,10 +62,10 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &userSuspendOptions{Reason: String("test")}
+	input := &UserSuspendOptions{Reason: String("test")}
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
-		v := new(userSuspendOptions)
+		v := new(UserSuspendOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
