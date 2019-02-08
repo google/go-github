@@ -12156,6 +12156,14 @@ func (u *UserStats) GetTotalUsers() int {
 	return *u.TotalUsers
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (u *UserSuspendOptions) GetReason() string {
+	if u == nil || u.Reason == nil {
+		return ""
+	}
+	return *u.Reason
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (w *WatchEvent) GetAction() string {
 	if w == nil || w.Action == nil {
