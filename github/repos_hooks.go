@@ -109,7 +109,7 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 
 	hookReq := &createHookRequest{
-		Name: 	"web",
+		Name:   "web",
 		Events: hook.Events,
 		Active: hook.Active,
 		Config: hook.Config,
