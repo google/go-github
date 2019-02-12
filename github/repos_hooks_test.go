@@ -103,6 +103,43 @@ func TestRepositoriesService_GetHook_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_EditHook(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &Hook{}
+
+	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(Hook)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	hook, _, err := client.Repositories.EditHook(context.Background(), "o", "r", 1, input)
+	if err != nil {
+		t.Errorf("Repositories.EditHook returned error: %v", err)
+	}
+
+	want := &Hook{ID: Int64(1)}
+	if !reflect.DeepEqual(hook, want) {
+		t.Errorf("Repositories.EditHook returned %+v, want %+v", hook, want)
+	}
+}
+
+func TestRepositoriesService_EditHook_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Repositories.EditHook(context.Background(), "%", "%", 1, nil)
+	testURLParseError(t, err)
+}
+
 func TestRepositoriesService_DeleteHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -122,5 +159,41 @@ func TestRepositoriesService_DeleteHook_invalidOwner(t *testing.T) {
 	defer teardown()
 
 	_, err := client.Repositories.DeleteHook(context.Background(), "%", "%", 1)
+	testURLParseError(t, err)
+}
+
+func TestRepositoriesService_PingHook(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks/1/pings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+	})
+
+	_, err := client.Repositories.PingHook(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.PingHook returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_TestHook(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks/1/tests", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+	})
+
+	_, err := client.Repositories.TestHook(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.TestHook returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, err := client.Repositories.TestHook(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
