@@ -7220,6 +7220,14 @@ func (p *PullRequest) GetID() int64 {
 	return *p.ID
 }
 
+// GetIsDraft returns the IsDraft field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetIsDraft() bool {
+	if p == nil || p.IsDraft == nil {
+		return false
+	}
+	return *p.IsDraft
+}
+
 // GetIssueURL returns the IssueURL field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetIssueURL() string {
 	if p == nil || p.IssueURL == nil {
