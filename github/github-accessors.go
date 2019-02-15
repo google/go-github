@@ -7196,6 +7196,14 @@ func (p *PullRequest) GetDiffURL() string {
 	return *p.DiffURL
 }
 
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetDraft() bool {
+	if p == nil || p.Draft == nil {
+		return false
+	}
+	return *p.Draft
+}
+
 // GetHead returns the Head field.
 func (p *PullRequest) GetHead() *PullRequestBranch {
 	if p == nil {
