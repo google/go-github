@@ -32,6 +32,7 @@ type PullRequest struct {
 	MergedAt            *time.Time `json:"merged_at,omitempty"`
 	Labels              []*Label   `json:"labels,omitempty"`
 	User                *User      `json:"user,omitempty"`
+	Draft               *bool      `json:"draft,omitempty"`
 	Merged              *bool      `json:"merged,omitempty"`
 	Mergeable           *bool      `json:"mergeable,omitempty"`
 	MergeableState      *string    `json:"mergeable_state,omitempty"`
@@ -72,10 +73,6 @@ type PullRequest struct {
 	// ActiveLockReason is populated only when LockReason is provided while locking the pull request.
 	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
 	ActiveLockReason *string `json:"active_lock_reason,omitempty"`
-
-	// IsDraft identifies if the pull request is a draft or not.
-	// https://developer.github.com/changes/2019-02-14-draft-pull-requests/
-	IsDraft             *bool      `json:"is_draft,omitempty"`
 }
 
 func (p PullRequest) String() string {

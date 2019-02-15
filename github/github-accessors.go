@@ -7196,6 +7196,14 @@ func (p *PullRequest) GetDiffURL() string {
 	return *p.DiffURL
 }
 
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetDraft() bool {
+	if p == nil || p.Draft == nil {
+		return false
+	}
+	return *p.Draft
+}
+
 // GetHead returns the Head field.
 func (p *PullRequest) GetHead() *PullRequestBranch {
 	if p == nil {
@@ -7218,14 +7226,6 @@ func (p *PullRequest) GetID() int64 {
 		return 0
 	}
 	return *p.ID
-}
-
-// GetIsDraft returns the IsDraft field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetIsDraft() bool {
-	if p == nil || p.IsDraft == nil {
-		return false
-	}
-	return *p.IsDraft
 }
 
 // GetIssueURL returns the IssueURL field if it's non-nil, zero value otherwise.
