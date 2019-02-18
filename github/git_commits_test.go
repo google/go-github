@@ -92,7 +92,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		Parents: []Commit{{SHA: String("p")}},
 		Verification: &SignatureVerification{
 			Signature: String(signature),
-		}
+		},
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -102,9 +102,9 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		testMethod(t, r, "POST")
 
 		want := &createCommit{
-			Message: input.Message,
-			Tree:    String("t"),
-			Parents: []string{"p"},
+			Message:   input.Message,
+			Tree:      String("t"),
+			Parents:   []string{"p"},
 			Signature: String(signature),
 		}
 		if !reflect.DeepEqual(v, want) {
