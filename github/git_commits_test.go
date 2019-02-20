@@ -80,6 +80,50 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 }
 
+func TestGitService_CreateSignedCommit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
+
+	input := &Commit{
+		Message: String("m"),
+		Tree:    &Tree{SHA: String("t")},
+		Parents: []Commit{{SHA: String("p")}},
+		Verification: &SignatureVerification{
+			Signature: String(signature),
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
+		v := new(createCommit)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+
+		want := &createCommit{
+			Message:   input.Message,
+			Tree:      String("t"),
+			Parents:   []string{"p"},
+			Signature: String(signature),
+		}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+		fmt.Fprint(w, `{"sha":"s"}`)
+	})
+
+	commit, _, err := client.Git.CreateCommit(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Git.CreateCommit returned error: %v", err)
+	}
+
+	want := &Commit{SHA: String("s")}
+	if !reflect.DeepEqual(commit, want) {
+		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
+	}
+}
+
 func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
