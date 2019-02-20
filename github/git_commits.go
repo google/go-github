@@ -84,6 +84,7 @@ type createCommit struct {
 	Message   *string       `json:"message,omitempty"`
 	Tree      *string       `json:"tree,omitempty"`
 	Parents   []string      `json:"parents,omitempty"`
+	Signature *string       `json:"signature,omitempty"`
 }
 
 // CreateCommit creates a new commit in a repository.
@@ -114,6 +115,9 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	}
 	if commit.Tree != nil {
 		body.Tree = commit.Tree.SHA
+	}
+	if commit.Verification != nil {
+		body.Signature = commit.Verification.Signature
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)
