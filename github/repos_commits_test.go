@@ -257,7 +257,7 @@ func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
 		t.Errorf("Expected HTTP 304 response")
 	}
 
-	if want = ""; got != want {
+	if want := ""; got != want {
 		t.Errorf("Repositories.GetCommitSHA1 = %v, want %v", got, want)
 	}
 }
