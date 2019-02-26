@@ -43,11 +43,11 @@ func TestPullComments_marshall(t *testing.T) {
 			PublicRepos: Int(1),
 			Followers:   Int(1),
 			Following:   Int(1),
-			CreatedAt:   &Timestamp{referenceTime},
+			CreatedAt:   time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 			URL:         String("u"),
 		},
-		Reactions: &Reaction{
-			ID: int64(),
+		Reactions: []*Reaction{{
+			ID: int64(223),
 			User: &User{
 				Login:       String("ll"),
 				ID:          Int64(123),
@@ -62,13 +62,13 @@ func TestPullComments_marshall(t *testing.T) {
 				PublicRepos: Int(1),
 				Followers:   Int(1),
 				Following:   Int(1),
-				CreatedAt:   &Timestamp{referenceTime},
+				CreatedAt:   time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 				URL:         String("u"),
 			},
 			Content: String("Heart"),
-		},
-		CreatedAt:      &Timestamp{referenceTime},
-		UpdatedAt:      &Timestamp{referenceTime},
+		}},
+		CreatedAt:      time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		UpdatedAt:      time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		URL:            String("pullrequestcommentUrl"),
 		HTMLURL:        String("pullrequestcommentHTMLUrl"),
 		PullRequestURL: String("pullrequestcommentPullRequestURL"),
@@ -99,11 +99,11 @@ func TestPullComments_marshall(t *testing.T) {
 		"public_repos": 1,
 		"followers": 1,
 		"following": 1,
-		"created_at": ` + referenceTimeStr + `,
+		"created_at": "2002-02-10T15:30:00Z",
 		"url": "u"
 	},
-	"reactions": {
-		"id": 123,
+	"reactions": [{
+		"id": 223,
 		"user": {
 			"login": "ll",
 			"id": 123,
@@ -118,13 +118,13 @@ func TestPullComments_marshall(t *testing.T) {
 			"public_repos": 1,
 			"followers": 1,
 			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
+			"created_at": "2002-02-10T15:30:00Z",
 			"url": "u"
 		},
 		"content": "Heart"
-	},
-    "created_at": "2011-04-14T16:00:49Z",
-	"updated_at": "2011-04-14T16:00:49Z",
+	}],
+    "created_at": "2002-02-10T15:30:00Z",
+	"updated_at": "2002-02-10T15:30:00Z",
 	"url": "pullrequestcommentUrl",
     "html_url": "pullrequestcommentHTMLUrl",
     "pull_request_url": "pullrequestcommentPullRequestURL",
