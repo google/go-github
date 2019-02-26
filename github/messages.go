@@ -130,8 +130,8 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 // The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
 // If the Content-Type is neither then an error is returned.
 // secretKey is the GitHub Webhook secret message.
-// If your webhook does not contain a secret message, you can pass nil. This
-// is intended for local development purposes only and all webhooks should contain a secret message.
+// If your webhook does not contain a secret message, you can pass nil or an empty slice.
+// This is intended for local development purposes only and all webhooks should contain a secret message.
 //
 // Example usage:
 //
@@ -179,7 +179,7 @@ func ValidatePayload(r *http.Request, secretKey []byte) (payload []byte, err err
 
 	// Only validate the signature if a secret message exists. This is intended for
 	// local development only and all webhooks should contain a secret message.
-	if secretKey != nil {
+	if len(secretKey) > 0 {
 		sig := r.Header.Get(signatureHeader)
 		if err := ValidateSignature(sig, body, secretKey); err != nil {
 			return nil, err

@@ -110,7 +110,7 @@ func TestValidatePayload_FormGet(t *testing.T) {
 
 	// check that if payload is invalid we get error
 	req.Header.Set(signatureHeader, "invalid signature")
-	if _, err = ValidatePayload(req, []byte{}); err == nil {
+	if _, err = ValidatePayload(req, []byte{0}); err == nil {
 		t.Error("ValidatePayload = nil, want err")
 	}
 }
@@ -140,7 +140,7 @@ func TestValidatePayload_FormPost(t *testing.T) {
 
 	// check that if payload is invalid we get error
 	req.Header.Set(signatureHeader, "invalid signature")
-	if _, err = ValidatePayload(req, []byte{}); err == nil {
+	if _, err = ValidatePayload(req, []byte{0}); err == nil {
 		t.Error("ValidatePayload = nil, want err")
 	}
 }
