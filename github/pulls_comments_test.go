@@ -15,6 +15,124 @@ import (
 	"time"
 )
 
+func TestPullComments_marshall(t *testing.T) {
+	testJSONMarshal(t, &PullRequestComment{}, "{}")
+
+	u := &PullRequestComment{
+		ID:                  Int64(10),
+		InReplyTo:           Int64(8),
+		Body:                String("Test comment"),
+		Path:                String("file1.txt"),
+		DiffHunk:            String("@@ -16,33 +16,40 @@ fmt.Println()"),
+		PullRequestReviewID: Int64(42),
+		Position:            Int(1),
+		OriginalPosition:    Int(4),
+		CommitID:            String("ab"),
+		OriginalCommitID:    String("9c"),
+		User: &User{
+			Login:       String("ll"),
+			ID:          Int64(123),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+		Reactions: &Reaction{
+			ID: int64(),
+			User: &User{
+				Login:       String("ll"),
+				ID:          Int64(123),
+				AvatarURL:   String("a"),
+				GravatarID:  String("g"),
+				Name:        String("n"),
+				Company:     String("c"),
+				Blog:        String("b"),
+				Location:    String("l"),
+				Email:       String("e"),
+				Hireable:    Bool(true),
+				PublicRepos: Int(1),
+				Followers:   Int(1),
+				Following:   Int(1),
+				CreatedAt:   &Timestamp{referenceTime},
+				URL:         String("u"),
+			},
+			Content: String("Heart"),
+		},
+		CreatedAt:      &Timestamp{referenceTime},
+		UpdatedAt:      &Timestamp{referenceTime},
+		URL:            String("pullrequestcommentUrl"),
+		HTMLURL:        String("pullrequestcommentHTMLUrl"),
+		PullRequestURL: String("pullrequestcommentPullRequestURL"),
+	}
+
+	want := `{
+    "id": 10,
+	"in_reply_to_id": 8,
+	"body": "Test comment",
+    "path": "file1.txt",
+    "diff_hunk": "@@ -16,33 +16,40 @@ fmt.Println()",
+    "pull_request_review_id": 42,
+    "position": 1,
+    "original_position": 4,
+    "commit_id": "ab",
+    "original_commit_id": "9c",
+    "user": {
+		"login": "ll",
+		"id": 123,
+		"avatar_url": "a",
+		"gravatar_id": "g",
+		"name": "n",
+		"company": "c",
+		"blog": "b",
+		"location": "l",
+		"email": "e",
+		"hireable": true,
+		"public_repos": 1,
+		"followers": 1,
+		"following": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"url": "u"
+	},
+	"reactions": {
+		"id": 123,
+		"user": {
+			"login": "ll",
+			"id": 123,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"content": "Heart"
+	},
+    "created_at": "2011-04-14T16:00:49Z",
+	"updated_at": "2011-04-14T16:00:49Z",
+	"url": "pullrequestcommentUrl",
+    "html_url": "pullrequestcommentHTMLUrl",
+    "pull_request_url": "pullrequestcommentPullRequestURL",
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
