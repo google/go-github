@@ -92,7 +92,7 @@ func (h Hook) String() string {
 // information.
 type createHookRequest struct {
 	// Config is required.
-	Name   string                 `json:"name,omitempty"`
+	Name   string                 `json:"name"`
 	Config map[string]interface{} `json:"config,omitempty"`
 	Events []string               `json:"events,omitempty"`
 	Active *bool                  `json:"active,omitempty"`
