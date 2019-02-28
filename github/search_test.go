@@ -115,7 +115,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	const q = "gopher is:issue label:bug language:go pushed:>=2018-01-01 stars:>=200"
+	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
 	var requestURI string
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -134,7 +134,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
 
-	if want := "/api-v3/search/issues?q=gopher+is:issue+label:bug+language:go+pushed:%3E=2018-01-01+stars:%3E=200"; requestURI != want {
+	if want := "/api-v3/search/issues?q=gopher+is%3Aissue+label%3Abug+language%3Ac%2B%2B+pushed%3A%3E%3D2018-01-01+stars%3A%3E%3D200"; requestURI != want {
 		t.Fatalf("URI encoding failed: got %v, want %v", requestURI, want)
 	}
 
@@ -152,7 +152,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	const q = "gopher is:issue label:bug language:go pushed:>=2018-01-01 stars:>=200"
+	const q = "gopher is:issue label:bug language:c++ pushed:>=2018-01-01 stars:>=200"
 
 	var requestURI string
 	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -172,7 +172,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
 
-	if want := "/api-v3/search/issues?q=gopher+is:issue+label:bug+language:go+pushed:%3E=2018-01-01+stars:%3E=200&sort=forks"; requestURI != want {
+	if want := "/api-v3/search/issues?q=gopher+is%3Aissue+label%3Abug+language%3Ac%2B%2B+pushed%3A%3E%3D2018-01-01+stars%3A%3E%3D200&sort=forks"; requestURI != want {
 		t.Fatalf("URI encoding failed: got %v, want %v", requestURI, want)
 	}
 
