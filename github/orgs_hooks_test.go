@@ -56,7 +56,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		want := &createHookRequest{}
+		want := &createHookRequest{Name: "web"}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
