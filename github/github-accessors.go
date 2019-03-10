@@ -860,14 +860,6 @@ func (c *CheckSuiteEvent) GetAction() string {
 	return *c.Action
 }
 
-// GetCheckSuite returns the CheckSuite field.
-func (c *CheckSuiteEvent) GetCheckSuite() *CheckSuite {
-	if c == nil {
-		return nil
-	}
-	return c.CheckSuite
-}
-
 // GetInstallation returns the Installation field.
 func (c *CheckSuiteEvent) GetInstallation() *Installation {
 	if c == nil {

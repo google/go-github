@@ -37,7 +37,10 @@ type CheckRunEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checksuiteevent
 type CheckSuiteEvent struct {
-	CheckSuite *CheckSuite `json:"check_suite,omitempty"`
+	CheckSuite struct {
+		*CheckSuite
+		HeadCommit *Commit `json:"head_commit,omitempty"`
+	} `json:"check_suite,omitempty"`
 	// The action performed. Can be "completed", "requested" or "re-requested".
 	Action *string `json:"action,omitempty"`
 
