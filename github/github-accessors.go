@@ -804,6 +804,14 @@ func (c *CheckSuite) GetHeadBranch() string {
 	return *c.HeadBranch
 }
 
+// GetHeadCommit returns the HeadCommit field.
+func (c *CheckSuite) GetHeadCommit() *Commit {
+	if c == nil {
+		return nil
+	}
+	return c.HeadCommit
+}
+
 // GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetHeadSHA() string {
 	if c == nil || c.HeadSHA == nil {
@@ -858,6 +866,14 @@ func (c *CheckSuiteEvent) GetAction() string {
 		return ""
 	}
 	return *c.Action
+}
+
+// GetCheckSuite returns the CheckSuite field.
+func (c *CheckSuiteEvent) GetCheckSuite() *CheckSuite {
+	if c == nil {
+		return nil
+	}
+	return c.CheckSuite
 }
 
 // GetInstallation returns the Installation field.
