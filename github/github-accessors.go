@@ -804,6 +804,14 @@ func (c *CheckSuite) GetHeadBranch() string {
 	return *c.HeadBranch
 }
 
+// GetHeadCommit returns the HeadCommit field.
+func (c *CheckSuite) GetHeadCommit() *Commit {
+	if c == nil {
+		return nil
+	}
+	return c.HeadCommit
+}
+
 // GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetHeadSHA() string {
 	if c == nil || c.HeadSHA == nil {
