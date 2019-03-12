@@ -81,6 +81,9 @@ type CheckSuite struct {
 	App          *App           `json:"app,omitempty"`
 	Repository   *Repository    `json:"repository,omitempty"`
 	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	HeadCommit *Commit `json:"head_commit,omitempty"`
 }
 
 func (c CheckRun) String() string {
