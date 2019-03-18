@@ -18,8 +18,10 @@ env:
   secure: "IrnPmy/rkIP6Nrbqji+u7MCAibQlA6WvPLEllmDQ2yZP/uIe3wLwwYbTu9BOkgzoLA+f8PA6u3pp/RhY/rtaM4NzHAO2nVfGIv9UHUQ3NGq0DYS6rODjVKhq7vkhELoagRewyqFVN4rE0LnExkknRMgjQfRke6/DA7u7Xm8JyhY=" # COVERALLS_TOKEN
 
 install:
-  - go get golang.org/x/tools/cmd/cover
-  - go get github.com/mattn/goveralls
+  # install specific versions of tools.  Otherwise, the latest version will always 
+  # be installed, which may change the depds in go.mod, breaking later tests.
+  - go get golang.org/x/tools/cmd/cover@v0.0.0-20190318005222-63e6ed9258fa
+  - go get github.com/mattn/goveralls@v0.0.2
   - # Do not install go-github yet, since we want it to happen inside the script step.
 
 script:
