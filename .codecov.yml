@@ -1,0 +1,3 @@
+ignore:
+  # ignore auto-generated code
+  - "github/github-accessors.go"
