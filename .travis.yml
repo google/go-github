@@ -13,13 +13,8 @@ matrix:
 env:
   global:
     - GO111MODULE=on
-  secure: "IrnPmy/rkIP6Nrbqji+u7MCAibQlA6WvPLEllmDQ2yZP/uIe3wLwwYbTu9BOkgzoLA+f8PA6u3pp/RhY/rtaM4NzHAO2nVfGIv9UHUQ3NGq0DYS6rODjVKhq7vkhELoagRewyqFVN4rE0LnExkknRMgjQfRke6/DA7u7Xm8JyhY=" # COVERALLS_TOKEN
 
 install:
-  # install specific versions of tools.  Otherwise, the latest version will always 
-  # be installed, which may change the depds in go.mod, breaking later tests.
-  - go get golang.org/x/tools/cmd/cover@v0.0.0-20190318005222-63e6ed9258fa
-  - go get github.com/mattn/goveralls@v0.0.2
   - # Do not install go-github yet, since we want it to happen inside the script step.
 
 script:
@@ -27,10 +22,8 @@ script:
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code) # Check that go generate ./... produces a zero diff; clean up any changes afterwards.
   - go vet ./...
-  - go test -v -race ./...
+  - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
   - go test -v -tags=integration -run=^$ ./test/integration # Check that integration test builds successfully, but don't run any of the tests (they hit live GitHub API).
 
-  # Generate test coverage report. This must be after all other tests.
-  #- rm github/github-accessors.go # exclude generated code
-  #- go test -v -covermode=count -coverprofile=coverage.out ./github
-  #- $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
