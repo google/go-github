@@ -10,6 +10,11 @@ matrix:
     - go: master
   fast_finish: true
 
+cache:
+  directories:
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod
+
 env:
   global:
     - GO111MODULE=on
