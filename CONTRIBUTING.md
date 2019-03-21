@@ -17,6 +17,18 @@ You generally only need to submit a CLA once, so if you've already submitted one
 again.
 
 
+## Reporting issues ##
+
+Bugs, feature requests, and development-related questions should be directed to
+our [GitHub issue tracker](https://github.com/google/go-github/issues).  If
+reporting a bug, please try and provide as much context as possible such as
+your operating system, Go version, and anything else that might be relevant to
+the bug.  For feature requests, please explain what you're trying to do, and
+how the requested feature would help you do that.
+
+Security related bugs can either be reported in the issue tracker, or if they
+are more sensitive, emailed to <opensource@google.com>.
+
 ## Submitting a patch ##
 
   1. It's generally best to start by opening a new issue describing the bug or
