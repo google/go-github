@@ -201,6 +201,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateAttachment returned error: %v", err)
 	}
+
 	want := &Attachment{ID: Int64(1), Title: String("title1"), Body: String("body1")}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)

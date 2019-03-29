@@ -62,6 +62,7 @@ type Installation struct {
 	UpdatedAt           *Timestamp               `json:"updated_at,omitempty"`
 }
 
+// Attachment represents GitHub Apps content attachment
 type Attachment struct {
 	ID    *int64  `json:"id,omitempty"`
 	Title *string `json:"title,omitempty"`
