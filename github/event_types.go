@@ -535,7 +535,7 @@ type PublicEvent struct {
 type PullRequestEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled",
-	// "opened", "closed", "reopened", "synchronize", "edited".
+	// "opened", "closed", "ready_for_review", "reopened", "synchronize", "edited".
 	// If the action is "closed" and the merged key is false,
 	// the pull request was closed with unmerged commits. If the action is "closed"
 	// and the merged key is true, the pull request was merged.
