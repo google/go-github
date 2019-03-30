@@ -62,7 +62,7 @@ type Installation struct {
 	UpdatedAt           *Timestamp               `json:"updated_at,omitempty"`
 }
 
-// Attachment represents a GitHub Apps attachment content
+// Attachment represents a GitHub Apps attachment.
 type Attachment struct {
 	ID    *int64  `json:"id,omitempty"`
 	Title *string `json:"title,omitempty"`
@@ -209,7 +209,7 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 	if err != nil {
 		return nil, resp, err
 	}
-	return m, resp, err
+	return m, resp, nil
 }
 
 // FindOrganizationInstallation finds the organization's installation information.
