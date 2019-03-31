@@ -209,6 +209,7 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return m, resp, nil
 }
 
