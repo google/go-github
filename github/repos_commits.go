@@ -54,6 +54,8 @@ type CommitFile struct {
 	Additions        *int    `json:"additions,omitempty"`
 	Deletions        *int    `json:"deletions,omitempty"`
 	Changes          *int    `json:"changes,omitempty"`
+
+	// Status returns status of the changed file. Possible values include: "added", "modified", and "removed".
 	Status           *string `json:"status,omitempty"`
 	Patch            *string `json:"patch,omitempty"`
 	BlobURL          *string `json:"blob_url,omitempty"`
