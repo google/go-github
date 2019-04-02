@@ -42,8 +42,8 @@ func TestGist_marshall(t *testing.T) {
 			CreatedAt:   &Timestamp{referenceTime},
 			URL:         String("u"),
 		},
-		Files: map[*GistFilename]GistFile{
-			String("gistfile.py"): &GistFile{
+		Files: map[GistFilename]GistFile{
+			"gistfile.py": GistFile{
 				Size:     Int(167),
 				Filename: String("gistfile.py"),
 				Language: String("Python"),
