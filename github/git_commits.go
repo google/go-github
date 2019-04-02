@@ -6,9 +6,12 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"time"
+
+	"golang.org/x/crypto/openpgp"
 )
 
 // SignatureVerification represents GPG signature verification.
@@ -37,6 +40,11 @@ type Commit struct {
 	// is only populated for requests that fetch GitHub data like
 	// Pulls.ListCommits, Repositories.ListCommits, etc.
 	CommentCount *int `json:"comment_count,omitempty"`
+
+	// SignKey denotes a key to sign the commit with. If not nil this key will
+	// be used to sign the commit. The private key must be present and already
+	// decrypted. Ignored if Verification.Signature is defined.
+	SignKey *openpgp.Entity
 }
 
 func (c Commit) String() string {
@@ -116,6 +124,13 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	if commit.Tree != nil {
 		body.Tree = commit.Tree.SHA
 	}
+	if commit.SignKey != nil {
+		signature, err := createSignature(commit.SignKey, body)
+		if err != nil {
+			return nil, nil, err
+		}
+		body.Signature = &signature
+	}
 	if commit.Verification != nil {
 		body.Signature = commit.Verification.Signature
 	}
@@ -132,4 +147,42 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	}
 
 	return c, resp, nil
+}
+
+func createSignature(signKey *openpgp.Entity, commit *createCommit) (string, error) {
+	if commit.Author == nil {
+		return "", fmt.Errorf("Commit Author is required to sign a commit")
+	}
+	message := createSignatureMessage(commit)
+
+	writer := new(bytes.Buffer)
+	reader := bytes.NewReader([]byte(message))
+	err := openpgp.ArmoredDetachSign(writer, signKey, reader, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return writer.String(), nil
+}
+
+func createSignatureMessage(commit *createCommit) string {
+	message := ""
+
+	if commit.Tree != nil {
+		message = fmt.Sprintf("tree %s\n", *commit.Tree)
+	}
+
+	for _, parent := range commit.Parents {
+		message += fmt.Sprintf("parent %s\n", parent)
+	}
+
+	message += fmt.Sprintf("author %s <%s> %d %s\n", *commit.Author.Name, *commit.Author.Email, commit.Author.Date.Unix(), commit.Author.Date.Format("-0700"))
+	commiter := commit.Committer
+	if commiter == nil {
+		commiter = commit.Author
+	}
+	// There needs to be a double newline after committer
+	message += fmt.Sprintf("committer %s <%s> %d %s\n\n", *commiter.Name, *commiter.Email, commiter.Date.Unix(), commiter.Date.Format("-0700"))
+	message += fmt.Sprintf("%s", *commit.Message)
+	return message
 }
