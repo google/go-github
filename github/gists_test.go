@@ -22,7 +22,7 @@ func TestGist_marshall(t *testing.T) {
 	updatedAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
 
 	u := &Gist{
-		ID:          Int64(1),
+		ID:          String("i"),
 		Description: String("description"),
 		Public:      Bool(true),
 		Owner: &User{
@@ -42,7 +42,7 @@ func TestGist_marshall(t *testing.T) {
 			CreatedAt:   &Timestamp{referenceTime},
 			URL:         String("u"),
 		},
-		Files: map[GistFilename]GistFile{
+		Files: map[*GistFilename]GistFile{
 			String("gistfile.py"): &GistFile{
 				Size:     Int(167),
 				Filename: String("gistfile.py"),
@@ -62,7 +62,7 @@ func TestGist_marshall(t *testing.T) {
 	}
 
 	want := `{
-		"id": 1,
+		"id": "i",
 		"description": "description",
 		"public": true,
 		"owner": {
@@ -107,8 +107,6 @@ func TestGist_marshall(t *testing.T) {
 func TestGistCommit_marshall(t *testing.T) {
 	testJSONMarshal(t, &GistCommit{}, "{}")
 
-	committedAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
-
 	u := &GistCommit{
 		URL:     String("u"),
 		Version: String("v"),
@@ -129,12 +127,12 @@ func TestGistCommit_marshall(t *testing.T) {
 			CreatedAt:   &Timestamp{referenceTime},
 			URL:         String("u"),
 		},
-		ChangeStatus: &CommentStats{
+		ChangeStatus: &CommitStats{
 			Additions: Int(1),
 			Deletions: Int(1),
 			Total:     Int(2),
 		},
-		CommittedAt: &committedAt,
+		CommittedAt: &Timestamp{referenceTime},
 		NodeID:      String("node"),
 	}
 
@@ -163,7 +161,7 @@ func TestGistCommit_marshall(t *testing.T) {
 			"deletions": 1,
 			"total": 2
 		},
-		"committed_at": "2010-02-10T10:10:00Z",
+		"committed_at": ` + referenceTimeStr + `,
 		"node_id": "node"
 	}`
 
@@ -172,9 +170,6 @@ func TestGistCommit_marshall(t *testing.T) {
 
 func TestGistFork_marshall(t *testing.T) {
 	testJSONMarshal(t, &GistFork{}, "{}")
-
-	createdAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
-	updatedAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
 
 	u := &GistFork{
 		URL: String("u"),
@@ -196,8 +191,8 @@ func TestGistFork_marshall(t *testing.T) {
 			URL:         String("u"),
 		},
 		ID:        String("id"),
-		CreatedAt: &createdAt,
-		UpdatedAt: &updatedAt,
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
 		NodeID:    String("node"),
 	}
 
@@ -221,8 +216,8 @@ func TestGistFork_marshall(t *testing.T) {
 			"url": "u"
 		},
 		"id": 1,
-		"created_at": "2010-02-10T10:10:00Z",
-		"updated_at": "2010-02-10T10:10:00Z",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
 		"node_id": "node"
 	}`
 }
