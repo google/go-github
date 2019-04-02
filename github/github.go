@@ -67,7 +67,7 @@ const (
 	mediaTypeTimelinePreview = "application/vnd.github.mockingbird-preview+json"
 
 	// https://developer.github.com/changes/2016-07-06-github-pages-preiew-api/
-	mediaTypePagesPreview = "application/vnd.github.mister-fantastic-preview+json"
+	mediaTypePagesPreview = "application/vnd.github.switcheroo-preview+json"
 
 	// https://developer.github.com/changes/2016-09-14-projects-api/
 	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
@@ -131,6 +131,8 @@ const (
 
 	// https://developer.github.com/changes/2019-02-14-draft-pull-requests/
 	mediaTypeDraftPreview = "application/vnd.github.shadow-cat-preview+json"
+
+	mediaTypePagesPreview
 )
 
 // A Client manages communication with the GitHub API.
