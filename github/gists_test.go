@@ -220,6 +220,8 @@ func TestGistFork_marshall(t *testing.T) {
 		"updated_at": ` + referenceTimeStr + `,
 		"node_id": "node"
 	}`
+
+	testJSONMarshal(t, u, want)
 }
 
 func TestGistsService_List_specifiedUser(t *testing.T) {
