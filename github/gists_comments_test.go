@@ -65,7 +65,7 @@ func TestGistComments_marshall(t *testing.T) {
 		"created_at": ` + referenceTimeStr + `,
 		"url": "u"
 	},
-    "created_at": "2002-02-10T15:30:00Z",
+    "created_at": "2002-02-10T15:30:00Z"
 	}`
 
 	testJSONMarshal(t, u, want)
