@@ -131,8 +131,6 @@ const (
 
 	// https://developer.github.com/changes/2019-02-14-draft-pull-requests/
 	mediaTypeDraftPreview = "application/vnd.github.shadow-cat-preview+json"
-
-	mediaTypePagesPreview
 )
 
 // A Client manages communication with the GitHub API.
