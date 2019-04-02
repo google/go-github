@@ -215,7 +215,7 @@ func TestGistFork_marshall(t *testing.T) {
 			"created_at": ` + referenceTimeStr + `,
 			"url": "u"
 		},
-		"id": 1,
+		"id": "id",
 		"created_at": ` + referenceTimeStr + `,
 		"updated_at": ` + referenceTimeStr + `,
 		"node_id": "node"
