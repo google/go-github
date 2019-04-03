@@ -5500,6 +5500,14 @@ func (n *NewPullRequest) GetBody() string {
 	return *n.Body
 }
 
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (n *NewPullRequest) GetDraft() bool {
+	if n == nil || n.Draft == nil {
+		return false
+	}
+	return *n.Draft
+}
+
 // GetHead returns the Head field if it's non-nil, zero value otherwise.
 func (n *NewPullRequest) GetHead() string {
 	if n == nil || n.Head == nil {
