@@ -43,7 +43,7 @@ func TestGist_marshall(t *testing.T) {
 			URL:         String("u"),
 		},
 		Files: map[GistFilename]GistFile{
-			"gistfile.py": GistFile{
+			"gistfile.py": {
 				Size:     Int(167),
 				Filename: String("gistfile.py"),
 				Language: String("Python"),
