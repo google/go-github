@@ -22,7 +22,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
 		testHeader(t, r, "Accept", strings.Join(wantHeaders, ","))
-		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "directory":"/"}}`)
+		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
 	page, _, err := client.Repositories.EnablePageSite(context.Background(), "o", "r")
