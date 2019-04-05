@@ -2500,6 +2500,38 @@ func (d *DismissalRestrictionsRequest) GetUsers() []string {
 	return *d.Users
 }
 
+// GetDismissalCommit returns the DismissalCommit field if it's non-nil, zero value otherwise.
+func (d *DismissedReview) GetDismissalCommit() string {
+	if d == nil || d.DismissalCommit == nil {
+		return ""
+	}
+	return *d.DismissalCommit
+}
+
+// GetDismissalMessage returns the DismissalMessage field if it's non-nil, zero value otherwise.
+func (d *DismissedReview) GetDismissalMessage() string {
+	if d == nil || d.DismissalMessage == nil {
+		return ""
+	}
+	return *d.DismissalMessage
+}
+
+// GetReviewID returns the ReviewID field if it's non-nil, zero value otherwise.
+func (d *DismissedReview) GetReviewID() int64 {
+	if d == nil || d.ReviewID == nil {
+		return 0
+	}
+	return *d.ReviewID
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (d *DismissedReview) GetState() string {
+	if d == nil || d.State == nil {
+		return ""
+	}
+	return *d.State
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (d *DraftReviewComment) GetBody() string {
 	if d == nil || d.Body == nil {
@@ -4114,6 +4146,14 @@ func (i *IssueEvent) GetCreatedAt() time.Time {
 		return time.Time{}
 	}
 	return *i.CreatedAt
+}
+
+// GetDismissedReview returns the DismissedReview field.
+func (i *IssueEvent) GetDismissedReview() *DismissedReview {
+	if i == nil {
+		return nil
+	}
+	return i.DismissedReview
 }
 
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
