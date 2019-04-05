@@ -10,8 +10,48 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
+
+func TestRepositoriesService_EnablePages(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		wantHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+		testHeader(t, r, "Accept", strings.Join(wantHeaders, ","))
+		fmt.Printf(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "directory":"/"}}`)
+	})
+
+	page, _, err := client.Repositories.EnablePageSite(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.EnablePageSite returned error: %v", err)
+	}
+
+	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PageOptions{Branch: String("master"), Path: String("/")}}
+
+	if !reflect.DeepEqual(page, want) {
+		t.Errorf("Repositories.EnablePageSite returned %+v, want %+v", page, want)
+	}
+}
+
+func TestRepositoriesService_DisablePages(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		wantHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+		testHeader(t, r, "Accept", strings.Join(wantHeaders, ","))
+	})
+
+	_, err := client.Repositories.DisablePageSite(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.DisablePageSite returned error: %v", err)
+	}
+}
 
 func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 	client, mux, _, teardown := setup()

@@ -8,15 +8,23 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Pages represents a GitHub Pages site configuration.
 type Pages struct {
-	URL       *string `json:"url,omitempty"`
-	Status    *string `json:"status,omitempty"`
-	CNAME     *string `json:"cname,omitempty"`
-	Custom404 *bool   `json:"custom_404,omitempty"`
-	HTMLURL   *string `json:"html_url,omitempty"`
+	URL       *string      `json:"url,omitempty"`
+	Status    *string      `json:"status,omitempty"`
+	CNAME     *string      `json:"cname,omitempty"`
+	Custom404 *bool        `json:"custom_404,omitempty"`
+	HTMLURL   *string      `json:"html_url,omitempty"`
+	Source    *PageOptions `json:"source,omitempty"`
+}
+
+// PageOptions represents options to enable/disable pages
+type PageOptions struct {
+	Branch *string `json:"branch,omitempty"`
+	Path   *string `json:"path,omitempty"`
 }
 
 // PagesError represents a build error for a GitHub Pages site.
@@ -34,6 +42,46 @@ type PagesBuild struct {
 	Duration  *int        `json:"duration,omitempty"`
 	CreatedAt *Timestamp  `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
+}
+
+// EnablePageSite allows to enable GitHub Pages
+//
+// https://developer.github.com/v3/repos/pages/#enable-a-pages-site
+func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+
+	enable := new(Pages)
+	resp, err := s.client.Do(ctx, req, enable)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return enable, resp, nil
+}
+
+// DisablePageSite allows to disable GitHub Pages
+//
+// https://developer.github.com/v3/repos/pages/#disable-a-pages-site
+func (s *ReactionsService) DisablePageSite(ctx context.Context, owner, repo string) (*Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/pages", owner, repo)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+
+	return s.client.Do(ctx, req, nil)
 }
 
 // GetPagesInfo fetches information about a GitHub Pages site.
