@@ -12,8 +12,64 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
+func TestGistComments_marshall(t *testing.T) {
+	testJSONMarshal(t, &GistComment{}, "{}")
+
+	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
+
+	u := &GistComment{
+		ID:   Int64(1),
+		URL:  String("u"),
+		Body: String("test gist comment"),
+		User: &User{
+			Login:       String("ll"),
+			ID:          Int64(123),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+		CreatedAt: &createdAt,
+	}
+
+	want := `{
+		"id": 1,
+		"url": "u",
+		"body": "test gist comment",
+		"user": {
+			"login": "ll",
+			"id": 123,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"created_at": "2002-02-10T15:30:00Z"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
 func TestGistsService_ListComments(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
