@@ -185,6 +185,28 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	}
 }
 
+func TestAppsService_CreateAttachement(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/content_references/11/attachments", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"id":1,"title":"title1","body":"body1"}`))
+	})
+
+	got, _, err := client.Apps.CreateAttachment(context.Background(), 11, "title1", "body1")
+	if err != nil {
+		t.Errorf("CreateAttachment returned error: %v", err)
+	}
+
+	want := &Attachment{ID: Int64(1), Title: String("title1"), Body: String("body1")}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
+	}
+}
 func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
