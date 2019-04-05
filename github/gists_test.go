@@ -15,6 +15,215 @@ import (
 	"time"
 )
 
+func TestGist_marshall(t *testing.T) {
+	testJSONMarshal(t, &Gist{}, "{}")
+
+	createdAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
+	updatedAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
+
+	u := &Gist{
+		ID:          String("i"),
+		Description: String("description"),
+		Public:      Bool(true),
+		Owner: &User{
+			Login:       String("ll"),
+			ID:          Int64(123),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+		Files: map[GistFilename]GistFile{
+			"gistfile.py": {
+				Size:     Int(167),
+				Filename: String("gistfile.py"),
+				Language: String("Python"),
+				Type:     String("application/x-python"),
+				RawURL:   String("raw-url"),
+				Content:  String("c"),
+			},
+		},
+		Comments:   Int(1),
+		HTMLURL:    String("html-url"),
+		GitPullURL: String("gitpull-url"),
+		GitPushURL: String("gitpush-url"),
+		CreatedAt:  &createdAt,
+		UpdatedAt:  &updatedAt,
+		NodeID:     String("node"),
+	}
+
+	want := `{
+		"id": "i",
+		"description": "description",
+		"public": true,
+		"owner": {
+			"login": "ll",
+			"id": 123,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"files": {
+			"gistfile.py": {
+				"size": 167,
+				"filename": "gistfile.py",
+				"language": "Python",
+				"type": "application/x-python",
+				"raw_url": "raw-url",
+				"content": "c"
+			}
+		},
+		"comments": 1,
+		"html_url": "html-url",
+		"git_pull_url": "gitpull-url",
+		"git_push_url": "gitpush-url",
+		"created_at": "2010-02-10T10:10:00Z",
+		"updated_at": "2010-02-10T10:10:00Z",
+		"node_id": "node"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestGistCommit_marshall(t *testing.T) {
+	testJSONMarshal(t, &GistCommit{}, "{}")
+
+	u := &GistCommit{
+		URL:     String("u"),
+		Version: String("v"),
+		User: &User{
+			Login:       String("ll"),
+			ID:          Int64(123),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+		ChangeStatus: &CommitStats{
+			Additions: Int(1),
+			Deletions: Int(1),
+			Total:     Int(2),
+		},
+		CommittedAt: &Timestamp{referenceTime},
+		NodeID:      String("node"),
+	}
+
+	want := `{
+		"url": "u",
+		"version": "v",
+		"user": {
+			"login": "ll",
+			"id": 123,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"change_status": {
+			"additions": 1,
+			"deletions": 1,
+			"total": 2
+		},
+		"committed_at": ` + referenceTimeStr + `,
+		"node_id": "node"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestGistFork_marshall(t *testing.T) {
+	testJSONMarshal(t, &GistFork{}, "{}")
+
+	u := &GistFork{
+		URL: String("u"),
+		User: &User{
+			Login:       String("ll"),
+			ID:          Int64(123),
+			AvatarURL:   String("a"),
+			GravatarID:  String("g"),
+			Name:        String("n"),
+			Company:     String("c"),
+			Blog:        String("b"),
+			Location:    String("l"),
+			Email:       String("e"),
+			Hireable:    Bool(true),
+			PublicRepos: Int(1),
+			Followers:   Int(1),
+			Following:   Int(1),
+			CreatedAt:   &Timestamp{referenceTime},
+			URL:         String("u"),
+		},
+		ID:        String("id"),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		NodeID:    String("node"),
+	}
+
+	want := `{
+		"url": "u",
+		"user": {
+			"login": "ll",
+			"id": 123,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"id": "id",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"node_id": "node"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestGistsService_List_specifiedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
