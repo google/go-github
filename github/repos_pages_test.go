@@ -33,7 +33,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PageOptions{Branch: String("master"), Path: String("/")}}
 
 	if !reflect.DeepEqual(page, want) {
-		t.Errorf("Repositories.EnablePageSite returned %+v, want %+v", page, want)
+		t.Errorf("Repositories.EnablePageSite returned %v, want %v", page, want)
 	}
 }
 
