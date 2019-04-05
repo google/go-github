@@ -69,14 +69,25 @@ type IssueEvent struct {
 	Issue     *Issue     `json:"issue,omitempty"`
 
 	// Only present on certain events; see above.
-	Assignee    *User        `json:"assignee,omitempty"`
-	Assigner    *User        `json:"assigner,omitempty"`
-	CommitID    *string      `json:"commit_id,omitempty"`
-	Milestone   *Milestone   `json:"milestone,omitempty"`
-	Label       *Label       `json:"label,omitempty"`
-	Rename      *Rename      `json:"rename,omitempty"`
-	LockReason  *string      `json:"lock_reason,omitempty"`
-	ProjectCard *ProjectCard `json:"project_card,omitempty"`
+	Assignee        *User            `json:"assignee,omitempty"`
+	Assigner        *User            `json:"assigner,omitempty"`
+	CommitID        *string          `json:"commit_id,omitempty"`
+	Milestone       *Milestone       `json:"milestone,omitempty"`
+	Label           *Label           `json:"label,omitempty"`
+	Rename          *Rename          `json:"rename,omitempty"`
+	LockReason      *string          `json:"lock_reason,omitempty"`
+	ProjectCard     *ProjectCard     `json:"project_card,omitempty"`
+	DismissedReview *DismissedReview `json:"dismissed_review,omitempty"`
+}
+
+// DismissedReview represents details for 'dismissed_review' events
+type DismissedReview struct {
+	// State represents the state of the dismissed review and
+	// possible state values are: commented, approved and changes_requested
+	State            *string `json:"state,omitempty"`
+	ReviewID         *int64  `json:"review_id,omitempty"`
+	DismissalMessage *string `json:"dismissal_message,omitempty"`
+	DismissalCommit  *string `json:"dismissal_commit_id,omitempty"`
 }
 
 // ListIssueEvents lists events for the specified issue.
