@@ -2500,12 +2500,12 @@ func (d *DismissalRestrictionsRequest) GetUsers() []string {
 	return *d.Users
 }
 
-// GetDismissalCommit returns the DismissalCommit field if it's non-nil, zero value otherwise.
-func (d *DismissedReview) GetDismissalCommit() string {
-	if d == nil || d.DismissalCommit == nil {
+// GetDismissalCommitID returns the DismissalCommitID field if it's non-nil, zero value otherwise.
+func (d *DismissedReview) GetDismissalCommitID() string {
+	if d == nil || d.DismissalCommitID == nil {
 		return ""
 	}
-	return *d.DismissalCommit
+	return *d.DismissalCommitID
 }
 
 // GetDismissalMessage returns the DismissalMessage field if it's non-nil, zero value otherwise.

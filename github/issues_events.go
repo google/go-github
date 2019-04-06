@@ -63,6 +63,8 @@ type IssueEvent struct {
 	//     head_ref_deleted, head_ref_restored
 	//       The pull request’s branch was deleted or restored.
 	//
+	//    review_dismissed
+	//      The review was dismissed and `DismissedReview` will be populated below.
 	Event *string `json:"event,omitempty"`
 
 	CreatedAt *time.Time `json:"created_at,omitempty"`
@@ -80,14 +82,14 @@ type IssueEvent struct {
 	DismissedReview *DismissedReview `json:"dismissed_review,omitempty"`
 }
 
-// DismissedReview represents details for 'dismissed_review' events
+// DismissedReview represents details for 'dismissed_review' events.
 type DismissedReview struct {
-	// State represents the state of the dismissed review and
-	// possible state values are: commented, approved and changes_requested
-	State            *string `json:"state,omitempty"`
-	ReviewID         *int64  `json:"review_id,omitempty"`
-	DismissalMessage *string `json:"dismissal_message,omitempty"`
-	DismissalCommit  *string `json:"dismissal_commit_id,omitempty"`
+	// State represents the state of the dismissed review.
+	// Possible values are: "commented", "approved", and "changes_requested".
+	State             *string `json:"state,omitempty"`
+	ReviewID          *int64  `json:"review_id,omitempty"`
+	DismissalMessage  *string `json:"dismissal_message,omitempty"`
+	DismissalCommitID *string `json:"dismissal_commit_id,omitempty"`
 }
 
 // ListIssueEvents lists events for the specified issue.
