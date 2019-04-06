@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -44,9 +43,9 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
-// EnablePageSite allows to enable GitHub Pages
+// EnablePageSite enables GitHub Pages for the named repo.
 //
-// https://developer.github.com/v3/repos/pages/#enable-a-pages-site
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#enable-a-pages-site
 func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -55,8 +54,7 @@ func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo st
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	enable := new(Pages)
 	resp, err := s.client.Do(ctx, req, enable)
@@ -67,9 +65,9 @@ func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo st
 	return enable, resp, nil
 }
 
-// DisablePageSite allows to disable GitHub Pages
+// DisablePageSite disables GitHub Pages for the named repo.
 //
-// https://developer.github.com/v3/repos/pages/#disable-a-pages-site
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#disable-a-pages-site
 func (s *RepositoriesService) DisablePageSite(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -78,8 +76,7 @@ func (s *RepositoriesService) DisablePageSite(ctx context.Context, owner, repo s
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ","))
+	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
