@@ -64,7 +64,8 @@ type IssueEvent struct {
 	//       The pull request’s branch was deleted or restored.
 	//
 	//    review_dismissed
-	//      The review was dismissed and `DismissedReview` will be populated below.
+	//       The review was dismissed and `DismissedReview` will be populated below.
+	//
 	Event *string `json:"event,omitempty"`
 
 	CreatedAt *time.Time `json:"created_at,omitempty"`
