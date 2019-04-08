@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -19,7 +20,8 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
+		wantAcceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 

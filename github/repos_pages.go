@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -54,7 +55,8 @@ func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo st
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
+	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	enable := new(Pages)
 	resp, err := s.client.Do(ctx, req, enable)
