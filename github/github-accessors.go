@@ -3716,6 +3716,14 @@ func (i *Invitation) GetLogin() string {
 	return *i.Login
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
 // GetRole returns the Role field if it's non-nil, zero value otherwise.
 func (i *Invitation) GetRole() string {
 	if i == nil || i.Role == nil {
@@ -5578,6 +5586,14 @@ func (n *NewTeam) GetLDAPDN() string {
 		return ""
 	}
 	return *n.LDAPDN
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (n *NewTeam) GetNodeID() string {
+	if n == nil || n.NodeID == nil {
+		return ""
+	}
+	return *n.NodeID
 }
 
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
@@ -7548,6 +7564,14 @@ func (p *PullRequestComment) GetInReplyTo() int64 {
 	return *p.InReplyTo
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetOriginalCommitID returns the OriginalCommitID field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetOriginalCommitID() string {
 	if p == nil || p.OriginalCommitID == nil {
@@ -7804,6 +7828,14 @@ func (p *PullRequestReview) GetID() int64 {
 	return *p.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequestReview) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
 // GetPullRequestURL returns the PullRequestURL field if it's non-nil, zero value otherwise.
 func (p *PullRequestReview) GetPullRequestURL() string {
 	if p == nil || p.PullRequestURL == nil {
@@ -7978,6 +8010,14 @@ func (p *PullRequestReviewRequest) GetEvent() string {
 		return ""
 	}
 	return *p.Event
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewRequest) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
@@ -9668,6 +9708,14 @@ func (r *RepositoryCommit) GetHTMLURL() string {
 	return *r.HTMLURL
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryCommit) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetSHA returns the SHA field if it's non-nil, zero value otherwise.
 func (r *RepositoryCommit) GetSHA() string {
 	if r == nil || r.SHA == nil {
@@ -10332,6 +10380,14 @@ func (r *RepoStatus) GetID() int64 {
 	return *r.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepoStatus) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (r *RepoStatus) GetState() string {
 	if r == nil || r.State == nil {
@@ -10370,6 +10426,14 @@ func (r *RequiredStatusChecksRequest) GetStrict() bool {
 		return false
 	}
 	return *r.Strict
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *ReviewersRequest) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -10826,6 +10890,14 @@ func (t *Team) GetName() string {
 		return ""
 	}
 	return *t.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (t *Team) GetNodeID() string {
+	if t == nil || t.NodeID == nil {
+		return ""
+	}
+	return *t.NodeID
 }
 
 // GetOrganization returns the Organization field.
