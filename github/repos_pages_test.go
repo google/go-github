@@ -25,12 +25,12 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
-	page, _, err := client.Repositories.EnablePageSite(context.Background(), "o", "r")
+	page, _, err := client.Repositories.EnablePages(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.EnablePageSite returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PageOptions{Branch: String("master"), Path: String("/")}}
+	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PagesSource{Branch: String("master"), Path: String("/")}}
 
 	if !reflect.DeepEqual(page, want) {
 		t.Errorf("Repositories.EnablePageSite returned %v, want %v", page, want)
@@ -46,7 +46,7 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 	})
 
-	_, err := client.Repositories.DisablePageSite(context.Background(), "o", "r")
+	_, err := client.Repositories.DisablePage(context.Background(), "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.DisablePageSite returned error: %v", err)
 	}
