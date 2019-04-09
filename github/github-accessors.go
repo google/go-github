@@ -6164,22 +6164,6 @@ func (p *PageBuildEvent) GetSender() *User {
 	return p.Sender
 }
 
-// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
-func (p *PageOptions) GetBranch() string {
-	if p == nil || p.Branch == nil {
-		return ""
-	}
-	return *p.Branch
-}
-
-// GetPath returns the Path field if it's non-nil, zero value otherwise.
-func (p *PageOptions) GetPath() string {
-	if p == nil || p.Path == nil {
-		return ""
-	}
-	return *p.Path
-}
-
 // GetCNAME returns the CNAME field if it's non-nil, zero value otherwise.
 func (p *Pages) GetCNAME() string {
 	if p == nil || p.CNAME == nil {
@@ -6205,7 +6189,7 @@ func (p *Pages) GetHTMLURL() string {
 }
 
 // GetSource returns the Source field.
-func (p *Pages) GetSource() *PageOptions {
+func (p *Pages) GetSource() *PagesSource {
 	if p == nil {
 		return nil
 	}
@@ -6298,6 +6282,22 @@ func (p *PagesError) GetMessage() string {
 		return ""
 	}
 	return *p.Message
+}
+
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (p *PagesSource) GetBranch() string {
+	if p == nil || p.Branch == nil {
+		return ""
+	}
+	return *p.Branch
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (p *PagesSource) GetPath() string {
+	if p == nil || p.Path == nil {
+		return ""
+	}
+	return *p.Path
 }
 
 // GetTotalPages returns the TotalPages field if it's non-nil, zero value otherwise.

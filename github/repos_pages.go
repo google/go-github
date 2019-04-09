@@ -18,11 +18,11 @@ type Pages struct {
 	CNAME     *string      `json:"cname,omitempty"`
 	Custom404 *bool        `json:"custom_404,omitempty"`
 	HTMLURL   *string      `json:"html_url,omitempty"`
-	Source    *PageOptions `json:"source,omitempty"`
+	Source    *PagesSource `json:"source,omitempty"`
 }
 
-// PageOptions represents options to enable/disable pages
-type PageOptions struct {
+// PagesSource represents options to enable/disable pages
+type PagesSource struct {
 	Branch *string `json:"branch,omitempty"`
 	Path   *string `json:"path,omitempty"`
 }
@@ -44,10 +44,10 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
-// EnablePageSite enables GitHub Pages for the named repo.
+// EnablePages enables GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#enable-a-pages-site
-func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
+func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -67,10 +67,10 @@ func (s *RepositoriesService) EnablePageSite(ctx context.Context, owner, repo st
 	return enable, resp, nil
 }
 
-// DisablePageSite disables GitHub Pages for the named repo.
+// DisablePages disables GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#disable-a-pages-site
-func (s *RepositoriesService) DisablePageSite(ctx context.Context, owner, repo string) (*Response, error) {
+func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
