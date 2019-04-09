@@ -22,6 +22,7 @@ type TeamsService service
 // manage access to an organization's repositories.
 type Team struct {
 	ID          *int64  `json:"id,omitempty"`
+	NodeID      *string `json:"node_id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	URL         *string `json:"url,omitempty"`
@@ -55,9 +56,10 @@ func (t Team) String() string {
 
 // Invitation represents a team member's invitation status.
 type Invitation struct {
-	ID    *int64  `json:"id,omitempty"`
-	Login *string `json:"login,omitempty"`
-	Email *string `json:"email,omitempty"`
+	ID     *int64  `json:"id,omitempty"`
+	NodeID *string `json:"node_id,omitempty"`
+	Login  *string `json:"login,omitempty"`
+	Email  *string `json:"email,omitempty"`
 	// Role can be one of the values - 'direct_member', 'admin', 'billing_manager', 'hiring_manager', or 'reinstate'.
 	Role              *string    `json:"role,omitempty"`
 	CreatedAt         *time.Time `json:"created_at,omitempty"`
@@ -121,6 +123,7 @@ func (s *TeamsService) GetTeam(ctx context.Context, team int64) (*Team, *Respons
 
 // NewTeam represents a team to be created or modified.
 type NewTeam struct {
+	NodeID       *string  `json:"node_id,omitempty"`
 	Name         string   `json:"name"` // Name of the team. (Required.)
 	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
