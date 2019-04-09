@@ -17,6 +17,7 @@ import (
 // Note that it's wrapping a Commit, so author/committer information is in two places,
 // but contain different details about them: in RepositoryCommit "github details", in Commit - "git details".
 type RepositoryCommit struct {
+	NodeID      *string  `json:"node_id,omitempty"`
 	SHA         *string  `json:"sha,omitempty"`
 	Commit      *Commit  `json:"commit,omitempty"`
 	Author      *User    `json:"author,omitempty"`
