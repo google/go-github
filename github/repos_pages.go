@@ -21,7 +21,7 @@ type Pages struct {
 	Source    *PagesSource `json:"source,omitempty"`
 }
 
-// PagesSource represents options to enable/disable pages.
+// PagesSource represents a GitHub page's source.
 type PagesSource struct {
 	Branch *string `json:"branch,omitempty"`
 	Path   *string `json:"path,omitempty"`
