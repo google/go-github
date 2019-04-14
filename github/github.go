@@ -131,6 +131,9 @@ const (
 
 	// https://developer.github.com/changes/2019-02-14-draft-pull-requests/
 	mediaTypeDraftPreview = "application/vnd.github.shadow-cat-preview+json"
+
+	// https://developer.github.com/changes/2019-03-14-enabling-disabling-pages/
+	mediaTypeEnablePagesAPIPreview = "application/vnd.github.switcheroo-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
