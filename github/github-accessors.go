@@ -5628,14 +5628,6 @@ func (n *NewTeam) GetLDAPDN() string {
 	return *n.LDAPDN
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetNodeID() string {
-	if n == nil || n.NodeID == nil {
-		return ""
-	}
-	return *n.NodeID
-}
-
 // GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
 func (n *NewTeam) GetParentTeamID() int64 {
 	if n == nil || n.ParentTeamID == nil {
