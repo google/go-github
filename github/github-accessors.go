@@ -932,14 +932,6 @@ func (c *CheckSuiteEvent) GetSender() *User {
 	return c.Sender
 }
 
-// GetPreferenceList returns the PreferenceList field.
-func (c *CheckSuitePreferenceOptions) GetPreferenceList() *PreferenceList {
-	if c == nil {
-		return nil
-	}
-	return c.PreferenceList
-}
-
 // GetPreferences returns the Preferences field.
 func (c *CheckSuitePreferenceResults) GetPreferences() *PreferenceList {
 	if c == nil {

@@ -396,20 +396,22 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		testBody(t, r, `{"auto_trigger_checks":[{"app_id":2,"setting":false}]}`+"\n")
 		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
 	})
-	p := &PreferenceList{
-		AutoTriggerChecks: []*AutoTriggerCheck{{
-			AppID:   Int64(2),
-			Setting: Bool(false),
-		}},
-	}
-	opt := CheckSuitePreferenceOptions{PreferenceList: p}
+	a := []*AutoTriggerCheck{{
+		AppID:   Int64(2),
+		Setting: Bool(false),
+	}}
+	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
 	prefResults, _, err := client.Checks.SetCheckSuitePreferences(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Checks.SetCheckSuitePreferences return error: %v", err)
 	}
 
+	p := &PreferenceList{
+		AutoTriggerChecks: a,
+	}
 	want := &CheckSuitePreferenceResults{
 		Preferences: p,
 	}
