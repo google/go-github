@@ -123,7 +123,6 @@ func (s *TeamsService) GetTeam(ctx context.Context, team int64) (*Team, *Respons
 
 // NewTeam represents a team to be created or modified.
 type NewTeam struct {
-	NodeID       *string  `json:"node_id,omitempty"`
 	Name         string   `json:"name"` // Name of the team. (Required.)
 	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
