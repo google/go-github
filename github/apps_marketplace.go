@@ -68,6 +68,7 @@ type MarketplacePlanAccount struct {
 	URL                      *string                   `json:"url,omitempty"`
 	Type                     *string                   `json:"type,omitempty"`
 	ID                       *int64                    `json:"id,omitempty"`
+	NodeID                   *string                   `json:"node_id,omitempty"`
 	Login                    *string                   `json:"login,omitempty"`
 	Email                    *string                   `json:"email,omitempty"`
 	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
