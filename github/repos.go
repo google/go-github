@@ -57,6 +57,7 @@ type Repository struct {
 	AllowMergeCommit *bool            `json:"allow_merge_commit,omitempty"`
 	Topics           []string         `json:"topics,omitempty"`
 	Archived         *bool            `json:"archived,omitempty"`
+	Disabled         *bool            `json:"disabled,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
