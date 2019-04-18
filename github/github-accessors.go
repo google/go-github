@@ -9132,6 +9132,14 @@ func (r *Repository) GetDescription() string {
 	return *r.Description
 }
 
+// GetDisabled returns the Disabled field if it's non-nil, zero value otherwise.
+func (r *Repository) GetDisabled() bool {
+	if r == nil || r.Disabled == nil {
+		return false
+	}
+	return *r.Disabled
+}
+
 // GetDownloadsURL returns the DownloadsURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetDownloadsURL() string {
 	if r == nil || r.DownloadsURL == nil {
