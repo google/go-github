@@ -203,6 +203,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "delete",
 		},
 		{
+			payload:     &DeployKeyEvent{},
+			messageType: "deploy_key",
+		},
+		{
 			payload:     &DeploymentEvent{},
 			messageType: "deployment",
 		},
@@ -250,6 +254,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &MembershipEvent{},
 			messageType: "membership",
+		},
+		{
+			payload:     &MetaEvent{},
+			messageType: "meta",
 		},
 		{
 			payload:     &MilestoneEvent{},
@@ -314,6 +322,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &RepositoryVulnerabilityAlertEvent{},
 			messageType: "repository_vulnerability_alert",
+		},
+		{
+			payload:     &StarEvent{},
+			messageType: "star",
 		},
 		{
 			payload:     &StatusEvent{},
