@@ -801,7 +801,7 @@ type StarEvent struct {
 	// Action is the action that was performed. Possible values are: "created" or "deleted".
 	Action *string `json:"action,omitempty"`
 
-	// The time the star was created. Will be null for the deleted action.
+	// StarredAt is the time the star was created. Will be null for the deleted action.
 	StarredAt *Timestamp `json:"starred_at,omitempty"`
 }
 
