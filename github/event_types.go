@@ -19,7 +19,7 @@ type RequestedAction struct {
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checkrunevent
 type CheckRunEvent struct {
 	CheckRun *CheckRun `json:"check_run,omitempty"`
-	// The action performed. Can be "created", "updated", "rerequested" or "requested_action".
+	// The action performed. Possible values are: "created", "updated", "rerequested" or "requested_action".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -38,7 +38,7 @@ type CheckRunEvent struct {
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checksuiteevent
 type CheckSuiteEvent struct {
 	CheckSuite *CheckSuite `json:"check_suite,omitempty"`
-	// The action performed. Can be "completed", "requested" or "re-requested".
+	// The action performed. Possible values are: "completed", "requested" or "re-requested".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -109,7 +109,7 @@ type DeleteEvent struct {
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#deploykeyevent
 type DeployKeyEvent struct {
 	// Action is the action that was performed. Possible values are:
-	// "created", or "deleted".
+	// "created" or "deleted".
 	Action *string `json:"action,omitempty"`
 
 	// The deploy key resource.
@@ -166,7 +166,7 @@ type ForkEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#githubappauthorizationevent
 type GitHubAppAuthorizationEvent struct {
-	// The action performed. Can be "revoked".
+	// The action performed. Possible value is: "revoked".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -399,7 +399,7 @@ type MembershipEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#metaevent
 type MetaEvent struct {
-	// Action is the action that was performed. Possible values are: "deleted".
+	// Action is the action that was performed. Possible value is: "deleted".
 	Action *string `json:"action,omitempty"`
 	// The ID of the modified webhook.
 	HookID *int64 `json:"hook_id,omitempty"`
@@ -435,7 +435,7 @@ type MilestoneEvent struct {
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#organizationevent
 type OrganizationEvent struct {
 	// Action is the action that was performed.
-	// Can be one of "deleted", "renamed", "member_added", "member_removed", or "member_invited".
+	// Possible values are: "deleted", "renamed", "member_added", "member_removed", or "member_invited".
 	Action *string `json:"action,omitempty"`
 
 	// Invitation is the invitation for the user or email if the action is "member_invited".
@@ -739,7 +739,7 @@ type PushEventRepoOwner struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#releaseevent
 type ReleaseEvent struct {
-	// Action is the action that was performed. Possible value is: "published", "unpublished",
+	// Action is the action that was performed. Possible values are: "published", "unpublished",
 	// "created", "edited", "deleted", or "prereleased".
 	Action  *string            `json:"action,omitempty"`
 	Release *RepositoryRelease `json:"release,omitempty"`
@@ -776,7 +776,7 @@ type RepositoryEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#repositoryvulnerabilityalertevent
 type RepositoryVulnerabilityAlertEvent struct {
-	// Action is the action that was performed. This can be: "create", "dismiss", "resolve".
+	// Action is the action that was performed. Possible values are: "create", "dismiss", "resolve".
 	Action *string `json:"action,omitempty"`
 
 	//The security alert of the vulnerable dependency.
@@ -798,11 +798,10 @@ type RepositoryVulnerabilityAlertEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#starevent
 type StarEvent struct {
-	// Action is the action that was performed. This can be: "created" or "deleted".
+	// Action is the action that was performed. Possible values are: "created" or "deleted".
 	Action *string `json:"action,omitempty"`
 
-	// The time the star was created. This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
-	// Will be null for the deleted action.
+	// The time the star was created. Will be null for the deleted action.
 	StarredAt *Timestamp `json:"starred_at,omitempty"`
 }
 
