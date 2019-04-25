@@ -40,6 +40,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &CreateEvent{}
 	case "DeleteEvent":
 		payload = &DeleteEvent{}
+	case "DeployKeyEvent":
+		payload = &DeployKeyEvent{}
 	case "DeploymentEvent":
 		payload = &DeploymentEvent{}
 	case "DeploymentStatusEvent":
@@ -66,6 +68,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &MemberEvent{}
 	case "MembershipEvent":
 		payload = &MembershipEvent{}
+	case "MetaEvent":
+		payload = &MetaEvent{}
 	case "MilestoneEvent":
 		payload = &MilestoneEvent{}
 	case "OrganizationEvent":
@@ -98,6 +102,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &RepositoryEvent{}
 	case "RepositoryVulnerabilityAlertEvent":
 		payload = &RepositoryVulnerabilityAlertEvent{}
+	case "StarEvent":
+		payload = &StarEvent{}
 	case "StatusEvent":
 		payload = &StatusEvent{}
 	case "TeamEvent":
