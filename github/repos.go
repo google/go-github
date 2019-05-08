@@ -462,10 +462,10 @@ type ListContributorsOptions struct {
 	ListOptions
 }
 
-// EnableVulnerabilityAlerts Enables vulnerability alerts and the dependency graph for a repository.
+// EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#enable-vulnerability-alerts
-func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, owner string, repository string) (*Response, error) {
+func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
 	req, err := s.client.NewRequest("PUT", u, nil)
@@ -479,10 +479,10 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 	return s.client.Do(ctx, req, nil)
 }
 
-// DisableVulnerabilityAlerts Disables vulnerability alerts and the dependency graph for a repository.
+// DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#disable-vulnerability-alerts
-func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, owner string, repository string) (*Response, error) {
+func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
