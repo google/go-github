@@ -13,7 +13,7 @@ type RequestedAction struct {
 	Identifier string `json:"identifier"` // The integrator reference of the action requested by the user.
 }
 
-// CheckRunEvent is triggered when a check run is "created", "updated", or "re-requested".
+// CheckRunEvent is triggered when a check run is "created", "updated", or "rerequested".
 // The Webhook event name is "check_run".
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checkrunevent
@@ -32,13 +32,13 @@ type CheckRunEvent struct {
 	RequestedAction *RequestedAction `json:"requested_action,omitempty"` //
 }
 
-// CheckSuiteEvent is triggered when a check suite is "completed", "requested", or "re-requested".
+// CheckSuiteEvent is triggered when a check suite is "completed", "requested", or "rerequested".
 // The Webhook event name is "check_suite".
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#checksuiteevent
 type CheckSuiteEvent struct {
 	CheckSuite *CheckSuite `json:"check_suite,omitempty"`
-	// The action performed. Possible values are: "completed", "requested" or "re-requested".
+	// The action performed. Possible values are: "completed", "requested" or "rerequested".
 	Action *string `json:"action,omitempty"`
 
 	// The following fields are only populated by Webhook events.
