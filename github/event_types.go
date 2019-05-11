@@ -585,11 +585,14 @@ type PullRequestEvent struct {
 	// RequestedReviewer is populated in "review_requested", "review_request_removed" event deliveries.
 	// A request affecting multiple reviewers at once is split into multiple
 	// such event deliveries, each with a single, different RequestedReviewer.
-	RequestedReviewer *User         `json:"requested_reviewer,omitempty"`
-	Repo              *Repository   `json:"repository,omitempty"`
-	Sender            *User         `json:"sender,omitempty"`
-	Installation      *Installation `json:"installation,omitempty"`
-	Label             *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
+	RequestedReviewer *User `json:"requested_reviewer,omitempty"`
+	// In the event that a team is requested instead of a user, "requested_team" gets sent in place of
+	// "requested_user" with the same delivery behavior.
+	RequestedTeam *Team         `json:"requested_team,omitempty"`
+	Repo          *Repository   `json:"repository,omitempty"`
+	Sender        *User         `json:"sender,omitempty"`
+	Installation  *Installation `json:"installation,omitempty"`
+	Label         *Label        `json:"label,omitempty"` // Populated in "labeled" event deliveries.
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
