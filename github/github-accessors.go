@@ -7828,6 +7828,14 @@ func (p *PullRequestEvent) GetRequestedReviewer() *User {
 	return p.RequestedReviewer
 }
 
+// GetRequestedTeam returns the RequestedTeam field.
+func (p *PullRequestEvent) GetRequestedTeam() *Team {
+	if p == nil {
+		return nil
+	}
+	return p.RequestedTeam
+}
+
 // GetSender returns the Sender field.
 func (p *PullRequestEvent) GetSender() *User {
 	if p == nil {
