@@ -367,6 +367,38 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Repositories.EnableVulnerabilityAlerts(context.Background(), "o", "r"); err != nil {
+		t.Errorf("Repositories.EnableVulnerabilityAlerts returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Repositories.DisableVulnerabilityAlerts(context.Background(), "o", "r"); err != nil {
+		t.Errorf("Repositories.DisableVulnerabilityAlerts returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_ListContributors(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

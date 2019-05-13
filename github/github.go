@@ -134,6 +134,9 @@ const (
 
 	// https://developer.github.com/changes/2019-03-14-enabling-disabling-pages/
 	mediaTypeEnablePagesAPIPreview = "application/vnd.github.switcheroo-preview+json"
+
+	// https://developer.github.com/changes/2019-04-24-vulnerability-alerts/
+	mediaTypeRequiredVulnerabilityAlertsPreview = "application/vnd.github.dorian-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
