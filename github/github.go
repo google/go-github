@@ -137,6 +137,9 @@ const (
 
 	// https://developer.github.com/changes/2019-04-24-vulnerability-alerts/
 	mediaTypeRequiredVulnerabilityAlertsPreview = "application/vnd.github.dorian-preview+json"
+
+	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
+	mediaTypePullsBranchesForCommit = "application/vnd.github.groot-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

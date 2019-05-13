@@ -404,3 +404,28 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo stri
 
 	return mergeResult, resp, nil
 }
+
+// ListPullRequestsWithCommit lists all the pull requests containing the provided commit SHA.
+// The results will include open and closed pull requests.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#list-pull-requests-associated-with-commit
+func (s *RepositoriesService) ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string) ([]*PullRequest, *Response, error) {
+	u := fmt.Sprintf("/repos/%v/%v/commits/%v/pulls", owner, repo, sha)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	acceptHeaders := []string{mediaTypePullsBranchesForCommit, mediaTypeDraftPreview, mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+
+	var pullRequests []*PullRequest
+	resp, err := s.client.Do(ctx, req, &pullRequests)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pullRequests, resp, nil
+}
