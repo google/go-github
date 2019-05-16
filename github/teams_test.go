@@ -92,6 +92,55 @@ func TestTeamsService_GetTeam_nestedTeams(t *testing.T) {
 	}
 }
 
+func TestTeamsService_GetTeamByName(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
+	})
+
+	team, _, err := client.Teams.GetTeamByName(context.Background(), "o", "s")
+	if err != nil {
+		t.Errorf("Teams.GetTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Teams.GetTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestTeamsService_GetTeamByName_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Teams.GetTeamByName(context.Background(), "%", "s")
+	testURLParseError(t, err)
+}
+
+func TestTeamsService_GetTeamByName_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	team, resp, err := client.Teams.GetTeamByName(context.Background(), "o", "s")
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Teams.GetTeamByName returned status %d, want %d", got, want)
+	}
+	if team != nil {
+		t.Errorf("Teams.GetTeamByName returned %+v, want nil", team)
+	}
+}
+
 func TestTeamsService_CreateTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
