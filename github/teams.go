@@ -124,7 +124,7 @@ func (s *TeamsService) GetTeam(ctx context.Context, team int64) (*Team, *Respons
 // GetTeamByName fetches a team by slug.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#get-team-by-name
-func (s *TeamsService) GetTeamByName(ctx context.Context, org string, slug string) (*Team, *Response, error) {
+func (s *TeamsService) GetTeamByName(ctx context.Context, org, slug string) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
