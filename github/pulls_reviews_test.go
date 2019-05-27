@@ -200,7 +200,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
+		testMethod(t, r, "PUT")
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 

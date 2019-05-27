@@ -198,7 +198,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 	}{Body: body}
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
