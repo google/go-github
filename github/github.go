@@ -244,12 +244,12 @@ func addOptions(s string, opt interface{}) (string, error) {
 }
 
 // NewClient returns a new GitHub API client. If a nil httpClient is
-// provided, http.DefaultClient will be used. To use API methods which require
+// provided, a new http.Client will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
-		httpClient = http.DefaultClient
+		httpClient = &http.Client{}
 	}
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
@@ -283,7 +283,7 @@ func NewClient(httpClient *http.Client) *Client {
 // NewEnterpriseClient returns a new GitHub API client with provided
 // base URL and upload URL (often the same URL).
 // If either URL does not have a trailing slash, one is added automatically.
-// If a nil httpClient is provided, http.DefaultClient will be used.
+// If a nil httpClient is provided, a new http.Client will be used.
 //
 // Note that NewEnterpriseClient is a convenience helper only;
 // its behavior is equivalent to using NewClient, followed by setting
