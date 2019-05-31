@@ -37,6 +37,10 @@ type InstallationToken struct {
 }
 
 // InstallationPermissions lists the repository and organization permissions for an installation.
+//
+// Permission names taken from:
+//   https://developer.github.com/v3/apps/permissions/
+//   https://developer.github.com/enterprise/v3/apps/permissions/
 type InstallationPermissions struct {
 	Administration              *string `json:"administration,omitempty"`
 	Checks                      *string `json:"checks,omitempty"`
