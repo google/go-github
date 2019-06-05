@@ -3676,6 +3676,14 @@ func (i *InstallationToken) GetExpiresAt() time.Time {
 	return *i.ExpiresAt
 }
 
+// GetPermissions returns the Permissions field.
+func (i *InstallationToken) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
+}
+
 // GetToken returns the Token field if it's non-nil, zero value otherwise.
 func (i *InstallationToken) GetToken() string {
 	if i == nil || i.Token == nil {
@@ -10546,6 +10554,22 @@ func (r *ReviewersRequest) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
+}
+
+// GetPermissions returns the Permissions field.
+func (s *ScopedInstallationTokenRequest) GetPermissions() *InstallationPermissions {
+	if s == nil {
+		return nil
+	}
+	return s.Permissions
+}
+
+// GetRepositoryIds returns the RepositoryIds field if it's non-nil, zero value otherwise.
+func (s *ScopedInstallationTokenRequest) GetRepositoryIds() []int64 {
+	if s == nil || s.RepositoryIds == nil {
+		return nil
+	}
+	return *s.RepositoryIds
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
