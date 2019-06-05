@@ -32,8 +32,17 @@ type App struct {
 
 // InstallationToken represents an installation token.
 type InstallationToken struct {
-	Token     *string    `json:"token,omitempty"`
-	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	Token        *string                  `json:"token,omitempty"`
+	ExpiresAt    *time.Time               `json:"expires_at,omitempty"`
+	Permissions  *InstallationPermissions `json:"permissions,omitempty"`
+	Repositories []*Repository            `json:"repositories,omitempty"`
+}
+
+// ScopedInstallationTokenRequest represents a request to create an
+// installation token with limited repository and permission access.
+type ScopedInstallationTokenRequest struct {
+	RepositoryIds *[]int64                 `json:"repository_ids,omitempty"`
+	Permissions   *InstallationPermissions `json:"permissions,omitempty"`
 }
 
 // InstallationPermissions lists the permissions for metadata, contents, issues and single file for an installation.
@@ -174,6 +183,30 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64) (*I
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
 	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+
+	t := new(InstallationToken)
+	resp, err := s.client.Do(ctx, req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
+}
+
+// CreateScopedInstallationToken creates a new installation token
+// with limited repository and permission access.
+//
+// GitHub API docs: https://developer.github.com/v3/apps/#create-a-new-installation-token
+func (s *AppsService) CreateScopedInstallationToken(ctx context.Context, id int64, request *ScopedInstallationTokenRequest) (*InstallationToken, *Response, error) {
+	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
+
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}

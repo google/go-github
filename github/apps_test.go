@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -182,6 +183,88 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	want := &InstallationToken{Token: String("t")}
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
+	}
+}
+
+func TestAppsService_CreateRepositoryScopedInstallationToken(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &ScopedInstallationTokenRequest{RepositoryIds: &[]int64{1}}
+
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ScopedInstallationTokenRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"token":"t", "repositories": [{"id": 1}]}`)
+	})
+
+	token, _, err := client.Apps.CreateScopedInstallationToken(context.Background(), 1, input)
+	if err != nil {
+		t.Errorf("Apps.CreateScopedInstallationToken returned error: %v", err)
+	}
+
+	want := &InstallationToken{
+		Token: String("t"),
+		Repositories: []*Repository{
+			{ID: Int64(1)},
+		},
+	}
+
+	if !reflect.DeepEqual(token, want) {
+		t.Errorf("Apps.CreateScopedInstallationToken returned %+v, want %+v", token, want)
+	}
+}
+
+func TestAppsService_CreateRepositoryAndPermissionScopedInstallationToken(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &ScopedInstallationTokenRequest{
+		RepositoryIds: &[]int64{1},
+		Permissions: &InstallationPermissions{
+			Metadata: String("read"),
+			Contents: String("read"),
+		},
+	}
+
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ScopedInstallationTokenRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"token":"t", "repositories": [{"id": 1}], "permissions": { "metadata": "read", "contents": "read" }}`)
+	})
+
+	token, _, err := client.Apps.CreateScopedInstallationToken(context.Background(), 1, input)
+	if err != nil {
+		t.Errorf("Apps.CreateScopedInstallationToken returned error: %v", err)
+	}
+
+	want := &InstallationToken{
+		Token: String("t"),
+		Repositories: []*Repository{
+			{ID: Int64(1)},
+		},
+		Permissions: &InstallationPermissions{
+			Metadata: String("read"),
+			Contents: String("read"),
+		},
+	}
+
+	if !reflect.DeepEqual(token, want) {
+		t.Errorf("Apps.CreateScopedInstallationToken returned %+v, want %+v", token, want)
 	}
 }
 
