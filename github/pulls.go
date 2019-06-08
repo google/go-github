@@ -245,9 +245,9 @@ func (s *PullRequestsService) Create(ctx context.Context, owner string, repo str
 // PullReqestBranchUpdateOptions specifies the optional parameters to the
 // PullRequestsService.UpdateBranch method.
 type PullReqestBranchUpdateOptions struct {
-	// ExpectedHeadSha specifies the most recent commit on the pull request's branch.
+	// ExpectedHeadSHA specifies the most recent commit on the pull request's branch.
 	// Default value is the SHA of the pull request's current HEAD ref.
-	ExpectedHeadSha *string `json:"expected_head_sha,omitempty"`
+	ExpectedHeadSHA *string `json:"expected_head_sha,omitempty"`
 }
 
 // PullRequestBranchUpdateResponse specifies the response of pull request branch update.
@@ -258,7 +258,7 @@ type PullRequestBranchUpdateResponse struct {
 
 // UpdateBranch updates the pull request branch with latest upstream changes.
 //
-// This method might return an *AcceptedError and a status code of
+// This method might return an AcceptedError and a status code of
 // 202. This is because this is the status that GitHub returns to signify that
 // it has now scheduled the update of the pull request branch in a background task.
 // A follow up request, after a delay of a second or so, should result

@@ -318,7 +318,7 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	})
 
 	opts := &PullReqestBranchUpdateOptions{
-		ExpectedHeadSha: String("s"),
+		ExpectedHeadSHA: String("s"),
 	}
 
 	pull, _, err := client.PullRequests.UpdateBranch(context.Background(), "o", "r", 1, opts)
