@@ -242,6 +242,35 @@ func (s *PullRequestsService) Create(ctx context.Context, owner string, repo str
 	return p, resp, nil
 }
 
+// PullReqestBranchUpdateOptions specifies the optional parameters to the
+// PullRequestsService.UpdateBranch method.
+type PullReqestBranchUpdateOptions struct {
+	// ExpectedHeadSha specifies the most recent commit on the pull request's branch.
+	// Default value is the SHA of the pull request's current HEAD ref.
+	ExpectedHeadSha *string `json:"expected_head_sha,omitempty"`
+}
+
+// UpdateBranch updates the pull request branch with latest upstream changes.
+// GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request-branch
+func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullReqestBranchUpdateOptions) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/update-branch", owner, repo, number)
+
+	req, err := s.client.NewRequest("PUT", u, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
 type pullRequestUpdate struct {
 	Title               *string `json:"title,omitempty"`
 	Body                *string `json:"body,omitempty"`
