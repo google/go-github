@@ -7228,6 +7228,14 @@ func (p *PublicEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetExpectedHeadSha returns the ExpectedHeadSha field if it's non-nil, zero value otherwise.
+func (p *PullReqestBranchUpdateOptions) GetExpectedHeadSha() string {
+	if p == nil || p.ExpectedHeadSha == nil {
+		return ""
+	}
+	return *p.ExpectedHeadSha
+}
+
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetActiveLockReason() string {
 	if p == nil || p.ActiveLockReason == nil {
