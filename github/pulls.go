@@ -250,25 +250,39 @@ type PullReqestBranchUpdateOptions struct {
 	ExpectedHeadSha *string `json:"expected_head_sha,omitempty"`
 }
 
+// PullRequestBranchUpdateResponse specifies the response of pull request branch update.
+type PullRequestBranchUpdateResponse struct {
+	Message *string `json:"message,omitempty"`
+	URL     *string `json:"url,omitempty"`
+}
+
 // UpdateBranch updates the pull request branch with latest upstream changes.
+//
+// This method might return an *AcceptedError and a status code of
+// 202. This is because this is the status that GitHub returns to signify that
+// it has now scheduled the update of the pull request branch in a background task.
+// A follow up request, after a delay of a second or so, should result
+// in a successful request.
+//
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request-branch
-func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullReqestBranchUpdateOptions) (*Response, error) {
+func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullReqestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/update-branch", owner, repo, number)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
+	p := new(PullRequestBranchUpdateResponse)
+	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
-		return resp, err
+		return nil, resp, err
 	}
 
-	return resp, nil
+	return p, resp, nil
 }
 
 type pullRequestUpdate struct {

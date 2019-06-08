@@ -310,15 +310,29 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeUpdatePullRequestBranchPreview)
+		fmt.Fprint(w, `
+			{
+			  "message": "Updating pull request branch.",
+			  "url": "https://github.com/repos/o/r/pulls/1"
+			}`)
 	})
 
 	opts := &PullReqestBranchUpdateOptions{
 		ExpectedHeadSha: String("s"),
 	}
 
-	_, err := client.PullRequests.UpdateBranch(context.Background(), "o", "r", 1, opts)
+	pull, _, err := client.PullRequests.UpdateBranch(context.Background(), "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.UpdateBranch returned error: %v", err)
+	}
+
+	want := &PullRequestBranchUpdateResponse{
+		Message: String("Updating pull request branch."),
+		URL:     String("https://github.com/repos/o/r/pulls/1"),
+	}
+
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.UpdateBranch returned %+v, want %+v", pull, want)
 	}
 }
 

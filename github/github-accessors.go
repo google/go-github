@@ -7604,6 +7604,22 @@ func (p *PullRequestBranch) GetUser() *User {
 	return p.User
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (p *PullRequestBranchUpdateResponse) GetMessage() string {
+	if p == nil || p.Message == nil {
+		return ""
+	}
+	return *p.Message
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PullRequestBranchUpdateResponse) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
+}
+
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetAuthorAssociation() string {
 	if p == nil || p.AuthorAssociation == nil {
