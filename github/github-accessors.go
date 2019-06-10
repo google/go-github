@@ -484,6 +484,30 @@ func (b *Branch) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetCommit returns the Commit field.
+func (b *BranchCommit) GetCommit() *Commit {
+	if b == nil {
+		return nil
+	}
+	return b.Commit
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (b *BranchCommit) GetName() string {
+	if b == nil || b.Name == nil {
+		return ""
+	}
+	return *b.Name
+}
+
+// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
+func (b *BranchCommit) GetProtected() string {
+	if b == nil || b.Protected == nil {
+		return ""
+	}
+	return *b.Protected
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {

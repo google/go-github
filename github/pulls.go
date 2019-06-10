@@ -159,6 +159,35 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 	return pulls, resp, nil
 }
 
+// ListPullRequestsWithCommit returns pull requests associated with a commit SHA.
+//
+// The results will include open and closed pull requests.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#list-pull-requests-associated-with-commit
+func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string, opt *PullRequestListOptions) ([]*PullRequest, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/pulls", owner, repo, sha)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	acceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeDraftPreview, mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	var pulls []*PullRequest
+	resp, err := s.client.Do(ctx, req, &pulls)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pulls, resp, nil
+}
+
 // Get a single pull request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#get-a-single-pull-request

@@ -47,6 +47,37 @@ func TestPullRequestsService_List(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	wantAcceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeDraftPreview, mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testFormValues(t, r, values{
+			"state":     "closed",
+			"head":      "h",
+			"base":      "b",
+			"sort":      "created",
+			"direction": "desc",
+			"page":      "2",
+		})
+		fmt.Fprint(w, `[{"number":1}]`)
+	})
+
+	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
+	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(context.Background(), "o", "r", "sha", opt)
+	if err != nil {
+		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
+	}
+
+	want := []*PullRequest{{Number: Int(1)}}
+	if !reflect.DeepEqual(pulls, want) {
+		t.Errorf("PullRequests.ListPullRequestsWithCommit returned %+v, want %+v", pulls, want)
+	}
+}
+
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
