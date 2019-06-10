@@ -480,7 +480,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 	}
 }
 
-func Test_marshall(t *testing.T) {
+func Test_CheckRunMarshall(t *testing.T) {
 	testJSONMarshal(t, &CheckRun{}, "{}")
 
 	now := time.Now()
@@ -660,6 +660,139 @@ func Test_marshall(t *testing.T) {
 			}
 		]
 	  }`, ts, ts, ts, ts)
+
+	testJSONMarshal(t, &c, w)
+}
+
+func Test_CheckSuiteMarshall(t *testing.T) {
+	testJSONMarshal(t, &CheckSuite{}, "{}")
+
+	now := time.Now()
+	ts := now.Format(time.RFC3339Nano)
+
+	c := CheckSuite{
+		ID:         Int64(1),
+		NodeID:     String("n"),
+		HeadBranch: String("h"),
+		HeadSHA:    String("h"),
+		URL:        String("u"),
+		BeforeSHA:  String("b"),
+		AfterSHA:   String("a"),
+		Status:     String("s"),
+		Conclusion: String("c"),
+		App: &App{
+			ID:     Int64(1),
+			NodeID: String("n"),
+			Owner: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			Name:        String("n"),
+			Description: String("d"),
+			HTMLURL:     String("h"),
+			ExternalURL: String("u"),
+			CreatedAt:   &now,
+			UpdatedAt:   &now,
+		},
+		Repository: &Repository{
+			ID: Int64(1),
+		},
+		PullRequests: []*PullRequest{
+			&PullRequest{
+				URL:    String("u"),
+				ID:     Int64(1),
+				Number: Int(1),
+				Head: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("s"),
+						Name: String("n"),
+					},
+				},
+				Base: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("u"),
+						Name: String("n"),
+					},
+				},
+			},
+		},
+		HeadCommit: &Commit{
+			SHA: String("s"),
+		},
+	}
+
+	w := fmt.Sprintf(`{
+			"id": 1,
+			"node_id": "n",
+			"head_branch": "h",
+			"head_sha": "h",
+			"url": "u",
+			"before": "b",
+			"after": "a",
+			"status": "s",
+			"conclusion": "c",
+			"app": {
+				"id": 1,
+				"node_id": "n",
+				"owner": {
+					"login": "l",
+					"id": 1,
+					"node_id": "n",
+					"avatar_url": "a",
+					"url": "u",
+					"events_url": "e",
+					"repos_url": "r"
+				},
+				"name": "n",
+				"description": "d",
+				"external_url": "u",
+				"html_url": "h",
+				"created_at": "%s",
+				"updated_at": "%s"
+			},
+			"repository": {
+				"id": 1
+			},
+			"pull_requests": [
+			{
+				"id": 1,
+				"number": 1,
+				"url": "u",
+				"head": {
+					"ref": "r",
+					"sha": "s",
+					"repo": {
+						"id": 1,
+						"name": "n",
+						"url": "s"
+					}
+				},
+				"base": {
+					"ref": "r",
+					"sha": "s",
+					"repo": {
+						"id": 1,
+						"name": "n",
+						"url": "u"
+					}
+				}
+			}
+		],
+		"head_commit": {
+			"sha": "s"
+		}
+		}`, ts, ts)
 
 	testJSONMarshal(t, &c, w)
 }
