@@ -500,7 +500,7 @@ func Test_CheckRunMarshall(t *testing.T) {
 		CompletedAt: &Timestamp{Time: now},
 		Output: &CheckRunOutput{
 			Annotations: []*CheckRunAnnotation{
-				&CheckRunAnnotation{
+				{
 					AnnotationLevel: String("a"),
 					BlobHRef:        String("b"),
 					EndLine:         Int(1),
@@ -514,7 +514,7 @@ func Test_CheckRunMarshall(t *testing.T) {
 			AnnotationsCount: Int(1),
 			AnnotationsURL:   String("a"),
 			Images: []*CheckRunImage{
-				&CheckRunImage{
+				{
 					Alt:      String("a"),
 					ImageURL: String("i"),
 					Caption:  String("c"),
@@ -548,7 +548,7 @@ func Test_CheckRunMarshall(t *testing.T) {
 			UpdatedAt:   &now,
 		},
 		PullRequests: []*PullRequest{
-			&PullRequest{
+			{
 				URL:    String("u"),
 				ID:     Int64(1),
 				Number: Int(1),
@@ -703,7 +703,7 @@ func Test_CheckSuiteMarshall(t *testing.T) {
 			ID: Int64(1),
 		},
 		PullRequests: []*PullRequest{
-			&PullRequest{
+			{
 				URL:    String("u"),
 				ID:     Int64(1),
 				Number: Int(1),
