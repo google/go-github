@@ -360,3 +360,23 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
 	}
 }
+
+func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/commits/s/branches-where-head", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `[{"name": "b"}]`)
+	})
+
+	branches, _, err := client.Repositories.ListBranchesHeadCommit(context.Background(), "o", "r", "s")
+	if err != nil {
+		t.Errorf("Repositories.ListBranchesHeadCommit returned error: %v", err)
+	}
+
+	want := []*BranchCommit{{Name: String("b")}}
+	if !reflect.DeepEqual(branches, want) {
+		t.Errorf("Repositories.ListBranchesHeadCommit returned %+v, want %+v", branches, want)
+	}
+}
