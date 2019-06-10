@@ -480,7 +480,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 	}
 }
 
-func Test_CheckRunMarshall(t *testing.T) {
+func Test_CheckRunMarshal(t *testing.T) {
 	testJSONMarshal(t, &CheckRun{}, "{}")
 
 	now := time.Now()
@@ -664,7 +664,7 @@ func Test_CheckRunMarshall(t *testing.T) {
 	testJSONMarshal(t, &c, w)
 }
 
-func Test_CheckSuiteMarshall(t *testing.T) {
+func Test_CheckSuiteMarshal(t *testing.T) {
 	testJSONMarshal(t, &CheckSuite{}, "{}")
 
 	now := time.Now()
