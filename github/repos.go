@@ -496,6 +496,40 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 	return s.client.Do(ctx, req, nil)
 }
 
+// EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#enable-automated-security-fixes
+func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#disable-automated-security-fixes
+func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // ListContributors lists contributors for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-contributors

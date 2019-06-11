@@ -399,6 +399,38 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Repositories.EnableAutomatedSecurityFixes(context.Background(), "o", "r"); err != nil {
+		t.Errorf("Repositories.EnableAutomatedSecurityFixes returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Repositories.DisableAutomatedSecurityFixes(context.Background(), "o", "r"); err != nil {
+		t.Errorf("Repositories.DisableAutomatedSecurityFixes returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_ListContributors(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
