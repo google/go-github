@@ -26,8 +26,8 @@ type App struct {
 	Description *string    `json:"description,omitempty"`
 	ExternalURL *string    `json:"external_url,omitempty"`
 	HTMLURL     *string    `json:"html_url,omitempty"`
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
 // InstallationToken represents an installation token.

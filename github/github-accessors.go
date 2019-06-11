@@ -117,9 +117,9 @@ func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (a *App) GetCreatedAt() time.Time {
+func (a *App) GetCreatedAt() Timestamp {
 	if a == nil || a.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *a.CreatedAt
 }
@@ -181,9 +181,9 @@ func (a *App) GetOwner() *User {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (a *App) GetUpdatedAt() time.Time {
+func (a *App) GetUpdatedAt() Timestamp {
 	if a == nil || a.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *a.UpdatedAt
 }
