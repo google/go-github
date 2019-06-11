@@ -155,7 +155,7 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	// now go the other direction and make sure things unmarshal as expected
 	u := reflect.ValueOf(v).Interface()
 	if err := json.Unmarshal([]byte(want), u); err != nil {
-		t.Errorf("Unable to unmarshal JSON for %v", want)
+		t.Errorf("Unable to unmarshal JSON for %v: %v", want, err)
 	}
 
 	if !reflect.DeepEqual(v, u) {
