@@ -154,6 +154,11 @@ func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, 
 	if commit.Author == nil {
 		return "", errors.New("createSignature: commit.Author=nil")
 	}
+
+	if commit.Message == nil {
+		return "", errors.New("createSignature: commit.Message=nil")
+	}
+
 	message := createSignatureMessage(commit)
 
 	writer := new(bytes.Buffer)
