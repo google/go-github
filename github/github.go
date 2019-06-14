@@ -4,6 +4,7 @@
 // license that can be found in the LICENSE file.
 
 //go:generate go run gen-accessors.go
+//go:generate go run gen-stringify-test.go
 
 package github
 
