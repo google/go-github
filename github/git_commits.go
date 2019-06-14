@@ -150,8 +150,8 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 	return c, resp, nil
 }
 
-func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, error) {
-	if SigningKey == nil || commit == nil {
+func createSignature(signingKey *openpgp.Entity, commit *createCommit) (string, error) {
+	if signingKey == nil || commit == nil {
 		return "", errors.New("createSignature: invalid parameters")
 	}
 
@@ -162,7 +162,7 @@ func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, 
 
 	writer := new(bytes.Buffer)
 	reader := bytes.NewReader([]byte(message))
-	if err := openpgp.ArmoredDetachSign(writer, SigningKey, reader, nil); err != nil {
+	if err := openpgp.ArmoredDetachSign(writer, signingKey, reader, nil); err != nil {
 		return "", err
 	}
 
