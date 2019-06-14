@@ -157,7 +157,7 @@ func createSignature(signingKey *openpgp.Entity, commit *createCommit) (string, 
 
 	message, err := createSignatureMessage(commit)
 	if err != nil {
-		return "", fmt.Errorf("createSignature: createSignatureMessage error: %s", err.Error())
+		return "", err
 	}
 
 	writer := new(bytes.Buffer)
