@@ -22,17 +22,17 @@ func TestGitService_GetCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/git/commits/s", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/org/repo/git/commits/commitSHA", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"sha":"s","message":"m","author":{"name":"n"}}`)
+		fmt.Fprint(w, `{"sha":"commitSHA","message":"Commit message.","author":{"name":"commitAuthorName"}}`)
 	})
 
-	commit, _, err := client.Git.GetCommit(context.Background(), "o", "r", "s")
+	commit, _, err := client.Git.GetCommit(context.Background(), "org", "repo", "commitSHA")
 	if err != nil {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s"), Message: String("m"), Author: &CommitAuthor{Name: String("n")}}
+	want := &Commit{SHA: String("commitSHA"), Message: String("Commit message."), Author: &CommitAuthor{Name: String("commitAuthorName")}}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
@@ -51,12 +51,12 @@ func TestGitService_CreateCommit(t *testing.T) {
 	defer teardown()
 
 	input := &Commit{
-		Message: String("m"),
-		Tree:    &Tree{SHA: String("t")},
-		Parents: []Commit{{SHA: String("p")}},
+		Message: String("Commit message."),
+		Tree:    &Tree{SHA: String("commitTree")},
+		Parents: []Commit{{SHA: String("commitParent")}},
 	}
 
-	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/org/repo/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createCommit)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -64,21 +64,21 @@ func TestGitService_CreateCommit(t *testing.T) {
 
 		want := &createCommit{
 			Message: input.Message,
-			Tree:    String("t"),
-			Parents: []string{"p"},
+			Tree:    String("commitTree"),
+			Parents: []string{"commitParent"},
 		}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
-		fmt.Fprint(w, `{"sha":"s"}`)
+		fmt.Fprint(w, `{"sha":"commitSHA"}`)
 	})
 
-	commit, _, err := client.Git.CreateCommit(context.Background(), "o", "r", input)
+	commit, _, err := client.Git.CreateCommit(context.Background(), "org", "repo", input)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s")}
+	want := &Commit{SHA: String("commitSHA")}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -91,15 +91,15 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
 
 	input := &Commit{
-		Message: String("m"),
-		Tree:    &Tree{SHA: String("t")},
-		Parents: []Commit{{SHA: String("p")}},
+		Message: String("Commit message."),
+		Tree:    &Tree{SHA: String("commitTree")},
+		Parents: []Commit{{SHA: String("commitParent")}},
 		Verification: &SignatureVerification{
 			Signature: String(signature),
 		},
 	}
 
-	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/org/repo/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createCommit)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -107,22 +107,22 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 
 		want := &createCommit{
 			Message:   input.Message,
-			Tree:      String("t"),
-			Parents:   []string{"p"},
+			Tree:      String("commitTree"),
+			Parents:   []string{"commitParent"},
 			Signature: String(signature),
 		}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
-		fmt.Fprint(w, `{"sha":"s"}`)
+		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
 
-	commit, _, err := client.Git.CreateCommit(context.Background(), "o", "r", input)
+	commit, _, err := client.Git.CreateCommit(context.Background(), "org", "repo", input)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s")}
+	want := &Commit{SHA: String("commitSha")}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -135,7 +135,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 		SigningKey: &openpgp.Entity{},
 	}
 
-	_, _, err := client.Git.CreateCommit(context.Background(), "o", "r", input)
+	_, _, err := client.Git.CreateCommit(context.Background(), "org", "repo", input)
 	if err == nil {
 		t.Errorf("Expected error to be returned because invalid params was passed")
 	}
@@ -154,21 +154,21 @@ func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 		Date:  &date,
 	}
 	input := &Commit{
-		Message:    String("m"),
-		Tree:       &Tree{SHA: String("t")},
-		Parents:    []Commit{{SHA: String("p")}},
+		Message:    String("Commit message."),
+		Tree:       &Tree{SHA: String("commitTree")},
+		Parents:    []Commit{{SHA: String("commitParent")}},
 		SigningKey: keyring[0],
 		Author:     &author,
 	}
 
-	messageReader := strings.NewReader(`tree t
-parent p
+	messageReader := strings.NewReader(`tree commitTree
+parent commitParent
 author go-github <go-github@github.com> 1493849023 +0200
 committer go-github <go-github@github.com> 1493849023 +0200
 
-m`)
+Commit message.`)
 
-	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/org/repo/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createCommit)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -176,8 +176,8 @@ m`)
 
 		want := &createCommit{
 			Message: input.Message,
-			Tree:    String("t"),
-			Parents: []string{"p"},
+			Tree:    String("commitTree"),
+			Parents: []string{"commitParent"},
 			Author:  &author,
 		}
 
@@ -194,15 +194,15 @@ m`)
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
-		fmt.Fprint(w, `{"sha":"s"}`)
+		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
 
-	commit, _, err := client.Git.CreateCommit(context.Background(), "o", "r", input)
+	commit, _, err := client.Git.CreateCommit(context.Background(), "org", "repo", input)
 	if err != nil {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: String("s")}
+	want := &Commit{SHA: String("commitSha")}
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -210,9 +210,9 @@ m`)
 
 func TestGitService_createSignature_noAuthor(t *testing.T) {
 	a := &createCommit{
-		Message: String("m"),
-		Tree:    String("t"),
-		Parents: []string{"p"},
+		Message: String("Commit message."),
+		Tree:    String("commitTree"),
+		Parents: []string{"commitParent"},
 	}
 
 	_, err := createSignature(nil, a)
