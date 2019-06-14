@@ -144,7 +144,7 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-	s := strings.NewReader(testKey)
+	s := strings.NewReader(testGPGKey)
 	keyring, err := openpgp.ReadArmoredKeyRing(s)
 
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
@@ -220,19 +220,15 @@ func TestGitService_createSignature_noAuthor(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected error to be returned because no author was passed")
 	}
-	expectedString := "Commit Author is required to sign a commit"
-	if !strings.Contains(err.Error(), expectedString) {
-		t.Errorf("Returned incorrect error. returned %s, want %s", err.Error(), expectedString)
-	}
 }
 
 func TestGitService_createSignature_invalidKey(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	_, err := createSignature(&openpgp.Entity{}, &createCommit{
-		Message: String("m"),
-		Tree:    String("t"),
-		Parents: []string{"p"},
+		Message: String("Commit message."),
+		Tree:    String("commitTree"),
+		Parents: []string{"commitParent"},
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
@@ -249,19 +245,19 @@ func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg := createSignatureMessage(&createCommit{
-		Message: String("m"),
-		Parents: []string{"p"},
+		Message: String("Commit message."),
+		Parents: []string{"commitParent"},
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
 			Date:  &date,
 		},
 	})
-	expected := `parent p
+	expected := `parent commitParent
 author go-github <go-github@github.com> 1493849023 +0200
 committer go-github <go-github@github.com> 1493849023 +0200
 
-m`
+Commit message.`
 	if msg != expected {
 		t.Errorf("Returned message incorrect. returned %s, want %s", msg, expected)
 	}
@@ -271,8 +267,8 @@ func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg := createSignatureMessage(&createCommit{
-		Message: String("m"),
-		Parents: []string{"p"},
+		Message: String("Commit Message."),
+		Parents: []string{"commitParent"},
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
@@ -284,11 +280,11 @@ func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 			Date:  &date,
 		},
 	})
-	expected := `parent p
+	expected := `parent commitParent
 author go-github <go-github@github.com> 1493849023 +0200
 committer foo <foo@bar.com> 1493849023 +0200
 
-m`
+Commit Message.`
 	if msg != expected {
 		t.Errorf("Returned message incorrect. returned %s, want %s", msg, expected)
 	}
@@ -302,7 +298,7 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-const testKey = `
+const testGPGKey = `
 -----BEGIN PGP PRIVATE KEY BLOCK-----
 
 lQOYBFyi1qYBCAD3EPfLJzIt4qkAceUKkhdvfaIvOsBwXbfr5sSu/lkMqL0Wq47+
