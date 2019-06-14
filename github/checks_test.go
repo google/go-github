@@ -544,8 +544,8 @@ func Test_CheckRunMarshal(t *testing.T) {
 			Description: String("d"),
 			HTMLURL:     String("h"),
 			ExternalURL: String("u"),
-			CreatedAt:   &now,
-			UpdatedAt:   &now,
+			CreatedAt:   &Timestamp{now},
+			UpdatedAt:   &Timestamp{now},
 		},
 		PullRequests: []*PullRequest{
 			{
@@ -696,8 +696,8 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 			Description: String("d"),
 			HTMLURL:     String("h"),
 			ExternalURL: String("u"),
-			CreatedAt:   &now,
-			UpdatedAt:   &now,
+			CreatedAt:   &Timestamp{now},
+			UpdatedAt:   &Timestamp{now},
 		},
 		Repository: &Repository{
 			ID: Int64(1),
