@@ -151,15 +151,14 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 }
 
 func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, error) {
-	if commit.Author == nil {
-		return "", errors.New("createSignature: commit.Author=nil")
+	if SigningKey == nil || commit == nil {
+		return "", errors.New("createSignature: invalid parameters")
 	}
 
-	if commit.Message == nil {
-		return "", errors.New("createSignature: commit.Message=nil")
+	message, err := createSignatureMessage(commit)
+	if err != nil {
+		return "", fmt.Errorf("createSignature: createSignatureMessage error: %s", err.Error())
 	}
-
-	message := createSignatureMessage(commit)
 
 	writer := new(bytes.Buffer)
 	reader := bytes.NewReader([]byte(message))
@@ -170,7 +169,11 @@ func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, 
 	return writer.String(), nil
 }
 
-func createSignatureMessage(commit *createCommit) string {
+func createSignatureMessage(commit *createCommit) (string, error) {
+	if commit == nil || commit.Message == nil || commit.Author == nil {
+		return "", errors.New("createSignatureMessage: invalid parameters")
+	}
+
 	message := ""
 
 	if commit.Tree != nil {
@@ -190,5 +193,5 @@ func createSignatureMessage(commit *createCommit) string {
 	// There needs to be a double newline after committer
 	message += fmt.Sprintf("committer %s <%s> %d %s\n\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700"))
 	message += fmt.Sprintf("%s", *commit.Message)
-	return message
+	return message, nil
 }

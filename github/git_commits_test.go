@@ -208,7 +208,7 @@ Commit Message.`)
 	}
 }
 
-func TestGitService_createSignature_noAuthor(t *testing.T) {
+func TestGitService_createSignature_nilSigningKey(t *testing.T) {
 	a := &createCommit{
 		Message: String("Commit Message."),
 		Tree:    String("t"),
@@ -216,6 +216,28 @@ func TestGitService_createSignature_noAuthor(t *testing.T) {
 	}
 
 	_, err := createSignature(nil, a)
+
+	if err == nil {
+		t.Errorf("Expected error to be returned because no author was passed")
+	}
+}
+
+func TestGitService_createSignature_nilCommit(t *testing.T) {
+	_, err := createSignature(&openpgp.Entity{}, nil)
+
+	if err == nil {
+		t.Errorf("Expected error to be returned because no author was passed")
+	}
+}
+
+func TestGitService_createSignature_noAuthor(t *testing.T) {
+	a := &createCommit{
+		Message: String("Commit Message."),
+		Tree:    String("t"),
+		Parents: []string{"p"},
+	}
+
+	_, err := createSignature(&openpgp.Entity{}, a)
 
 	if err == nil {
 		t.Errorf("Expected error to be returned because no author was passed")
@@ -241,10 +263,45 @@ func TestGitService_createSignature_invalidKey(t *testing.T) {
 	}
 }
 
+func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
+	_, err := createSignatureMessage(nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned due to nil key")
+	}
+}
+
+func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+
+	_, err := createSignatureMessage(&createCommit{
+		Message: nil,
+		Parents: []string{"p"},
+		Author: &CommitAuthor{
+			Name:  String("go-github"),
+			Email: String("go-github@github.com"),
+			Date:  &date,
+		},
+	})
+	if err == nil {
+		t.Errorf("Expected error to be returned due to nil key")
+	}
+}
+
+func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
+	_, err := createSignatureMessage(&createCommit{
+		Message: String("Commit Message."),
+		Parents: []string{"p"},
+		Author:  nil,
+	})
+	if err == nil {
+		t.Errorf("Expected error to be returned due to nil key")
+	}
+}
+
 func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
-	msg := createSignatureMessage(&createCommit{
+	msg, _ := createSignatureMessage(&createCommit{
 		Message: String("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
@@ -266,7 +323,7 @@ Commit Message.`
 func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
-	msg := createSignatureMessage(&createCommit{
+	msg, _ := createSignatureMessage(&createCommit{
 		Message: String("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
