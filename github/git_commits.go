@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/openpgp"
@@ -174,24 +175,26 @@ func createSignatureMessage(commit *createCommit) (string, error) {
 		return "", errors.New("createSignatureMessage: invalid parameters")
 	}
 
-	message := ""
+	var message []string
 
 	if commit.Tree != nil {
-		message = fmt.Sprintf("tree %s\n", *commit.Tree)
+		message = append(message, fmt.Sprintf("tree %s", *commit.Tree))
 	}
 
 	for _, parent := range commit.Parents {
-		message += fmt.Sprintf("parent %s\n", parent)
+		message = append(message, fmt.Sprintf("parent %s", parent))
 	}
 
-	message += fmt.Sprintf("author %s <%s> %d %s\n", commit.Author.GetName(), commit.Author.GetEmail(), commit.Author.GetDate().Unix(), commit.Author.GetDate().Format("-0700"))
+	message = append(message, fmt.Sprintf("author %s <%s> %d %s", commit.Author.GetName(), commit.Author.GetEmail(), commit.Author.GetDate().Unix(), commit.Author.GetDate().Format("-0700")))
+
 	committer := commit.Committer
 	if committer == nil {
 		committer = commit.Author
 	}
 
 	// There needs to be a double newline after committer
-	message += fmt.Sprintf("committer %s <%s> %d %s\n\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700"))
-	message += fmt.Sprintf("%s", *commit.Message)
-	return message, nil
+	message = append(message, fmt.Sprintf("committer %s <%s> %d %s\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700")))
+	message = append(message, fmt.Sprintf("%s", *commit.Message))
+
+	return strings.Join(message, "\n"), nil
 }
