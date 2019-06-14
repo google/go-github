@@ -8,6 +8,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -151,14 +152,13 @@ func (s *GitService) CreateCommit(ctx context.Context, owner string, repo string
 
 func createSignature(SigningKey *openpgp.Entity, commit *createCommit) (string, error) {
 	if commit.Author == nil {
-		return "", fmt.Errorf("Commit Author is required to sign a commit")
+		return "", errors.New("createSignature: commit.Author=nil")
 	}
 	message := createSignatureMessage(commit)
 
 	writer := new(bytes.Buffer)
 	reader := bytes.NewReader([]byte(message))
-	err := openpgp.ArmoredDetachSign(writer, SigningKey, reader, nil)
-	if err != nil {
+	if err := openpgp.ArmoredDetachSign(writer, SigningKey, reader, nil); err != nil {
 		return "", err
 	}
 
@@ -176,13 +176,14 @@ func createSignatureMessage(commit *createCommit) string {
 		message += fmt.Sprintf("parent %s\n", parent)
 	}
 
-	message += fmt.Sprintf("author %s <%s> %d %s\n", *commit.Author.Name, *commit.Author.Email, commit.Author.Date.Unix(), commit.Author.Date.Format("-0700"))
-	commiter := commit.Committer
-	if commiter == nil {
-		commiter = commit.Author
+	message += fmt.Sprintf("author %s <%s> %d %s\n", commit.Author.GetName(), commit.Author.GetEmail(), commit.Author.GetDate().Unix(), commit.Author.GetDate().Format("-0700"))
+	committer := commit.Committer
+	if committer == nil {
+		committer = commit.Author
 	}
+
 	// There needs to be a double newline after committer
-	message += fmt.Sprintf("committer %s <%s> %d %s\n\n", *commiter.Name, *commiter.Email, commiter.Date.Unix(), commiter.Date.Format("-0700"))
+	message += fmt.Sprintf("committer %s <%s> %d %s\n\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700"))
 	message += fmt.Sprintf("%s", *commit.Message)
 	return message
 }
