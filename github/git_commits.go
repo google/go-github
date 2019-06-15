@@ -171,7 +171,7 @@ func createSignature(signingKey *openpgp.Entity, commit *createCommit) (string, 
 }
 
 func createSignatureMessage(commit *createCommit) (string, error) {
-	if commit == nil || commit.Message == nil || commit.Author == nil {
+	if commit == nil || commit.Message == nil || *commit.Message == "" || commit.Author == nil {
 		return "", errors.New("createSignatureMessage: invalid parameters")
 	}
 
@@ -194,7 +194,7 @@ func createSignatureMessage(commit *createCommit) (string, error) {
 
 	// There needs to be a double newline after committer
 	message = append(message, fmt.Sprintf("committer %s <%s> %d %s\n", committer.GetName(), committer.GetEmail(), committer.GetDate().Unix(), committer.GetDate().Format("-0700")))
-	message = append(message, fmt.Sprintf("%s", *commit.Message))
+	message = append(message, *commit.Message)
 
 	return strings.Join(message, "\n"), nil
 }

@@ -287,6 +287,23 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 	}
 }
 
+func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+	emptyString := ""
+	_, err := createSignatureMessage(&createCommit{
+		Message: &emptyString,
+		Parents: []string{"p"},
+		Author: &CommitAuthor{
+			Name:  String("go-github"),
+			Email: String("go-github@github.com"),
+			Date:  &date,
+		},
+	})
+	if err == nil {
+		t.Errorf("Expected error to be returned due to nil key")
+	}
+}
+
 func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 	_, err := createSignatureMessage(&createCommit{
 		Message: String("Commit Message."),
