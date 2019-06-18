@@ -3716,6 +3716,14 @@ func (i *InstallationPermissions) GetOrganizationUserBlocking() string {
 	return *i.OrganizationUserBlocking
 }
 
+// GetPackages returns the Packages field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetPackages() string {
+	if i == nil || i.Packages == nil {
+		return ""
+	}
+	return *i.Packages
+}
+
 // GetPages returns the Pages field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetPages() string {
 	if i == nil || i.Pages == nil {

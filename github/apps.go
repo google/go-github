@@ -56,6 +56,7 @@ type InstallationPermissions struct {
 	OrganizationPreReceiveHooks *string `json:"organization_pre_receive_hooks,omitempty"`
 	OrganizationProjects        *string `json:"organization_projects,omitempty"`
 	OrganizationUserBlocking    *string `json:"organization_user_blocking,omitempty"`
+	Packages                    *string `json:"packages,omitempty"`
 	Pages                       *string `json:"pages,omitempty"`
 	PullRequests                *string `json:"pull_requests,omitempty"`
 	RepositoryHooks             *string `json:"repository_hooks,omitempty"`
