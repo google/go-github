@@ -3628,12 +3628,44 @@ func (i *InstallationEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetAdministration returns the Administration field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetAdministration() string {
+	if i == nil || i.Administration == nil {
+		return ""
+	}
+	return *i.Administration
+}
+
+// GetChecks returns the Checks field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetChecks() string {
+	if i == nil || i.Checks == nil {
+		return ""
+	}
+	return *i.Checks
+}
+
+// GetContentReferences returns the ContentReferences field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetContentReferences() string {
+	if i == nil || i.ContentReferences == nil {
+		return ""
+	}
+	return *i.ContentReferences
+}
+
 // GetContents returns the Contents field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetContents() string {
 	if i == nil || i.Contents == nil {
 		return ""
 	}
 	return *i.Contents
+}
+
+// GetDeployments returns the Deployments field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetDeployments() string {
+	if i == nil || i.Deployments == nil {
+		return ""
+	}
+	return *i.Deployments
 }
 
 // GetIssues returns the Issues field if it's non-nil, zero value otherwise.
@@ -3644,6 +3676,14 @@ func (i *InstallationPermissions) GetIssues() string {
 	return *i.Issues
 }
 
+// GetMembers returns the Members field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetMembers() string {
+	if i == nil || i.Members == nil {
+		return ""
+	}
+	return *i.Members
+}
+
 // GetMetadata returns the Metadata field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetMetadata() string {
 	if i == nil || i.Metadata == nil {
@@ -3652,12 +3692,132 @@ func (i *InstallationPermissions) GetMetadata() string {
 	return *i.Metadata
 }
 
+// GetOrganizationAdministration returns the OrganizationAdministration field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationAdministration() string {
+	if i == nil || i.OrganizationAdministration == nil {
+		return ""
+	}
+	return *i.OrganizationAdministration
+}
+
+// GetOrganizationHooks returns the OrganizationHooks field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationHooks() string {
+	if i == nil || i.OrganizationHooks == nil {
+		return ""
+	}
+	return *i.OrganizationHooks
+}
+
+// GetOrganizationPlan returns the OrganizationPlan field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPlan() string {
+	if i == nil || i.OrganizationPlan == nil {
+		return ""
+	}
+	return *i.OrganizationPlan
+}
+
+// GetOrganizationPreReceiveHooks returns the OrganizationPreReceiveHooks field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPreReceiveHooks() string {
+	if i == nil || i.OrganizationPreReceiveHooks == nil {
+		return ""
+	}
+	return *i.OrganizationPreReceiveHooks
+}
+
+// GetOrganizationProjects returns the OrganizationProjects field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationProjects() string {
+	if i == nil || i.OrganizationProjects == nil {
+		return ""
+	}
+	return *i.OrganizationProjects
+}
+
+// GetOrganizationUserBlocking returns the OrganizationUserBlocking field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationUserBlocking() string {
+	if i == nil || i.OrganizationUserBlocking == nil {
+		return ""
+	}
+	return *i.OrganizationUserBlocking
+}
+
+// GetPackages returns the Packages field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetPackages() string {
+	if i == nil || i.Packages == nil {
+		return ""
+	}
+	return *i.Packages
+}
+
+// GetPages returns the Pages field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetPages() string {
+	if i == nil || i.Pages == nil {
+		return ""
+	}
+	return *i.Pages
+}
+
+// GetPullRequests returns the PullRequests field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetPullRequests() string {
+	if i == nil || i.PullRequests == nil {
+		return ""
+	}
+	return *i.PullRequests
+}
+
+// GetRepositoryHooks returns the RepositoryHooks field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryHooks() string {
+	if i == nil || i.RepositoryHooks == nil {
+		return ""
+	}
+	return *i.RepositoryHooks
+}
+
+// GetRepositoryPreReceiveHooks returns the RepositoryPreReceiveHooks field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryPreReceiveHooks() string {
+	if i == nil || i.RepositoryPreReceiveHooks == nil {
+		return ""
+	}
+	return *i.RepositoryPreReceiveHooks
+}
+
+// GetRepositoryProjects returns the RepositoryProjects field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetRepositoryProjects() string {
+	if i == nil || i.RepositoryProjects == nil {
+		return ""
+	}
+	return *i.RepositoryProjects
+}
+
 // GetSingleFile returns the SingleFile field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetSingleFile() string {
 	if i == nil || i.SingleFile == nil {
 		return ""
 	}
 	return *i.SingleFile
+}
+
+// GetStatuses returns the Statuses field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetStatuses() string {
+	if i == nil || i.Statuses == nil {
+		return ""
+	}
+	return *i.Statuses
+}
+
+// GetTeamDiscussions returns the TeamDiscussions field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetTeamDiscussions() string {
+	if i == nil || i.TeamDiscussions == nil {
+		return ""
+	}
+	return *i.TeamDiscussions
+}
+
+// GetVulnerabilityAlerts returns the VulnerabilityAlerts field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetVulnerabilityAlerts() string {
+	if i == nil || i.VulnerabilityAlerts == nil {
+		return ""
+	}
+	return *i.VulnerabilityAlerts
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
