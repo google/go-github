@@ -36,12 +36,36 @@ type InstallationToken struct {
 	ExpiresAt *time.Time `json:"expires_at,omitempty"`
 }
 
-// InstallationPermissions lists the permissions for metadata, contents, issues and single file for an installation.
+// InstallationPermissions lists the repository and organization permissions for an installation.
+//
+// Permission names taken from:
+//   https://developer.github.com/v3/apps/permissions/
+//   https://developer.github.com/enterprise/v3/apps/permissions/
 type InstallationPermissions struct {
-	Metadata   *string `json:"metadata,omitempty"`
-	Contents   *string `json:"contents,omitempty"`
-	Issues     *string `json:"issues,omitempty"`
-	SingleFile *string `json:"single_file,omitempty"`
+	Administration              *string `json:"administration,omitempty"`
+	Checks                      *string `json:"checks,omitempty"`
+	Contents                    *string `json:"contents,omitempty"`
+	ContentReferences           *string `json:"content_references,omitempty"`
+	Deployments                 *string `json:"deployments,omitempty"`
+	Issues                      *string `json:"issues,omitempty"`
+	Metadata                    *string `json:"metadata,omitempty"`
+	Members                     *string `json:"members,omitempty"`
+	OrganizationAdministration  *string `json:"organization_administration,omitempty"`
+	OrganizationHooks           *string `json:"organization_hooks,omitempty"`
+	OrganizationPlan            *string `json:"organization_plan,omitempty"`
+	OrganizationPreReceiveHooks *string `json:"organization_pre_receive_hooks,omitempty"`
+	OrganizationProjects        *string `json:"organization_projects,omitempty"`
+	OrganizationUserBlocking    *string `json:"organization_user_blocking,omitempty"`
+	Packages                    *string `json:"packages,omitempty"`
+	Pages                       *string `json:"pages,omitempty"`
+	PullRequests                *string `json:"pull_requests,omitempty"`
+	RepositoryHooks             *string `json:"repository_hooks,omitempty"`
+	RepositoryProjects          *string `json:"repository_projects,omitempty"`
+	RepositoryPreReceiveHooks   *string `json:"repository_pre_receive_hooks,omitempty"`
+	SingleFile                  *string `json:"single_file,omitempty"`
+	Statuses                    *string `json:"statuses,omitempty"`
+	TeamDiscussions             *string `json:"team_discussions,omitempty"`
+	VulnerabilityAlerts         *string `json:"vulnerability_alerts,omitempty"`
 }
 
 // Installation represents a GitHub Apps installation.
