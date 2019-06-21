@@ -39,8 +39,6 @@ const (
 var (
 	verbose = flag.Bool("v", false, "Print verbose log messages")
 
-	sourceTmpl = template.Must(template.New("source").Funcs(funcMap).Parse(source))
-
 	// blacklistStructMethod lists "struct.method" combos to skip.
 	blacklistStructMethod = map[string]bool{}
 	// blacklistStruct lists structs to skip.
@@ -74,6 +72,8 @@ var (
 			return ""
 		},
 	}
+
+	sourceTmpl = template.Must(template.New("source").Funcs(funcMap).Parse(source))
 )
 
 func main() {
@@ -89,7 +89,7 @@ func main() {
 	for pkgName, pkg := range pkgs {
 		t := &templateData{
 			filename:     pkgName + outputFileSuffix,
-			Year:         2019,
+			Year:         2019, // No need to change this once set (even in following years).
 			Package:      pkgName,
 			Imports:      map[string]string{"testing": "testing"},
 			StringFuncs:  map[string]bool{},
