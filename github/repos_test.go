@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
@@ -26,14 +27,35 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	repos, _, err := client.Repositories.List(context.Background(), "", nil)
+	ctx := context.Background()
+	got, resp, err := client.Repositories.List(ctx, "", nil)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(repos, want) {
-		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.List returned %+v, want %+v", got, want)
+	}
+
+	// Test addOptions failure
+	got, resp, err = client.Repositories.List(ctx, "\n", &RepositoryListOptions{})
+	if err == nil {
+		t.Error("bad options List err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.List(ctx, "", nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now List = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now List resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now List err = nil, want error")
 	}
 }
 
@@ -124,15 +146,36 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
+	ctx := context.Background()
 	opt := &RepositoryListByOrgOptions{"forks", ListOptions{Page: 2}}
-	repos, _, err := client.Repositories.ListByOrg(context.Background(), "o", opt)
+	got, resp, err := client.Repositories.ListByOrg(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(repos, want) {
-		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", repos, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", got, want)
+	}
+
+	// Test addOptions failure
+	got, resp, err = client.Repositories.ListByOrg(ctx, "\n", opt)
+	if err == nil {
+		t.Error("bad options ListByOrg err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListByOrg(ctx, "o", opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListByOrg = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListByOrg resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListByOrg err = nil, want error")
 	}
 }
 
@@ -156,15 +199,43 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
+	ctx := context.Background()
 	opt := &RepositoryListAllOptions{1}
-	repos, _, err := client.Repositories.ListAll(context.Background(), opt)
+	got, resp, err := client.Repositories.ListAll(ctx, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListAll returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(repos, want) {
-		t.Errorf("Repositories.ListAll returned %+v, want %+v", repos, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListAll returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err = client.Repositories.ListAll(ctx, &RepositoryListAllOptions{1})
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListAll = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListAll resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListAll err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListAll(ctx, &RepositoryListAllOptions{1})
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListAll = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListAll resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListAll err = nil, want error")
 	}
 }
 
@@ -190,14 +261,42 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Repositories.Create(context.Background(), "", input)
+	ctx := context.Background()
+	got, resp, err := client.Repositories.Create(ctx, "", input)
 	if err != nil {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.Create returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err = client.Repositories.Create(ctx, "", input)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' Create = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' Create resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' Create err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.Create(ctx, "", input)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now Create = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now Create resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now Create err = nil, want error")
 	}
 }
 
@@ -245,14 +344,29 @@ func TestRepositoriesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
-	repo, _, err := client.Repositories.Get(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, resp, err := client.Repositories.Get(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("Repositories.Get returned %+v, want %+v", repo, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.Get(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now Get = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now Get resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now Get err = nil, want error")
 	}
 }
 
@@ -271,7 +385,8 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		)
 	})
 
-	coc, _, err := client.Repositories.GetCodeOfConduct(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, resp, err := client.Repositories.GetCodeOfConduct(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetCodeOfConduct returned error: %v", err)
 	}
@@ -283,8 +398,35 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		Body: String("body"),
 	}
 
-	if !reflect.DeepEqual(coc, want) {
-		t.Errorf("Repositories.Get returned %+v, want %+v", coc, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.GetCodeOfConduct returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err = client.Repositories.GetCodeOfConduct(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' GetCodeOfConduct = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' GetCodeOfConduct resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' GetCodeOfConduct err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.GetCodeOfConduct(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now GetCodeOfConduct = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now GetCodeOfConduct resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now GetCodeOfConduct err = nil, want error")
 	}
 }
 
@@ -297,14 +439,42 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
-	repo, _, err := client.Repositories.GetByID(context.Background(), 1)
+	ctx := context.Background()
+	got, resp, err := client.Repositories.GetByID(ctx, 1)
 	if err != nil {
 		t.Fatalf("Repositories.GetByID returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("Repositories.GetByID returned %+v, want %+v", repo, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.GetByID returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err = client.Repositories.GetByID(ctx, 1)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' GetByID = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' GetByID resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' GetByID err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.GetByID(ctx, 1)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now GetByID = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now GetByID resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now GetByID err = nil, want error")
 	}
 }
 
@@ -326,14 +496,29 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Repositories.Edit(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	got, resp, err := client.Repositories.Edit(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Edit returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("Repositories.Edit returned %+v, want %+v", repo, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.Edit returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.Edit(ctx, "o", "r", input)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now Edit = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now Edit resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now Edit err = nil, want error")
 	}
 }
 
@@ -345,9 +530,20 @@ func TestRepositoriesService_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Repositories.Delete(context.Background(), "o", "r")
+	ctx := context.Background()
+	resp, err := client.Repositories.Delete(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.Delete returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	resp, err = client.Repositories.Delete(ctx, "o", "r")
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' Delete resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' Delete err = nil, want error")
 	}
 }
 
