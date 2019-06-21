@@ -221,6 +221,17 @@ func TestClient_rateLimits(t *testing.T) {
 	}
 }
 
+func TestRateLimits_String(t *testing.T) {
+	v := RateLimits{
+		Core:   &Rate{},
+		Search: &Rate{},
+	}
+	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
+	if got := v.String(); got != want {
+		t.Errorf("RateLimits.String = %v, want %v", got, want)
+	}
+}
+
 func TestNewRequest(t *testing.T) {
 	c := NewClient(nil)
 

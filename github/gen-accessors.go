@@ -7,8 +7,9 @@
 
 // gen-accessors generates accessor methods for structs with pointer fields.
 //
-// It is meant to be used by the go-github authors in conjunction with the
-// go generate tool before sending a commit to GitHub.
+// It is meant to be used by go-github contributors in conjunction with the
+// go generate tool before sending a PR to GitHub.
+// Please see the CONTRIBUTING.md file for more information.
 package main
 
 import (
