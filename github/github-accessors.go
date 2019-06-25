@@ -9940,6 +9940,14 @@ func (r *RepositoryComment) GetID() int64 {
 	return *r.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetNodeID() string {
+	if r == nil || r.NodeID == nil {
+		return ""
+	}
+	return *r.NodeID
+}
+
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
 func (r *RepositoryComment) GetPath() string {
 	if r == nil || r.Path == nil {

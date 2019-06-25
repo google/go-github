@@ -1262,6 +1262,7 @@ func TestRepositoryComment_String(t *testing.T) {
 		HTMLURL:   String(""),
 		URL:       String(""),
 		ID:        Int64(0),
+		NodeID:    String(""),
 		CommitID:  String(""),
 		User:      &User{},
 		Reactions: &Reactions{},
@@ -1269,7 +1270,7 @@ func TestRepositoryComment_String(t *testing.T) {
 		Path:      String(""),
 		Position:  Int(0),
 	}
-	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, CommitID:"", User:github.User{}, Reactions:github.Reactions{}, Body:"", Path:"", Position:0}`
+	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, Reactions:github.Reactions{}, Body:"", Path:"", Position:0}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryComment.String = %v, want %v", got, want)
 	}
