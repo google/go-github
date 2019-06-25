@@ -47,6 +47,7 @@ type User struct {
 	Collaborators           *int       `json:"collaborators,omitempty"`
 	TwoFactorAuthentication *bool      `json:"two_factor_authentication,omitempty"`
 	Plan                    *Plan      `json:"plan,omitempty"`
+	LdapDn                  *string    `json:"ldap_dn,omitempty"`
 
 	// API URLs
 	URL               *string `json:"url,omitempty"`

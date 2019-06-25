@@ -12164,6 +12164,14 @@ func (u *User) GetID() int64 {
 	return *u.ID
 }
 
+// GetLdapDn returns the LdapDn field if it's non-nil, zero value otherwise.
+func (u *User) GetLdapDn() string {
+	if u == nil || u.LdapDn == nil {
+		return ""
+	}
+	return *u.LdapDn
+}
+
 // GetLocation returns the Location field if it's non-nil, zero value otherwise.
 func (u *User) GetLocation() string {
 	if u == nil || u.Location == nil {
