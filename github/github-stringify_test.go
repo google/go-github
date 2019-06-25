@@ -1491,7 +1491,6 @@ func TestTreeEntry_String(t *testing.T) {
 func TestUser_String(t *testing.T) {
 	v := User{
 		Login:                   String(""),
-		LdapDn:			 String(""),
 		ID:                      Int64(0),
 		NodeID:                  String(""),
 		AvatarURL:               String(""),
@@ -1520,6 +1519,7 @@ func TestUser_String(t *testing.T) {
 		Collaborators:           Int(0),
 		TwoFactorAuthentication: Bool(false),
 		Plan:                    &Plan{},
+		LdapDn:			 String(""),
 		URL:                     String(""),
 		EventsURL:               String(""),
 		FollowingURL:            String(""),
