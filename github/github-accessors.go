@@ -172,6 +172,15 @@ func (a *App) GetNodeID() string {
 	return *a.NodeID
 }
 
+// GetLdapDn returns the LdapDn field if it's non-nil, zero value otherwise.
+func (u *User) GetLdapDn() string {
+	if u == nil || u.LdapDn == nil {
+		return ""
+	}
+	return *u.LdapDn
+}
+
+
 // GetOwner returns the Owner field.
 func (a *App) GetOwner() *User {
 	if a == nil {
