@@ -180,7 +180,6 @@ func (u *User) GetLdapDn() string {
 	return *u.LdapDn
 }
 
-
 // GetOwner returns the Owner field.
 func (a *App) GetOwner() *User {
 	if a == nil {

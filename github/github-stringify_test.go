@@ -1519,7 +1519,7 @@ func TestUser_String(t *testing.T) {
 		Collaborators:           Int(0),
 		TwoFactorAuthentication: Bool(false),
 		Plan:                    &Plan{},
-		LdapDn:			 String(""),
+		LdapDn:                  String(""),
 		URL:                     String(""),
 		EventsURL:               String(""),
 		FollowingURL:            String(""),
