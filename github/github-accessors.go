@@ -3260,6 +3260,30 @@ func (g *Grant) GetURL() string {
 	return *g.URL
 }
 
+// GetGroupDescription returns the GroupDescription field if it's non-nil, zero value otherwise.
+func (g *Group) GetGroupDescription() string {
+	if g == nil || g.GroupDescription == nil {
+		return ""
+	}
+	return *g.GroupDescription
+}
+
+// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
+func (g *Group) GetGroupID() string {
+	if g == nil || g.GroupID == nil {
+		return ""
+	}
+	return *g.GroupID
+}
+
+// GetGroupName returns the GroupName field if it's non-nil, zero value otherwise.
+func (g *Group) GetGroupName() string {
+	if g == nil || g.GroupName == nil {
+		return ""
+	}
+	return *g.GroupName
+}
+
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
 func (h *Hook) GetActive() bool {
 	if h == nil || h.Active == nil {
