@@ -149,7 +149,7 @@ const (
 	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
 
 	// https://developer.github.com/changes/2019-06-12-team-sync/
-	mediaTypeTeamSync = "application/vnd.github.team-sync-preview+json"
+	mediaTypeTeamSyncPreview = "application/vnd.github.team-sync-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

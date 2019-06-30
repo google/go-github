@@ -477,21 +477,21 @@ func (s *TeamsService) RemoveTeamProject(ctx context.Context, teamID int64, proj
 	return s.client.Do(ctx, req, nil)
 }
 
-// GroupObject reprents list of Idp Group.
+// IDPGroupList represents a list of external identity provider (IDP) groups.
 type GroupObject struct {
 	Groups []*Group `json:"groups,omitempty"`
 }
 
-// Group represents an Idp group status.
+// IDPGroup represents an external identity provider (IDP) group.
 type Group struct {
 	GroupID          *string `json:"group_id,omitempty"`
 	GroupName        *string `json:"group_name,omitempty"`
 	GroupDescription *string `json:"group_description,omitempty"`
 }
 
-// ListIDPGroupsInOrganization list IdP groups available in an organization.
+// ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
-// Github API docs: https://developer.github.com/v3/teams/team_sync/
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-in-an-organization
 func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListOptions) (*GroupObject, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
 	u, err := addOptions(u, opt)
@@ -505,20 +505,19 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSync)
+	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
 
 	groups := new(GroupObject)
 	resp, err := s.client.Do(ctx, req, groups)
-
 	if err != nil {
 		return nil, resp, err
 	}
 	return groups, resp, nil
 }
 
-// ListIDPGroupsForTeam list IdP groups connected to a team on GitHub.
+// ListIDPGroupsForTeam lists IDP groups connected to a team on GitHub.
 //
-// Github API docs: https://developer.github.com/v3/teams/team_sync/
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team
 func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) (*GroupObject, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 
@@ -528,7 +527,7 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSync)
+	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
 
 	groups := new(GroupObject)
 	resp, err := s.client.Do(ctx, req, groups)
@@ -539,9 +538,9 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 }
 
 // CreateOrUpdateIDPGroupConnections creates, updates, or removes a connection between a team
-// and an IdP group.
+// and an IDP group.
 //
-// Github API docs: https://developer.github.com/v3/teams/team_sync/
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
 func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opt GroupObject) (*GroupObject, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 
@@ -551,7 +550,7 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, te
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSync)
+	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
 
 	groups := new(GroupObject)
 	resp, err := s.client.Do(ctx, req, groups)
