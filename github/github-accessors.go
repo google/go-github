@@ -6132,6 +6132,14 @@ func (o *Organization) GetLogin() string {
 	return *o.Login
 }
 
+// GetMembersAllowedRepositoryCreationType returns the MembersAllowedRepositoryCreationType field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersAllowedRepositoryCreationType() string {
+	if o == nil || o.MembersAllowedRepositoryCreationType == nil {
+		return ""
+	}
+	return *o.MembersAllowedRepositoryCreationType
+}
+
 // GetMembersCanCreateRepos returns the MembersCanCreateRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersCanCreateRepos() bool {
 	if o == nil || o.MembersCanCreateRepos == nil {

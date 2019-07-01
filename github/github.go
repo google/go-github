@@ -147,6 +147,9 @@ const (
 
 	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
 	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
+
+	// https://developer.github.com/v3/previews/#repository-creation-permissions
+	mediaTypeMemberAllowedRepoCreationType = "application/vnd.github.surtur-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
