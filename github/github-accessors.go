@@ -3260,30 +3260,6 @@ func (g *Grant) GetURL() string {
 	return *g.URL
 }
 
-// GetGroupDescription returns the GroupDescription field if it's non-nil, zero value otherwise.
-func (g *Group) GetGroupDescription() string {
-	if g == nil || g.GroupDescription == nil {
-		return ""
-	}
-	return *g.GroupDescription
-}
-
-// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
-func (g *Group) GetGroupID() string {
-	if g == nil || g.GroupID == nil {
-		return ""
-	}
-	return *g.GroupID
-}
-
-// GetGroupName returns the GroupName field if it's non-nil, zero value otherwise.
-func (g *Group) GetGroupName() string {
-	if g == nil || g.GroupName == nil {
-		return ""
-	}
-	return *g.GroupName
-}
-
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
 func (h *Hook) GetActive() bool {
 	if h == nil || h.Active == nil {
@@ -3346,6 +3322,30 @@ func (h *HookStats) GetTotalHooks() int {
 		return 0
 	}
 	return *h.TotalHooks
+}
+
+// GetGroupDescription returns the GroupDescription field if it's non-nil, zero value otherwise.
+func (i *IDPGroup) GetGroupDescription() string {
+	if i == nil || i.GroupDescription == nil {
+		return ""
+	}
+	return *i.GroupDescription
+}
+
+// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
+func (i *IDPGroup) GetGroupID() string {
+	if i == nil || i.GroupID == nil {
+		return ""
+	}
+	return *i.GroupID
+}
+
+// GetGroupName returns the GroupName field if it's non-nil, zero value otherwise.
+func (i *IDPGroup) GetGroupName() string {
+	if i == nil || i.GroupName == nil {
+		return ""
+	}
+	return *i.GroupName
 }
 
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.

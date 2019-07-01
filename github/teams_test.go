@@ -621,8 +621,8 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 		t.Errorf("Teams.ListIDPGroupsInOrganization returned error: %v", err)
 	}
 
-	want := &GroupObject{
-		Groups: []*Group{
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
 			{
 				GroupID:          String("1"),
 				GroupName:        String("n"),
@@ -650,8 +650,8 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
 	}
 
-	want := &GroupObject{
-		Groups: []*Group{
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
 			{
 				GroupID:          String("1"),
 				GroupName:        String("n"),
@@ -674,8 +674,8 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	input := GroupObject{
-		Groups: []*Group{
+	input := IDPGroupList{
+		Groups: []*IDPGroup{
 			{
 				GroupID:          String("1"),
 				GroupName:        String("n"),
@@ -689,8 +689,8 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
 	}
 
-	want := &GroupObject{
-		Groups: []*Group{
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
 			{
 				GroupID:          String("1"),
 				GroupName:        String("n"),
