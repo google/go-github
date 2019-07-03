@@ -1,4 +1,4 @@
-// Copyright 2013 The go-github AUTHORS. All rights reserved.
+// Copyright 2019 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -10,16 +10,15 @@ import (
 )
 
 // createUserRequest is a subset of User and is used internally
-// by Create to pass only the known fields for the endpoint
-//
+// by CreateUser to pass only the known fields for the endpoint.
 type createUserRequest struct {
-	Login *string `json:"login"`
-	Email *string `json:"email"`
+	Login *string `json:"login,omitempty"`
+	Email *string `json:"email,omitempty"`
 }
 
-// CreateUser creates a new user in Github Enterprise.
+// CreateUser creates a new user in GitHub Enterprise.
 //
-// Github Enterprise API docs: https://developer.github.com/enterprise/2.16/v3/enterprise-admin/users/#create-a-new-user
+// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-a-new-user
 func (s *AdminService) CreateUser(ctx context.Context, login, email string) (*User, *Response, error) {
 	u := "admin/users"
 
@@ -42,9 +41,9 @@ func (s *AdminService) CreateUser(ctx context.Context, login, email string) (*Us
 	return &user, resp, nil
 }
 
-// DeleteUser deletes a user in Github Enterprise.
+// DeleteUser deletes a user in GitHub Enterprise.
 //
-// https://developer.github.com/enterprise/2.16/v3/enterprise-admin/users/#delete-a-user
+// https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
 func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Response, error) {
 	u := "admin/users/" + username
 
