@@ -12388,6 +12388,14 @@ func (u *UserEmail) GetVerified() bool {
 	return *u.Verified
 }
 
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (u *UserEmail) GetVisibility() string {
+	if u == nil || u.Visibility == nil {
+		return ""
+	}
+	return *u.Visibility
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (u *UserLDAPMapping) GetAvatarURL() string {
 	if u == nil || u.AvatarURL == nil {
