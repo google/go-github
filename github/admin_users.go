@@ -43,7 +43,7 @@ func (s *AdminService) CreateUser(ctx context.Context, login, email string) (*Us
 
 // DeleteUser deletes a user in GitHub Enterprise.
 //
-// https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
+// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
 func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Response, error) {
 	u := "admin/users/" + username
 
