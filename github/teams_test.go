@@ -601,3 +601,104 @@ func TestTeamsService_RemoveTeamProject(t *testing.T) {
 		t.Errorf("Teams.RemoveTeamProject returned error: %v", err)
 	}
 }
+
+func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	opt := &ListOptions{Page: 2}
+	groups, _, err := client.Teams.ListIDPGroupsInOrganization(context.Background(), "o", opt)
+	if err != nil {
+		t.Errorf("Teams.ListIDPGroupsInOrganization returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.ListIDPGroupsInOrganization returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "1")
+	if err != nil {
+		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.ListIDPGroupsForTeam returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
+	}
+}
