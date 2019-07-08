@@ -56,6 +56,23 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 	}
 }
 
+func TestGitService_GetRef_noRefs(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, "[]")
+	})
+
+	_, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
+	want := "no match found for this ref"
+	if err.Error() != want {
+		t.Errorf("Git.GetRef returned %+v, want %+v", err, want)
+	}
+}
+
 func TestGitService_GetRef_multipleRefs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -87,7 +104,7 @@ func TestGitService_GetRef_multipleRefs(t *testing.T) {
 	})
 
 	_, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
-	want := "no exact match found for this ref"
+	want := "multiple matches found for this ref"
 	if err.Error() != want {
 		t.Errorf("Git.GetRef returned %+v, want %+v", err, want)
 	}
