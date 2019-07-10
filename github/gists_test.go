@@ -704,7 +704,7 @@ func TestGistsService_ListForks(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, nil)
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `
 		  [
 		    {"url": "https://api.github.com/gists/1",
@@ -717,7 +717,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		`)
 	})
 
-	gistForks, _, err := client.Gists.ListForks(context.Background(), "1")
+	opt := &ListOptions{Page: 2}
+	gistForks, _, err := client.Gists.ListForks(context.Background(), "1", opt)
 	if err != nil {
 		t.Errorf("Gists.ListForks returned error: %v", err)
 	}
