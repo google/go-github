@@ -568,6 +568,15 @@ func TestGistsService_ListCommits_withOptions(t *testing.T) {
 	}
 }
 
+func TestGistsService_ListCommits_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Gists.ListCommits(context.Background(), "%", nil)
+	testURLParseError(t, err)
+}
+
+
 func TestGistsService_Delete(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -717,7 +726,7 @@ func TestGistsService_ListForks(t *testing.T) {
 		`)
 	})
 
-	gistForks, _, err := client.Gists.ListForks(context.Background(), "1")
+	gistForks, _, err := client.Gists.ListForks(context.Background(), "1", nil)
 	if err != nil {
 		t.Errorf("Gists.ListForks returned error: %v", err)
 	}
@@ -734,10 +743,41 @@ func TestGistsService_ListForks(t *testing.T) {
 	}
 }
 
+func TestGistsService_ListForks_withOptions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[]`)
+	})
+
+	gistForks, _, err := client.Gists.ListForks(context.Background(), "1", &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Gists.ListForks returned error: %v", err)
+	}
+
+	want := []*GistFork{}
+	if !reflect.DeepEqual(gistForks, want) {
+		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
+	}
+}
+
 func TestGistsService_Fork_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
 	_, _, err := client.Gists.Fork(context.Background(), "%")
+	testURLParseError(t, err)
+}
+
+func TestGistsService_ListForks_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Gists.ListForks(context.Background(), "%", nil)
 	testURLParseError(t, err)
 }

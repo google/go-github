@@ -341,8 +341,13 @@ func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, e
 // ListForks lists forks of a gist.
 //
 // GitHub API docs: https://developer.github.com/v3/gists/#list-gist-forks
-func (s *GistsService) ListForks(ctx context.Context, id string) ([]*GistFork, *Response, error) {
+func (s *GistsService) ListForks(ctx context.Context, id string, opt *ListOptions) ([]*GistFork, *Response, error) {
 	u := fmt.Sprintf("gists/%v/forks", id)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
