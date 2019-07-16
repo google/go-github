@@ -568,6 +568,14 @@ func TestGistsService_ListCommits_withOptions(t *testing.T) {
 	}
 }
 
+func TestGistsService_ListCommits_invalidID(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Gists.ListCommits(context.Background(), "%", nil)
+	testURLParseError(t, err)
+}
+
 func TestGistsService_Delete(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -717,7 +725,7 @@ func TestGistsService_ListForks(t *testing.T) {
 		`)
 	})
 
-	gistForks, _, err := client.Gists.ListForks(context.Background(), "1")
+	gistForks, _, err := client.Gists.ListForks(context.Background(), "1", nil)
 	if err != nil {
 		t.Errorf("Gists.ListForks returned error: %v", err)
 	}
@@ -732,12 +740,59 @@ func TestGistsService_ListForks(t *testing.T) {
 	if !reflect.DeepEqual(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
+
 }
 
-func TestGistsService_Fork_invalidID(t *testing.T) {
-	client, _, _, teardown := setup()
+func TestGistsService_ListForks_withOptions(t *testing.T) {
+	client, mux, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Gists.Fork(context.Background(), "%")
-	testURLParseError(t, err)
+	mux.HandleFunc("/gists/1/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "2",
+		})
+		fmt.Fprint(w, `[]`)
+	})
+
+	gistForks, _, err := client.Gists.ListForks(context.Background(), "1", &ListOptions{Page: 2})
+	if err != nil {
+		t.Errorf("Gists.ListForks returned error: %v", err)
+	}
+
+	want := []*GistFork{}
+	if !reflect.DeepEqual(gistForks, want) {
+		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Gists.ListForks(context.Background(), "%", &ListOptions{})
+	if err == nil {
+		t.Error("Gists.ListForks returned err = nil")
+	}
+
+	// Test client.NewRequest failure
+	got, resp, err := client.Gists.ListForks(context.Background(), "%", nil)
+	if got != nil {
+		t.Errorf("Gists.ListForks = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("Gists.ListForks resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("Gists.ListForks err = nil, want error")
+	}
+
+	// Test client.Do failure
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Gists.ListForks(context.Background(), "1", &ListOptions{Page: 2})
+	if got != nil {
+		t.Errorf("Gists.ListForks returned = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("Gists.ListForks returned resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rGists.ListForks returned err = nil, want error")
+	}
 }
