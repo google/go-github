@@ -25,7 +25,7 @@ func TestActivityService_List(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, resp, err := client.Activity.ListFeeds(ctx)
+	got, _, err := client.Activity.ListFeeds(ctx)
 	if err != nil {
 		t.Errorf("Activity.ListFeeds returned error: %v", err)
 	}
@@ -35,7 +35,7 @@ func TestActivityService_List(t *testing.T) {
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.Activity.ListFeeds(ctx)
+	got, resp, err := client.Activity.ListFeeds(ctx)
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListFeeds = %#v, want nil", got)
 	}
