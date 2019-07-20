@@ -146,6 +146,9 @@ func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 	defer teardown()
 	s := strings.NewReader(testGPGKey)
 	keyring, err := openpgp.ReadArmoredKeyRing(s)
+	if err != nil {
+		t.Errorf("Error reading keyring: %+v", err)
+	}
 
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	author := CommitAuthor{

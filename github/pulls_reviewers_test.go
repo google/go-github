@@ -26,7 +26,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	// This returns a PR, unmarshalling of which is tested elsewhere
 	ctx := context.Background()
-	got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
@@ -37,7 +37,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+	got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' RequestReviewers = %#v, want nil", got)
 	}
@@ -99,7 +99,7 @@ func TestListReviewers(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
+	got, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
@@ -124,7 +124,7 @@ func TestListReviewers(t *testing.T) {
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
+	got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListReviewers = %#v, want nil", got)
 	}
