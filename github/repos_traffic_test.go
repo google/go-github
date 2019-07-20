@@ -27,7 +27,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
  		}]`)
 	})
 	ctx := context.Background()
-	got, resp, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
+	got, _, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficReferrers returned error: %+v", err)
 	}
@@ -43,7 +43,7 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.Repositories.ListTrafficReferrers(ctx, "o", "r")
+	got, resp, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListTrafficReferrers = %#v, want nil", got)
 	}
@@ -83,7 +83,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
  		}]`)
 	})
 	ctx := context.Background()
-	got, resp, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
+	got, _, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficPaths returned error: %+v", err)
 	}
@@ -100,7 +100,7 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.Repositories.ListTrafficPaths(ctx, "o", "r")
+	got, resp, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListTrafficPaths = %#v, want nil", got)
 	}
@@ -142,7 +142,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, resp, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
+	got, _, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficViews returned error: %+v", err)
 	}
@@ -162,14 +162,14 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	}
 
 	// Test addOptions failure
-	got, resp, err = client.Repositories.ListTrafficViews(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+	_, _, err = client.Repositories.ListTrafficViews(ctx, "\n", "\n", &TrafficBreakdownOptions{})
 	if err == nil {
 		t.Error("bad options ListTrafficViews err = nil, want error")
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
+	got, resp, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListTrafficViews = %#v, want nil", got)
 	}
@@ -211,7 +211,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, resp, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
+	got, _, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListTrafficClones returned error: %+v", err)
 	}
@@ -231,14 +231,14 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	}
 
 	// Test addOptions failure
-	got, resp, err = client.Repositories.ListTrafficClones(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+	_, _, err = client.Repositories.ListTrafficClones(ctx, "\n", "\n", &TrafficBreakdownOptions{})
 	if err == nil {
 		t.Error("bad options ListTrafficViews err = nil, want error")
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	got, resp, err = client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
+	got, resp, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
 	if got != nil {
 		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
 	}
