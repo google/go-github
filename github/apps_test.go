@@ -6,8 +6,10 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -224,6 +226,55 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
 }
+
+func TestAppsService_CreateInstallationTokenWithParameters(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	installationTokenParameters := &InstallationTokenParameters{
+		RepositoryIDs: []int64{1234},
+		Permissions: &InstallationPermissions{
+			Contents: String("write"),
+			Issues:   String("read"),
+		},
+	}
+
+	// Convert InstallationTokenParameters into an io.ReadCloser object for comparison.
+	itpSlice := []InstallationTokenParameters{*installationTokenParameters}
+	wantBody, err := GetReadCloser(itpSlice)
+	if err != nil {
+		t.Errorf("GetReadCloser returned error: %v", err)
+	}
+
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		// Read request body contents.
+		var gotBodyBytes []byte
+		gotBodyBytes, err = ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("ReadAll returned error: %v", err)
+		}
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(gotBodyBytes))
+
+		if !reflect.DeepEqual(r.Body, wantBody) {
+			t.Errorf("request sent %+v, want %+v", r.Body, wantBody)
+		}
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"token":"t"}`)
+	})
+
+	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, installationTokenParameters)
+	if err != nil {
+		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
+	}
+
+	want := &InstallationToken{Token: String("t")}
+	if !reflect.DeepEqual(token, want) {
+		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
+	}
+}
+
 
 func TestAppsService_CreateAttachement(t *testing.T) {
 	client, mux, _, teardown := setup()
