@@ -6,8 +6,12 @@
 package github
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"time"
 )
 
@@ -32,8 +36,21 @@ type App struct {
 
 // InstallationToken represents an installation token.
 type InstallationToken struct {
-	Token     *string    `json:"token,omitempty"`
-	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	Token        *string                  `json:"token,omitempty"`
+	ExpiresAt    *time.Time               `json:"expires_at,omitempty"`
+	Permissions  *InstallationPermissions `json:"permissions,omitempty"`
+	Repositories *[]Repository            `json:"repositories,emitempty"`
+}
+
+// InstallationTokenParameters allow restricting a token's access to specific repositories.
+type InstallationTokenParameters struct {
+	// The ids of the repositories that the installation token can access.
+	// Providing repository ids restricts the access of an installation token to specific repositories.
+	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
+
+	// The permissions granted to the access token.
+	// The permissions object includes the permission names and their access type.
+	Permissions *InstallationPermissions `json:"permissions,omitempty"`
 }
 
 // InstallationPermissions lists the repository and organization permissions for an installation.
@@ -194,10 +211,10 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opt *ListOption
 // CreateInstallationToken creates a new installation token.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#create-a-new-installation-token
-func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, body ...interface{}) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -281,4 +298,33 @@ func (s *AppsService) getInstallation(ctx context.Context, url string) (*Install
 	}
 
 	return i, resp, nil
+}
+
+// GetReadWriter converts a body interface into an io.ReadWriter object.
+func GetReadWriter(body interface{}) (io.ReadWriter, error) {
+	var buf io.ReadWriter
+	if body != nil {
+		buf = new(bytes.Buffer)
+		enc := json.NewEncoder(buf)
+		err := enc.Encode(body)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return buf, nil
+}
+
+// GetReadCloser converts a body interface into an io.ReadCloser object.
+func GetReadCloser(body interface{}) (io.ReadCloser, error) {
+	buf, err := GetReadWriter(body)
+	if err != nil {
+		return nil, err
+	}
+
+	all, err := ioutil.ReadAll(buf)
+	if err != nil {
+		return nil, err
+	}
+	
+	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
 }
