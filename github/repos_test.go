@@ -253,6 +253,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
 		want := &createRepoRequest{Name: String("n")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -314,6 +315,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
 		want := &createRepoRequest{Name: String("n")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -333,11 +335,72 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	templateRepoReq := &TemplateRepoRequest{
+		Name: String("n"),
+	}
+
+	mux.HandleFunc("/repos/to/tr/generate", func(w http.ResponseWriter, r *http.Request) {
+		v := new(TemplateRepoRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
+		want := &TemplateRepoRequest{Name: String("n")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"id":1,"name":"n"}`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
+	if err != nil {
+		t.Errorf("Repositories.CreateFromTemplate returned error: %v", err)
+	}
+
+	want := &Repository{ID: Int64(1), Name: String("n")}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.CreateFromTemplate returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' CreateFromTemplate = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' CreateFromTemplate resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' CreateFromTemplate err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now CreateFromTemplate = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now CreateFromTemplate resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now CreateFromTemplate err = nil, want error")
+	}
+}
+
 func TestRepositoriesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview}
+	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview, mediaTypeRepositoryTemplatePreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -490,6 +553,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
