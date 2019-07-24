@@ -227,11 +227,11 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	}
 }
 
-func TestAppsService_CreateInstallationTokenWithParameters(t *testing.T) {
+func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	installationTokenParameters := &InstallationTokenParameters{
+	installationTokenOptions := &InstallationTokenOptions{
 		RepositoryIDs: []int64{1234},
 		Permissions: &InstallationPermissions{
 			Contents: String("write"),
@@ -239,9 +239,8 @@ func TestAppsService_CreateInstallationTokenWithParameters(t *testing.T) {
 		},
 	}
 
-	// Convert InstallationTokenParameters into an io.ReadCloser object for comparison.
-	itpSlice := []InstallationTokenParameters{*installationTokenParameters}
-	wantBody, err := GetReadCloser(itpSlice)
+	// Convert InstallationTokenOptions into an io.ReadCloser object for comparison.
+	wantBody, err := GetReadCloser(installationTokenOptions)
 	if err != nil {
 		t.Errorf("GetReadCloser returned error: %v", err)
 	}
@@ -264,7 +263,7 @@ func TestAppsService_CreateInstallationTokenWithParameters(t *testing.T) {
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
-	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, installationTokenParameters)
+	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, installationTokenOptions)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -274,7 +273,6 @@ func TestAppsService_CreateInstallationTokenWithParameters(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
 }
-
 
 func TestAppsService_CreateAttachement(t *testing.T) {
 	client, mux, _, teardown := setup()
@@ -298,6 +296,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
 	}
 }
+
 func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
