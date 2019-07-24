@@ -39,13 +39,13 @@ type InstallationToken struct {
 	Token        *string                  `json:"token,omitempty"`
 	ExpiresAt    *time.Time               `json:"expires_at,omitempty"`
 	Permissions  *InstallationPermissions `json:"permissions,omitempty"`
-	Repositories *[]Repository            `json:"repositories,emitempty"`
+	Repositories []*Repository            `json:"repositories,emitempty"`
 }
 
-// InstallationTokenParameters allow restricting a token's access to specific repositories.
-type InstallationTokenParameters struct {
-	// The ids of the repositories that the installation token can access.
-	// Providing repository ids restricts the access of an installation token to specific repositories.
+// InstallationTokenOptions allow restricting a token's access to specific repositories.
+type InstallationTokenOptions struct {
+	// The IDs of the repositories that the installation token can access.
+	// Providing repository IDs restricts the access of an installation token to specific repositories.
 	RepositoryIDs []int64 `json:"repository_ids,omitempty"`
 
 	// The permissions granted to the access token.
@@ -211,10 +211,10 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opt *ListOption
 // CreateInstallationToken creates a new installation token.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#create-a-new-installation-token
-func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, body ...interface{}) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt *InstallationTokenOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
 	}
