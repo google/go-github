@@ -344,8 +344,8 @@ func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, 
 // GetProjectCard gets a card in a column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#get-a-project-card
-func (s *ProjectsService) GetProjectCard(ctx context.Context, columnID int64) (*ProjectCard, *Response, error) {
-	u := fmt.Sprintf("projects/columns/cards/%v", columnID)
+func (s *ProjectsService) GetProjectCard(ctx context.Context, cardID int64) (*ProjectCard, *Response, error) {
+	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
