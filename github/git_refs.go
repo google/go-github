@@ -69,11 +69,11 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	if _, ok := err.(*json.UnmarshalTypeError); ok {
 		// Multiple refs, means there wasn't an exact match.
 		return nil, resp, errors.New("multiple matches found for this ref")
+	} else if _, ok; err.(*ErrorResponse); ok && resp.StatusCode == 404 {
+		// No ref, there was no match for the ref
+		return nil, nil, errors.New("no match found for this ref")
 	} else if err != nil {
 		return nil, nil, err
-	} else if resp.StatusCode == 404 {
-		// No ref, there was no match for the ref
-		return nil, resp, errors.New("no match found for this ref")
 	}
 
 	return r, resp, nil
