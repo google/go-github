@@ -649,7 +649,7 @@ type RateLimitError struct {
 func (r *RateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %d %v %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message, formatRateReset(r.Rate.Reset.Time.Sub(time.Now())))
+		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
