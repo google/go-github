@@ -153,6 +153,9 @@ const (
 
 	// https://developer.github.com/v3/previews/#repository-creation-permissions
 	mediaTypeMemberAllowedRepoCreationTypePreview = "application/vnd.github.surtur-preview+json"
+
+	// https://developer.github.com/v3/previews/#create-and-use-repository-templates
+	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

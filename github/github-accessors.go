@@ -9612,6 +9612,14 @@ func (r *Repository) GetIssuesURL() string {
 	return *r.IssuesURL
 }
 
+// GetIsTemplate returns the IsTemplate field if it's non-nil, zero value otherwise.
+func (r *Repository) GetIsTemplate() bool {
+	if r == nil || r.IsTemplate == nil {
+		return false
+	}
+	return *r.IsTemplate
+}
+
 // GetKeysURL returns the KeysURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetKeysURL() string {
 	if r == nil || r.KeysURL == nil {
@@ -9898,6 +9906,14 @@ func (r *Repository) GetTeamsURL() string {
 		return ""
 	}
 	return *r.TeamsURL
+}
+
+// GetTemplateRepository returns the TemplateRepository field.
+func (r *Repository) GetTemplateRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.TemplateRepository
 }
 
 // GetTreesURL returns the TreesURL field if it's non-nil, zero value otherwise.
@@ -11666,6 +11682,38 @@ func (t *TeamProjectOptions) GetPermission() string {
 		return ""
 	}
 	return *t.Permission
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (t *TemplateRepoRequest) GetDescription() string {
+	if t == nil || t.Description == nil {
+		return ""
+	}
+	return *t.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (t *TemplateRepoRequest) GetName() string {
+	if t == nil || t.Name == nil {
+		return ""
+	}
+	return *t.Name
+}
+
+// GetOwner returns the Owner field if it's non-nil, zero value otherwise.
+func (t *TemplateRepoRequest) GetOwner() string {
+	if t == nil || t.Owner == nil {
+		return ""
+	}
+	return *t.Owner
+}
+
+// GetPrivate returns the Private field if it's non-nil, zero value otherwise.
+func (t *TemplateRepoRequest) GetPrivate() bool {
+	if t == nil || t.Private == nil {
+		return false
+	}
+	return *t.Private
 }
 
 // GetFragment returns the Fragment field if it's non-nil, zero value otherwise.
