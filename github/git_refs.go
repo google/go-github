@@ -71,9 +71,9 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 		return nil, resp, errors.New("multiple matches found for this ref")
 	} else if _, ok; err.(*ErrorResponse); ok && resp.StatusCode == 404 {
 		// No ref, there was no match for the ref
-		return nil, nil, errors.New("no match found for this ref")
+		return nil, resp, errors.New("no match found for this ref")
 	} else if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return r, resp, nil
