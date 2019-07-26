@@ -644,6 +644,14 @@ func (c *CheckRunAnnotation) GetBlobHRef() string {
 	return *c.BlobHRef
 }
 
+// GetEndColumn returns the EndColumn field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetEndColumn() int {
+	if c == nil || c.EndColumn == nil {
+		return 0
+	}
+	return *c.EndColumn
+}
+
 // GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetEndLine() int {
 	if c == nil || c.EndLine == nil {
@@ -674,6 +682,14 @@ func (c *CheckRunAnnotation) GetRawDetails() string {
 		return ""
 	}
 	return *c.RawDetails
+}
+
+// GetStartColumn returns the StartColumn field if it's non-nil, zero value otherwise.
+func (c *CheckRunAnnotation) GetStartColumn() int {
+	if c == nil || c.StartColumn == nil {
+		return 0
+	}
+	return *c.StartColumn
 }
 
 // GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
