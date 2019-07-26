@@ -636,14 +636,6 @@ func (c *CheckRunAnnotation) GetAnnotationLevel() string {
 	return *c.AnnotationLevel
 }
 
-// GetBlobHRef returns the BlobHRef field if it's non-nil, zero value otherwise.
-func (c *CheckRunAnnotation) GetBlobHRef() string {
-	if c == nil || c.BlobHRef == nil {
-		return ""
-	}
-	return *c.BlobHRef
-}
-
 // GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
 func (c *CheckRunAnnotation) GetEndLine() int {
 	if c == nil || c.EndLine == nil {
