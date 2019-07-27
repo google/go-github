@@ -591,7 +591,6 @@ func Test_CheckRunMarshal(t *testing.T) {
 			"annotations": [
 				{
 					"path": "p",
-					"blob_href": "b",
 					"start_line": 1,
 					"end_line": 1,
 					"annotation_level": "a",
