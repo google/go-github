@@ -216,7 +216,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
-	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1)
+	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, nil)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
