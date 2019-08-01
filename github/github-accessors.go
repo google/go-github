@@ -3892,7 +3892,7 @@ func (i *InstallationToken) GetToken() string {
 	return *i.Token
 }
 
-// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+// GetPermissions returns the Permissions field.
 func (i *InstallationToken) GetPermissions() *InstallationPermissions {
 	if i == nil {
 		return nil
@@ -3900,12 +3900,12 @@ func (i *InstallationToken) GetPermissions() *InstallationPermissions {
 	return i.Permissions
 }
 
-// GetRepositories returns the Repositories field if it's non-nil, zero value otherwise.
-func (i *InstallationToken) GetRepositories() []*Repository {
+// GetPermissions returns the Permissions field.
+func (i *InstallationTokenOptions) GetPermissions() *InstallationPermissions {
 	if i == nil {
 		return nil
 	}
-	return i.Repositories
+	return i.Permissions
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
