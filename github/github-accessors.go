@@ -3892,6 +3892,22 @@ func (i *InstallationToken) GetToken() string {
 	return *i.Token
 }
 
+// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+func (i *InstallationToken) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
+}
+
+// GetRepositories returns the Repositories field if it's non-nil, zero value otherwise.
+func (i *InstallationToken) GetRepositories() []*Repository {
+	if i == nil {
+		return nil
+	}
+	return i.Repositories
+}
+
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
 func (i *InteractionRestriction) GetExpiresAt() Timestamp {
 	if i == nil || i.ExpiresAt == nil {
