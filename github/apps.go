@@ -325,6 +325,5 @@ func GetReadCloser(body interface{}) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-	
 	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
 }
