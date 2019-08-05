@@ -316,15 +316,15 @@ func GetReadWriter(body interface{}) (io.ReadWriter, error) {
 
 // GetReadCloser converts a body interface into an io.ReadCloser object.
 func GetReadCloser(body interface{}) (io.ReadCloser, error) {
-	buf, err := GetReadWriter(body)
-	if err != nil {
-		return nil, err
-	}
+        buf, err := GetReadWriter(body)
+        if err != nil {
+                return nil, err
+        }
 
-	all, err := ioutil.ReadAll(buf)
-	if err != nil {
-		return nil, err
-	}
-	
-	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
+        all, err := ioutil.ReadAll(buf)
+        if err != nil {
+                return nil, err
+        }
+        return ioutil.NopCloser(bytes.NewBuffer(all)), nil
 }
+
