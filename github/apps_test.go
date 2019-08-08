@@ -380,3 +380,31 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
 	}
 }
+
+// GetReadWriter converts a body interface into an io.ReadWriter object.
+func GetReadWriter(body interface{}) (io.ReadWriter, error) {
+	var buf io.ReadWriter
+	if body != nil {
+		buf = new(bytes.Buffer)
+		enc := json.NewEncoder(buf)
+		err := enc.Encode(body)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return buf, nil
+}
+
+// GetReadCloser converts a body interface into an io.ReadCloser object.
+func GetReadCloser(body interface{}) (io.ReadCloser, error) {
+	buf, err := GetReadWriter(body)
+	if err != nil {
+		return nil, err
+	}
+
+	all, err := ioutil.ReadAll(buf)
+	if err != nil {
+		return nil, err
+	}
+	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
+}
