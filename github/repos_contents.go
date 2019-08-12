@@ -261,7 +261,7 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		return nil, nil, err
 	}
 	resp.Body.Close()
-	if resp.StatusCode != http.StatusFound {
+	if !(resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently) {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))

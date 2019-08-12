@@ -379,7 +379,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
-	if resp.StatusCode != http.StatusFound {
+	if !(resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently) {
 		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 	}
 	want := "http://github.com/a"
