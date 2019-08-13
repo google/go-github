@@ -35,7 +35,7 @@ type InstallationToken struct {
 	Token        *string                  `json:"token,omitempty"`
 	ExpiresAt    *time.Time               `json:"expires_at,omitempty"`
 	Permissions  *InstallationPermissions `json:"permissions,omitempty"`
-	Repositories []*Repository            `json:"repositories,emitempty"`
+	Repositories []*Repository            `json:"repositories,omitempty"`
 }
 
 // InstallationTokenOptions allow restricting a token's access to specific repositories.
