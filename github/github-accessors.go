@@ -8780,6 +8780,14 @@ func (p *PushEventRepository) GetHomepage() string {
 	return *p.Homepage
 }
 
+// GetPullsURL returns the PullsURL field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetPullsURL() string {
+	if p == nil || p.PullsURL == nil {
+		return ""
+	}
+	return *p.PullsURL
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetHTMLURL() string {
 	if p == nil || p.HTMLURL == nil {
