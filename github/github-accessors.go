@@ -4612,6 +4612,14 @@ func (i *IssueStats) GetTotalIssues() int {
 	return *i.TotalIssues
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (k *Key) GetCreatedAt() time.Time {
+	if k == nil || k.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *k.CreatedAt
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (k *Key) GetID() int64 {
 	if k == nil || k.ID == nil {
