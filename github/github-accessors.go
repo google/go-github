@@ -8860,6 +8860,14 @@ func (p *PushEventRepository) GetPrivate() bool {
 	return *p.Private
 }
 
+// GetPullsURL returns the PullsURL field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetPullsURL() string {
+	if p == nil || p.PullsURL == nil {
+		return ""
+	}
+	return *p.PullsURL
+}
+
 // GetPushedAt returns the PushedAt field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetPushedAt() Timestamp {
 	if p == nil || p.PushedAt == nil {
