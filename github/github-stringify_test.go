@@ -623,13 +623,14 @@ func TestIssueStats_String(t *testing.T) {
 
 func TestKey_String(t *testing.T) {
 	v := Key{
-		ID:       Int64(0),
-		Key:      String(""),
-		URL:      String(""),
-		Title:    String(""),
-		ReadOnly: Bool(false),
+		ID:        Int64(0),
+		Key:       String(""),
+		URL:       String(""),
+		Title:     String(""),
+		ReadOnly:  Bool(false),
+		CreatedAt: &Timestamp{},
 	}
-	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false}`
+	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Key.String = %v, want %v", got, want)
 	}

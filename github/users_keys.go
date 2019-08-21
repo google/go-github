@@ -12,11 +12,12 @@ import (
 
 // Key represents a public SSH key used to authenticate a user or deploy script.
 type Key struct {
-	ID       *int64  `json:"id,omitempty"`
-	Key      *string `json:"key,omitempty"`
-	URL      *string `json:"url,omitempty"`
-	Title    *string `json:"title,omitempty"`
-	ReadOnly *bool   `json:"read_only,omitempty"`
+	ID        *int64     `json:"id,omitempty"`
+	Key       *string    `json:"key,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+	Title     *string    `json:"title,omitempty"`
+	ReadOnly  *bool      `json:"read_only,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 func (k Key) String() string {
