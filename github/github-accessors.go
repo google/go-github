@@ -4613,9 +4613,9 @@ func (i *IssueStats) GetTotalIssues() int {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (k *Key) GetCreatedAt() time.Time {
+func (k *Key) GetCreatedAt() Timestamp {
 	if k == nil || k.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *k.CreatedAt
 }

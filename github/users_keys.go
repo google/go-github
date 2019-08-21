@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // Key represents a public SSH key used to authenticate a user or deploy script.
@@ -18,7 +17,7 @@ type Key struct {
 	URL       *string    `json:"url,omitempty"`
 	Title     *string    `json:"title,omitempty"`
 	ReadOnly  *bool      `json:"read_only,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 func (k Key) String() string {
