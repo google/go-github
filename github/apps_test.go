@@ -6,8 +6,12 @@
 package github
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -214,7 +218,54 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
-	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1)
+	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, nil)
+	if err != nil {
+		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
+	}
+
+	want := &InstallationToken{Token: String("t")}
+	if !reflect.DeepEqual(token, want) {
+		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
+	}
+}
+
+func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	installationTokenOptions := &InstallationTokenOptions{
+		RepositoryIDs: []int64{1234},
+		Permissions: &InstallationPermissions{
+			Contents: String("write"),
+			Issues:   String("read"),
+		},
+	}
+
+	// Convert InstallationTokenOptions into an io.ReadCloser object for comparison.
+	wantBody, err := GetReadCloser(installationTokenOptions)
+	if err != nil {
+		t.Errorf("GetReadCloser returned error: %v", err)
+	}
+
+	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
+		// Read request body contents.
+		var gotBodyBytes []byte
+		gotBodyBytes, err = ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("ReadAll returned error: %v", err)
+		}
+		r.Body = ioutil.NopCloser(bytes.NewBuffer(gotBodyBytes))
+
+		if !reflect.DeepEqual(r.Body, wantBody) {
+			t.Errorf("request sent %+v, want %+v", r.Body, wantBody)
+		}
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+		fmt.Fprint(w, `{"token":"t"}`)
+	})
+
+	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, installationTokenOptions)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -247,6 +298,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
 	}
 }
+
 func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -329,4 +381,32 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 	if !reflect.DeepEqual(installation, want) {
 		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
 	}
+}
+
+// GetReadWriter converts a body interface into an io.ReadWriter object.
+func GetReadWriter(body interface{}) (io.ReadWriter, error) {
+	var buf io.ReadWriter
+	if body != nil {
+		buf = new(bytes.Buffer)
+		enc := json.NewEncoder(buf)
+		err := enc.Encode(body)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return buf, nil
+}
+
+// GetReadCloser converts a body interface into an io.ReadCloser object.
+func GetReadCloser(body interface{}) (io.ReadCloser, error) {
+	buf, err := GetReadWriter(body)
+	if err != nil {
+		return nil, err
+	}
+
+	all, err := ioutil.ReadAll(buf)
+	if err != nil {
+		return nil, err
+	}
+	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
 }
