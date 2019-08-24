@@ -3884,12 +3884,28 @@ func (i *InstallationToken) GetExpiresAt() time.Time {
 	return *i.ExpiresAt
 }
 
+// GetPermissions returns the Permissions field.
+func (i *InstallationToken) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
+}
+
 // GetToken returns the Token field if it's non-nil, zero value otherwise.
 func (i *InstallationToken) GetToken() string {
 	if i == nil || i.Token == nil {
 		return ""
 	}
 	return *i.Token
+}
+
+// GetPermissions returns the Permissions field.
+func (i *InstallationTokenOptions) GetPermissions() *InstallationPermissions {
+	if i == nil {
+		return nil
+	}
+	return i.Permissions
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
