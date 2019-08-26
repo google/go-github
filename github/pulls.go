@@ -271,9 +271,9 @@ func (s *PullRequestsService) Create(ctx context.Context, owner string, repo str
 	return p, resp, nil
 }
 
-// PullReqestBranchUpdateOptions specifies the optional parameters to the
+// PullRequestBranchUpdateOptions specifies the optional parameters to the
 // PullRequestsService.UpdateBranch method.
-type PullReqestBranchUpdateOptions struct {
+type PullRequestBranchUpdateOptions struct {
 	// ExpectedHeadSHA specifies the most recent commit on the pull request's branch.
 	// Default value is the SHA of the pull request's current HEAD ref.
 	ExpectedHeadSHA *string `json:"expected_head_sha,omitempty"`
@@ -294,7 +294,7 @@ type PullRequestBranchUpdateResponse struct {
 // in a successful request.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/#update-a-pull-request-branch
-func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullReqestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
+func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/update-branch", owner, repo, number)
 
 	req, err := s.client.NewRequest("PUT", u, opts)
