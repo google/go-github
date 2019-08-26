@@ -7469,7 +7469,7 @@ func (p *PublicEvent) GetSender() *User {
 }
 
 // GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
-func (p *PullReqestBranchUpdateOptions) GetExpectedHeadSHA() string {
+func (p *PullRequestBranchUpdateOptions) GetExpectedHeadSHA() string {
 	if p == nil || p.ExpectedHeadSHA == nil {
 		return ""
 	}
