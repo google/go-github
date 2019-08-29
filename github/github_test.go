@@ -155,7 +155,7 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	// now go the other direction and make sure things unmarshal as expected
 	u := reflect.ValueOf(v).Interface()
 	if err := json.Unmarshal([]byte(want), u); err != nil {
-		t.Errorf("Unable to unmarshal JSON for %v", want)
+		t.Errorf("Unable to unmarshal JSON for %v: %v", want, err)
 	}
 
 	if !reflect.DeepEqual(v, u) {
@@ -171,6 +171,11 @@ func TestNewClient(t *testing.T) {
 	}
 	if got, want := c.UserAgent, userAgent; got != want {
 		t.Errorf("NewClient UserAgent is %v, want %v", got, want)
+	}
+
+	c2 := NewClient(nil)
+	if c.client == c2.client {
+		t.Error("NewClient returned same http.Clients, but they should differ")
 	}
 }
 
@@ -251,6 +256,17 @@ func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testi
 func TestClient_rateLimits(t *testing.T) {
 	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
 		t.Errorf("len(Client{}.rateLimits) is %v, want %v", got, want)
+	}
+}
+
+func TestRateLimits_String(t *testing.T) {
+	v := RateLimits{
+		Core:   &Rate{},
+		Search: &Rate{},
+	}
+	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
+	if got := v.String(); got != want {
+		t.Errorf("RateLimits.String = %v, want %v", got, want)
 	}
 }
 

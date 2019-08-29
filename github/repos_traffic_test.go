@@ -26,9 +26,10 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 			"uniques": 3
  		}]`)
 	})
-	referrers, _, err := client.Repositories.ListTrafficReferrers(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.ListPaths returned error: %+v", err)
+		t.Errorf("Repositories.ListTrafficReferrers returned error: %+v", err)
 	}
 
 	want := []*TrafficReferrer{{
@@ -36,10 +37,36 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 		Count:    Int(4),
 		Uniques:  Int(3),
 	}}
-	if !reflect.DeepEqual(referrers, want) {
-		t.Errorf("Repositories.ListReferrers returned %+v, want %+v", referrers, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListTrafficReferrers returned %+v, want %+v", got, want)
 	}
 
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficReferrers = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficReferrers resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficReferrers err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListTrafficReferrers(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficReferrers = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficReferrers resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficReferrers err = nil, want error")
+	}
 }
 
 func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
@@ -55,9 +82,10 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 			"uniques": 2225
  		}]`)
 	})
-	paths, _, err := client.Repositories.ListTrafficPaths(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Repositories.ListPaths returned error: %+v", err)
+		t.Errorf("Repositories.ListTrafficPaths returned error: %+v", err)
 	}
 
 	want := []*TrafficPath{{
@@ -66,10 +94,36 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 		Count:   Int(3542),
 		Uniques: Int(2225),
 	}}
-	if !reflect.DeepEqual(paths, want) {
-		t.Errorf("Repositories.ListPaths returned %+v, want %+v", paths, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListTrafficPaths returned %+v, want %+v", got, want)
 	}
 
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficPaths = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficPaths resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficPaths err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListTrafficPaths(ctx, "o", "r")
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficPaths = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficPaths resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficPaths err = nil, want error")
+	}
 }
 
 func TestRepositoriesService_ListTrafficViews(t *testing.T) {
@@ -87,9 +141,10 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 		}]}`)
 	})
 
-	views, _, err := client.Repositories.ListTrafficViews(context.Background(), "o", "r", nil)
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
 	if err != nil {
-		t.Errorf("Repositories.ListPaths returned error: %+v", err)
+		t.Errorf("Repositories.ListTrafficViews returned error: %+v", err)
 	}
 
 	want := &TrafficViews{
@@ -102,10 +157,42 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 		Uniques: Int(6),
 	}
 
-	if !reflect.DeepEqual(views, want) {
-		t.Errorf("Repositories.ListViews returned %+v, want %+v", views, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListTrafficViews returned %+v, want %+v", got, want)
 	}
 
+	// Test addOptions failure
+	_, _, err = client.Repositories.ListTrafficViews(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+	if err == nil {
+		t.Error("bad options ListTrafficViews err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficViews = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficViews resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficViews err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficViews = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficViews resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficViews err = nil, want error")
+	}
 }
 
 func TestRepositoriesService_ListTrafficClones(t *testing.T) {
@@ -123,9 +210,10 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		}]}`)
 	})
 
-	clones, _, err := client.Repositories.ListTrafficClones(context.Background(), "o", "r", nil)
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
 	if err != nil {
-		t.Errorf("Repositories.ListPaths returned error: %+v", err)
+		t.Errorf("Repositories.ListTrafficClones returned error: %+v", err)
 	}
 
 	want := &TrafficClones{
@@ -138,8 +226,40 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		Uniques: Int(6),
 	}
 
-	if !reflect.DeepEqual(clones, want) {
-		t.Errorf("Repositories.ListViews returned %+v, want %+v", clones, want)
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ListTrafficClones returned %+v, want %+v", got, want)
 	}
 
+	// Test addOptions failure
+	_, _, err = client.Repositories.ListTrafficClones(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+	if err == nil {
+		t.Error("bad options ListTrafficViews err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+	}
 }

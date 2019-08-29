@@ -195,6 +195,26 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestPullRequestsService_UpdateReview(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprintf(w, `{"id":1}`)
+	})
+
+	got, _, err := client.PullRequests.UpdateReview(context.Background(), "o", "r", 1, 1, "updated_body")
+	if err != nil {
+		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
+	}
+
+	want := &PullRequestReview{ID: Int64(1)}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
+	}
+}
+
 func TestPullRequestsService_SubmitReview(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

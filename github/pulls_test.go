@@ -47,6 +47,37 @@ func TestPullRequestsService_List(t *testing.T) {
 	}
 }
 
+func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	wantAcceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeDraftPreview, mediaTypeLabelDescriptionSearchPreview, mediaTypeLockReasonPreview}
+	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testFormValues(t, r, values{
+			"state":     "closed",
+			"head":      "h",
+			"base":      "b",
+			"sort":      "created",
+			"direction": "desc",
+			"page":      "2",
+		})
+		fmt.Fprint(w, `[{"number":1}]`)
+	})
+
+	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
+	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(context.Background(), "o", "r", "sha", opt)
+	if err != nil {
+		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
+	}
+
+	want := []*PullRequest{{Number: Int(1)}}
+	if !reflect.DeepEqual(pulls, want) {
+		t.Errorf("PullRequests.ListPullRequestsWithCommit returned %+v, want %+v", pulls, want)
+	}
+}
+
 func TestPullRequestsService_List_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
@@ -301,6 +332,39 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 
 	_, _, err := client.PullRequests.Create(context.Background(), "%", "r", nil)
 	testURLParseError(t, err)
+}
+
+func TestPullRequestsService_UpdateBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeUpdatePullRequestBranchPreview)
+		fmt.Fprint(w, `
+			{
+			  "message": "Updating pull request branch.",
+			  "url": "https://github.com/repos/o/r/pulls/1"
+			}`)
+	})
+
+	opts := &PullReqestBranchUpdateOptions{
+		ExpectedHeadSHA: String("s"),
+	}
+
+	pull, _, err := client.PullRequests.UpdateBranch(context.Background(), "o", "r", 1, opts)
+	if err != nil {
+		t.Errorf("PullRequests.UpdateBranch returned error: %v", err)
+	}
+
+	want := &PullRequestBranchUpdateResponse{
+		Message: String("Updating pull request branch."),
+		URL:     String("https://github.com/repos/o/r/pulls/1"),
+	}
+
+	if !reflect.DeepEqual(pull, want) {
+		t.Errorf("PullRequests.UpdateBranch returned %+v, want %+v", pull, want)
+	}
 }
 
 func TestPullRequestsService_Edit(t *testing.T) {

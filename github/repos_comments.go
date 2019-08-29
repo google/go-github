@@ -16,6 +16,7 @@ type RepositoryComment struct {
 	HTMLURL   *string    `json:"html_url,omitempty"`
 	URL       *string    `json:"url,omitempty"`
 	ID        *int64     `json:"id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
 	CommitID  *string    `json:"commit_id,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	Reactions *Reactions `json:"reactions,omitempty"`
