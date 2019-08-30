@@ -7644,6 +7644,14 @@ func (p *PullRequest) GetLinks() *PRLinks {
 	return p.Links
 }
 
+// GetLocked returns the Locked field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetLocked() bool {
+	if p == nil || p.Locked == nil {
+		return false
+	}
+	return *p.Locked
+}
+
 // GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetMaintainerCanModify() bool {
 	if p == nil || p.MaintainerCanModify == nil {
@@ -7730,6 +7738,14 @@ func (p *PullRequest) GetPatchURL() string {
 		return ""
 	}
 	return *p.PatchURL
+}
+
+// GetRebaseable returns the Rebaseable field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetRebaseable() bool {
+	if p == nil || p.Rebaseable == nil {
+		return false
+	}
+	return *p.Rebaseable
 }
 
 // GetReviewComments returns the ReviewComments field if it's non-nil, zero value otherwise.

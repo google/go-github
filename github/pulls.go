@@ -24,6 +24,7 @@ type PullRequest struct {
 	ID                  *int64     `json:"id,omitempty"`
 	Number              *int       `json:"number,omitempty"`
 	State               *string    `json:"state,omitempty"`
+	Locked              *bool      `json:"locked,omitempty"`
 	Title               *string    `json:"title,omitempty"`
 	Body                *string    `json:"body,omitempty"`
 	CreatedAt           *time.Time `json:"created_at,omitempty"`
@@ -38,6 +39,7 @@ type PullRequest struct {
 	MergeableState      *string    `json:"mergeable_state,omitempty"`
 	MergedBy            *User      `json:"merged_by,omitempty"`
 	MergeCommitSHA      *string    `json:"merge_commit_sha,omitempty"`
+	Rebaseable          *bool      `json:"rebaseable,omitempty"`
 	Comments            *int       `json:"comments,omitempty"`
 	Commits             *int       `json:"commits,omitempty"`
 	Additions           *int       `json:"additions,omitempty"`
