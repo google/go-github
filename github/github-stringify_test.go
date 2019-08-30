@@ -899,6 +899,7 @@ func TestPullRequest_String(t *testing.T) {
 		ID:                  Int64(0),
 		Number:              Int(0),
 		State:               String(""),
+		Locked:              Bool(false),
 		Title:               String(""),
 		Body:                String(""),
 		User:                &User{},
@@ -908,6 +909,7 @@ func TestPullRequest_String(t *testing.T) {
 		MergeableState:      String(""),
 		MergedBy:            &User{},
 		MergeCommitSHA:      String(""),
+		Rebaseable:          Bool(false),
 		Comments:            Int(0),
 		Commits:             Int(0),
 		Additions:           Int(0),
@@ -934,7 +936,7 @@ func TestPullRequest_String(t *testing.T) {
 		Base:                &PullRequestBranch{},
 		ActiveLockReason:    String(""),
 	}
-	want := `github.PullRequest{ID:0, Number:0, State:"", Title:"", Body:"", User:github.User{}, Draft:false, Merged:false, Mergeable:false, MergeableState:"", MergedBy:github.User{}, MergeCommitSHA:"", Comments:0, Commits:0, Additions:0, Deletions:0, ChangedFiles:0, URL:"", HTMLURL:"", IssueURL:"", StatusesURL:"", DiffURL:"", PatchURL:"", CommitsURL:"", CommentsURL:"", ReviewCommentsURL:"", ReviewCommentURL:"", ReviewComments:0, Assignee:github.User{}, Milestone:github.Milestone{}, MaintainerCanModify:false, AuthorAssociation:"", NodeID:"", Links:github.PRLinks{}, Head:github.PullRequestBranch{}, Base:github.PullRequestBranch{}, ActiveLockReason:""}`
+	want := `github.PullRequest{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", User:github.User{}, Draft:false, Merged:false, Mergeable:false, MergeableState:"", MergedBy:github.User{}, MergeCommitSHA:"", Rebaseable:false, Comments:0, Commits:0, Additions:0, Deletions:0, ChangedFiles:0, URL:"", HTMLURL:"", IssueURL:"", StatusesURL:"", DiffURL:"", PatchURL:"", CommitsURL:"", CommentsURL:"", ReviewCommentsURL:"", ReviewCommentURL:"", ReviewComments:0, Assignee:github.User{}, Milestone:github.Milestone{}, MaintainerCanModify:false, AuthorAssociation:"", NodeID:"", Links:github.PRLinks{}, Head:github.PullRequestBranch{}, Base:github.PullRequestBranch{}, ActiveLockReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequest.String = %v, want %v", got, want)
 	}
