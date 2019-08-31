@@ -105,7 +105,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 	}
 }
 
-func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
+func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -115,18 +115,18 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 	})
 
 	client.Marketplace.Stubbed = false
-	account, _, err := client.Marketplace.ListPlanAccountsForAccount(context.Background(), 1)
+	account, _, err := client.Marketplace.GetPlanAccountForAccount(context.Background(), 1)
 	if err != nil {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
+		t.Errorf("Marketplace.GetPlanAccountForAccount returned error: %v", err)
 	}
 
 	want := &MarketplacePlanAccount{ID: Int64(1), MarketplacePendingChange: &MarketplacePendingChange{ID: Int64(77)}}
 	if !reflect.DeepEqual(account, want) {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", account, want)
+		t.Errorf("Marketplace.GetPlanAccountForAccount returned %+v, want %+v", account, want)
 	}
 }
 
-func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
+func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -136,14 +136,14 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
 	})
 
 	client.Marketplace.Stubbed = true
-	account, _, err := client.Marketplace.ListPlanAccountsForAccount(context.Background(), 1)
+	account, _, err := client.Marketplace.GetPlanAccountForAccount(context.Background(), 1)
 	if err != nil {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned error: %v", err)
+		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned error: %v", err)
 	}
 
 	want := &MarketplacePlanAccount{ID: Int64(1)}
 	if !reflect.DeepEqual(account, want) {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned %+v, want %+v", account, want)
+		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned %+v, want %+v", account, want)
 	}
 }
 
