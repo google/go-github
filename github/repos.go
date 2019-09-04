@@ -125,6 +125,18 @@ func (r Repository) String() string {
 	return Stringify(r)
 }
 
+// BranchListOptions specifies the optional parameters to the
+// RepositoriesService.ListBranches method.
+type BranchListOptions struct {
+	// Setting to true returns only protected branches.
+	// When set to false, only unprotected branches are returned.
+	// Omitting this parameter returns all branches.
+	// Default: null
+	Protected *bool `url:"protected,omitempty"`
+
+	ListOptions
+}
+
 // RepositoryListOptions specifies the optional parameters to the
 // RepositoriesService.List method.
 type RepositoryListOptions struct {
@@ -814,7 +826,7 @@ type SignaturesProtectedBranch struct {
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-branches
-func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opt *ListOptions) ([]*Branch, *Response, error) {
+func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opt *BranchListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {

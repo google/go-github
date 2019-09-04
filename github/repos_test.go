@@ -803,7 +803,10 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 		fmt.Fprint(w, `[{"name":"master", "commit" : {"sha" : "a57781", "url" : "https://api.github.com/repos/o/r/commits/a57781"}}]`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &BranchListOptions{
+		Protected:   nil,
+		ListOptions: ListOptions{Page: 2},
+	}
 	branches, _, err := client.Repositories.ListBranches(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListBranches returned error: %v", err)
