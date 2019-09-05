@@ -384,7 +384,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 			},
 			Protected: Bool(true),
 		},
-	}1
+	}
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned %+v, want %+v", branches, want)
 	}
