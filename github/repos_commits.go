@@ -119,7 +119,7 @@ type CommitsListOptions struct {
 type BranchCommit struct {
 	Name      *string `json:"name,omitempty"`
 	Commit    *Commit `json:"commit,omitempty"`
-	Protected *string `json:"protected,omitempty"`
+	Protected *bool   `json:"protected,omitempty"`
 }
 
 // ListCommits lists the commits of a repository.
