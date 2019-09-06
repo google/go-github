@@ -48,7 +48,7 @@ func (r Reaction) String() string {
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-commit-comment
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListOptions) ([]*Reaction, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
