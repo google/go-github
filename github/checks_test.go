@@ -150,6 +150,8 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		                           "path": "README.md",
 		                           "start_line": 2,
 		                           "end_line": 2,
+		                           "start_column": 1,
+		                           "end_column": 5,									
 		                           "annotation_level": "warning",
 		                           "message": "Check your spelling for 'banaas'.",
                                            "title": "Spell check",
@@ -166,10 +168,12 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		Path:            String("README.md"),
 		StartLine:       Int(2),
 		EndLine:         Int(2),
+		StartColumn:     Int(1),
+		EndColumn:       Int(5),
 		AnnotationLevel: String("warning"),
 		Message:         String("Check your spelling for 'banaas'."),
-		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
 		Title:           String("Spell check"),
+		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
 	}}
 
 	if !reflect.DeepEqual(checkRunAnnotations, want) {
