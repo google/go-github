@@ -3,7 +3,6 @@ language: go
 go:
   - "1.x"
   - "1.12.x"
-  - "1.13.x"
   - master
 
 matrix:
