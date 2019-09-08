@@ -47,11 +47,11 @@ func (r Reaction) String() string {
 // ListCommentReactionOptions specifies the optional parameters to the
 // ReactionsService.ListCommentReactions method.
 type ListCommentReactionOptions struct {
-	// Content allows to return a single reaction type.
+	// Content restricts the returned comment reactions to only those with the given type.
+	// Omit this parameter to list all reactions to a commit comment.
+	// Possible values are: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 	Content string `url:"content,omitempty"`
 
-	// ListOptions.Page has no effect.
-	// ListOptions.PerPage controls an undocumented GitHub API parameter.
 	ListOptions
 }
 
