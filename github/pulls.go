@@ -344,7 +344,10 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 		State:               pull.State,
 		MaintainerCanModify: pull.MaintainerCanModify,
 	}
-	if pull.Base != nil {
+	// avoid updating the base branch when closing the Pull Request
+	// - otherwise the GitHub API server returns a "Validation Failed" error:
+	// "Cannot change base branch of closed pull request".
+	if pull.Base != nil && pull.GetState() != "closed" {
 		update.Base = pull.Base.Ref
 	}
 
