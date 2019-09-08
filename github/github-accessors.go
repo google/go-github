@@ -501,9 +501,9 @@ func (b *BranchCommit) GetName() string {
 }
 
 // GetProtected returns the Protected field if it's non-nil, zero value otherwise.
-func (b *BranchCommit) GetProtected() string {
+func (b *BranchCommit) GetProtected() bool {
 	if b == nil || b.Protected == nil {
-		return ""
+		return false
 	}
 	return *b.Protected
 }
