@@ -201,6 +201,14 @@ type RepositoryListByOrgOptions struct {
 	// forks, sources, member. Default is "all".
 	Type string `url:"type,omitempty"`
 
+	// How to sort the repository list. Can be one of created, updated, pushed,
+	// full_name. Default is "created".
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort repositories. Can be one of asc or desc.
+	// Default when using full_name: asc; otherwise desc.
+	Direction string `url:"direction,omitempty"`
+
 	ListOptions
 }
 
