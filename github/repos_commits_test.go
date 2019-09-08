@@ -367,7 +367,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s/branches-where-head", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprintf(w, `[{"name": "b"}]`)
+		fmt.Fprintf(w, `[{"name": "b","commit":{"sha":"2e90302801c870f17b6152327d9b9a03c8eca0e2","url":"https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"},"protected":true}]`)
 	})
 
 	branches, _, err := client.Repositories.ListBranchesHeadCommit(context.Background(), "o", "r", "s")
@@ -375,7 +375,16 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned error: %v", err)
 	}
 
-	want := []*BranchCommit{{Name: String("b")}}
+	want := []*BranchCommit{
+		{
+			Name: String("b"),
+			Commit: &Commit{
+				SHA: String("2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+				URL: String("https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+			},
+			Protected: Bool(true),
+		},
+	}
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned %+v, want %+v", branches, want)
 	}
