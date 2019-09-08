@@ -147,7 +147,10 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opt := &RepositoryListByOrgOptions{"forks", ListOptions{Page: 2}}
+	opt := &RepositoryListByOrgOptions{
+		Type:        "forks",
+		ListOptions: ListOptions{Page: 2},
+	}
 	got, _, err := client.Repositories.ListByOrg(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
