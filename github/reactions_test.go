@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"reflect"
 	"testing"
@@ -20,17 +21,18 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
+		testFormValues(t, r, values{"content": "+1"})
+		fmt.Fprint(w, `[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`)
 	})
 
-	got, _, err := client.Reactions.ListCommentReactions(context.Background(), "o", "r", 1, nil)
+	opt := &ListCommentReactionOptions{Content: "+1"}
+	reactions, _, err := client.Reactions.ListCommentReactions(context.Background(), "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("ListCommentReactions returned error: %v", err)
 	}
 	want := []*Reaction{{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("+1")}}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("ListCommentReactions = %+v, want %+v", got, want)
+	if !reflect.DeepEqual(reactions, want) {
+		t.Errorf("ListCommentReactions = %+v, want %+v", reactions, want)
 	}
 }
 
