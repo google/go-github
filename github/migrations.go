@@ -103,7 +103,7 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 // ListMigrations lists the most recent migrations.
 //
-// GitHub API docs: https://developer.github.com/v3/migration/migrations/#get-a-list-of-migrations
+// GitHub API docs: https://developer.github.com/v3/migrations/orgs/#get-a-list-of-organization-migrations
 func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts *ListOptions) ([]*Migration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/migrations", org)
 	u, err := addOptions(u, opts)
