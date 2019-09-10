@@ -51,7 +51,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 		w.Write([]byte(fmt.Sprintf("[%s]", migrationJSON)))
 	})
 
-	got, _, err := client.Migrations.ListMigrations(context.Background(), "o")
+	got, _, err := client.Migrations.ListMigrations(context.Background(), "o", &ListOptions{Page: 1, PerPage: 2})
 	if err != nil {
 		t.Errorf("ListMigrations returned error: %v", err)
 	}
