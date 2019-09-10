@@ -508,6 +508,14 @@ func (b *BranchCommit) GetProtected() bool {
 	return *b.Protected
 }
 
+// GetProtected returns the Protected field if it's non-nil, zero value otherwise.
+func (b *BranchListOptions) GetProtected() bool {
+	if b == nil || b.Protected == nil {
+		return false
+	}
+	return *b.Protected
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
