@@ -1291,6 +1291,87 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 	return t.Names, resp, nil
 }
 
+// ListApps lists the github apps that have push access to a given protected branch.
+// It requires the github apps to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#list-apps-with-access-to-protected-branch
+func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var apps []*App
+	resp, err := s.client.Do(ctx, req, &apps)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return apps, resp, nil
+}
+
+// ReplaceAppRestrictions replaces the apps that have push access to a given protected branch.
+// It removes all apps that previously had push access and grants push access to the new list of apps.
+// It requires the github apps to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#replace-app-restrictions-of-protected-branch
+func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, array []string) ([]*App, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	req, err := s.client.NewRequest("PUT", u, array)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var apps []*App
+	resp, err := s.client.Do(ctx, req, &apps)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return apps, resp, nil
+}
+
+// AddAppRestrictions grants the specified apps push access to a given protected branch.
+// It requires the github apps to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#add-app-restrictions-of-protected-branch
+func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, array []string) ([]*App, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	req, err := s.client.NewRequest("POST", u, array)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var apps []*App
+	resp, err := s.client.Do(ctx, req, &apps)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return apps, resp, nil
+}
+
+// RemoveAppRestrictions removes the ability of an app to push to this branch.
+// It requires the github apps to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#remove-app-restrictions-of-protected-branch
+func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, array []string) ([]*App, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, array)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var apps []*App
+	resp, err := s.client.Do(ctx, req, &apps)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return apps, resp, nil
+}
+
 // TransferRequest represents a request to transfer a repository.
 type TransferRequest struct {
 	NewOwner string  `json:"new_owner"`
