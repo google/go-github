@@ -1603,6 +1603,85 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_ListApps(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+
+	_, _, err := client.Repositories.ListApps(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListApps returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	got, _, err := client.Repositories.ReplaceAppRestrictions(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
+	}
+	want := []*App{
+		&App{Name: String("octocat")},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
+	}
+}
+
+func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	got, _, err := client.Repositories.AddAppRestrictions(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
+	}
+	want := []*App{
+		&App{Name: String("octocat")},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
+	}
+}
+
+func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/apps", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		fmt.Fprint(w, `[]`)
+	})
+	input := []string{"octocat"}
+	got, _, err := client.Repositories.RemoveAppRestrictions(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.RemoveAppRestrictions returned error: %v", err)
+	}
+	want := []*App{}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.RemoveAppRestrictions returned %+v, want %+v", got, want)
+	}
+}
+
 func TestRepositoriesService_Transfer(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
