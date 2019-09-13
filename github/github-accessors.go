@@ -180,6 +180,22 @@ func (a *App) GetOwner() *User {
 	return a.Owner
 }
 
+// GetPermissions returns the Permissions field.
+func (a *App) GetPermissions() *InstallationPermissions {
+	if a == nil {
+		return nil
+	}
+	return a.Permissions
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (a *App) GetSlug() string {
+	if a == nil || a.Slug == nil {
+		return ""
+	}
+	return *a.Slug
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (a *App) GetUpdatedAt() Timestamp {
 	if a == nil || a.UpdatedAt == nil {
@@ -3676,6 +3692,14 @@ func (i *InstallationPermissions) GetAdministration() string {
 	return *i.Administration
 }
 
+// GetBlocking returns the Blocking field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetBlocking() string {
+	if i == nil || i.Blocking == nil {
+		return ""
+	}
+	return *i.Blocking
+}
+
 // GetChecks returns the Checks field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetChecks() string {
 	if i == nil || i.Checks == nil {
@@ -3706,6 +3730,22 @@ func (i *InstallationPermissions) GetDeployments() string {
 		return ""
 	}
 	return *i.Deployments
+}
+
+// GetEmails returns the Emails field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEmails() string {
+	if i == nil || i.Emails == nil {
+		return ""
+	}
+	return *i.Emails
+}
+
+// GetFollowers returns the Followers field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetFollowers() string {
+	if i == nil || i.Followers == nil {
+		return ""
+	}
+	return *i.Followers
 }
 
 // GetIssues returns the Issues field if it's non-nil, zero value otherwise.
