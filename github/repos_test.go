@@ -1633,7 +1633,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 		t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
 	}
 	want := []*App{
-		&App{Name: String("octocat")},
+		{Name: String("octocat")},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
@@ -1656,7 +1656,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 		t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
 	}
 	want := []*App{
-		&App{Name: String("octocat")},
+		{Name: String("octocat")},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
