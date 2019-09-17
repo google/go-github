@@ -300,15 +300,15 @@ func NewClient(httpClient *http.Client) *Client {
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
-// base URL and upload URL (often the same URL and is your enterprise github host name).
-// If either URL does not have a trailing slash or the suffix api/v3, one is added automatically.
+// base URL and upload URL (often the same URL and is your GitHub Enterprise hostname).
+// If either URL does not have the suffix "/api/v3/", it will be added automatically.
 // If a nil httpClient is provided, http.DefaultClient will be used.
 //
 // Note that NewEnterpriseClient is a convenience helper only;
 // its behavior is equivalent to using NewClient, followed by setting
 // the BaseURL and UploadURL fields.
 //
-// Another important thing is that by default, the github enterprise url format
+// Another important thing is that by default, the GitHub Enterprise URL format
 // should be http(s)://[hostname]/api/v3 or you will always receive the 406 status code.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
 	baseEndpoint, err := url.Parse(baseURL)
