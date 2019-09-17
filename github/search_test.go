@@ -76,7 +76,7 @@ func TestSearchService_Topics(t *testing.T) {
 		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
-		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
+		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
 	}
 }
 
