@@ -47,6 +47,39 @@ func TestSearchService_Repositories(t *testing.T) {
 	}
 }
 
+func TestSearchService_Topics(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/topics", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"q":        "blah",
+			"sort":     "forks",
+			"order":    "desc",
+			"page":     "2",
+			"per_page": "2",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id":1},{"id":2}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
+	result, _, err := client.Search.Repositories(context.Background(), "blah", opts)
+	if err != nil {
+		t.Errorf("Search.Repositories returned error: %v", err)
+	}
+
+	want := &RepositoriesSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(false),
+		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
+	}
+	if !reflect.DeepEqual(result, want) {
+		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
+	}
+}
+
 func TestSearchService_Commits(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

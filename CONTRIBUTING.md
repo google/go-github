@@ -20,7 +20,7 @@ again.
 ## Reporting issues ##
 
 Bugs, feature requests, and development-related questions should be directed to
-our [GitHub issue tracker](https://github.com/google/go-github/issues).  If
+our [GitHub issue tracker](https://github.com/lucmski/go-github/issues).  If
 reporting a bug, please try and provide as much context as possible such as
 your operating system, Go version, and anything else that might be relevant to
 the bug.  For feature requests, please explain what you're trying to do, and
@@ -55,9 +55,9 @@ are more sensitive, emailed to <opensource@google.com>.
      exercised by your tests.
 
   1. Please run:
-     * `go generate github.com/google/go-github/...`
-     * `go test github.com/google/go-github/...`
-     * `go vet github.com/google/go-github/...`
+     * `go generate github.com/lucmski/go-github/...`
+     * `go test github.com/lucmski/go-github/...`
+     * `go vet github.com/lucmski/go-github/...`
 
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
@@ -88,7 +88,7 @@ defined at <https://developer.github.com/v3/repos/hooks/> live in
 [repos_hooks.go][].
 
 [GitHub API documentation]: https://developer.github.com/v3/
-[repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
+[repos_hooks.go]: https://github.com/lucmski/go-github/blob/master/github/repos_hooks.go
 
 
 ## Maintainer's Guide ##
@@ -122,5 +122,5 @@ If you made any other changes, it's worth noting that as well, [like
 this][modified-comment].
 
 [git-aliases]: https://github.com/willnorris/dotfiles/blob/d640d010c23b1116bdb3d4dc12088ed26120d87d/git/.gitconfig#L13-L15
-[rebase-comment]: https://github.com/google/go-github/pull/277#issuecomment-183035491
-[modified-comment]: https://github.com/google/go-github/pull/280#issuecomment-184859046
+[rebase-comment]: https://github.com/lucmski/go-github/pull/277#issuecomment-183035491
+[modified-comment]: https://github.com/lucmski/go-github/pull/280#issuecomment-184859046

@@ -71,6 +71,22 @@ func (s *SearchService) Repositories(ctx context.Context, query string, opt *Sea
 	return result, resp, err
 }
 
+// TopicsSearchResult represents the result of a topics search.
+type TopicsSearchResult struct {
+	Total             *int         `json:"total_count,omitempty"`
+	IncompleteResults *bool        `json:"incomplete_results,omitempty"`
+	Repositories      []Repository `json:"items,omitempty"`
+}
+
+// Topics searches repositories via various topics.
+//
+// GitHub API docs: https://developer.github.com/v3/search/#search-topics
+func (s *SearchService) Topics(ctx context.Context, query string, opt *SearchOptions) (*TopicsSearchResult, *Response, error) {
+	result := new(TopicsSearchResult)
+	resp, err := s.search(ctx, "topics", &searchParameters{Query: query}, opt, result)
+	return result, resp, err
+}
+
 // CommitsSearchResult represents the result of a commits search.
 type CommitsSearchResult struct {
 	Total             *int            `json:"total_count,omitempty"`
@@ -240,6 +256,10 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		// Accept header for search commits preview endpoint
 		// TODO: remove custom Accept header when this API fully launches.
 		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
+	case searchType == "topics":
+		// Accept header for search repositories based on topics preview endpoint
+		// TODO: remove custom Accept header when this API fully launches.
+		req.Header.Set("Accept", mediaTypeTopicsPreview)
 	case searchType == "repositories":
 		// Accept header for search repositories based on topics preview endpoint
 		// TODO: remove custom Accept header when this API fully launches.
