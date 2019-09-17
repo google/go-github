@@ -65,12 +65,12 @@ func TestSearchService_Topics(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Repositories(context.Background(), "blah", opts)
+	result, _, err := client.Search.Topics(context.Background(), "blah", opts)
 	if err != nil {
-		t.Errorf("Search.Repositories returned error: %v", err)
+		t.Errorf("Search.Topics returned error: %v", err)
 	}
 
-	want := &RepositoriesSearchResult{
+	want := &TopicsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
 		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
