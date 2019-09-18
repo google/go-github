@@ -180,8 +180,8 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestNewEnterpriseClient(t *testing.T) {
-	baseURL := "https://custom-url/"
-	uploadURL := "https://custom-upload-url/"
+	baseURL := "https://custom-url/api/v3/"
+	uploadURL := "https://custom-upload-url/api/v3/"
 	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
 	if err != nil {
 		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
@@ -196,10 +196,48 @@ func TestNewEnterpriseClient(t *testing.T) {
 }
 
 func TestNewEnterpriseClient_addsTrailingSlashToURLs(t *testing.T) {
-	baseURL := "https://custom-url"
-	uploadURL := "https://custom-upload-url"
+	baseURL := "https://custom-url/api/v3"
+	uploadURL := "https://custom-upload-url/api/v3"
 	formattedBaseURL := baseURL + "/"
 	formattedUploadURL := uploadURL + "/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_addsEnterpriseSuffixToURLs(t *testing.T) {
+	baseURL := "https://custom-url/"
+	uploadURL := "https://custom-upload-url/"
+	formattedBaseURL := baseURL + "api/v3/"
+	formattedUploadURL := uploadURL + "api/v3/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testing.T) {
+	baseURL := "https://custom-url"
+	uploadURL := "https://custom-upload-url"
+	formattedBaseURL := baseURL + "/api/v3/"
+	formattedUploadURL := uploadURL + "/api/v3/"
 
 	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
 	if err != nil {
