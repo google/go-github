@@ -73,9 +73,21 @@ func (s *SearchService) Repositories(ctx context.Context, query string, opt *Sea
 
 // TopicsSearchResult represents the result of a topics search.
 type TopicsSearchResult struct {
-	Total             *int         `json:"total_count,omitempty"`
-	IncompleteResults *bool        `json:"incomplete_results,omitempty"`
-	Repositories      []Repository `json:"items,omitempty"`
+	Total             *int           `json:"total_count,omitempty"`
+	IncompleteResults *bool          `json:"incomplete_results,omitempty"`
+	Topics            []*TopicResult `json:"items,omitempty"`
+}
+
+type TopicResult struct {
+	Name             *string  `json:"name,omitempty"`
+	DisplayName      *string  `json:"display_name,omitempty"`
+	ShortDescription *string  `json:"short_description,omitempty"`
+	Description      *string  `json:"description,omitempty"`
+	CreatedBy        *string  `json:"created_by,omitempty"`
+	CreatedAt        *string  `json:"created_at,omitempty"`
+	UpdatedAt        *string  `json:"updated_at,omitempty"`
+	Featured         *bool    `json:"featured,omitempty"`
+	Score            *float32 `json:"score,omitempty"`
 }
 
 // Topics searches repositories via various topics.
