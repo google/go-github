@@ -55,16 +55,14 @@ func TestSearchService_Topics(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"q":        "blah",
-			"sort":     "forks",
-			"order":    "desc",
 			"page":     "2",
 			"per_page": "2",
 		})
 
-		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"id":1},{"id":2}]}`)
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": false, "items": [{"name":"blah"},{"name":"blahblah"}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
+	opts := &SearchOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	result, _, err := client.Search.Topics(context.Background(), "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Topics returned error: %v", err)
@@ -73,7 +71,7 @@ func TestSearchService_Topics(t *testing.T) {
 	want := &TopicsSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
+		Topics:            []*TopicResult{{Name: String("blah")}, {Name: String("blahblah")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
