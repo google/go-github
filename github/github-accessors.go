@@ -11917,9 +11917,9 @@ func (t *Timeline) GetURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (t *TopicResult) GetCreatedAt() string {
+func (t *TopicResult) GetCreatedAt() Timestamp {
 	if t == nil || t.CreatedAt == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *t.CreatedAt
 }
@@ -11930,6 +11930,14 @@ func (t *TopicResult) GetCreatedBy() string {
 		return ""
 	}
 	return *t.CreatedBy
+}
+
+// GetCurated returns the Curated field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetCurated() bool {
+	if t == nil || t.Curated == nil {
+		return false
+	}
+	return *t.Curated
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -11965,7 +11973,7 @@ func (t *TopicResult) GetName() string {
 }
 
 // GetScore returns the Score field.
-func (t *TopicResult) GetScore() *float32 {
+func (t *TopicResult) GetScore() *float64 {
 	if t == nil {
 		return nil
 	}
