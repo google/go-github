@@ -79,18 +79,21 @@ type TopicsSearchResult struct {
 }
 
 type TopicResult struct {
-	Name             *string  `json:"name,omitempty"`
-	DisplayName      *string  `json:"display_name,omitempty"`
-	ShortDescription *string  `json:"short_description,omitempty"`
-	Description      *string  `json:"description,omitempty"`
-	CreatedBy        *string  `json:"created_by,omitempty"`
-	CreatedAt        *string  `json:"created_at,omitempty"`
-	UpdatedAt        *string  `json:"updated_at,omitempty"`
-	Featured         *bool    `json:"featured,omitempty"`
-	Score            *float32 `json:"score,omitempty"`
+	Name             *string    `json:"name,omitempty"`
+	DisplayName      *string    `json:"display_name,omitempty"`
+	ShortDescription *string    `json:"short_description,omitempty"`
+	Description      *string    `json:"description,omitempty"`
+	CreatedBy        *string    `json:"created_by,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *string    `json:"updated_at,omitempty"`
+	Featured         *bool      `json:"featured,omitempty"`
+	Curated          *bool      `json:"curated,omitempty"`
+	Score            *float64   `json:"score,omitempty"`
 }
 
-// Topics searches repositories via various topics.
+// Topics finds topics via various criteria. Results are sorted by best match.
+// Please see https://help.github.com/en/articles/searching-topics for more
+// information about search qualifiers.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-topics
 func (s *SearchService) Topics(ctx context.Context, query string, opt *SearchOptions) (*TopicsSearchResult, *Response, error) {
