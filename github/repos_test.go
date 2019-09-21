@@ -955,6 +955,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		Restrictions: &BranchRestrictionsRequest{
 			Users: []string{"u"},
 			Teams: []string{"t"},
+			Apps:  []string{"a"},
 		},
 	}
 
@@ -990,7 +991,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			},
 			"restrictions":{
 				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}]
+				"teams":[{"id":2,"slug":"t"}],
+				"apps":[{"id":3,"slug":"a"}]
 			}
 		}`)
 	})
@@ -1023,6 +1025,9 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			},
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
+			},
+			Apps: []*App{
+				{Slug: String("a"), ID: Int64(3)},
 			},
 		},
 	}
