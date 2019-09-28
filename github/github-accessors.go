@@ -12132,14 +12132,6 @@ func (u *UpdateCheckRunOptions) GetExternalID() string {
 	return *u.ExternalID
 }
 
-// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetHeadBranch() string {
-	if u == nil || u.HeadBranch == nil {
-		return ""
-	}
-	return *u.HeadBranch
-}
-
 // GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
 func (u *UpdateCheckRunOptions) GetHeadSHA() string {
 	if u == nil || u.HeadSHA == nil {
