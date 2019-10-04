@@ -40,8 +40,8 @@ func (s *UsersService) ListProjects(ctx context.Context, user string, opt *Proje
 // CreateProject creates a GitHub Project for the current user.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#create-a-user-project
-func (s *UsersService) CreateProject(ctx context.Context, user string, opt *ProjectOptions) (*Project, *Response, error) {
-	u := fmt.Sprintf("users/%v/projects", user)
+func (s *UsersService) CreateProject(ctx context.Context, opt *ProjectOptions) (*Project, *Response, error) {
+	u := "users/projects"
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err

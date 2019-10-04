@@ -43,7 +43,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 
 	input := &ProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
 
-	mux.HandleFunc("/users/u/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
@@ -56,7 +56,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Users.CreateProject(context.Background(), "u", input)
+	project, _, err := client.Users.CreateProject(context.Background(), input)
 	if err != nil {
 		t.Errorf("Users.CreateProject returned error: %v", err)
 	}
