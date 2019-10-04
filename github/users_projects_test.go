@@ -41,13 +41,13 @@ func TestUsersService_CreateProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &ProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
+	input := &CreateUserProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
 
 	mux.HandleFunc("/users/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
-		v := &ProjectOptions{}
+		v := &CreateUserProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
