@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ListProjects lists the projects for an user.
+// ListProjects lists the projects for the specified user.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-user-projects
 func (s *UsersService) ListProjects(ctx context.Context, user string, opt *ProjectListOptions) ([]*Project, *Response, error) {
@@ -37,7 +37,7 @@ func (s *UsersService) ListProjects(ctx context.Context, user string, opt *Proje
 	return projects, resp, nil
 }
 
-// CreateProject creates a GitHub Project for the specified user.
+// CreateProject creates a GitHub Project for the current user.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#create-a-user-project
 func (s *UsersService) CreateProject(ctx context.Context, user string, opt *ProjectOptions) (*Project, *Response, error) {
