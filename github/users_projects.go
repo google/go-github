@@ -10,14 +10,6 @@ import (
 	"fmt"
 )
 
-// CreateUserProjectOptions specifies the parameters to the UsersService.CreateProject method.
-type CreateUserProjectOptions struct {
-	// The name of the project. (Required.)
-	Name *string `json:"name"`
-	// The description of the project. (Optional.)
-	Body *string `json:"body,omitempty"`
-}
-
 // ListProjects lists the projects for the specified user.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#list-user-projects
@@ -43,6 +35,14 @@ func (s *UsersService) ListProjects(ctx context.Context, user string, opt *Proje
 	}
 
 	return projects, resp, nil
+}
+
+// CreateUserProjectOptions specifies the parameters to the UsersService.CreateProject method.
+type CreateUserProjectOptions struct {
+	// The name of the project. (Required.)
+	Name *string `json:"name"`
+	// The description of the project. (Optional.)
+	Body *string `json:"body,omitempty"`
 }
 
 // CreateProject creates a GitHub Project for the current user.
