@@ -24,6 +24,10 @@ import (
 // will search for such issues, sorting by creation date in ascending order
 // (i.e., oldest first).
 //
+// If query includes multiple condition, it MUST NOT include "+" as condition separator.
+// For example, querying with "language:c++" and "leveldb", then query should be
+// "language:c++ leveldb" but not "language:c+++leveldb".
+//
 // GitHub API docs: https://developer.github.com/v3/search/
 type SearchService service
 
