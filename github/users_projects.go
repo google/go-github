@@ -40,7 +40,7 @@ func (s *UsersService) ListProjects(ctx context.Context, user string, opt *Proje
 // CreateUserProjectOptions specifies the parameters to the UsersService.CreateProject method.
 type CreateUserProjectOptions struct {
 	// The name of the project. (Required.)
-	Name *string `json:"name"`
+	Name string `json:"name"`
 	// The description of the project. (Optional.)
 	Body *string `json:"body,omitempty"`
 }

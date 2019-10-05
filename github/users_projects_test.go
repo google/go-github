@@ -41,7 +41,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &CreateUserProjectOptions{Name: String("Project Name"), Body: String("Project body.")}
+	input := &CreateUserProjectOptions{Name: "Project Name", Body: String("Project body.")}
 
 	mux.HandleFunc("/users/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

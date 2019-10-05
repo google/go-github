@@ -1996,14 +1996,6 @@ func (c *CreateUserProjectOptions) GetBody() string {
 	return *c.Body
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateUserProjectOptions) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
