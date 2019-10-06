@@ -24,7 +24,8 @@ import (
 // will search for such issues, sorting by creation date in ascending order
 // (i.e., oldest first).
 //
-// If query includes multiple condition, it MUST NOT include "+" as condition separator.
+// If query includes multiple conditions, it MUST NOT include "+" as the condition separator.
+// You have to use " " as the separator instead.
 // For example, querying with "language:c++" and "leveldb", then query should be
 // "language:c++ leveldb" but not "language:c+++leveldb".
 //
