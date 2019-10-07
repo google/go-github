@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // AdminService handles communication with the admin related methods of the
@@ -73,8 +72,8 @@ type Enterprise struct {
 	Description *string    `json:"description,omitempty"`
 	WebsiteURL  *string    `json:"website_url,omitempty"`
 	HTMLURL     *string    `json:"html_url,omitempty"`
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
 func (m Enterprise) String() string {

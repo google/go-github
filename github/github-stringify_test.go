@@ -317,8 +317,10 @@ func TestEnterprise_String(t *testing.T) {
 		Description: String(""),
 		WebsiteURL:  String(""),
 		HTMLURL:     String(""),
+		CreatedAt:   &Timestamp{},
+		UpdatedAt:   &Timestamp{},
 	}
-	want := `github.Enterprise{ID:0, Slug:"", Name:"", NodeID:"", AvatarURL:"", Description:"", WebsiteURL:"", HTMLURL:""}`
+	want := `github.Enterprise{ID:0, Slug:"", Name:"", NodeID:"", AvatarURL:"", Description:"", WebsiteURL:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Enterprise.String = %v, want %v", got, want)
 	}

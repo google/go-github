@@ -2613,9 +2613,9 @@ func (e *Enterprise) GetAvatarURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (e *Enterprise) GetCreatedAt() time.Time {
+func (e *Enterprise) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *e.CreatedAt
 }
@@ -2669,9 +2669,9 @@ func (e *Enterprise) GetSlug() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (e *Enterprise) GetUpdatedAt() time.Time {
+func (e *Enterprise) GetUpdatedAt() Timestamp {
 	if e == nil || e.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *e.UpdatedAt
 }
