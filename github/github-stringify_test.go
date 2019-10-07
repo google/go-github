@@ -307,6 +307,23 @@ func TestDraftReviewComment_String(t *testing.T) {
 	}
 }
 
+func TestEnterprise_String(t *testing.T) {
+	v := Enterprise{
+		ID:          Int(0),
+		Slug:        String(""),
+		Name:        String(""),
+		NodeID:      String(""),
+		AvatarURL:   String(""),
+		Description: String(""),
+		WebsiteURL:  String(""),
+		HTMLURL:     String(""),
+	}
+	want := `github.Enterprise{ID:0, Slug:"", Name:"", NodeID:"", AvatarURL:"", Description:"", WebsiteURL:"", HTMLURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("Enterprise.String = %v, want %v", got, want)
+	}
+}
+
 func TestEvent_String(t *testing.T) {
 	v := Event{
 		Type:   String(""),

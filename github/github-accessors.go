@@ -2604,6 +2604,86 @@ func (d *DraftReviewComment) GetPosition() int {
 	return *d.Position
 }
 
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetAvatarURL() string {
+	if e == nil || e.AvatarURL == nil {
+		return ""
+	}
+	return *e.AvatarURL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetCreatedAt() time.Time {
+	if e == nil || e.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *e.CreatedAt
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetDescription() string {
+	if e == nil || e.Description == nil {
+		return ""
+	}
+	return *e.Description
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetHTMLURL() string {
+	if e == nil || e.HTMLURL == nil {
+		return ""
+	}
+	return *e.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetID() int {
+	if e == nil || e.ID == nil {
+		return 0
+	}
+	return *e.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetNodeID() string {
+	if e == nil || e.NodeID == nil {
+		return ""
+	}
+	return *e.NodeID
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetSlug() string {
+	if e == nil || e.Slug == nil {
+		return ""
+	}
+	return *e.Slug
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetUpdatedAt() time.Time {
+	if e == nil || e.UpdatedAt == nil {
+		return time.Time{}
+	}
+	return *e.UpdatedAt
+}
+
+// GetWebsiteURL returns the WebsiteURL field if it's non-nil, zero value otherwise.
+func (e *Enterprise) GetWebsiteURL() string {
+	if e == nil || e.WebsiteURL == nil {
+		return ""
+	}
+	return *e.WebsiteURL
+}
+
 // GetActor returns the Actor field.
 func (e *Event) GetActor() *User {
 	if e == nil {
@@ -12538,6 +12618,38 @@ func (u *UserEmail) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (u *UserEvent) GetAction() string {
+	if u == nil || u.Action == nil {
+		return ""
+	}
+	return *u.Action
+}
+
+// GetEnterprise returns the Enterprise field.
+func (u *UserEvent) GetEnterprise() *Enterprise {
+	if u == nil {
+		return nil
+	}
+	return u.Enterprise
+}
+
+// GetSender returns the Sender field.
+func (u *UserEvent) GetSender() *User {
+	if u == nil {
+		return nil
+	}
+	return u.Sender
+}
+
+// GetUser returns the User field.
+func (u *UserEvent) GetUser() *User {
+	if u == nil {
+		return nil
+	}
+	return u.User
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.

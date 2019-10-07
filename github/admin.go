@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // AdminService handles communication with the admin related methods of the
@@ -59,6 +60,24 @@ type UserLDAPMapping struct {
 }
 
 func (m UserLDAPMapping) String() string {
+	return Stringify(m)
+}
+
+// Enterprise represents the GitHub enterprise profile
+type Enterprise struct {
+	ID          *int       `json:"id,omitempty"`
+	Slug        *string    `json:"slug,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	NodeID      *string    `json:"node_id,omitempty"`
+	AvatarURL   *string    `json:"avatar_url,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	WebsiteURL  *string    `json:"website_url,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+}
+
+func (m Enterprise) String() string {
 	return Stringify(m)
 }
 

@@ -872,6 +872,21 @@ type TeamAddEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// UserEvent is triggered when a user is added or deleted
+// The Webhook event name is "user"
+//
+// Events of this type are only available if you have setup global webhook in GitHub Enterprise with
+// the users event selected
+//
+// GitHub docs: https://help.github.com/en/enterprise/admin/user-management/managing-global-webhooks
+type UserEvent struct {
+	User *User `json:"user,omitempty"`
+	// The action performed. Possible values are: "created" or "deleted".
+	Action     *string     `json:"action,omitempty"`
+	Enterprise *Enterprise `json:"enterprise,omitempty"`
+	Sender     *User       `json:"sender,omitempty"`
+}
+
 // WatchEvent is related to starring a repository, not watching. See this API
 // blog post for an explanation: https://developer.github.com/changes/2012-09-05-watcher-api/
 //
