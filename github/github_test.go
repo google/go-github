@@ -6,7 +6,6 @@
 package github
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -135,31 +134,28 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-// Helper function to test that a value is marshalled to JSON as expected.
+// Test whether the marshaling of v produces JSON that corresponds
+// to the want string.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
-	j, err := json.Marshal(v)
-	if err != nil {
-		t.Errorf("Unable to marshal JSON for %v", v)
-	}
-
-	w := new(bytes.Buffer)
-	err = json.Compact(w, []byte(want))
-	if err != nil {
-		t.Errorf("String is not valid json: %s", want)
-	}
-
-	if w.String() != string(j) {
-		t.Errorf("json.Marshal(%q) returned %s, want %s", v, j, w)
-	}
-
-	// now go the other direction and make sure things unmarshal as expected
-	u := reflect.ValueOf(v).Interface()
-	if err := json.Unmarshal([]byte(want), u); err != nil {
+	// Unmarshal the wanted JSON, to verify its correctness, and marshal it back
+	// to sort the keys.
+	u := reflect.New(reflect.TypeOf(v)).Interface()
+	if err := json.Unmarshal([]byte(want), &u); err != nil {
 		t.Errorf("Unable to unmarshal JSON for %v: %v", want, err)
 	}
+	w, err := json.Marshal(u)
+	if err != nil {
+		t.Errorf("Unable to marshal JSON for %#v", u)
+	}
 
-	if !reflect.DeepEqual(v, u) {
-		t.Errorf("json.Unmarshal(%q) returned %s, want %s", want, u, v)
+	// Marshal the target value.
+	j, err := json.Marshal(v)
+	if err != nil {
+		t.Errorf("Unable to marshal JSON for %#v", v)
+	}
+
+	if string(w) != string(j) {
+		t.Errorf("json.Marshal(%q) returned %s, want %s", v, j, w)
 	}
 }
 
