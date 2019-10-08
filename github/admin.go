@@ -62,7 +62,7 @@ func (m UserLDAPMapping) String() string {
 	return Stringify(m)
 }
 
-// Enterprise represents the GitHub enterprise profile
+// Enterprise represents the GitHub enterprise profile.
 type Enterprise struct {
 	ID          *int       `json:"id,omitempty"`
 	Slug        *string    `json:"slug,omitempty"`
