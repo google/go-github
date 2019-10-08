@@ -504,9 +504,6 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
-
 	groups := new(IDPGroupList)
 	resp, err := s.client.Do(ctx, req, groups)
 	if err != nil {
@@ -525,9 +522,6 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
 
 	groups := new(IDPGroupList)
 	resp, err := s.client.Do(ctx, req, groups)
@@ -548,9 +542,6 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, te
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeTeamSyncPreview)
 
 	groups := new(IDPGroupList)
 	resp, err := s.client.Do(ctx, req, groups)
