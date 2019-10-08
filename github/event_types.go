@@ -872,8 +872,8 @@ type TeamAddEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// UserEvent is triggered when a user is created or deleted
-// The Webhook event name is "user"
+// UserEvent is triggered when a user is created or deleted.
+// The Webhook event name is "user".
 //
 // Only global webhooks can subscribe to this event type.
 //
