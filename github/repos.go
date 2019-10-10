@@ -1427,3 +1427,31 @@ func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, 
 
 	return r, resp, nil
 }
+
+// DispatchRequest represents a request to trigger a repository_dispatch event.
+type DispatchRequest struct {
+	EventType string  `json:"event_type"`
+}
+
+// Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, dispatch DispatchRequest) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/dispatches", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, &dispatch)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeRepositoryDispatchPreview)
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}

@@ -1796,3 +1796,33 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
 	}
 }
+
+func TestRepositoriesService_Dispatch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := DispatchRequest{EventType: "go"}
+
+	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
+		var v DispatchRequest
+		json.NewDecoder(r.Body).Decode(&v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryDispatchPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
+	})
+
+	got, _, err := client.Repositories.Dispatch(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.Dispatch returned error: %v", err)
+	}
+
+	want := &Repository{Owner: &User{Login: String("a")}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
+	}
+}
