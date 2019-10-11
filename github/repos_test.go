@@ -1816,7 +1816,8 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
 	})
 
-	got, _, err := client.Repositories.Dispatch(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	got, _, err := client.Repositories.Dispatch(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Dispatch returned error: %v", err)
 	}
@@ -1824,5 +1825,32 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	want := &Repository{Owner: &User{Login: String("a")}}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.Dispatch(ctx, "o", "r", input)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' Dispatch = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' Dispatch resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' Dispatch err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.Dispatch(ctx, "o", "r", input)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now Dispatch = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now Dispatch resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now Dispatch err = nil, want error")
 	}
 }
