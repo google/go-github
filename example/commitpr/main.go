@@ -87,7 +87,7 @@ func getRef() (ref *github.Reference, err error) {
 // of the ref you got in getRef.
 func getTree(ref *github.Reference) (tree *github.Tree, err error) {
 	// Create a tree with what to commit.
-	entries := []github.TreeEntry{}
+	var entries []interface{}
 
 	// Load each file into the tree.
 	for _, fileArg := range strings.Split(*sourceFiles, ",") {

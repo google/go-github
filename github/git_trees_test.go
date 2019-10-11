@@ -58,14 +58,14 @@ func TestGitService_CreateTree(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := []TreeEntry{
+	input := append([]interface{}{}, []TreeEntry{
 		{
 			Path: String("file.rb"),
 			Mode: String("100644"),
 			Type: String("blob"),
 			SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 		},
-	}
+	})
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createTree)
@@ -123,13 +123,14 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := []TreeEntry{
+
+	input := append([]interface{}{}, []TreeEntry{
 		{
 			Path:    String("content.md"),
 			Mode:    String("100644"),
 			Content: String("file content"),
 		},
-	}
+	})
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createTree)

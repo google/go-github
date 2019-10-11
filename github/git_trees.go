@@ -43,6 +43,18 @@ func (t TreeEntry) String() string {
 	return Stringify(t)
 }
 
+// TreeDeleteEntry represents a file deletion operation. Leave SHA empty
+type TreeDeleteEntry struct {
+	SHA     *string `json:"sha"`
+	Path    *string `json:"path,omitempty"`
+	Mode    *string `json:"mode,omitempty"`
+	Type    *string `json:"type,omitempty"`
+}
+
+func (t TreeDeleteEntry) String() string {
+	return Stringify(t)
+}
+
 // GetTree fetches the Tree object for a given sha hash from a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/git/trees/#get-a-tree
@@ -68,8 +80,8 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 
 // createTree represents the body of a CreateTree request.
 type createTree struct {
-	BaseTree string      `json:"base_tree,omitempty"`
-	Entries  []TreeEntry `json:"tree"`
+	BaseTree string        `json:"base_tree,omitempty"`
+	Entries  []interface{} `json:"tree"`
 }
 
 // CreateTree creates a new tree in a repository. If both a tree and a nested
@@ -77,7 +89,7 @@ type createTree struct {
 // that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: https://developer.github.com/v3/git/trees/#create-a-tree
-func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, *Response, error) {
+func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []interface{}) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
 	body := &createTree{
