@@ -1801,10 +1801,10 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := DispatchRequest{EventType: "go"}
+	input := DispatchRequestOptions{EventType: "go"}
 
 	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v DispatchRequest
+		var v DispatchRequestOptions
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
