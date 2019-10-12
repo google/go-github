@@ -26,6 +26,16 @@ func (t Tree) String() string {
 	return Stringify(t)
 }
 
+type ITreeEntry interface {
+	Tree() *TreeEntryBase
+}
+
+type TreeEntryBase struct {
+	Path *string `json:"path,omitempty"`
+	Mode *string `json:"mode,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
 // TreeEntry represents the contents of a tree structure. TreeEntry can
 // represent either a blob, a commit (in the case of a submodule), or another
 // tree.
@@ -43,16 +53,32 @@ func (t TreeEntry) String() string {
 	return Stringify(t)
 }
 
+func (t TreeEntry) Tree() *TreeEntryBase {
+	return &TreeEntryBase{
+		t.Path,
+		t.Mode,
+		t.Type,
+	}
+}
+
 // TreeDeleteEntry represents a file deletion operation. Leave SHA empty
 type TreeDeleteEntry struct {
-	SHA     *string `json:"sha"`
-	Path    *string `json:"path,omitempty"`
-	Mode    *string `json:"mode,omitempty"`
-	Type    *string `json:"type,omitempty"`
+	SHA  *string `json:"sha"`
+	Path *string `json:"path,omitempty"`
+	Mode *string `json:"mode,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 func (t TreeDeleteEntry) String() string {
 	return Stringify(t)
+}
+
+func (t TreeDeleteEntry) Tree() *TreeEntryBase {
+	return &TreeEntryBase{
+		t.Path,
+		t.Mode,
+		t.Type,
+	}
 }
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
@@ -80,8 +106,8 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 
 // createTree represents the body of a CreateTree request.
 type createTree struct {
-	BaseTree string        `json:"base_tree,omitempty"`
-	Entries  []interface{} `json:"tree"`
+	BaseTree string       `json:"base_tree,omitempty"`
+	Entries  []ITreeEntry `json:"tree"`
 }
 
 // CreateTree creates a new tree in a repository. If both a tree and a nested
@@ -89,7 +115,7 @@ type createTree struct {
 // that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: https://developer.github.com/v3/git/trees/#create-a-tree
-func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []interface{}) (*Tree, *Response, error) {
+func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []ITreeEntry) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
 	body := &createTree{

@@ -12044,6 +12044,38 @@ func (t *Tree) GetTruncated() bool {
 	return *t.Truncated
 }
 
+// GetMode returns the Mode field if it's non-nil, zero value otherwise.
+func (t *TreeDeleteEntry) GetMode() string {
+	if t == nil || t.Mode == nil {
+		return ""
+	}
+	return *t.Mode
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (t *TreeDeleteEntry) GetPath() string {
+	if t == nil || t.Path == nil {
+		return ""
+	}
+	return *t.Path
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (t *TreeDeleteEntry) GetSHA() string {
+	if t == nil || t.SHA == nil {
+		return ""
+	}
+	return *t.SHA
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (t *TreeDeleteEntry) GetType() string {
+	if t == nil || t.Type == nil {
+		return ""
+	}
+	return *t.Type
+}
+
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
 func (t *TreeEntry) GetContent() string {
 	if t == nil || t.Content == nil {
@@ -12098,6 +12130,30 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetMode returns the Mode field if it's non-nil, zero value otherwise.
+func (t *TreeEntryBase) GetMode() string {
+	if t == nil || t.Mode == nil {
+		return ""
+	}
+	return *t.Mode
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (t *TreeEntryBase) GetPath() string {
+	if t == nil || t.Path == nil {
+		return ""
+	}
+	return *t.Path
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (t *TreeEntryBase) GetType() string {
+	if t == nil || t.Type == nil {
+		return ""
+	}
+	return *t.Type
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.

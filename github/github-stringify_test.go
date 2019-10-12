@@ -1478,6 +1478,19 @@ func TestTree_String(t *testing.T) {
 	}
 }
 
+func TestTreeDeleteEntry_String(t *testing.T) {
+	v := TreeDeleteEntry{
+		SHA:  String(""),
+		Path: String(""),
+		Mode: String(""),
+		Type: String(""),
+	}
+	want := `github.TreeDeleteEntry{SHA:"", Path:"", Mode:"", Type:""}`
+	if got := v.String(); got != want {
+		t.Errorf("TreeDeleteEntry.String = %v, want %v", got, want)
+	}
+}
+
 func TestTreeEntry_String(t *testing.T) {
 	v := TreeEntry{
 		SHA:     String(""),
