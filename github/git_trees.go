@@ -142,7 +142,7 @@ func (s *createTree) UnmarshalJSON(data []byte) error {
 	decoded := map[string]interface{}{}
 	decodeErr := json.Unmarshal(data, &decoded)
 	if decodeErr != nil {
-		return fmt.Errorf("couldn't decode to map %w", decodeErr)
+		return fmt.Errorf("couldn't decode to map %v", decodeErr)
 	}
 	var typeOk bool
 	if s.BaseTree, typeOk = decoded["base_tree"].(string); !typeOk {
