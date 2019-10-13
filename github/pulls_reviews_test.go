@@ -18,7 +18,7 @@ func TestReviewers_marshall(t *testing.T) {
 	testJSONMarshal(t, &Reviewers{}, "{}")
 
 	u := &Reviewers{
-		Users: []*User{&User{
+		Users: []*User{{
 			Login:       String("l"),
 			ID:          Int64(1),
 			AvatarURL:   String("a"),
@@ -35,7 +35,7 @@ func TestReviewers_marshall(t *testing.T) {
 			CreatedAt:   &Timestamp{referenceTime},
 			URL:         String("u"),
 		}},
-		Teams: []*Team{&Team{
+		Teams: []*Team{{
 			ID:              Int64(1),
 			NodeID:          String("node"),
 			Name:            String("n"),
