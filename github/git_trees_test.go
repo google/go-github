@@ -117,6 +117,83 @@ func TestGitService_CreateTree(t *testing.T) {
 	}
 }
 
+func TestGitService_CreateTreeWithDelete(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := append([]ITreeEntry{}, TreeEntry{
+		Path: String("file.rb"),
+		Mode: String("100644"),
+		Type: String("blob"),
+		SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+	}, TreeDeleteEntry{
+		Path: String("some_file.rb"),
+		Mode: String("100644"),
+		Type: String("blob"),
+	})
+
+	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
+		v := new(createTree)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+
+		want := &createTree{
+			BaseTree: "b",
+			Entries:  input,
+		}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Git.CreateTree request body: %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{
+		  "sha": "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
+		  "tree": [
+		    {
+		      "path": "file.rb",
+		      "mode": "100644",
+		      "type": "blob",
+		      "size": 132,
+		      "sha": "7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"
+		    },
+		    {
+		      "path": "some_file.rb",
+		      "mode": "100644",
+		      "type": "blob",
+		      "sha": null
+		    }
+		  ]
+		}`)
+	})
+
+	tree, _, err := client.Git.CreateTree(context.Background(), "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Git.CreateTree returned error: %v", err)
+	}
+
+	want := Tree{
+		String("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
+		[]TreeEntry{
+			{
+				Path: String("file.rb"),
+				Mode: String("100644"),
+				Type: String("blob"),
+				Size: Int(132),
+				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+			},			{
+				Path: String("some_file.rb"),
+				Mode: String("100644"),
+				Type: String("blob"),
+			},
+		},
+		nil,
+	}
+
+	if !reflect.DeepEqual(*tree, want) {
+		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
+	}
+}
+
 func TestGitService_CreateTree_Content(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
