@@ -274,9 +274,9 @@ func TestGitService_CreateTree_TreeEntryBase(t *testing.T) {
 		Type: String("blob"),
 	}
 	treeDelete := TreeDeleteEntry{
-		Path: String("file.rb"),
-		Mode: String("100644"),
-		Type: String("blob"),
+		Path: tree.Path,
+		Mode: tree.Mode,
+		Type: tree.Type,
 	}
 	if !reflect.DeepEqual(*tree.Tree(), *treeDelete.Tree()) {
 		t.Errorf("tree does not equall tree Delete %+v, want %+v", *tree.Tree(), *treeDelete.Tree())
@@ -301,7 +301,7 @@ func TestGitService_CreateTree_JsonObject(t *testing.T) {
 	if jObj.GetInt("b") != nil {
 		t.Errorf("b int should be nil")
 	}
-	if *jObj.GetString("c") == "nil" {
+	if *jObj.GetString("c") != "c" {
 		t.Errorf("c str should be c")
 	}
 	if jObj.GetInt("c") != nil {
