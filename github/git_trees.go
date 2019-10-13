@@ -112,9 +112,9 @@ type createTree struct {
 	Entries  []ITreeEntry `json:"tree"`
 }
 
-type JsonObject map[string]interface{}
+type jsonObject map[string]interface{}
 
-func (h JsonObject) GetString(path string) *string {
+func (h jsonObject) GetString(path string) *string {
 	value, hasPath := h[path]
 	if !hasPath {
 		return nil
@@ -126,7 +126,7 @@ func (h JsonObject) GetString(path string) *string {
 	return &valueStr
 }
 
-func (h JsonObject) GetInt(path string) *int {
+func (h jsonObject) GetInt(path string) *int {
 	value, hasPath := h[path]
 	if !hasPath {
 		return nil
@@ -158,7 +158,7 @@ func (s *createTree) UnmarshalJSON(data []byte) error {
 		if !isMap {
 			return errors.New("tree needs to be array of map")
 		}
-		itemAsJson := JsonObject(itemAsMap)
+		itemAsJson := jsonObject(itemAsMap)
 		sha := itemAsJson.GetString("sha")
 		content := itemAsJson.GetString("content")
 

@@ -284,7 +284,7 @@ func TestGitService_CreateTree_TreeEntryBase(t *testing.T) {
 }
 
 func TestGitService_CreateTree_JsonObject(t *testing.T) {
-	jObj := JsonObject{
+	jObj := jsonObject{
 		"a": 1,
 		"b": nil,
 		"c": "c",
