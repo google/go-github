@@ -266,3 +266,45 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	_, _, err := client.Git.CreateTree(context.Background(), "%", "%", "", nil)
 	testURLParseError(t, err)
 }
+
+func TestGitService_CreateTree_TreeEntryBase(t *testing.T) {
+	tree := TreeEntry{
+		Path: String("file.rb"),
+		Mode: String("100644"),
+		Type: String("blob"),
+	}
+	treeDelete := TreeDeleteEntry{
+		Path: String("file.rb"),
+		Mode: String("100644"),
+		Type: String("blob"),
+	}
+	if !reflect.DeepEqual(*tree.Tree(), *treeDelete.Tree()) {
+		t.Errorf("tree does not equall tree Delete %+v, want %+v", *tree.Tree(), *treeDelete.Tree())
+	}
+}
+
+func TestGitService_CreateTree_JsonObject(t *testing.T) {
+	jObj := JsonObject{
+		"a": 1,
+		"b": nil,
+		"c": "c",
+	}
+	if jObj.GetString("a") != nil {
+		t.Errorf("a str should be nil")
+	}
+	if *jObj.GetInt("a") != 1 {
+		t.Errorf("a int should be 1")
+	}
+	if jObj.GetString("b") != nil {
+		t.Errorf("b str should be nil")
+	}
+	if jObj.GetInt("b") != nil {
+		t.Errorf("b int should be nil")
+	}
+	if *jObj.GetString("c") == "nil" {
+		t.Errorf("c str should be c")
+	}
+	if jObj.GetInt("c") != nil {
+		t.Errorf("c int should be nil")
+	}
+}
