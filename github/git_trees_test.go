@@ -180,7 +180,7 @@ func TestGitService_CreateTreeWithDelete(t *testing.T) {
 				Type: String("blob"),
 				Size: Int(132),
 				SHA:  String("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
-			},			{
+			}, {
 				Path: String("some_file.rb"),
 				Mode: String("100644"),
 				Type: String("blob"),
