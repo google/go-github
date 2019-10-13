@@ -7,6 +7,8 @@ package github
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -108,6 +110,78 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 type createTree struct {
 	BaseTree string       `json:"base_tree,omitempty"`
 	Entries  []ITreeEntry `json:"tree"`
+}
+
+type JsonObject map[string]interface{}
+
+func (h JsonObject) GetString (path string) *string {
+	value, hasPath := h[path]
+	if !hasPath {
+		return nil
+	}
+	valueStr, isStr := value.(string)
+	if !isStr {
+		return nil
+	}
+	return &valueStr
+}
+
+func (h JsonObject) GetInt (path string) *int {
+	value, hasPath := h[path]
+	if !hasPath {
+		return nil
+	}
+	valueInt, isInt := value.(int)
+	if !isInt {
+		return nil
+	}
+	return &valueInt
+}
+
+func (s *createTree) UnmarshalJSON(data []byte) error {
+	decoded := map[string]interface{}{}
+	decodeErr := json.Unmarshal(data, &decoded)
+	if decodeErr != nil {
+		return fmt.Errorf("couldn't decode to map %w", decodeErr)
+	}
+	var typeOk bool
+	if s.BaseTree, typeOk = decoded["base_tree"].(string); !typeOk {
+		return errors.New("base_tree not string")
+	}
+	tree, isArray := decoded["tree"].([]interface{})
+	if !isArray {
+		return errors.New("tree is not array")
+	}
+
+	for _, item := range tree {
+		itemAsMap, isMap := item.(map[string]interface{})
+		if !isMap {
+			return errors.New("tree needs to be array of map")
+		}
+		itemAsJson := JsonObject(itemAsMap)
+		sha := itemAsJson.GetString("sha")
+		content := itemAsJson.GetString("content")
+
+		if sha != nil || content != nil {
+			s.Entries = append(s.Entries, TreeEntry{
+				SHA:     sha,
+				Path:    itemAsJson.GetString("path"),
+				Mode:    itemAsJson.GetString("mode"),
+				Type:    itemAsJson.GetString("type"),
+				Size:    itemAsJson.GetInt("size"),
+				Content: content,
+				URL:     itemAsJson.GetString("url"),
+			})
+		} else {
+			s.Entries = append(s.Entries, TreeDeleteEntry{
+				SHA:     nil,
+				Path:    itemAsJson.GetString("path"),
+				Mode:    itemAsJson.GetString("mode"),
+				Type:    itemAsJson.GetString("type"),
+			})
+		}
+	}
+	return nil
 }
 
 // CreateTree creates a new tree in a repository. If both a tree and a nested
