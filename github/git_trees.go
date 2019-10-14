@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -39,8 +40,27 @@ type TreeEntry struct {
 	URL     *string `json:"url,omitempty"`
 }
 
+type treeEntryDelete struct {
+	SHA     *string `json:"sha"`
+	Path    *string `json:"path,omitempty"`
+	Mode    *string `json:"mode,omitempty"`
+	Type    *string `json:"type,omitempty"`
+}
+
 func (t TreeEntry) String() string {
 	return Stringify(t)
+}
+
+func (t *TreeEntry) MarshalJSON() ([]byte, error) {
+	if t.SHA == nil && t.Content == nil {
+		return json.Marshal(treeEntryDelete{
+			nil,
+			t.Path,
+			t.Mode,
+			t.Type,
+		})
+	}
+	return json.Marshal(t)
 }
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
