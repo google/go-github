@@ -40,27 +40,41 @@ type TreeEntry struct {
 	URL     *string `json:"url,omitempty"`
 }
 
-type treeEntryDelete struct {
-	SHA     *string `json:"sha"`
-	Path    *string `json:"path,omitempty"`
-	Mode    *string `json:"mode,omitempty"`
-	Type    *string `json:"type,omitempty"`
-}
-
 func (t TreeEntry) String() string {
 	return Stringify(t)
 }
 
 func (t *TreeEntry) MarshalJSON() ([]byte, error) {
 	if t.SHA == nil && t.Content == nil {
-		return json.Marshal(treeEntryDelete{
+		return json.Marshal(struct {
+			SHA  *string `json:"sha"`
+			Path *string `json:"path,omitempty"`
+			Mode *string `json:"mode,omitempty"`
+			Type *string `json:"type,omitempty"`
+		}{
 			nil,
 			t.Path,
 			t.Mode,
 			t.Type,
 		})
 	}
-	return json.Marshal(t)
+	return json.Marshal(struct {
+		SHA     *string `json:"sha,omitempty"`
+		Path    *string `json:"path,omitempty"`
+		Mode    *string `json:"mode,omitempty"`
+		Type    *string `json:"type,omitempty"`
+		Size    *int    `json:"size,omitempty"`
+		Content *string `json:"content,omitempty"`
+		URL     *string `json:"url,omitempty"`
+	}{
+		SHA:     t.SHA,
+		Path:    t.Path,
+		Mode:    t.Mode,
+		Type:    t.Type,
+		Size:    t.Size,
+		Content: t.Content,
+		URL:     t.URL,
+	})
 }
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
