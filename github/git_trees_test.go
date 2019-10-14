@@ -192,8 +192,8 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 
 	input := []TreeEntry{
 		{
-			Path:    String("content.md"),
-			Mode:    String("100644"),
+			Path: String("content.md"),
+			Mode: String("100644"),
 		},
 	}
 
