@@ -19,7 +19,7 @@ import (
 // AppRestrictionsEnabled returns whether the specified organization has
 // restricted third-party application access.
 func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
-	doc, err := c.Get("/organizations/%s/settings/oauth_application_policy", org)
+	doc, err := c.get("/organizations/%s/settings/oauth_application_policy", org)
 	if err != nil {
 		return false, err
 	}
@@ -42,7 +42,7 @@ func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
 // ListOAuthApps lists the reviewed OAuth Applications for the
 // specified organization (whether approved or denied).
 func (c *Client) ListOAuthApps(org string) ([]OAuthApp, error) {
-	doc, err := c.Get("/organizations/%s/settings/oauth_application_policy", org)
+	doc, err := c.get("/organizations/%s/settings/oauth_application_policy", org)
 	if err != nil {
 		return nil, err
 	}
