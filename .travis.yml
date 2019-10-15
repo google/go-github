@@ -25,6 +25,7 @@ script:
   - go vet ./...
   - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
   - go test -v -tags=integration -run=^$ ./test/integration # Check that integration test builds successfully, but don't run any of the tests (they hit live GitHub API).
+  - cd scrape && go test ./... # explicitly run scrape tests, since it is in a separate module
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
