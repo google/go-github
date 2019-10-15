@@ -12,7 +12,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v28/scrape"
+	"github.com/google/go-github/scrape"
 )
 
 var (
