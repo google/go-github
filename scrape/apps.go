@@ -10,8 +10,6 @@ package scrape
 
 import (
 	"errors"
-	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 
@@ -21,18 +19,9 @@ import (
 // AppRestrictionsEnabled returns whether the specified organization has
 // restricted third-party application access.
 func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
-	u := fmt.Sprintf("https://github.com/organizations/%s/settings/oauth_application_policy", org)
-	resp, err := c.Client.Get(u)
+	doc, err := c.Get("/organizations/%s/settings/oauth_application_policy", org)
 	if err != nil {
-		return false, fmt.Errorf("error fetching url %q: %v", u, err)
-	}
-	if resp.StatusCode == http.StatusNotFound {
-		return false, fmt.Errorf("unable to fetch URL %q", u)
-	}
-
-	doc, err := goquery.NewDocumentFromResponse(resp)
-	if err != nil {
-		return false, fmt.Errorf("error parsing response: %v", err)
+		return false, err
 	}
 
 	s := doc.Find(".oauth-application-whitelist svg").First()
@@ -53,18 +42,9 @@ func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
 // ListOAuthApps lists the reviewed OAuth Applications for the
 // specified organization (whether approved or denied).
 func (c *Client) ListOAuthApps(org string) ([]OAuthApp, error) {
-	u := fmt.Sprintf("https://github.com/organizations/%s/settings/oauth_application_policy", org)
-	resp, err := c.Client.Get(u)
+	doc, err := c.Get("/organizations/%s/settings/oauth_application_policy", org)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching url %q: %v", u, err)
-	}
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, fmt.Errorf("unable to fetch URL %q", u)
-	}
-
-	doc, err := goquery.NewDocumentFromResponse(resp)
-	if err != nil {
-		return nil, fmt.Errorf("error parsing response: %v", err)
+		return nil, err
 	}
 
 	var apps []OAuthApp

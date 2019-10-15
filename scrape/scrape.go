@@ -21,29 +21,43 @@ package scrape
 import (
 	"bytes"
 	"encoding/gob"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"strings"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/xlzd/gotp"
 	"golang.org/x/net/publicsuffix"
 )
 
+var defaultBaseURL = "https://github.com/"
+
 // Client is a GitHub scraping client.
 type Client struct {
 	*http.Client
+
+	// base URL for github.com pages.  Exposed primarily for testing.  Also
+	// used for saving and restoring cookies on the Client.
+	baseURL *url.URL
 }
 
-// NewClient constructs a new Client.
-func NewClient() *Client {
+// NewClient constructs a new Client.  If transport is nil, a default transport is used.
+func NewClient(transport http.RoundTripper) *Client {
 	jar, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
 		log.Fatalf("error creating cookiejar: %v", err)
 	}
+	baseURL, _ := url.Parse(defaultBaseURL)
+
 	return &Client{
-		Client: &http.Client{Jar: jar},
+		Client: &http.Client{
+			Transport: transport,
+			Jar:       jar,
+		},
+		baseURL: baseURL,
 	}
 }
 
@@ -56,8 +70,7 @@ func NewClient() *Client {
 // client, so should be treated with the same sensitivity as the account
 // credentials.
 func (c *Client) SaveCookies() ([]byte, error) {
-	u, _ := url.Parse("https://github.com/")
-	cookies := c.Client.Jar.Cookies(u)
+	cookies := c.Client.Jar.Cookies(c.baseURL)
 
 	var b bytes.Buffer
 	err := gob.NewEncoder(&b).Encode(cookies)
@@ -73,9 +86,31 @@ func (c *Client) LoadCookies(v []byte) error {
 		return err
 	}
 
-	u, _ := url.Parse("https://github.com/")
-	c.Client.Jar.SetCookies(u, cookies)
+	c.Client.Jar.SetCookies(c.baseURL, cookies)
 	return nil
+}
+
+// Get fetches a urlStr (a GitHub URL relative to the client's baseURL), and
+// returns the parsed response document.
+func (c *Client) Get(urlStr string, a ...interface{}) (*goquery.Document, error) {
+	u, err := c.baseURL.Parse(fmt.Sprintf(urlStr, a...))
+	if err != nil {
+		return nil, fmt.Errorf("error parsing URL: %q: %v", urlStr, err)
+	}
+	resp, err := c.Client.Get(u.String())
+	if err != nil {
+		return nil, fmt.Errorf("error fetching url %q: %v", u, err)
+	}
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, fmt.Errorf("received %v response fetching URL %q", resp.StatusCode, u)
+	}
+
+	doc, err := goquery.NewDocumentFromResponse(resp)
+	if err != nil {
+		return nil, fmt.Errorf("error parsing response: %v", err)
+	}
+
+	return doc, nil
 }
 
 // Authenticate client to GitHub with the provided username, password, and if
@@ -89,9 +124,12 @@ func (c *Client) Authenticate(username, password, otpseed string) error {
 		values.Set("login", username)
 		values.Set("password", password)
 	}
-	_, err := FetchAndSubmitForm(c.Client, "https://github.com/login", setPassword)
+	resp, err := FetchAndSubmitForm(c.Client, "https://github.com/login", setPassword)
 	if err != nil {
 		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("received %v response submitting login form", resp.StatusCode)
 	}
 
 	if otpseed == "" {
@@ -102,9 +140,12 @@ func (c *Client) Authenticate(username, password, otpseed string) error {
 		otp := gotp.NewDefaultTOTP(strings.ToUpper(otpseed)).Now()
 		values.Set("otp", otp)
 	}
-	_, err = FetchAndSubmitForm(c.Client, "https://github.com/sessions/two-factor", setOTP)
+	resp, err = FetchAndSubmitForm(c.Client, "https://github.com/sessions/two-factor", setOTP)
 	if err != nil {
 		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("received %v response submitting otp form", resp.StatusCode)
 	}
 
 	return nil

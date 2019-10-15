@@ -38,7 +38,7 @@ func main() {
 		*otpseed = strings.TrimSpace(*otpseed)
 	}
 
-	client := scrape.NewClient()
+	client := scrape.NewClient(nil)
 
 	if err := client.Authenticate(*username, *password, *otpseed); err != nil {
 		log.Fatal(err)
