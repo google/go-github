@@ -124,7 +124,7 @@ func (c *Client) Authenticate(username, password, otpseed string) error {
 		values.Set("login", username)
 		values.Set("password", password)
 	}
-	resp, err := FetchAndSubmitForm(c.Client, "https://github.com/login", setPassword)
+	resp, err := fetchAndSubmitForm(c.Client, "https://github.com/login", setPassword)
 	if err != nil {
 		return err
 	}
@@ -140,7 +140,7 @@ func (c *Client) Authenticate(username, password, otpseed string) error {
 		otp := gotp.NewDefaultTOTP(strings.ToUpper(otpseed)).Now()
 		values.Set("otp", otp)
 	}
-	resp, err = FetchAndSubmitForm(c.Client, "https://github.com/sessions/two-factor", setOTP)
+	resp, err = fetchAndSubmitForm(c.Client, "https://github.com/sessions/two-factor", setOTP)
 	if err != nil {
 		return err
 	}

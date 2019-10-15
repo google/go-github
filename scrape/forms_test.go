@@ -15,14 +15,14 @@ func Test_ParseForms(t *testing.T) {
 	tests := []struct {
 		description string
 		html        string
-		forms       []Form
+		forms       []htmlForm
 	}{
 		{"no forms", `<html></html>`, nil},
-		{"empty form", `<html><form></form></html>`, []Form{{Values: url.Values{}}}},
+		{"empty form", `<html><form></form></html>`, []htmlForm{{Values: url.Values{}}}},
 		{
 			"single form with one value",
 			`<html><form action="a" method="m"><input name="n1" value="v1"></form></html>`,
-			[]Form{{Action: "a", Method: "m", Values: url.Values{"n1": {"v1"}}}},
+			[]htmlForm{{Action: "a", Method: "m", Values: url.Values{"n1": {"v1"}}}},
 		},
 		{
 			"two forms",
@@ -30,7 +30,7 @@ func Test_ParseForms(t *testing.T) {
 			  <form action="a1" method="m1"><input name="n1" value="v1"></form>
 			  <form action="a2" method="m2"><input name="n2" value="v2"></form>
 			</html>`,
-			[]Form{
+			[]htmlForm{
 				{Action: "a1", Method: "m1", Values: url.Values{"n1": {"v1"}}},
 				{Action: "a2", Method: "m2", Values: url.Values{"n2": {"v2"}}},
 			},
@@ -43,8 +43,8 @@ func Test_ParseForms(t *testing.T) {
 			if err != nil {
 				t.Errorf("error parsing html: %v", err)
 			}
-			if got, want := ParseForms(node), tt.forms; !cmp.Equal(got, want) {
-				t.Errorf("ParseForms(%q) returned %+v, want %+v", tt.html, got, want)
+			if got, want := parseForms(node), tt.forms; !cmp.Equal(got, want) {
+				t.Errorf("parseForms(%q) returned %+v, want %+v", tt.html, got, want)
 			}
 		})
 	}
@@ -71,7 +71,7 @@ func Test_FetchAndSumbitForm(t *testing.T) {
 	})
 
 	setValues := func(values url.Values) { values.Set("name", "n") }
-	FetchAndSubmitForm(client.Client, client.baseURL.String()+"/", setValues)
+	fetchAndSubmitForm(client.Client, client.baseURL.String()+"/", setValues)
 	if !submitted {
 		t.Error("form was never submitted")
 	}
