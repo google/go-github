@@ -105,7 +105,8 @@ func (c *Client) get(urlStr string, a ...interface{}) (*goquery.Document, error)
 		return nil, fmt.Errorf("received %v response fetching URL %q", resp.StatusCode, u)
 	}
 
-	doc, err := goquery.NewDocumentFromResponse(resp)
+	defer resp.Body.Close()
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing response: %v", err)
 	}
