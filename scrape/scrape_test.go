@@ -21,10 +21,8 @@ func setup() (client *Client, mux *http.ServeMux, cleanup func()) {
 	return client, mux, server.Close
 }
 
-var testDataDir = "testdata/"
-
 func copyTestFile(w io.Writer, filename string) error {
-	f, err := os.Open(testDataDir + filename)
+	f, err := os.Open("testdata/" + filename)
 	if err != nil {
 		return err
 	}
