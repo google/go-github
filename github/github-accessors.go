@@ -3364,14 +3364,6 @@ func (i *IDPGroup) GetGroupName() string {
 	return *i.GroupName
 }
 
-// GetScopes returns the Scopes field if it's non-nil, zero value otherwise.
-func (i *ImpersonateUserOptions) GetScopes() []string {
-	if i == nil || i.Scopes == nil {
-		return nil
-	}
-	return *i.Scopes
-}
-
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.
 func (i *Import) GetAuthorsCount() int {
 	if i == nil || i.AuthorsCount == nil {
@@ -12578,14 +12570,6 @@ func (u *UserAuthorization) GetNoteURL() string {
 		return ""
 	}
 	return *u.NoteURL
-}
-
-// GetScopes returns the Scopes field if it's non-nil, zero value otherwise.
-func (u *UserAuthorization) GetScopes() []string {
-	if u == nil || u.Scopes == nil {
-		return nil
-	}
-	return *u.Scopes
 }
 
 // GetToken returns the Token field if it's non-nil, zero value otherwise.

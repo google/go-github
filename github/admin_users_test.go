@@ -84,7 +84,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"fingerprint": null}`)
 	})
 
-	opt := &ImpersonateUserOptions{Scopes: &[]string{"repo"}}
+	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
 	auth, _, err := client.Admin.CreateUserImpersonation(context.Background(), "github", opt)
 	if err != nil {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
@@ -106,7 +106,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		NoteURL:        nil,
 		CreatedAt:      &date,
 		UpdatedAt:      &date,
-		Scopes:         &[]string{"repo"},
+		Scopes:         []string{"repo"},
 		Fingerprint:    nil,
 	}
 	if !reflect.DeepEqual(auth, want) {
