@@ -81,7 +81,7 @@ func (s OAuthAPP) String() string {
 type UserAuthorization struct {
 	ID             *int64     `json:"id,omitempty"`
 	URL            *string    `json:"url,omitempty"`
-	Scopes         []string  `json:"scopes,omitempty"`
+	Scopes         []string   `json:"scopes,omitempty"`
 	Token          *string    `json:"token,omitempty"`
 	TokenLastEight *string    `json:"token_last_eight,omitempty"`
 	HashedToken    *string    `json:"hashed_token,omitempty"`
