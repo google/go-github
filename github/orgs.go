@@ -70,6 +70,11 @@ type Organization struct {
 	ReposURL         *string `json:"repos_url,omitempty"`
 }
 
+type OrganizationInstallations struct {
+	TotalCount    *int           `json:"total_count,omitempty"`
+	Installations []Installation `json:"installations,omitempty"`
+}
+
 func (o Organization) String() string {
 	return Stringify(o)
 }
@@ -212,4 +217,26 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	}
 
 	return o, resp, nil
+}
+
+// List installations for an organization.
+//
+// GitHub API docs: https://developer.github.com/v3/orgs/#list-installations-for-an-organization
+func (s *OrganizationsService) ListInstallations(ctx context.Context, org string) (*OrganizationInstallations, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/installations", org)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+
+	org_installations := new(OrganizationInstallations)
+	resp, err := s.client.Do(ctx, req, org_installations)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return org_installations, resp, nil
 }
