@@ -188,7 +188,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
 
-	want := &OrganizationInstallations{TotalCount: Int(1), Installations: []Installation{{ID: Int64(1), AppID: Int64(5)}}}
+	want := &OrganizationInstallations{TotalCount: Int(1), Installations: []*Installation{{ID: Int64(1), AppID: Int64(5)}}}
 	if !reflect.DeepEqual(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}

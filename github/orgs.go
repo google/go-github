@@ -70,9 +70,10 @@ type Organization struct {
 	ReposURL         *string `json:"repos_url,omitempty"`
 }
 
+// OrganizationInstallations represents Github app installations of an organization
 type OrganizationInstallations struct {
-	TotalCount    *int           `json:"total_count,omitempty"`
-	Installations []Installation `json:"installations,omitempty"`
+	TotalCount    *int            `json:"total_count,omitempty"`
+	Installations []*Installation `json:"installations,omitempty"`
 }
 
 func (o Organization) String() string {
@@ -232,11 +233,11 @@ func (s *OrganizationsService) ListInstallations(ctx context.Context, org string
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
-	org_installations := new(OrganizationInstallations)
-	resp, err := s.client.Do(ctx, req, org_installations)
+	result := new(OrganizationInstallations)
+	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return org_installations, resp, nil
+	return result, resp, nil
 }
