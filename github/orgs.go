@@ -223,8 +223,14 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 // List installations for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-installations-for-an-organization
-func (s *OrganizationsService) ListInstallations(ctx context.Context, org string) (*OrganizationInstallations, *Response, error) {
+func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opt *ListOptions) (*OrganizationInstallations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/installations", org)
+
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
