@@ -200,9 +200,10 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 
 	_, _, err := client.Organizations.ListInstallations(context.Background(), "%", nil)
 	testURLParseError(t, err)
+
 }
 
-func TestOrganizationsService_ListInstallations_withOptions(t *testing.T) {
+func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -213,8 +214,7 @@ func TestOrganizationsService_ListInstallations_withOptions(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 2, "installations": [{ "id": 2, "app_id": 10}]}`)
 	})
 
-	opt := &ListOptions{Page: 2}
-	apps, _, err := client.Organizations.ListInstallations(context.Background(), "o", opt)
+	apps, _, err := client.Organizations.ListInstallations(context.Background(), "o", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
@@ -222,5 +222,11 @@ func TestOrganizationsService_ListInstallations_withOptions(t *testing.T) {
 	want := &OrganizationInstallations{TotalCount: Int(2), Installations: []*Installation{{ID: Int64(2), AppID: Int64(10)}}}
 	if !reflect.DeepEqual(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
+	}
+
+	// Test ListOptions failure
+	_, _, err = client.Organizations.ListInstallations(context.Background(), "%", &ListOptions{})
+	if err == nil {
+		t.Error("Organizations.ListInstallations returned error: nil")
 	}
 }
