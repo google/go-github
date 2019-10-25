@@ -70,7 +70,7 @@ type Organization struct {
 	ReposURL         *string `json:"repos_url,omitempty"`
 }
 
-// OrganizationInstallations represents Github app installations of an organization
+// OrganizationInstallations represents GitHub app installations for an organization.
 type OrganizationInstallations struct {
 	TotalCount    *int            `json:"total_count,omitempty"`
 	Installations []*Installation `json:"installations,omitempty"`
