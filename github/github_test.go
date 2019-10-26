@@ -111,9 +111,14 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 }
 
 func testHeader(t *testing.T, r *http.Request, header string, want string) {
-	if got := r.Header.Get(header); got != want {
-		t.Errorf("Header.Get(%q) returned %q, want %q", header, got, want)
+	relevantHeaders := r.Header[header]
+
+	for _, h := range relevantHeaders {
+		if h == want {
+			return
+		}
 	}
+	t.Errorf("Did not find the value %q in %q header key", want, header)
 }
 
 func testURLParseError(t *testing.T, err error) {

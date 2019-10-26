@@ -7964,6 +7964,14 @@ func (p *PullRequestComment) GetInReplyTo() int64 {
 	return *p.InReplyTo
 }
 
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetLine() int {
+	if p == nil || p.Line == nil {
+		return 0
+	}
+	return *p.Line
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetNodeID() string {
 	if p == nil || p.NodeID == nil {
@@ -8026,6 +8034,14 @@ func (p *PullRequestComment) GetReactions() *Reactions {
 		return nil
 	}
 	return p.Reactions
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetStartLine() int {
+	if p == nil || p.StartLine == nil {
+		return 0
+	}
+	return *p.StartLine
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.

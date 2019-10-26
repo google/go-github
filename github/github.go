@@ -156,6 +156,9 @@ const (
 
 	// https://developer.github.com/v3/previews/#create-and-use-repository-templates
 	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
+
+	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
+	mediaTypeMultiLineCommentsPreview = "application/vnd.github.comfort-fade-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

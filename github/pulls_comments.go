@@ -22,6 +22,8 @@ type PullRequestComment struct {
 	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
 	Position            *int       `json:"position,omitempty"`
 	OriginalPosition    *int       `json:"original_position,omitempty"`
+	StartLine           *int       `json:"start_line,omitempty"`
+	Line                *int       `json:"line,omitempty"`
 	CommitID            *string    `json:"commit_id,omitempty"`
 	OriginalCommitID    *string    `json:"original_commit_id,omitempty"`
 	User                *User      `json:"user,omitempty"`
@@ -120,6 +122,9 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner string, r
 	if err != nil {
 		return nil, nil, err
 	}
+	// TODO: remove custom Accept headers when their respective API fully launches.
+	req.Header.Add("Accept", mediaTypeReactionsPreview)
+	req.Header.Add("Accept", mediaTypeMultiLineCommentsPreview)
 
 	c := new(PullRequestComment)
 	resp, err := s.client.Do(ctx, req, c)
