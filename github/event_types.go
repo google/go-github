@@ -776,6 +776,25 @@ type RepositoryEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// RepositoryDispatchEvent is triggered when a GitHub App sends a POST request
+// to the repository dispatch endpoint.
+// The Webhook event name is "repository_dispatch".
+//
+// Events of this type are not visible in timelines, they are only used to
+// trigger organization webhooks.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#repositorydispatchevent
+type RepositoryDispatchEvent struct {
+	// Action is the action that will be performed.
+	// Possible values can be anything that's set using the event_type field.
+	Action        *string           `json:"action,omitempty"`
+	ClientPayload map[string]string `json:"client_payload,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Branch *string     `json:"branch,omitempty"`
+	Repo   *Repository `json:"repository,omitempty"`
+}
+
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#repositoryvulnerabilityalertevent

@@ -1321,3 +1321,28 @@ func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, 
 
 	return r, resp, nil
 }
+
+// RepositoryDispatch represents a repository_dispatch event.
+type RepositoryDispatch struct {
+	EventType     string            `json:"event_type"`
+	ClientPayload map[string]string `json:"client_payload"`
+}
+
+// CreateRepoDispatch triggers a webhook event called repository_dispatch
+// when you want activity that happens outside of GitHub to trigger a
+// GitHub Actions workflow or GitHub App webhook.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+func (s *RepositoriesService) CreateRepoDispatch(ctx context.Context, owner, repo, repoDispatch RepositoryDispatch) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/dispatches", owner, repo)
+	req, err := s.client.NewRequest("POST", u, &repoDispatch)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", mediaTypeRepositoryDispatchPreview)
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+	return resp, nil
+}

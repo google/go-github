@@ -156,6 +156,9 @@ const (
 
 	// https://developer.github.com/v3/previews/#create-and-use-repository-templates
 	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
+
+	// https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+	mediaTypeRepositoryDispatchPreview = "application/vnd.github.everest-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
