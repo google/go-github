@@ -648,7 +648,7 @@ type TwoFactorAuthError ErrorResponse
 func (r *TwoFactorAuthError) Error() string { return (*ErrorResponse)(r).Error() }
 
 // RateLimitError occurs when GitHub returns 403 Forbidden response with a rate limit
-// remaining value of 0
+// remaining value of 0.
 type RateLimitError struct {
 	Rate     Rate           // Rate specifies last known rate limit for the client
 	Response *http.Response // HTTP response that caused this error
