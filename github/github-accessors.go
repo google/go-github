@@ -10325,6 +10325,30 @@ func (r *RepositoryContentResponse) GetContent() *RepositoryContent {
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (r *RepositoryDispatchEvent) GetAction() string {
+	if r == nil || r.Action == nil {
+		return ""
+	}
+	return *r.Action
+}
+
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (r *RepositoryDispatchEvent) GetBranch() string {
+	if r == nil || r.Branch == nil {
+		return ""
+	}
+	return *r.Branch
+}
+
+// GetRepo returns the Repo field.
+func (r *RepositoryDispatchEvent) GetRepo() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repo
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (r *RepositoryEvent) GetAction() string {
 	if r == nil || r.Action == nil {
 		return ""
