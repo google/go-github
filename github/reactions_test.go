@@ -12,6 +12,25 @@ import (
 	"testing"
 )
 
+func TestReaction_marshall(t *testing.T) {
+	testJSONMarshal(t, &Reaction{}, "{}")
+
+	r := &Reaction{
+		ID:      Int64(1),
+		User:    nil,
+		NodeID:  String("n"),
+		Content: String("+1"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "n",
+		"content": "+1"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
 func TestReactionsService_ListCommentReactions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
