@@ -738,7 +738,7 @@ type PushEventRepoOwner struct {
 }
 
 // ReleaseEvent is triggered when a release is published, unpublished, created,
-// edited, deleted, or prerelased.
+// edited, deleted, or prereleased.
 // The Webhook event name is "release".
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#releaseevent
