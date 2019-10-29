@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func TestReaction_marshall(t *testing.T) {
+func TestReaction_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Reaction{}, "{}")
 
 	r := &Reaction{
@@ -31,7 +31,7 @@ func TestReaction_marshall(t *testing.T) {
 	testJSONMarshal(t, r, want)
 }
 
-func TestReactions_marshall(t *testing.T) {
+func TestReactions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Reactions{}, "{}")
 
 	r := &Reactions{
