@@ -126,6 +126,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", mediaTypeMultiLineCommentsPreview)
 		testFormValues(t, r, values{
 			"sort":      "updated",
 			"direction": "desc",
@@ -159,6 +160,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", mediaTypeMultiLineCommentsPreview)
 		fmt.Fprint(w, `[{"id":1, "pull_request_review_id":42}]`)
 	})
 
@@ -188,6 +190,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", mediaTypeMultiLineCommentsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
