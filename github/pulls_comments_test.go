@@ -40,8 +40,8 @@ func TestPullComments_marshall(t *testing.T) {
 		PullRequestReviewID: Int64(42),
 		Position:            Int(1),
 		OriginalPosition:    Int(4),
-		StartLine: Int(2),
-		Line: Int(3),
+		StartLine:           Int(2),
+		Line:                Int(3),
 		CommitID:            String("ab"),
 		OriginalCommitID:    String("9c"),
 		User: &User{
