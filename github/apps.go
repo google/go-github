@@ -227,7 +227,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 	return t, resp, nil
 }
 
-// Create a new attachment on user comment containing a url.
+// CreateAttachment creates a new attachment on user comment containing a url.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#create-a-content-attachment
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
