@@ -17,7 +17,7 @@ import (
 
 // Fetch all the public organizations' membership of a user.
 //
-func FetchOrganizations(username string) ([]*github.Organization, error) {
+func fetchOrganizations(username string) ([]*github.Organization, error) {
 	client := github.NewClient(nil)
 	orgs, _, err := client.Organizations.List(context.Background(), username, nil)
 	return orgs, err
@@ -28,7 +28,7 @@ func main() {
 	fmt.Print("Enter GitHub username: ")
 	fmt.Scanf("%s", &username)
 
-	organizations, err := FetchOrganizations(username)
+	organizations, err := fetchOrganizations(username)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
