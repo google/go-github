@@ -220,7 +220,7 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	return o, resp, nil
 }
 
-// List installations for an organization.
+// ListInstallations lists installations for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-installations-for-an-organization
 func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opt *ListOptions) (*OrganizationInstallations, *Response, error) {
