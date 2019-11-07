@@ -86,6 +86,8 @@ type Plan struct {
 	Space         *int    `json:"space,omitempty"`
 	Collaborators *int    `json:"collaborators,omitempty"`
 	PrivateRepos  *int    `json:"private_repos,omitempty"`
+	FilledSeats   *int    `json:"filled_seats,omitempty"`
+	Seats         *int    `json:"seats,omitempty"`
 }
 
 func (p Plan) String() string {
