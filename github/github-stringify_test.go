@@ -852,8 +852,10 @@ func TestPlan_String(t *testing.T) {
 		Space:         Int(0),
 		Collaborators: Int(0),
 		PrivateRepos:  Int(0),
+		FilledSeats:   Int(0),
+		Seats:         Int(0),
 	}
-	want := `github.Plan{Name:"", Space:0, Collaborators:0, PrivateRepos:0}`
+	want := `github.Plan{Name:"", Space:0, Collaborators:0, PrivateRepos:0, FilledSeats:0, Seats:0}`
 	if got := v.String(); got != want {
 		t.Errorf("Plan.String = %v, want %v", got, want)
 	}
