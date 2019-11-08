@@ -6732,6 +6732,14 @@ func (p *Plan) GetCollaborators() int {
 	return *p.Collaborators
 }
 
+// GetFilledSeats returns the FilledSeats field if it's non-nil, zero value otherwise.
+func (p *Plan) GetFilledSeats() int {
+	if p == nil || p.FilledSeats == nil {
+		return 0
+	}
+	return *p.FilledSeats
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (p *Plan) GetName() string {
 	if p == nil || p.Name == nil {
@@ -6746,6 +6754,14 @@ func (p *Plan) GetPrivateRepos() int {
 		return 0
 	}
 	return *p.PrivateRepos
+}
+
+// GetSeats returns the Seats field if it's non-nil, zero value otherwise.
+func (p *Plan) GetSeats() int {
+	if p == nil || p.Seats == nil {
+		return 0
+	}
+	return *p.Seats
 }
 
 // GetSpace returns the Space field if it's non-nil, zero value otherwise.
