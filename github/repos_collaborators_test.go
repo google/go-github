@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestRepositoriesService_ListCollaborators(t *testing.T) {
@@ -162,9 +163,33 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.AddCollaborator(context.Background(), "o", "r", "u", opt)
+	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(context.Background(), "o", "r", "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
+	}
+	want := &CollaboratorInvitation{
+		ID: Int64(1),
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("r"),
+		},
+		Invitee: &User{
+			Login: String("u"),
+		},
+		Inviter: &User{
+			Login: String("o"),
+		},
+		Permissions: String("write"),
+		CreatedAt: &Timestamp{
+			Time: time.Now(),
+		},
+		URL:     String("x"),
+		HTMLURL: String("y"),
+	}
+
+	if !reflect.DeepEqual(collaboratorInvitation, want) {
+		t.Errorf("AddCollaborator returned %+v, want %+v", collaboratorInvitation, want)
 	}
 }
 
@@ -172,7 +197,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Repositories.AddCollaborator(context.Background(), "%", "%", "%", nil)
+	_, _, err := client.Repositories.AddCollaborator(context.Background(), "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
 
