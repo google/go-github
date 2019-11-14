@@ -1,0 +1,69 @@
+on: [push, pull_request]
+name: tests
+env:
+  GO111MODULE: on
+
+jobs:
+  linux:
+    strategy:
+      matrix:
+        go-version: [1.x, 1.12.x]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+    - uses: actions/checkout@v1
+
+    - name: Cache go modules
+      uses: actions/cache@preview
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+        restore-keys: ${{ runner.os }}-go-
+
+    - name: Run go fmt
+      run: diff -u <(echo -n) <(gofmt -d -s .)
+
+    - name: Ensure go generate produces a zero diff
+      run:  go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+
+    - name: Run go vet
+      run: go vet ./...
+
+    - name: Run go test
+      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+    - name: Ensure integration tests build
+      # don't actually run tests since they hit live GitHub API
+      run: go test -v -tags=integration -run=^$ ./test/integration
+
+    - name: Run scrape tests
+      run: cd scrape && go test ./...
+
+    - name: Upload coverage to Codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: bash <(curl -s https://codecov.io/bash)
+
+  # On Windows, just run the local tests.  Don't bother with checking gofmt, go
+  # vet, or uploading results to Codecov
+  windows:
+    strategy:
+      matrix:
+        go-version: [1.x, 1.12.x]
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+    - uses: actions/checkout@v1
+    - name: Cache go modules
+      uses: actions/cache@preview
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+        restore-keys: ${{ runner.os }}-go-
+    - run: go test ./...
