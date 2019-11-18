@@ -375,7 +375,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
-	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{})
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, false, &RepositoryContentGetOptions{})
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}

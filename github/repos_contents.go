@@ -240,16 +240,27 @@ const (
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, dontFollowRedirects bool, opt *RepositoryContentGetOptions) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
 		u += fmt.Sprintf("/%s", opt.Ref)
 	}
+	resp, err := s.getArchiveLinkFromURL(ctx, dontFollowRedirects, u)
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusFound {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	return parsedURL, newResponse(resp), err
+}
+
+func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, dontFollowRedirects bool, u string) (*http.Response, error) {
+	var resp *http.Response
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	var resp *http.Response
+
 	// Use http.DefaultTransport if no custom Transport is configured
 	req = withContext(ctx, req)
 	if s.client.client.Transport == nil {
@@ -258,12 +269,14 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		resp, err = s.client.client.Transport.RoundTrip(req)
 	}
 	if err != nil {
-		return nil, nil, err
+		return nil, err
+	}
+
+	// If redirect response is returned, follow it
+	if !dontFollowRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		u = resp.Header.Get("Location")
+		resp, err = s.getArchiveLinkFromURL(ctx, false, u)
 	}
 	resp.Body.Close()
-	if resp.StatusCode != http.StatusFound {
-		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
-	}
-	parsedURL, err := url.Parse(resp.Header.Get("Location"))
-	return parsedURL, newResponse(resp), err
+	return resp, nil
 }
