@@ -387,3 +387,16 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
 }
+
+func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+	})
+	_, resp, _ := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, true, &RepositoryContentGetOptions{})
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+}
