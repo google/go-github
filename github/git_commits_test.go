@@ -18,6 +18,106 @@ import (
 	"golang.org/x/crypto/openpgp"
 )
 
+func TestCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Commit{}, "{}")
+
+	u := &Commit{
+		SHA: String("s"),
+		Author: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("n"),
+			Email: String("e"),
+			Login: String("u"),
+		},
+		Committer: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("n"),
+			Email: String("e"),
+			Login: String("u"),
+		},
+		Message: String("m"),
+		Tree: &Tree{
+			SHA: String("s"),
+			Entries: []TreeEntry{{
+				SHA:     String("s"),
+				Path:    String("p"),
+				Mode:    String("m"),
+				Type:    String("t"),
+				Size:    Int(1),
+				Content: String("c"),
+				URL:     String("u"),
+			}},
+			Truncated: Bool(false),
+		},
+		Parents: nil,
+		Stats: &CommitStats{
+			Additions: Int(1),
+			Deletions: Int(1),
+			Total:     Int(1),
+		},
+		HTMLURL: String("h"),
+		URL:     String("u"),
+		Verification: &SignatureVerification{
+			Verified:  Bool(false),
+			Reason:    String("r"),
+			Signature: String("s"),
+			Payload:   String("p"),
+		},
+		NodeID:       String("n"),
+		CommentCount: Int(1),
+		SigningKey:   &openpgp.Entity{},
+	}
+
+	want := `{
+		"sha": "s",
+		"author": {
+			"date": ` + referenceTimeStr + `,
+			"name": "n",
+			"email": "e",
+			"username": "u"
+		},
+		"committer": {
+			"date": ` + referenceTimeStr + `,
+			"name": "n",
+			"email": "e",
+			"username": "u"
+		},
+		"message": "m",
+		"tree": {
+			"sha": "s",
+			"tree": [
+				{
+					"sha": "s",
+					"path": "p",
+					"mode": "m",
+					"type": "t",
+					"size": 1,
+					"content": "c",
+					"url": "u"
+				}
+			],
+			"truncated": false
+		},
+		"stats": {
+			"additions": 1,
+			"deletions": 1,
+			"total": 1
+		},
+		"html_url": "h",
+		"url": "u",
+		"verification": {
+			"verified": false,
+			"reason": "r",
+			"signature": "s",
+			"payload": "p"
+		},
+		"node_id": "n",
+		"comment_count": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestGitService_GetCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
