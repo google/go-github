@@ -9,11 +9,15 @@
 package scrape
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
+	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/google/go-github/v28/github"
 )
 
 // AppRestrictionsEnabled returns whether the specified organization has
@@ -102,4 +106,41 @@ type OAuthApp struct {
 	Description string
 	State       OAuthAppReviewState
 	RequestedBy string
+}
+
+// AppManifest represents a GitHub App manifest, used for preconfiguring
+// GitHub App configuration.
+type AppManifest struct {
+	// The name of the GitHub App.
+	Name *string `json:"name,omitempty"`
+	//Required. The homepage of your GitHub App.
+	URL *string `json:"url,omitempty"`
+	// Required. The configuration of the GitHub App's webhook.
+	HookAttributes map[string]string `json:"hook_attributes,omitempty"`
+	// The full URL to redirect to after the person installs the GitHub App.
+	RedirectURL *string `json:"redirect_url,omitempty"`
+	// A description of the GitHub App.
+	Description *string `json:"description,omitempty"`
+	// Set to true when your GitHub App is available to the public or false when
+	// it is only accessible to the owner of the app.
+	Public *bool `json:"public,omitempty"`
+	// The list of events the GitHub App subscribes to.
+	DefaultEvents []string `json:"default_events,omitempty"`
+	// The set of permissions needed by the GitHub App.
+	DefaultPermissions *github.InstallationPermissions `json:"default_permissions,omitempty"`
+}
+
+// CreateApp creates a new GitHub App with the given manifest configuration.
+func (c *Client) CreateApp(m *AppManifest) (*http.Response, error) {
+	u, err := c.baseURL.Parse("/settings/apps/new")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := json.Marshal(map[string]*AppManifest{"manifest": m})
+	if err != nil {
+		return nil, err
+	}
+
+	return c.Client.Post(u.String(), "json", bytes.NewReader(body))
 }

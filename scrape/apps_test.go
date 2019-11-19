@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-github/v28/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
@@ -83,4 +84,22 @@ func Test_ListOAuthApps(t *testing.T) {
 		t.Errorf("ListOAuthApps(o) returned %v, want %v", got, want)
 	}
 
+}
+
+func Test_CreateApp(t *testing.T) {
+	client, mux, cleanup := setup()
+	defer cleanup()
+
+	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	if _, err := client.CreateApp(&AppManifest{
+		URL: github.String("https://example.com"),
+		HookAttributes: map[string]string{
+			"url": "https://example.com/hook",
+		},
+	}); err != nil {
+		t.Fatalf("CreateApp: %v", err)
+	}
 }
