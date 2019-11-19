@@ -188,6 +188,110 @@ func (a *App) GetUpdatedAt() Timestamp {
 	return *a.UpdatedAt
 }
 
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetClientID() string {
+	if a == nil || a.ClientID == nil {
+		return ""
+	}
+	return *a.ClientID
+}
+
+// GetClientSecret returns the ClientSecret field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetClientSecret() string {
+	if a == nil || a.ClientSecret == nil {
+		return ""
+	}
+	return *a.ClientSecret
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetDescription() string {
+	if a == nil || a.Description == nil {
+		return ""
+	}
+	return *a.Description
+}
+
+// GetExternalURL returns the ExternalURL field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetExternalURL() string {
+	if a == nil || a.ExternalURL == nil {
+		return ""
+	}
+	return *a.ExternalURL
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetHTMLURL() string {
+	if a == nil || a.HTMLURL == nil {
+		return ""
+	}
+	return *a.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetNodeID() string {
+	if a == nil || a.NodeID == nil {
+		return ""
+	}
+	return *a.NodeID
+}
+
+// GetOwner returns the Owner field.
+func (a *AppConfig) GetOwner() *User {
+	if a == nil {
+		return nil
+	}
+	return a.Owner
+}
+
+// GetPEM returns the PEM field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetPEM() string {
+	if a == nil || a.PEM == nil {
+		return ""
+	}
+	return *a.PEM
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetWebhookSecret returns the WebhookSecret field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetWebhookSecret() string {
+	if a == nil || a.WebhookSecret == nil {
+		return ""
+	}
+	return *a.WebhookSecret
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (a *Attachment) GetBody() string {
 	if a == nil || a.Body == nil {
