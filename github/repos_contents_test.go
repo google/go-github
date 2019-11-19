@@ -375,7 +375,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
-	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, false, &RepositoryContentGetOptions{})
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
@@ -395,8 +395,31 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
-	_, resp, _ := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, true, &RepositoryContentGetOptions{})
+	_, resp, _ := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+	// TODO: Test for return of URL here
+}
+
+// TODO: Fix failing test
+func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/redirect", http.StatusMovedPermanently)
+	})
+	// TODO: Mock to follow a redirect here
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	if err != nil {
+		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
 }
