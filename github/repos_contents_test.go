@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"reflect"
 	"testing"
