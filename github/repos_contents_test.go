@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -375,7 +377,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
-	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
@@ -395,23 +397,26 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
-	_, resp, _ := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+	_, resp, _ := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
-	// TODO: Test for return of URL here
 }
 
-// TODO: Fix failing test
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirects(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, serverURL, teardown := setup()
 	defer teardown()
+	// Mock a redirect link, which leads to an archive link
 	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		http.Redirect(w, r, "http://github.com/redirect", http.StatusMovedPermanently)
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
 	})
-	// TODO: Mock to follow a redirect here
-	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+	url, resp, err := client.Repositories.GetArchiveLink(context.Background(), "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}

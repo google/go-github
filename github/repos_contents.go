@@ -240,12 +240,12 @@ const (
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions, dontFollowRedirects bool) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opt != nil && opt.Ref != "" {
 		u += fmt.Sprintf("/%s", opt.Ref)
 	}
-	resp, err := s.getArchiveLinkFromURL(ctx, u, dontFollowRedirects)
+	resp, err := s.getArchiveLinkFromURL(ctx, u, followRedirects)
 	resp.Body.Close()
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
@@ -254,7 +254,7 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	return parsedURL, newResponse(resp), err
 }
 
-func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u string, dontFollowRedirects bool) (*http.Response, error) {
+func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	var resp *http.Response
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u strin
 	}
 
 	// If redirect response is returned, follow it
-	if !dontFollowRedirects && resp.StatusCode == http.StatusMovedPermanently {
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
 		resp, err = s.getArchiveLinkFromURL(ctx, u, false)
 	}
