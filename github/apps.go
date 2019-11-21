@@ -145,7 +145,7 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 
 // ListInstallations lists the installations that the current GitHub App has.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#find-installations
+// GitHub API docs: https://developer.github.com/v3/apps/#list-installations
 func (s *AppsService) ListInstallations(ctx context.Context, opt *ListOptions) ([]*Installation, *Response, error) {
 	u, err := addOptions("app/installations", opt)
 	if err != nil {
@@ -252,14 +252,14 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 
 // FindOrganizationInstallation finds the organization's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#find-organization-installation
+// GitHub API docs: https://developer.github.com/v3/apps/#get-an-organization-installation
 func (s *AppsService) FindOrganizationInstallation(ctx context.Context, org string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("orgs/%v/installation", org))
 }
 
 // FindRepositoryInstallation finds the repository's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#find-repository-installation
+// GitHub API docs: https://developer.github.com/v3/apps/#get-a-repository-installation
 func (s *AppsService) FindRepositoryInstallation(ctx context.Context, owner, repo string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("repos/%v/%v/installation", owner, repo))
 }
@@ -273,7 +273,7 @@ func (s *AppsService) FindRepositoryInstallationByID(ctx context.Context, id int
 
 // FindUserInstallation finds the user's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#find-repository-installation
+// GitHub API docs: https://developer.github.com/v3/apps/#get-a-user-installation
 func (s *AppsService) FindUserInstallation(ctx context.Context, user string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("users/%v/installation", user))
 }
