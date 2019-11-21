@@ -246,7 +246,6 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		u += fmt.Sprintf("/%s", opt.Ref)
 	}
 	resp, err := s.getArchiveLinkFromURL(ctx, u, followRedirects)
-	resp.Body.Close()
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
@@ -255,12 +254,12 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 }
 
 func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
-	var resp *http.Response
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
+	var resp *http.Response
 	// Use http.DefaultTransport if no custom Transport is configured
 	req = withContext(ctx, req)
 	if s.client.client.Transport == nil {
@@ -271,12 +270,12 @@ func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u strin
 	if err != nil {
 		return nil, err
 	}
+	resp.Body.Close()
 
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
 		resp, err = s.getArchiveLinkFromURL(ctx, u, false)
 	}
-	resp.Body.Close()
-	return resp, nil
+	return resp, err
 }
