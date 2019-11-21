@@ -246,6 +246,9 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		u += fmt.Sprintf("/%s", opt.Ref)
 	}
 	resp, err := s.getArchiveLinkFromURL(ctx, u, followRedirects)
+	if err != nil {
+		return nil, nil, err
+	}
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
