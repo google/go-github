@@ -562,7 +562,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 			}
 
 			aerr.Raw = b
-			return response, aerr
 		}
 
 		return response, err
@@ -575,8 +574,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 			decErr := json.NewDecoder(resp.Body).Decode(v)
 			if decErr == io.EOF {
 				decErr = nil // ignore EOF errors caused by empty response body
-			}
-			if decErr != nil {
+			} else if decErr != nil {
 				err = decErr
 			}
 		}
