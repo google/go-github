@@ -646,8 +646,7 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 		t.Errorf("Repositories.GetVulnerabilityAlerts returned error: %v", err)
 	}
 
-	want := true
-	if !reflect.DeepEqual(vulnerabilityAlertsEnabled, want) {
+	if want := true; vulnerabilityAlertsEnabled != want {
 		t.Errorf("Repositories.GetVulnerabilityAlerts returned %+v, want %+v", vulnerabilityAlertsEnabled, want)
 	}
 }
