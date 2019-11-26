@@ -23,17 +23,13 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{
-			"sort":      "updated",
-			"direction": "desc",
-			"since":     "2002-02-10T15:30:00Z",
-			"page":      "2",
+			"since": "2002-02-10T15:30:00Z",
+			"page":  "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
 	opt := &IssueListCommentsOptions{
-		Sort:        "updated",
-		Direction:   "desc",
 		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions: ListOptions{Page: 2},
 	}
