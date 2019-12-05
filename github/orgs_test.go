@@ -14,6 +14,38 @@ import (
 	"testing"
 )
 
+func TestOrganization_marshal(t *testing.T) {
+	testJSONMarshal(t, &Organization{}, "{}")
+
+	o := &Organization{
+		BillingEmail:                         String("support@github.com"),
+		Blog:                                 String("https://github.com/blog"),
+		Company:                              String("GitHub"),
+		Email:                                String("support@github.com"),
+		Location:                             String("San Francisco"),
+		Name:                                 String("github"),
+		Description:                          String("GitHub, the company."),
+		DefaultRepoPermission:                String("read"),
+		MembersCanCreateRepos:                Bool(true),
+		MembersAllowedRepositoryCreationType: String("all"),
+	}
+	want := `
+		{
+			"billing_email": "support@github.com",
+			"blog": "https://github.com/blog",
+			"company": "GitHub",
+			"email": "support@github.com",
+			"location": "San Francisco",
+			"name": "github",
+			"description": "GitHub, the company.",
+			"default_repository_permission": "read",
+			"members_can_create_repositories": true,
+			"members_allowed_repository_creation_type": "all"
+		}
+	`
+	testJSONMarshal(t, o, want)
+}
+
 func TestOrganizationsService_ListAll(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
