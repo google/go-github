@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -54,9 +53,7 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	enable := new(Pages)
 	resp, err := s.client.Do(ctx, req, enable)
@@ -92,9 +89,6 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePagesPreview)
 
 	site := new(Pages)
 	resp, err := s.client.Do(ctx, req, site)
@@ -176,9 +170,6 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePagesPreview)
 
 	build := new(PagesBuild)
 	resp, err := s.client.Do(ctx, req, build)
