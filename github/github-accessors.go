@@ -12052,6 +12052,102 @@ func (t *Timeline) GetURL() string {
 	return *t.URL
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetCreatedAt() Timestamp {
+	if t == nil || t.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *t.CreatedAt
+}
+
+// GetCreatedBy returns the CreatedBy field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetCreatedBy() string {
+	if t == nil || t.CreatedBy == nil {
+		return ""
+	}
+	return *t.CreatedBy
+}
+
+// GetCurated returns the Curated field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetCurated() bool {
+	if t == nil || t.Curated == nil {
+		return false
+	}
+	return *t.Curated
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetDescription() string {
+	if t == nil || t.Description == nil {
+		return ""
+	}
+	return *t.Description
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetDisplayName() string {
+	if t == nil || t.DisplayName == nil {
+		return ""
+	}
+	return *t.DisplayName
+}
+
+// GetFeatured returns the Featured field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetFeatured() bool {
+	if t == nil || t.Featured == nil {
+		return false
+	}
+	return *t.Featured
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetName() string {
+	if t == nil || t.Name == nil {
+		return ""
+	}
+	return *t.Name
+}
+
+// GetScore returns the Score field.
+func (t *TopicResult) GetScore() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.Score
+}
+
+// GetShortDescription returns the ShortDescription field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetShortDescription() string {
+	if t == nil || t.ShortDescription == nil {
+		return ""
+	}
+	return *t.ShortDescription
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (t *TopicResult) GetUpdatedAt() string {
+	if t == nil || t.UpdatedAt == nil {
+		return ""
+	}
+	return *t.UpdatedAt
+}
+
+// GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
+func (t *TopicsSearchResult) GetIncompleteResults() bool {
+	if t == nil || t.IncompleteResults == nil {
+		return false
+	}
+	return *t.IncompleteResults
+}
+
+// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+func (t *TopicsSearchResult) GetTotal() int {
+	if t == nil || t.Total == nil {
+		return 0
+	}
+	return *t.Total
+}
+
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
 func (t *TrafficClones) GetCount() int {
 	if t == nil || t.Count == nil {
