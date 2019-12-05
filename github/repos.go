@@ -736,7 +736,7 @@ type RequiredStatusChecksRequest struct {
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
 	// Specifies which users and teams can dismiss pull request reviews.
-	DismissalRestrictions DismissalRestrictions `json:"dismissal_restrictions"`
+	DismissalRestrictions *DismissalRestrictions `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
 	DismissStaleReviews bool `json:"dismiss_stale_reviews"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
@@ -1134,9 +1134,9 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, branch)
 
-	data := struct {
-		R []interface{} `json:"dismissal_restrictions"`
-	}{[]interface{}{}}
+	data := new(struct {
+		DismissalRestrictionsRequest `json:"dismissal_restrictions"`
+	})
 
 	req, err := s.client.NewRequest("PATCH", u, data)
 	if err != nil {

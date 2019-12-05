@@ -907,7 +907,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
-			DismissalRestrictions: DismissalRestrictions{
+			DismissalRestrictions: &DismissalRestrictions{
 				Users: []*User{
 					{Login: String("u"), ID: Int64(3)},
 				},
@@ -915,6 +915,70 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					{Slug: String("t"), ID: Int64(4)},
 				},
 			},
+			RequireCodeOwnerReviews:      true,
+			RequiredApprovingReviewCount: 1,
+		},
+		EnforceAdmins: &AdminEnforcement{
+			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
+			Enabled: true,
+		},
+		Restrictions: &BranchRestrictions{
+			Users: []*User{
+				{Login: String("u"), ID: Int64(1)},
+			},
+			Teams: []*Team{
+				{Slug: String("t"), ID: Int64(2)},
+			},
+		},
+	}
+	if !reflect.DeepEqual(protection, want) {
+		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
+	}
+}
+
+func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+
+		testMethod(t, r, "GET")
+		// TODO: remove custom Accept header when this API fully launches
+		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+		fmt.Fprintf(w, `{
+				"required_status_checks":{
+					"strict":true,
+					"contexts":["continuous-integration"]
+				},
+				"required_pull_request_reviews":{
+					"dismiss_stale_reviews":true,
+					"require_code_owner_reviews":true,
+					"required_approving_review_count":1
+					},
+					"enforce_admins":{
+						"url":"/repos/o/r/branches/b/protection/enforce_admins",
+						"enabled":true
+					},
+					"restrictions":{
+						"users":[{"id":1,"login":"u"}],
+						"teams":[{"id":2,"slug":"t"}]
+					}
+				}`)
+	})
+
+	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
+	}
+
+	want := &Protection{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			Strict:   true,
+			Contexts: []string{"continuous-integration"},
+		},
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+			DismissStaleReviews:          true,
+			DismissalRestrictions:        nil,
 			RequireCodeOwnerReviews:      true,
 			RequiredApprovingReviewCount: 1,
 		},
@@ -1007,7 +1071,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
-			DismissalRestrictions: DismissalRestrictions{
+			DismissalRestrictions: &DismissalRestrictions{
 				Users: []*User{
 					{Login: String("uu"), ID: Int64(3)},
 				},
@@ -1201,7 +1265,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 	want := &PullRequestReviewsEnforcement{
 		DismissStaleReviews: true,
-		DismissalRestrictions: DismissalRestrictions{
+		DismissalRestrictions: &DismissalRestrictions{
 			Users: []*User{
 				{Login: String("u"), ID: Int64(1)},
 			},
@@ -1257,7 +1321,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 
 	want := &PullRequestReviewsEnforcement{
 		DismissStaleReviews: true,
-		DismissalRestrictions: DismissalRestrictions{
+		DismissalRestrictions: &DismissalRestrictions{
 			Users: []*User{
 				{Login: String("u"), ID: Int64(1)},
 			},
@@ -1281,8 +1345,8 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-		testBody(t, r, `{"dismissal_restrictions":[]}`+"\n")
-		fmt.Fprintf(w, `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
+		testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
+		fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 	})
 
 	enforcement, _, err := client.Repositories.DisableDismissalRestrictions(context.Background(), "o", "r", "b")
@@ -1291,11 +1355,8 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	}
 
 	want := &PullRequestReviewsEnforcement{
-		DismissStaleReviews: true,
-		DismissalRestrictions: DismissalRestrictions{
-			Users: []*User{},
-			Teams: []*Team{},
-		},
+		DismissStaleReviews:          true,
+		DismissalRestrictions:        nil,
 		RequireCodeOwnerReviews:      true,
 		RequiredApprovingReviewCount: 1,
 	}
