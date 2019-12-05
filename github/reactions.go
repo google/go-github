@@ -44,10 +44,21 @@ func (r Reaction) String() string {
 	return Stringify(r)
 }
 
+// ListCommentReactionOptions specifies the optional parameters to the
+// ReactionsService.ListCommentReactions method.
+type ListCommentReactionOptions struct {
+	// Content restricts the returned comment reactions to only those with the given type.
+	// Omit this parameter to list all reactions to a commit comment.
+	// Possible values are: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+	Content string `url:"content,omitempty"`
+
+	ListOptions
+}
+
 // ListCommentReactions lists the reactions for a commit comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-commit-comment
-func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opt)
 	if err != nil {
