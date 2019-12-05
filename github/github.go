@@ -642,7 +642,7 @@ type TwoFactorAuthError ErrorResponse
 func (r *TwoFactorAuthError) Error() string { return (*ErrorResponse)(r).Error() }
 
 // RateLimitError occurs when GitHub returns 403 Forbidden response with a rate limit
-// remaining value of 0, and error message starts with "API rate limit exceeded for ".
+// remaining value of 0.
 type RateLimitError struct {
 	Rate     Rate           // Rate specifies last known rate limit for the client
 	Response *http.Response // HTTP response that caused this error
@@ -757,7 +757,7 @@ func CheckResponse(r *http.Response) error {
 	switch {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
-	case r.StatusCode == http.StatusForbidden && r.Header.Get(headerRateRemaining) == "0" && strings.HasPrefix(errorResponse.Message, "API rate limit exceeded for "):
+	case r.StatusCode == http.StatusForbidden && r.Header.Get(headerRateRemaining) == "0":
 		return &RateLimitError{
 			Rate:     parseRate(r),
 			Response: errorResponse.Response,
