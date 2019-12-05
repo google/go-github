@@ -340,6 +340,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "team_add",
 		},
 		{
+			payload:     &UserEvent{},
+			messageType: "user",
+		},
+		{
 			payload:     &WatchEvent{},
 			messageType: "watch",
 		},

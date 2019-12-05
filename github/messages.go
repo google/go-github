@@ -80,6 +80,7 @@ var (
 		"status":                         "StatusEvent",
 		"team":                           "TeamEvent",
 		"team_add":                       "TeamAddEvent",
+		"user":                           "UserEvent",
 		"watch":                          "WatchEvent",
 	}
 )
