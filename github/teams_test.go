@@ -608,7 +608,6 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -641,7 +640,6 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
@@ -670,7 +668,6 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
