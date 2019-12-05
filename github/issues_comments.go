@@ -36,13 +36,13 @@ func (i IssueComment) String() string {
 // IssuesService.ListComments method.
 type IssueListCommentsOptions struct {
 	// Sort specifies how to sort comments. Possible values are: created, updated.
-	Sort string `url:"sort,omitempty"`
+	Sort *string `url:"sort,omitempty"`
 
 	// Direction in which to sort comments. Possible values are: asc, desc.
-	Direction string `url:"direction,omitempty"`
+	Direction *string `url:"direction,omitempty"`
 
 	// Since filters comments by time.
-	Since time.Time `url:"since,omitempty"`
+	Since *time.Time `url:"since,omitempty"`
 
 	ListOptions
 }
