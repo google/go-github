@@ -19,15 +19,18 @@ type AppsService service
 
 // App represents a GitHub App.
 type App struct {
-	ID          *int64     `json:"id,omitempty"`
-	NodeID      *string    `json:"node_id,omitempty"`
-	Owner       *User      `json:"owner,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	ExternalURL *string    `json:"external_url,omitempty"`
-	HTMLURL     *string    `json:"html_url,omitempty"`
-	CreatedAt   *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+	ID          *int64                   `json:"id,omitempty"`
+	Slug        *string                  `json:"slug,omitempty"`
+	NodeID      *string                  `json:"node_id,omitempty"`
+	Owner       *User                    `json:"owner,omitempty"`
+	Name        *string                  `json:"name,omitempty"`
+	Description *string                  `json:"description,omitempty"`
+	ExternalURL *string                  `json:"external_url,omitempty"`
+	HTMLURL     *string                  `json:"html_url,omitempty"`
+	CreatedAt   *Timestamp               `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp               `json:"updated_at,omitempty"`
+	Permissions *InstallationPermissions `json:"permissions,omitempty"`
+	Events      []*Event                 `json:"events,omitempty"`
 }
 
 // InstallationToken represents an installation token.
@@ -56,10 +59,13 @@ type InstallationTokenOptions struct {
 //   https://developer.github.com/enterprise/v3/apps/permissions/
 type InstallationPermissions struct {
 	Administration              *string `json:"administration,omitempty"`
+	Blocking                    *string `json:"blocking,omitempty"`
 	Checks                      *string `json:"checks,omitempty"`
 	Contents                    *string `json:"contents,omitempty"`
 	ContentReferences           *string `json:"content_references,omitempty"`
 	Deployments                 *string `json:"deployments,omitempty"`
+	Emails                      *string `json:"emails,omitempty"`
+	Followers                   *string `json:"followers,omitempty"`
 	Issues                      *string `json:"issues,omitempty"`
 	Metadata                    *string `json:"metadata,omitempty"`
 	Members                     *string `json:"members,omitempty"`
