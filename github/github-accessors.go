@@ -1196,6 +1196,70 @@ func (c *CodeSearchResult) GetTotal() int {
 	return *c.Total
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CollaboratorInvitation) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CollaboratorInvitation) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CollaboratorInvitation) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetInvitee returns the Invitee field.
+func (c *CollaboratorInvitation) GetInvitee() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Invitee
+}
+
+// GetInviter returns the Inviter field.
+func (c *CollaboratorInvitation) GetInviter() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Inviter
+}
+
+// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+func (c *CollaboratorInvitation) GetPermissions() string {
+	if c == nil || c.Permissions == nil {
+		return ""
+	}
+	return *c.Permissions
+}
+
+// GetRepo returns the Repo field.
+func (c *CollaboratorInvitation) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CollaboratorInvitation) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetCommitURL returns the CommitURL field if it's non-nil, zero value otherwise.
 func (c *CombinedStatus) GetCommitURL() string {
 	if c == nil || c.CommitURL == nil {
