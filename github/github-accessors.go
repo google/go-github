@@ -8548,6 +8548,14 @@ func (p *PullRequestReviewRequest) GetNodeID() string {
 	return *p.NodeID
 }
 
+// GetDismissalRestrictions returns the DismissalRestrictions field.
+func (p *PullRequestReviewsEnforcement) GetDismissalRestrictions() *DismissalRestrictions {
+	if p == nil {
+		return nil
+	}
+	return p.DismissalRestrictions
+}
+
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
 func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest() *DismissalRestrictionsRequest {
 	if p == nil {
