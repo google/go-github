@@ -630,6 +630,27 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	vulnerabilityAlertsEnabled, _, err := client.Repositories.GetVulnerabilityAlerts(context.Background(), "o", "r")
+	if err != nil {
+		t.Errorf("Repositories.GetVulnerabilityAlerts returned error: %v", err)
+	}
+
+	if want := true; vulnerabilityAlertsEnabled != want {
+		t.Errorf("Repositories.GetVulnerabilityAlerts returned %+v, want %+v", vulnerabilityAlertsEnabled, want)
+	}
+}
+
 func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
