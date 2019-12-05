@@ -862,6 +862,56 @@ func TestCheckResponse(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_RateLimit(t *testing.T) {
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusForbidden,
+		Header:     http.Header{},
+		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
+			"documentation_url": "url"}`)),
+	}
+	res.Header.Set(headerRateLimit, "60")
+	res.Header.Set(headerRateRemaining, "0")
+	res.Header.Set(headerRateReset, "243424")
+
+	err := CheckResponse(res).(*RateLimitError)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	want := &RateLimitError{
+		Rate:     parseRate(res),
+		Response: res,
+		Message:  "m",
+	}
+	if !reflect.DeepEqual(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestCheckResponse_AbuseRateLimit(t *testing.T) {
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusForbidden,
+		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
+			"documentation_url": "developer.github.com/v3/#abuse-rate-limits"}`)),
+	}
+	err := CheckResponse(res).(*AbuseRateLimitError)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	want := &AbuseRateLimitError{
+		Response: res,
+		Message:  "m",
+	}
+	if !reflect.DeepEqual(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
 // ensure that we properly handle API errors that do not contain a response body
 func TestCheckResponse_noBody(t *testing.T) {
 	res := &http.Response{
