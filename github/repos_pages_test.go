@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"strings"
 	"testing"
 )
 
@@ -20,8 +19,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeEnablePagesAPIPreview, mediaTypePagesPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
@@ -58,7 +56,6 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypePagesPreview)
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h"}`)
 	})
 
@@ -157,7 +154,6 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages/builds", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypePagesPreview)
 		fmt.Fprint(w, `{"url":"u","status":"s"}`)
 	})
 
