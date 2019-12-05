@@ -62,6 +62,24 @@ func (m UserLDAPMapping) String() string {
 	return Stringify(m)
 }
 
+// Enterprise represents the GitHub enterprise profile.
+type Enterprise struct {
+	ID          *int       `json:"id,omitempty"`
+	Slug        *string    `json:"slug,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	NodeID      *string    `json:"node_id,omitempty"`
+	AvatarURL   *string    `json:"avatar_url,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	WebsiteURL  *string    `json:"website_url,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+}
+
+func (m Enterprise) String() string {
+	return Stringify(m)
+}
+
 // UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
 //
 // GitHub API docs: https://developer.github.com/v3/enterprise/ldap/#update-ldap-mapping-for-a-user
