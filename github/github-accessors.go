@@ -6252,6 +6252,30 @@ func (n *NotificationSubject) GetURL() string {
 	return *n.URL
 }
 
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (o *OAuthAPP) GetClientID() string {
+	if o == nil || o.ClientID == nil {
+		return ""
+	}
+	return *o.ClientID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (o *OAuthAPP) GetName() string {
+	if o == nil || o.Name == nil {
+		return ""
+	}
+	return *o.Name
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (o *OAuthAPP) GetURL() string {
+	if o == nil || o.URL == nil {
+		return ""
+	}
+	return *o.URL
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAvatarURL() string {
 	if o == nil || o.AvatarURL == nil {
@@ -12822,6 +12846,94 @@ func (u *User) GetUpdatedAt() Timestamp {
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (u *User) GetURL() string {
+	if u == nil || u.URL == nil {
+		return ""
+	}
+	return *u.URL
+}
+
+// GetApp returns the App field.
+func (u *UserAuthorization) GetApp() *OAuthAPP {
+	if u == nil {
+		return nil
+	}
+	return u.App
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetCreatedAt() Timestamp {
+	if u == nil || u.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *u.CreatedAt
+}
+
+// GetFingerprint returns the Fingerprint field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetFingerprint() string {
+	if u == nil || u.Fingerprint == nil {
+		return ""
+	}
+	return *u.Fingerprint
+}
+
+// GetHashedToken returns the HashedToken field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetHashedToken() string {
+	if u == nil || u.HashedToken == nil {
+		return ""
+	}
+	return *u.HashedToken
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetID() int64 {
+	if u == nil || u.ID == nil {
+		return 0
+	}
+	return *u.ID
+}
+
+// GetNote returns the Note field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetNote() string {
+	if u == nil || u.Note == nil {
+		return ""
+	}
+	return *u.Note
+}
+
+// GetNoteURL returns the NoteURL field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetNoteURL() string {
+	if u == nil || u.NoteURL == nil {
+		return ""
+	}
+	return *u.NoteURL
+}
+
+// GetToken returns the Token field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetToken() string {
+	if u == nil || u.Token == nil {
+		return ""
+	}
+	return *u.Token
+}
+
+// GetTokenLastEight returns the TokenLastEight field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetTokenLastEight() string {
+	if u == nil || u.TokenLastEight == nil {
+		return ""
+	}
+	return *u.TokenLastEight
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetUpdatedAt() Timestamp {
+	if u == nil || u.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *u.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (u *UserAuthorization) GetURL() string {
 	if u == nil || u.URL == nil {
 		return ""
 	}

@@ -798,6 +798,18 @@ func TestNewTeam_String(t *testing.T) {
 	}
 }
 
+func TestOAuthAPP_String(t *testing.T) {
+	v := OAuthAPP{
+		URL:      String(""),
+		Name:     String(""),
+		ClientID: String(""),
+	}
+	want := `github.OAuthAPP{URL:"", Name:"", ClientID:""}`
+	if got := v.String(); got != want {
+		t.Errorf("OAuthAPP.String = %v, want %v", got, want)
+	}
+}
+
 func TestOrgStats_String(t *testing.T) {
 	v := OrgStats{
 		TotalOrgs:        Int(0),
