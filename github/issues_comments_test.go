@@ -31,10 +31,11 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
+	since := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
 	opt := &IssueListCommentsOptions{
-		Sort:        "updated",
-		Direction:   "desc",
-		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		Sort:        String("updated"),
+		Direction:   String("desc"),
+		Since:       &since,
 		ListOptions: ListOptions{Page: 2},
 	}
 	comments, _, err := client.Issues.ListComments(context.Background(), "o", "r", 0, opt)
