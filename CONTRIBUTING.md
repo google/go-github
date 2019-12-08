@@ -64,6 +64,9 @@ are more sensitive, emailed to <opensource@google.com>.
      messages are able to be formatted properly by various git tools.
 
   1. Finally, push the commits to your fork and submit a [pull request][].
+     **NOTE:** Please do not use force-push on PRs in this repo, as it makes
+     it more difficult for reviewers to see what has changed since the last
+     code review.
 
 [forking]: https://help.github.com/articles/fork-a-repo
 [golint]: https://github.com/golang/lint
