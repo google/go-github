@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -474,6 +475,18 @@ func TestDo(t *testing.T) {
 	want := &foo{"a"}
 	if !reflect.DeepEqual(body, want) {
 		t.Errorf("Response body = %v, want %v", body, want)
+	}
+}
+
+func TestDo_nilContext(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	_, err := client.Do(nil, req, nil)
+
+	if !reflect.DeepEqual(err, errors.New("context must be non-nil")) {
+		t.Errorf("Expected context must be non-nil error")
 	}
 }
 
