@@ -27,6 +27,9 @@ func TestOrganization_marshal(t *testing.T) {
 		Description:                          String("GitHub, the company."),
 		DefaultRepoPermission:                String("read"),
 		MembersCanCreateRepos:                Bool(true),
+		MembersCanCreateInternalRepos:        Bool(true),
+		MembersCanCreatePrivateRepos:         Bool(true),
+		MembersCanCreatePublicRepos:          Bool(false),
 		MembersAllowedRepositoryCreationType: String("all"),
 	}
 	want := `
@@ -40,6 +43,9 @@ func TestOrganization_marshal(t *testing.T) {
 			"description": "GitHub, the company.",
 			"default_repository_permission": "read",
 			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
 			"members_allowed_repository_creation_type": "all"
 		}
 	`
@@ -178,6 +184,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		v := new(Organization)
 		json.NewDecoder(r.Body).Decode(v)
 
+		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
