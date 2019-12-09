@@ -56,8 +56,17 @@ type Organization struct {
 	// MembersCanCreateRepos default value is true and is only used in Organizations.Edit.
 	MembersCanCreateRepos *bool `json:"members_can_create_repositories,omitempty"`
 
+	// https://developer.github.com/changes/2019-12-03-internal-visibility-changes/#rest-v3-api
+	MembersCanCreatePublicRepos   *bool `json:"members_can_create_public_repositories,omitempty"`
+	MembersCanCreatePrivateRepos  *bool `json:"members_can_create_private_repositories,omitempty"`
+	MembersCanCreateInternalRepos *bool `json:"members_can_create_internal_repositories,omitempty"`
+
 	// MembersAllowedRepositoryCreationType denotes if organization members can create repositories
 	// and the type of repositories they can create. Possible values are: "all", "private", or "none".
+	//
+	// Deprecated: Use MembersCanCreatePublicRepos, MembersCanCreatePrivateRepos, MembersCanCreateInternalRepos
+	// instead. The new fields overrides the existing MembersAllowedRepositoryCreationType during 'edit'
+	// operation and does not consider 'internal' repositories during 'get' operation
 	MembersAllowedRepositoryCreationType *string `json:"members_allowed_repository_creation_type,omitempty"`
 
 	// API URLs
@@ -212,6 +221,9 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
 	o := new(Organization)
 	resp, err := s.client.Do(ctx, req, o)
