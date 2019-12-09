@@ -498,9 +498,12 @@ func parseRate(r *http.Response) Rate {
 // first decode it. If rate limit is exceeded and reset time is in the future,
 // Do returns *RateLimitError immediately without making a network API call.
 //
-// The provided ctx must be non-nil. If it is canceled or times out,
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is canceled or times out,
 // ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+	if ctx == nil {
+		return nil, errors.New("context must be non-nil")
+	}
 	req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
