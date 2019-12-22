@@ -43,6 +43,10 @@ func TestPullComments_marshall(t *testing.T) {
 		OriginalPosition:    Int(4),
 		StartLine:           Int(2),
 		Line:                Int(3),
+		OriginalLine:        Int(2),
+		OriginalStartLine:   Int(2),
+		Side:                String("RIGHT"),
+		StartSide:           String("LEFT"),
 		CommitID:            String("ab"),
 		OriginalCommitID:    String("9c"),
 		User: &User{
@@ -81,6 +85,10 @@ func TestPullComments_marshall(t *testing.T) {
 		"original_position": 4,
 		"start_line": 2,
 		"line": 3,
+		"original_line": 2,
+		"original_start_line": 2,
+		"side": "RIGHT",
+		"start_side": "LEFT",
 		"commit_id": "ab",
 		"original_commit_id": "9c",
 		"user": {

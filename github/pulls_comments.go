@@ -25,6 +25,10 @@ type PullRequestComment struct {
 	OriginalPosition    *int       `json:"original_position,omitempty"`
 	StartLine           *int       `json:"start_line,omitempty"`
 	Line                *int       `json:"line,omitempty"`
+	OriginalLine        *int       `json:"original_line,omitempty"`
+	OriginalStartLine   *int       `json:"original_start_line,omitempty"`
+	Side                *string    `json:"side,omitempty"`
+	StartSide           *string    `json:"start_side,omitempty"`
 	CommitID            *string    `json:"commit_id,omitempty"`
 	OriginalCommitID    *string    `json:"original_commit_id,omitempty"`
 	User                *User      `json:"user,omitempty"`
