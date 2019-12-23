@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -40,6 +41,12 @@ func TestPullComments_marshall(t *testing.T) {
 		PullRequestReviewID: Int64(42),
 		Position:            Int(1),
 		OriginalPosition:    Int(4),
+		StartLine:           Int(2),
+		Line:                Int(3),
+		OriginalLine:        Int(2),
+		OriginalStartLine:   Int(2),
+		Side:                String("RIGHT"),
+		StartSide:           String("LEFT"),
 		CommitID:            String("ab"),
 		OriginalCommitID:    String("9c"),
 		User: &User{
@@ -76,6 +83,12 @@ func TestPullComments_marshall(t *testing.T) {
 		"pull_request_review_id": 42,
 		"position": 1,
 		"original_position": 4,
+		"start_line": 2,
+		"line": 3,
+		"original_line": 2,
+		"original_start_line": 2,
+		"side": "RIGHT",
+		"start_side": "LEFT",
 		"commit_id": "ab",
 		"original_commit_id": "9c",
 		"user": {
@@ -119,9 +132,10 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"sort":      "updated",
 			"direction": "desc",
@@ -152,9 +166,10 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1, "pull_request_review_id":42}]`)
 	})
 
@@ -181,9 +196,10 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -212,10 +228,13 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 
 	input := &PullRequestComment{Body: String("b")}
 
+	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PullRequestComment)
 		json.NewDecoder(r.Body).Decode(v)
 
+		// TODO: remove custom Accept header assertion when the API fully launches.
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testMethod(t, r, "POST")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
