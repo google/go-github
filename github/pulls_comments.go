@@ -22,6 +22,7 @@ type PullRequestComment struct {
 	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
 	Position            *int       `json:"position,omitempty"`
 	Line                *int       `json:"line,omitempty"`
+	Side                *string    `json:"side,omitempty"`
 	OriginalPosition    *int       `json:"original_position,omitempty"`
 	CommitID            *string    `json:"commit_id,omitempty"`
 	OriginalCommitID    *string    `json:"original_commit_id,omitempty"`
