@@ -989,6 +989,12 @@ func TestPullRequestComment_String(t *testing.T) {
 		PullRequestReviewID: Int64(0),
 		Position:            Int(0),
 		OriginalPosition:    Int(0),
+		StartLine:           Int(0),
+		Line:                Int(0),
+		OriginalLine:        Int(0),
+		OriginalStartLine:   Int(0),
+		Side:                String(""),
+		StartSide:           String(""),
 		CommitID:            String(""),
 		OriginalCommitID:    String(""),
 		User:                &User{},
@@ -998,7 +1004,7 @@ func TestPullRequestComment_String(t *testing.T) {
 		HTMLURL:             String(""),
 		PullRequestURL:      String(""),
 	}
-	want := `github.PullRequestComment{ID:0, NodeID:"", InReplyTo:0, Body:"", Path:"", DiffHunk:"", PullRequestReviewID:0, Position:0, OriginalPosition:0, CommitID:"", OriginalCommitID:"", User:github.User{}, Reactions:github.Reactions{}, AuthorAssociation:"", URL:"", HTMLURL:"", PullRequestURL:""}`
+	want := `github.PullRequestComment{ID:0, NodeID:"", InReplyTo:0, Body:"", Path:"", DiffHunk:"", PullRequestReviewID:0, Position:0, OriginalPosition:0, StartLine:0, Line:0, OriginalLine:0, OriginalStartLine:0, Side:"", StartSide:"", CommitID:"", OriginalCommitID:"", User:github.User{}, Reactions:github.Reactions{}, AuthorAssociation:"", URL:"", HTMLURL:"", PullRequestURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestComment.String = %v, want %v", got, want)
 	}
