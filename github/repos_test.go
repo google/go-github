@@ -912,7 +912,10 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					"restrictions":{
 						"users":[{"id":1,"login":"u"}],
 						"teams":[{"id":2,"slug":"t"}]
-					}
+					},
+					"required_linear_history":true,
+					"allow_force_pushes":true,
+					"allow_deletions":true
 				}`)
 	})
 
@@ -951,6 +954,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
+		RequiredLinearHistory: true,
+		AllowForcePushes:      true,
+		AllowDeletions:        true,
 	}
 	if !reflect.DeepEqual(protection, want) {
 		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
@@ -1015,6 +1021,9 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 				{Slug: String("t"), ID: Int64(2)},
 			},
 		},
+		RequiredLinearHistory: false,
+		AllowForcePushes:      false,
+		AllowDeletions:        false,
 	}
 	if !reflect.DeepEqual(protection, want) {
 		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
@@ -1042,6 +1051,9 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			Teams: []string{"t"},
 			Apps:  []string{"a"},
 		},
+		RequiredLinearHistory: true,
+		AllowForcePushes:      true,
+		AllowDeletions:        true,
 	}
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
@@ -1078,7 +1090,10 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 				"users":[{"id":1,"login":"u"}],
 				"teams":[{"id":2,"slug":"t"}],
 				"apps":[{"id":3,"slug":"a"}]
-			}
+			},
+			"required_linear_history":true,
+			"allow_force_pushes":true,
+			"allow_deletions":true
 		}`)
 	})
 
@@ -1115,6 +1130,9 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 				{Slug: String("a"), ID: Int64(3)},
 			},
 		},
+		RequiredLinearHistory: true,
+		AllowForcePushes:      true,
+		AllowDeletions:        true,
 	}
 	if !reflect.DeepEqual(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)

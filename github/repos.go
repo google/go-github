@@ -728,6 +728,9 @@ type Protection struct {
 	RequiredPullRequestReviews *PullRequestReviewsEnforcement `json:"required_pull_request_reviews"`
 	EnforceAdmins              *AdminEnforcement              `json:"enforce_admins"`
 	Restrictions               *BranchRestrictions            `json:"restrictions"`
+	RequiredLinearHistory      bool                           `json:"required_linear_history"`
+	AllowForcePushes           bool                           `json:"allow_force_pushes"`
+	AllowDeletions             bool                           `json:"allow_deletions"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
@@ -736,6 +739,9 @@ type ProtectionRequest struct {
 	RequiredPullRequestReviews *PullRequestReviewsEnforcementRequest `json:"required_pull_request_reviews"`
 	EnforceAdmins              bool                                  `json:"enforce_admins"`
 	Restrictions               *BranchRestrictionsRequest            `json:"restrictions"`
+	RequiredLinearHistory      bool                                  `json:"required_linear_history"`
+	AllowForcePushes           bool                                  `json:"allow_force_pushes"`
+	AllowDeletions             bool                                  `json:"allow_deletions"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
