@@ -22,6 +22,10 @@ type PullRequestComment struct {
 	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
 	Position            *int       `json:"position,omitempty"`
 	Line                *int       `json:"line,omitempty"`
+	StartLine           *int       `json:"start_line,omitempty"`
+	OriginalStartLine   *int       `json:"original_start_line,omitempty"`
+	StartSide           *string    `json:"start_side,omitempty"`
+	OriginalLine        *int       `json:"original_line,omitempty"`
 	Side                *string    `json:"side,omitempty"`
 	OriginalPosition    *int       `json:"original_position,omitempty"`
 	CommitID            *string    `json:"commit_id,omitempty"`
@@ -122,6 +126,27 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner string, r
 	if err != nil {
 		return nil, nil, err
 	}
+
+	c := new(PullRequestComment)
+	resp, err := s.client.Do(ctx, req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, nil
+}
+
+// CreateCommentWithComfortFade creates a new comment on the specified pull request. It has `Accept: application/vnd.github.comfort-fade-preview+json` header.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/comments/#create-a-comment
+func (s *PullRequestsService) CreateCommentWithComfortFade(ctx context.Context, owner string, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+	req, err := s.client.NewRequest("POST", u, comment)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", "application/vnd.github.comfort-fade-preview+json")
 
 	c := new(PullRequestComment)
 	resp, err := s.client.Do(ctx, req, c)
