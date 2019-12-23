@@ -21,6 +21,7 @@ type PullRequestComment struct {
 	DiffHunk            *string    `json:"diff_hunk,omitempty"`
 	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
 	Position            *int       `json:"position,omitempty"`
+	Line                *int       `json:"line,omitempty"`
 	OriginalPosition    *int       `json:"original_position,omitempty"`
 	CommitID            *string    `json:"commit_id,omitempty"`
 	OriginalCommitID    *string    `json:"original_commit_id,omitempty"`
