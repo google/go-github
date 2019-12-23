@@ -156,6 +156,30 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner 
 	return c, resp, nil
 }
 
+// CreateReviewCommentReply creates a reply to a review comment for a pull request.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/comments/#create-a-review-comment-reply
+func (s *PullRequestsService) CreateReviewCommentReply(ctx context.Context, owner string, repo string, prNumber int, body string, commentID int64) (*PullRequestComment, *Response, error) {
+	comment := &struct {
+		Body string `json:"body,omitempty"`
+	}{
+		Body: body,
+	}
+	u := fmt.Sprintf("repos/%v/%v/pulls/%d/comments/%v/replies", owner, repo, prNumber, commentID)
+	req, err := s.client.NewRequest("POST", u, comment)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	c := new(PullRequestComment)
+	resp, err := s.client.Do(ctx, req, c)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return c, resp, nil
+}
+
 // EditComment updates a pull request comment.
 // A non-nil comment.Body must be provided. Other comment fields should be left nil.
 //
