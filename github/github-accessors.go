@@ -8340,6 +8340,14 @@ func (p *PullRequestComment) GetInReplyTo() int64 {
 	return *p.InReplyTo
 }
 
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetLine() int {
+	if p == nil || p.Line == nil {
+		return 0
+	}
+	return *p.Line
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetNodeID() string {
 	if p == nil || p.NodeID == nil {
@@ -8356,12 +8364,28 @@ func (p *PullRequestComment) GetOriginalCommitID() string {
 	return *p.OriginalCommitID
 }
 
+// GetOriginalLine returns the OriginalLine field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetOriginalLine() int {
+	if p == nil || p.OriginalLine == nil {
+		return 0
+	}
+	return *p.OriginalLine
+}
+
 // GetOriginalPosition returns the OriginalPosition field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetOriginalPosition() int {
 	if p == nil || p.OriginalPosition == nil {
 		return 0
 	}
 	return *p.OriginalPosition
+}
+
+// GetOriginalStartLine returns the OriginalStartLine field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetOriginalStartLine() int {
+	if p == nil || p.OriginalStartLine == nil {
+		return 0
+	}
+	return *p.OriginalStartLine
 }
 
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
@@ -8402,6 +8426,30 @@ func (p *PullRequestComment) GetReactions() *Reactions {
 		return nil
 	}
 	return p.Reactions
+}
+
+// GetSide returns the Side field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetSide() string {
+	if p == nil || p.Side == nil {
+		return ""
+	}
+	return *p.Side
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetStartLine() int {
+	if p == nil || p.StartLine == nil {
+		return 0
+	}
+	return *p.StartLine
+}
+
+// GetStartSide returns the StartSide field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetStartSide() string {
+	if p == nil || p.StartSide == nil {
+		return ""
+	}
+	return *p.StartSide
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
