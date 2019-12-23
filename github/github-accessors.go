@@ -2404,14 +2404,6 @@ func (d *DeploymentRequest) GetEnvironment() string {
 	return *d.Environment
 }
 
-// GetPayload returns the Payload field if it's non-nil, zero value otherwise.
-func (d *DeploymentRequest) GetPayload() string {
-	if d == nil || d.Payload == nil {
-		return ""
-	}
-	return *d.Payload
-}
-
 // GetProductionEnvironment returns the ProductionEnvironment field if it's non-nil, zero value otherwise.
 func (d *DeploymentRequest) GetProductionEnvironment() bool {
 	if d == nil || d.ProductionEnvironment == nil {
