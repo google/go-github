@@ -36,8 +36,6 @@ func (s *TeamsService) ListTeamMembers(ctx context.Context, team int64, opt *Tea
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
-
 	var members []*User
 	resp, err := s.client.Do(ctx, req, &members)
 	if err != nil {
@@ -74,8 +72,6 @@ func (s *TeamsService) GetTeamMembership(ctx context.Context, team int64, user s
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	t := new(Membership)
 	resp, err := s.client.Do(ctx, req, t)

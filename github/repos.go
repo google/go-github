@@ -672,8 +672,6 @@ func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo 
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
-
 	var teams []*Team
 	resp, err := s.client.Do(ctx, req, &teams)
 	if err != nil {
@@ -1420,9 +1418,6 @@ func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryTransferPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
