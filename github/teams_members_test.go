@@ -20,7 +20,6 @@ func TestTeamsService__ListTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -107,7 +106,6 @@ func TestTeamsService__GetTeamMembership(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 

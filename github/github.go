@@ -88,26 +88,8 @@ const (
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
 
-	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
-	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
-
-	// https://developer.github.com/changes/2017-11-09-repository-transfer-api-preview/
-	mediaTypeRepositoryTransferPreview = "application/vnd.github.nightshade-preview+json"
-
-	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
-	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
-
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeRequiredApprovingReviewsPreview = "application/vnd.github.luke-cage-preview+json"
-
-	// https://developer.github.com/changes/2018-02-22-label-description-search-preview/
-	mediaTypeLabelDescriptionSearchPreview = "application/vnd.github.symmetra-preview+json"
-
-	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
-	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
-
-	// https://developer.github.com/changes/2018-03-21-hovercard-api-preview/
-	mediaTypeHovercardPreview = "application/vnd.github.hagar-preview+json"
 
 	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
 	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"

@@ -284,10 +284,6 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		// Accept header for search repositories based on topics preview endpoint
 		// TODO: remove custom Accept header when this API fully launches.
 		req.Header.Set("Accept", mediaTypeTopicsPreview)
-	case searchType == "labels":
-		// Accept header for search labels based on label description preview endpoint.
-		// TODO: remove custom Accept header when this API fully launches.
-		req.Header.Set("Accept", mediaTypeLabelDescriptionSearchPreview)
 	case opt != nil && opt.TextMatch:
 		// Accept header defaults to "application/vnd.github.v3+json"
 		// We change it here to fetch back text-match metadata
