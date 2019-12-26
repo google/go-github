@@ -176,9 +176,6 @@ func (s *UsersService) GetHovercard(ctx context.Context, user string, opt *Hover
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeHovercardPreview)
-
 	hc := new(Hovercard)
 	resp, err := s.client.Do(ctx, req, hc)
 	if err != nil {

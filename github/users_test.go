@@ -159,7 +159,6 @@ func TestUsersService_GetHovercard(t *testing.T) {
 
 	mux.HandleFunc("/users/u/hovercard", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeHovercardPreview)
 		testFormValues(t, r, values{"subject_type": "repository", "subject_id": "20180408"})
 		fmt.Fprint(w, `{"contexts": [{"message":"Owns this repository", "octicon": "repo"}]}`)
 	})

@@ -21,7 +21,6 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		testFormValues(t, r, values{
 			"direction": "desc",
 		})
@@ -121,7 +120,6 @@ func TestTeamsService_GetDiscussion(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -147,7 +145,6 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -177,7 +174,6 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -202,7 +198,6 @@ func TestTeamsService_DeleteDiscussion(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 	})
 
 	_, err := client.Teams.DeleteDiscussion(context.Background(), 2, 3)
