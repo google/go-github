@@ -20,7 +20,6 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
