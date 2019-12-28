@@ -205,7 +205,7 @@ func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam) (*T
 
 // RemoveParentTeam represents a new team with no parent
 type RemoveParentTeam struct {
-		Name         string   `json:"name"` // Name of the team. (Required.)
+	Name         string   `json:"name"` // Name of the team. (Required.)
 	Description  *string  `json:"description,omitempty"`
 	Maintainers  []string `json:"maintainers,omitempty"`
 	RepoNames    []string `json:"repo_names,omitempty"`
