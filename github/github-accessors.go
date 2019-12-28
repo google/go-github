@@ -9724,6 +9724,46 @@ func (r *ReleaseEvent) GetSender() *User {
 	return r.Sender
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (r *RemoveParentTeam) GetDescription() string {
+	if r == nil || r.Description == nil {
+		return ""
+	}
+	return *r.Description
+}
+
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (r *RemoveParentTeam) GetLDAPDN() string {
+	if r == nil || r.LDAPDN == nil {
+		return ""
+	}
+	return *r.LDAPDN
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (r *RemoveParentTeam) GetParentTeamID() int64 {
+	if r == nil || r.ParentTeamID == nil {
+		return 0
+	}
+	return *r.ParentTeamID
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (r *RemoveParentTeam) GetPermission() string {
+	if r == nil || r.Permission == nil {
+		return ""
+	}
+	return *r.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (r *RemoveParentTeam) GetPrivacy() string {
+	if r == nil || r.Privacy == nil {
+		return ""
+	}
+	return *r.Privacy
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (r *Rename) GetFrom() string {
 	if r == nil || r.From == nil {

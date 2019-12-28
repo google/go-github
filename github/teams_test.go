@@ -204,6 +204,35 @@ func TestTeamsService_EditTeam(t *testing.T) {
 	}
 }
 
+func TestTeamsRemoveParentsService_EditTeam(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := RemoveParentTeam{Name: "n", Privacy: String("closed"), ParentTeamID: nil}
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RemoveParentTeam)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	team, _, err := client.Teams.EditTeamRemoveParent(context.Background(), 1, input)
+	if err != nil {
+		t.Errorf("Teams.EditTeamRemoveParent returned error: %v", err)
+	}
+
+	want := &Team{ID: Int64(1)}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Teams.EditTeamRemoveParent returned %+v, want %+v", team, want)
+	}
+}
+
 func TestTeamsService_DeleteTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

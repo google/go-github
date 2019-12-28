@@ -203,6 +203,52 @@ func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam) (*T
 	return t, resp, nil
 }
 
+// RemoveParentTeam represents a new team with no parent
+type RemoveParentTeam struct {
+		Name         string   `json:"name"` // Name of the team. (Required.)
+	Description  *string  `json:"description,omitempty"`
+	Maintainers  []string `json:"maintainers,omitempty"`
+	RepoNames    []string `json:"repo_names,omitempty"`
+	ParentTeamID *int64   `json:"parent_team_id,omitempty"`
+
+	// Deprecated: Permission is deprecated when creating or editing a team in an org
+	// using the new GitHub permission model. It no longer identifies the
+	// permission a team has on its repos, but only specifies the default
+	// permission a repo is initially added with. Avoid confusion by
+	// specifying a permission value when calling AddTeamRepo.
+	Permission *string `json:"permission,omitempty"`
+
+	// Privacy identifies the level of privacy this team should have.
+	// Possible values are:
+	//     secret - only visible to organization owners and members of this team
+	//     closed - visible to all members of this organization
+	// Default is "secret".
+	Privacy *string `json:"privacy,omitempty"`
+
+	// LDAPDN may be used in GitHub Enterprise when the team membership
+	// is synchronized with LDAP.
+	LDAPDN *string `json:"ldap_dn,omitempty"`
+}
+
+// EditTeamRemoveParent sets the parent for the team to be nil.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/#edit-team
+func (s *TeamsService) EditTeamRemoveParent(ctx context.Context, id int64, team RemoveParentTeam) (*Team, *Response, error) {
+	u := fmt.Sprintf("teams/%v", id)
+	req, err := s.client.NewRequest("PATCH", u, team)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	t := new(Team)
+	resp, err := s.client.Do(ctx, req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
+}
+
 // DeleteTeam deletes a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#delete-team
