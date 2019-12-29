@@ -318,6 +318,9 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	return c, nil
 }
 
+// GetJSONEncodedData creates io writer object for sending API call. The usage
+// can also be extended to use for parsing the bytes array data for some edge
+// case validations while parsing the struct.
 func (c *Client) GetJSONEncodedData(body interface{}) (io.ReadWriter, error) {
 	var buf io.ReadWriter
 	if body != nil {
