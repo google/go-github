@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -187,9 +188,32 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam)
 // EditTeam edits a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#edit-team
-func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
-	req, err := s.client.NewRequest("PATCH", u, team)
+
+	var req *http.Request
+	var err error
+	if removeParent {
+		teamRemoveParent := struct {
+			Name         string   `json:"name"`
+			Description  *string  `json:"description,omitempty"`
+			Maintainers  []string `json:"maintainers,omitempty"`
+			RepoNames    []string `json:"repo_names,omitempty"`
+			ParentTeamID *int64   `json:"parent_team_id"` // This will be "null"
+			Privacy      *string  `json:"privacy,omitempty"`
+			LDAPDN       *string  `json:"ldap_dn,omitempty"`
+		}{
+			Name:        team.Name,
+			Description: team.Description,
+			Maintainers: team.Maintainers,
+			RepoNames:   team.RepoNames,
+			Privacy:     team.Privacy,
+			LDAPDN:      team.LDAPDN,
+		}
+		req, err = s.client.NewRequest("PATCH", u, teamRemoveParent)
+	} else {
+		req, err = s.client.NewRequest("PATCH", u, team)
+	}
 	if err != nil {
 		return nil, nil, err
 	}
