@@ -329,7 +329,6 @@ func (c *Client) GetJSONEncodedData(body interface{}) (io.ReadWriter, error) {
 			return nil, err
 		}
 	}
-	fmt.Println(buf)
 	return buf, nil
 }
 
