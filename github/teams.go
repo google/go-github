@@ -7,7 +7,9 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"strings"
 	"time"
 )
@@ -187,9 +189,28 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam)
 // EditTeam edits a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#edit-team
-func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) EditTeam(ctx context.Context, id int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v", id)
-	req, err := s.client.NewRequest("PATCH", u, team)
+
+	buf, err := s.client.GetJSONEncodedData(team)
+	if err != nil {
+		return nil, nil, err
+	}
+	body, err := ioutil.ReadAll(buf)
+	if err != nil {
+		return nil, nil, err
+	}
+	var dumpTeam map[string]interface{}
+	err = json.Unmarshal(body, &dumpTeam)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if removeParent == true {
+		dumpTeam["parent_team_id"] = nil
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, dumpTeam)
 	if err != nil {
 		return nil, nil, err
 	}

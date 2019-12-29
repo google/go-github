@@ -179,7 +179,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := NewTeam{Name: "n", Privacy: String("closed")}
+	input := NewTeam{Name: "n", Privacy: String("closed"), ParentTeamID: nil}
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
@@ -193,7 +193,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeam(context.Background(), 1, input)
+	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, true)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
