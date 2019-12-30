@@ -2764,6 +2764,14 @@ func (d *DismissedReview) GetState() string {
 	return *d.State
 }
 
+// GetClientPayload returns the ClientPayload field if it's non-nil, zero value otherwise.
+func (d *DispatchRequest) GetClientPayload() json.RawMessage {
+	if d == nil || d.ClientPayload == nil {
+		return json.RawMessage{}
+	}
+	return *d.ClientPayload
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (d *DraftReviewComment) GetBody() string {
 	if d == nil || d.Body == nil {
@@ -10754,6 +10762,54 @@ func (r *RepositoryContentResponse) GetContent() *RepositoryContent {
 		return nil
 	}
 	return r.Content
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (r *RepositoryDispatchEvent) GetAction() string {
+	if r == nil || r.Action == nil {
+		return ""
+	}
+	return *r.Action
+}
+
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (r *RepositoryDispatchEvent) GetBranch() string {
+	if r == nil || r.Branch == nil {
+		return ""
+	}
+	return *r.Branch
+}
+
+// GetInstallation returns the Installation field.
+func (r *RepositoryDispatchEvent) GetInstallation() *Installation {
+	if r == nil {
+		return nil
+	}
+	return r.Installation
+}
+
+// GetOrg returns the Org field.
+func (r *RepositoryDispatchEvent) GetOrg() *Organization {
+	if r == nil {
+		return nil
+	}
+	return r.Org
+}
+
+// GetRepo returns the Repo field.
+func (r *RepositoryDispatchEvent) GetRepo() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repo
+}
+
+// GetSender returns the Sender field.
+func (r *RepositoryDispatchEvent) GetSender() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Sender
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
