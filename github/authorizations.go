@@ -274,13 +274,17 @@ func (s *AuthorizationsService) Delete(ctx context.Context, id int64) (*Response
 // The returned Authorization.User field will be populated.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
-func (s *AuthorizationsService) Check(ctx context.Context, clientID string, token string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
+func (s *AuthorizationsService) Check(ctx context.Context, clientID string, clientToken string, accessToken string) (*Authorization, *Response, error) {
+	u := fmt.Sprintf("applications/%v/token", clientID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	q := req.URL.Query()
+	q.Add("access_token", accessToken)
+	req.URL.RawQuery = q.Encode()
 
 	a := new(Authorization)
 	resp, err := s.client.Do(ctx, req, a)

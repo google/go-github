@@ -200,12 +200,12 @@ func TestAuthorizationsService_Check(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
+	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	got, _, err := client.Authorizations.Check(context.Background(), "id", "t")
+	got, _, err := client.Authorizations.Check(context.Background(), "id", "t", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Check returned error: %v", err)
 	}
