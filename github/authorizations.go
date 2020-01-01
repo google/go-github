@@ -277,14 +277,14 @@ func (s *AuthorizationsService) Delete(ctx context.Context, id int64) (*Response
 func (s *AuthorizationsService) Check(ctx context.Context, clientID string, clientToken string, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	reqBody := &struct {
+		AccessToken string `json:"access_token"`
+	}{AccessToken: accessToken}
+
+	req, err := s.client.NewRequest("POST", u, reqBody)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	q := req.URL.Query()
-	q.Add("access_token", accessToken)
-	req.URL.RawQuery = q.Encode()
 
 	a := new(Authorization)
 	resp, err := s.client.Do(ctx, req, a)
