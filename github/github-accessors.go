@@ -2765,7 +2765,7 @@ func (d *DismissedReview) GetState() string {
 }
 
 // GetClientPayload returns the ClientPayload field if it's non-nil, zero value otherwise.
-func (d *DispatchRequest) GetClientPayload() json.RawMessage {
+func (d *DispatchRequestOptions) GetClientPayload() json.RawMessage {
 	if d == nil || d.ClientPayload == nil {
 		return json.RawMessage{}
 	}

@@ -1801,10 +1801,10 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := DispatchRequest{EventType: "go"}
+	var input DispatchRequestOptions
 
 	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v DispatchRequest
+		var v DispatchRequestOptions
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
@@ -1817,14 +1817,48 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Repositories.Dispatch(ctx, "o", "r", input)
-	if err != nil {
-		t.Errorf("Repositories.Dispatch returned error: %v", err)
-	}
 
-	want := &Repository{Owner: &User{Login: String("a")}}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
+	testCases := []interface{}{
+		nil,
+		struct {
+			Foo string
+		}{
+			Foo: "test",
+		},
+		struct {
+			Bar int
+		}{
+			Bar: 42,
+		},
+		struct {
+			Foo string
+			Bar int
+			Baz bool
+		}{
+			Foo: "test",
+			Bar: 42,
+			Baz: false,
+		},
+	}
+	for _, tc := range testCases {
+
+		if tc == nil {
+			input = DispatchRequestOptions{EventType: "go"}
+		} else {
+			bytes, _ := json.Marshal(tc)
+			payload := json.RawMessage(bytes)
+			input = DispatchRequestOptions{EventType: "go", ClientPayload: &payload}
+		}
+
+		got, _, err := client.Repositories.Dispatch(ctx, "o", "r", input)
+		if err != nil {
+			t.Errorf("Repositories.Dispatch returned error: %v", err)
+		}
+
+		want := &Repository{Owner: &User{Login: String("a")}}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
+		}
 	}
 
 	// Test s.client.NewRequest failure
