@@ -43,6 +43,12 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
+//PageUpdate represents options for updating page
+type PageUpdate struct {
+	Cname  *string `json:"cname,omitempty"`
+	Source *string `json:"source,omitempty"`
+}
+
 // EnablePages enables GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#enable-a-pages-site
@@ -62,6 +68,24 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	}
 
 	return enable, resp, nil
+}
+
+// UpdatePages https://developer.github.com/v3/repos/pages/#update-information-about-a-pages-site
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, body *PageUpdate) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+
+	req, err := s.client.NewRequest("PUT", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	enable := new(Pages)
+	resp, err := s.client.Do(ctx, req, enable)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
 
 // DisablePages disables GitHub Pages for the named repo.
