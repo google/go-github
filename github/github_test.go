@@ -958,7 +958,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	want := &ErrorResponse{
 		Response: res,
 		Message:  "m",
-		Errors:   []Error{{}},
+		Errors:   []Error{{Message: "error 1"}},
 	}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)

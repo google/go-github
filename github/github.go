@@ -709,6 +709,10 @@ These are the possible validation error codes:
         some resources return this (e.g. github.User.CreateKey()), additional
         information is set in the Message field of the Error
 
+GitHub error responses structure are often undocumented and inconsistent.
+Sometimes error is just a simple string (Issue #540).
+In such cases, Message represents an error message as a workaround.
+
 GitHub API docs: https://developer.github.com/v3/#client-errors
 */
 type Error struct {
@@ -721,6 +725,14 @@ type Error struct {
 func (e *Error) Error() string {
 	return fmt.Sprintf("%v error caused by %v field on %v resource",
 		e.Code, e.Field, e.Resource)
+}
+
+func (e *Error) UnmarshalJSON(data []byte) error {
+	type aliasError Error // avoid infinite recursion by using type alias.
+	if err := json.Unmarshal(data, (*aliasError)(e)); err != nil {
+		return json.Unmarshal(data, &e.Message) // data can be json string.
+	}
+	return nil
 }
 
 // CheckResponse checks the API response for errors, and returns them if
