@@ -402,7 +402,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
       						"site_admin": false
 						},
 						"team_count": 2,
-						"invitation_team_url": "https://api.github.com/organizations/2/invitations/1/teams"	  	
+						"invitation_team_url": "https://api.github.com/organizations/2/invitations/1/teams"
   				}
 			]`)
 	})
@@ -466,7 +466,6 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -493,7 +492,6 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 	mux.HandleFunc("/orgs/o/invitations/22/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
-		testHeader(t, r, "Accept", mediaTypeOrganizationInvitationPreview)
 		fmt.Fprint(w, `[
 			{
 				"id": 1,

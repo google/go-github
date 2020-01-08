@@ -67,9 +67,6 @@ const (
 	// https://developer.github.com/changes/2016-05-23-timeline-preview-api/
 	mediaTypeTimelinePreview = "application/vnd.github.mockingbird-preview+json"
 
-	// https://developer.github.com/changes/2016-07-06-github-pages-preiew-api/
-	mediaTypePagesPreview = "application/vnd.github.mister-fantastic-preview+json"
-
 	// https://developer.github.com/changes/2016-09-14-projects-api/
 	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
 
@@ -91,26 +88,8 @@ const (
 	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
 	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
 
-	// https://developer.github.com/changes/2017-08-30-preview-nested-teams/
-	mediaTypeNestedTeamsPreview = "application/vnd.github.hellcat-preview+json"
-
-	// https://developer.github.com/changes/2017-11-09-repository-transfer-api-preview/
-	mediaTypeRepositoryTransferPreview = "application/vnd.github.nightshade-preview+json"
-
-	// https://developer.github.com/changes/2018-01-25-organization-invitation-api-preview/
-	mediaTypeOrganizationInvitationPreview = "application/vnd.github.dazzler-preview+json"
-
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeRequiredApprovingReviewsPreview = "application/vnd.github.luke-cage-preview+json"
-
-	// https://developer.github.com/changes/2018-02-22-label-description-search-preview/
-	mediaTypeLabelDescriptionSearchPreview = "application/vnd.github.symmetra-preview+json"
-
-	// https://developer.github.com/changes/2018-02-07-team-discussions-api/
-	mediaTypeTeamDiscussionsPreview = "application/vnd.github.echo-preview+json"
-
-	// https://developer.github.com/changes/2018-03-21-hovercard-api-preview/
-	mediaTypeHovercardPreview = "application/vnd.github.hagar-preview+json"
 
 	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
 	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
@@ -148,14 +127,17 @@ const (
 	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
 	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
 
-	// https://developer.github.com/changes/2019-06-12-team-sync/
-	mediaTypeTeamSyncPreview = "application/vnd.github.team-sync-preview+json"
-
 	// https://developer.github.com/v3/previews/#repository-creation-permissions
 	mediaTypeMemberAllowedRepoCreationTypePreview = "application/vnd.github.surtur-preview+json"
 
 	// https://developer.github.com/v3/previews/#create-and-use-repository-templates
 	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
+
+	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
+	mediaTypeMultiLineCommentsPreview = "application/vnd.github.comfort-fade-preview+json"
+
+	// https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+	mediaTypeRepositoryDispatchPreview = "application/vnd.github.everest-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -504,9 +486,12 @@ func parseRate(r *http.Response) Rate {
 // first decode it. If rate limit is exceeded and reset time is in the future,
 // Do returns *RateLimitError immediately without making a network API call.
 //
-// The provided ctx must be non-nil. If it is canceled or times out,
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is canceled or times out,
 // ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+	if ctx == nil {
+		return nil, errors.New("context must be non-nil")
+	}
 	req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
@@ -648,7 +633,7 @@ type TwoFactorAuthError ErrorResponse
 func (r *TwoFactorAuthError) Error() string { return (*ErrorResponse)(r).Error() }
 
 // RateLimitError occurs when GitHub returns 403 Forbidden response with a rate limit
-// remaining value of 0, and error message starts with "API rate limit exceeded for ".
+// remaining value of 0.
 type RateLimitError struct {
 	Rate     Rate           // Rate specifies last known rate limit for the client
 	Response *http.Response // HTTP response that caused this error
@@ -724,6 +709,10 @@ These are the possible validation error codes:
         some resources return this (e.g. github.User.CreateKey()), additional
         information is set in the Message field of the Error
 
+GitHub error responses structure are often undocumented and inconsistent.
+Sometimes error is just a simple string (Issue #540).
+In such cases, Message represents an error message as a workaround.
+
 GitHub API docs: https://developer.github.com/v3/#client-errors
 */
 type Error struct {
@@ -738,12 +727,19 @@ func (e *Error) Error() string {
 		e.Code, e.Field, e.Resource)
 }
 
+func (e *Error) UnmarshalJSON(data []byte) error {
+	type aliasError Error // avoid infinite recursion by using type alias.
+	if err := json.Unmarshal(data, (*aliasError)(e)); err != nil {
+		return json.Unmarshal(data, &e.Message) // data can be json string.
+	}
+	return nil
+}
+
 // CheckResponse checks the API response for errors, and returns them if
 // present. A response is considered an error if it has a status code outside
 // the 200 range or equal to 202 Accepted.
-// API error responses are expected to have either no response
-// body, or a JSON response body that maps to ErrorResponse. Any other
-// response body will be silently ignored.
+// API error responses are expected to have response
+// body, and a JSON response body that maps to ErrorResponse.
 //
 // The error type will be *RateLimitError for rate limit exceeded errors,
 // *AcceptedError for 202 Accepted status codes,
@@ -760,10 +756,14 @@ func CheckResponse(r *http.Response) error {
 	if err == nil && data != nil {
 		json.Unmarshal(data, errorResponse)
 	}
+	// Re-populate error response body because GitHub error responses are often
+	// undocumented and inconsistent.
+	// Issue #1136, #540.
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(data))
 	switch {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
-	case r.StatusCode == http.StatusForbidden && r.Header.Get(headerRateRemaining) == "0" && strings.HasPrefix(errorResponse.Message, "API rate limit exceeded for "):
+	case r.StatusCode == http.StatusForbidden && r.Header.Get(headerRateRemaining) == "0":
 		return &RateLimitError{
 			Rate:     parseRate(r),
 			Response: errorResponse.Response,

@@ -14,6 +14,44 @@ import (
 	"testing"
 )
 
+func TestOrganization_marshal(t *testing.T) {
+	testJSONMarshal(t, &Organization{}, "{}")
+
+	o := &Organization{
+		BillingEmail:                         String("support@github.com"),
+		Blog:                                 String("https://github.com/blog"),
+		Company:                              String("GitHub"),
+		Email:                                String("support@github.com"),
+		Location:                             String("San Francisco"),
+		Name:                                 String("github"),
+		Description:                          String("GitHub, the company."),
+		DefaultRepoPermission:                String("read"),
+		MembersCanCreateRepos:                Bool(true),
+		MembersCanCreateInternalRepos:        Bool(true),
+		MembersCanCreatePrivateRepos:         Bool(true),
+		MembersCanCreatePublicRepos:          Bool(false),
+		MembersAllowedRepositoryCreationType: String("all"),
+	}
+	want := `
+		{
+			"billing_email": "support@github.com",
+			"blog": "https://github.com/blog",
+			"company": "GitHub",
+			"email": "support@github.com",
+			"location": "San Francisco",
+			"name": "github",
+			"description": "GitHub, the company.",
+			"default_repository_permission": "read",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "all"
+		}
+	`
+	testJSONMarshal(t, o, want)
+}
+
 func TestOrganizationsService_ListAll(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -146,6 +184,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		v := new(Organization)
 		json.NewDecoder(r.Body).Decode(v)
 
+		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)

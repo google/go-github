@@ -26,6 +26,19 @@ type ListCollaboratorsOptions struct {
 	ListOptions
 }
 
+// CollaboratorInvitation represents an invitation created when adding a collaborator.
+// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#response-when-a-new-invitation-is-created
+type CollaboratorInvitation struct {
+	ID          *int64      `json:"id,omitempty"`
+	Repo        *Repository `json:"repository,omitempty"`
+	Invitee     *User       `json:"invitee,omitempty"`
+	Inviter     *User       `json:"inviter,omitempty"`
+	Permissions *string     `json:"permissions,omitempty"`
+	CreatedAt   *Timestamp  `json:"created_at,omitempty"`
+	URL         *string     `json:"url,omitempty"`
+	HTMLURL     *string     `json:"html_url,omitempty"`
+}
+
 // ListCollaborators lists the GitHub users that have access to the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#list-collaborators
@@ -40,8 +53,6 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeNestedTeamsPreview)
 
 	var users []*User
 	resp, err := s.client.Do(ctx, req, &users)
@@ -113,14 +124,18 @@ type RepositoryAddCollaboratorOptions struct {
 // to become a collaborator to the given repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
-func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*Response, error) {
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-
-	return s.client.Do(ctx, req, nil)
+	acr := new(CollaboratorInvitation)
+	resp, err := s.client.Do(ctx, req, acr)
+	if err != nil {
+		return nil, resp, err
+	}
+	return acr, resp, nil
 }
 
 // RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.

@@ -6,9 +6,11 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -22,7 +24,6 @@ func TestTeamsService_ListTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -53,7 +54,6 @@ func TestTeamsService_GetTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
 	})
 
@@ -74,7 +74,6 @@ func TestTeamsService_GetTeam_nestedTeams(t *testing.T) {
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
 		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
 	})
@@ -152,7 +151,6 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -189,7 +187,6 @@ func TestTeamsService_EditTeam(t *testing.T) {
 		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testMethod(t, r, "PATCH")
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -198,7 +195,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeam(context.Background(), 1, input)
+	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, false)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
@@ -209,13 +206,51 @@ func TestTeamsService_EditTeam(t *testing.T) {
 	}
 }
 
+func TestTeamsService_EditTeam_RemoveParent(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := NewTeam{Name: "n", Privacy: String("closed")}
+	var body string
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(NewTeam)
+		buf, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("Unable to read body: %v", err)
+		}
+		body = string(buf)
+		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, true)
+	if err != nil {
+		t.Errorf("Teams.EditTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int64(1)}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
+	}
+
+	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
+	}
+}
+
 func TestTeamsService_DeleteTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 	})
 
 	_, err := client.Teams.DeleteTeam(context.Background(), 1)
@@ -230,7 +265,6 @@ func TestTeamsService_ListChildTeams(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
@@ -253,7 +287,7 @@ func TestTeamsService_ListTeamRepos(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeNestedTeamsPreview}
+		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -277,7 +311,7 @@ func TestTeamsService_IsTeamRepo_true(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeOrgPermissionRepo, mediaTypeNestedTeamsPreview}
+		wantAcceptHeaders := []string{mediaTypeOrgPermissionRepo}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -419,7 +453,6 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 
 	mux.HandleFunc("/user/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "1"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -517,7 +550,7 @@ func TestTeamsService_ListProjects(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}
+	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/teams/1/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -539,7 +572,7 @@ func TestTeamsService_ReviewProjects(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}
+	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -565,7 +598,7 @@ func TestTeamsService_AddTeamProject(t *testing.T) {
 		Permission: String("admin"),
 	}
 
-	wantAcceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}
+	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -589,7 +622,7 @@ func TestTeamsService_RemoveTeamProject(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeNestedTeamsPreview, mediaTypeProjectsPreview}
+	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -608,7 +641,6 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -641,7 +673,6 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
@@ -670,7 +701,6 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 
 	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeTeamSyncPreview)
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 

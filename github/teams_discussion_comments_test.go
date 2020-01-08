@@ -21,7 +21,6 @@ func TestTeamsService_ListComments(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions/3/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		testFormValues(t, r, values{
 			"direction": "desc",
 		})
@@ -112,7 +111,6 @@ func TestTeamsService_GetComment(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		fmt.Fprint(w, `{"number":4}`)
 	})
 
@@ -138,7 +136,6 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -168,7 +165,6 @@ func TestTeamsService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 		if !reflect.DeepEqual(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -193,7 +189,6 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 
 	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeTeamDiscussionsPreview)
 	})
 
 	_, err := client.Teams.DeleteComment(context.Background(), 2, 3, 4)

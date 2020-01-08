@@ -20,7 +20,6 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeNestedTeamsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -149,22 +148,40 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	defer teardown()
 
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
-
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(RepositoryAddCollaboratorOptions)
 		json.NewDecoder(r.Body).Decode(v)
-
 		testMethod(t, r, "PUT")
 		if !reflect.DeepEqual(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
-
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
 	})
-
-	_, err := client.Repositories.AddCollaborator(context.Background(), "o", "r", "u", opt)
+	collaboratorInvitation, _, err := client.Repositories.AddCollaborator(context.Background(), "o", "r", "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
+	}
+	want := &CollaboratorInvitation{
+		ID: Int64(1),
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("r"),
+		},
+		Invitee: &User{
+			Login: String("u"),
+		},
+		Inviter: &User{
+			Login: String("o"),
+		},
+		Permissions: String("write"),
+		URL:         String("https://api.github.com/user/repository_invitations/1296269"),
+		HTMLURL:     String("https://github.com/octocat/Hello-World/invitations"),
+	}
+
+	if !reflect.DeepEqual(collaboratorInvitation, want) {
+		t.Errorf("AddCollaborator returned %+v, want %+v", collaboratorInvitation, want)
 	}
 }
 
@@ -172,7 +189,7 @@ func TestRepositoriesService_AddCollaborator_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Repositories.AddCollaborator(context.Background(), "%", "%", "%", nil)
+	_, _, err := client.Repositories.AddCollaborator(context.Background(), "%", "%", "%", nil)
 	testURLParseError(t, err)
 }
 
