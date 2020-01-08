@@ -942,6 +942,36 @@ func TestCheckResponse_noBody(t *testing.T) {
 	}
 }
 
+func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
+	httpBody := `{"message":"m", "errors": ["error 1"]}`
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusBadRequest,
+		Body:       ioutil.NopCloser(strings.NewReader(httpBody)),
+	}
+	err := CheckResponse(res).(*ErrorResponse)
+
+	if err == nil {
+		t.Errorf("Expected error response.")
+	}
+
+	want := &ErrorResponse{
+		Response: res,
+		Message:  "m",
+		Errors:   []Error{{}},
+	}
+	if !reflect.DeepEqual(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+	data, err2 := ioutil.ReadAll(err.Response.Body)
+	if err2 != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+	if got := string(data); got != httpBody {
+		t.Errorf("ErrorResponse.Response.Body = %q, want %q", got, httpBody)
+	}
+}
+
 func TestParseBooleanResponse_true(t *testing.T) {
 	result, err := parseBoolResponse(nil)
 	if err != nil {
