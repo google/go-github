@@ -6,9 +6,11 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -193,7 +195,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeam(context.Background(), 1, input)
+	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, false)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
@@ -201,6 +203,45 @@ func TestTeamsService_EditTeam(t *testing.T) {
 	want := &Team{ID: Int64(1)}
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
+	}
+}
+
+func TestTeamsService_EditTeam_RemoveParent(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := NewTeam{Name: "n", Privacy: String("closed")}
+	var body string
+
+	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(NewTeam)
+		buf, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Errorf("Unable to read body: %v", err)
+		}
+		body = string(buf)
+		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !reflect.DeepEqual(v, &input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, true)
+	if err != nil {
+		t.Errorf("Teams.EditTeam returned error: %v", err)
+	}
+
+	want := &Team{ID: Int64(1)}
+	if !reflect.DeepEqual(team, want) {
+		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
+	}
+
+	if want := `{"name":"n","parent_team_id":null,"privacy":"closed"}` + "\n"; body != want {
+		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
 	}
 }
 
