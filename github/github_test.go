@@ -963,6 +963,13 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
+	data, err2 := ioutil.ReadAll(err.Response.Body)
+	if err2 != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+	if got := string(data); got != httpBody {
+		t.Errorf("ErrorResponse.Response.Body = %q, want %q", got, httpBody)
+	}
 }
 
 func TestParseBooleanResponse_true(t *testing.T) {

@@ -135,6 +135,9 @@ const (
 
 	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
 	mediaTypeMultiLineCommentsPreview = "application/vnd.github.comfort-fade-preview+json"
+
+	// https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+	mediaTypeRepositoryDispatchPreview = "application/vnd.github.everest-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
@@ -735,9 +738,8 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // CheckResponse checks the API response for errors, and returns them if
 // present. A response is considered an error if it has a status code outside
 // the 200 range or equal to 202 Accepted.
-// API error responses are expected to have either no response
-// body, or a JSON response body that maps to ErrorResponse. Any other
-// response body will be silently ignored.
+// API error responses are expected to have response
+// body, and a JSON response body that maps to ErrorResponse.
 //
 // The error type will be *RateLimitError for rate limit exceeded errors,
 // *AcceptedError for 202 Accepted status codes,
@@ -754,6 +756,10 @@ func CheckResponse(r *http.Response) error {
 	if err == nil && data != nil {
 		json.Unmarshal(data, errorResponse)
 	}
+	// Re-populate error response body because GitHub error responses are often
+	// undocumented and inconsistent.
+	// Issue #1136, #540.
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(data))
 	switch {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
