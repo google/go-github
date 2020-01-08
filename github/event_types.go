@@ -7,6 +7,8 @@
 
 package github
 
+import "encoding/json"
+
 // RequestedAction is included in a CheckRunEvent when a user has invoked an action,
 // i.e. when the CheckRunEvent's Action field is "requested_action".
 type RequestedAction struct {
@@ -769,6 +771,22 @@ type RepositoryEvent struct {
 	// "transferred", "publicized", or "privatized".
 	Action *string     `json:"action,omitempty"`
 	Repo   *Repository `json:"repository,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
+// RepositoryDispatchEvent is triggered when a client sends a POST request to the repository dispatch event endpoint.
+//
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#repositorydispatchevent
+type RepositoryDispatchEvent struct {
+	// Action is the event_type that submitted with the repository dispatch payload. Value can be any string.
+	Action        *string         `json:"action,omitempty"`
+	Branch        *string         `json:"branch,omitempty"`
+	ClientPayload json.RawMessage `json:"client_payload,omitempty"`
+	Repo          *Repository     `json:"repository,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Org          *Organization `json:"organization,omitempty"`

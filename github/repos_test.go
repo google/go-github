@@ -1796,3 +1796,95 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
 	}
 }
+
+func TestRepositoriesService_Dispatch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	var input DispatchRequestOptions
+
+	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
+		var v DispatchRequestOptions
+		json.NewDecoder(r.Body).Decode(&v)
+
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeRepositoryDispatchPreview)
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
+	})
+
+	ctx := context.Background()
+
+	testCases := []interface{}{
+		nil,
+		struct {
+			Foo string
+		}{
+			Foo: "test",
+		},
+		struct {
+			Bar int
+		}{
+			Bar: 42,
+		},
+		struct {
+			Foo string
+			Bar int
+			Baz bool
+		}{
+			Foo: "test",
+			Bar: 42,
+			Baz: false,
+		},
+	}
+	for _, tc := range testCases {
+
+		if tc == nil {
+			input = DispatchRequestOptions{EventType: "go"}
+		} else {
+			bytes, _ := json.Marshal(tc)
+			payload := json.RawMessage(bytes)
+			input = DispatchRequestOptions{EventType: "go", ClientPayload: &payload}
+		}
+
+		got, _, err := client.Repositories.Dispatch(ctx, "o", "r", input)
+		if err != nil {
+			t.Errorf("Repositories.Dispatch returned error: %v", err)
+		}
+
+		want := &Repository{Owner: &User{Login: String("a")}}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
+		}
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Repositories.Dispatch(ctx, "o", "r", input)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' Dispatch = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' Dispatch resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' Dispatch err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Repositories.Dispatch(ctx, "o", "r", input)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now Dispatch = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now Dispatch resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now Dispatch err = nil, want error")
+	}
+}
