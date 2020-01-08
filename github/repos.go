@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -1418,6 +1419,38 @@ func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
+
+// DispatchRequestOptions represents a request to trigger a repository_dispatch event.
+type DispatchRequestOptions struct {
+	// EventType is a custom webhook event name. (Required.)
+	EventType string `json:"event_type"`
+	// ClientPayload is a custom JSON payload with extra information about the webhook event.
+	// Defaults to an empty JSON object.
+	ClientPayload *json.RawMessage `json:"client_payload,omitempty"`
+}
+
+// Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
+func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, opts DispatchRequestOptions) (*Repository, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/dispatches", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, &opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeRepositoryDispatchPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
