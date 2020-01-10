@@ -44,6 +44,20 @@ func (t TreeEntry) String() string {
 	return Stringify(t)
 }
 
+// treeEntryWithFileDelete is used internally to delete a file whose
+// Content and SHA fields are empty. It does this by removing the "omitempty"
+// tag modifier on the SHA field which causes the GitHub API to receive
+// {"sha":null} and thereby delete the file.
+type treeEntryWithFileDelete struct {
+	SHA     *string `json:"sha"`
+	Path    *string `json:"path,omitempty"`
+	Mode    *string `json:"mode,omitempty"`
+	Type    *string `json:"type,omitempty"`
+	Size    *int    `json:"size,omitempty"`
+	Content *string `json:"content,omitempty"`
+	URL     *string `json:"url,omitempty"`
+}
+
 func (t *TreeEntry) MarshalJSON() ([]byte, error) {
 	if t.SHA == nil && t.Content == nil {
 		return json.Marshal(struct {
@@ -102,8 +116,8 @@ func (s *GitService) GetTree(ctx context.Context, owner string, repo string, sha
 
 // createTree represents the body of a CreateTree request.
 type createTree struct {
-	BaseTree string      `json:"base_tree,omitempty"`
-	Entries  []TreeEntry `json:"tree"`
+	BaseTree string        `json:"base_tree,omitempty"`
+	Entries  []interface{} `json:"tree"`
 }
 
 // CreateTree creates a new tree in a repository. If both a tree and a nested
@@ -114,9 +128,24 @@ type createTree struct {
 func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
+	newEntries := make([]interface{}, 0, len(entries))
+	for _, entry := range entries {
+		if entry.Content == nil && entry.SHA == nil {
+			newEntries = append(newEntries, treeEntryWithFileDelete{
+				Path: entry.Path,
+				Mode: entry.Mode,
+				Type: entry.Type,
+				Size: entry.Size,
+				URL:  entry.URL,
+			})
+			continue
+		}
+		newEntries = append(newEntries, entry)
+	}
+
 	body := &createTree{
 		BaseTree: baseTree,
-		Entries:  entries,
+		Entries:  newEntries,
 	}
 	req, err := s.client.NewRequest("POST", u, body)
 	if err != nil {
