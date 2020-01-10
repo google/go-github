@@ -6,9 +6,10 @@
 package github
 
 import (
+	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -68,17 +69,16 @@ func TestGitService_CreateTree(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createTree)
-		json.NewDecoder(r.Body).Decode(v)
+		got, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("unable to read body: %v", err)
+		}
 
 		testMethod(t, r, "POST")
 
-		want := &createTree{
-			BaseTree: "b",
-			Entries:  input,
-		}
-		if !reflect.DeepEqual(v, want) {
-			t.Errorf("Git.CreateTree request body: %+v, want %+v", v, want)
+		want := []byte(`{"base_tree":"b","tree":[{"sha":"7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b","path":"file.rb","mode":"100644","type":"blob"}]}` + "\n")
+		if !bytes.Equal(got, want) {
+			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -132,17 +132,16 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createTree)
-		json.NewDecoder(r.Body).Decode(v)
+		got, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("unable to read body: %v", err)
+		}
 
 		testMethod(t, r, "POST")
 
-		want := &createTree{
-			BaseTree: "b",
-			Entries:  input,
-		}
-		if !reflect.DeepEqual(v, want) {
-			t.Errorf("Git.CreateTree request body: %+v, want %+v", v, want)
+		want := []byte(`{"base_tree":"b","tree":[{"path":"content.md","mode":"100644","content":"file content"}]}` + "\n")
+		if !bytes.Equal(got, want) {
+			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
 		}
 
 		fmt.Fprint(w, `{
@@ -198,17 +197,16 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createTree)
-		json.NewDecoder(r.Body).Decode(v)
+		got, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("unable to read body: %v", err)
+		}
 
 		testMethod(t, r, "POST")
 
-		want := &createTree{
-			BaseTree: "b",
-			Entries:  input,
-		}
-		if !reflect.DeepEqual(v, want) {
-			t.Errorf("Git.CreateTree request body: %+v, want %+v", v, want)
+		want := []byte(`{"base_tree":"b","tree":[{"sha":null,"path":"content.md","mode":"100644"}]}` + "\n")
+		if !bytes.Equal(got, want) {
+			t.Errorf("Git.CreateTree request body: %s, want %s", got, want)
 		}
 
 		fmt.Fprint(w, `{
