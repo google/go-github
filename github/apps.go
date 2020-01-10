@@ -30,7 +30,7 @@ type App struct {
 	CreatedAt   *Timestamp               `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp               `json:"updated_at,omitempty"`
 	Permissions *InstallationPermissions `json:"permissions,omitempty"`
-	Events      []*Event                 `json:"events,omitempty"`
+	Events      []string                 `json:"events,omitempty"`
 }
 
 // InstallationToken represents an installation token.
