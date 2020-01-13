@@ -30,7 +30,6 @@ func TestMigrationService_StartImport(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -55,7 +54,6 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		fmt.Fprint(w, `{"status":"complete"}`)
 	})
 
@@ -85,7 +83,6 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -110,7 +107,6 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/authors", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		fmt.Fprint(w, `[{"id":1,"name":"a"},{"id":2,"name":"b"}]`)
 	})
 
@@ -138,7 +134,6 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -167,7 +162,6 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -192,7 +186,6 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/large_files", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		fmt.Fprint(w, `[{"oid":"a"},{"oid":"b"}]`)
 	})
 
@@ -215,7 +208,6 @@ func TestMigrationService_CancelImport(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeImportPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
