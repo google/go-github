@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 // Pages represents a GitHub Pages site configuration.
@@ -43,9 +44,10 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
-//PageUpdate represents options for updating page
+// PageUpdateOptions represents options for updating a GitHub Page.
+
 type PageUpdate struct {
-	Cname  *string `json:"cname,omitempty"`
+	CName  *string `json:"cname,omitempty"`
 	Source *string `json:"source,omitempty"`
 }
 
@@ -53,6 +55,7 @@ type PageUpdate struct {
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#enable-a-pages-site
 func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
+
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -68,25 +71,54 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	}
 
 	return enable, resp, nil
+
+
+}
+
+type RemoveCName struct {
+	CName *string `json:"cname"`
+	Source *string `json:"source,omitempty"`
+}
+
+func copyRemoveCName(opts *PageUpdate) *RemoveCName {
+	return &RemoveCName{
+		CName: opts.CName,
+		Source: opts.Source,
+	}
 }
 
 // UpdatePages https://developer.github.com/v3/repos/pages/#update-information-about-a-pages-site
-func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, body *PageUpdate) (*Response, error) {
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PageUpdate, removeCustomDomain bool) (*Response, error) {
+
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
-	req, err := s.client.NewRequest("PUT", u, body)
-	if err != nil {
-		return nil, err
+	var err error
+
+	var req *http.Request
+
+	if removeCustomDomain {
+
+		removeCNameOpts := copyRemoveCName(opts)
+		req, err = s.client.NewRequest("PUT", u, removeCNameOpts)
+
+	} else {
+		req, err = s.client.NewRequest("PUT", u, opts)
 	}
 
-	enable := new(Pages)
-	resp, err := s.client.Do(ctx, req, enable)
-	if err != nil {
-		return resp, err
+		if err != nil {
+			return nil, err
+		}
+
+		enable := new(Pages)
+		resp, err := s.client.Do(ctx, req, enable)
+		if err != nil {
+			return resp, err
+		}
+
+		return resp, nil
+
 	}
 
-	return resp, nil
-}
 
 // DisablePages disables GitHub Pages for the named repo.
 //
