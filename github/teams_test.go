@@ -732,3 +732,29 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
 	}
 }
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"groups": []}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
+	}
+}
