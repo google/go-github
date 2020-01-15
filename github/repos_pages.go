@@ -45,7 +45,6 @@ type PagesBuild struct {
 }
 
 // PageUpdateOptions represents options for updating a GitHub Page.
-
 type PageUpdate struct {
 	CName  *string `json:"cname,omitempty"`
 	Source *string `json:"source,omitempty"`
@@ -72,17 +71,16 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 
 	return enable, resp, nil
 
-
 }
 
 type RemoveCName struct {
-	CName *string `json:"cname"`
+	CName  *string `json:"cname"`
 	Source *string `json:"source,omitempty"`
 }
 
 func copyRemoveCName(opts *PageUpdate) *RemoveCName {
 	return &RemoveCName{
-		CName: opts.CName,
+		CName:  opts.CName,
 		Source: opts.Source,
 	}
 }
@@ -105,20 +103,19 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 		req, err = s.client.NewRequest("PUT", u, opts)
 	}
 
-		if err != nil {
-			return nil, err
-		}
-
-		enable := new(Pages)
-		resp, err := s.client.Do(ctx, req, enable)
-		if err != nil {
-			return resp, err
-		}
-
-		return resp, nil
-
+	if err != nil {
+		return nil, err
 	}
 
+	enable := new(Pages)
+	resp, err := s.client.Do(ctx, req, enable)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+
+}
 
 // DisablePages disables GitHub Pages for the named repo.
 //
