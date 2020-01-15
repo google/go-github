@@ -7052,6 +7052,22 @@ func (p *PageStats) GetTotalPages() int {
 	return *p.TotalPages
 }
 
+// GetCName returns the CName field if it's non-nil, zero value otherwise.
+func (p *PageUpdate) GetCName() string {
+	if p == nil || p.CName == nil {
+		return ""
+	}
+	return *p.CName
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (p *PageUpdate) GetSource() string {
+	if p == nil || p.Source == nil {
+		return ""
+	}
+	return *p.Source
+}
+
 // GetHook returns the Hook field.
 func (p *PingEvent) GetHook() *Hook {
 	if p == nil {
@@ -9722,6 +9738,22 @@ func (r *ReleaseEvent) GetSender() *User {
 		return nil
 	}
 	return r.Sender
+}
+
+// GetCName returns the CName field if it's non-nil, zero value otherwise.
+func (r *RemoveCName) GetCName() string {
+	if r == nil || r.CName == nil {
+		return ""
+	}
+	return *r.CName
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (r *RemoveCName) GetSource() string {
+	if r == nil || r.Source == nil {
+		return ""
+	}
+	return *r.Source
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
