@@ -496,7 +496,7 @@ func (s *TeamsService) RemoveTeamProject(ctx context.Context, teamID int64, proj
 
 // IDPGroupList represents a list of external identity provider (IDP) groups.
 type IDPGroupList struct {
-	Groups []*IDPGroup `json:"groups,omitempty"`
+	Groups []*IDPGroup `json:"groups"`
 }
 
 // IDPGroup represents an external identity provider (IDP) group.
