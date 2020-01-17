@@ -288,9 +288,9 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, u
 		loc = req.URL.String()
 		return errors.New("disable redirect")
 	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
 	req = withContext(ctx, req)
 	resp, err := s.client.client.Do(req)
+	s.client.client.CheckRedirect = saveRedirect
 	s.client.clientMu.Unlock()
 	if err != nil {
 		if !strings.Contains(err.Error(), "disable redirect") {
