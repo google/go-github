@@ -101,3 +101,19 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 		t.Errorf("Apps.RemoveRepository returned error: %v", err)
 	}
 }
+
+func TestAppsService_RevokeInstallationToken(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/installation/token", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeRevokeTokenPreview)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	_, err := client.Apps.RevokeInstallationToken(context.Background())
+	if err != nil {
+		t.Errorf("Apps.RemoveRepository returned error: %v", err)
+	}
+}
