@@ -114,6 +114,6 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 
 	_, err := client.Apps.RevokeInstallationToken(context.Background())
 	if err != nil {
-		t.Errorf("Apps.RemoveRepository returned error: %v", err)
+		t.Errorf("Apps.RevokeInstallationToken returned error: %v", err)
 	}
 }
