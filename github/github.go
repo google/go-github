@@ -46,6 +46,9 @@ const (
 
 	// Media Type values to access preview APIs
 
+	// https://developer.github.com/changes/2020-01-10-revoke-installation-token/
+	mediaTypeRevokeTokenPreview = "application/vnd.github.gambit-preview+json"
+
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
