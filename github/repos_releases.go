@@ -266,10 +266,13 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // If a redirect is returned, the redirect URL will be returned as a string instead
 // of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
 //
-// If followRedirects is true, a single redirect will be followed.
+// followRedirectsClient can be passed to download the asset from a redirected
+// location. Passing http.DefaultClient is recommended unless special circumstances
+// exists, but it's possible to pass any http.Client. If nil is passed the
+// redirectURL will be returned instead.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
-func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirects bool) (rc io.ReadCloser, redirectURL string, err error) {
+func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -295,8 +298,8 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 		if !strings.Contains(err.Error(), "disable redirect") {
 			return nil, "", err
 		}
-		if followRedirects {
-			rc, err := s.downloadReleaseAssetFromURL(ctx, loc)
+		if followRedirectsClient != nil {
+			rc, err := s.downloadReleaseAssetFromURL(ctx, followRedirectsClient, loc)
 			return rc, "", err
 		}
 		return nil, loc, nil // Intentionally return no error with valid redirect URL.
@@ -310,15 +313,14 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 	return resp.Body, "", nil
 }
 
-func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, url string) (rc io.ReadCloser, err error) {
+func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, followRedirectsClient *http.Client, url string) (rc io.ReadCloser, err error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req = withContext(ctx, req)
 	req.Header.Set("Accept", "*/*")
-	httpClient := &http.Client{}
-	resp, err := httpClient.Do(req)
+	resp, err := followRedirectsClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

@@ -252,7 +252,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 		fmt.Fprint(w, "Hello World")
 	})
 
-	reader, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, true)
+	reader, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
@@ -276,7 +276,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 		http.Redirect(w, r, "/yo", http.StatusFound)
 	})
 
-	_, got, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, false)
+	_, got, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
@@ -304,7 +304,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 		fmt.Fprint(w, "Hello World")
 	})
 
-	reader, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, true)
+	reader, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, http.DefaultClient)
 	content, err := ioutil.ReadAll(reader)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
@@ -327,7 +327,7 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 		fmt.Fprint(w, `{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}`)
 	})
 
-	resp, loc, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, false)
+	resp, loc, err := client.Repositories.DownloadReleaseAsset(context.Background(), "o", "r", 1, nil)
 	if err == nil {
 		t.Error("Repositories.DownloadReleaseAsset did not return an error")
 	}

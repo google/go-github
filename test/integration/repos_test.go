@@ -187,7 +187,7 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 		return
 	}
 
-	rc, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "andersjanmyr", "goose", 484892, true)
+	rc, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "andersjanmyr", "goose", 484892, http.DefaultClient)
 	if err != nil {
 		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}
