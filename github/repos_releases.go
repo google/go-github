@@ -268,7 +268,7 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 //
 // followRedirectsClient can be passed to download the asset from a redirected
 // location. Passing http.DefaultClient is recommended unless special circumstances
-// exists, but it's possible to pass any http.Client. If nil is passed the
+// exist, but it's possible to pass any http.Client. If nil is passed the
 // redirectURL will be returned instead.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
