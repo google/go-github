@@ -298,7 +298,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	})
 	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", defaultMediaType)
+		testHeader(t, r, "Accept", "*/*")
 		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Header().Set("Content-Disposition", "attachment; filename=hello-world.txt")
 		fmt.Fprint(w, "Hello World")
@@ -309,6 +309,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
+	reader.Close()
 	want := []byte("Hello World")
 	if !bytes.Equal(want, content) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)

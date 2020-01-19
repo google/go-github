@@ -271,34 +271,33 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
 func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirects bool) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
-	return s.downloadReleaseAssetFromURL(ctx, u, followRedirects)
-}
 
-func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, url string, followRedirects bool) (rc io.ReadCloser, redirectURL string, err error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, "", err
 	}
 	req.Header.Set("Accept", defaultMediaType)
 
 	s.client.clientMu.Lock()
+	defer s.client.clientMu.Unlock()
+
 	var loc string
 	saveRedirect := s.client.client.CheckRedirect
 	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		loc = req.URL.String()
 		return errors.New("disable redirect")
 	}
+	defer func() { s.client.client.CheckRedirect = saveRedirect }()
+
 	req = withContext(ctx, req)
 	resp, err := s.client.client.Do(req)
-	s.client.client.CheckRedirect = saveRedirect
-	s.client.clientMu.Unlock()
 	if err != nil {
 		if !strings.Contains(err.Error(), "disable redirect") {
 			return nil, "", err
 		}
 		if followRedirects {
-			// Only follow a single redirect
-			return s.downloadReleaseAssetFromURL(ctx, loc, false)
+			rc, err := s.downloadReleaseAssetFromURL(ctx, loc)
+			return rc, "", err
 		}
 		return nil, loc, nil // Intentionally return no error with valid redirect URL.
 	}
@@ -309,6 +308,25 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, u
 	}
 
 	return resp.Body, "", nil
+}
+
+func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, url string) (rc io.ReadCloser, err error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req = withContext(ctx, req)
+	req.Header.Set("Accept", "*/*")
+	httpClient := &http.Client{}
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if err := CheckResponse(resp); err != nil {
+		resp.Body.Close()
+		return nil, err
+	}
+	return resp.Body, nil
 }
 
 // EditReleaseAsset edits a repository release asset.

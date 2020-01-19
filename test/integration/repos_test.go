@@ -9,6 +9,8 @@ package integration
 
 import (
 	"context"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -177,5 +179,21 @@ func TestRepositories_List(t *testing.T) {
 		if i > 0 && (*repos[i-1].CreatedAt).Time.Before((*repo.CreatedAt).Time) {
 			t.Fatalf("Repositories.List('google') with default descending Sort returned incorrect order")
 		}
+	}
+}
+
+func TestRepositories_DownloadReleaseAsset(t *testing.T) {
+	if !checkAuth("TestRepositories_DownloadReleaseAsset") {
+		return
+	}
+
+	rc, _, err := client.Repositories.DownloadReleaseAsset(context.Background(), "andersjanmyr", "goose", 484892, true)
+	if err != nil {
+		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
+	}
+	defer func() { _ = rc.Close() }()
+	_, err = io.Copy(ioutil.Discard, rc)
+	if err != nil {
+		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}
 }
