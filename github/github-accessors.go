@@ -9916,6 +9916,14 @@ func (r *Repository) GetDefaultBranch() string {
 	return *r.DefaultBranch
 }
 
+// GetDeleteBranchOnMerge returns the DeleteBranchOnMerge field if it's non-nil, zero value otherwise.
+func (r *Repository) GetDeleteBranchOnMerge() bool {
+	if r == nil || r.DeleteBranchOnMerge == nil {
+		return false
+	}
+	return *r.DeleteBranchOnMerge
+}
+
 // GetDeploymentsURL returns the DeploymentsURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetDeploymentsURL() string {
 	if r == nil || r.DeploymentsURL == nil {
