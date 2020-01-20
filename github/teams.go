@@ -509,7 +509,7 @@ type IDPGroup struct {
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-in-an-organization
-func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListOptions) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListCursorOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
 	u, err := addOptions(u, opt)
 	if err != nil {

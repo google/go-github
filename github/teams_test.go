@@ -642,12 +642,12 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"page": "2",
+			"page": "url-encoded-next-page-token",
 		})
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &ListCursorOptions{Page: "url-encoded-next-page-token"}
 	groups, _, err := client.Teams.ListIDPGroupsInOrganization(context.Background(), "o", opt)
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsInOrganization returned error: %v", err)

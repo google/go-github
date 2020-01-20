@@ -91,6 +91,7 @@ func openTestFile(name, content string) (file *os.File, dir string, err error) {
 }
 
 func testMethod(t *testing.T, r *http.Request, want string) {
+	t.Helper()
 	if got := r.Method; got != want {
 		t.Errorf("Request method: %v, want %v", got, want)
 	}
@@ -99,6 +100,7 @@ func testMethod(t *testing.T, r *http.Request, want string) {
 type values map[string]string
 
 func testFormValues(t *testing.T, r *http.Request, values values) {
+	t.Helper()
 	want := url.Values{}
 	for k, v := range values {
 		want.Set(k, v)
@@ -111,12 +113,14 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 }
 
 func testHeader(t *testing.T, r *http.Request, header string, want string) {
+	t.Helper()
 	if got := r.Header.Get(header); got != want {
 		t.Errorf("Header.Get(%q) returned %q, want %q", header, got, want)
 	}
 }
 
 func testURLParseError(t *testing.T, err error) {
+	t.Helper()
 	if err == nil {
 		t.Errorf("Expected error to be returned")
 	}
@@ -126,6 +130,7 @@ func testURLParseError(t *testing.T, err error) {
 }
 
 func testBody(t *testing.T, r *http.Request, want string) {
+	t.Helper()
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		t.Errorf("Error reading request body: %v", err)
@@ -138,6 +143,7 @@ func testBody(t *testing.T, r *http.Request, want string) {
 // Test whether the marshaling of v produces JSON that corresponds
 // to the want string.
 func testJSONMarshal(t *testing.T, v interface{}, want string) {
+	t.Helper()
 	// Unmarshal the wanted JSON, to verify its correctness, and marshal it back
 	// to sort the keys.
 	u := reflect.New(reflect.TypeOf(v)).Interface()
@@ -413,6 +419,35 @@ func TestResponse_populatePageValues(t *testing.T) {
 	}
 	if got, want := response.LastPage, 5; want != got {
 		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_cursorPagination(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Status": {"200 OK"},
+			"Link":   {`<https://api.github.com/resource?per_page=2&page=url-encoded-next-page-token>; rel="next"`},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, "url-encoded-next-page-token"; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
 	}
 }
 
