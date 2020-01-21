@@ -12,20 +12,21 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestTeamsService__ListTeamMembers(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/members", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/members", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"role": "member", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
 	opt := &TeamListTeamMembersOptions{Role: "member", ListOptions: ListOptions{Page: 2}}
-	members, _, err := client.Teams.ListTeamMembers(context.Background(), 1, opt)
+	members, _, err := client.Teams.ListTeamMembers(context.Background(), "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamMembers returned error: %v", err)
 	}
@@ -104,12 +105,12 @@ func TestTeamsService__GetTeamMembership(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"url":"u", "state":"active"}`)
 	})
 
-	membership, _, err := client.Teams.GetTeamMembership(context.Background(), 1, "u")
+	membership, _, err := client.Teams.GetTeamMembership(context.Background(), "o", "s", "u")
 	if err != nil {
 		t.Errorf("Teams.GetTeamMembership returned error: %v", err)
 	}
@@ -126,7 +127,7 @@ func TestTeamsService__AddTeamMembership(t *testing.T) {
 
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
-	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamMembershipOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -138,7 +139,7 @@ func TestTeamsService__AddTeamMembership(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
-	membership, _, err := client.Teams.AddTeamMembership(context.Background(), 1, "u", opt)
+	membership, _, err := client.Teams.AddTeamMembership(context.Background(), "o", "s", "u", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamMembership returned error: %v", err)
 	}
@@ -153,13 +154,90 @@ func TestTeamsService__RemoveTeamMembership(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/memberships/u", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.RemoveTeamMembership(context.Background(), 1, "u")
+	_, err := client.Teams.RemoveTeamMembership(context.Background(), "o", "s", "u")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamMembership returned error: %v", err)
+	}
+}
+
+func TestTeamsService_ListPendingTeamInvitations(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/s/invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1"})
+		fmt.Fprint(w, `[
+				{
+    					"id": 1,
+    					"login": "monalisa",
+    					"email": "octocat@github.com",
+    					"role": "direct_member",
+    					"created_at": "2017-01-21T00:00:00Z",
+    					"inviter": {
+      						"login": "other_user",
+      						"id": 1,
+      						"avatar_url": "https://github.com/images/error/other_user_happy.gif",
+      						"gravatar_id": "",
+      						"url": "https://api.github.com/users/other_user",
+      						"html_url": "https://github.com/other_user",
+      						"followers_url": "https://api.github.com/users/other_user/followers",
+      						"following_url": "https://api.github.com/users/other_user/following/other_user",
+      						"gists_url": "https://api.github.com/users/other_user/gists/gist_id",
+      						"starred_url": "https://api.github.com/users/other_user/starred/owner/repo",
+      						"subscriptions_url": "https://api.github.com/users/other_user/subscriptions",
+      						"organizations_url": "https://api.github.com/users/other_user/orgs",
+      						"repos_url": "https://api.github.com/users/other_user/repos",
+      						"events_url": "https://api.github.com/users/other_user/events/privacy",
+      						"received_events_url": "https://api.github.com/users/other_user/received_events/privacy",
+      						"type": "User",
+      						"site_admin": false
+    					}
+  				}
+			]`)
+	})
+
+	opt := &ListOptions{Page: 1}
+	invitations, _, err := client.Teams.ListPendingTeamInvitations(context.Background(), "o", "s", opt)
+	if err != nil {
+		t.Errorf("Teams.ListPendingTeamInvitations returned error: %v", err)
+	}
+
+	createdAt := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
+	want := []*Invitation{
+		{
+			ID:        Int64(1),
+			Login:     String("monalisa"),
+			Email:     String("octocat@github.com"),
+			Role:      String("direct_member"),
+			CreatedAt: &createdAt,
+			Inviter: &User{
+				Login:             String("other_user"),
+				ID:                Int64(1),
+				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
+				GravatarID:        String(""),
+				URL:               String("https://api.github.com/users/other_user"),
+				HTMLURL:           String("https://github.com/other_user"),
+				FollowersURL:      String("https://api.github.com/users/other_user/followers"),
+				FollowingURL:      String("https://api.github.com/users/other_user/following/other_user"),
+				GistsURL:          String("https://api.github.com/users/other_user/gists/gist_id"),
+				StarredURL:        String("https://api.github.com/users/other_user/starred/owner/repo"),
+				SubscriptionsURL:  String("https://api.github.com/users/other_user/subscriptions"),
+				OrganizationsURL:  String("https://api.github.com/users/other_user/orgs"),
+				ReposURL:          String("https://api.github.com/users/other_user/repos"),
+				EventsURL:         String("https://api.github.com/users/other_user/events/privacy"),
+				ReceivedEventsURL: String("https://api.github.com/users/other_user/received_events/privacy"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+			},
+		}}
+
+	if !reflect.DeepEqual(invitations, want) {
+		t.Errorf("Teams.ListPendingTeamInvitations returned %+v, want %+v", invitations, want)
 	}
 }

@@ -24,8 +24,8 @@ type TeamListTeamMembersOptions struct {
 // team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#list-team-members
-func (s *TeamsService) ListTeamMembers(ctx context.Context, team int64, opt *TeamListTeamMembersOptions) ([]*User, *Response, error) {
-	u := fmt.Sprintf("teams/%v/members", team)
+func (s *TeamsService) ListTeamMembers(ctx context.Context, org, slug string, opt *TeamListTeamMembersOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/members", org, slug)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -66,8 +66,8 @@ func (s *TeamsService) IsTeamMember(ctx context.Context, team int64, user string
 // GetTeamMembership returns the membership status for a user in a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#get-team-membership
-func (s *TeamsService) GetTeamMembership(ctx context.Context, team int64, user string) (*Membership, *Response, error) {
-	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+func (s *TeamsService) GetTeamMembership(ctx context.Context, org, slug, user string) (*Membership, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -114,8 +114,8 @@ type TeamAddTeamMembershipOptions struct {
 // added as a member of the team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#add-or-update-team-membership
-func (s *TeamsService) AddTeamMembership(ctx context.Context, team int64, user string, opt *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
-	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+func (s *TeamsService) AddTeamMembership(ctx context.Context, org, slug, user string, opt *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -133,8 +133,8 @@ func (s *TeamsService) AddTeamMembership(ctx context.Context, team int64, user s
 // RemoveTeamMembership removes a user from a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#remove-team-membership
-func (s *TeamsService) RemoveTeamMembership(ctx context.Context, team int64, user string) (*Response, error) {
-	u := fmt.Sprintf("teams/%v/memberships/%v", team, user)
+func (s *TeamsService) RemoveTeamMembership(ctx context.Context, org, slug, user string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -148,8 +148,8 @@ func (s *TeamsService) RemoveTeamMembership(ctx context.Context, team int64, use
 // Preview features are not supported for production use.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#list-pending-team-invitations
-func (s *TeamsService) ListPendingTeamInvitations(ctx context.Context, team int64, opt *ListOptions) ([]*Invitation, *Response, error) {
-	u := fmt.Sprintf("teams/%v/invitations", team)
+func (s *TeamsService) ListPendingTeamInvitations(ctx context.Context, org, slug string, opt *ListOptions) ([]*Invitation, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/invitations", org, slug)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
