@@ -183,7 +183,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 
 	input := NewTeam{Name: "n", Privacy: String("closed")}
 
-	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -195,7 +195,7 @@ func TestTeamsService_EditTeam(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, false)
+	team, _, err := client.Teams.EditTeam(context.Background(), "o", "s", input, false)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
@@ -213,7 +213,7 @@ func TestTeamsService_EditTeam_RemoveParent(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: String("closed")}
 	var body string
 
-	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
 		buf, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -230,7 +230,7 @@ func TestTeamsService_EditTeam_RemoveParent(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeam(context.Background(), 1, input, true)
+	team, _, err := client.Teams.EditTeam(context.Background(), "o", "s", input, true)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
@@ -249,11 +249,11 @@ func TestTeamsService_DeleteTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Teams.DeleteTeam(context.Background(), 1)
+	_, err := client.Teams.DeleteTeam(context.Background(), "o", "s")
 	if err != nil {
 		t.Errorf("Teams.DeleteTeam returned error: %v", err)
 	}
@@ -263,14 +263,14 @@ func TestTeamsService_ListChildTeams(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/teams", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
 	opt := &ListOptions{Page: 2}
-	teams, _, err := client.Teams.ListChildTeams(context.Background(), 1, opt)
+	teams, _, err := client.Teams.ListChildTeams(context.Background(), "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeams returned error: %v", err)
 	}
@@ -285,7 +285,7 @@ func TestTeamsService_ListTeamRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -294,7 +294,7 @@ func TestTeamsService_ListTeamRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	members, _, err := client.Teams.ListTeamRepos(context.Background(), 1, opt)
+	members, _, err := client.Teams.ListTeamRepos(context.Background(), "o", "s", opt)
 	if err != nil {
 		t.Errorf("Teams.ListTeamRepos returned error: %v", err)
 	}
@@ -309,14 +309,14 @@ func TestTeamsService_IsTeamRepo_true(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		wantAcceptHeaders := []string{mediaTypeOrgPermissionRepo}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Teams.IsTeamRepo(context.Background(), 1, "o", "r")
+	repo, _, err := client.Teams.IsTeamRepo(context.Background(), "org", "slug", "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.IsTeamRepo returned error: %v", err)
 	}
@@ -331,12 +331,12 @@ func TestTeamsService_IsTeamRepo_false(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	repo, resp, err := client.Teams.IsTeamRepo(context.Background(), 1, "o", "r")
+	repo, resp, err := client.Teams.IsTeamRepo(context.Background(), "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -352,12 +352,12 @@ func TestTeamsService_IsTeamRepo_error(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	repo, resp, err := client.Teams.IsTeamRepo(context.Background(), 1, "o", "r")
+	repo, resp, err := client.Teams.IsTeamRepo(context.Background(), "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -373,7 +373,7 @@ func TestTeamsService_IsTeamRepo_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Teams.IsTeamRepo(context.Background(), 1, "%", "r")
+	_, _, err := client.Teams.IsTeamRepo(context.Background(), "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -383,7 +383,7 @@ func TestTeamsService_AddTeamRepo(t *testing.T) {
 
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamAddTeamRepoOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -395,7 +395,7 @@ func TestTeamsService_AddTeamRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.AddTeamRepo(context.Background(), 1, "o", "r", opt)
+	_, err := client.Teams.AddTeamRepo(context.Background(), "org", "slug", "owner", "repo", opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepo returned error: %v", err)
 	}
@@ -405,12 +405,12 @@ func TestTeamsService_AddTeamRepo_noAccess(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusUnprocessableEntity)
 	})
 
-	_, err := client.Teams.AddTeamRepo(context.Background(), 1, "o", "r", nil)
+	_, err := client.Teams.AddTeamRepo(context.Background(), "org", "slug", "owner", "repo", nil)
 	if err == nil {
 		t.Errorf("Expcted error to be returned")
 	}
@@ -420,7 +420,7 @@ func TestTeamsService_AddTeamRepo_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Teams.AddTeamRepo(context.Background(), 1, "%", "r", nil)
+	_, err := client.Teams.AddTeamRepo(context.Background(), "o", "s", "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -428,12 +428,12 @@ func TestTeamsService_RemoveTeamRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.RemoveTeamRepo(context.Background(), 1, "o", "r")
+	_, err := client.Teams.RemoveTeamRepo(context.Background(), "org", "slug", "owner", "repo")
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamRepo returned error: %v", err)
 	}
@@ -443,7 +443,7 @@ func TestTeamsService_RemoveTeamRepo_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Teams.RemoveTeamRepo(context.Background(), 1, "%", "r")
+	_, err := client.Teams.RemoveTeamRepo(context.Background(), "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -551,13 +551,13 @@ func TestTeamsService_ListProjects(t *testing.T) {
 	defer teardown()
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
-	mux.HandleFunc("/teams/1/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	projects, _, err := client.Teams.ListTeamProjects(context.Background(), 1)
+	projects, _, err := client.Teams.ListTeamProjects(context.Background(), "o", "s")
 	if err != nil {
 		t.Errorf("Teams.ListTeamProjects returned error: %v", err)
 	}
@@ -573,13 +573,13 @@ func TestTeamsService_ReviewProjects(t *testing.T) {
 	defer teardown()
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
-	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Teams.ReviewTeamProjects(context.Background(), 1, 1)
+	project, _, err := client.Teams.ReviewTeamProjects(context.Background(), "o", "s", 1)
 	if err != nil {
 		t.Errorf("Teams.ReviewTeamProjects returned error: %v", err)
 	}
@@ -599,7 +599,7 @@ func TestTeamsService_AddTeamProject(t *testing.T) {
 	}
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
-	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 
@@ -612,7 +612,7 @@ func TestTeamsService_AddTeamProject(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.AddTeamProject(context.Background(), 1, 1, opt)
+	_, err := client.Teams.AddTeamProject(context.Background(), "o", "s", 1, opt)
 	if err != nil {
 		t.Errorf("Teams.AddTeamProject returned error: %v", err)
 	}
@@ -623,13 +623,13 @@ func TestTeamsService_RemoveTeamProject(t *testing.T) {
 	defer teardown()
 
 	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
-	mux.HandleFunc("/teams/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.RemoveTeamProject(context.Background(), 1, 1)
+	_, err := client.Teams.RemoveTeamProject(context.Background(), "o", "s", 1)
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamProject returned error: %v", err)
 	}
@@ -671,12 +671,12 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "1")
+	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "o", "s")
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
 	}
@@ -699,7 +699,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
@@ -714,7 +714,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "o", "s", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
 	}
@@ -737,7 +737,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/s/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": []}`)
 	})
@@ -746,7 +746,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
 		Groups: []*IDPGroup{},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "o", "s", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
 	}
