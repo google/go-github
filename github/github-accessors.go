@@ -8492,12 +8492,28 @@ func (p *PullRequestEvent) GetAction() string {
 	return *p.Action
 }
 
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (p *PullRequestEvent) GetAfter() string {
+	if p == nil || p.After == nil {
+		return ""
+	}
+	return *p.After
+}
+
 // GetAssignee returns the Assignee field.
 func (p *PullRequestEvent) GetAssignee() *User {
 	if p == nil {
 		return nil
 	}
 	return p.Assignee
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (p *PullRequestEvent) GetBefore() string {
+	if p == nil || p.Before == nil {
+		return ""
+	}
+	return *p.Before
 }
 
 // GetChanges returns the Changes field.
