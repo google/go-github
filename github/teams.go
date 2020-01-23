@@ -120,7 +120,7 @@ func (s *TeamsService) GetTeam(ctx context.Context, team int64) (*Team, *Respons
 //
 // Github API docs: https://developer.github.com/v3/teams/#get-team-by-name
 func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*Team, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -235,7 +235,7 @@ func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#edit-team
 func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 
 	var req *http.Request
 	var err error
@@ -289,7 +289,7 @@ func (s *TeamsService) EditTeamByName(ctx context.Context, org, slug string, tea
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#delete-team
 func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -315,7 +315,7 @@ func (s *TeamsService) DeleteTeamByName(ctx context.Context, org, slug string) (
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-child-teams
 func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opt *ListOptions) ([]*Team, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/teams", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v/teams", orgID, teamID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -363,7 +363,7 @@ func (s *TeamsService) ListChildTeamsByParentName(ctx context.Context, org, slug
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-repos
 func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int64, opt *ListOptions) ([]*Repository, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/repos", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v/repos", orgID, teamID)
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -421,7 +421,7 @@ func (s *TeamsService) ListTeamReposByName(ctx context.Context, org, slug string
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#check-if-a-team-manages-a-repository
 func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Repository, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/repos/%v/%v", orgID, teamID, owner, repo)
+	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -482,7 +482,7 @@ type TeamAddTeamRepoOptions struct {
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opt *TeamAddTeamRepoOptions) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/repos/%v/%v", orgID, teamID, owner, repo)
+	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
@@ -512,7 +512,7 @@ func (s *TeamsService) AddTeamRepoByName(ctx context.Context, org, slug, owner, 
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/repos/%v/%v", orgID, teamID, owner, repo)
+	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -563,7 +563,7 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opt *ListOptions) ([]*
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-projects
 func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*Project, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/projects", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v/projects", orgID, teamID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -612,7 +612,7 @@ func (s *TeamsService) ListTeamProjectsByName(ctx context.Context, org, slug str
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#review-a-team-project
 func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*Project, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/projects/%v", orgID, teamID, projectID)
+	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -673,7 +673,7 @@ type TeamProjectOptions struct {
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opt *TeamProjectOptions) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/projects/%v", orgID, teamID, projectID)
+	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("PUT", u, opt)
 	if err != nil {
 		return nil, err
@@ -714,7 +714,7 @@ func (s *TeamsService) AddTeamProjectByName(ctx context.Context, org, slug strin
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#remove-team-project
 func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64) (*Response, error) {
-	u := fmt.Sprintf("organizations/%v/teams/%v/projects/%v", orgID, teamID, projectID)
+	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
