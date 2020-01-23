@@ -1940,6 +1940,14 @@ func (c *Contributor) GetLogin() string {
 	return *c.Login
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *Contributor) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
 // GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
 func (c *Contributor) GetOrganizationsURL() string {
 	if c == nil || c.OrganizationsURL == nil {

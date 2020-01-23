@@ -493,6 +493,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
 	ID                *int64  `json:"id,omitempty"`
+	NodeID            *string `json:"node_id,omitempty"`
 	AvatarURL         *string `json:"avatar_url,omitempty"`
 	GravatarID        *string `json:"gravatar_id,omitempty"`
 	URL               *string `json:"url,omitempty"`
