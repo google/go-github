@@ -46,6 +46,9 @@ const (
 
 	// Media Type values to access preview APIs
 
+	// https://developer.github.com/changes/2020-01-10-revoke-installation-token/
+	mediaTypeRevokeTokenPreview = "application/vnd.github.gambit-preview+json"
+
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
@@ -187,10 +190,20 @@ type service struct {
 }
 
 // ListOptions specifies the optional parameters to various List methods that
-// support pagination.
+// support offset pagination.
 type ListOptions struct {
 	// For paginated result sets, page of results to retrieve.
 	Page int `url:"page,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage int `url:"per_page,omitempty"`
+}
+
+// ListCursorOptions specifies the optional parameters to various List methods that
+// support cursor pagination.
+type ListCursorOptions struct {
+	// For paginated result sets, page of results to retrieve.
+	Page string `url:"page,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
@@ -395,11 +408,26 @@ type Response struct {
 	// results. Any or all of these may be set to the zero value for
 	// responses that are not part of a paginated set, or for which there
 	// are no additional pages.
-
+	//
+	// These fields support what is called "offset pagination" and should
+	// be used with the ListOptions struct.
 	NextPage  int
 	PrevPage  int
 	FirstPage int
 	LastPage  int
+
+	// Additionally, some APIs support "cursor pagination" instead of offset.
+	// This means that a token points directly to the next record which
+	// can lead to O(1) performance compared to O(n) performance provided
+	// by offset pagination.
+	//
+	// For APIs that support cursor pagination (such as
+	// TeamsService.ListIDPGroupsInOrganization), the following field
+	// will be populated to point to the next page.
+	//
+	// To use this token, set ListCursorOptions.Page to this value before
+	// calling the endpoint again.
+	NextPageToken string
 
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
@@ -445,7 +473,9 @@ func (r *Response) populatePageValues() {
 			for _, segment := range segments[1:] {
 				switch strings.TrimSpace(segment) {
 				case `rel="next"`:
-					r.NextPage, _ = strconv.Atoi(page)
+					if r.NextPage, err = strconv.Atoi(page); err != nil {
+						r.NextPageToken = page
+					}
 				case `rel="prev"`:
 					r.PrevPage, _ = strconv.Atoi(page)
 				case `rel="first"`:

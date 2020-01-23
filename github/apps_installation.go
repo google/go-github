@@ -101,3 +101,17 @@ func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// RevokeInstallationToken revokes an installation token.
+//
+// GitHub docs: https://developer.github.com/v3/apps/installations/#revoke-an-installation-token
+func (s *AppsService) RevokeInstallationToken(ctx context.Context) (*Response, error) {
+	u := "installation/token"
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", mediaTypeRevokeTokenPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
