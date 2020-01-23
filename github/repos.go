@@ -1449,9 +1449,6 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryDispatchPreview)
-
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
