@@ -7796,6 +7796,22 @@ func (p *ProjectPermissionLevel) GetUser() *User {
 	return p.User
 }
 
+// GetAllowDeletions returns the AllowDeletions field.
+func (p *Protection) GetAllowDeletions() *AllowDeletions {
+	if p == nil {
+		return nil
+	}
+	return p.AllowDeletions
+}
+
+// GetAllowForcePushes returns the AllowForcePushes field.
+func (p *Protection) GetAllowForcePushes() *AllowForcePushes {
+	if p == nil {
+		return nil
+	}
+	return p.AllowForcePushes
+}
+
 // GetEnforceAdmins returns the EnforceAdmins field.
 func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	if p == nil {
@@ -7820,12 +7836,36 @@ func (p *Protection) GetRequiredStatusChecks() *RequiredStatusChecks {
 	return p.RequiredStatusChecks
 }
 
+// GetRequireLinearHistory returns the RequireLinearHistory field.
+func (p *Protection) GetRequireLinearHistory() *RequireLinearHistory {
+	if p == nil {
+		return nil
+	}
+	return p.RequireLinearHistory
+}
+
 // GetRestrictions returns the Restrictions field.
 func (p *Protection) GetRestrictions() *BranchRestrictions {
 	if p == nil {
 		return nil
 	}
 	return p.Restrictions
+}
+
+// GetAllowDeletions returns the AllowDeletions field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetAllowDeletions() bool {
+	if p == nil || p.AllowDeletions == nil {
+		return false
+	}
+	return *p.AllowDeletions
+}
+
+// GetAllowForcePushes returns the AllowForcePushes field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetAllowForcePushes() bool {
+	if p == nil || p.AllowForcePushes == nil {
+		return false
+	}
+	return *p.AllowForcePushes
 }
 
 // GetRequiredPullRequestReviews returns the RequiredPullRequestReviews field.
@@ -7842,6 +7882,14 @@ func (p *ProtectionRequest) GetRequiredStatusChecks() *RequiredStatusChecks {
 		return nil
 	}
 	return p.RequiredStatusChecks
+}
+
+// GetRequireLinearHistory returns the RequireLinearHistory field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetRequireLinearHistory() bool {
+	if p == nil || p.RequireLinearHistory == nil {
+		return false
+	}
+	return *p.RequireLinearHistory
 }
 
 // GetRestrictions returns the Restrictions field.

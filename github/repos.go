@@ -727,6 +727,9 @@ type Protection struct {
 	RequiredPullRequestReviews *PullRequestReviewsEnforcement `json:"required_pull_request_reviews"`
 	EnforceAdmins              *AdminEnforcement              `json:"enforce_admins"`
 	Restrictions               *BranchRestrictions            `json:"restrictions"`
+	RequireLinearHistory       *RequireLinearHistory          `json:"required_linear_history"`
+	AllowForcePushes           *AllowForcePushes              `json:"allow_force_pushes"`
+	AllowDeletions             *AllowDeletions                `json:"allow_deletions"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
@@ -735,6 +738,12 @@ type ProtectionRequest struct {
 	RequiredPullRequestReviews *PullRequestReviewsEnforcementRequest `json:"required_pull_request_reviews"`
 	EnforceAdmins              bool                                  `json:"enforce_admins"`
 	Restrictions               *BranchRestrictionsRequest            `json:"restrictions"`
+	// Enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
+	RequireLinearHistory *bool `json:"required_linear_history,omitempty"`
+	// Permits force pushes to the protected branch by anyone with write access to the repository.
+	AllowForcePushes *bool `json:"allow_force_pushes,omitempty"`
+	// Allows deletion of the protected branch by anyone with write access to the repository.
+	AllowDeletions *bool `json:"allow_deletions,omitempty"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
@@ -795,6 +804,21 @@ type PullRequestReviewsEnforcementUpdate struct {
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
 	// Valid values are 1 - 6.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
+}
+
+// RequireLinearHistory represents the configuration to enfore branches with no merge commit.
+type RequireLinearHistory struct {
+	Enabled bool `json:"enabled"`
+}
+
+// AllowDeletions represents the configuration to accept deletion of protected branches.
+type AllowDeletions struct {
+	Enabled bool `json:"enabled"`
+}
+
+// AllowForcePushes represents the configuration to accept forced pushes on protected branches.
+type AllowForcePushes struct {
+	Enabled bool `json:"enabled"`
 }
 
 // AdminEnforcement represents the configuration to enforce required status checks for repository administrators.
