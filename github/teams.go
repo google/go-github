@@ -476,7 +476,7 @@ type TeamAddTeamRepoOptions struct {
 	Permission string `json:"permission,omitempty"`
 }
 
-// AddTeamRepoByID adds a repository to be managed by the specified team given the team ID. 
+// AddTeamRepoByID adds a repository to be managed by the specified team given the team ID.
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
@@ -491,7 +491,7 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 	return s.client.Do(ctx, req, nil)
 }
 
-// AddTeamRepoByName adds a repository to be managed by the specified team given the team name. 
+// AddTeamRepoByName adds a repository to be managed by the specified team given the team name.
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
@@ -507,7 +507,7 @@ func (s *TeamsService) AddTeamRepoByName(ctx context.Context, org, slug, owner, 
 }
 
 // RemoveTeamRepoByID removes a repository from being managed by the specified
-// team given the team ID. Note that this does not delete the repository, it 
+// team given the team ID. Note that this does not delete the repository, it
 // just removes it from the team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
@@ -522,7 +522,7 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 }
 
 // RemoveTeamRepoByName removes a repository from being managed by the specified
-// team given the team Name. Note that this does not delete the repository, it 
+// team given the team Name. Note that this does not delete the repository, it
 // just removes it from the team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
@@ -667,8 +667,8 @@ type TeamProjectOptions struct {
 	Permission *string `json:"permission,omitempty"`
 }
 
-// AddTeamProjectByID adds an organization project to a team given the team ID. 
-// To add a project to a team or update the team's permission on a project, the 
+// AddTeamProjectByID adds an organization project to a team given the team ID.
+// To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
@@ -686,8 +686,8 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 	return s.client.Do(ctx, req, nil)
 }
 
-// AddTeamProjectByName adds an organization project to a team given the team name. 
-// To add a project to a team or update the team's permission on a project, the 
+// AddTeamProjectByName adds an organization project to a team given the team name.
+// To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
@@ -705,10 +705,10 @@ func (s *TeamsService) AddTeamProjectByName(ctx context.Context, org, slug strin
 	return s.client.Do(ctx, req, nil)
 }
 
-// RemoveTeamProjectByID removes an organization project from a team given team ID. 
-// An organization owner or a team maintainer can remove any project from the team. 
-// To remove a project from a team as an organization member, the authenticated user 
-// must have "read" access to both the team and project, or "admin" access to the team 
+// RemoveTeamProjectByID removes an organization project from a team given team ID.
+// An organization owner or a team maintainer can remove any project from the team.
+// To remove a project from a team as an organization member, the authenticated user
+// must have "read" access to both the team and project, or "admin" access to the team
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
@@ -727,10 +727,10 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 	return s.client.Do(ctx, req, nil)
 }
 
-// RemoveTeamProjectByName removes an organization project from a team given team name. 
-// An organization owner or a team maintainer can remove any project from the team. 
-// To remove a project from a team as an organization member, the authenticated user 
-// must have "read" access to both the team and project, or "admin" access to the team 
+// RemoveTeamProjectByName removes an organization project from a team given team name.
+// An organization owner or a team maintainer can remove any project from the team.
+// To remove a project from a team as an organization member, the authenticated user
+// must have "read" access to both the team and project, or "admin" access to the team
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
@@ -747,79 +747,4 @@ func (s *TeamsService) RemoveTeamProjectByName(ctx context.Context, org, slug st
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	return s.client.Do(ctx, req, nil)
-}
-
-// IDPGroupList represents a list of external identity provider (IDP) groups.
-type IDPGroupList struct {
-	Groups []*IDPGroup `json:"groups"`
-}
-
-// IDPGroup represents an external identity provider (IDP) group.
-type IDPGroup struct {
-	GroupID          *string `json:"group_id,omitempty"`
-	GroupName        *string `json:"group_name,omitempty"`
-	GroupDescription *string `json:"group_description,omitempty"`
-}
-
-// ListIDPGroupsInOrganization lists IDP groups available in an organization.
-//
-// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-in-an-organization
-func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListCursorOptions) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
-	u, err := addOptions(u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
-	if err != nil {
-		return nil, resp, err
-	}
-	return groups, resp, nil
-}
-
-// ListIDPGroupsForTeam lists IDP groups connected to a team on GitHub.
-//
-// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team
-func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
-	if err != nil {
-		return nil, resp, err
-	}
-	return groups, resp, err
-}
-
-// CreateOrUpdateIDPGroupConnections creates, updates, or removes a connection between a team
-// and an IDP group.
-//
-// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
-func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, org, slug string, opt IDPGroupList) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
-
-	req, err := s.client.NewRequest("PATCH", u, opt)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return groups, resp, nil
 }
