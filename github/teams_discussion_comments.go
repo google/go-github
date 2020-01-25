@@ -91,7 +91,7 @@ func (s *TeamsService) ListCommentsByName(ctx context.Context, org, slug string,
 	return comments, resp, nil
 }
 
-// GetComment gets a specific comment on a team discussion
+// GetCommentByID gets a specific comment on a team discussion
 // given a team ID and organization ID.
 // Authenticated user must grant read:discussion scope.
 //
@@ -112,7 +112,7 @@ func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, 
 	return discussionComment, resp, nil
 }
 
-// GetComment gets a specific comment on a team discussion 
+// GetCommentByName gets a specific comment on a team discussion
 // given a team slug and organization name.
 // Authenticated user must grant read:discussion scope.
 //

@@ -88,7 +88,7 @@ func (s *TeamsService) IsTeamMember(ctx context.Context, team int64, user string
 	return member, resp, err
 }
 
-// GetTeamMembershipByID returns the membership status for a user in a team 
+// GetTeamMembershipByID returns the membership status for a user in a team
 // given the team ID and organization ID.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#get-team-membership
@@ -212,7 +212,7 @@ func (s *TeamsService) AddTeamMembershipByName(ctx context.Context, org, slug, u
 	return t, resp, nil
 }
 
-// RemoveTeamMembershipByID removes a user from a team given the team ID and 
+// RemoveTeamMembershipByID removes a user from a team given the team ID and
 // organization ID.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#remove-team-membership
