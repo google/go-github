@@ -1808,7 +1808,6 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeRepositoryDispatchPreview)
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
