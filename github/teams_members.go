@@ -70,24 +70,6 @@ func (s *TeamsService) ListTeamMembersByName(ctx context.Context, org, slug stri
 	return members, resp, nil
 }
 
-// IsTeamMember checks if a user is a member of the specified team.
-//
-// GitHub API docs: https://developer.github.com/v3/teams/members/#get-team-member
-//
-// Deprecated: This API has been marked as deprecated in the Github API docs,
-// TeamsService.GetTeamMembership method should be used instead.
-func (s *TeamsService) IsTeamMember(ctx context.Context, team int64, user string) (bool, *Response, error) {
-	u := fmt.Sprintf("teams/%v/members/%v", team, user)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return false, nil, err
-	}
-
-	resp, err := s.client.Do(ctx, req, nil)
-	member, err := parseBoolResponse(err)
-	return member, resp, err
-}
-
 // GetTeamMembershipByID returns the membership status for a user in a team
 // given the team ID and organization ID.
 //

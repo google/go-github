@@ -47,49 +47,6 @@ func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_GetTeam(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
-	})
-
-	team, _, err := client.Teams.GetTeam(context.Background(), 1)
-	if err != nil {
-		t.Errorf("Teams.GetTeam returned error: %v", err)
-	}
-
-	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
-	if !reflect.DeepEqual(team, want) {
-		t.Errorf("Teams.GetTeam returned %+v, want %+v", team, want)
-	}
-}
-
-func TestTeamsService_GetTeam_nestedTeams(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/teams/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p",
-		"parent": {"id":2, "name":"n", "description": "d", "parent": null}}`)
-	})
-
-	team, _, err := client.Teams.GetTeam(context.Background(), 1)
-	if err != nil {
-		t.Errorf("Teams.GetTeam returned error: %v", err)
-	}
-
-	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"),
-		Parent: &Team{ID: Int64(2), Name: String("n"), Description: String("d")},
-	}
-	if !reflect.DeepEqual(team, want) {
-		t.Errorf("Teams.GetTeam returned %+v, want %+v", team, want)
-	}
-}
-
 func TestTeamsService_GetTeamByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

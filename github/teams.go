@@ -97,25 +97,6 @@ func (s *TeamsService) ListTeams(ctx context.Context, org string, opt *ListOptio
 	return teams, resp, nil
 }
 
-// GetTeam fetches a team by ID.
-//
-// GitHub API docs: https://developer.github.com/v3/teams/#get-team
-func (s *TeamsService) GetTeam(ctx context.Context, team int64) (*Team, *Response, error) {
-	u := fmt.Sprintf("teams/%v", team)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return t, resp, nil
-}
-
 // GetTeamByID fetches a team, given a specified organization ID, by ID.
 //
 // Github API docs: https://developer.github.com/v3/teams/#get-team-by-name
