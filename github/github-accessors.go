@@ -2796,6 +2796,30 @@ func (d *DraftReviewComment) GetPosition() int {
 	return *d.Position
 }
 
+// GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
+func (e *EncryptedSecret) GetEncryptedValue() string {
+	if e == nil || e.EncryptedValue == nil {
+		return ""
+	}
+	return *e.EncryptedValue
+}
+
+// GetKeyId returns the KeyId field if it's non-nil, zero value otherwise.
+func (e *EncryptedSecret) GetKeyId() string {
+	if e == nil || e.KeyId == nil {
+		return ""
+	}
+	return *e.KeyId
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (e *EncryptedSecret) GetName() string {
+	if e == nil || e.Name == nil {
+		return ""
+	}
+	return *e.Name
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (e *Enterprise) GetAvatarURL() string {
 	if e == nil || e.AvatarURL == nil {
@@ -7924,6 +7948,22 @@ func (p *PublicEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetID() string {
+	if p == nil || p.ID == nil {
+		return ""
+	}
+	return *p.ID
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetKey() string {
+	if p == nil || p.Key == nil {
+		return ""
+	}
+	return *p.Key
+}
+
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetActiveLockReason() string {
 	if p == nil || p.ActiveLockReason == nil {
@@ -11442,6 +11482,30 @@ func (r *ReviewersRequest) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (s *Secret) GetCreatedAt() Timestamp {
+	if s == nil || s.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.CreatedAt
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (s *Secret) GetName() string {
+	if s == nil || s.Name == nil {
+		return ""
+	}
+	return *s.Name
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (s *Secret) GetUpdatedAt() Timestamp {
+	if s == nil || s.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.UpdatedAt
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
