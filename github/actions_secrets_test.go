@@ -112,3 +112,17 @@ func TestActionsService_CreateOrUpdateSecret(t *testing.T) {
 		t.Errorf("Actions.CreateOrUpdateSecret returned %+v, want %+v", secret, want)
 	}
 }
+
+func TestActionsService_DeleteSecret(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Actions.DeleteSecret(context.Background(), "o", "r", "NAME")
+	if err != nil {
+		t.Errorf("Actions.DeleteSecret returned error: %v", err)
+	}
+}
