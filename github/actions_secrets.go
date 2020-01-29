@@ -10,15 +10,16 @@ import (
 	"fmt"
 )
 
+// PublicKey represents the public key that should be used to encrypt secrets.
 type PublicKey struct {
-	ID  *string `json:"key_id,omitempty"`
-	Key *string `json:"key,omitempty"`
+	KeyID *string `json:"key_id"`
+	Key   *string `json:"key"`
 }
 
 // GetPublicKey gets a public key that should be used for secret encryption.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-your-public-key
-func (s *ActionsService) GetPublicKey(ctx context.Context, owner string, repo string) (*PublicKey, *Response, error) {
+func (s *ActionsService) GetPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/secrets/public-key", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -36,20 +37,22 @@ func (s *ActionsService) GetPublicKey(ctx context.Context, owner string, repo st
 
 // Secret represents a repository action secret.
 type Secret struct {
-	Name      *string    `json:"name,omitempty"`
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	Name      *string    `json:"name"`
+	CreatedAt *Timestamp `json:"created_at"`
+	UpdatedAt *Timestamp `json:"updated_at"`
 }
 
-type secrets struct {
-	Secrets []*Secret `json:"secrets,omitempty"`
+// Secrets represents one item from the ListSecrets response.
+type Secrets struct {
+	TotalCount int       `json:"total_count"`
+	Secrets    []*Secret `json:"secrets"`
 }
 
 // ListSecrets lists all secrets available in a repository
 // without revealing their encrypted values.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/secrets/#list-secrets-for-a-repository
-func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Secret, *Response, error) {
+func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, opt *ListOptions) (*Secrets, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/secrets", owner, repo)
 	u, err := addOptions(u, opt)
 	if err != nil {
@@ -61,13 +64,13 @@ func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, op
 		return nil, nil, err
 	}
 
-	secrets := new(secrets)
+	secrets := new(Secrets)
 	resp, err := s.client.Do(ctx, req, &secrets)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return secrets.Secrets, resp, nil
+	return secrets, resp, nil
 }
 
 // GetSecret gets a single secret without revealing its encrypted value.
@@ -89,30 +92,25 @@ func (s *ActionsService) GetSecret(ctx context.Context, owner, repo, name string
 	return secret, resp, nil
 }
 
+// EncryptedSecret represents represents a secret that is encrypted using public key.
 type EncryptedSecret struct {
-	Name           *string `json:"-"`
-	KeyId          *string `json:"key_id,omitempty"`
-	EncryptedValue *string `json:"encrypted_value,omitempty"`
+	Name           string `json:"-"`
+	KeyID          string `json:"key_id"`
+	EncryptedValue string `json:"encrypted_value"`
 }
 
 // CreateOrUpdateSecret creates or updates a secret with an encrypted value.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/secrets/#create-or-update-a-secret-for-a-repository
-func (s *ActionsService) CreateOrUpdateSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*EncryptedSecret, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, *eSecret.Name)
+func (s *ActionsService) CreateOrUpdateSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, eSecret.Name)
 
 	req, err := s.client.NewRequest("PUT", u, eSecret)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	es := new(EncryptedSecret)
-	resp, err := s.client.Do(ctx, req, es)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return es, resp, nil
+	return s.client.Do(ctx, req, nil)
 }
 
 // DeleteSecret deletes a secret in a repository using the secret name.

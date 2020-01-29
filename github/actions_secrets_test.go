@@ -28,7 +28,7 @@ func TestActionsService_GetPublicKey(t *testing.T) {
 		t.Errorf("Actions.GetPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{ID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Actions.GetPublicKey returned %+v, want %+v", key, want)
 	}
@@ -40,19 +40,22 @@ func TestActionsService_ListSecrets(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprint(w, `{"total_count":2,"secrets":[{"name":"A","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &ListOptions{Page: 2, PerPage: 2}
 	secrets, _, err := client.Actions.ListSecrets(context.Background(), "o", "r", opt)
 	if err != nil {
 		t.Errorf("Actions.ListSecrets returned error: %v", err)
 	}
 
-	want := []*Secret{
-		{Name: String("A"), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-		{Name: String("B"), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+	want := &Secrets{
+		TotalCount: 4,
+		Secrets: []*Secret{
+			{Name: String("A"), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: String("B"), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+		},
 	}
 	if !reflect.DeepEqual(secrets, want) {
 		t.Errorf("Actions.ListSecrets returned %+v, want %+v", secrets, want)
@@ -91,25 +94,17 @@ func TestActionsService_CreateOrUpdateSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
-		fmt.Fprint(w, `{"key_id":"1234","encrypted_value":"QIv="}`)
+		w.WriteHeader(http.StatusCreated)
 	})
 
 	input := &EncryptedSecret{
-		Name:           String("NAME"),
-		EncryptedValue: String("QIv="),
-		KeyId:          String("1234"),
+		Name:           "NAME",
+		EncryptedValue: "QIv=",
+		KeyID:          "1234",
 	}
-	secret, _, err := client.Actions.CreateOrUpdateSecret(context.Background(), "o", "r", input)
+	_, err := client.Actions.CreateOrUpdateSecret(context.Background(), "o", "r", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateSecret returned error: %v", err)
-	}
-
-	want := &EncryptedSecret{
-		EncryptedValue: String("QIv="),
-		KeyId:          String("1234"),
-	}
-	if !reflect.DeepEqual(secret, want) {
-		t.Errorf("Actions.CreateOrUpdateSecret returned %+v, want %+v", secret, want)
 	}
 }
 

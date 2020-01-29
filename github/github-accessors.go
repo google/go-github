@@ -2796,30 +2796,6 @@ func (d *DraftReviewComment) GetPosition() int {
 	return *d.Position
 }
 
-// GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
-func (e *EncryptedSecret) GetEncryptedValue() string {
-	if e == nil || e.EncryptedValue == nil {
-		return ""
-	}
-	return *e.EncryptedValue
-}
-
-// GetKeyId returns the KeyId field if it's non-nil, zero value otherwise.
-func (e *EncryptedSecret) GetKeyId() string {
-	if e == nil || e.KeyId == nil {
-		return ""
-	}
-	return *e.KeyId
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (e *EncryptedSecret) GetName() string {
-	if e == nil || e.Name == nil {
-		return ""
-	}
-	return *e.Name
-}
-
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (e *Enterprise) GetAvatarURL() string {
 	if e == nil || e.AvatarURL == nil {
@@ -7948,20 +7924,20 @@ func (p *PublicEvent) GetSender() *User {
 	return p.Sender
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PublicKey) GetID() string {
-	if p == nil || p.ID == nil {
-		return ""
-	}
-	return *p.ID
-}
-
 // GetKey returns the Key field if it's non-nil, zero value otherwise.
 func (p *PublicKey) GetKey() string {
 	if p == nil || p.Key == nil {
 		return ""
 	}
 	return *p.Key
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetKeyID() string {
+	if p == nil || p.KeyID == nil {
+		return ""
+	}
+	return *p.KeyID
 }
 
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
