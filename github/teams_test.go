@@ -242,7 +242,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	}
 }
 
-func TestTeamsService_EditTeamByName(t *testing.T) {
+func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -260,18 +260,18 @@ func TestTeamsService_EditTeamByName(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeamByName(context.Background(), "o", "s", input, false)
+	team, _, err := client.Teams.EditTeamBySlug(context.Background(), "o", "s", input, false)
 	if err != nil {
-		t.Errorf("Teams.EditTeamByName returned error: %v", err)
+		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
 	}
 
 	want := &Team{ID: Int64(1)}
 	if !reflect.DeepEqual(team, want) {
-		t.Errorf("Teams.EditTeamByName returned %+v, want %+v", team, want)
+		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
 	}
 }
 
-func TestTeamsService_EditTeamByName_RemoveParent(t *testing.T) {
+func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -295,7 +295,7 @@ func TestTeamsService_EditTeamByName_RemoveParent(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	team, _, err := client.Teams.EditTeamByName(context.Background(), "o", "s", input, true)
+	team, _, err := client.Teams.EditTeamBySlug(context.Background(), "o", "s", input, true)
 	if err != nil {
 		t.Errorf("Teams.EditTeam returned error: %v", err)
 	}
@@ -324,7 +324,7 @@ func TestTeamsService_DeleteTeamByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_DeleteTeamByName(t *testing.T) {
+func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -332,9 +332,9 @@ func TestTeamsService_DeleteTeamByName(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Teams.DeleteTeamByName(context.Background(), "o", "s")
+	_, err := client.Teams.DeleteTeamBySlug(context.Background(), "o", "s")
 	if err != nil {
-		t.Errorf("Teams.DeleteTeamByName returned error: %v", err)
+		t.Errorf("Teams.DeleteTeamBySlug returned error: %v", err)
 	}
 }
 
@@ -360,7 +360,7 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_ListChildTeamsByParentName(t *testing.T) {
+func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -371,14 +371,14 @@ func TestTeamsService_ListChildTeamsByParentName(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	teams, _, err := client.Teams.ListChildTeamsByParentName(context.Background(), "o", "s", opt)
+	teams, _, err := client.Teams.ListChildTeamsByParentSlug(context.Background(), "o", "s", opt)
 	if err != nil {
-		t.Errorf("Teams.ListChildTeamsByParentName returned error: %v", err)
+		t.Errorf("Teams.ListChildTeamsByParentSlug returned error: %v", err)
 	}
 
 	want := []*Team{{ID: Int64(2)}}
 	if !reflect.DeepEqual(teams, want) {
-		t.Errorf("Teams.ListChildTeamsByParentName returned %+v, want %+v", teams, want)
+		t.Errorf("Teams.ListChildTeamsByParentSlug returned %+v, want %+v", teams, want)
 	}
 }
 
@@ -406,7 +406,7 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_ListTeamReposByName(t *testing.T) {
+func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -419,14 +419,14 @@ func TestTeamsService_ListTeamReposByName(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	members, _, err := client.Teams.ListTeamReposByName(context.Background(), "o", "s", opt)
+	members, _, err := client.Teams.ListTeamReposBySlug(context.Background(), "o", "s", opt)
 	if err != nil {
-		t.Errorf("Teams.ListTeamReposByName returned error: %v", err)
+		t.Errorf("Teams.ListTeamReposBySlug returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(members, want) {
-		t.Errorf("Teams.ListTeamReposByName returned %+v, want %+v", members, want)
+		t.Errorf("Teams.ListTeamReposBySlug returned %+v, want %+v", members, want)
 	}
 }
 
@@ -452,7 +452,7 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 	}
 }
 
-func TestTeamsService_IsTeamRepoByName_true(t *testing.T) {
+func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -463,14 +463,14 @@ func TestTeamsService_IsTeamRepoByName_true(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Teams.IsTeamRepoByName(context.Background(), "org", "slug", "owner", "repo")
+	repo, _, err := client.Teams.IsTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo")
 	if err != nil {
-		t.Errorf("Teams.IsTeamRepoByName returned error: %v", err)
+		t.Errorf("Teams.IsTeamRepoBySlug returned error: %v", err)
 	}
 
 	want := &Repository{ID: Int64(1)}
 	if !reflect.DeepEqual(repo, want) {
-		t.Errorf("Teams.IsTeamRepoByName returned %+v, want %+v", repo, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want %+v", repo, want)
 	}
 }
 
@@ -495,16 +495,16 @@ func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
 	}
 }
 
-func TestTeamsService_IsTeamRepoByName_false(t *testing.T) {
+func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	repo, resp, err := client.Teams.IsTeamRepoByName(context.Background(), "org", "slug", "owner", "repo")
+	repo, resp, err := client.Teams.IsTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -537,7 +537,7 @@ func TestTeamsService_IsTeamRepoByID_error(t *testing.T) {
 	}
 }
 
-func TestTeamsService_IsTeamRepoByName_error(t *testing.T) {
+func TestTeamsService_IsTeamRepoBySlug_error(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -546,15 +546,15 @@ func TestTeamsService_IsTeamRepoByName_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	repo, resp, err := client.Teams.IsTeamRepoByName(context.Background(), "org", "slug", "owner", "repo")
+	repo, resp, err := client.Teams.IsTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusBadRequest; got != want {
-		t.Errorf("Teams.IsTeamRepoByName returned status %d, want %d", got, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned status %d, want %d", got, want)
 	}
 	if repo != nil {
-		t.Errorf("Teams.IsTeamRepoByName returned %+v, want nil", repo)
+		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want nil", repo)
 	}
 }
 
@@ -566,11 +566,11 @@ func TestTeamsService_IsTeamRepoByID_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_IsTeamRepoByName_invalidOwner(t *testing.T) {
+func TestTeamsService_IsTeamRepoBySlug_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Teams.IsTeamRepoByName(context.Background(), "o", "s", "%", "r")
+	_, _, err := client.Teams.IsTeamRepoBySlug(context.Background(), "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -598,7 +598,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_AddTeamRepoByName(t *testing.T) {
+func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -616,9 +616,9 @@ func TestTeamsService_AddTeamRepoByName(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.AddTeamRepoByName(context.Background(), "org", "slug", "owner", "repo", opt)
+	_, err := client.Teams.AddTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo", opt)
 	if err != nil {
-		t.Errorf("Teams.AddTeamRepoByName returned error: %v", err)
+		t.Errorf("Teams.AddTeamRepoBySlug returned error: %v", err)
 	}
 }
 
@@ -637,16 +637,16 @@ func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
 	}
 }
 
-func TestTeamsService_AddTeamRepoByName_noAccess(t *testing.T) {
+func TestTeamsService_AddTeamRepoBySlug_noAccess(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/org/teams/slug/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		w.WriteHeader(http.StatusUnprocessableEntity)
 	})
 
-	_, err := client.Teams.AddTeamRepoByName(context.Background(), "org", "slug", "owner", "repo", nil)
+	_, err := client.Teams.AddTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo", nil)
 	if err == nil {
 		t.Errorf("Expcted error to be returned")
 	}
@@ -660,11 +660,11 @@ func TestTeamsService_AddTeamRepoByID_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_AddTeamRepoByName_invalidOwner(t *testing.T) {
+func TestTeamsService_AddTeamRepoBySlug_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Teams.AddTeamRepoByName(context.Background(), "o", "s", "%", "r", nil)
+	_, err := client.Teams.AddTeamRepoBySlug(context.Background(), "o", "s", "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -683,7 +683,7 @@ func TestTeamsService_RemoveTeamRepoByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_RemoveTeamRepoByName(t *testing.T) {
+func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -692,9 +692,9 @@ func TestTeamsService_RemoveTeamRepoByName(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.RemoveTeamRepoByName(context.Background(), "org", "slug", "owner", "repo")
+	_, err := client.Teams.RemoveTeamRepoBySlug(context.Background(), "org", "slug", "owner", "repo")
 	if err != nil {
-		t.Errorf("Teams.RemoveTeamRepoByName returned error: %v", err)
+		t.Errorf("Teams.RemoveTeamRepoBySlug returned error: %v", err)
 	}
 }
 
@@ -706,11 +706,11 @@ func TestTeamsService_RemoveTeamRepoByID_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_RemoveTeamRepoByName_invalidOwner(t *testing.T) {
+func TestTeamsService_RemoveTeamRepoBySlug_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Teams.RemoveTeamRepoByName(context.Background(), "o", "s", "%", "r")
+	_, err := client.Teams.RemoveTeamRepoBySlug(context.Background(), "o", "s", "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -758,7 +758,7 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_ListProjectsByName(t *testing.T) {
+func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -769,14 +769,14 @@ func TestTeamsService_ListProjectsByName(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	projects, _, err := client.Teams.ListTeamProjectsByName(context.Background(), "o", "s")
+	projects, _, err := client.Teams.ListTeamProjectsBySlug(context.Background(), "o", "s")
 	if err != nil {
-		t.Errorf("Teams.ListTeamProjectsByName returned error: %v", err)
+		t.Errorf("Teams.ListTeamProjectsBySlug returned error: %v", err)
 	}
 
 	want := []*Project{{ID: Int64(1)}}
 	if !reflect.DeepEqual(projects, want) {
-		t.Errorf("Teams.ListTeamProjectsByName returned %+v, want %+v", projects, want)
+		t.Errorf("Teams.ListTeamProjectsBySlug returned %+v, want %+v", projects, want)
 	}
 }
 
@@ -802,7 +802,7 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_ReviewProjectsByName(t *testing.T) {
+func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -813,14 +813,14 @@ func TestTeamsService_ReviewProjectsByName(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Teams.ReviewTeamProjectsByName(context.Background(), "o", "s", 1)
+	project, _, err := client.Teams.ReviewTeamProjectsBySlug(context.Background(), "o", "s", 1)
 	if err != nil {
-		t.Errorf("Teams.ReviewTeamProjectsByName returned error: %v", err)
+		t.Errorf("Teams.ReviewTeamProjectsBySlug returned error: %v", err)
 	}
 
 	want := &Project{ID: Int64(1)}
 	if !reflect.DeepEqual(project, want) {
-		t.Errorf("Teams.ReviewTeamProjectsByName returned %+v, want %+v", project, want)
+		t.Errorf("Teams.ReviewTeamProjectsBySlug returned %+v, want %+v", project, want)
 	}
 }
 
@@ -852,7 +852,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_AddTeamProjectByName(t *testing.T) {
+func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -874,9 +874,9 @@ func TestTeamsService_AddTeamProjectByName(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.AddTeamProjectByName(context.Background(), "o", "s", 1, opt)
+	_, err := client.Teams.AddTeamProjectBySlug(context.Background(), "o", "s", 1, opt)
 	if err != nil {
-		t.Errorf("Teams.AddTeamProjectByName returned error: %v", err)
+		t.Errorf("Teams.AddTeamProjectBySlug returned error: %v", err)
 	}
 }
 
@@ -897,7 +897,7 @@ func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
 	}
 }
 
-func TestTeamsService_RemoveTeamProjectByName(t *testing.T) {
+func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -908,8 +908,132 @@ func TestTeamsService_RemoveTeamProjectByName(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Teams.RemoveTeamProjectByName(context.Background(), "o", "s", 1)
+	_, err := client.Teams.RemoveTeamProjectBySlug(context.Background(), "o", "s", 1)
 	if err != nil {
-		t.Errorf("Teams.RemoveTeamProjectByName returned error: %v", err)
+		t.Errorf("Teams.RemoveTeamProjectBySlug returned error: %v", err)
+	}
+}
+
+func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/team-sync/groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "url-encoded-next-page-token",
+		})
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	opt := &ListCursorOptions{Page: "url-encoded-next-page-token"}
+	groups, _, err := client.Teams.ListIDPGroupsInOrganization(context.Background(), "o", opt)
+	if err != nil {
+		t.Errorf("Teams.ListIDPGroupsInOrganization returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.ListIDPGroupsInOrganization returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "1")
+	if err != nil {
+		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.ListIDPGroupsForTeam returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"groups": []}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
 	}
 }
