@@ -93,6 +93,10 @@ func (s *ActionsService) GetSecret(ctx context.Context, owner, repo, name string
 }
 
 // EncryptedSecret represents represents a secret that is encrypted using public key.
+//
+// The value of EncryptedValue must value for your secret, encrypted with
+// LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
+// using the public key retrieved using the GetPublicKey method.
 type EncryptedSecret struct {
 	Name           string `json:"-"`
 	KeyID          string `json:"key_id"`
