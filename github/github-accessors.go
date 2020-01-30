@@ -11460,30 +11460,6 @@ func (r *ReviewersRequest) GetNodeID() string {
 	return *r.NodeID
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (s *Secret) GetCreatedAt() Timestamp {
-	if s == nil || s.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *s.CreatedAt
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (s *Secret) GetName() string {
-	if s == nil || s.Name == nil {
-		return ""
-	}
-	return *s.Name
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (s *Secret) GetUpdatedAt() Timestamp {
-	if s == nil || s.UpdatedAt == nil {
-		return Timestamp{}
-	}
-	return *s.UpdatedAt
-}
-
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (s *ServiceHook) GetName() string {
 	if s == nil || s.Name == nil {

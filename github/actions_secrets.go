@@ -37,9 +37,9 @@ func (s *ActionsService) GetPublicKey(ctx context.Context, owner, repo string) (
 
 // Secret represents a repository action secret.
 type Secret struct {
-	Name      *string    `json:"name"`
-	CreatedAt *Timestamp `json:"created_at"`
-	UpdatedAt *Timestamp `json:"updated_at"`
+	Name      string    `json:"name"`
+	CreatedAt Timestamp `json:"created_at"`
+	UpdatedAt Timestamp `json:"updated_at"`
 }
 
 // Secrets represents one item from the ListSecrets response.
@@ -92,9 +92,9 @@ func (s *ActionsService) GetSecret(ctx context.Context, owner, repo, name string
 	return secret, resp, nil
 }
 
-// EncryptedSecret represents represents a secret that is encrypted using public key.
+// EncryptedSecret represents a secret that is encrypted using a public key.
 //
-// The value of EncryptedValue must value for your secret, encrypted with
+// The value of EncryptedValue must value of your secret, encrypted with
 // LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
 // using the public key retrieved using the GetPublicKey method.
 type EncryptedSecret struct {
