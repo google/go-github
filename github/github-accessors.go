@@ -9236,6 +9236,14 @@ func (p *PushEventRepoOwner) GetName() string {
 	return *p.Name
 }
 
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetArchived() bool {
+	if p == nil || p.Archived == nil {
+		return false
+	}
+	return *p.Archived
+}
+
 // GetArchiveURL returns the ArchiveURL field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetArchiveURL() string {
 	if p == nil || p.ArchiveURL == nil {
@@ -9274,6 +9282,14 @@ func (p *PushEventRepository) GetDescription() string {
 		return ""
 	}
 	return *p.Description
+}
+
+// GetDisabled returns the Disabled field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetDisabled() bool {
+	if p == nil || p.Disabled == nil {
+		return false
+	}
+	return *p.Disabled
 }
 
 // GetFork returns the Fork field if it's non-nil, zero value otherwise.
