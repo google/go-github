@@ -12,6 +12,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -76,6 +77,9 @@ func (r *RepositoryContent) GetContent() (string, error) {
 
 	switch encoding {
 	case "base64":
+		if r.Content == nil {
+			return "", errors.New("malformed response: base64 encoding of null content")
+		}
 		c, err := base64.StdEncoding.DecodeString(*r.Content)
 		return string(c), err
 	case "":
