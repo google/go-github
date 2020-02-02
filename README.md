@@ -5,6 +5,7 @@
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/796/badge)](https://bestpractices.coreinfrastructure.org/projects/796)
+[![TODOs](https://img.shields.io/endpoint?url=https://todos.tickgit.com/badge?repo=github.com/google/go-github)](https://todos.tickgit.com/browse?repo=github.com/google/go-github)
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
