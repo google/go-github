@@ -23,7 +23,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
-	page, _, err := client.Repositories.EnablePages(context.Background(), "o", "r")
+	page, _, err := client.Repositories.EnablePages(context.Background(), "o", "r", &Pages{Source: &PagesSource{Branch: String("master"), Path: String("/")}})
 	if err != nil {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
