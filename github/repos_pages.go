@@ -46,7 +46,7 @@ type PagesBuild struct {
 // createPagesRequest is a subset of Pages and is used internally
 // by EnablePages to pass only the known fields for the endpoint.
 type createPagesRequest struct {
-	Source *PagesSource
+	Source *PagesSource `json:"source,omitempty"`
 }
 
 // EnablePages enables GitHub Pages for the named repo.
