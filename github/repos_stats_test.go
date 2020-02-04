@@ -50,7 +50,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	want := []*ContributorStats{
 		{
 			Author: &Contributor{
-				ID: Int64(1),
+				ID: 		Int64(1),
 				NodeID: String("nodeid-1"),
 			},
 			Total: Int(135),
