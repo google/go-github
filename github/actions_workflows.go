@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // Workflow represents a repository action workflow.
@@ -18,8 +17,8 @@ type Workflow struct {
 	Name      string    `json:"name"`
 	Path      string    `json:"path"`
 	State     string    `json:"state"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt Timestamp `json:"created_at"`
+	UpdatedAt Timestamp `json:"updated_at"`
 	URL       string    `json:"url"`
 	HTMLURL   string    `json:"html_url"`
 	BadgeURL  string    `json:"badge_url"`
