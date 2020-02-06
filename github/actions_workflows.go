@@ -54,12 +54,26 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 	return workflows, resp, nil
 }
 
-// GetWorkflow gets a specific workflow.
+// GetWorkflowByID gets a specific workflow by ID.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-a-workflow
-func (s *ActionsService) GetWorkflow(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
+func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowID)
-	req, err := s.client.NewRequest("GET", u, nil)
+
+	return s.getWorkflow(ctx, u)
+}
+
+// GetWorkflowByFileName gets a specific workflow by file name.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-a-workflow
+func (s *ActionsService) GetWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Workflow, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowFileName)
+
+	return s.getWorkflow(ctx, u)
+}
+
+func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
