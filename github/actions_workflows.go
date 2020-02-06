@@ -24,7 +24,7 @@ type Workflow struct {
 	BadgeURL  string    `json:"badge_url"`
 }
 
-// Workflows represents one item from the ListWorkflows response.
+// Workflows represents a slice of repository action workflows.
 type Workflows struct {
 	TotalCount int         `json:"total_count"`
 	Workflows  []*Workflow `json:"workflows"`
@@ -56,7 +56,7 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 
 // GetWorkflow gets a specific workflow.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflows/#list-repository-workflows
+// GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-a-workflow
 func (s *ActionsService) GetWorkflow(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowID)
 	req, err := s.client.NewRequest("GET", u, nil)
