@@ -142,7 +142,7 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
+// GitHub API docs: https://developer.github.com/v3/apps/oauth_applications/#check-a-token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID string, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -174,7 +174,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID string, acce
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
+// GitHub API docs: https://developer.github.com/v3/apps/oauth_applications/#delete-an-app-token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 

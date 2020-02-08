@@ -27,125 +27,21 @@ const envKeyClientSecret = "GITHUB_CLIENT_SECRET"
 const envKeyAccessToken = "GITHUB_ACCESS_TOKEN"
 const InvalidTokenValue = "iamnotacroken"
 
-// TestAuthorizationsBasicOperations tests the basic CRUD operations of the API (mostly for
-// the Personal Access Token scenario).
-func TestAuthorizationsBasicOperations(t *testing.T) {
-
-	client := getUserPassClient(t)
-
-	auths, resp, err := client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	initialAuthCount := len(auths)
-
-	authReq := generatePersonalAuthTokenRequest()
-
-	createdAuth, resp, err := client.Authorizations.Create(context.Background(), authReq)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 201)
-
-	if *authReq.Note != *createdAuth.Note {
-		t.Fatal("Returned Authorization does not match the requested Authorization.")
-	}
-
-	auths, resp, err = client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if len(auths) != initialAuthCount+1 {
-		t.Fatalf("The number of Authorizations should have increased. Expected [%v], was [%v]", initialAuthCount+1, len(auths))
-	}
-
-	// Test updating the authorization
-	authUpdate := new(github.AuthorizationUpdateRequest)
-	authUpdate.Note = github.String("Updated note: " + randString())
-
-	updatedAuth, resp, err := client.Authorizations.Edit(context.Background(), *createdAuth.ID, authUpdate)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if *updatedAuth.Note != *authUpdate.Note {
-		t.Fatal("The returned Authorization does not match the requested updated value.")
-	}
-
-	// Verify that the Get operation also reflects the update
-	retrievedAuth, resp, err := client.Authorizations.Get(context.Background(), *createdAuth.ID)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if *retrievedAuth.Note != *updatedAuth.Note {
-		t.Fatal("The retrieved Authorization does not match the expected (updated) value.")
-	}
-
-	// Now, let's delete...
-	resp, err = client.Authorizations.Delete(context.Background(), *createdAuth.ID)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 204)
-
-	// Verify that we can no longer retrieve the auth
-	retrievedAuth, resp, err = client.Authorizations.Get(context.Background(), *createdAuth.ID)
-	if err == nil {
-		t.Fatal("Should have failed due to 404")
-	}
-	failIfNotStatusCode(t, resp, 404)
-
-	// Verify that our count reset back to the initial value
-	auths, resp, err = client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if len(auths) != initialAuthCount {
-		t.Fatalf("The number of Authorizations should match the initial count Expected [%v], got [%v]", initialAuthCount, len(auths))
-	}
-
-}
-
 // TestAuthorizationsAppOperations tests the application/token related operations, such
 // as creating, testing, resetting and revoking application OAuth tokens.
 func TestAuthorizationsAppOperations(t *testing.T) {
-
-	userAuthenticatedClient := getUserPassClient(t)
 
 	appAuthenticatedClient := getOAuthAppClient(t)
 
 	// We know these vars are set because getOAuthAppClient would have
 	// skipped the test by now
 	clientID := os.Getenv(envKeyClientID)
-	clientSecret := os.Getenv(envKeyClientSecret)
 	accessToken := os.Getenv(envKeyAccessToken)
 
-	authRequest := generateAppAuthTokenRequest(clientID, clientSecret)
-
-	createdAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 201)
-
-	// Quick sanity check:
-	if *createdAuth.Note != *authRequest.Note {
-		t.Fatal("The returned auth does not match expected value.")
-	}
-
-	// Let's try the same request again, this time it should return the same
-	// auth instead of creating a new one
-	secondAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	// Verify that the IDs are the same
-	if *createdAuth.ID != *secondAuth.ID {
-		t.Fatalf("The ID of the second returned auth should be the same as the first. Expected [%v], got [%v]", createdAuth.ID, secondAuth.ID)
-	}
-
 	// Verify the token
-	appAuth, resp, err := appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, accessToken)
+	_, resp, err := appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, accessToken)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
-
-	// Quick sanity check
-	if *appAuth.ID != *createdAuth.ID || *appAuth.Token != *createdAuth.Token {
-		t.Fatal("The returned auth/token does not match.")
-	}
 
 	// Let's verify that we get a 404 for a non-existent token
 	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, accessToken)
@@ -165,11 +61,6 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 		t.Fatal("An error should have been returned because of the invalid token.")
 	}
 	failIfNotStatusCode(t, resp, 404)
-
-	// Verify that the token has changed
-	if resetAuth.Token == createdAuth.Token {
-		t.Fatal("The reset token should be different from the original.")
-	}
 
 	// Verify that we do have a token value
 	if *resetAuth.Token == "" {
