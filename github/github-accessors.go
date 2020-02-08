@@ -8708,6 +8708,14 @@ func (p *PullRequestMergeResult) GetSHA() string {
 	return *p.SHA
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (p *PullRequestReview) GetAuthorAssociation() string {
+	if p == nil || p.AuthorAssociation == nil {
+		return ""
+	}
+	return *p.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (p *PullRequestReview) GetBody() string {
 	if p == nil || p.Body == nil {

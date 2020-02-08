@@ -22,6 +22,9 @@ type PullRequestReview struct {
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 	State          *string    `json:"state,omitempty"`
+	// AuthorAssociation is the comment author's relationship to the issue's repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	AuthorAssociation *string `json:"author_association,omitempty"`
 }
 
 func (p PullRequestReview) String() string {
