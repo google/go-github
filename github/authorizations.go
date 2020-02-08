@@ -274,7 +274,7 @@ func (s *AuthorizationsService) Delete(ctx context.Context, id int64) (*Response
 // The returned Authorization.User field will be populated.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
-func (s *AuthorizationsService) Check(ctx context.Context, clientID string, clientToken string, accessToken string) (*Authorization, *Response, error) {
+func (s *AuthorizationsService) Check(ctx context.Context, clientID string, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
 	reqBody := &struct {
@@ -306,7 +306,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID string, clie
 // The returned Authorization.User field will be populated.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
-func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, token string, accessToken string) (*Authorization, *Response, error) {
+func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
 	reqBody := &struct {
@@ -334,7 +334,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, toke
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#revoke-an-authorization-for-an-application
-func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, token string, accessToken string) (*Response, error) {
+func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
 	reqBody := &struct {
@@ -399,9 +399,14 @@ func (s *AuthorizationsService) GetGrant(ctx context.Context, id int64) (*Grant,
 // the user.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#delete-a-grant
-func (s *AuthorizationsService) DeleteGrant(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("applications/grants/%d", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID string, accessToken string) (*Response, error) {
+	u := fmt.Sprintf("applications/%v/grant", clientID)
+
+	reqBody := &struct {
+		AccessToken string `json:"access_token"`
+	}{AccessToken: accessToken}
+
+	req, err := s.client.NewRequest("DELETE", u, reqBody)
 	if err != nil {
 		return nil, err
 	}

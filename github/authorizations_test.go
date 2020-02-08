@@ -205,7 +205,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	got, _, err := client.Authorizations.Check(context.Background(), "id", "t", "a")
+	got, _, err := client.Authorizations.Check(context.Background(), "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Check returned error: %v", err)
 	}
@@ -225,7 +225,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 		fmt.Fprint(w, `{"ID":1}`)
 	})
 
-	got, _, err := client.Authorizations.Reset(context.Background(), "id", "t", "a")
+	got, _, err := client.Authorizations.Reset(context.Background(), "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
 	}
@@ -245,7 +245,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Authorizations.Revoke(context.Background(), "id", "t", "a")
+	_, err := client.Authorizations.Revoke(context.Background(), "id", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Revoke returned error: %v", err)
 	}
@@ -313,11 +313,11 @@ func TestDeleteGrant(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/applications/grants/1", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/applications/id/grant", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Authorizations.DeleteGrant(context.Background(), 1)
+	_, err := client.Authorizations.DeleteGrant(context.Background(), "id", "a")
 	if err != nil {
 		t.Errorf("OAuthAuthorizations.DeleteGrant returned error: %v", err)
 	}
