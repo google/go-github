@@ -221,7 +221,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
+		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"ID":1}`)
 	})
 

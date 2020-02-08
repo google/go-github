@@ -313,7 +313,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, toke
 		AccessToken string `json:"access_token"`
 	}{AccessToken: accessToken}
 
-	req, err := s.client.NewRequest("POST", u, reqBody)
+	req, err := s.client.NewRequest("PATCH", u, reqBody)
 	if err != nil {
 		return nil, nil, err
 	}
