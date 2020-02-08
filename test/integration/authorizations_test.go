@@ -189,7 +189,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 200)
 
 	// Let's revoke the token
-	resp, err = appAuthenticatedClient.Authorizations.Revoke(context.Background(), clientID, *resetAuth.Token)
+	resp, err = appAuthenticatedClient.Authorizations.Revoke(context.Background(), clientID, *resetAuth.Token, accessToken)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 204)
 

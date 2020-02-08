@@ -334,10 +334,14 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, toke
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#revoke-an-authorization-for-an-application
-func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, token string) (*Response, error) {
-	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
+func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, token string, accessToken string) (*Response, error) {
+	u := fmt.Sprintf("applications/%v/token", clientID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	reqBody := &struct {
+		AccessToken string `json:"access_token"`
+	}{AccessToken: accessToken}
+
+	req, err := s.client.NewRequest("DELETE", u, reqBody)
 	if err != nil {
 		return nil, err
 	}

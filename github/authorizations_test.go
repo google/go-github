@@ -240,12 +240,12 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Authorizations.Revoke(context.Background(), "id", "t")
+	_, err := client.Authorizations.Revoke(context.Background(), "id", "t", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Revoke returned error: %v", err)
 	}
