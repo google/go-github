@@ -1012,16 +1012,17 @@ func TestPullRequestComment_String(t *testing.T) {
 
 func TestPullRequestReview_String(t *testing.T) {
 	v := PullRequestReview{
-		ID:             Int64(0),
-		NodeID:         String(""),
-		User:           &User{},
-		Body:           String(""),
-		CommitID:       String(""),
-		HTMLURL:        String(""),
-		PullRequestURL: String(""),
-		State:          String(""),
+		ID:                Int64(0),
+		NodeID:            String(""),
+		User:              &User{},
+		Body:              String(""),
+		CommitID:          String(""),
+		HTMLURL:           String(""),
+		PullRequestURL:    String(""),
+		State:             String(""),
+		AuthorAssociation: String(""),
 	}
-	want := `github.PullRequestReview{ID:0, NodeID:"", User:github.User{}, Body:"", CommitID:"", HTMLURL:"", PullRequestURL:"", State:""}`
+	want := `github.PullRequestReview{ID:0, NodeID:"", User:github.User{}, Body:"", CommitID:"", HTMLURL:"", PullRequestURL:"", State:"", AuthorAssociation:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestReview.String = %v, want %v", got, want)
 	}
