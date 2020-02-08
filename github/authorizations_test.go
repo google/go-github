@@ -220,12 +220,12 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/applications/id/tokens/t", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"ID":1}`)
 	})
 
-	got, _, err := client.Authorizations.Reset(context.Background(), "id", "t")
+	got, _, err := client.Authorizations.Reset(context.Background(), "id", "t", "a")
 	if err != nil {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
 	}

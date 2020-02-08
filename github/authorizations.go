@@ -306,10 +306,14 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID string, clie
 // The returned Authorization.User field will be populated.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#reset-an-authorization
-func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, token string) (*Authorization, *Response, error) {
-	u := fmt.Sprintf("applications/%v/tokens/%v", clientID, token)
+func (s *AuthorizationsService) Reset(ctx context.Context, clientID string, token string, accessToken string) (*Authorization, *Response, error) {
+	u := fmt.Sprintf("applications/%v/token", clientID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	reqBody := &struct {
+		AccessToken string `json:"access_token"`
+	}{AccessToken: accessToken}
+
+	req, err := s.client.NewRequest("POST", u, reqBody)
 	if err != nil {
 		return nil, nil, err
 	}

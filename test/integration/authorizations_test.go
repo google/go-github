@@ -155,12 +155,12 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 404)
 
 	// Let's reset the token
-	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, *createdAuth.Token)
+	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, *createdAuth.Token, accessToken)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
 	// Let's verify that we get a 404 for a non-existent token
-	_, resp, err = appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, InvalidTokenValue)
+	_, resp, err = appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, InvalidTokenValue, accessToken)
 	if err == nil {
 		t.Fatal("An error should have been returned because of the invalid token.")
 	}
