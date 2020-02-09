@@ -58,7 +58,7 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 	return artifactList, resp, nil
 }
 
-// GetArtifact gets a specific artifact for a workflow run
+// GetArtifact gets a specific artifact for a workflow run.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/artifacts/#get-an-artifact
 func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error) {
