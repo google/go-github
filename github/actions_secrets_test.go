@@ -44,8 +44,8 @@ func TestActionsService_ListSecrets(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
 	})
 
-	opt := &ListOptions{Page: 2, PerPage: 2}
-	secrets, _, err := client.Actions.ListSecrets(context.Background(), "o", "r", opt)
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	secrets, _, err := client.Actions.ListSecrets(context.Background(), "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListSecrets returned error: %v", err)
 	}

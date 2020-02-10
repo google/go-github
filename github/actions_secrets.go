@@ -52,9 +52,9 @@ type Secrets struct {
 // without revealing their encrypted values.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/secrets/#list-secrets-for-a-repository
-func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, opt *ListOptions) (*Secrets, *Response, error) {
+func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/secrets", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
