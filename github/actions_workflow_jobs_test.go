@@ -14,78 +14,74 @@ import (
 	"time"
 )
 
-func TestActionsService_ListWorkflows(t *testing.T) {
+func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/actions/workflows", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"workflows":[{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"id":72845,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"},{"id":399444497,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	workflows, _, err := client.Actions.ListWorkflows(context.Background(), "o", "r", opts)
+	jobs, _, err := client.Actions.ListWorkflowJobs(context.Background(), "o", "r", 29679449, opts)
 	if err != nil {
-		t.Errorf("Actions.ListWorkflows returned error: %v", err)
+		t.Errorf("Actions.ListWorkflowJobs returned error: %v", err)
 	}
 
-	want := &Workflows{
+	want := &Jobs{
 		TotalCount: 4,
-		Workflows: []*Workflow{
-			{ID: 72844, CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: 72845, CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+		Jobs: []*Job{
+			{ID: 399444496, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: 399444497, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(workflows, want) {
-		t.Errorf("Actions.ListWorkflows returned %+v, want %+v", workflows, want)
+	if !reflect.DeepEqual(jobs, want) {
+		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
 }
 
-func TestActionsService_GetWorkflowByID(t *testing.T) {
+func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/72844", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/jobs/399444496", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":399444496,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	workflow, _, err := client.Actions.GetWorkflowByID(context.Background(), "o", "r", 72844)
+	job, _, err := client.Actions.GetWorkflowJobByID(context.Background(), "o", "r", 399444496)
 	if err != nil {
-		t.Errorf("Actions.GetWorkflowByID returned error: %v", err)
+		t.Errorf("Actions.GetWorkflowJobByID returned error: %v", err)
 	}
 
-	want := &Workflow{
-		ID:        72844,
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+	want := &Job{
+		ID:          399444496,
+		StartedAt:   Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(workflow, want) {
-		t.Errorf("Actions.GetWorkflowByID returned %+v, want %+v", workflow, want)
+	if !reflect.DeepEqual(job, want) {
+		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
 	}
 }
 
-func TestActionsService_GetWorkflowByFileName(t *testing.T) {
+func TestActionsService_ListWorkflowJobLogs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `https://pipelines.actions.githubusercontent.com/ab1f3cCFPB34Nd6imvFxpGZH5hNlDp2wijMwl2gDoO0bcrrlJj/_apis/pipelines/1/jobs/19/signedlogcontent?urlExpires=2020-01-22T22%3A44%3A54.1389777Z&urlSigningMethod=HMACV1&urlSignature=2TUDfIg4fm36OJmfPy6km5QD5DLCOkBVzvhWZM8B%2BUY%3D`)
 	})
 
-	workflow, _, err := client.Actions.GetWorkflowByFileName(context.Background(), "o", "r", "main.yml")
+	logFileURL, _, err := client.Actions.ListWorkflowJobLogs(context.Background(), "o", "r", 399444496)
 	if err != nil {
-		t.Errorf("Actions.GetWorkflowByFileName returned error: %v", err)
+		t.Errorf("Actions.ListWorkflowJobLogs returned error: %v", err)
 	}
 
-	want := &Workflow{
-		ID:        72844,
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-	}
-	if !reflect.DeepEqual(workflow, want) {
-		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)
+	want := "https://pipelines.actions.githubusercontent.com/ab1f3cCFPB34Nd6imvFxpGZH5hNlDp2wijMwl2gDoO0bcrrlJj/_apis/pipelines/1/jobs/19/signedlogcontent?urlExpires=2020-01-22T22%3A44%3A54.1389777Z&urlSigningMethod=HMACV1&urlSignature=2TUDfIg4fm36OJmfPy6km5QD5DLCOkBVzvhWZM8B%2BUY%3D"
+	if !reflect.DeepEqual(logFileURL, want) {
+		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", logFileURL, want)
 	}
 }
