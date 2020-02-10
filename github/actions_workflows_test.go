@@ -24,8 +24,8 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":4,"workflows":[{"id":72844,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"id":72845,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
 	})
 
-	opt := &ListOptions{Page: 2, PerPage: 2}
-	workflows, _, err := client.Actions.ListWorkflows(context.Background(), "o", "r", opt)
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	workflows, _, err := client.Actions.ListWorkflows(context.Background(), "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflows returned error: %v", err)
 	}

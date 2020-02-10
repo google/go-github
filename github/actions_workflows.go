@@ -33,9 +33,9 @@ type Workflows struct {
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#list-repository-workflows
-func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opt *ListOptions) (*Workflows, *Response, error) {
+func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
