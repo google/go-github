@@ -96,10 +96,10 @@ type UserAuthorization struct {
 // CreateUserImpersonation creates an impersonation OAuth token.
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
-func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opt *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
+func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%s/authorizations", username)
 
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

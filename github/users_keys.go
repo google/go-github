@@ -28,14 +28,14 @@ func (k Key) String() string {
 // string will fetch keys for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/keys/#list-public-keys-for-a-user
-func (s *UsersService) ListKeys(ctx context.Context, user string, opt *ListOptions) ([]*Key, *Response, error) {
+func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*Key, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/keys", user)
 	} else {
 		u = "user/keys"
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

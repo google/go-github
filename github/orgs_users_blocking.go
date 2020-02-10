@@ -13,9 +13,9 @@ import (
 // ListBlockedUsers lists all the users blocked by an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/blocking/#list-blocked-users
-func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string, opt *ListOptions) ([]*User, *Response, error) {
+func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string, opts *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
