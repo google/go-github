@@ -164,9 +164,9 @@ type UserContext struct {
 // via Basic Auth or via OAuth with the repo scope.
 //
 // GitHub API docs: https://developer.github.com/v3/users/#get-contextual-information-about-a-user
-func (s *UsersService) GetHovercard(ctx context.Context, user string, opt *HovercardOptions) (*Hovercard, *Response, error) {
+func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *HovercardOptions) (*Hovercard, *Response, error) {
 	u := fmt.Sprintf("users/%v/hovercard", user)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -202,8 +202,8 @@ type UserListOptions struct {
 // To paginate through all users, populate 'Since' with the ID of the last user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/#get-all-users
-func (s *UsersService) ListAll(ctx context.Context, opt *UserListOptions) ([]*User, *Response, error) {
-	u, err := addOptions("users", opt)
+func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*User, *Response, error) {
+	u, err := addOptions("users", opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -226,8 +226,8 @@ func (s *UsersService) ListAll(ctx context.Context, opt *UserListOptions) ([]*Us
 // authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/invitations/#list-a-users-repository-invitations
-func (s *UsersService) ListInvitations(ctx context.Context, opt *ListOptions) ([]*RepositoryInvitation, *Response, error) {
-	u, err := addOptions("user/repository_invitations", opt)
+func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
+	u, err := addOptions("user/repository_invitations", opts)
 	if err != nil {
 		return nil, nil, err
 	}

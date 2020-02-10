@@ -12,6 +12,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -76,6 +77,9 @@ func (r *RepositoryContent) GetContent() (string, error) {
 
 	switch encoding {
 	case "base64":
+		if r.Content == nil {
+			return "", errors.New("malformed response: base64 encoding of null content")
+		}
 		c, err := base64.StdEncoding.DecodeString(*r.Content)
 		return string(c), err
 	case "":
@@ -91,9 +95,9 @@ func (r *RepositoryContent) GetContent() (string, error) {
 // GetReadme gets the Readme file for the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-the-readme
-func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string, opt *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
+func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string, opts *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/readme", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -113,10 +117,10 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // specified file. This function will work with files of any size, as opposed
 // to GetContents which is limited to 1 Mb files. It is the caller's
 // responsibility to close the ReadCloser.
-func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opt *RepositoryContentGetOptions) (io.ReadCloser, error) {
+func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
-	_, dirContents, _, err := s.GetContents(ctx, owner, repo, dir, opt)
+	_, dirContents, _, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -143,10 +147,10 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 // value and the other will be nil.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-contents
-func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opt *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
+func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
 	escapedPath := (&url.URL{Path: path}).String()
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
-	u, err = addOptions(u, opt)
+	u, err = addOptions(u, opts)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -174,9 +178,9 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 // the commit and file metadata.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#create-a-file
-func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -192,9 +196,9 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#update-a-file
-func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -210,9 +214,9 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 // Requires the blob SHA of the file to be deleted.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#delete-a-file
-func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opt *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
+func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
-	req, err := s.client.NewRequest("DELETE", u, opt)
+	req, err := s.client.NewRequest("DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -240,10 +244,10 @@ const (
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opt *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
-	if opt != nil && opt.Ref != "" {
-		u += fmt.Sprintf("/%s", opt.Ref)
+	if opts != nil && opts.Ref != "" {
+		u += fmt.Sprintf("/%s", opts.Ref)
 	}
 	resp, err := s.getArchiveLinkFromURL(ctx, u, followRedirects)
 	if err != nil {

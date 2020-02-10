@@ -135,14 +135,14 @@ type ReferenceListOptions struct {
 // ListRefs lists all refs in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/git/refs/#get-all-references
-func (s *GitService) ListRefs(ctx context.Context, owner, repo string, opt *ReferenceListOptions) ([]*Reference, *Response, error) {
+func (s *GitService) ListRefs(ctx context.Context, owner, repo string, opts *ReferenceListOptions) ([]*Reference, *Response, error) {
 	var u string
-	if opt != nil && opt.Type != "" {
-		u = fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, opt.Type)
+	if opts != nil && opts.Type != "" {
+		u = fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, opts.Type)
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

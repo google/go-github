@@ -67,14 +67,14 @@ type PullRequestListCommentsOptions struct {
 // the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
-func (s *PullRequestsService) ListComments(ctx context.Context, owner string, repo string, number int, opt *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
+func (s *PullRequestsService) ListComments(ctx context.Context, owner string, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/pulls/comments", owner, repo)
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

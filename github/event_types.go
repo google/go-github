@@ -723,6 +723,8 @@ type PushEventRepository struct {
 	HasWiki         *bool      `json:"has_wiki,omitempty"`
 	HasPages        *bool      `json:"has_pages,omitempty"`
 	ForksCount      *int       `json:"forks_count,omitempty"`
+	Archived        *bool      `json:"archived,omitempty"`
+	Disabled        *bool      `json:"disabled,omitempty"`
 	OpenIssuesCount *int       `json:"open_issues_count,omitempty"`
 	DefaultBranch   *string    `json:"default_branch,omitempty"`
 	MasterBranch    *string    `json:"master_branch,omitempty"`
