@@ -13,9 +13,9 @@ import (
 // ListHooks lists all Hooks for the specified organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/hooks/#list-hooks
-func (s *OrganizationsService) ListHooks(ctx context.Context, org string, opt *ListOptions) ([]*Hook, *Response, error) {
+func (s *OrganizationsService) ListHooks(ctx context.Context, org string, opts *ListOptions) ([]*Hook, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -20,46 +20,47 @@ type RepositoriesService service
 
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID                 *int64           `json:"id,omitempty"`
-	NodeID             *string          `json:"node_id,omitempty"`
-	Owner              *User            `json:"owner,omitempty"`
-	Name               *string          `json:"name,omitempty"`
-	FullName           *string          `json:"full_name,omitempty"`
-	Description        *string          `json:"description,omitempty"`
-	Homepage           *string          `json:"homepage,omitempty"`
-	CodeOfConduct      *CodeOfConduct   `json:"code_of_conduct,omitempty"`
-	DefaultBranch      *string          `json:"default_branch,omitempty"`
-	MasterBranch       *string          `json:"master_branch,omitempty"`
-	CreatedAt          *Timestamp       `json:"created_at,omitempty"`
-	PushedAt           *Timestamp       `json:"pushed_at,omitempty"`
-	UpdatedAt          *Timestamp       `json:"updated_at,omitempty"`
-	HTMLURL            *string          `json:"html_url,omitempty"`
-	CloneURL           *string          `json:"clone_url,omitempty"`
-	GitURL             *string          `json:"git_url,omitempty"`
-	MirrorURL          *string          `json:"mirror_url,omitempty"`
-	SSHURL             *string          `json:"ssh_url,omitempty"`
-	SVNURL             *string          `json:"svn_url,omitempty"`
-	Language           *string          `json:"language,omitempty"`
-	Fork               *bool            `json:"fork,omitempty"`
-	ForksCount         *int             `json:"forks_count,omitempty"`
-	NetworkCount       *int             `json:"network_count,omitempty"`
-	OpenIssuesCount    *int             `json:"open_issues_count,omitempty"`
-	StargazersCount    *int             `json:"stargazers_count,omitempty"`
-	SubscribersCount   *int             `json:"subscribers_count,omitempty"`
-	WatchersCount      *int             `json:"watchers_count,omitempty"`
-	Size               *int             `json:"size,omitempty"`
-	AutoInit           *bool            `json:"auto_init,omitempty"`
-	Parent             *Repository      `json:"parent,omitempty"`
-	Source             *Repository      `json:"source,omitempty"`
-	TemplateRepository *Repository      `json:"template_repository,omitempty"`
-	Organization       *Organization    `json:"organization,omitempty"`
-	Permissions        *map[string]bool `json:"permissions,omitempty"`
-	AllowRebaseMerge   *bool            `json:"allow_rebase_merge,omitempty"`
-	AllowSquashMerge   *bool            `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit   *bool            `json:"allow_merge_commit,omitempty"`
-	Topics             []string         `json:"topics,omitempty"`
-	Archived           *bool            `json:"archived,omitempty"`
-	Disabled           *bool            `json:"disabled,omitempty"`
+	ID                  *int64           `json:"id,omitempty"`
+	NodeID              *string          `json:"node_id,omitempty"`
+	Owner               *User            `json:"owner,omitempty"`
+	Name                *string          `json:"name,omitempty"`
+	FullName            *string          `json:"full_name,omitempty"`
+	Description         *string          `json:"description,omitempty"`
+	Homepage            *string          `json:"homepage,omitempty"`
+	CodeOfConduct       *CodeOfConduct   `json:"code_of_conduct,omitempty"`
+	DefaultBranch       *string          `json:"default_branch,omitempty"`
+	MasterBranch        *string          `json:"master_branch,omitempty"`
+	CreatedAt           *Timestamp       `json:"created_at,omitempty"`
+	PushedAt            *Timestamp       `json:"pushed_at,omitempty"`
+	UpdatedAt           *Timestamp       `json:"updated_at,omitempty"`
+	HTMLURL             *string          `json:"html_url,omitempty"`
+	CloneURL            *string          `json:"clone_url,omitempty"`
+	GitURL              *string          `json:"git_url,omitempty"`
+	MirrorURL           *string          `json:"mirror_url,omitempty"`
+	SSHURL              *string          `json:"ssh_url,omitempty"`
+	SVNURL              *string          `json:"svn_url,omitempty"`
+	Language            *string          `json:"language,omitempty"`
+	Fork                *bool            `json:"fork,omitempty"`
+	ForksCount          *int             `json:"forks_count,omitempty"`
+	NetworkCount        *int             `json:"network_count,omitempty"`
+	OpenIssuesCount     *int             `json:"open_issues_count,omitempty"`
+	StargazersCount     *int             `json:"stargazers_count,omitempty"`
+	SubscribersCount    *int             `json:"subscribers_count,omitempty"`
+	WatchersCount       *int             `json:"watchers_count,omitempty"`
+	Size                *int             `json:"size,omitempty"`
+	AutoInit            *bool            `json:"auto_init,omitempty"`
+	Parent              *Repository      `json:"parent,omitempty"`
+	Source              *Repository      `json:"source,omitempty"`
+	TemplateRepository  *Repository      `json:"template_repository,omitempty"`
+	Organization        *Organization    `json:"organization,omitempty"`
+	Permissions         *map[string]bool `json:"permissions,omitempty"`
+	AllowRebaseMerge    *bool            `json:"allow_rebase_merge,omitempty"`
+	AllowSquashMerge    *bool            `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit    *bool            `json:"allow_merge_commit,omitempty"`
+	DeleteBranchOnMerge *bool            `json:"delete_branch_on_merge,omitempty"`
+	Topics              []string         `json:"topics,omitempty"`
+	Archived            *bool            `json:"archived,omitempty"`
+	Disabled            *bool            `json:"disabled,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
@@ -177,14 +178,14 @@ type RepositoryListOptions struct {
 // repositories for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-user-repositories
-func (s *RepositoriesService) List(ctx context.Context, user string, opt *RepositoryListOptions) ([]*Repository, *Response, error) {
+func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/repos", user)
 	} else {
 		u = "user/repos"
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -228,9 +229,9 @@ type RepositoryListByOrgOptions struct {
 // ListByOrg lists the repositories for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-organization-repositories
-func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opt *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
+func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repos", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -263,8 +264,8 @@ type RepositoryListAllOptions struct {
 // ListAll lists all GitHub repositories in the order that they were created.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-all-public-repositories
-func (s *RepositoriesService) ListAll(ctx context.Context, opt *RepositoryListAllOptions) ([]*Repository, *Response, error) {
-	u, err := addOptions("repositories", opt)
+func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error) {
+	u, err := addOptions("repositories", opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -303,12 +304,13 @@ type createRepoRequest struct {
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
 
-	AutoInit          *bool   `json:"auto_init,omitempty"`
-	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
-	LicenseTemplate   *string `json:"license_template,omitempty"`
-	AllowSquashMerge  *bool   `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit  *bool   `json:"allow_merge_commit,omitempty"`
-	AllowRebaseMerge  *bool   `json:"allow_rebase_merge,omitempty"`
+	AutoInit            *bool   `json:"auto_init,omitempty"`
+	GitignoreTemplate   *string `json:"gitignore_template,omitempty"`
+	LicenseTemplate     *string `json:"license_template,omitempty"`
+	AllowSquashMerge    *bool   `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit    *bool   `json:"allow_merge_commit,omitempty"`
+	AllowRebaseMerge    *bool   `json:"allow_rebase_merge,omitempty"`
+	DeleteBranchOnMerge *bool   `json:"delete_branch_on_merge,omitempty"`
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -328,21 +330,22 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 	}
 
 	repoReq := &createRepoRequest{
-		Name:              repo.Name,
-		Description:       repo.Description,
-		Homepage:          repo.Homepage,
-		Private:           repo.Private,
-		HasIssues:         repo.HasIssues,
-		HasProjects:       repo.HasProjects,
-		HasWiki:           repo.HasWiki,
-		IsTemplate:        repo.IsTemplate,
-		TeamID:            repo.TeamID,
-		AutoInit:          repo.AutoInit,
-		GitignoreTemplate: repo.GitignoreTemplate,
-		LicenseTemplate:   repo.LicenseTemplate,
-		AllowSquashMerge:  repo.AllowSquashMerge,
-		AllowMergeCommit:  repo.AllowMergeCommit,
-		AllowRebaseMerge:  repo.AllowRebaseMerge,
+		Name:                repo.Name,
+		Description:         repo.Description,
+		Homepage:            repo.Homepage,
+		Private:             repo.Private,
+		HasIssues:           repo.HasIssues,
+		HasProjects:         repo.HasProjects,
+		HasWiki:             repo.HasWiki,
+		IsTemplate:          repo.IsTemplate,
+		TeamID:              repo.TeamID,
+		AutoInit:            repo.AutoInit,
+		GitignoreTemplate:   repo.GitignoreTemplate,
+		LicenseTemplate:     repo.LicenseTemplate,
+		AllowSquashMerge:    repo.AllowSquashMerge,
+		AllowMergeCommit:    repo.AllowMergeCommit,
+		AllowRebaseMerge:    repo.AllowRebaseMerge,
+		DeleteBranchOnMerge: repo.DeleteBranchOnMerge,
 	}
 
 	req, err := s.client.NewRequest("POST", u, repoReq)
@@ -493,6 +496,7 @@ func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*
 type Contributor struct {
 	Login             *string `json:"login,omitempty"`
 	ID                *int64  `json:"id,omitempty"`
+	NodeID            *string `json:"node_id,omitempty"`
 	AvatarURL         *string `json:"avatar_url,omitempty"`
 	GravatarID        *string `json:"gravatar_id,omitempty"`
 	URL               *string `json:"url,omitempty"`
@@ -611,9 +615,9 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 // ListContributors lists contributors for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-contributors
-func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opt *ListContributorsOptions) ([]*Contributor, *Response, error) {
+func (s *RepositoriesService) ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contributors", owner, repository)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -661,9 +665,9 @@ func (s *RepositoriesService) ListLanguages(ctx context.Context, owner string, r
 // ListTeams lists the teams for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-teams
-func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo string, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *RepositoriesService) ListTeams(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/teams", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -693,9 +697,9 @@ type RepositoryTag struct {
 // ListTags lists tags for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-tags
-func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo string, opt *ListOptions) ([]*RepositoryTag, *Response, error) {
+func (s *RepositoriesService) ListTags(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -881,9 +885,9 @@ type SignaturesProtectedBranch struct {
 // ListBranches lists branches for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/#list-branches
-func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opt *BranchListOptions) ([]*Branch, *Response, error) {
+func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1472,9 +1476,6 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryDispatchPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)

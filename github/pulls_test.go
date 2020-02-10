@@ -35,8 +35,8 @@ func TestPullRequestsService_List(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
-	pulls, _, err := client.PullRequests.List(context.Background(), "o", "r", opt)
+	opts := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
+	pulls, _, err := client.PullRequests.List(context.Background(), "o", "r", opts)
 	if err != nil {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
@@ -66,8 +66,8 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opt := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
-	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(context.Background(), "o", "r", "sha", opt)
+	opts := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
+	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(context.Background(), "o", "r", "sha", opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
 	}
@@ -458,8 +458,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 			]`)
 	})
 
-	opt := &ListOptions{Page: 2}
-	commits, _, err := client.PullRequests.ListCommits(context.Background(), "o", "r", 1, opt)
+	opts := &ListOptions{Page: 2}
+	commits, _, err := client.PullRequests.ListCommits(context.Background(), "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListCommits returned error: %v", err)
 	}
@@ -517,8 +517,8 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 			]`)
 	})
 
-	opt := &ListOptions{Page: 2}
-	commitFiles, _, err := client.PullRequests.ListFiles(context.Background(), "o", "r", 1, opt)
+	opts := &ListOptions{Page: 2}
+	commitFiles, _, err := client.PullRequests.ListFiles(context.Background(), "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListFiles returned error: %v", err)
 	}

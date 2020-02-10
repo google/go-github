@@ -28,9 +28,9 @@ type ListOutsideCollaboratorsOptions struct {
 // Preview features are not supported for production use.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators
-func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org string, opt *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
+func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

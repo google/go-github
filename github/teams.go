@@ -76,9 +76,9 @@ func (i Invitation) String() string {
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-teams
-func (s *TeamsService) ListTeams(ctx context.Context, org string, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -295,9 +295,9 @@ func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (
 // ListChildTeamsByParentID lists child teams for a parent team given parent ID.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-child-teams
-func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/teams", orgID, teamID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -319,9 +319,9 @@ func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, team
 // ListChildTeamsByParentSlug lists child teams for a parent team given parent slug.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-child-teams
-func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug string, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/teams", org, slug)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -343,9 +343,9 @@ func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug
 // ListTeamReposByID lists the repositories given a team ID that the specified team has access to.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-repos
-func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int64, opt *ListOptions) ([]*Repository, *Response, error) {
+func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos", orgID, teamID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -371,9 +371,9 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 // ListTeamReposBySlug lists the repositories given a team slug that the specified team has access to.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-repos
-func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string, opt *ListOptions) ([]*Repository, *Response, error) {
+func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos", org, slug)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -462,9 +462,9 @@ type TeamAddTeamRepoOptions struct {
 // belongs, or a direct fork of a repository owned by the organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
-func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opt *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -477,9 +477,9 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // belongs, or a direct fork of a repository owned by the organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
-func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opt *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -519,9 +519,9 @@ func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owne
 
 // ListUserTeams lists a user's teams
 // GitHub API docs: https://developer.github.com/v3/teams/#list-user-teams
-func (s *TeamsService) ListUserTeams(ctx context.Context, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]*Team, *Response, error) {
 	u := "user/teams"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -653,9 +653,9 @@ type TeamProjectOptions struct {
 // authenticated user must have admin permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
-func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opt *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -672,9 +672,9 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // authenticated user must have admin permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
-func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opt *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -745,9 +745,9 @@ type IDPGroup struct {
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-in-an-organization
-func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListCursorOptions) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -788,10 +788,10 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 // and an IDP group.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
-func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opt IDPGroupList) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

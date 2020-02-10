@@ -132,9 +132,9 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 // ListHooks lists all Hooks for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/hooks/#list
-func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Hook, *Response, error) {
+func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

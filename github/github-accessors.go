@@ -1940,6 +1940,14 @@ func (c *Contributor) GetLogin() string {
 	return *c.Login
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *Contributor) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
 // GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
 func (c *Contributor) GetOrganizationsURL() string {
 	if c == nil || c.OrganizationsURL == nil {
@@ -7924,6 +7932,22 @@ func (p *PublicEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetKey() string {
+	if p == nil || p.Key == nil {
+		return ""
+	}
+	return *p.Key
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetKeyID() string {
+	if p == nil || p.KeyID == nil {
+		return ""
+	}
+	return *p.KeyID
+}
+
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetActiveLockReason() string {
 	if p == nil || p.ActiveLockReason == nil {
@@ -8700,6 +8724,14 @@ func (p *PullRequestMergeResult) GetSHA() string {
 	return *p.SHA
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (p *PullRequestReview) GetAuthorAssociation() string {
+	if p == nil || p.AuthorAssociation == nil {
+		return ""
+	}
+	return *p.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (p *PullRequestReview) GetBody() string {
 	if p == nil || p.Body == nil {
@@ -9236,6 +9268,14 @@ func (p *PushEventRepoOwner) GetName() string {
 	return *p.Name
 }
 
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetArchived() bool {
+	if p == nil || p.Archived == nil {
+		return false
+	}
+	return *p.Archived
+}
+
 // GetArchiveURL returns the ArchiveURL field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetArchiveURL() string {
 	if p == nil || p.ArchiveURL == nil {
@@ -9274,6 +9314,14 @@ func (p *PushEventRepository) GetDescription() string {
 		return ""
 	}
 	return *p.Description
+}
+
+// GetDisabled returns the Disabled field if it's non-nil, zero value otherwise.
+func (p *PushEventRepository) GetDisabled() bool {
+	if p == nil || p.Disabled == nil {
+		return false
+	}
+	return *p.Disabled
 }
 
 // GetFork returns the Fork field if it's non-nil, zero value otherwise.
@@ -9978,6 +10026,14 @@ func (r *Repository) GetDefaultBranch() string {
 		return ""
 	}
 	return *r.DefaultBranch
+}
+
+// GetDeleteBranchOnMerge returns the DeleteBranchOnMerge field if it's non-nil, zero value otherwise.
+func (r *Repository) GetDeleteBranchOnMerge() bool {
+	if r == nil || r.DeleteBranchOnMerge == nil {
+		return false
+	}
+	return *r.DeleteBranchOnMerge
 }
 
 // GetDeploymentsURL returns the DeploymentsURL field if it's non-nil, zero value otherwise.

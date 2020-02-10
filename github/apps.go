@@ -152,8 +152,8 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 // ListInstallations lists the installations that the current GitHub App has.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#list-installations
-func (s *AppsService) ListInstallations(ctx context.Context, opt *ListOptions) ([]*Installation, *Response, error) {
-	u, err := addOptions("app/installations", opt)
+func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
+	u, err := addOptions("app/installations", opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -185,8 +185,8 @@ func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installat
 // ListUserInstallations lists installations that are accessible to the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#list-installations-for-user
-func (s *AppsService) ListUserInstallations(ctx context.Context, opt *ListOptions) ([]*Installation, *Response, error) {
-	u, err := addOptions("user/installations", opt)
+func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
+	u, err := addOptions("user/installations", opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -213,10 +213,10 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opt *ListOption
 // CreateInstallationToken creates a new installation token.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#create-a-new-installation-token
-func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt *InstallationTokenOptions) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

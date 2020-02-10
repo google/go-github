@@ -43,12 +43,23 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
+// createPagesRequest is a subset of Pages and is used internally
+// by EnablePages to pass only the known fields for the endpoint.
+type createPagesRequest struct {
+	Source *PagesSource `json:"source,omitempty"`
+}
+
 // EnablePages enables GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#enable-a-pages-site
-func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
+func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string, pages *Pages) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
-	req, err := s.client.NewRequest("POST", u, nil)
+
+	pagesReq := &createPagesRequest{
+		Source: pages.Source,
+	}
+
+	req, err := s.client.NewRequest("POST", u, pagesReq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -102,9 +113,9 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 // ListPagesBuilds lists the builds for a GitHub Pages site.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#list-pages-builds
-func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo string, opt *ListOptions) ([]*PagesBuild, *Response, error) {
+func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
