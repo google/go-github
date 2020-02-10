@@ -79,9 +79,9 @@ type MarketplacePlanAccount struct {
 // ListPlans lists all plans for your Marketplace listing.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#list-all-plans-for-your-marketplace-listing
-func (s *MarketplaceService) ListPlans(ctx context.Context, opt *ListOptions) ([]*MarketplacePlan, *Response, error) {
+func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error) {
 	uri := s.marketplaceURI("plans")
-	u, err := addOptions(uri, opt)
+	u, err := addOptions(uri, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -103,9 +103,9 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opt *ListOptions) ([
 // ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#list-all-github-accounts-user-or-organization-on-a-specific-plan
-func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int64, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("plans/%v/accounts", planID))
-	u, err := addOptions(uri, opt)
+	u, err := addOptions(uri, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -127,9 +127,9 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 // ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#check-if-a-github-account-is-associated-with-any-marketplace-listing
-func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64, opt *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
-	u, err := addOptions(uri, opt)
+	u, err := addOptions(uri, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -151,13 +151,13 @@ func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, acc
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/marketplace/#get-a-users-marketplace-purchases
-func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opt *ListOptions) ([]*MarketplacePurchase, *Response, error) {
+func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error) {
 	uri := "user/marketplace_purchases"
 	if s.Stubbed {
 		uri = "user/marketplace_purchases/stubbed"
 	}
 
-	u, err := addOptions(uri, opt)
+	u, err := addOptions(uri, opts)
 	if err != nil {
 		return nil, nil, err
 	}
