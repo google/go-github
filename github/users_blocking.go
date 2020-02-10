@@ -13,9 +13,9 @@ import (
 // ListBlockedUsers lists all the blocked users by the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/blocking/#list-blocked-users
-func (s *UsersService) ListBlockedUsers(ctx context.Context, opt *ListOptions) ([]*User, *Response, error) {
+func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) ([]*User, *Response, error) {
 	u := "user/blocks"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
