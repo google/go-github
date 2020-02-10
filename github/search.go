@@ -70,9 +70,9 @@ type RepositoriesSearchResult struct {
 // Repositories searches repositories via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-repositories
-func (s *SearchService) Repositories(ctx context.Context, query string, opt *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
+func (s *SearchService) Repositories(ctx context.Context, query string, opts *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
-	resp, err := s.search(ctx, "repositories", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "repositories", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -101,9 +101,9 @@ type TopicResult struct {
 // information about search qualifiers.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-topics
-func (s *SearchService) Topics(ctx context.Context, query string, opt *SearchOptions) (*TopicsSearchResult, *Response, error) {
+func (s *SearchService) Topics(ctx context.Context, query string, opts *SearchOptions) (*TopicsSearchResult, *Response, error) {
 	result := new(TopicsSearchResult)
-	resp, err := s.search(ctx, "topics", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "topics", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -132,9 +132,9 @@ type CommitResult struct {
 // Commits searches commits via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-commits
-func (s *SearchService) Commits(ctx context.Context, query string, opt *SearchOptions) (*CommitsSearchResult, *Response, error) {
+func (s *SearchService) Commits(ctx context.Context, query string, opts *SearchOptions) (*CommitsSearchResult, *Response, error) {
 	result := new(CommitsSearchResult)
-	resp, err := s.search(ctx, "commits", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "commits", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -148,9 +148,9 @@ type IssuesSearchResult struct {
 // Issues searches issues via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-issues
-func (s *SearchService) Issues(ctx context.Context, query string, opt *SearchOptions) (*IssuesSearchResult, *Response, error) {
+func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
-	resp, err := s.search(ctx, "issues", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "issues", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -164,9 +164,9 @@ type UsersSearchResult struct {
 // Users searches users via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-users
-func (s *SearchService) Users(ctx context.Context, query string, opt *SearchOptions) (*UsersSearchResult, *Response, error) {
+func (s *SearchService) Users(ctx context.Context, query string, opts *SearchOptions) (*UsersSearchResult, *Response, error) {
 	result := new(UsersSearchResult)
-	resp, err := s.search(ctx, "users", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "users", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -213,9 +213,9 @@ func (c CodeResult) String() string {
 // Code searches code via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-code
-func (s *SearchService) Code(ctx context.Context, query string, opt *SearchOptions) (*CodeSearchResult, *Response, error) {
+func (s *SearchService) Code(ctx context.Context, query string, opts *SearchOptions) (*CodeSearchResult, *Response, error) {
 	result := new(CodeSearchResult)
-	resp, err := s.search(ctx, "code", &searchParameters{Query: query}, opt, result)
+	resp, err := s.search(ctx, "code", &searchParameters{Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -244,9 +244,9 @@ func (l LabelResult) String() string {
 // Labels searches labels in the repository with ID repoID via various criteria.
 //
 // GitHub API docs: https://developer.github.com/v3/search/#search-labels
-func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opt *SearchOptions) (*LabelsSearchResult, *Response, error) {
+func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opts *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
-	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: &repoID, Query: query}, opt, result)
+	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: &repoID, Query: query}, opts, result)
 	return result, resp, err
 }
 
@@ -255,8 +255,8 @@ func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, 
 //
 // If searchParameters.Query includes multiple condition, it MUST NOT include "+" as condition separator.
 // For example, querying with "language:c++" and "leveldb", then searchParameters.Query should be "language:c++ leveldb" but not "language:c+++leveldb".
-func (s *SearchService) search(ctx context.Context, searchType string, parameters *searchParameters, opt *SearchOptions, result interface{}) (*Response, error) {
-	params, err := qs.Values(opt)
+func (s *SearchService) search(ctx context.Context, searchType string, parameters *searchParameters, opts *SearchOptions, result interface{}) (*Response, error) {
+	params, err := qs.Values(opts)
 	if err != nil {
 		return nil, err
 	}
@@ -284,7 +284,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		// Accept header for search repositories based on topics preview endpoint
 		// TODO: remove custom Accept header when this API fully launches.
 		req.Header.Set("Accept", mediaTypeTopicsPreview)
-	case opt != nil && opt.TextMatch:
+	case opts != nil && opts.TextMatch:
 		// Accept header defaults to "application/vnd.github.v3+json"
 		// We change it here to fetch back text-match metadata
 		req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")

@@ -96,9 +96,9 @@ type DismissedReview struct {
 // ListIssueEvents lists events for the specified issue.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/events/#list-events-for-an-issue
-func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opt *ListOptions) ([]*IssueEvent, *Response, error) {
+func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/events", owner, repo, number)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -123,9 +123,9 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 // ListRepositoryEvents lists events for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/events/#list-events-for-a-repository
-func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opt *ListOptions) ([]*IssueEvent, *Response, error) {
+func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

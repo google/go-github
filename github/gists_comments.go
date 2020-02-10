@@ -27,9 +27,9 @@ func (g GistComment) String() string {
 // ListComments lists all comments for a gist.
 //
 // GitHub API docs: https://developer.github.com/v3/gists/comments/#list-comments-on-a-gist
-func (s *GistsService) ListComments(ctx context.Context, gistID string, opt *ListOptions) ([]*GistComment, *Response, error) {
+func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *ListOptions) ([]*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

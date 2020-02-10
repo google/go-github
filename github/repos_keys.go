@@ -15,9 +15,9 @@ import (
 // ListKeys lists the deploy keys for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/keys/#list
-func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opt *ListOptions) ([]*Key, *Response, error) {
+func (s *RepositoriesService) ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -56,9 +56,9 @@ type MilestoneListOptions struct {
 // ListMilestones lists all milestones for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
-func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo string, opt *MilestoneListOptions) ([]*Milestone, *Response, error) {
+func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo string, opts *MilestoneListOptions) ([]*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

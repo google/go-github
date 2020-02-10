@@ -50,9 +50,9 @@ type NotificationListOptions struct {
 // ListNotifications lists all notifications for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/notifications/#list-your-notifications
-func (s *ActivityService) ListNotifications(ctx context.Context, opt *NotificationListOptions) ([]*Notification, *Response, error) {
+func (s *ActivityService) ListNotifications(ctx context.Context, opts *NotificationListOptions) ([]*Notification, *Response, error) {
 	u := fmt.Sprintf("notifications")
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -75,9 +75,9 @@ func (s *ActivityService) ListNotifications(ctx context.Context, opt *Notificati
 // for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/notifications/#list-your-notifications-in-a-repository
-func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner, repo string, opt *NotificationListOptions) ([]*Notification, *Response, error) {
+func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner, repo string, opts *NotificationListOptions) ([]*Notification, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/notifications", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

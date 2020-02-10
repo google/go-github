@@ -89,9 +89,9 @@ type ProjectOptions struct {
 // UpdateProject updates a repository project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#update-a-project
-func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opt *ProjectOptions) (*Project, *Response, error) {
+func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *ProjectOptions) (*Project, *Response, error) {
 	u := fmt.Sprintf("projects/%v", id)
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -141,9 +141,9 @@ type ProjectColumn struct {
 // ListProjectColumns lists the columns of a GitHub Project for a repo.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#list-project-columns
-func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int64, opt *ListOptions) ([]*ProjectColumn, *Response, error) {
+func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int64, opts *ListOptions) ([]*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/%v/columns", projectID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -198,9 +198,9 @@ type ProjectColumnOptions struct {
 // CreateProjectColumn creates a column for the specified (by number) project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#create-a-project-column
-func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int64, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/%v/columns", projectID)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -220,9 +220,9 @@ func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int
 // UpdateProjectColumn updates a column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#update-a-project-column
-func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int64, opt *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
+func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v", columnID)
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -266,9 +266,9 @@ type ProjectColumnMoveOptions struct {
 // MoveProjectColumn moves a column within a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/columns/#move-a-project-column
-func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64, opt *ProjectColumnMoveOptions) (*Response, error) {
+func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/moves", columnID)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -317,9 +317,9 @@ type ProjectCardListOptions struct {
 // ListProjectCards lists the cards in a column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#list-project-cards
-func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, opt *ProjectCardListOptions) ([]*ProjectCard, *Response, error) {
+func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, opts *ProjectCardListOptions) ([]*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -382,9 +382,9 @@ type ProjectCardOptions struct {
 // CreateProjectCard creates a card in the specified column of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#create-a-project-card
-func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64, opt *ProjectCardOptions) (*ProjectCard, *Response, error) {
+func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/%v/cards", columnID)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -404,9 +404,9 @@ func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64,
 // UpdateProjectCard updates a card of a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#update-a-project-card
-func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, opt *ProjectCardOptions) (*ProjectCard, *Response, error) {
+func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v", cardID)
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -454,9 +454,9 @@ type ProjectCardMoveOptions struct {
 // MoveProjectCard moves a card within a GitHub Project.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/cards/#move-a-project-card
-func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int64, opt *ProjectCardMoveOptions) (*Response, error) {
+func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int64, opts *ProjectCardMoveOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/columns/cards/%v/moves", cardID)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -484,9 +484,9 @@ type ProjectCollaboratorOptions struct {
 // their permission level. You must be an organization owner or a project admin to add a collaborator.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/collaborators/#add-user-as-a-collaborator
-func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, username string, opt *ProjectCollaboratorOptions) (*Response, error) {
+func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, username string, opts *ProjectCollaboratorOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -537,9 +537,9 @@ type ListCollaboratorOptions struct {
 // organization owner or a project admin to list collaborators.
 //
 // GitHub API docs: https://developer.github.com/v3/projects/collaborators/#list-collaborators
-func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64, opt *ListCollaboratorOptions) ([]*User, *Response, error) {
+func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64, opts *ListCollaboratorOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators", id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

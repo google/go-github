@@ -161,9 +161,9 @@ type CheckRunAction struct {
 // CreateCheckRun creates a check run for repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#create-a-check-run
-func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opt CreateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -195,9 +195,9 @@ type UpdateCheckRunOptions struct {
 // UpdateCheckRun updates a check run for a specific commit in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#update-a-check-run
-func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opt UpdateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -216,9 +216,9 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 // ListCheckRunAnnotations lists the annotations for a check run.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-annotations-for-a-check-run
-func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opt *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
+func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opts *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -257,9 +257,9 @@ type ListCheckRunsResults struct {
 // ListCheckRunsForRef lists check runs for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-for-a-specific-ref
-func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, url.QueryEscape(ref))
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -283,9 +283,9 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 // ListCheckRunsCheckSuite lists check runs for a check suite.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-in-a-check-suite
-func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opt *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
+func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/check-runs", owner, repo, checkSuiteID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -323,9 +323,9 @@ type ListCheckSuiteResults struct {
 // ListCheckSuitesForRef lists check suite for a specific ref.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
-func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opt *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
+func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, url.QueryEscape(ref))
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -371,9 +371,9 @@ type PreferenceList struct {
 // SetCheckSuitePreferences changes the default automatic flow when creating check suites.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#set-preferences-for-check-suites-on-a-repository
-func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opt CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
+func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -398,9 +398,9 @@ type CreateCheckSuiteOptions struct {
 // CreateCheckSuite manually creates a check suite for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#create-a-check-suite
-func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opt CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
+func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opts CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

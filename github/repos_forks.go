@@ -25,9 +25,9 @@ type RepositoryListForksOptions struct {
 // ListForks lists the forks of the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/forks/#list-forks
-func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string, opt *RepositoryListForksOptions) ([]*Repository, *Response, error) {
+func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -66,9 +66,9 @@ type RepositoryCreateForkOptions struct {
 // in a successful request.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/forks/#create-a-fork
-func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opt *RepositoryCreateForkOptions) (*Repository, *Response, error) {
+func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

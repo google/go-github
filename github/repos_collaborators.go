@@ -42,9 +42,9 @@ type CollaboratorInvitation struct {
 // ListCollaborators lists the GitHub users that have access to the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#list-collaborators
-func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opt *ListCollaboratorsOptions) ([]*User, *Response, error) {
+func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo string, opts *ListCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -124,9 +124,9 @@ type RepositoryAddCollaboratorOptions struct {
 // to become a collaborator to the given repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator
-func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opt *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

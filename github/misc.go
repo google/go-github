@@ -40,14 +40,14 @@ type markdownRequest struct {
 // Markdown renders an arbitrary Markdown document.
 //
 // GitHub API docs: https://developer.github.com/v3/markdown/
-func (c *Client) Markdown(ctx context.Context, text string, opt *MarkdownOptions) (string, *Response, error) {
+func (c *Client) Markdown(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
 	request := &markdownRequest{Text: String(text)}
-	if opt != nil {
-		if opt.Mode != "" {
-			request.Mode = String(opt.Mode)
+	if opts != nil {
+		if opts.Mode != "" {
+			request.Mode = String(opts.Mode)
 		}
-		if opt.Context != "" {
-			request.Context = String(opt.Context)
+		if opts.Context != "" {
+			request.Context = String(opts.Context)
 		}
 	}
 

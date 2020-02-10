@@ -68,13 +68,13 @@ type startUserMigration struct {
 // repos is a slice of repository names to migrate.
 //
 // GitHub API docs: https://developer.github.com/v3/migrations/users/#start-a-user-migration
-func (s *MigrationService) StartUserMigration(ctx context.Context, repos []string, opt *UserMigrationOptions) (*UserMigration, *Response, error) {
+func (s *MigrationService) StartUserMigration(ctx context.Context, repos []string, opts *UserMigrationOptions) (*UserMigration, *Response, error) {
 	u := "user/migrations"
 
 	body := &startUserMigration{Repositories: repos}
-	if opt != nil {
-		body.LockRepositories = Bool(opt.LockRepositories)
-		body.ExcludeAttachments = Bool(opt.ExcludeAttachments)
+	if opts != nil {
+		body.LockRepositories = Bool(opts.LockRepositories)
+		body.ExcludeAttachments = Bool(opts.ExcludeAttachments)
 	}
 
 	req, err := s.client.NewRequest("POST", u, body)

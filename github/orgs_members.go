@@ -72,14 +72,14 @@ type ListMembersOptions struct {
 // public members, otherwise it will only return public members.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#members-list
-func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opt *ListMembersOptions) ([]*User, *Response, error) {
+func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts *ListMembersOptions) ([]*User, *Response, error) {
 	var u string
-	if opt != nil && opt.PublicOnly {
+	if opts != nil && opts.PublicOnly {
 		u = fmt.Sprintf("orgs/%v/public_members", org)
 	} else {
 		u = fmt.Sprintf("orgs/%v/members", org)
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -181,9 +181,9 @@ type ListOrgMembershipsOptions struct {
 // ListOrgMemberships lists the organization memberships for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#list-your-organization-memberships
-func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opt *ListOrgMembershipsOptions) ([]*Membership, *Response, error) {
+func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *ListOrgMembershipsOptions) ([]*Membership, *Response, error) {
 	u := "user/memberships/orgs"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -278,9 +278,9 @@ func (s *OrganizationsService) RemoveOrgMembership(ctx context.Context, user, or
 // ListPendingOrgInvitations returns a list of pending invitations.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#list-pending-organization-invitations
-func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, org string, opt *ListOptions) ([]*Invitation, *Response, error) {
+func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, org string, opts *ListOptions) ([]*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -323,10 +323,10 @@ type CreateOrgInvitationOptions struct {
 // the authenticated user must be an organization owner.
 //
 // https://developer.github.com/v3/orgs/members/#create-organization-invitation
-func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opt *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
+func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opts *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 
-	req, err := s.client.NewRequest("POST", u, opt)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -343,9 +343,9 @@ func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org stri
 // the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#list-organization-invitation-teams
-func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, invitationID string, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, invitationID string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations/%v/teams", org, invitationID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

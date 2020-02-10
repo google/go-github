@@ -46,10 +46,10 @@ type UserSuspendOptions struct {
 // Suspend a user on a GitHub Enterprise instance.
 //
 // GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#suspend-a-user
-func (s *UsersService) Suspend(ctx context.Context, user string, opt *UserSuspendOptions) (*Response, error) {
+func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}

@@ -76,9 +76,9 @@ func (i Invitation) String() string {
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-teams
-func (s *TeamsService) ListTeams(ctx context.Context, org string, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -255,9 +255,9 @@ func (s *TeamsService) DeleteTeam(ctx context.Context, team int64) (*Response, e
 // ListChildTeams lists child teams for a team.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-child-teams
-func (s *TeamsService) ListChildTeams(ctx context.Context, teamID int64, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListChildTeams(ctx context.Context, teamID int64, opts *ListOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("teams/%v/teams", teamID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -279,9 +279,9 @@ func (s *TeamsService) ListChildTeams(ctx context.Context, teamID int64, opt *Li
 // ListTeamRepos lists the repositories that the specified team has access to.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#list-team-repos
-func (s *TeamsService) ListTeamRepos(ctx context.Context, team int64, opt *ListOptions) ([]*Repository, *Response, error) {
+func (s *TeamsService) ListTeamRepos(ctx context.Context, team int64, opts *ListOptions) ([]*Repository, *Response, error) {
 	u := fmt.Sprintf("teams/%v/repos", team)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -346,9 +346,9 @@ type TeamAddTeamRepoOptions struct {
 // belongs, or a direct fork of a repository owned by the organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
-func (s *TeamsService) AddTeamRepo(ctx context.Context, team int64, owner string, repo string, opt *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepo(ctx context.Context, team int64, owner string, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/repos/%v/%v", team, owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -373,9 +373,9 @@ func (s *TeamsService) RemoveTeamRepo(ctx context.Context, team int64, owner str
 
 // ListUserTeams lists a user's teams
 // GitHub API docs: https://developer.github.com/v3/teams/#list-user-teams
-func (s *TeamsService) ListUserTeams(ctx context.Context, opt *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]*Team, *Response, error) {
 	u := "user/teams"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -459,9 +459,9 @@ type TeamProjectOptions struct {
 // permissions for the project.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
-func (s *TeamsService) AddTeamProject(ctx context.Context, teamID, projectID int64, opt *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProject(ctx context.Context, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("teams/%v/projects/%v", teamID, projectID)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -509,9 +509,9 @@ type IDPGroup struct {
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-in-an-organization
-func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opt *ListCursorOptions) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/team-sync/groups", org)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -552,10 +552,10 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 // and an IDP group.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
-func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opt IDPGroupList) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 
-	req, err := s.client.NewRequest("PATCH", u, opt)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

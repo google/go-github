@@ -290,8 +290,8 @@ func TestGitService_ListRefs_options(t *testing.T) {
 		fmt.Fprint(w, `[{"ref": "r"}]`)
 	})
 
-	opt := &ReferenceListOptions{Type: "t", ListOptions: ListOptions{Page: 2}}
-	refs, _, err := client.Git.ListRefs(context.Background(), "o", "r", opt)
+	opts := &ReferenceListOptions{Type: "t", ListOptions: ListOptions{Page: 2}}
+	refs, _, err := client.Git.ListRefs(context.Background(), "o", "r", opts)
 	if err != nil {
 		t.Errorf("Git.ListRefs returned error: %v", err)
 	}

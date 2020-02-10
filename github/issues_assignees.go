@@ -14,9 +14,9 @@ import (
 // which issues may be assigned.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/assignees/#list-assignees
-func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, opt *ListOptions) ([]*User, *Response, error) {
+func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
