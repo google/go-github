@@ -122,8 +122,8 @@ type OrganizationsListOptions struct {
 // as the opts.Since parameter for the next call.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-all-organizations
-func (s *OrganizationsService) ListAll(ctx context.Context, opt *OrganizationsListOptions) ([]*Organization, *Response, error) {
-	u, err := addOptions("organizations", opt)
+func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsListOptions) ([]*Organization, *Response, error) {
+	u, err := addOptions("organizations", opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -145,14 +145,14 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opt *OrganizationsLi
 // organizations for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-user-organizations
-func (s *OrganizationsService) List(ctx context.Context, user string, opt *ListOptions) ([]*Organization, *Response, error) {
+func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/orgs", user)
 	} else {
 		u = "user/orgs"
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -237,10 +237,10 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 // ListInstallations lists installations for an organization.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-installations-for-an-organization
-func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opt *ListOptions) (*OrganizationInstallations, *Response, error) {
+func (s *OrganizationsService) ListInstallations(ctx context.Context, org string, opts *ListOptions) (*OrganizationInstallations, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/installations", org)
 
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

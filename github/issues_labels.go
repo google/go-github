@@ -28,9 +28,9 @@ func (l Label) String() string {
 // ListLabels lists all labels for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo string, opt *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabels(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -121,9 +121,9 @@ func (s *IssuesService) DeleteLabel(ctx context.Context, owner string, repo stri
 // ListLabelsByIssue lists all labels for an issue.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/labels/#list-labels-on-an-issue
-func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, repo string, number int, opt *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/labels", owner, repo, number)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -209,9 +209,9 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner string, 
 // ListLabelsForMilestone lists labels for every issue in a milestone.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone
-func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string, repo string, number int, opt *ListOptions) ([]*Label, *Response, error) {
+func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%d/labels", owner, repo, number)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
