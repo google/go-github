@@ -25,9 +25,9 @@ func (p PreReceiveHook) String() string {
 // ListPreReceiveHooks lists all pre-receive hooks for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#list-pre-receive-hooks
-func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, repo string, opt *ListOptions) ([]*PreReceiveHook, *Response, error) {
+func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

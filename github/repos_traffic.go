@@ -95,9 +95,9 @@ func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo 
 // ListTrafficViews get total number of views for the last 14 days and breaks it down either per day or week.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo string, opt *TrafficBreakdownOptions) (*TrafficViews, *Response, error) {
+func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficViews, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/views", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -119,9 +119,9 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 // ListTrafficClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/traffic/#views
-func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo string, opt *TrafficBreakdownOptions) (*TrafficClones, *Response, error) {
+func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficClones, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/clones", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

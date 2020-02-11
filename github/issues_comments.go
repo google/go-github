@@ -51,14 +51,14 @@ type IssueListCommentsOptions struct {
 // number of 0 will return all comments on all issues for the repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
-func (s *IssuesService) ListComments(ctx context.Context, owner string, repo string, number int, opt *IssueListCommentsOptions) ([]*IssueComment, *Response, error) {
+func (s *IssuesService) ListComments(ctx context.Context, owner string, repo string, number int, opts *IssueListCommentsOptions) ([]*IssueComment, *Response, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
 	} else {
 		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

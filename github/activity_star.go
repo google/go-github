@@ -26,9 +26,9 @@ type Stargazer struct {
 // ListStargazers lists people who have starred the specified repo.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/starring/#list-stargazers
-func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Stargazer, *Response, error) {
+func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Stargazer, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/stargazers", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -68,14 +68,14 @@ type ActivityListStarredOptions struct {
 // will list the starred repositories for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/starring/#list-repositories-being-starred
-func (s *ActivityService) ListStarred(ctx context.Context, user string, opt *ActivityListStarredOptions) ([]*StarredRepository, *Response, error) {
+func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *ActivityListStarredOptions) ([]*StarredRepository, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/starred", user)
 	} else {
 		u = "user/starred"
 	}
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

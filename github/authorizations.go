@@ -137,9 +137,9 @@ func (a AuthorizationUpdateRequest) String() string {
 // List the authorizations for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#list-your-authorizations
-func (s *AuthorizationsService) List(ctx context.Context, opt *ListOptions) ([]*Authorization, *Response, error) {
+func (s *AuthorizationsService) List(ctx context.Context, opts *ListOptions) ([]*Authorization, *Response, error) {
 	u := "authorizations"
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -343,8 +343,8 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID string, tok
 // tokens an application has generated for the user.
 //
 // GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#list-your-grants
-func (s *AuthorizationsService) ListGrants(ctx context.Context, opt *ListOptions) ([]*Grant, *Response, error) {
-	u, err := addOptions("applications/grants", opt)
+func (s *AuthorizationsService) ListGrants(ctx context.Context, opts *ListOptions) ([]*Grant, *Response, error) {
+	u, err := addOptions("applications/grants", opts)
 	if err != nil {
 		return nil, nil, err
 	}
