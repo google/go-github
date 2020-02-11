@@ -90,7 +90,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 	return job, resp, nil
 }
 
-// GetWorkflowJobLogs gets a redirect URL to a download a plain text file of logs for a workflow job.
+// GetWorkflowJobLogs gets a redirect URL to download a plain text file of logs for a workflow job.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-workflow-job-logs
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
