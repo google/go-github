@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -28,8 +29,8 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 		)
 	})
 
-	opt := &ListOptions{Page: 2}
-	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "o", "r", 1, opt)
+	opts := &ListOptions{Page: 2}
+	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned error: %v", err)
 	}
@@ -83,7 +84,13 @@ func TestActionsService_GetArtifact(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "node_id": "xyz", "name": "a", "size_in_bytes": 5, "archive_download_url": "u", "expired": false, "created_at": "b", "expires_at": "c"}`)
+		fmt.Fprint(w, `{
+			"id":1,
+			"node_id":"xyz",
+			"name":"a",
+			"size_in_bytes":5,
+			"archive_download_url":"u"
+		}`)
 	})
 
 	artifact, _, err := client.Actions.GetArtifact(context.Background(), "o", "r", 1)
@@ -91,7 +98,13 @@ func TestActionsService_GetArtifact(t *testing.T) {
 		t.Errorf("Actions.GetArtifact returned error: %v", err)
 	}
 
-	want := &Artifact{ID: Int64(1), NodeID: String("xyz"), Name: String("a"), SizeInBytes: Int64(5), ArchiveDownloadURL: String("u"), Expired: Bool(false), CreatedAt: String("b"), ExpiresAt: String("c")}
+	want := &Artifact{
+		ID:                 Int64(1),
+		NodeID:             String("xyz"),
+		Name:               String("a"),
+		SizeInBytes:        Int64(5),
+		ArchiveDownloadURL: String("u"),
+	}
 	if !reflect.DeepEqual(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)
 	}
@@ -109,7 +122,7 @@ func TestActionsService_GetArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.GetArtifact(context.Background(), "%", "r", 1)
+	_, _, err := client.Actions.GetArtifact(context.Background(), "o", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -140,13 +153,20 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.Header()["Location"] = []string{"https://location.com/artifact"}
-		w.WriteHeader(http.StatusNoContent)
+		http.Redirect(w, r, "https://github.com/artifact", http.StatusFound)
 	})
 
-	_, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, "zip")
+	url, resp, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, true)
 	if err != nil {
 		t.Errorf("Actions.DownloadArtifact returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.DownloadArtifact returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+
+	want := "https://github.com/artifact"
+	if url.String() != want {
+		t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
 	}
 }
 
@@ -154,7 +174,7 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DownloadArtifact(context.Background(), "%", "r", 1, "zip")
+	_, _, err := client.Actions.DownloadArtifact(context.Background(), "%", "r", 1, true)
 	testURLParseError(t, err)
 }
 
@@ -162,35 +182,49 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DownloadArtifact(context.Background(), "%", "r", 1, "zip")
+	_, _, err := client.Actions.DownloadArtifact(context.Background(), "o", "%", 1, true)
 	testURLParseError(t, err)
 }
 
-func TestActionsService_DownloadArtifact_notFound(t *testing.T) {
+func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusNotFound)
+		http.Redirect(w, r, "https://github.com/artifact", http.StatusMovedPermanently)
 	})
 
-	resp, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, "zip")
-	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
-	}
-	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Actions.DownloadArtifact return status %d, want %d", got, want)
+	_, resp, _ := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, false)
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
 }
 
-func TestActionsService_DownloadArtifact_invalidArchiveFormat(t *testing.T) {
-	client, _, _, teardown := setup()
+func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, "tgz")
-	if err == nil {
-		t.Errorf("Expected HTTP 404 response")
+	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/artifact", http.StatusFound)
+	})
+
+	url, resp, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, true)
+	if err != nil {
+		t.Errorf("Actions.DownloadArtifact return error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+	want := "http://github.com/artifact"
+	if url.String() != want {
+		t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
 	}
 }
 
@@ -220,7 +254,7 @@ func TestActionsService_DeleteArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DeleteArtifact(context.Background(), "%", "r", 1)
+	_, err := client.Actions.DeleteArtifact(context.Background(), "o", "%", 1)
 	testURLParseError(t, err)
 }
 

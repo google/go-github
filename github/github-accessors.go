@@ -317,9 +317,9 @@ func (a *Artifact) GetArchiveDownloadURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (a *Artifact) GetCreatedAt() string {
+func (a *Artifact) GetCreatedAt() Timestamp {
 	if a == nil || a.CreatedAt == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *a.CreatedAt
 }
@@ -333,9 +333,9 @@ func (a *Artifact) GetExpired() bool {
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
-func (a *Artifact) GetExpiresAt() string {
+func (a *Artifact) GetExpiresAt() Timestamp {
 	if a == nil || a.ExpiresAt == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *a.ExpiresAt
 }
