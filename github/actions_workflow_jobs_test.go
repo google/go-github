@@ -67,7 +67,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	}
 }
 
-func TestActionsService_GetWorkflowJobLogsFile(t *testing.T) {
+func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -76,16 +76,16 @@ func TestActionsService_GetWorkflowJobLogsFile(t *testing.T) {
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.GetWorkflowJobLogsFile(context.Background(), "o", "r", 399444496, true)
+	url, resp, err := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, true)
 	if err != nil {
-		t.Errorf("Actions.GetWorkflowJobLogsFile returned error: %v", err)
+		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusFound {
-		t.Errorf("Actions.GetWorkflowJobLogsFile returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
 	}
 	want := "http://github.com/a"
 	if url.String() != want {
-		t.Errorf("Actions.GetWorkflowJobLogsFile returned %+v, want %+v", url.String(), want)
+		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
 }
 
@@ -98,7 +98,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
 
-	_, resp, _ := client.Actions.GetWorkflowJobLogsFile(context.Background(), "o", "r", 399444496, false)
+	_, resp, _ := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, false)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
