@@ -8,6 +8,8 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"net/url"
 )
 
 // Step represents a single task from a sequence of tasks of a job.
@@ -88,23 +90,48 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 	return job, resp, nil
 }
 
-// ListWorkflowJobLogs gets a redirect URL to a download a plain text file of logs for a workflow job.
+// GetWorkflowJobLogs gets a redirect URL to a download a plain text file of logs for a workflow job.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-workflow-job-logs
-func (s *ActionsService) ListWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64) (string, *Response, error) {
+func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
+	resp, err := s.getWorkflowJobLogsFromURL(ctx, u, followRedirects)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if resp.StatusCode != http.StatusFound {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	return parsedURL, newResponse(resp), err
+}
+
+func (s *ActionsService) getWorkflowJobLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 
-	var logFileURL string
-	resp, err := s.client.Do(ctx, req, &logFileURL)
-
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	req = withContext(ctx, req)
+	if s.client.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = s.client.client.Transport.RoundTrip(req)
+	}
 	if err != nil {
-		return "", resp, err
+		return nil, err
 	}
+	resp.Body.Close()
 
-	return logFileURL, resp, nil
+	// If redirect response is returned, follow it
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		u = resp.Header.Get("Location")
+		resp, err = s.getWorkflowJobLogsFromURL(ctx, u, false)
+	}
+	return resp, err
+
 }

@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"testing"
 	"time"
@@ -66,22 +67,70 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	}
 }
 
-func TestActionsService_ListWorkflowJobLogs(t *testing.T) {
+func TestActionsService_GetWorkflowJobLogsFile(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `https://pipelines.actions.githubusercontent.com/ab1f3cCFPB34Nd6imvFxpGZH5hNlDp2wijMwl2gDoO0bcrrlJj/_apis/pipelines/1/jobs/19/signedlogcontent?urlExpires=2020-01-22T22%3A44%3A54.1389777Z&urlSigningMethod=HMACV1&urlSignature=2TUDfIg4fm36OJmfPy6km5QD5DLCOkBVzvhWZM8B%2BUY%3D`)
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	logFileURL, _, err := client.Actions.ListWorkflowJobLogs(context.Background(), "o", "r", 399444496)
+	url, resp, err := client.Actions.GetWorkflowJobLogsFile(context.Background(), "o", "r", 399444496, true)
 	if err != nil {
-		t.Errorf("Actions.ListWorkflowJobLogs returned error: %v", err)
+		t.Errorf("Actions.GetWorkflowJobLogsFile returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowJobLogsFile returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowJobLogsFile returned %+v, want %+v", url.String(), want)
+	}
+}
+
+func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
+	})
+
+	_, resp, _ := client.Actions.GetWorkflowJobLogsFile(context.Background(), "o", "r", 399444496, false)
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+}
+
+func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+
+	// Mock a redirect link, which leads to an archive link
+	mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/redirect")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+
+	mux.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
+	})
+
+	url, resp, err := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, true)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
 
-	want := "https://pipelines.actions.githubusercontent.com/ab1f3cCFPB34Nd6imvFxpGZH5hNlDp2wijMwl2gDoO0bcrrlJj/_apis/pipelines/1/jobs/19/signedlogcontent?urlExpires=2020-01-22T22%3A44%3A54.1389777Z&urlSigningMethod=HMACV1&urlSignature=2TUDfIg4fm36OJmfPy6km5QD5DLCOkBVzvhWZM8B%2BUY%3D"
-	if !reflect.DeepEqual(logFileURL, want) {
-		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", logFileURL, want)
+	if resp.StatusCode != http.StatusFound {
+		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusFound)
+	}
+
+	want := "http://github.com/a"
+	if url.String() != want {
+		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
 }
