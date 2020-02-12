@@ -19,7 +19,7 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction": "desc",
@@ -65,7 +65,7 @@ func TestTeamsService_ListDiscussions(t *testing.T) {
 				}
 			]`)
 	})
-	discussions, _, err := client.Teams.ListDiscussions(context.Background(), 2, &DiscussionListOptions{"desc"})
+	discussions, _, err := client.Teams.ListDiscussions(context.Background(), 1, 2, &DiscussionListOptions{"desc"})
 	if err != nil {
 		t.Errorf("Teams.ListDiscussions returned error: %v", err)
 	}
@@ -118,12 +118,12 @@ func TestTeamsService_GetDiscussion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	discussion, _, err := client.Teams.GetDiscussion(context.Background(), 2, 3)
+	discussion, _, err := client.Teams.GetDiscussion(context.Background(), 1, 2, 3)
 	if err != nil {
 		t.Errorf("Teams.GetDiscussion returned error: %v", err)
 	}
@@ -140,7 +140,7 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 
 	input := TeamDiscussion{Title: String("c_t"), Body: String("c_b")}
 
-	mux.HandleFunc("/teams/2/discussions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -152,7 +152,7 @@ func TestTeamsService_CreateDiscussion(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.CreateDiscussion(context.Background(), 2, input)
+	comment, _, err := client.Teams.CreateDiscussion(context.Background(), 1, 2, input)
 	if err != nil {
 		t.Errorf("Teams.CreateDiscussion returned error: %v", err)
 	}
@@ -169,7 +169,7 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 
 	input := TeamDiscussion{Title: String("e_t"), Body: String("e_b")}
 
-	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		v := new(TeamDiscussion)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -181,7 +181,7 @@ func TestTeamsService_EditDiscussion(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.EditDiscussion(context.Background(), 2, 3, input)
+	comment, _, err := client.Teams.EditDiscussion(context.Background(), 1, 2, 3, input)
 	if err != nil {
 		t.Errorf("Teams.EditDiscussion returned error: %v", err)
 	}
@@ -196,11 +196,11 @@ func TestTeamsService_DeleteDiscussion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Teams.DeleteDiscussion(context.Background(), 2, 3)
+	_, err := client.Teams.DeleteDiscussion(context.Background(), 1, 2, 3)
 	if err != nil {
 		t.Errorf("Teams.DeleteDiscussion returned error: %v", err)
 	}

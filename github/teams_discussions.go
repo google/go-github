@@ -48,8 +48,8 @@ type DiscussionListOptions struct {
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#list-discussions
-func (s *TeamsService) ListDiscussions(ctx context.Context, teamID int64, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions", teamID)
+func (s *TeamsService) ListDiscussions(ctx context.Context, orgID, teamID int64, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
 	u, err := addOptions(u, options)
 	if err != nil {
 		return nil, nil, err
@@ -73,8 +73,8 @@ func (s *TeamsService) ListDiscussions(ctx context.Context, teamID int64, option
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-single-discussion
-func (s *TeamsService) GetDiscussion(ctx context.Context, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v", teamID, discussionNumber)
+func (s *TeamsService) GetDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -93,8 +93,8 @@ func (s *TeamsService) GetDiscussion(ctx context.Context, teamID int64, discussi
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#create-a-discussion
-func (s *TeamsService) CreateDiscussion(ctx context.Context, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions", teamID)
+func (s *TeamsService) CreateDiscussion(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
 	req, err := s.client.NewRequest("POST", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -114,8 +114,8 @@ func (s *TeamsService) CreateDiscussion(ctx context.Context, teamID int64, discu
 // User is allowed to change Title and Body of a discussion only.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
-func (s *TeamsService) EditDiscussion(ctx context.Context, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v", teamID, discussionNumber)
+func (s *TeamsService) EditDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("PATCH", u, discussion)
 	if err != nil {
 		return nil, nil, err
@@ -134,8 +134,8 @@ func (s *TeamsService) EditDiscussion(ctx context.Context, teamID int64, discuss
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#delete-a-discussion
-func (s *TeamsService) DeleteDiscussion(ctx context.Context, teamID int64, discussionNumber int) (*Response, error) {
-	u := fmt.Sprintf("teams/%v/discussions/%v", teamID, discussionNumber)
+func (s *TeamsService) DeleteDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
