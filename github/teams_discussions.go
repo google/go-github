@@ -44,11 +44,11 @@ type DiscussionListOptions struct {
 	Direction string `url:"direction,omitempty"`
 }
 
-// ListDiscussions lists all discussions on team's page.
+// ListDiscussionsByID lists all discussions on team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#list-discussions
-func (s *TeamsService) ListDiscussions(ctx context.Context, orgID, teamID int64, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
+func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID int64, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
 	u, err := addOptions(u, options)
 	if err != nil {
@@ -69,11 +69,36 @@ func (s *TeamsService) ListDiscussions(ctx context.Context, orgID, teamID int64,
 	return teamDiscussions, resp, nil
 }
 
-// GetDiscussion gets a specific discussion on a team's page.
+// ListDiscussionsBySlug lists all discussions on team's page given Organization name and Team's slug.
+// Authenticated user must grant read:discussion scope.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#list-discussions
+func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug string, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
+	u, err := addOptions(u, options)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teamDiscussions []*TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teamDiscussions, resp, nil
+}
+
+// GetDiscussionByID gets a specific discussion on a team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-single-discussion
-func (s *TeamsService) GetDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -89,11 +114,31 @@ func (s *TeamsService) GetDiscussion(ctx context.Context, orgID, teamID int64, d
 	return teamDiscussion, resp, nil
 }
 
-// CreateDiscussion creates a new discussion post on a team's page.
+// GetDiscussionBySlug gets a specific discussion on a team's page given Organization name and Team's slug.
+// Authenticated user must grant read:discussion scope.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-single-discussion
+func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	teamDiscussion := &TeamDiscussion{}
+	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teamDiscussion, resp, nil
+}
+
+// CreateDiscussionByID creates a new discussion post on a team's page given Organization and Team ID.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#create-a-discussion
-func (s *TeamsService) CreateDiscussion(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
 	req, err := s.client.NewRequest("POST", u, discussion)
 	if err != nil {
@@ -109,12 +154,32 @@ func (s *TeamsService) CreateDiscussion(ctx context.Context, orgID, teamID int64
 	return teamDiscussion, resp, nil
 }
 
-// EditDiscussion edits the title and body text of a discussion post.
+// CreateDiscussionBySlug creates a new discussion post on a team's page given Organization name and Team's slug.
+// Authenticated user must grant write:discussion scope.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#create-a-discussion
+func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
+	req, err := s.client.NewRequest("POST", u, discussion)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	teamDiscussion := &TeamDiscussion{}
+	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teamDiscussion, resp, nil
+}
+
+// EditDiscussionByID edits the title and body text of a discussion post given Organization and Team ID.
 // Authenticated user must grant write:discussion scope.
 // User is allowed to change Title and Body of a discussion only.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
-func (s *TeamsService) EditDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("PATCH", u, discussion)
 	if err != nil {
@@ -130,12 +195,47 @@ func (s *TeamsService) EditDiscussion(ctx context.Context, orgID, teamID int64, 
 	return teamDiscussion, resp, nil
 }
 
-// DeleteDiscussion deletes a discussion from team's page.
+// EditDiscussionBySlug edits the title and body text of a discussion post given Organization name and Team's slug.
+// Authenticated user must grant write:discussion scope.
+// User is allowed to change Title and Body of a discussion only.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
+func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
+	req, err := s.client.NewRequest("PATCH", u, discussion)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	teamDiscussion := &TeamDiscussion{}
+	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teamDiscussion, resp, nil
+}
+
+// DeleteDiscussionByID deletes a discussion from team's page given Organization and Team ID.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#delete-a-discussion
-func (s *TeamsService) DeleteDiscussion(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error) {
+func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// DeleteDiscussionBySlug deletes a discussion from team's page given Organization name and Team's slug.
+// Authenticated user must grant write:discussion scope.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#delete-a-discussion
+func (s *TeamsService) DeleteDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
