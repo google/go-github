@@ -23,6 +23,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction": "desc",
+			"page":      "2",
 		})
 		fmt.Fprintf(w,
 			`[
@@ -65,7 +66,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 				}
 			]`)
 	})
-	discussions, _, err := client.Teams.ListDiscussionsByID(context.Background(), 1, 2, &DiscussionListOptions{"desc"})
+	discussions, _, err := client.Teams.ListDiscussionsByID(context.Background(), 1, 2, &DiscussionListOptions{"desc", ListOptions{Page: 2}})
 	if err != nil {
 		t.Errorf("Teams.ListDiscussionsByID returned error: %v", err)
 	}
@@ -122,6 +123,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction": "desc",
+			"page":      "2",
 		})
 		fmt.Fprintf(w,
 			`[
@@ -164,7 +166,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 				}
 			]`)
 	})
-	discussions, _, err := client.Teams.ListDiscussionsBySlug(context.Background(), "o", "s", &DiscussionListOptions{"desc"})
+	discussions, _, err := client.Teams.ListDiscussionsBySlug(context.Background(), "o", "s", &DiscussionListOptions{"desc", ListOptions{Page: 2}})
 	if err != nil {
 		t.Errorf("Teams.ListDiscussionsBySlug returned error: %v", err)
 	}

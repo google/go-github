@@ -42,15 +42,17 @@ type DiscussionListOptions struct {
 	// Sorts the discussion by the date they were created.
 	// Accepted values are asc and desc. Default is desc.
 	Direction string `url:"direction,omitempty"`
+
+	ListOptions
 }
 
 // ListDiscussionsByID lists all discussions on team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#list-discussions
-func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID int64, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
+func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID int64, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -73,9 +75,9 @@ func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID in
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussions/#list-discussions
-func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug string, options *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
+func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug string, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
