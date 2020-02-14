@@ -37,9 +37,10 @@ type DiscussionCommentListOptions struct {
 	// Sorts the discussion comments by the date they were created.
 	// Accepted values are asc and desc. Default is desc.
 	Direction string `url:"direction,omitempty"`
+	ListOptions
 }
 
-// ListCommentsByID lists all comments on a team discussion.
+// ListCommentsByID lists all comments on a team discussion by team ID.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#list-comments
@@ -64,7 +65,7 @@ func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64
 	return comments, resp, nil
 }
 
-// ListCommentsBySlug lists all comments on a team discussion.
+// ListCommentsBySlug lists all comments on a team discussion by team slug.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#list-comments
@@ -89,7 +90,7 @@ func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string,
 	return comments, resp, nil
 }
 
-// GetCommentByID gets a specific comment on a team discussion.
+// GetCommentByID gets a specific comment on a team discussion by team ID.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#get-a-single-comment
@@ -109,7 +110,7 @@ func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, 
 	return discussionComment, resp, nil
 }
 
-// GetCommentBySlug gets a specific comment on a team discussion.
+// GetCommentBySlug gets a specific comment on a team discussion by team slug.
 // Authenticated user must grant read:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#get-a-single-comment
@@ -130,7 +131,7 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 	return discussionComment, resp, nil
 }
 
-// CreateCommentByID creates a new comment on a team discussion.
+// CreateCommentByID creates a new comment on a team discussion by team ID.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
@@ -150,7 +151,7 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 	return discussionComment, resp, nil
 }
 
-// CreateCommentBySlug creates a new comment on a team discussion.
+// CreateCommentBySlug creates a new comment on a team discussion by team slug.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
@@ -170,7 +171,7 @@ func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string
 	return discussionComment, resp, nil
 }
 
-// EditCommentByID edits the body text of a discussion comment.
+// EditCommentByID edits the body text of a discussion comment by team ID.
 // Authenticated user must grant write:discussion scope.
 // User is allowed to edit body of a comment only.
 //
@@ -191,7 +192,7 @@ func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64,
 	return discussionComment, resp, nil
 }
 
-// EditCommentBySlug edits the body text of a discussion comment.
+// EditCommentBySlug edits the body text of a discussion comment by team slug.
 // Authenticated user must grant write:discussion scope.
 // User is allowed to edit body of a comment only.
 //
@@ -212,7 +213,7 @@ func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, 
 	return discussionComment, resp, nil
 }
 
-// DeleteCommentByID deletes a comment on a team discussion.
+// DeleteCommentByID deletes a comment on a team discussion by team ID.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#delete-a-comment
@@ -226,7 +227,7 @@ func (s *TeamsService) DeleteCommentByID(ctx context.Context, orgID, teamID int6
 	return s.client.Do(ctx, req, nil)
 }
 
-// DeleteCommentBySlug deletes a comment on a team discussion.
+// DeleteCommentBySlug deletes a comment on a team discussion by team slug.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#delete-a-comment

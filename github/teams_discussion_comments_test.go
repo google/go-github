@@ -117,7 +117,8 @@ func TestTeamsService_ListComments(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handleFunc)
 
-	commentsByID, _, err := client.Teams.ListCommentsByID(context.Background(), 1, 2, 3, &DiscussionCommentListOptions{"desc"})
+	commentsByID, _, err := client.Teams.ListCommentsByID(context.Background(), 1, 2, 3,
+		&DiscussionCommentListOptions{Direction: "desc"})
 	if err != nil {
 		t.Errorf("Teams.ListCommentsByID returned error: %v", err)
 	}
@@ -129,7 +130,8 @@ func TestTeamsService_ListComments(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "")
 	mux.HandleFunc(e, handleFunc)
 
-	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(context.Background(), "a", "b", 3, &DiscussionCommentListOptions{"desc"})
+	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(context.Background(), "a", "b", 3,
+		&DiscussionCommentListOptions{Direction: "desc"})
 	if err != nil {
 		t.Errorf("Teams.ListCommentsBySlug returned error: %v", err)
 	}
