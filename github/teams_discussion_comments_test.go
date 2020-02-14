@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-// "teams discussion comments" endpoint, when using a teamID.
+// "Team Discussion Comments" endpoint, when using a teamID.
 func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) string {
 	out := fmt.Sprintf("/organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
 	if commentNumber != "" {
@@ -24,7 +24,7 @@ func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) stri
 	return out
 }
 
-// "teams discussion comments" endpoint, when using a team slug.
+// "Team Discussion Comments" endpoint, when using a team slug.
 func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
 	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
 	if commentNumber != "" {

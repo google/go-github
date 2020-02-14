@@ -130,7 +130,7 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 	return discussionComment, resp, nil
 }
 
-// CreateCommentByID creates a new discussion post on a team discussion.
+// CreateCommentByID creates a new comment on a team discussion.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
@@ -150,7 +150,7 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 	return discussionComment, resp, nil
 }
 
-// CreateCommentBySlug creates a new discussion post on a team discussion.
+// CreateCommentBySlug creates a new comment on a team discussion.
 // Authenticated user must grant write:discussion scope.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/discussion_comments/#create-a-comment
