@@ -15,11 +15,29 @@ import (
 	"time"
 )
 
+// "teams discussion comments" endpoint, when using a teamID.
+func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) string {
+	out := fmt.Sprintf("/organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
+	if commentNumber != "" {
+		return fmt.Sprintf("%v/%v", out, commentNumber)
+	}
+	return out
+}
+
+// "teams discussion comments" endpoint, when using a team slug.
+func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
+	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
+	if commentNumber != "" {
+		return fmt.Sprintf("%v/%v", out, commentNumber)
+	}
+	return out
+}
+
 func TestTeamsService_ListComments(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions/3/comments", func(w http.ResponseWriter, r *http.Request) {
+	handleFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction": "desc",
@@ -59,11 +77,6 @@ func TestTeamsService_ListComments(t *testing.T) {
 					"url": "https://api.github.com/teams/2/discussions/3/comments/4"
 				}
 			]`)
-	})
-
-	comments, _, err := client.Teams.ListComments(context.Background(), 2, 3, &DiscussionCommentListOptions{"desc"})
-	if err != nil {
-		t.Errorf("Teams.ListComments returned error: %v", err)
 	}
 
 	want := []*DiscussionComment{
@@ -100,8 +113,29 @@ func TestTeamsService_ListComments(t *testing.T) {
 			URL:           String("https://api.github.com/teams/2/discussions/3/comments/4"),
 		},
 	}
-	if !reflect.DeepEqual(comments, want) {
-		t.Errorf("Teams.ListComments returned %+v, want %+v", comments, want)
+
+	e := tdcEndpointByID("1", "2", "3", "")
+	mux.HandleFunc(e, handleFunc)
+
+	commentsByID, _, err := client.Teams.ListCommentsByID(context.Background(), 1, 2, 3, &DiscussionCommentListOptions{"desc"})
+	if err != nil {
+		t.Errorf("Teams.ListCommentsByID returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(commentsByID, want) {
+		t.Errorf("Teams.ListCommentsByID returned %+v, want %+v", commentsByID, want)
+	}
+
+	e = tdcEndpointBySlug("a", "b", "3", "")
+	mux.HandleFunc(e, handleFunc)
+
+	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(context.Background(), "a", "b", 3, &DiscussionCommentListOptions{"desc"})
+	if err != nil {
+		t.Errorf("Teams.ListCommentsBySlug returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(commentsBySlug, want) {
+		t.Errorf("Teams.ListCommentsBySlug returned %+v, want %+v", commentsBySlug, want)
 	}
 }
 
@@ -109,20 +143,36 @@ func TestTeamsService_GetComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"number":4}`)
-	})
-
-	comment, _, err := client.Teams.GetComment(context.Background(), 2, 3, 4)
-	if err != nil {
-		t.Errorf("Teams.GetComment returned error: %v", err)
 	}
-
 	want := &DiscussionComment{Number: Int(4)}
-	if !reflect.DeepEqual(comment, want) {
-		t.Errorf("Teams.GetComment returned %+v, want %+v", comment, want)
+
+	e := tdcEndpointByID("1", "2", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentByID, _, err := client.Teams.GetCommentByID(context.Background(), 1, 2, 3, 4)
+	if err != nil {
+		t.Errorf("Teams.GetCommentByID returned error: %v", err)
 	}
+
+	if !reflect.DeepEqual(commentByID, want) {
+		t.Errorf("Teams.GetCommentByID returned %+v, want %+v", commentByID, want)
+	}
+
+	e = tdcEndpointBySlug("a", "b", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentBySlug, _, err := client.Teams.GetCommentBySlug(context.Background(), "a", "b", 3, 4)
+	if err != nil {
+		t.Errorf("Teams.GetCommentBySlug returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(commentBySlug, want) {
+		t.Errorf("Teams.GetCommentBySlug returned %+v, want %+v", commentBySlug, want)
+	}
+
 }
 
 func TestTeamsService_CreateComment(t *testing.T) {
@@ -131,7 +181,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 
 	input := DiscussionComment{Body: String("c")}
 
-	mux.HandleFunc("/teams/2/discussions/3/comments", func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -141,16 +191,31 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		}
 
 		fmt.Fprint(w, `{"number":4}`)
-	})
+	}
+	want := &DiscussionComment{Number: Int(4)}
 
-	comment, _, err := client.Teams.CreateComment(context.Background(), 2, 3, input)
+	e := tdcEndpointByID("1", "2", "3", "")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentByID, _, err := client.Teams.CreateCommentByID(context.Background(), 1, 2, 3, input)
 	if err != nil {
-		t.Errorf("Teams.CreateComment returned error: %v", err)
+		t.Errorf("Teams.CreateCommentByID returned error: %v", err)
 	}
 
-	want := &DiscussionComment{Number: Int(4)}
-	if !reflect.DeepEqual(comment, want) {
-		t.Errorf("Teams.CreateComment returned %+v, want %+v", comment, want)
+	if !reflect.DeepEqual(commentByID, want) {
+		t.Errorf("Teams.CreateCommentByID returned %+v, want %+v", commentByID, want)
+	}
+
+	e = tdcEndpointBySlug("a", "b", "3", "")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentBySlug, _, err := client.Teams.CreateCommentBySlug(context.Background(), "a", "b", 3, input)
+	if err != nil {
+		t.Errorf("Teams.CreateCommentBySlug returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(commentBySlug, want) {
+		t.Errorf("Teams.CreateCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
 }
 
@@ -159,8 +224,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	defer teardown()
 
 	input := DiscussionComment{Body: String("e")}
-
-	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		v := new(DiscussionComment)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -170,16 +234,31 @@ func TestTeamsService_EditComment(t *testing.T) {
 		}
 
 		fmt.Fprint(w, `{"number":4}`)
-	})
+	}
+	want := &DiscussionComment{Number: Int(4)}
 
-	comment, _, err := client.Teams.EditComment(context.Background(), 2, 3, 4, input)
+	e := tdcEndpointByID("1", "2", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentByID, _, err := client.Teams.EditCommentByID(context.Background(), 1, 2, 3, 4, input)
 	if err != nil {
-		t.Errorf("Teams.EditComment returned error: %v", err)
+		t.Errorf("Teams.EditCommentByID returned error: %v", err)
 	}
 
-	want := &DiscussionComment{Number: Int(4)}
-	if !reflect.DeepEqual(comment, want) {
-		t.Errorf("Teams.EditComment returned %+v, want %+v", comment, want)
+	if !reflect.DeepEqual(commentByID, want) {
+		t.Errorf("Teams.EditCommentByID returned %+v, want %+v", commentByID, want)
+	}
+
+	e = tdcEndpointBySlug("a", "b", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	commentBySlug, _, err := client.Teams.EditCommentBySlug(context.Background(), "a", "b", 3, 4, input)
+	if err != nil {
+		t.Errorf("Teams.EditCommentBySlug returned error: %v", err)
+	}
+
+	if !reflect.DeepEqual(commentBySlug, want) {
+		t.Errorf("Teams.EditCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
 }
 
@@ -187,12 +266,23 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/2/discussions/3/comments/4", func(w http.ResponseWriter, r *http.Request) {
+	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-	})
+	}
 
-	_, err := client.Teams.DeleteComment(context.Background(), 2, 3, 4)
+	e := tdcEndpointByID("1", "2", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	_, err := client.Teams.DeleteCommentByID(context.Background(), 1, 2, 3, 4)
 	if err != nil {
-		t.Errorf("Teams.DeleteComment returned error: %v", err)
+		t.Errorf("Teams.DeleteCommentByID returned error: %v", err)
+	}
+
+	e = tdcEndpointBySlug("a", "b", "3", "4")
+	mux.HandleFunc(e, handlerFunc)
+
+	_, err = client.Teams.DeleteCommentBySlug(context.Background(), "a", "b", 3, 4)
+	if err != nil {
+		t.Errorf("Teams.DeleteCommentBySlug returned error: %v", err)
 	}
 }
