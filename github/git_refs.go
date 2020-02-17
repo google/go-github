@@ -79,10 +79,11 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	return r, resp, nil
 }
 
+// refURLEscape escapes every path segment of the given ref.
 func refURLEscape(ref string) string {
 	parts := strings.Split(ref, "/")
 	for i, s := range parts {
-		parts[i] = url.QueryEscape(s)
+		parts[i] = url.PathEscape(s)
 	}
 	return strings.Join(parts, "/")
 }
