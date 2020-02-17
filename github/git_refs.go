@@ -79,7 +79,8 @@ func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref 
 	return r, resp, nil
 }
 
-// refURLEscape escapes every path segment of the given ref.
+// refURLEscape escapes every path segment of the given ref. Those must
+// not contain escaped "/" - as "%2F" - or github will not recognize it.
 func refURLEscape(ref string) string {
 	parts := strings.Split(ref, "/")
 	for i, s := range parts {
