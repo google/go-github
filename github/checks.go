@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/url"
 )
 
 // ChecksService provides access to the Checks API in the
@@ -258,7 +257,7 @@ type ListCheckRunsResults struct {
 //
 // GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-for-a-specific-ref
 func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, url.QueryEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, refURLEscape(ref))
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -324,7 +323,7 @@ type ListCheckSuiteResults struct {
 //
 // GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
 func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, url.QueryEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, refURLEscape(ref))
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
