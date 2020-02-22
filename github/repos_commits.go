@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -198,7 +197,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, re
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, url.QueryEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
