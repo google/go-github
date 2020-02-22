@@ -12,22 +12,22 @@ import (
 
 // Workflow represents a repository action workflow.
 type Workflow struct {
-	ID        int64     `json:"id"`
-	NodeID    string    `json:"node_id"`
-	Name      string    `json:"name"`
-	Path      string    `json:"path"`
-	State     string    `json:"state"`
-	CreatedAt Timestamp `json:"created_at"`
-	UpdatedAt Timestamp `json:"updated_at"`
-	URL       string    `json:"url"`
-	HTMLURL   string    `json:"html_url"`
-	BadgeURL  string    `json:"badge_url"`
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
+	Name      *string    `json:"name,omitempty"`
+	Path      *string    `json:"path,omitempty"`
+	State     *string    `json:"state,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	URL       *string    `json:"url,omitempty"`
+	HTMLURL   *string    `json:"html_url,omitempty"`
+	BadgeURL  *string    `json:"badge_url,omitempty"`
 }
 
 // Workflows represents a slice of repository action workflows.
 type Workflows struct {
-	TotalCount int         `json:"total_count"`
-	Workflows  []*Workflow `json:"workflows"`
+	TotalCount *int        `json:"total_count,omitempty"`
+	Workflows  []*Workflow `json:"workflows,omitempty"`
 }
 
 // ListWorkflows lists all workflows in a repository.
