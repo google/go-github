@@ -31,10 +31,10 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	}
 
 	want := &Workflows{
-		TotalCount: 4,
+		TotalCount: Int(4),
 		Workflows: []*Workflow{
-			{ID: 72844, CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: 72845, CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(72844), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !reflect.DeepEqual(workflows, want) {
@@ -57,9 +57,9 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        72844,
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		ID:        Int64(72844),
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !reflect.DeepEqual(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByID returned %+v, want %+v", workflow, want)
@@ -81,9 +81,9 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        72844,
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		ID:        Int64(72844),
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !reflect.DeepEqual(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)
