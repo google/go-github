@@ -33,7 +33,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 
 	want := &Jobs{
 		TotalCount: 4,
-		Jobs: []*Job{
+		Jobs: []*WorkflowJob{
 			{ID: 399444496, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 			{ID: 399444497, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
@@ -57,7 +57,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 		t.Errorf("Actions.GetWorkflowJobByID returned error: %v", err)
 	}
 
-	want := &Job{
+	want := &WorkflowJob{
 		ID:          399444496,
 		StartedAt:   Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},

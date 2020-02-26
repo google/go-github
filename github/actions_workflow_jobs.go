@@ -12,8 +12,8 @@ import (
 	"net/url"
 )
 
-// Step represents a single task from a sequence of tasks of a job.
-type Step struct {
+// TaskStep represents a single task step from a sequence of tasks of a job.
+type TaskStep struct {
 	Name        *string    `json:"name,omitempty"`
 	Status      *string    `json:"status,omitempty"`
 	Conclusion  *string    `json:"conclusion,omitempty"`
@@ -22,28 +22,28 @@ type Step struct {
 	CompletedAt *Timestamp `json:"completed_at,omitempty"`
 }
 
-// Job represents a repository action workflow job.
-type Job struct {
-	ID          *int64     `json:"id,omitempty"`
-	RunID       *int64     `json:"run_id,omitempty"`
-	RunURL      *string    `json:"run_url,omitempty"`
-	NodeID      *string    `json:"node_id,omitempty"`
-	HeadSHA     *string    `json:"head_sha,omitempty"`
-	URL         *string    `json:"url,omitempty"`
-	HTMLURL     *string    `json:"html_url,omitempty"`
-	Status      *string    `json:"status,omitempty"`
-	Conclusion  *string    `json:"conclusion,omitempty"`
-	StartedAt   *Timestamp `json:"started_at,omitempty"`
-	CompletedAt *Timestamp `json:"completed_at,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	Steps       []*Step    `json:"steps,omitempty"`
-	CheckRunURL *string    `json:"check_run_url,omitempty"`
+// WorkflowJob represents a repository action workflow job.
+type WorkflowJob struct {
+	ID          *int64      `json:"id,omitempty"`
+	RunID       *int64      `json:"run_id,omitempty"`
+	RunURL      *string     `json:"run_url,omitempty"`
+	NodeID      *string     `json:"node_id,omitempty"`
+	HeadSHA     *string     `json:"head_sha,omitempty"`
+	URL         *string     `json:"url,omitempty"`
+	HTMLURL     *string     `json:"html_url,omitempty"`
+	Status      *string     `json:"status,omitempty"`
+	Conclusion  *string     `json:"conclusion,omitempty"`
+	StartedAt   *Timestamp  `json:"started_at,omitempty"`
+	CompletedAt *Timestamp  `json:"completed_at,omitempty"`
+	Name        *string     `json:"name,omitempty"`
+	Steps       []*TaskStep `json:"steps,omitempty"`
+	CheckRunURL *string     `json:"check_run_url,omitempty"`
 }
 
 // Jobs represents a slice of repository action workflow job.
 type Jobs struct {
-	TotalCount *int   `json:"total_count,omitempty"`
-	Jobs       []*Job `json:"jobs,omitempty"`
+	TotalCount *int           `json:"total_count,omitempty"`
+	Jobs       []*WorkflowJob `json:"jobs,omitempty"`
 }
 
 // ListWorkflowJobs lists all jobs for a workflow run.
@@ -73,7 +73,7 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 // GetWorkflowJobByID gets a specific job in a workflow run by ID.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-jobs-for-a-workflow-run
-func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*Job, *Response, error) {
+func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -81,7 +81,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	job := new(Job)
+	job := new(WorkflowJob)
 	resp, err := s.client.Do(ctx, req, job)
 	if err != nil {
 		return nil, resp, err
