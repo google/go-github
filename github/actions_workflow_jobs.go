@@ -43,7 +43,7 @@ type Job struct {
 // Jobs represents a slice of repository action workflow job.
 type Jobs struct {
 	TotalCount *int   `json:"total_count,omitempty"`
-	Jobs       []*Job `json:"jobs"`
+	Jobs       []*Job `json:"jobs,omitempty"`
 }
 
 // ListWorkflowJobs lists all jobs for a workflow run.
