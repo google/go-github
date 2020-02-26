@@ -14,35 +14,35 @@ import (
 
 // Step represents a single task from a sequence of tasks of a job.
 type Step struct {
-	Name        *string    `json:"name"`
-	Status      *string    `json:"status"`
-	Conclusion  *string    `json:"conclusion"`
-	Number      *int64     `json:"number"`
-	StartedAt   *Timestamp `json:"started_at"`
-	CompletedAt *Timestamp `json:"completed_at"`
+	Name        *string    `json:"name,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	Conclusion  *string    `json:"conclusion,omitempty"`
+	Number      *int64     `json:"number,omitempty"`
+	StartedAt   *Timestamp `json:"started_at,omitempty"`
+	CompletedAt *Timestamp `json:"completed_at,omitempty"`
 }
 
 // Job represents a repository action workflow job.
 type Job struct {
-	ID          *int64     `json:"id"`
-	RunID       *int64     `json:"run_id"`
-	RunURL      *string    `json:"run_url"`
-	NodeID      *string    `json:"node_id"`
-	HeadSHA     *string    `json:"head_sha"`
-	URL         *string    `json:"url"`
-	HTMLURL     *string    `json:"html_url"`
-	Status      *string    `json:"status"`
-	Conclusion  *string    `json:"conclusion"`
-	StartedAt   *Timestamp `json:"started_at"`
-	CompletedAt *Timestamp `json:"completed_at"`
-	Name        *string    `json:"name"`
-	Steps       []*Step    `json:"steps"`
-	CheckRunURL *string    `json:"check_run_url"`
+	ID          *int64     `json:"id,omitempty"`
+	RunID       *int64     `json:"run_id,omitempty"`
+	RunURL      *string    `json:"run_url,omitempty"`
+	NodeID      *string    `json:"node_id,omitempty"`
+	HeadSHA     *string    `json:"head_sha,omitempty"`
+	URL         *string    `json:"url,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	Conclusion  *string    `json:"conclusion,omitempty"`
+	StartedAt   *Timestamp `json:"started_at,omitempty"`
+	CompletedAt *Timestamp `json:"completed_at,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Steps       []*Step    `json:"steps,omitempty"`
+	CheckRunURL *string    `json:"check_run_url,omitempty"`
 }
 
 // Jobs represents a slice of repository action workflow job.
 type Jobs struct {
-	TotalCount *int   `json:"total_count"`
+	TotalCount *int   `json:"total_count,omitempty"`
 	Jobs       []*Job `json:"jobs"`
 }
 
