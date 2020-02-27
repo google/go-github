@@ -32,10 +32,10 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: 4,
+		TotalCount: Int(4),
 		Jobs: []*WorkflowJob{
-			{ID: 399444496, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: 399444497, RunID: 29679449, StartedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444496), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !reflect.DeepEqual(jobs, want) {
