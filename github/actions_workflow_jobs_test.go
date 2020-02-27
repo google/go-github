@@ -58,9 +58,9 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	}
 
 	want := &WorkflowJob{
-		ID:          399444496,
-		StartedAt:   Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		CompletedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		ID:          Int64(399444496),
+		StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !reflect.DeepEqual(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
