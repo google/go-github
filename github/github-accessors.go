@@ -5044,6 +5044,14 @@ func (i *IssueStats) GetTotalIssues() int {
 	return *i.TotalIssues
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (j *Jobs) GetTotalCount() int {
+	if j == nil || j.TotalCount == nil {
+		return 0
+	}
+	return *j.TotalCount
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (k *Key) GetCreatedAt() Timestamp {
 	if k == nil || k.CreatedAt == nil {
@@ -11988,6 +11996,54 @@ func (t *Tag) GetVerification() *SignatureVerification {
 	return t.Verification
 }
 
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetCompletedAt() Timestamp {
+	if t == nil || t.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *t.CompletedAt
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetConclusion() string {
+	if t == nil || t.Conclusion == nil {
+		return ""
+	}
+	return *t.Conclusion
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetName() string {
+	if t == nil || t.Name == nil {
+		return ""
+	}
+	return *t.Name
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetNumber() int64 {
+	if t == nil || t.Number == nil {
+		return 0
+	}
+	return *t.Number
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetStartedAt() Timestamp {
+	if t == nil || t.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *t.StartedAt
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (t *TaskStep) GetStatus() string {
+	if t == nil || t.Status == nil {
+		return ""
+	}
+	return *t.Status
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (t *Team) GetDescription() string {
 	if t == nil || t.Description == nil {
@@ -13998,6 +14054,110 @@ func (w *Workflow) GetUpdatedAt() Timestamp {
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (w *Workflow) GetURL() string {
+	if w == nil || w.URL == nil {
+		return ""
+	}
+	return *w.URL
+}
+
+// GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetCheckRunURL() string {
+	if w == nil || w.CheckRunURL == nil {
+		return ""
+	}
+	return *w.CheckRunURL
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetCompletedAt() Timestamp {
+	if w == nil || w.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *w.CompletedAt
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetConclusion() string {
+	if w == nil || w.Conclusion == nil {
+		return ""
+	}
+	return *w.Conclusion
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetHeadSHA() string {
+	if w == nil || w.HeadSHA == nil {
+		return ""
+	}
+	return *w.HeadSHA
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetHTMLURL() string {
+	if w == nil || w.HTMLURL == nil {
+		return ""
+	}
+	return *w.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetID() int64 {
+	if w == nil || w.ID == nil {
+		return 0
+	}
+	return *w.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetName() string {
+	if w == nil || w.Name == nil {
+		return ""
+	}
+	return *w.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetNodeID() string {
+	if w == nil || w.NodeID == nil {
+		return ""
+	}
+	return *w.NodeID
+}
+
+// GetRunID returns the RunID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunID() int64 {
+	if w == nil || w.RunID == nil {
+		return 0
+	}
+	return *w.RunID
+}
+
+// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunURL() string {
+	if w == nil || w.RunURL == nil {
+		return ""
+	}
+	return *w.RunURL
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetStartedAt() Timestamp {
+	if w == nil || w.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *w.StartedAt
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetStatus() string {
+	if w == nil || w.Status == nil {
+		return ""
+	}
+	return *w.Status
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetURL() string {
 	if w == nil || w.URL == nil {
 		return ""
 	}
