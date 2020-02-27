@@ -308,6 +308,78 @@ func (a *AppConfig) GetWebhookSecret() string {
 	return *a.WebhookSecret
 }
 
+// GetArchiveDownloadURL returns the ArchiveDownloadURL field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetArchiveDownloadURL() string {
+	if a == nil || a.ArchiveDownloadURL == nil {
+		return ""
+	}
+	return *a.ArchiveDownloadURL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetExpired returns the Expired field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetExpired() bool {
+	if a == nil || a.Expired == nil {
+		return false
+	}
+	return *a.Expired
+}
+
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetExpiresAt() Timestamp {
+	if a == nil || a.ExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *a.ExpiresAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetNodeID() string {
+	if a == nil || a.NodeID == nil {
+		return ""
+	}
+	return *a.NodeID
+}
+
+// GetSizeInBytes returns the SizeInBytes field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetSizeInBytes() int64 {
+	if a == nil || a.SizeInBytes == nil {
+		return 0
+	}
+	return *a.SizeInBytes
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ArtifactList) GetTotalCount() int64 {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (a *Attachment) GetBody() string {
 	if a == nil || a.Body == nil {
