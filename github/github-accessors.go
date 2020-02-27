@@ -13908,6 +13908,86 @@ func (w *WeeklyStats) GetWeek() Timestamp {
 	return *w.Week
 }
 
+// GetBadgeURL returns the BadgeURL field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetBadgeURL() string {
+	if w == nil || w.BadgeURL == nil {
+		return ""
+	}
+	return *w.BadgeURL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetCreatedAt() Timestamp {
+	if w == nil || w.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.CreatedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetHTMLURL() string {
+	if w == nil || w.HTMLURL == nil {
+		return ""
+	}
+	return *w.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetID() int64 {
+	if w == nil || w.ID == nil {
+		return 0
+	}
+	return *w.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetName() string {
+	if w == nil || w.Name == nil {
+		return ""
+	}
+	return *w.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetNodeID() string {
+	if w == nil || w.NodeID == nil {
+		return ""
+	}
+	return *w.NodeID
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetPath() string {
+	if w == nil || w.Path == nil {
+		return ""
+	}
+	return *w.Path
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetState() string {
+	if w == nil || w.State == nil {
+		return ""
+	}
+	return *w.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetUpdatedAt() Timestamp {
+	if w == nil || w.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (w *Workflow) GetURL() string {
+	if w == nil || w.URL == nil {
+		return ""
+	}
+	return *w.URL
+}
+
 // GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetCheckRunURL() string {
 	if w == nil || w.CheckRunURL == nil {
@@ -14010,4 +14090,12 @@ func (w *WorkflowJob) GetURL() string {
 		return ""
 	}
 	return *w.URL
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (w *Workflows) GetTotalCount() int {
+	if w == nil || w.TotalCount == nil {
+		return 0
+	}
+	return *w.TotalCount
 }
