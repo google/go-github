@@ -116,7 +116,7 @@ func (s ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
-	return s.deleteCommentReaction(ctx, u)
+	return s.deleteReaction(ctx, u)
 }
 
 // DeleteCommentReactionByRepoID deletes the reaction for a commit comment by repository ID.
@@ -125,19 +125,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 func (s *ReactionsService) DeleteCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
-	return s.deleteCommentReaction(ctx, u)
-}
-
-func (s ReactionsService) deleteCommentReaction(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest(http.MethodDelete, url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
-	return s.client.Do(ctx, req, nil)
+	return s.deleteReaction(ctx, u)
 }
 
 // ListIssueReactions lists the reactions for an issue.
@@ -194,6 +182,24 @@ func (s ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo s
 	return m, resp, nil
 }
 
+// DeleteIssueReaction deletes the reaction to an issue.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-reaction
+func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
+// DeleteIssueReactionByRepoID deletes the reaction to an issue by repository ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-reaction
+func (s *ReactionsService) DeleteIssueReactionByRepoID(ctx context.Context, repoID, issueNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-an-issue-comment
@@ -246,6 +252,24 @@ func (s ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner,
 	}
 
 	return m, resp, nil
+}
+
+// DeleteIssueCommentReaction deletes the reaction to an issue comment.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-comment-reaction
+func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
+// DeleteIssueCommentReactionByRepoID deletes the reaction to an issue comment by repository ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-comment-reaction
+func (s *ReactionsService) DeleteIssueCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
+
+	return s.deleteReaction(ctx, url)
 }
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
@@ -302,6 +326,24 @@ func (s ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, 
 	return m, resp, nil
 }
 
+// DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-pull-request-comment-reaction
+func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
+// DeletePullRequestCommentReactionByRepoID deletes the reaction to a pull request review comment by repository ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-pull-request-comment-reaction
+func (s *ReactionsService) DeletePullRequestCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion
@@ -350,6 +392,24 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	}
 
 	return m, resp, nil
+}
+
+// DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-reaction
+func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
+// DeleteTeamDiscussionReactionByTeamIDAndOrgID deletes the reaction to a team discussion by organization ID and team ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-reaction
+func (s *ReactionsService) DeleteTeamDiscussionReactionByTeamIDAndOrgID(ctx context.Context, orgID, teamID, discussionNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
+
+	return s.deleteReaction(ctx, url)
 }
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
@@ -401,18 +461,31 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	return m, resp, nil
 }
 
-// DeleteReaction deletes a reaction.
+// DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
-// GitHub API docs: https://developer.github.com/v3/reaction/reactions/#delete-a-reaction-archive
-func (s *ReactionsService) DeleteReaction(ctx context.Context, id int64) (*Response, error) {
-	u := fmt.Sprintf("reactions/%v", id)
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-comment-reaction
+func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	return s.deleteReaction(ctx, url)
+}
+
+// DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID deletes the reaction to a team discussion comment by organization ID and team ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-comment-reaction
+func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber, reactionID int64) (*Response, error) {
+	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
+
+	return s.deleteReaction(ctx, url)
+}
+
+func (s ReactionsService) deleteReaction(ctx context.Context, url string) (*Response, error) {
+	req, err := s.client.NewRequest(http.MethodDelete, url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
+	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	return s.client.Do(ctx, req, nil)

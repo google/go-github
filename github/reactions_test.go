@@ -325,22 +325,6 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 	}
 }
 
-func TestReactionsService_DeleteReaction(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/reactions/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
-
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	if _, err := client.Reactions.DeleteReaction(context.Background(), 1); err != nil {
-		t.Errorf("DeleteReaction returned error: %v", err)
-	}
-}
-
 func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -370,5 +354,165 @@ func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
 
 	if _, err := client.Reactions.DeleteCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
 		t.Errorf("DeleteCommentReactionByRepoID returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteIssueReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteIssueReaction(context.Background(), "o", "r", 1, 2); err != nil {
+		t.Errorf("DeleteIssueReaction returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories/1/issues/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteIssueReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+		t.Errorf("DeleteIssueReactionByRepoID returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteIssueCommentReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/issues/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteIssueCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+		t.Errorf("DeleteIssueCommentReaction returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories/1/issues/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteIssueCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+		t.Errorf("DeleteIssueCommentReactionByRepoID returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeletePullRequestCommentReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/pulls/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeletePullRequestCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+		t.Errorf("DeletePullRequestCommentReaction returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories/1/pulls/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeletePullRequestCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+		t.Errorf("DeletePullRequestCommentReactionByRepoID returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteTeamDiscussionReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/s/discussions/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteTeamDiscussionReaction(context.Background(), "o", "s", 1, 2); err != nil {
+		t.Errorf("DeleteTeamDiscussionReaction returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/organizations/1/team/2/discussions/3/reactions/4", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteTeamDiscussionReactionByTeamIDAndOrgID(context.Background(), 1, 2, 3, 4); err != nil {
+		t.Errorf("DeleteTeamDiscussionReactionByTeamIDAndOrgID returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/s/discussions/1/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteTeamDiscussionCommentReaction(context.Background(), "o", "s", 1, 2, 3); err != nil {
+		t.Errorf("DeleteTeamDiscussionCommentReaction returned error: %v", err)
+	}
+}
+
+func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/organizations/1/team/2/discussions/3/comments/4/reactions/5", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(context.Background(), 1, 2, 3, 4, 5); err != nil {
+		t.Errorf("DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID returned error: %v", err)
 	}
 }
