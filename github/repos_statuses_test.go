@@ -96,7 +96,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
 	}
 
-	want := &CombinedStatus{State: String("success"), Statuses: []RepoStatus{{ID: Int64(1)}}}
+	want := &CombinedStatus{State: String("success"), Statuses: []*RepoStatus{{ID: Int64(1)}}}
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}

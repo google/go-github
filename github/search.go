@@ -62,9 +62,9 @@ type searchParameters struct {
 
 // RepositoriesSearchResult represents the result of a repositories search.
 type RepositoriesSearchResult struct {
-	Total             *int         `json:"total_count,omitempty"`
-	IncompleteResults *bool        `json:"incomplete_results,omitempty"`
-	Repositories      []Repository `json:"items,omitempty"`
+	Total             *int          `json:"total_count,omitempty"`
+	IncompleteResults *bool         `json:"incomplete_results,omitempty"`
+	Repositories      []*Repository `json:"items,omitempty"`
 }
 
 // Repositories searches repositories via various criteria.
@@ -140,9 +140,9 @@ func (s *SearchService) Commits(ctx context.Context, query string, opts *SearchO
 
 // IssuesSearchResult represents the result of an issues search.
 type IssuesSearchResult struct {
-	Total             *int    `json:"total_count,omitempty"`
-	IncompleteResults *bool   `json:"incomplete_results,omitempty"`
-	Issues            []Issue `json:"items,omitempty"`
+	Total             *int     `json:"total_count,omitempty"`
+	IncompleteResults *bool    `json:"incomplete_results,omitempty"`
+	Issues            []*Issue `json:"items,omitempty"`
 }
 
 // Issues searches issues via various criteria.
@@ -156,9 +156,9 @@ func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOp
 
 // UsersSearchResult represents the result of a users search.
 type UsersSearchResult struct {
-	Total             *int   `json:"total_count,omitempty"`
-	IncompleteResults *bool  `json:"incomplete_results,omitempty"`
-	Users             []User `json:"items,omitempty"`
+	Total             *int    `json:"total_count,omitempty"`
+	IncompleteResults *bool   `json:"incomplete_results,omitempty"`
+	Users             []*User `json:"items,omitempty"`
 }
 
 // Users searches users via various criteria.
@@ -178,11 +178,11 @@ type Match struct {
 
 // TextMatch represents a text match for a SearchResult
 type TextMatch struct {
-	ObjectURL  *string `json:"object_url,omitempty"`
-	ObjectType *string `json:"object_type,omitempty"`
-	Property   *string `json:"property,omitempty"`
-	Fragment   *string `json:"fragment,omitempty"`
-	Matches    []Match `json:"matches,omitempty"`
+	ObjectURL  *string  `json:"object_url,omitempty"`
+	ObjectType *string  `json:"object_type,omitempty"`
+	Property   *string  `json:"property,omitempty"`
+	Fragment   *string  `json:"fragment,omitempty"`
+	Matches    []*Match `json:"matches,omitempty"`
 }
 
 func (tm TextMatch) String() string {
@@ -191,19 +191,19 @@ func (tm TextMatch) String() string {
 
 // CodeSearchResult represents the result of a code search.
 type CodeSearchResult struct {
-	Total             *int         `json:"total_count,omitempty"`
-	IncompleteResults *bool        `json:"incomplete_results,omitempty"`
-	CodeResults       []CodeResult `json:"items,omitempty"`
+	Total             *int          `json:"total_count,omitempty"`
+	IncompleteResults *bool         `json:"incomplete_results,omitempty"`
+	CodeResults       []*CodeResult `json:"items,omitempty"`
 }
 
 // CodeResult represents a single search result.
 type CodeResult struct {
-	Name        *string     `json:"name,omitempty"`
-	Path        *string     `json:"path,omitempty"`
-	SHA         *string     `json:"sha,omitempty"`
-	HTMLURL     *string     `json:"html_url,omitempty"`
-	Repository  *Repository `json:"repository,omitempty"`
-	TextMatches []TextMatch `json:"text_matches,omitempty"`
+	Name        *string      `json:"name,omitempty"`
+	Path        *string      `json:"path,omitempty"`
+	SHA         *string      `json:"sha,omitempty"`
+	HTMLURL     *string      `json:"html_url,omitempty"`
+	Repository  *Repository  `json:"repository,omitempty"`
+	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 }
 
 func (c CodeResult) String() string {

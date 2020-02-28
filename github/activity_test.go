@@ -116,13 +116,13 @@ var wantFeeds = &Feeds{
 		"https://github.com/organizations/github/defunkt.private.atom?token=abc123",
 	},
 	Links: &struct {
-		Timeline                 *FeedLink  `json:"timeline,omitempty"`
-		User                     *FeedLink  `json:"user,omitempty"`
-		CurrentUserPublic        *FeedLink  `json:"current_user_public,omitempty"`
-		CurrentUser              *FeedLink  `json:"current_user,omitempty"`
-		CurrentUserActor         *FeedLink  `json:"current_user_actor,omitempty"`
-		CurrentUserOrganization  *FeedLink  `json:"current_user_organization,omitempty"`
-		CurrentUserOrganizations []FeedLink `json:"current_user_organizations,omitempty"`
+		Timeline                 *FeedLink   `json:"timeline,omitempty"`
+		User                     *FeedLink   `json:"user,omitempty"`
+		CurrentUserPublic        *FeedLink   `json:"current_user_public,omitempty"`
+		CurrentUser              *FeedLink   `json:"current_user,omitempty"`
+		CurrentUserActor         *FeedLink   `json:"current_user_actor,omitempty"`
+		CurrentUserOrganization  *FeedLink   `json:"current_user_organization,omitempty"`
+		CurrentUserOrganizations []*FeedLink `json:"current_user_organizations,omitempty"`
 	}{
 		Timeline: &FeedLink{
 			HRef: String("https://github.com/timeline"),
@@ -148,7 +148,7 @@ var wantFeeds = &Feeds{
 			HRef: String(""),
 			Type: String(""),
 		},
-		CurrentUserOrganizations: []FeedLink{
+		CurrentUserOrganizations: []*FeedLink{
 			{
 				HRef: String("https://github.com/organizations/github/defunkt.private.atom?token=abc123"),
 				Type: String("application/atom+xml"),

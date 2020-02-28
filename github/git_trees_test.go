@@ -35,7 +35,7 @@ func TestGitService_GetTree(t *testing.T) {
 
 	want := Tree{
 		SHA: String("s"),
-		Entries: []TreeEntry{
+		Entries: []*TreeEntry{
 			{
 				Type: String("blob"),
 			},
@@ -59,7 +59,7 @@ func TestGitService_CreateTree(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := []TreeEntry{
+	input := []*TreeEntry{
 		{
 			Path: String("file.rb"),
 			Mode: String("100644"),
@@ -102,7 +102,7 @@ func TestGitService_CreateTree(t *testing.T) {
 
 	want := Tree{
 		String("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
-		[]TreeEntry{
+		[]*TreeEntry{
 			{
 				Path: String("file.rb"),
 				Mode: String("100644"),
@@ -123,7 +123,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := []TreeEntry{
+	input := []*TreeEntry{
 		{
 			Path:    String("content.md"),
 			Mode:    String("100644"),
@@ -167,7 +167,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 
 	want := Tree{
 		String("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
-		[]TreeEntry{
+		[]*TreeEntry{
 			{
 				Path: String("content.md"),
 				Mode: String("100644"),
@@ -189,7 +189,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := []TreeEntry{
+	input := []*TreeEntry{
 		{
 			Path: String("content.md"),
 			Mode: String("100644"),
@@ -232,7 +232,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 
 	want := Tree{
 		String("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
-		[]TreeEntry{
+		[]*TreeEntry{
 			{
 				Path: String("content.md"),
 				Mode: String("100644"),

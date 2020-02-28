@@ -13,8 +13,8 @@ import (
 
 // Tree represents a GitHub tree.
 type Tree struct {
-	SHA     *string     `json:"sha,omitempty"`
-	Entries []TreeEntry `json:"tree,omitempty"`
+	SHA     *string      `json:"sha,omitempty"`
+	Entries []*TreeEntry `json:"tree,omitempty"`
 
 	// Truncated is true if the number of items in the tree
 	// exceeded GitHub's maximum limit and the Entries were truncated
@@ -125,7 +125,7 @@ type createTree struct {
 // that tree with the new path contents and write a new tree out.
 //
 // GitHub API docs: https://developer.github.com/v3/git/trees/#create-a-tree
-func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []TreeEntry) (*Tree, *Response, error) {
+func (s *GitService) CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []*TreeEntry) (*Tree, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/trees", owner, repo)
 
 	newEntries := make([]interface{}, 0, len(entries))

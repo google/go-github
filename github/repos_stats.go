@@ -14,9 +14,9 @@ import (
 // ContributorStats represents a contributor to a repository and their
 // weekly contributions to a given repo.
 type ContributorStats struct {
-	Author *Contributor  `json:"author,omitempty"`
-	Total  *int          `json:"total,omitempty"`
-	Weeks  []WeeklyStats `json:"weeks,omitempty"`
+	Author *Contributor   `json:"author,omitempty"`
+	Total  *int           `json:"total,omitempty"`
+	Weeks  []*WeeklyStats `json:"weeks,omitempty"`
 }
 
 func (c ContributorStats) String() string {

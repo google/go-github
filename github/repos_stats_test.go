@@ -54,7 +54,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 				NodeID: String("nodeid-1"),
 			},
 			Total: Int(135),
-			Weeks: []WeeklyStats{
+			Weeks: []*WeeklyStats{
 				{
 					Week:      &Timestamp{time.Date(2013, time.May, 05, 00, 00, 00, 0, time.UTC).Local()},
 					Additions: Int(6898),

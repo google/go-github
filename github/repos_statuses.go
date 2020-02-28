@@ -91,10 +91,10 @@ type CombinedStatus struct {
 	// failure, pending, or success.
 	State *string `json:"state,omitempty"`
 
-	Name       *string      `json:"name,omitempty"`
-	SHA        *string      `json:"sha,omitempty"`
-	TotalCount *int         `json:"total_count,omitempty"`
-	Statuses   []RepoStatus `json:"statuses,omitempty"`
+	Name       *string       `json:"name,omitempty"`
+	SHA        *string       `json:"sha,omitempty"`
+	TotalCount *int          `json:"total_count,omitempty"`
+	Statuses   []*RepoStatus `json:"statuses,omitempty"`
 
 	CommitURL     *string `json:"commit_url,omitempty"`
 	RepositoryURL *string `json:"repository_url,omitempty"`

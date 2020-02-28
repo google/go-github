@@ -33,7 +33,7 @@ type Issue struct {
 	Title            *string           `json:"title,omitempty"`
 	Body             *string           `json:"body,omitempty"`
 	User             *User             `json:"user,omitempty"`
-	Labels           []Label           `json:"labels,omitempty"`
+	Labels           []*Label          `json:"labels,omitempty"`
 	Assignee         *User             `json:"assignee,omitempty"`
 	Comments         *int              `json:"comments,omitempty"`
 	ClosedAt         *time.Time        `json:"closed_at,omitempty"`
@@ -55,7 +55,7 @@ type Issue struct {
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
-	TextMatches []TextMatch `json:"text_matches,omitempty"`
+	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
 	// Possible values are: "off-topic", "too heated", "resolved", and "spam".

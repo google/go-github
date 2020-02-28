@@ -15,18 +15,18 @@ import (
 //
 // https://developer.github.com/changes/2016-04-04-git-signing-api-preview/
 type GPGKey struct {
-	ID                *int64     `json:"id,omitempty"`
-	PrimaryKeyID      *int64     `json:"primary_key_id,omitempty"`
-	KeyID             *string    `json:"key_id,omitempty"`
-	PublicKey         *string    `json:"public_key,omitempty"`
-	Emails            []GPGEmail `json:"emails,omitempty"`
-	Subkeys           []GPGKey   `json:"subkeys,omitempty"`
-	CanSign           *bool      `json:"can_sign,omitempty"`
-	CanEncryptComms   *bool      `json:"can_encrypt_comms,omitempty"`
-	CanEncryptStorage *bool      `json:"can_encrypt_storage,omitempty"`
-	CanCertify        *bool      `json:"can_certify,omitempty"`
-	CreatedAt         *time.Time `json:"created_at,omitempty"`
-	ExpiresAt         *time.Time `json:"expires_at,omitempty"`
+	ID                *int64      `json:"id,omitempty"`
+	PrimaryKeyID      *int64      `json:"primary_key_id,omitempty"`
+	KeyID             *string     `json:"key_id,omitempty"`
+	PublicKey         *string     `json:"public_key,omitempty"`
+	Emails            []*GPGEmail `json:"emails,omitempty"`
+	Subkeys           []*GPGKey   `json:"subkeys,omitempty"`
+	CanSign           *bool       `json:"can_sign,omitempty"`
+	CanEncryptComms   *bool       `json:"can_encrypt_comms,omitempty"`
+	CanEncryptStorage *bool       `json:"can_encrypt_storage,omitempty"`
+	CanCertify        *bool       `json:"can_certify,omitempty"`
+	CreatedAt         *time.Time  `json:"created_at,omitempty"`
+	ExpiresAt         *time.Time  `json:"expires_at,omitempty"`
 }
 
 // String stringifies a GPGKey.

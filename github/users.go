@@ -63,7 +63,7 @@ type User struct {
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
-	TextMatches []TextMatch `json:"text_matches,omitempty"`
+	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// Permissions identifies the permissions that a user has on a given
 	// repository. This is only populated when calling Repositories.ListCollaborators.

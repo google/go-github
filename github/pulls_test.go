@@ -467,7 +467,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 	want := []*RepositoryCommit{
 		{
 			SHA: String("3"),
-			Parents: []Commit{
+			Parents: []*Commit{
 				{
 					SHA: String("2"),
 				},
@@ -475,7 +475,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 		},
 		{
 			SHA: String("2"),
-			Parents: []Commit{
+			Parents: []*Commit{
 				{
 					SHA: String("1"),
 				},
