@@ -106,7 +106,7 @@ type Import struct {
 	// When the importer finds several projects or repositories at the
 	// provided URLs, this will identify the available choices. Call
 	// UpdateImport with the selected Import value.
-	ProjectChoices []Import `json:"project_choices,omitempty"`
+	ProjectChoices []*Import `json:"project_choices,omitempty"`
 }
 
 func (i Import) String() string {

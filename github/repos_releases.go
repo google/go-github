@@ -27,18 +27,18 @@ type RepositoryRelease struct {
 	Prerelease      *bool   `json:"prerelease,omitempty"`
 
 	// The following fields are not used in CreateRelease or EditRelease:
-	ID          *int64         `json:"id,omitempty"`
-	CreatedAt   *Timestamp     `json:"created_at,omitempty"`
-	PublishedAt *Timestamp     `json:"published_at,omitempty"`
-	URL         *string        `json:"url,omitempty"`
-	HTMLURL     *string        `json:"html_url,omitempty"`
-	AssetsURL   *string        `json:"assets_url,omitempty"`
-	Assets      []ReleaseAsset `json:"assets,omitempty"`
-	UploadURL   *string        `json:"upload_url,omitempty"`
-	ZipballURL  *string        `json:"zipball_url,omitempty"`
-	TarballURL  *string        `json:"tarball_url,omitempty"`
-	Author      *User          `json:"author,omitempty"`
-	NodeID      *string        `json:"node_id,omitempty"`
+	ID          *int64          `json:"id,omitempty"`
+	CreatedAt   *Timestamp      `json:"created_at,omitempty"`
+	PublishedAt *Timestamp      `json:"published_at,omitempty"`
+	URL         *string         `json:"url,omitempty"`
+	HTMLURL     *string         `json:"html_url,omitempty"`
+	AssetsURL   *string         `json:"assets_url,omitempty"`
+	Assets      []*ReleaseAsset `json:"assets,omitempty"`
+	UploadURL   *string         `json:"upload_url,omitempty"`
+	ZipballURL  *string         `json:"zipball_url,omitempty"`
+	TarballURL  *string         `json:"tarball_url,omitempty"`
+	Author      *User           `json:"author,omitempty"`
+	NodeID      *string         `json:"node_id,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
