@@ -110,11 +110,11 @@ func (s ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo
 	return m, resp, nil
 }
 
-// DeleteCommentReaction delete the reaction for a commit comment.
+// DeleteCommentReaction deletes the reaction for a commit comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
-func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, id, reactionID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, id, reactionID)
+func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
 	req, err := s.client.NewRequest(http.MethodDelete, u, nil)
 	if err != nil {
