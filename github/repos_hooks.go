@@ -19,18 +19,18 @@ import (
 //
 // GitHub API docs: https://help.github.com/articles/post-receive-hooks
 type WebHookPayload struct {
-	After      *string         `json:"after,omitempty"`
-	Before     *string         `json:"before,omitempty"`
-	Commits    []WebHookCommit `json:"commits,omitempty"`
-	Compare    *string         `json:"compare,omitempty"`
-	Created    *bool           `json:"created,omitempty"`
-	Deleted    *bool           `json:"deleted,omitempty"`
-	Forced     *bool           `json:"forced,omitempty"`
-	HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
-	Pusher     *User           `json:"pusher,omitempty"`
-	Ref        *string         `json:"ref,omitempty"`
-	Repo       *Repository     `json:"repository,omitempty"`
-	Sender     *User           `json:"sender,omitempty"`
+	After      *string          `json:"after,omitempty"`
+	Before     *string          `json:"before,omitempty"`
+	Commits    []*WebHookCommit `json:"commits,omitempty"`
+	Compare    *string          `json:"compare,omitempty"`
+	Created    *bool            `json:"created,omitempty"`
+	Deleted    *bool            `json:"deleted,omitempty"`
+	Forced     *bool            `json:"forced,omitempty"`
+	HeadCommit *WebHookCommit   `json:"head_commit,omitempty"`
+	Pusher     *User            `json:"pusher,omitempty"`
+	Ref        *string          `json:"ref,omitempty"`
+	Repo       *Repository      `json:"repository,omitempty"`
+	Sender     *User            `json:"sender,omitempty"`
 }
 
 func (w WebHookPayload) String() string {
