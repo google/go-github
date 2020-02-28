@@ -356,3 +356,19 @@ func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 		t.Errorf("DeleteCommentReaction returned error: %v", err)
 	}
 }
+
+func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repositories/1/comments/2/reactions/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+		t.Errorf("DeleteCommentReactionByRepoID returned error: %v", err)
+	}
+}
