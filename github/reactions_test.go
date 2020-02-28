@@ -353,6 +353,6 @@ func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 	})
 
 	if _, err := client.Reactions.DeleteCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
-		t.Errorf("DeleteReaction returned error: %v", err)
+		t.Errorf("DeleteCommentReaction returned error: %v", err)
 	}
 }
