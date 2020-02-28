@@ -38,7 +38,7 @@ func TestCommit_Marshal(t *testing.T) {
 		Message: String("m"),
 		Tree: &Tree{
 			SHA: String("s"),
-			Entries: []TreeEntry{{
+			Entries: []*TreeEntry{{
 				SHA:     String("s"),
 				Path:    String("p"),
 				Mode:    String("m"),
@@ -153,7 +153,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 	input := &Commit{
 		Message: String("Commit Message."),
 		Tree:    &Tree{SHA: String("t")},
-		Parents: []Commit{{SHA: String("p")}},
+		Parents: []*Commit{{SHA: String("p")}},
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -193,7 +193,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	input := &Commit{
 		Message: String("Commit Message."),
 		Tree:    &Tree{SHA: String("t")},
-		Parents: []Commit{{SHA: String("p")}},
+		Parents: []*Commit{{SHA: String("p")}},
 		Verification: &SignatureVerification{
 			Signature: String(signature),
 		},
@@ -259,7 +259,7 @@ func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 	input := &Commit{
 		Message:    String("Commit Message."),
 		Tree:       &Tree{SHA: String("t")},
-		Parents:    []Commit{{SHA: String("p")}},
+		Parents:    []*Commit{{SHA: String("p")}},
 		SigningKey: keyring[0],
 		Author:     &author,
 	}

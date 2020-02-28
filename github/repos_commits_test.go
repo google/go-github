@@ -96,7 +96,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 		Committer: &User{
 			Login: String("l"),
 		},
-		Parents: []Commit{
+		Parents: []*Commit{
 			{
 				SHA: String("s"),
 			},
@@ -106,7 +106,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 			Deletions: Int(4),
 			Total:     Int(108),
 		},
-		Files: []CommitFile{
+		Files: []*CommitFile{
 			{
 				Filename:    String("f"),
 				Additions:   Int(10),
@@ -358,7 +358,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 			},
 			Author:    &User{Login: String("l")},
 			Committer: &User{Login: String("l")},
-			Parents: []Commit{
+			Parents: []*Commit{
 				{
 					SHA: String("s"),
 				},
@@ -368,7 +368,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		AheadBy:      Int(1),
 		BehindBy:     Int(2),
 		TotalCommits: Int(1),
-		Commits: []RepositoryCommit{
+		Commits: []*RepositoryCommit{
 			{
 				SHA: String("s"),
 				Commit: &Commit{
@@ -376,14 +376,14 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 				},
 				Author:    &User{Login: String("l")},
 				Committer: &User{Login: String("l")},
-				Parents: []Commit{
+				Parents: []*Commit{
 					{
 						SHA: String("s"),
 					},
 				},
 			},
 		},
-		Files: []CommitFile{
+		Files: []*CommitFile{
 			{
 				Filename: String("f"),
 			},
