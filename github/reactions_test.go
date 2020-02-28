@@ -340,3 +340,19 @@ func TestReactionsService_DeleteReaction(t *testing.T) {
 		t.Errorf("DeleteReaction returned error: %v", err)
 	}
 }
+
+func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/comments/1/reactions/2", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Reactions.DeleteCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+		t.Errorf("DeleteReaction returned error: %v", err)
+	}
+}
