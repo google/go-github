@@ -35,6 +35,38 @@ func Test_ParseForms(t *testing.T) {
 				{Action: "a2", Method: "m2", Values: url.Values{"n2": {"v2"}}},
 			},
 		},
+		{
+			"form with radio buttons (none checked)",
+			`<html><form>
+			   <input type="radio" name="n1" value="v1">
+			   <input type="radio" name="n1" value="v2">
+			   <input type="radio" name="n1" value="v3">
+			</form></html>`,
+			[]htmlForm{{Values: url.Values{}}},
+		},
+		{
+			"form with radio buttons",
+			`<html><form>
+			   <input type="radio" name="n1" value="v1">
+			   <input type="radio" name="n1" value="v2">
+			   <input type="radio" name="n1" value="v3" checked>
+			</form></html>`,
+			[]htmlForm{{Values: url.Values{"n1": {"v3"}}}},
+		},
+		{
+			"form with checkboxes",
+			`<html><form>
+			   <input type="checkbox" name="n1" value="v1" checked>
+			   <input type="checkbox" name="n2" value="v2">
+			   <input type="checkbox" name="n3" value="v3" checked>
+			</form></html>`,
+			[]htmlForm{{Values: url.Values{"n1": {"v1"}, "n3": {"v3"}}}},
+		},
+		{
+			"single form with textarea",
+			`<html><form><textarea name="n1">v1</textarea></form></html>`,
+			[]htmlForm{{Values: url.Values{"n1": {"v1"}}}},
+		},
 	}
 
 	for _, tt := range tests {

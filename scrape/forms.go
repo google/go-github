@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
@@ -29,8 +30,8 @@ type htmlForm struct {
 }
 
 // parseForms parses and returns all form elements beneath node.  Form values
-// include all nested input elements within the form (textarea is not currently
-// supported).
+// include all input and textarea elements within the form. The values of radio
+// and checkbox inputs are included only if they are checked.
 //
 // In the future, we might want to allow a custom selector to be passed in to
 // further restrict what forms will be returned.
@@ -47,10 +48,28 @@ func parseForms(node *html.Node) (forms []htmlForm) {
 
 		s.Find("input").Each(func(_ int, s *goquery.Selection) {
 			name, _ := s.Attr("name")
-			value, _ := s.Attr("value")
-			if name != "" {
-				form.Values.Add(name, value)
+			if name == "" {
+				return
 			}
+
+			typ, _ := s.Attr("type")
+			typ = strings.ToLower(typ)
+			_, checked := s.Attr("checked")
+			if (typ == "radio" || typ == "checkbox") && !checked {
+				return
+			}
+
+			value, _ := s.Attr("value")
+			form.Values.Add(name, value)
+		})
+		s.Find("textarea").Each(func(_ int, s *goquery.Selection) {
+			name, _ := s.Attr("name")
+			if name == "" {
+				return
+			}
+
+			value := s.Text()
+			form.Values.Add(name, value)
 		})
 		forms = append(forms, form)
 	})
@@ -87,7 +106,9 @@ func fetchAndSubmitForm(client *http.Client, urlStr string, setValues func(url.V
 	actionURL = resp.Request.URL.ResolveReference(actionURL)
 
 	// allow caller to fill out the form
-	setValues(form.Values)
+	if setValues != nil {
+		setValues(form.Values)
+	}
 
 	resp, err = client.PostForm(actionURL.String(), form.Values)
 	if err != nil {
