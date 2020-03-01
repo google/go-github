@@ -31,11 +31,11 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 		t.Errorf("Actions.ListWorkFlowRunsByID returned error: %v", err)
 	}
 
-	want := &Runs{
+	want := &WorkflowRuns{
 		TotalCount: Int(4),
-		Runs: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int64(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int64(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+		WorkflowRuns: []*WorkflowRun{
+			{ID: Int64(399444496), RunNumber: Int(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444497), RunNumber: Int(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !reflect.DeepEqual(runs, want) {
@@ -59,11 +59,11 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 		t.Errorf("Actions.ListWorkFlowRunsByFileName returned error: %v", err)
 	}
 
-	want := &Runs{
+	want := &WorkflowRuns{
 		TotalCount: Int(4),
-		Runs: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int64(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int64(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+		WorkflowRuns: []*WorkflowRun{
+			{ID: Int64(399444496), RunNumber: Int(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444497), RunNumber: Int(29679449), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !reflect.DeepEqual(runs, want) {
@@ -87,7 +87,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 
 	want := &WorkflowRun{
 		ID:        Int64(399444496),
-		RunNumber: Int64(29679449),
+		RunNumber: Int(29679449),
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}

@@ -1860,54 +1860,6 @@ func (c *CommitStats) GetTotal() int {
 	return *c.Total
 }
 
-// GetAuthor returns the Author field.
-func (c *CommitWorkflowRun) GetAuthor() *PersonWorkflowRun {
-	if c == nil {
-		return nil
-	}
-	return c.Author
-}
-
-// GetCommitter returns the Committer field.
-func (c *CommitWorkflowRun) GetCommitter() *PersonWorkflowRun {
-	if c == nil {
-		return nil
-	}
-	return c.Committer
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *CommitWorkflowRun) GetID() string {
-	if c == nil || c.ID == nil {
-		return ""
-	}
-	return *c.ID
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CommitWorkflowRun) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
-func (c *CommitWorkflowRun) GetTimestamp() Timestamp {
-	if c == nil || c.Timestamp == nil {
-		return Timestamp{}
-	}
-	return *c.Timestamp
-}
-
-// GetTreeID returns the TreeID field if it's non-nil, zero value otherwise.
-func (c *CommitWorkflowRun) GetTreeID() string {
-	if c == nil || c.TreeID == nil {
-		return ""
-	}
-	return *c.TreeID
-}
-
 // GetCodeOfConduct returns the CodeOfConduct field.
 func (c *CommunityHealthFiles) GetCodeOfConduct() *Metric {
 	if c == nil {
@@ -3674,6 +3626,78 @@ func (g *Grant) GetURL() string {
 		return ""
 	}
 	return *g.URL
+}
+
+// GetAuthor returns the Author field.
+func (h *HeadCommit) GetAuthor() *CommitAuthor {
+	if h == nil {
+		return nil
+	}
+	return h.Author
+}
+
+// GetCommitter returns the Committer field.
+func (h *HeadCommit) GetCommitter() *CommitAuthor {
+	if h == nil {
+		return nil
+	}
+	return h.Committer
+}
+
+// GetDistinct returns the Distinct field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetDistinct() bool {
+	if h == nil || h.Distinct == nil {
+		return false
+	}
+	return *h.Distinct
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetID() string {
+	if h == nil || h.ID == nil {
+		return ""
+	}
+	return *h.ID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetMessage() string {
+	if h == nil || h.Message == nil {
+		return ""
+	}
+	return *h.Message
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetSHA() string {
+	if h == nil || h.SHA == nil {
+		return ""
+	}
+	return *h.SHA
+}
+
+// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetTimestamp() Timestamp {
+	if h == nil || h.Timestamp == nil {
+		return Timestamp{}
+	}
+	return *h.Timestamp
+}
+
+// GetTreeID returns the TreeID field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetTreeID() string {
+	if h == nil || h.TreeID == nil {
+		return ""
+	}
+	return *h.TreeID
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (h *HeadCommit) GetURL() string {
+	if h == nil || h.URL == nil {
+		return ""
+	}
+	return *h.URL
 }
 
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
@@ -7196,22 +7220,6 @@ func (p *PageStats) GetTotalPages() int {
 	return *p.TotalPages
 }
 
-// GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (p *PersonWorkflowRun) GetEmail() string {
-	if p == nil || p.Email == nil {
-		return ""
-	}
-	return *p.Email
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (p *PersonWorkflowRun) GetName() string {
-	if p == nil || p.Name == nil {
-		return ""
-	}
-	return *p.Name
-}
-
 // GetHook returns the Hook field.
 func (p *PingEvent) GetHook() *Hook {
 	if p == nil {
@@ -9261,7 +9269,7 @@ func (p *PushEvent) GetHead() string {
 }
 
 // GetHeadCommit returns the HeadCommit field.
-func (p *PushEvent) GetHeadCommit() *PushEventCommit {
+func (p *PushEvent) GetHeadCommit() *HeadCommit {
 	if p == nil {
 		return nil
 	}
@@ -9322,78 +9330,6 @@ func (p *PushEvent) GetSize() int {
 		return 0
 	}
 	return *p.Size
-}
-
-// GetAuthor returns the Author field.
-func (p *PushEventCommit) GetAuthor() *CommitAuthor {
-	if p == nil {
-		return nil
-	}
-	return p.Author
-}
-
-// GetCommitter returns the Committer field.
-func (p *PushEventCommit) GetCommitter() *CommitAuthor {
-	if p == nil {
-		return nil
-	}
-	return p.Committer
-}
-
-// GetDistinct returns the Distinct field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetDistinct() bool {
-	if p == nil || p.Distinct == nil {
-		return false
-	}
-	return *p.Distinct
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetID() string {
-	if p == nil || p.ID == nil {
-		return ""
-	}
-	return *p.ID
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetMessage() string {
-	if p == nil || p.Message == nil {
-		return ""
-	}
-	return *p.Message
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetSHA() string {
-	if p == nil || p.SHA == nil {
-		return ""
-	}
-	return *p.SHA
-}
-
-// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetTimestamp() Timestamp {
-	if p == nil || p.Timestamp == nil {
-		return Timestamp{}
-	}
-	return *p.Timestamp
-}
-
-// GetTreeID returns the TreeID field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetTreeID() string {
-	if p == nil || p.TreeID == nil {
-		return ""
-	}
-	return *p.TreeID
-}
-
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (p *PushEventCommit) GetURL() string {
-	if p == nil || p.URL == nil {
-		return ""
-	}
-	return *p.URL
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
@@ -11634,14 +11570,6 @@ func (r *ReviewersRequest) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
-}
-
-// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (r *Runs) GetTotalCount() int {
-	if r == nil || r.TotalCount == nil {
-		return 0
-	}
-	return *r.TotalCount
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -14292,6 +14220,14 @@ func (w *WorkflowRun) GetHeadBranch() string {
 	return *w.HeadBranch
 }
 
+// GetHeadCommit returns the HeadCommit field.
+func (w *WorkflowRun) GetHeadCommit() *HeadCommit {
+	if w == nil {
+		return nil
+	}
+	return w.HeadCommit
+}
+
 // GetHeadRepository returns the HeadRepository field.
 func (w *WorkflowRun) GetHeadRepository() *Repository {
 	if w == nil {
@@ -14365,7 +14301,7 @@ func (w *WorkflowRun) GetRerunURL() string {
 }
 
 // GetRunNumber returns the RunNumber field if it's non-nil, zero value otherwise.
-func (w *WorkflowRun) GetRunNumber() int64 {
+func (w *WorkflowRun) GetRunNumber() int {
 	if w == nil || w.RunNumber == nil {
 		return 0
 	}
@@ -14402,6 +14338,14 @@ func (w *WorkflowRun) GetWorkflowURL() string {
 		return ""
 	}
 	return *w.WorkflowURL
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (w *WorkflowRuns) GetTotalCount() int {
+	if w == nil || w.TotalCount == nil {
+		return 0
+	}
+	return *w.TotalCount
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

@@ -12,53 +12,37 @@ import (
 	"net/url"
 )
 
-// PersonWorkflowRun represents a person object as returned in actions workflow jobs endpoint response.
-type PersonWorkflowRun struct {
-	Name  *string `json:"name,omitempty"`
-	Email *string `json:"email,omitempty"`
-}
-
-// CommitWorkflowRun represents a commit object as returned in actions workflow jobs endpoint response.
-type CommitWorkflowRun struct {
-	ID        *string            `json:"id,omitempty"`
-	TreeID    *string            `json:"tree_id,omitempty"`
-	Message   *string            `json:"message,omitempty"`
-	Timestamp *Timestamp         `json:"timestamp,omitempty"`
-	Author    *PersonWorkflowRun `json:"author,omitempty"`
-	Committer *PersonWorkflowRun `json:"committer,omitempty"`
-}
-
 // WorkflowRun represents a repository action workflow run.
 type WorkflowRun struct {
-	ID             *int64            `json:"id,omitempty"`
-	NodeID         *string           `json:"node_id,omitempty"`
-	HeadBranch     *string           `json:"head_branch,omitempty"`
-	HeadSHA        *string           `json:"head_sha,omitempty"`
-	RunNumber      *int64            `json:"run_number,omitempty"`
-	Event          *string           `json:"event,omitempty"`
-	Status         *string           `json:"status,omitempty"`
-	Conclusion     *string           `json:"conclusion,omitempty"`
-	URL            *string           `json:"url,omitempty"`
-	HTMLURL        *string           `json:"html_url,omitempty"`
-	PullRequests   []*PullRequest    `json:"pull_requests,omitempty"`
-	CreatedAt      *Timestamp        `json:"created_at,omitempty"`
-	UpdatedAt      *Timestamp        `json:"updated_at,omitempty"`
-	JobsURL        *string           `json:"jobs_url,omitempty"`
-	LogsURL        *string           `json:"logs_url,omitempty"`
-	CheckSuiteURL  *string           `json:"check_suite_url,omitempty"`
-	ArtifactsURL   *string           `json:"artifacts_url,omitempty"`
-	CancelURL      *string           `json:"cancel_url,omitempty"`
-	RerunURL       *string           `json:"rerun_url,omitempty"`
-	HeadCommit     CommitWorkflowRun `json:"head_commit,omitempty"`
-	WorkflowURL    *string           `json:"workflow_url,omitempty"`
-	Repository     *Repository       `json:"repository,omitempty"`
-	HeadRepository *Repository       `json:"head_repository,omitempty"`
+	ID             *int64         `json:"id,omitempty"`
+	NodeID         *string        `json:"node_id,omitempty"`
+	HeadBranch     *string        `json:"head_branch,omitempty"`
+	HeadSHA        *string        `json:"head_sha,omitempty"`
+	RunNumber      *int           `json:"run_number,omitempty"`
+	Event          *string        `json:"event,omitempty"`
+	Status         *string        `json:"status,omitempty"`
+	Conclusion     *string        `json:"conclusion,omitempty"`
+	URL            *string        `json:"url,omitempty"`
+	HTMLURL        *string        `json:"html_url,omitempty"`
+	PullRequests   []*PullRequest `json:"pull_requests,omitempty"`
+	CreatedAt      *Timestamp     `json:"created_at,omitempty"`
+	UpdatedAt      *Timestamp     `json:"updated_at,omitempty"`
+	JobsURL        *string        `json:"jobs_url,omitempty"`
+	LogsURL        *string        `json:"logs_url,omitempty"`
+	CheckSuiteURL  *string        `json:"check_suite_url,omitempty"`
+	ArtifactsURL   *string        `json:"artifacts_url,omitempty"`
+	CancelURL      *string        `json:"cancel_url,omitempty"`
+	RerunURL       *string        `json:"rerun_url,omitempty"`
+	HeadCommit     *HeadCommit    `json:"head_commit,omitempty"`
+	WorkflowURL    *string        `json:"workflow_url,omitempty"`
+	Repository     *Repository    `json:"repository,omitempty"`
+	HeadRepository *Repository    `json:"head_repository,omitempty"`
 }
 
-// Runs represents a slice of repository action workflow run.
-type Runs struct {
-	TotalCount *int           `json:"total_count,omitempty"`
-	Runs       []*WorkflowRun `json:"workflow_runs,omitempty"`
+// WorkflowRuns represents a slice of repository action workflow run.
+type WorkflowRuns struct {
+	TotalCount   *int           `json:"total_count,omitempty"`
+	WorkflowRuns []*WorkflowRun `json:"workflow_runs,omitempty"`
 }
 
 // ListWorkflowRunsOptions specifies optional parameters to ListWorkflowRuns.
@@ -70,7 +54,7 @@ type ListWorkflowRunsOptions struct {
 	ListOptions
 }
 
-func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*Runs, *Response, error) {
+func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
 		return nil, nil, err
@@ -81,7 +65,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 		return nil, nil, err
 	}
 
-	runs := new(Runs)
+	runs := new(WorkflowRuns)
 	resp, err := s.client.Do(ctx, req, &runs)
 	if err != nil {
 		return nil, resp, err
@@ -93,7 +77,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 // ListWorkflowRunsByID lists all workflow runs by workflow ID.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-workflow-runs
-func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*Runs, *Response, error) {
+func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
 	return s.listWorkflowRuns(ctx, u, opts)
 }
@@ -101,7 +85,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 // ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-workflow-runs
-func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo string, workflowFileName string, opts *ListWorkflowRunsOptions) (*Runs, *Response, error) {
+func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
 	return s.listWorkflowRuns(ctx, u, opts)
 }
@@ -109,7 +93,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 // ListRepositoryWorkflowRuns lists all workflow runs for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-repository-workflow-runs
-func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListOptions) (*Runs, *Response, error) {
+func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -121,7 +105,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	runs := new(Runs)
+	runs := new(WorkflowRuns)
 	resp, err := s.client.Do(ctx, req, &runs)
 	if err != nil {
 		return nil, resp, err
