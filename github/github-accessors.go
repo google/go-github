@@ -1860,6 +1860,54 @@ func (c *CommitStats) GetTotal() int {
 	return *c.Total
 }
 
+// GetAuthor returns the Author field.
+func (c *CommitWorkflowRun) GetAuthor() *PersonWorkflowRun {
+	if c == nil {
+		return nil
+	}
+	return c.Author
+}
+
+// GetCommitter returns the Committer field.
+func (c *CommitWorkflowRun) GetCommitter() *PersonWorkflowRun {
+	if c == nil {
+		return nil
+	}
+	return c.Committer
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CommitWorkflowRun) GetID() string {
+	if c == nil || c.ID == nil {
+		return ""
+	}
+	return *c.ID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CommitWorkflowRun) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
+func (c *CommitWorkflowRun) GetTimestamp() Timestamp {
+	if c == nil || c.Timestamp == nil {
+		return Timestamp{}
+	}
+	return *c.Timestamp
+}
+
+// GetTreeID returns the TreeID field if it's non-nil, zero value otherwise.
+func (c *CommitWorkflowRun) GetTreeID() string {
+	if c == nil || c.TreeID == nil {
+		return ""
+	}
+	return *c.TreeID
+}
+
 // GetCodeOfConduct returns the CodeOfConduct field.
 func (c *CommunityHealthFiles) GetCodeOfConduct() *Metric {
 	if c == nil {
@@ -7148,6 +7196,22 @@ func (p *PageStats) GetTotalPages() int {
 	return *p.TotalPages
 }
 
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (p *PersonWorkflowRun) GetEmail() string {
+	if p == nil || p.Email == nil {
+		return ""
+	}
+	return *p.Email
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PersonWorkflowRun) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
 // GetHook returns the Hook field.
 func (p *PingEvent) GetHook() *Hook {
 	if p == nil {
@@ -11572,6 +11636,14 @@ func (r *ReviewersRequest) GetNodeID() string {
 	return *r.NodeID
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (r *Runs) GetTotalCount() int {
+	if r == nil || r.TotalCount == nil {
+		return 0
+	}
+	return *r.TotalCount
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (s *ServiceHook) GetName() string {
 	if s == nil || s.Name == nil {
@@ -14162,6 +14234,174 @@ func (w *WorkflowJob) GetURL() string {
 		return ""
 	}
 	return *w.URL
+}
+
+// GetArtifactsURL returns the ArtifactsURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetArtifactsURL() string {
+	if w == nil || w.ArtifactsURL == nil {
+		return ""
+	}
+	return *w.ArtifactsURL
+}
+
+// GetCancelURL returns the CancelURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetCancelURL() string {
+	if w == nil || w.CancelURL == nil {
+		return ""
+	}
+	return *w.CancelURL
+}
+
+// GetCheckSuiteURL returns the CheckSuiteURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetCheckSuiteURL() string {
+	if w == nil || w.CheckSuiteURL == nil {
+		return ""
+	}
+	return *w.CheckSuiteURL
+}
+
+// GetConclusion returns the Conclusion field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetConclusion() string {
+	if w == nil || w.Conclusion == nil {
+		return ""
+	}
+	return *w.Conclusion
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetCreatedAt() Timestamp {
+	if w == nil || w.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.CreatedAt
+}
+
+// GetEvent returns the Event field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetEvent() string {
+	if w == nil || w.Event == nil {
+		return ""
+	}
+	return *w.Event
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetHeadBranch() string {
+	if w == nil || w.HeadBranch == nil {
+		return ""
+	}
+	return *w.HeadBranch
+}
+
+// GetHeadRepository returns the HeadRepository field.
+func (w *WorkflowRun) GetHeadRepository() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.HeadRepository
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetHeadSHA() string {
+	if w == nil || w.HeadSHA == nil {
+		return ""
+	}
+	return *w.HeadSHA
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetHTMLURL() string {
+	if w == nil || w.HTMLURL == nil {
+		return ""
+	}
+	return *w.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetID() int64 {
+	if w == nil || w.ID == nil {
+		return 0
+	}
+	return *w.ID
+}
+
+// GetJobsURL returns the JobsURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetJobsURL() string {
+	if w == nil || w.JobsURL == nil {
+		return ""
+	}
+	return *w.JobsURL
+}
+
+// GetLogsURL returns the LogsURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetLogsURL() string {
+	if w == nil || w.LogsURL == nil {
+		return ""
+	}
+	return *w.LogsURL
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetNodeID() string {
+	if w == nil || w.NodeID == nil {
+		return ""
+	}
+	return *w.NodeID
+}
+
+// GetRepository returns the Repository field.
+func (w *WorkflowRun) GetRepository() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repository
+}
+
+// GetRerunURL returns the RerunURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetRerunURL() string {
+	if w == nil || w.RerunURL == nil {
+		return ""
+	}
+	return *w.RerunURL
+}
+
+// GetRunNumber returns the RunNumber field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetRunNumber() int64 {
+	if w == nil || w.RunNumber == nil {
+		return 0
+	}
+	return *w.RunNumber
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetStatus() string {
+	if w == nil || w.Status == nil {
+		return ""
+	}
+	return *w.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetUpdatedAt() Timestamp {
+	if w == nil || w.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetURL() string {
+	if w == nil || w.URL == nil {
+		return ""
+	}
+	return *w.URL
+}
+
+// GetWorkflowURL returns the WorkflowURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetWorkflowURL() string {
+	if w == nil || w.WorkflowURL == nil {
+		return ""
+	}
+	return *w.WorkflowURL
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
