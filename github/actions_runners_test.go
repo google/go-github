@@ -28,7 +28,7 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned error: %v", err)
 	}
 
-	want := &[]RunnerApplicationDownload{
+	want := []*RunnerApplicationDownload{
 		{OS: String("osx"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: String("actions-runner-osx-x64-2.164.0.tar.gz")},
 		{OS: String("linux"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-x64-2.164.0.tar.gz")},
 		{OS: String("linux"), Architecture: String("arm"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm-2.164.0.tar.gz")},
@@ -78,7 +78,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 		t.Errorf("Actions.ListRunners returned error: %v", err)
 	}
 
-	want := &[]Runner{
+	want := []*Runner{
 		{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
 		{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 	}

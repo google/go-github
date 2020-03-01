@@ -18,23 +18,23 @@ type RunnerApplicationDownload struct {
 	Filename     *string `json:"filename,omitempty"`
 }
 
-// ListRunnerApplicationDownloads lists self-hosted runner applicatio binaries that can be downloaded and run.
+// ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#list-downloads-for-the-self-hosted-runner-application
-func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) (*[]RunnerApplicationDownload, *Response, error) {
+func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/downloads", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	runnerApplicationDownloads := new([]RunnerApplicationDownload)
-	resp, err := s.client.Do(ctx, req, runnerApplicationDownloads)
+	var rads []*RunnerApplicationDownload
+	resp, err := s.client.Do(ctx, req, &rads)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return runnerApplicationDownloads, resp, nil
+	return rads, resp, nil
 }
 
 // RegistrationToken represents a token that can be used to add a self-hosted runner to a repository.
@@ -74,7 +74,7 @@ type Runner struct {
 // ListRunners lists all the self-hosted runners for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#list-self-hosted-runners-for-a-repository
-func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*[]Runner, *Response, error) {
+func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Runner, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -86,8 +86,8 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 		return nil, nil, err
 	}
 
-	runners := new([]Runner)
-	resp, err := s.client.Do(ctx, req, runners)
+	var runners []*Runner
+	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
 	}
