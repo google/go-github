@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 // ReactionsService provides access to the reactions-related functions in the
@@ -107,6 +108,36 @@ func (s ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo
 	}
 
 	return m, resp, nil
+}
+
+// DeleteCommentReaction deletes the reaction for a commit comment.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
+func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+
+	return s.deleteCommentReaction(ctx, u)
+}
+
+// DeleteCommentReactionByRepoID deletes the reaction for a commit comment by repository ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
+func (s *ReactionsService) DeleteCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
+
+	return s.deleteCommentReaction(ctx, u)
+}
+
+func (s ReactionsService) deleteCommentReaction(ctx context.Context, url string) (*Response, error) {
+	req, err := s.client.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListIssueReactions lists the reactions for an issue.
