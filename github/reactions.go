@@ -386,3 +386,33 @@ func (s *ReactionsService) DeleteReaction(ctx context.Context, id int64) (*Respo
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// DeleteIssueReaction deletes a reaction on issue
+//
+// Github API docs: https://developer.github.com/v3/reactions/#delete-an-issue-reaction
+func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
+
+	return s.deleteIssueReaction(ctx, u)
+}
+
+//DeleteIssueReactionByRepoID deletes a reaction by repo_id
+//
+//Github API docs: https://developer.github.com/v3/reactions/#delete-an-issue-reaction
+func (s *ReactionsService) DeleteIssueReactionByRepoID(ctx context.Context, repoID, issueNumber, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
+
+	return s.deleteIssueReaction(ctx, u)
+}
+
+// Helper method for issue reaction deletion
+func (s *ReactionsService) deleteIssueReaction(ctx context.Context, url string) (*Response, error) {
+	req, err := s.client.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custome Accept header when this API fully launches
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+	return s.client.Do(ctx, req, nil)
+}
