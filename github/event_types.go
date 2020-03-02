@@ -649,13 +649,13 @@ type PullRequestReviewCommentEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID       *int64            `json:"push_id,omitempty"`
-	Head         *string           `json:"head,omitempty"`
-	Ref          *string           `json:"ref,omitempty"`
-	Size         *int              `json:"size,omitempty"`
-	Commits      []PushEventCommit `json:"commits,omitempty"`
-	Before       *string           `json:"before,omitempty"`
-	DistinctSize *int              `json:"distinct_size,omitempty"`
+	PushID       *int64             `json:"push_id,omitempty"`
+	Head         *string            `json:"head,omitempty"`
+	Ref          *string            `json:"ref,omitempty"`
+	Size         *int               `json:"size,omitempty"`
+	Commits      []*PushEventCommit `json:"commits,omitempty"`
+	Before       *string            `json:"before,omitempty"`
+	DistinctSize *int               `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	After        *string              `json:"after,omitempty"`

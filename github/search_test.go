@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-
 	"testing"
 )
 
@@ -40,7 +39,7 @@ func TestSearchService_Repositories(t *testing.T) {
 	want := &RepositoriesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Repositories:      []Repository{{ID: Int64(1)}, {ID: Int64(2)}},
+		Repositories:      []*Repository{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -135,7 +134,7 @@ func TestSearchService_Issues(t *testing.T) {
 	want := &IssuesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(true),
-		Issues:            []Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -172,7 +171,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	want := &IssuesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(true),
-		Issues:            []Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -210,7 +209,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 	want := &IssuesSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(true),
-		Issues:            []Issue{{Number: Int(1)}, {Number: Int(2)}},
+		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -243,7 +242,7 @@ func TestSearchService_Users(t *testing.T) {
 	want := &UsersSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		Users:             []User{{ID: Int64(1)}, {ID: Int64(2)}},
+		Users:             []*User{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
@@ -276,7 +275,7 @@ func TestSearchService_Code(t *testing.T) {
 	want := &CodeSearchResult{
 		Total:             Int(4),
 		IncompleteResults: Bool(false),
-		CodeResults:       []CodeResult{{Name: String("1")}, {Name: String("2")}},
+		CodeResults:       []*CodeResult{{Name: String("1")}, {Name: String("2")}},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
@@ -325,11 +324,11 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 		t.Errorf("Search.Code returned error: %v", err)
 	}
 
-	wantedCodeResult := CodeResult{
+	wantedCodeResult := &CodeResult{
 		Name: String("gopher1"),
-		TextMatches: []TextMatch{{
+		TextMatches: []*TextMatch{{
 			Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []Match{{Text: String("gopher"), Indices: []int{14, 21}}},
+			Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
 		},
 		},
 	}
@@ -337,7 +336,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	want := &CodeSearchResult{
 		Total:             Int(1),
 		IncompleteResults: Bool(false),
-		CodeResults:       []CodeResult{wantedCodeResult},
+		CodeResults:       []*CodeResult{wantedCodeResult},
 	}
 	if !reflect.DeepEqual(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
