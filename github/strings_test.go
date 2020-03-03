@@ -113,7 +113,7 @@ func TestString(t *testing.T) {
 		{DraftReviewComment{Position: Int(1)}, `github.DraftReviewComment{Position:1}`},
 		{PullRequestReviewRequest{Body: String("r")}, `github.PullRequestReviewRequest{Body:"r"}`},
 		{PullRequestReviewDismissalRequest{Message: String("r")}, `github.PullRequestReviewDismissalRequest{Message:"r"}`},
-		{PushEventCommit{SHA: String("s")}, `github.PushEventCommit{SHA:"s"}`},
+		{HeadCommit{SHA: String("s")}, `github.HeadCommit{SHA:"s"}`},
 		{PushEvent{PushID: Int64(1)}, `github.PushEvent{PushID:1}`},
 		{Reference{Ref: String("r")}, `github.Reference{Ref:"r"}`},
 		{ReleaseAsset{ID: Int64(1)}, `github.ReleaseAsset{ID:1}`},

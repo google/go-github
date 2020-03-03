@@ -649,13 +649,13 @@ type PullRequestReviewCommentEvent struct {
 //
 // GitHub API docs: https://developer.github.com/v3/activity/events/types/#pushevent
 type PushEvent struct {
-	PushID       *int64             `json:"push_id,omitempty"`
-	Head         *string            `json:"head,omitempty"`
-	Ref          *string            `json:"ref,omitempty"`
-	Size         *int               `json:"size,omitempty"`
-	Commits      []*PushEventCommit `json:"commits,omitempty"`
-	Before       *string            `json:"before,omitempty"`
-	DistinctSize *int               `json:"distinct_size,omitempty"`
+	PushID       *int64        `json:"push_id,omitempty"`
+	Head         *string       `json:"head,omitempty"`
+	Ref          *string       `json:"ref,omitempty"`
+	Size         *int          `json:"size,omitempty"`
+	Commits      []*HeadCommit `json:"commits,omitempty"`
+	Before       *string       `json:"before,omitempty"`
+	DistinctSize *int          `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	After        *string              `json:"after,omitempty"`
@@ -665,7 +665,7 @@ type PushEvent struct {
 	BaseRef      *string              `json:"base_ref,omitempty"`
 	Compare      *string              `json:"compare,omitempty"`
 	Repo         *PushEventRepository `json:"repository,omitempty"`
-	HeadCommit   *PushEventCommit     `json:"head_commit,omitempty"`
+	HeadCommit   *HeadCommit          `json:"head_commit,omitempty"`
 	Pusher       *User                `json:"pusher,omitempty"`
 	Sender       *User                `json:"sender,omitempty"`
 	Installation *Installation        `json:"installation,omitempty"`
@@ -675,8 +675,8 @@ func (p PushEvent) String() string {
 	return Stringify(p)
 }
 
-// PushEventCommit represents a git commit in a GitHub PushEvent.
-type PushEventCommit struct {
+// HeadCommit represents a git commit in a GitHub PushEvent.
+type HeadCommit struct {
 	Message  *string       `json:"message,omitempty"`
 	Author   *CommitAuthor `json:"author,omitempty"`
 	URL      *string       `json:"url,omitempty"`
@@ -695,7 +695,7 @@ type PushEventCommit struct {
 	Modified  []string      `json:"modified,omitempty"`
 }
 
-func (p PushEventCommit) String() string {
+func (p HeadCommit) String() string {
 	return Stringify(p)
 }
 

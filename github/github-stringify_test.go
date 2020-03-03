@@ -484,6 +484,24 @@ func TestGrant_String(t *testing.T) {
 	}
 }
 
+func TestHeadCommit_String(t *testing.T) {
+	v := HeadCommit{
+		Message:   String(""),
+		Author:    &CommitAuthor{},
+		URL:       String(""),
+		Distinct:  Bool(false),
+		SHA:       String(""),
+		ID:        String(""),
+		TreeID:    String(""),
+		Timestamp: &Timestamp{},
+		Committer: &CommitAuthor{},
+	}
+	want := `github.HeadCommit{Message:"", Author:github.CommitAuthor{}, URL:"", Distinct:false, SHA:"", ID:"", TreeID:"", Timestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Committer:github.CommitAuthor{}}`
+	if got := v.String(); got != want {
+		t.Errorf("HeadCommit.String = %v, want %v", got, want)
+	}
+}
+
 func TestHook_String(t *testing.T) {
 	v := Hook{
 		URL:    String(""),
@@ -1079,32 +1097,14 @@ func TestPushEvent_String(t *testing.T) {
 		BaseRef:      String(""),
 		Compare:      String(""),
 		Repo:         &PushEventRepository{},
-		HeadCommit:   &PushEventCommit{},
+		HeadCommit:   &HeadCommit{},
 		Pusher:       &User{},
 		Sender:       &User{},
 		Installation: &Installation{},
 	}
-	want := `github.PushEvent{PushID:0, Head:"", Ref:"", Size:0, Before:"", DistinctSize:0, After:"", Created:false, Deleted:false, Forced:false, BaseRef:"", Compare:"", Repo:github.PushEventRepository{}, HeadCommit:github.PushEventCommit{}, Pusher:github.User{}, Sender:github.User{}, Installation:github.Installation{}}`
+	want := `github.PushEvent{PushID:0, Head:"", Ref:"", Size:0, Before:"", DistinctSize:0, After:"", Created:false, Deleted:false, Forced:false, BaseRef:"", Compare:"", Repo:github.PushEventRepository{}, HeadCommit:github.HeadCommit{}, Pusher:github.User{}, Sender:github.User{}, Installation:github.Installation{}}`
 	if got := v.String(); got != want {
 		t.Errorf("PushEvent.String = %v, want %v", got, want)
-	}
-}
-
-func TestPushEventCommit_String(t *testing.T) {
-	v := PushEventCommit{
-		Message:   String(""),
-		Author:    &CommitAuthor{},
-		URL:       String(""),
-		Distinct:  Bool(false),
-		SHA:       String(""),
-		ID:        String(""),
-		TreeID:    String(""),
-		Timestamp: &Timestamp{},
-		Committer: &CommitAuthor{},
-	}
-	want := `github.PushEventCommit{Message:"", Author:github.CommitAuthor{}, URL:"", Distinct:false, SHA:"", ID:"", TreeID:"", Timestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Committer:github.CommitAuthor{}}`
-	if got := v.String(); got != want {
-		t.Errorf("PushEventCommit.String = %v, want %v", got, want)
 	}
 }
 
