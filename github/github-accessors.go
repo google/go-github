@@ -9780,6 +9780,22 @@ func (r *Reference) GetURL() string {
 	return *r.URL
 }
 
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (r *RegistrationToken) GetExpiresAt() Timestamp {
+	if r == nil || r.ExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *r.ExpiresAt
+}
+
+// GetToken returns the Token field if it's non-nil, zero value otherwise.
+func (r *RegistrationToken) GetToken() string {
+	if r == nil || r.Token == nil {
+		return ""
+	}
+	return *r.Token
+}
+
 // GetBrowserDownloadURL returns the BrowserDownloadURL field if it's non-nil, zero value otherwise.
 func (r *ReleaseAsset) GetBrowserDownloadURL() string {
 	if r == nil || r.BrowserDownloadURL == nil {
@@ -9922,6 +9938,22 @@ func (r *ReleaseEvent) GetSender() *User {
 		return nil
 	}
 	return r.Sender
+}
+
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (r *RemoveToken) GetExpiresAt() Timestamp {
+	if r == nil || r.ExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *r.ExpiresAt
+}
+
+// GetToken returns the Token field if it's non-nil, zero value otherwise.
+func (r *RemoveToken) GetToken() string {
+	if r == nil || r.Token == nil {
+		return ""
+	}
+	return *r.Token
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -11570,6 +11602,70 @@ func (r *ReviewersRequest) GetNodeID() string {
 		return ""
 	}
 	return *r.NodeID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *Runner) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *Runner) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetOS returns the OS field if it's non-nil, zero value otherwise.
+func (r *Runner) GetOS() string {
+	if r == nil || r.OS == nil {
+		return ""
+	}
+	return *r.OS
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (r *Runner) GetStatus() string {
+	if r == nil || r.Status == nil {
+		return ""
+	}
+	return *r.Status
+}
+
+// GetArchitecture returns the Architecture field if it's non-nil, zero value otherwise.
+func (r *RunnerApplicationDownload) GetArchitecture() string {
+	if r == nil || r.Architecture == nil {
+		return ""
+	}
+	return *r.Architecture
+}
+
+// GetDownloadURL returns the DownloadURL field if it's non-nil, zero value otherwise.
+func (r *RunnerApplicationDownload) GetDownloadURL() string {
+	if r == nil || r.DownloadURL == nil {
+		return ""
+	}
+	return *r.DownloadURL
+}
+
+// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
+func (r *RunnerApplicationDownload) GetFilename() string {
+	if r == nil || r.Filename == nil {
+		return ""
+	}
+	return *r.Filename
+}
+
+// GetOS returns the OS field if it's non-nil, zero value otherwise.
+func (r *RunnerApplicationDownload) GetOS() string {
+	if r == nil || r.OS == nil {
+		return ""
+	}
+	return *r.OS
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
