@@ -96,7 +96,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
-	resp, err := s.getWorkflowJobLogsFromURL(ctx, u, followRedirects)
+	resp, err := s.getWorkflowLogsFromURL(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -108,7 +108,7 @@ func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo str
 	return parsedURL, newResponse(resp), err
 }
 
-func (s *ActionsService) getWorkflowJobLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
+func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -130,7 +130,7 @@ func (s *ActionsService) getWorkflowJobLogsFromURL(ctx context.Context, u string
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
-		resp, err = s.getWorkflowJobLogsFromURL(ctx, u, false)
+		resp, err = s.getWorkflowLogsFromURL(ctx, u, false)
 	}
 	return resp, err
 
