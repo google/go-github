@@ -78,18 +78,10 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 // PagesUpdate sets up parameters needed to update a GitHub Pages site.
 type PagesUpdate struct {
 	// CNAME represents a custom domain for the repository.
-	// Setting CNAME as an empty string will remove the custom domain.
-	CNAME *string `json:"cname,omitempty"`
+	// Leaving CNAME empty will remove the custom domain.
+	CNAME *string `json:"cname"`
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
 	// Possible values are: "gh-pages", "master", and "master /docs".
-	Source *string `json:"source,omitempty"`
-}
-
-// pagesUpdateNullCNAME is used internally by UpdatePages to pass a null
-// value for the CNAME field when an empty string has been provided in
-// order to remove the custom domain.
-type pagesUpdateNullCNAME struct {
-	CNAME  *string `json:"cname"`
 	Source *string `json:"source,omitempty"`
 }
 
@@ -102,16 +94,6 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
-	}
-
-	if *opts.CNAME == "" {
-		update := new(pagesUpdateNullCNAME)
-		resp, err := s.client.Do(ctx, req, update)
-		if err != nil {
-			return resp, err
-		}
-
-		return resp, nil
 	}
 
 	resp, err := s.client.Do(ctx, req, nil)
