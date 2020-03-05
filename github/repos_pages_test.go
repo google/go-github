@@ -56,18 +56,18 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &UpdatePagesRequest{
+	input := &PagesUpdate{
 		CNAME:  String("www.my-domain.com"),
 		Source: String("gh-pages"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(UpdatePagesRequest)
+		v := new(PagesUpdate)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		want := &UpdatePagesRequest{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
+		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
