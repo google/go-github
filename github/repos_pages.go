@@ -75,6 +75,39 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	return enable, resp, nil
 }
 
+// UpdatePagesRequest sets up parameters needed to update a GitHub Pages site.
+type UpdatePagesRequest struct {
+	CNAME  *string `json:"cname,omitempty"`
+	Source *string `json:"source,omitempty"`
+}
+
+// UpdatePages updates GitHub Pages for the named repo.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#update-information-about-a-pages-site
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *UpdatePagesRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
+
+	pagesReq := &UpdatePagesRequest{
+		Source: opts.Source,
+		CNAME:  opts.CNAME,
+	}
+
+	req, err := s.client.NewRequest("PUT", u, pagesReq)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
+
+	update := new(Pages)
+	resp, err := s.client.Do(ctx, req, update)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
 // DisablePages disables GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#disable-a-pages-site

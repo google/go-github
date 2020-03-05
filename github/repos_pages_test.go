@@ -52,6 +52,35 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_UpdatePages(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &UpdatePagesRequest{
+		CNAME:  String("www.my-domain.com"),
+		Source: String("gh-pages"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		v := new(UpdatePagesRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
+		want := &UpdatePagesRequest{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"cname":"www.my-domain.com","source":"gh-pages"}`)
+	})
+
+	_, err := client.Repositories.UpdatePages(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePages returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_DisablePages(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
