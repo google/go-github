@@ -66,7 +66,6 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)

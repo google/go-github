@@ -100,8 +100,6 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 		return nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
-
 	if *opts.CNAME == "" {
 		update := new(pagesUpdateNullCNAME)
 		resp, err := s.client.Do(ctx, req, update)
@@ -112,8 +110,7 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 		return resp, nil
 	}
 
-	update := new(PagesUpdate)
-	resp, err := s.client.Do(ctx, req, update)
+	resp, err := s.client.Do(ctx, req, nil)
 	if err != nil {
 		return resp, err
 	}
