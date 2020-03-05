@@ -81,6 +81,14 @@ type PagesUpdate struct {
 	Source *string `json:"source,omitempty"`
 }
 
+// pagesUpdateNullCNAME is used internally by UpdatePages to pass a null
+// value for the CNAME field when an empty string has been provided in
+// order to remove the custom domain.
+type pagesUpdateNullCNAME struct {
+	CNAME  *string `json:"cname"`
+	Source *string `json:"source,omitempty"`
+}
+
 // UpdatePages updates GitHub Pages for the named repo.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/pages/#update-information-about-a-pages-site
@@ -93,6 +101,16 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 	}
 
 	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
+
+	if *opts.CNAME == "" {
+		update := new(pagesUpdateNullCNAME)
+		resp, err := s.client.Do(ctx, req, update)
+		if err != nil {
+			return resp, err
+		}
+
+		return resp, nil
+	}
 
 	update := new(PagesUpdate)
 	resp, err := s.client.Do(ctx, req, update)
