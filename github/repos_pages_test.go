@@ -6,9 +6,11 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -89,13 +91,14 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PagesUpdate)
-		json.NewDecoder(r.Body).Decode(v)
+		got, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("unable to read body: %v", err)
+		}
 
-		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: nil, Source: String("gh-pages")}
-		if !reflect.DeepEqual(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
+		want := []byte(`{"cname":null,"source":"gh-pages"}` + "\n")
+		if !bytes.Equal(got, want) {
+			t.Errorf("Request body = %+v, want %+v", got, want)
 		}
 
 		fmt.Fprint(w, `{"cname":null,"source":"gh-pages"}`)
