@@ -79,7 +79,7 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 type PagesUpdate struct {
 	// CNAME represents a custom domain for the repository.
 	// Setting CNAME as an empty string will remove the custom domain.
-	CNAME  *string `json:"cname,omitempty"`
+	CNAME *string `json:"cname,omitempty"`
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
 	// Possible values are: "gh-pages", "master", and "master /docs".
 	Source *string `json:"source,omitempty"`
