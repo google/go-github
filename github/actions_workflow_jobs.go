@@ -46,10 +46,16 @@ type Jobs struct {
 	Jobs       []*WorkflowJob `json:"jobs,omitempty"`
 }
 
+// ListWorkflowJobsOptions specifies optional parameters to ListWorkflowJobs
+type ListWorkflowJobsOptions struct {
+	Filter string `url:"filter,omitempty"`
+	ListOptions
+}
+
 // ListWorkflowJobs lists all jobs for a workflow run.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-jobs-for-a-workflow-run
-func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListOptions) (*Jobs, *Response, error) {
+func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
 	u, err := addOptions(u, opts)
 	if err != nil {

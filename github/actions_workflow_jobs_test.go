@@ -25,7 +25,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"},{"id":399444497,"run_id":29679449,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"}]}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListWorkflowJobsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	jobs, _, err := client.Actions.ListWorkflowJobs(context.Background(), "o", "r", 29679449, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowJobs returned error: %v", err)
