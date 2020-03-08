@@ -48,6 +48,12 @@ type Jobs struct {
 
 // ListWorkflowJobsOptions specifies optional parameters to ListWorkflowJobs
 type ListWorkflowJobsOptions struct {
+	// Filter specifies how jobs should be filtered by their completed_at timestamp.
+	// Possible values are:
+	//     latest - Returns jobs from the most recent execution of the workflow run
+	//     all - Returns all jobs for a workflow run, including from old executions of the workflow run
+	//
+	// Default value is "latest".
 	Filter string `url:"filter,omitempty"`
 	ListOptions
 }
