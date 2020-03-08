@@ -921,6 +921,24 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 	return response.Resources, resp, nil
 }
 
+func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request {
+	// To set extra headers, we must make a copy of the Request so
+	// that we don't modify the Request we were given. This is required by the
+	// specification of http.RoundTripper.
+	//
+	// Since we are going to modify only req.Header here, we only need a deep copy
+	// of req.Header.
+	convertedRequest := new(http.Request)
+	*convertedRequest = *req
+	convertedRequest.Header = make(http.Header, len(req.Header))
+
+	for k, s := range req.Header {
+		convertedRequest.Header[k] = append([]string(nil), s...)
+	}
+	convertedRequest.SetBasicAuth(id, secret)
+	return convertedRequest
+}
+
 /*
 UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
 that need to use a higher rate limit associated with your OAuth application.
@@ -931,8 +949,8 @@ that need to use a higher rate limit associated with your OAuth application.
 	}
 	client := github.NewClient(t.Client())
 
-This will append the querystring params client_id=xxx&client_secret=yyy to all
-requests.
+This will add the client id and secret as a base64-encoded string in the format
+ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
 
 See https://developer.github.com/v3/#unauthenticated-rate-limited-requests for
 more information.
@@ -961,22 +979,7 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 		return nil, errors.New("t.ClientSecret is empty")
 	}
 
-	// To set extra querystring params, we must make a copy of the Request so
-	// that we don't modify the Request we were given. This is required by the
-	// specification of http.RoundTripper.
-	//
-	// Since we are going to modify only req.URL here, we only need a deep copy
-	// of req.URL.
-	req2 := new(http.Request)
-	*req2 = *req
-	req2.URL = new(url.URL)
-	*req2.URL = *req.URL
-
-	q := req2.URL.Query()
-	q.Set("client_id", t.ClientID)
-	q.Set("client_secret", t.ClientSecret)
-	req2.URL.RawQuery = q.Encode()
-
+	req2 := setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
 	// Make the HTTP request.
 	return t.transport().RoundTrip(req2)
 }
@@ -1010,20 +1013,7 @@ type BasicAuthTransport struct {
 
 // RoundTrip implements the RoundTripper interface.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	// To set extra headers, we must make a copy of the Request so
-	// that we don't modify the Request we were given. This is required by the
-	// specification of http.RoundTripper.
-	//
-	// Since we are going to modify only req.Header here, we only need a deep copy
-	// of req.Header.
-	req2 := new(http.Request)
-	*req2 = *req
-	req2.Header = make(http.Header, len(req.Header))
-	for k, s := range req.Header {
-		req2.Header[k] = append([]string(nil), s...)
-	}
-
-	req2.SetBasicAuth(t.Username, t.Password)
+	req2 := setCredentialsAsHeaders(req, t.Username, t.Password)
 	if t.OTP != "" {
 		req2.Header.Set(headerOTP, t.OTP)
 	}
