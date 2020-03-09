@@ -6,9 +6,11 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"testing"
@@ -49,6 +51,62 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 
 	if !reflect.DeepEqual(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
+	}
+}
+
+func TestRepositoriesService_UpdatePages(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &PagesUpdate{
+		CNAME:  String("www.my-domain.com"),
+		Source: String("gh-pages"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PagesUpdate)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"cname":"www.my-domain.com","source":"gh-pages"}`)
+	})
+
+	_, err := client.Repositories.UpdatePages(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePages returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &PagesUpdate{
+		Source: String("gh-pages"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
+		got, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("unable to read body: %v", err)
+		}
+
+		want := []byte(`{"cname":null,"source":"gh-pages"}` + "\n")
+		if !bytes.Equal(got, want) {
+			t.Errorf("Request body = %+v, want %+v", got, want)
+		}
+
+		fmt.Fprint(w, `{"cname":null,"source":"gh-pages"}`)
+	})
+
+	_, err := client.Repositories.UpdatePages(context.Background(), "o", "r", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdatePages returned error: %v", err)
 	}
 }
 
