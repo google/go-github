@@ -352,7 +352,7 @@ func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+	if _, err := client.Reactions.DeleteCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
 		t.Errorf("DeleteCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -384,7 +384,7 @@ func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+	if _, err := client.Reactions.DeleteIssueReactionByID(context.Background(), 1, 2, 3); err != nil {
 		t.Errorf("DeleteIssueReactionByRepoID returned error: %v", err)
 	}
 }
@@ -416,7 +416,7 @@ func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+	if _, err := client.Reactions.DeleteIssueCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
 		t.Errorf("DeleteIssueCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -448,7 +448,7 @@ func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeletePullRequestCommentReactionByRepoID(context.Background(), 1, 2, 3); err != nil {
+	if _, err := client.Reactions.DeletePullRequestCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
 		t.Errorf("DeletePullRequestCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -480,7 +480,7 @@ func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testin
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionReactionByTeamIDAndOrgID(context.Background(), 1, 2, 3, 4); err != nil {
+	if _, err := client.Reactions.DeleteTeamDiscussionReactionByOrgIDAndTeamID(context.Background(), 1, 2, 3, 4); err != nil {
 		t.Errorf("DeleteTeamDiscussionReactionByTeamIDAndOrgID returned error: %v", err)
 	}
 }
@@ -512,7 +512,7 @@ func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t 
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(context.Background(), 1, 2, 3, 4, 5); err != nil {
+	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(context.Background(), 1, 2, 3, 4, 5); err != nil {
 		t.Errorf("DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID returned error: %v", err)
 	}
 }

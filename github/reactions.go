@@ -119,10 +119,10 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 	return s.deleteReaction(ctx, u)
 }
 
-// DeleteCommentReactionByRepoID deletes the reaction for a commit comment by repository ID.
+// DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
-func (s *ReactionsService) DeleteCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
 	return s.deleteReaction(ctx, u)
@@ -191,10 +191,10 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 	return s.deleteReaction(ctx, url)
 }
 
-// DeleteIssueReactionByRepoID deletes the reaction to an issue by repository ID.
+// DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-reaction
-func (s *ReactionsService) DeleteIssueReactionByRepoID(ctx context.Context, repoID, issueNumber, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
 
 	return s.deleteReaction(ctx, url)
@@ -263,10 +263,10 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 	return s.deleteReaction(ctx, url)
 }
 
-// DeleteIssueCommentReactionByRepoID deletes the reaction to an issue comment by repository ID.
+// DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-an-issue-comment-reaction
-func (s *ReactionsService) DeleteIssueCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
 	return s.deleteReaction(ctx, url)
@@ -335,10 +335,10 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 	return s.deleteReaction(ctx, url)
 }
 
-// DeletePullRequestCommentReactionByRepoID deletes the reaction to a pull request review comment by repository ID.
+// DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-pull-request-comment-reaction
-func (s *ReactionsService) DeletePullRequestCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
 	return s.deleteReaction(ctx, url)
@@ -403,10 +403,10 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 	return s.deleteReaction(ctx, url)
 }
 
-// DeleteTeamDiscussionReactionByTeamIDAndOrgID deletes the reaction to a team discussion by organization ID and team ID.
+// DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-reaction
-func (s *ReactionsService) DeleteTeamDiscussionReactionByTeamIDAndOrgID(ctx context.Context, orgID, teamID, discussionNumber, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
 
 	return s.deleteReaction(ctx, url)
@@ -470,10 +470,10 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 	return s.deleteReaction(ctx, url)
 }
 
-// DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID deletes the reaction to a team discussion comment by organization ID and team ID.
+// DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#delete-team-discussion-comment-reaction
-func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber, reactionID int64) (*Response, error) {
+func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
 
 	return s.deleteReaction(ctx, url)
