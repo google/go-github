@@ -46,7 +46,7 @@ type Jobs struct {
 	Jobs       []*WorkflowJob `json:"jobs,omitempty"`
 }
 
-// ListWorkflowJobsOptions specifies optional parameters to ListWorkflowJobs
+// ListWorkflowJobsOptions specifies optional parameters to ListWorkflowJobs.
 type ListWorkflowJobsOptions struct {
 	// Filter specifies how jobs should be filtered by their completed_at timestamp.
 	// Possible values are:
