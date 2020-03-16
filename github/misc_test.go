@@ -128,6 +128,26 @@ func TestGetCodeOfConduct(t *testing.T) {
 	}
 }
 
+func TestAPIMeta_marshal(t *testing.T) {
+	testJSONMarshal(t, &APIMeta{}, "{}")
+
+	a := &APIMeta{
+		Hooks:                            []string{"h"},
+		Git:                              []string{"g"},
+		VerifiablePasswordAuthentication: Bool(true),
+		Pages:                            []string{"p"},
+		Importer:                         []string{"i"},
+	}
+	want := `{
+		"hooks":["h"],
+		"git":["g"],
+		"verifiable_password_authentication":true,
+		"pages":["p"],"importer":["i"]
+	}`
+
+	testJSONMarshal(t, a, want)
+}
+
 func TestAPIMeta(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
