@@ -27,18 +27,18 @@ type RepositoryRelease struct {
 	Prerelease      *bool   `json:"prerelease,omitempty"`
 
 	// The following fields are not used in CreateRelease or EditRelease:
-	ID          *int64         `json:"id,omitempty"`
-	CreatedAt   *Timestamp     `json:"created_at,omitempty"`
-	PublishedAt *Timestamp     `json:"published_at,omitempty"`
-	URL         *string        `json:"url,omitempty"`
-	HTMLURL     *string        `json:"html_url,omitempty"`
-	AssetsURL   *string        `json:"assets_url,omitempty"`
-	Assets      []ReleaseAsset `json:"assets,omitempty"`
-	UploadURL   *string        `json:"upload_url,omitempty"`
-	ZipballURL  *string        `json:"zipball_url,omitempty"`
-	TarballURL  *string        `json:"tarball_url,omitempty"`
-	Author      *User          `json:"author,omitempty"`
-	NodeID      *string        `json:"node_id,omitempty"`
+	ID          *int64          `json:"id,omitempty"`
+	CreatedAt   *Timestamp      `json:"created_at,omitempty"`
+	PublishedAt *Timestamp      `json:"published_at,omitempty"`
+	URL         *string         `json:"url,omitempty"`
+	HTMLURL     *string         `json:"html_url,omitempty"`
+	AssetsURL   *string         `json:"assets_url,omitempty"`
+	Assets      []*ReleaseAsset `json:"assets,omitempty"`
+	UploadURL   *string         `json:"upload_url,omitempty"`
+	ZipballURL  *string         `json:"zipball_url,omitempty"`
+	TarballURL  *string         `json:"tarball_url,omitempty"`
+	Author      *User           `json:"author,omitempty"`
+	NodeID      *string         `json:"node_id,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
@@ -69,9 +69,9 @@ func (r ReleaseAsset) String() string {
 // ListReleases lists the releases for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
-func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opt *ListOptions) ([]*RepositoryRelease, *Response, error) {
+func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -220,9 +220,9 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 // ListReleaseAssets lists the release's assets.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#list-assets-for-a-release
-func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opt *ListOptions) ([]*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -367,9 +367,9 @@ func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, rep
 // To upload assets that cannot be represented by an os.File, call NewUploadRequest directly.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#upload-a-release-asset
-func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opt *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -383,8 +383,8 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 	}
 
 	mediaType := mime.TypeByExtension(filepath.Ext(file.Name()))
-	if opt.MediaType != "" {
-		mediaType = opt.MediaType
+	if opts.MediaType != "" {
+		mediaType = opts.MediaType
 	}
 
 	req, err := s.client.NewUploadRequest(u, file, stat.Size(), mediaType)

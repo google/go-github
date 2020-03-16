@@ -22,6 +22,9 @@ type PullRequestReview struct {
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`
 	State          *string    `json:"state,omitempty"`
+	// AuthorAssociation is the comment author's relationship to the issue's repository.
+	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
+	AuthorAssociation *string `json:"author_association,omitempty"`
 }
 
 func (p PullRequestReview) String() string {
@@ -68,9 +71,9 @@ func (r PullRequestReviewDismissalRequest) String() string {
 // Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#list-reviews-on-a-pull-request
-func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opt *ListOptions) ([]*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -144,9 +147,9 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 // Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#get-comments-for-a-single-review
-func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opt *ListOptions) ([]*PullRequestComment, *Response, error) {
+func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

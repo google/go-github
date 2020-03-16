@@ -25,7 +25,8 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 [
   {
     "author": {
-      "id": 1
+			"id": 1,
+			"node_id": "nodeid-1"
     },
     "total": 135,
     "weeks": [
@@ -49,10 +50,11 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	want := []*ContributorStats{
 		{
 			Author: &Contributor{
-				ID: Int64(1),
+				ID:     Int64(1),
+				NodeID: String("nodeid-1"),
 			},
 			Total: Int(135),
-			Weeks: []WeeklyStats{
+			Weeks: []*WeeklyStats{
 				{
 					Week:      &Timestamp{time.Date(2013, time.May, 05, 00, 00, 00, 0, time.UTC).Local()},
 					Additions: Int(6898),

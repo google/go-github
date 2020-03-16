@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -17,20 +16,20 @@ import (
 // Note that it's wrapping a Commit, so author/committer information is in two places,
 // but contain different details about them: in RepositoryCommit "github details", in Commit - "git details".
 type RepositoryCommit struct {
-	NodeID      *string  `json:"node_id,omitempty"`
-	SHA         *string  `json:"sha,omitempty"`
-	Commit      *Commit  `json:"commit,omitempty"`
-	Author      *User    `json:"author,omitempty"`
-	Committer   *User    `json:"committer,omitempty"`
-	Parents     []Commit `json:"parents,omitempty"`
-	HTMLURL     *string  `json:"html_url,omitempty"`
-	URL         *string  `json:"url,omitempty"`
-	CommentsURL *string  `json:"comments_url,omitempty"`
+	NodeID      *string   `json:"node_id,omitempty"`
+	SHA         *string   `json:"sha,omitempty"`
+	Commit      *Commit   `json:"commit,omitempty"`
+	Author      *User     `json:"author,omitempty"`
+	Committer   *User     `json:"committer,omitempty"`
+	Parents     []*Commit `json:"parents,omitempty"`
+	HTMLURL     *string   `json:"html_url,omitempty"`
+	URL         *string   `json:"url,omitempty"`
+	CommentsURL *string   `json:"comments_url,omitempty"`
 
 	// Details about how many changes were made in this commit. Only filled in during GetCommit!
 	Stats *CommitStats `json:"stats,omitempty"`
 	// Details about which files, and how this commit touched. Only filled in during GetCommit!
-	Files []CommitFile `json:"files,omitempty"`
+	Files []*CommitFile `json:"files,omitempty"`
 }
 
 func (r RepositoryCommit) String() string {
@@ -79,9 +78,9 @@ type CommitsComparison struct {
 	BehindBy     *int    `json:"behind_by,omitempty"`
 	TotalCommits *int    `json:"total_commits,omitempty"`
 
-	Commits []RepositoryCommit `json:"commits,omitempty"`
+	Commits []*RepositoryCommit `json:"commits,omitempty"`
 
-	Files []CommitFile `json:"files,omitempty"`
+	Files []*CommitFile `json:"files,omitempty"`
 
 	HTMLURL      *string `json:"html_url,omitempty"`
 	PermalinkURL *string `json:"permalink_url,omitempty"`
@@ -125,9 +124,9 @@ type BranchCommit struct {
 // ListCommits lists the commits of a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#list
-func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opt *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
+func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -168,20 +167,20 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 }
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
-func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opt RawOptions) (string, *Response, error) {
+func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
 
-	switch opt.Type {
+	switch opts.Type {
 	case Diff:
 		req.Header.Set("Accept", mediaTypeV3Diff)
 	case Patch:
 		req.Header.Set("Accept", mediaTypeV3Patch)
 	default:
-		return "", nil, fmt.Errorf("unsupported raw type %d", opt.Type)
+		return "", nil, fmt.Errorf("unsupported raw type %d", opts.Type)
 	}
 
 	var buf bytes.Buffer
@@ -198,7 +197,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, re
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, url.QueryEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

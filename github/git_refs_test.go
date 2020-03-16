@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -290,8 +291,8 @@ func TestGitService_ListRefs_options(t *testing.T) {
 		fmt.Fprint(w, `[{"ref": "r"}]`)
 	})
 
-	opt := &ReferenceListOptions{Type: "t", ListOptions: ListOptions{Page: 2}}
-	refs, _, err := client.Git.ListRefs(context.Background(), "o", "r", opt)
+	opts := &ReferenceListOptions{Type: "t", ListOptions: ListOptions{Page: 2}}
+	refs, _, err := client.Git.ListRefs(context.Background(), "o", "r", opts)
 	if err != nil {
 		t.Errorf("Git.ListRefs returned error: %v", err)
 	}
@@ -442,5 +443,32 @@ func TestGitService_DeleteRef(t *testing.T) {
 	// without 'refs/' prefix
 	if _, err := client.Git.DeleteRef(context.Background(), "o", "r", "heads/b"); err != nil {
 		t.Errorf("Git.DeleteRef returned error: %v", err)
+	}
+}
+
+func TestGitService_GetRef_pathEscape(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		if strings.Contains(r.URL.RawPath, "%2F") {
+			t.Errorf("RawPath still contains escaped / as %%2F: %v", r.URL.RawPath)
+		}
+		fmt.Fprint(w, `
+		  {
+		    "ref": "refs/heads/b",
+		    "url": "https://api.github.com/repos/o/r/git/refs/heads/b",
+		    "object": {
+		      "type": "commit",
+		      "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		      "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+		    }
+		  }`)
+	})
+
+	_, _, err := client.Git.GetRef(context.Background(), "o", "r", "refs/heads/b")
+	if err != nil {
+		t.Fatalf("Git.GetRef returned error: %v", err)
 	}
 }

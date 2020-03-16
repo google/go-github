@@ -159,6 +159,7 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the GitHub API.
+	Actions        *ActionsService
 	Activity       *ActivityService
 	Admin          *AdminService
 	Apps           *AppsService
@@ -231,8 +232,8 @@ type RawOptions struct {
 
 // addOptions adds the parameters in opt as URL query parameters to s. opt
 // must be a struct whose fields may contain "url" tags.
-func addOptions(s string, opt interface{}) (string, error) {
-	v := reflect.ValueOf(opt)
+func addOptions(s string, opts interface{}) (string, error) {
+	v := reflect.ValueOf(opts)
 	if v.Kind() == reflect.Ptr && v.IsNil() {
 		return s, nil
 	}
@@ -242,7 +243,7 @@ func addOptions(s string, opt interface{}) (string, error) {
 		return s, err
 	}
 
-	qs, err := query.Values(opt)
+	qs, err := query.Values(opts)
 	if err != nil {
 		return s, err
 	}
@@ -264,6 +265,7 @@ func NewClient(httpClient *http.Client) *Client {
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
 	c.common.client = c
+	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
 	c.Admin = (*AdminService)(&c.common)
 	c.Apps = (*AppsService)(&c.common)
@@ -344,7 +346,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 
 	var buf io.ReadWriter
 	if body != nil {
-		buf = new(bytes.Buffer)
+		buf = &bytes.Buffer{}
 		enc := json.NewEncoder(buf)
 		enc.SetEscapeHTML(false)
 		err := enc.Encode(body)

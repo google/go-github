@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"time"
 )
 
@@ -45,9 +44,9 @@ func (r RepoStatus) String() string {
 // reference. ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
-func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref string, opt *ListOptions) ([]*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, url.QueryEscape(ref))
-	u, err := addOptions(u, opt)
+func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref string, opts *ListOptions) ([]*RepoStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/statuses", owner, repo, refURLEscape(ref))
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -71,7 +70,7 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#create-a-status
 func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, url.QueryEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, refURLEscape(ref))
 	req, err := s.client.NewRequest("POST", u, status)
 	if err != nil {
 		return nil, nil, err
@@ -92,10 +91,10 @@ type CombinedStatus struct {
 	// failure, pending, or success.
 	State *string `json:"state,omitempty"`
 
-	Name       *string      `json:"name,omitempty"`
-	SHA        *string      `json:"sha,omitempty"`
-	TotalCount *int         `json:"total_count,omitempty"`
-	Statuses   []RepoStatus `json:"statuses,omitempty"`
+	Name       *string       `json:"name,omitempty"`
+	SHA        *string       `json:"sha,omitempty"`
+	TotalCount *int          `json:"total_count,omitempty"`
+	Statuses   []*RepoStatus `json:"statuses,omitempty"`
 
 	CommitURL     *string `json:"commit_url,omitempty"`
 	RepositoryURL *string `json:"repository_url,omitempty"`
@@ -109,9 +108,9 @@ func (s CombinedStatus) String() string {
 // reference. ref can be a SHA, a branch name, or a tag name.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/statuses/#get-the-combined-status-for-a-specific-ref
-func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo, ref string, opt *ListOptions) (*CombinedStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, url.QueryEscape(ref))
-	u, err := addOptions(u, opt)
+func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo, ref string, opts *ListOptions) (*CombinedStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/status", owner, repo, refURLEscape(ref))
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

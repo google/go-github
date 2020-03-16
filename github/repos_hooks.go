@@ -19,18 +19,18 @@ import (
 //
 // GitHub API docs: https://help.github.com/articles/post-receive-hooks
 type WebHookPayload struct {
-	After      *string         `json:"after,omitempty"`
-	Before     *string         `json:"before,omitempty"`
-	Commits    []WebHookCommit `json:"commits,omitempty"`
-	Compare    *string         `json:"compare,omitempty"`
-	Created    *bool           `json:"created,omitempty"`
-	Deleted    *bool           `json:"deleted,omitempty"`
-	Forced     *bool           `json:"forced,omitempty"`
-	HeadCommit *WebHookCommit  `json:"head_commit,omitempty"`
-	Pusher     *User           `json:"pusher,omitempty"`
-	Ref        *string         `json:"ref,omitempty"`
-	Repo       *Repository     `json:"repository,omitempty"`
-	Sender     *User           `json:"sender,omitempty"`
+	After      *string          `json:"after,omitempty"`
+	Before     *string          `json:"before,omitempty"`
+	Commits    []*WebHookCommit `json:"commits,omitempty"`
+	Compare    *string          `json:"compare,omitempty"`
+	Created    *bool            `json:"created,omitempty"`
+	Deleted    *bool            `json:"deleted,omitempty"`
+	Forced     *bool            `json:"forced,omitempty"`
+	HeadCommit *WebHookCommit   `json:"head_commit,omitempty"`
+	Pusher     *User            `json:"pusher,omitempty"`
+	Ref        *string          `json:"ref,omitempty"`
+	Repo       *Repository      `json:"repository,omitempty"`
+	Sender     *User            `json:"sender,omitempty"`
 }
 
 func (w WebHookPayload) String() string {
@@ -132,9 +132,9 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 // ListHooks lists all Hooks for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/hooks/#list
-func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opt *ListOptions) ([]*Hook, *Response, error) {
+func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

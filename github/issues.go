@@ -33,7 +33,7 @@ type Issue struct {
 	Title            *string           `json:"title,omitempty"`
 	Body             *string           `json:"body,omitempty"`
 	User             *User             `json:"user,omitempty"`
-	Labels           []Label           `json:"labels,omitempty"`
+	Labels           []*Label          `json:"labels,omitempty"`
 	Assignee         *User             `json:"assignee,omitempty"`
 	Comments         *int              `json:"comments,omitempty"`
 	ClosedAt         *time.Time        `json:"closed_at,omitempty"`
@@ -55,7 +55,7 @@ type Issue struct {
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
-	TextMatches []TextMatch `json:"text_matches,omitempty"`
+	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
 	// Possible values are: "off-topic", "too heated", "resolved", and "spam".
@@ -129,27 +129,27 @@ type PullRequestLinks struct {
 // repositories.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) List(ctx context.Context, all bool, opt *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
 		u = "issues"
 	} else {
 		u = "user/issues"
 	}
-	return s.listIssues(ctx, u, opt)
+	return s.listIssues(ctx, u, opts)
 }
 
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues
-func (s *IssuesService) ListByOrg(ctx context.Context, org string, opt *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
-	return s.listIssues(ctx, u, opt)
+	return s.listIssues(ctx, u, opts)
 }
 
-func (s *IssuesService) listIssues(ctx context.Context, u string, opt *IssueListOptions) ([]*Issue, *Response, error) {
-	u, err := addOptions(u, opt)
+func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueListOptions) ([]*Issue, *Response, error) {
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -215,9 +215,9 @@ type IssueListByRepoOptions struct {
 // ListByRepo lists the issues for the specified repository.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues-for-a-repository
-func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opt *IssueListByRepoOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -313,14 +313,14 @@ type LockIssueOptions struct {
 // Lock an issue's conversation.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#lock-an-issue
-func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int, opt *LockIssueOptions) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int, opts *LockIssueOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	if opt != nil {
+	if opts != nil {
 		req.Header.Set("Accept", mediaTypeLockReasonPreview)
 	}
 

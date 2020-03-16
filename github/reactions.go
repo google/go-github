@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 // ReactionsService provides access to the reactions-related functions in the
@@ -58,9 +59,9 @@ type ListCommentReactionOptions struct {
 // ListCommentReactions lists the reactions for a commit comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-commit-comment
-func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,12 +110,42 @@ func (s ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo
 	return m, resp, nil
 }
 
+// DeleteCommentReaction deletes the reaction for a commit comment.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
+func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
+
+	return s.deleteCommentReaction(ctx, u)
+}
+
+// DeleteCommentReactionByRepoID deletes the reaction for a commit comment by repository ID.
+//
+// GitHub API docs: https://developer.github.com/v3/reactions/#delete-a-commit-comment-reaction
+func (s *ReactionsService) DeleteCommentReactionByRepoID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
+
+	return s.deleteCommentReaction(ctx, u)
+}
+
+func (s ReactionsService) deleteCommentReaction(ctx context.Context, url string) (*Response, error) {
+	req, err := s.client.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // ListIssueReactions lists the reactions for an issue.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-an-issue
-func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -166,9 +197,9 @@ func (s ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo s
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-an-issue-comment
-func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -220,9 +251,9 @@ func (s ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner,
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-an-issue-comment
-func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -274,9 +305,9 @@ func (s ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion
-func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -324,9 +355,9 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion-comment
-func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opt *ListOptions) ([]*Reaction, *Response, error) {
+func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
