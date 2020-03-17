@@ -43,10 +43,6 @@ const (
 	ScopeAdminGPGKey    Scope = "admin:gpg_key"
 )
 
-const (
-	mediaTypeOAuthAppPreview = "application/vnd.github.doctor-strange-preview+json"
-)
-
 // AuthorizationsService handles communication with the authorization related
 // methods of the GitHub API.
 //
