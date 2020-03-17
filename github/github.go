@@ -136,7 +136,7 @@ const (
 	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
 	mediaTypeMultiLineCommentsPreview = "application/vnd.github.comfort-fade-preview+json"
 
-	// https://developer.github.com/v3/previews/#new-oauth-applications-api-endpoints
+	// https://developer.github.com/changes/2019-11-05-deprecated-passwords-and-authorizations-api/
 	mediaTypeOAuthAppPreview = "application/vnd.github.doctor-strange-preview+json"
 )
 
