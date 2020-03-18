@@ -605,10 +605,10 @@ func TestIssue_String(t *testing.T) {
 		Locked:            Bool(false),
 		Title:             String(""),
 		Body:              String(""),
+		AuthorAssociation: String(""),
 		User:              &User{},
 		Assignee:          &User{},
 		Comments:          Int(0),
-		AuthorAssociation: String(""),
 		ClosedBy:          &User{},
 		URL:               String(""),
 		HTMLURL:           String(""),
@@ -623,7 +623,7 @@ func TestIssue_String(t *testing.T) {
 		NodeID:            String(""),
 		ActiveLockReason:  String(""),
 	}
-	want := `github.Issue{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", User:github.User{}, Assignee:github.User{}, Comments:0, AuthorAssociation:"", ClosedBy:github.User{}, URL:"", HTMLURL:"", CommentsURL:"", EventsURL:"", LabelsURL:"", RepositoryURL:"", Milestone:github.Milestone{}, PullRequestLinks:github.PullRequestLinks{}, Repository:github.Repository{}, Reactions:github.Reactions{}, NodeID:"", ActiveLockReason:""}`
+	want := `github.Issue{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", AuthorAssociation:"", User:github.User{}, Assignee:github.User{}, Comments:0, AuthorAssociation:"", ClosedBy:github.User{}, URL:"", HTMLURL:"", CommentsURL:"", EventsURL:"", LabelsURL:"", RepositoryURL:"", Milestone:github.Milestone{}, PullRequestLinks:github.PullRequestLinks{}, Repository:github.Repository{}, Reactions:github.Reactions{}, NodeID:"", ActiveLockReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Issue.String = %v, want %v", got, want)
 	}
