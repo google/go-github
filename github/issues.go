@@ -32,12 +32,12 @@ type Issue struct {
 	Locked            *bool             `json:"locked,omitempty"`
 	Title             *string           `json:"title,omitempty"`
 	Body              *string           `json:"body,omitempty"`
+	AuthorAssociation *string           `json:"author_association,omitempty"`
 	User              *User             `json:"user,omitempty"`
 	Labels            []*Label          `json:"labels,omitempty"`
 	Assignee          *User             `json:"assignee,omitempty"`
 	Comments          *int              `json:"comments,omitempty"`
 	ClosedAt          *time.Time        `json:"closed_at,omitempty"`
-	AuthorAssociation *string           `json:"author_association,omitempty"`
 	CreatedAt         *time.Time        `json:"created_at,omitempty"`
 	UpdatedAt         *time.Time        `json:"updated_at,omitempty"`
 	ClosedBy          *User             `json:"closed_by,omitempty"`
