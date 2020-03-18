@@ -159,7 +159,7 @@ func TestIssuesService_Get(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		fmt.Fprint(w, `{"number":1, "labels": [{"url": "u", "name": "n", "color": "c"}]}`)
+		fmt.Fprint(w, `{"number":1, "author_association": "MEMBER","labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
 	issue, _, err := client.Issues.Get(context.Background(), "o", "r", 1)
@@ -168,7 +168,8 @@ func TestIssuesService_Get(t *testing.T) {
 	}
 
 	want := &Issue{
-		Number: Int(1),
+		Number:            Int(1),
+		AuthorAssociation: String("MEMBER"),
 		Labels: []*Label{{
 			URL:   String("u"),
 			Name:  String("n"),

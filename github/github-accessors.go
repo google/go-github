@@ -4484,6 +4484,14 @@ func (i *Issue) GetAssignee() *User {
 	return i.Assignee
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (i *Issue) GetAuthorAssociation() string {
+	if i == nil || i.AuthorAssociation == nil {
+		return ""
+	}
+	return *i.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (i *Issue) GetBody() string {
 	if i == nil || i.Body == nil {
