@@ -251,10 +251,6 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	issue := new(Issue)
 	resp, err := s.client.Do(ctx, req, issue)
 	if err != nil {
