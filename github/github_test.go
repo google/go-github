@@ -1099,6 +1099,25 @@ func TestRateLimits(t *testing.T) {
 	}
 }
 
+func TestSetCredentialsAsHeaders(t *testing.T) {
+	req := new(http.Request)
+	id, secret := "id", "secret"
+	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
+
+	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
+	if !ok {
+		t.Errorf("request does not contain basic credentials")
+	}
+
+	if actualID != id {
+		t.Errorf("id is %s, want %s", actualID, id)
+	}
+
+	if actualSecret != secret {
+		t.Errorf("secret is %s, want %s", actualSecret, secret)
+	}
+}
+
 func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
