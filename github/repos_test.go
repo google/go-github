@@ -251,12 +251,13 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		Archived: Bool(true), // not passed along.
 	}
 
+	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: String("n")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -313,12 +314,13 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		Archived: Bool(true), // not passed along.
 	}
 
+	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: String("n")}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -551,12 +553,13 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	i := true
 	input := &Repository{HasIssues: &i}
 
+	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Repository)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}

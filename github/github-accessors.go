@@ -10708,6 +10708,14 @@ func (r *Repository) GetURL() string {
 	return *r.URL
 }
 
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (r *Repository) GetVisibility() string {
+	if r == nil || r.Visibility == nil {
+		return ""
+	}
+	return *r.Visibility
+}
+
 // GetWatchersCount returns the WatchersCount field if it's non-nil, zero value otherwise.
 func (r *Repository) GetWatchersCount() int {
 	if r == nil || r.WatchersCount == nil {

@@ -138,6 +138,9 @@ const (
 
 	// https://developer.github.com/changes/2019-11-05-deprecated-passwords-and-authorizations-api/
 	mediaTypeOAuthAppPreview = "application/vnd.github.doctor-strange-preview+json"
+
+	// https://developer.github.com/changes/2019-12-03-internal-visibility-changes/
+	mediaTypeRepositoryVisibilityPreview = "application/vnd.github.nebula-preview+json"
 )
 
 // A Client manages communication with the GitHub API.

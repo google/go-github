@@ -121,6 +121,11 @@ type Repository struct {
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
+
+	// Visibility is only used for Create and Edit endpoints. The visibility field
+	// overrides the field parameter when both are used.
+	// Can be one of public, private or internal.
+	Visibility *string `json:"visibility,omitempty"`
 }
 
 func (r Repository) String() string {
@@ -295,11 +300,12 @@ type createRepoRequest struct {
 	Description *string `json:"description,omitempty"`
 	Homepage    *string `json:"homepage,omitempty"`
 
-	Private     *bool `json:"private,omitempty"`
-	HasIssues   *bool `json:"has_issues,omitempty"`
-	HasProjects *bool `json:"has_projects,omitempty"`
-	HasWiki     *bool `json:"has_wiki,omitempty"`
-	IsTemplate  *bool `json:"is_template,omitempty"`
+	Private     *bool   `json:"private,omitempty"`
+	Visibility  *string `json:"visibility,omitempty"`
+	HasIssues   *bool   `json:"has_issues,omitempty"`
+	HasProjects *bool   `json:"has_projects,omitempty"`
+	HasWiki     *bool   `json:"has_wiki,omitempty"`
+	IsTemplate  *bool   `json:"is_template,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
@@ -334,6 +340,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		Description:         repo.Description,
 		Homepage:            repo.Homepage,
 		Private:             repo.Private,
+		Visibility:          repo.Visibility,
 		HasIssues:           repo.HasIssues,
 		HasProjects:         repo.HasProjects,
 		HasWiki:             repo.HasWiki,
@@ -353,7 +360,8 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeRepositoryTemplatePreview)
+	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -469,7 +477,8 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeRepositoryTemplatePreview)
+	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
