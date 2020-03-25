@@ -71,10 +71,16 @@ type Runner struct {
 	Status *string `json:"status,omitempty"`
 }
 
+// Runners represents a collection of self-hosted runners for a repository.
+type Runners struct {
+	TotalCount int       `json:"total_count"`
+	Runners    []*Runner `json:"runners"`
+}
+
 // ListRunners lists all the self-hosted runners for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/self_hosted_runners/#list-self-hosted-runners-for-a-repository
-func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Runner, *Response, error) {
+func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -86,7 +92,7 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 		return nil, nil, err
 	}
 
-	var runners []*Runner
+	runners := &Runners{}
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
