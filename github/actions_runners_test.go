@@ -69,7 +69,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]`)
+		fmt.Fprint(w, `{"total_count":2,"runners":[{"id":23,"name":"MBP","os":"macos","status":"online"},{"id":24,"name":"iMac","os":"macos","status":"offline"}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -78,9 +78,12 @@ func TestActionsService_ListRunners(t *testing.T) {
 		t.Errorf("Actions.ListRunners returned error: %v", err)
 	}
 
-	want := []*Runner{
-		{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
-		{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
+	want := &Runners{
+		TotalCount: 2,
+		Runners: []*Runner{
+			{ID: Int64(23), Name: String("MBP"), OS: String("macos"), Status: String("online")},
+			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
+		},
 	}
 	if !reflect.DeepEqual(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
