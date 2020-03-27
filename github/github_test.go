@@ -1099,24 +1099,46 @@ func TestRateLimits(t *testing.T) {
 	}
 }
 
+func TestSetCredentialsAsHeaders(t *testing.T) {
+	req := new(http.Request)
+	id, secret := "id", "secret"
+	modifiedRequest := setCredentialsAsHeaders(req, id, secret)
+
+	actualID, actualSecret, ok := modifiedRequest.BasicAuth()
+	if !ok {
+		t.Errorf("request does not contain basic credentials")
+	}
+
+	if actualID != id {
+		t.Errorf("id is %s, want %s", actualID, id)
+	}
+
+	if actualSecret != secret {
+		t.Errorf("secret is %s, want %s", actualSecret, secret)
+	}
+}
+
 func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	clientID, clientSecret := "id", "secret"
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		var v, want string
-		q := r.URL.Query()
-		if v, want = q.Get("client_id"), "id"; v != want {
-			t.Errorf("OAuth Client ID = %v, want %v", v, want)
+		id, secret, ok := r.BasicAuth()
+		if !ok {
+			t.Errorf("request does not contain basic auth credentials")
 		}
-		if v, want = q.Get("client_secret"), "secret"; v != want {
-			t.Errorf("OAuth Client Secret = %v, want %v", v, want)
+		if id != clientID {
+			t.Errorf("request contained basic auth username %q, want %q", id, clientID)
+		}
+		if secret != clientSecret {
+			t.Errorf("request contained basic auth password %q, want %q", secret, clientSecret)
 		}
 	})
 
 	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
 	}
 	unauthedClient := NewClient(tp.Client())
 	unauthedClient.BaseURL = client.BaseURL
