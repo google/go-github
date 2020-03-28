@@ -8284,6 +8284,14 @@ func (p *PullRequest) GetIssueURL() string {
 	return *p.IssueURL
 }
 
+// GetLabels returns the Labels field if it's non-nil, zero value otherwise.
+func (p *PullRequest) GetLabels() []*Label {
+	if p == nil || p.Labels == nil {
+		return nil
+	}
+	return p.Labels
+}
+
 // GetLinks returns the Links field.
 func (p *PullRequest) GetLinks() *PRLinks {
 	if p == nil {
