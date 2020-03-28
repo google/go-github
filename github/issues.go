@@ -215,7 +215,7 @@ type IssueListByRepoOptions struct {
 
 // ListByRepo lists the issues for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-issues-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/issues/#list-repository-issues
 func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opts)
