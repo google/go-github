@@ -50,7 +50,7 @@ type IssueListCommentsOptions struct {
 // ListComments lists all comments on the specified issue. Specifying an issue
 // number of 0 will return all comments on all issues for the repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
+// GitHub API docs: https://developer.github.com/v3/issues/comments/#list-comments-in-a-repository
 func (s *IssuesService) ListComments(ctx context.Context, owner string, repo string, number int, opts *IssueListCommentsOptions) ([]*IssueComment, *Response, error) {
 	var u string
 	if number == 0 {

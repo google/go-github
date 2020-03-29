@@ -461,7 +461,7 @@ type TeamAddTeamRepoOptions struct {
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-repository
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -476,7 +476,7 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-repository
 func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -491,7 +491,7 @@ func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, 
 // team given the team ID. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repository
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -506,7 +506,7 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 // team given the team slug. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repository
 func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -767,7 +767,7 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 
 // ListIDPGroupsForTeam lists IDP groups connected to a team on GitHub.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team-legacy
 func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 
@@ -787,7 +787,7 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 // CreateOrUpdateIDPGroupConnections creates, updates, or removes a connection between a team
 // and an IDP group.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections-legacy
 func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
 

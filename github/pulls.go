@@ -458,7 +458,7 @@ type pullRequestMergeRequest struct {
 // Merge a pull request (Merge Button™).
 // commitMessage is the title for the automatic commit message.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-buttontrade
+// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-button
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 

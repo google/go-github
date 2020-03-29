@@ -52,7 +52,7 @@ func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, 
 // ListWatched lists the repositories the specified user is watching. Passing
 // the empty string will fetch watched repos for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/watching/#list-repositories-being-watched
+// GitHub API docs: https://developer.github.com/v3/activity/watching/#list-repositories-watched-by-the-authenticated-useruser
 func (s *ActivityService) ListWatched(ctx context.Context, user string, opts *ListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {

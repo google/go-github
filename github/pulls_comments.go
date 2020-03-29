@@ -66,7 +66,7 @@ type PullRequestListCommentsOptions struct {
 // pull request number of 0 will return all comments on all pull requests for
 // the repository.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
+// GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository
 func (s *PullRequestsService) ListComments(ctx context.Context, owner string, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {
@@ -144,7 +144,7 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner string, r
 
 // CreateCommentInReplyTo creates a new comment as a reply to an existing pull request comment.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/comments/#alternative-input
+// GitHub API docs: https://developer.github.com/v3/pulls/comments/#create-a-comment
 func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner string, repo string, number int, body string, commentID int64) (*PullRequestComment, *Response, error) {
 	comment := &struct {
 		Body      string `json:"body,omitempty"`

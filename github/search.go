@@ -147,7 +147,7 @@ type IssuesSearchResult struct {
 
 // Issues searches issues via various criteria.
 //
-// GitHub API docs: https://developer.github.com/v3/search/#search-issues
+// GitHub API docs: https://developer.github.com/v3/search/#search-issues-and-pull-requests
 func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
 	resp, err := s.search(ctx, "issues", &searchParameters{Query: query}, opts, result)

@@ -123,7 +123,7 @@ type BranchCommit struct {
 
 // ListCommits lists the commits of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/commits/#list
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
 func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
 	u, err := addOptions(u, opts)
@@ -195,7 +195,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, re
 // GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
 // supplied and no new commits have occurred, a 304 Unmodified response is returned.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-the-sha-1-of-a-commit-reference
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
 

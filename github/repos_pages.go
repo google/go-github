@@ -165,7 +165,7 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 
 // GetLatestPagesBuild fetches the latest build information for a GitHub pages site.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/pages/#list-latest-pages-build
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#get-latest-pages-build
 func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/latest", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -184,7 +184,7 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 
 // GetPageBuild fetches the specific build information for a GitHub pages site.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/pages/#list-a-specific-pages-build
+// GitHub API docs: https://developer.github.com/v3/repos/pages/#get-a-specific-pages-build
 func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo string, id int64) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/%v", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)

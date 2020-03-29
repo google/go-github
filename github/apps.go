@@ -123,7 +123,7 @@ func (i Installation) String() string {
 // You can find this on the settings page for your GitHub App
 // (e.g., https://github.com/settings/apps/:app_slug).
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-a-single-github-app
+// GitHub API docs: https://developer.github.com/v3/apps/#get-the-authenticated-github-app
 func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response, error) {
 	var u string
 	if appSlug != "" {
@@ -177,14 +177,14 @@ func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) 
 
 // GetInstallation returns the specified installation.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-a-single-installation
+// GitHub API docs: https://developer.github.com/v3/apps/#get-an-installation
 func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("app/installations/%v", id))
 }
 
 // ListUserInstallations lists installations that are accessible to the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#list-installations-for-user
+// GitHub API docs: https://developer.github.com/v3/apps/installations/#list-installations-for-a-user
 func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
 	u, err := addOptions("user/installations", opts)
 	if err != nil {
@@ -235,7 +235,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 
 // CreateAttachment creates a new attachment on user comment containing a url.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#create-a-content-attachment
+// GitHub API docs: https://developer.github.com/v3/apps/installations/#create-a-content-attachment
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
 	payload := &Attachment{Title: String(title), Body: String(body)}
