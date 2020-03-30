@@ -97,6 +97,7 @@ type GistListOptions struct {
 // user.
 //
 // GitHub API docs: https://developer.github.com/v3/gists/#list-gists-for-a-user
+// GitHub API docs: https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user
 func (s *GistsService) List(ctx context.Context, user string, opts *GistListOptions) ([]*Gist, *Response, error) {
 	var u string
 	if user != "" {

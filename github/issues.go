@@ -130,6 +130,7 @@ type PullRequestLinks struct {
 // repositories.
 //
 // GitHub API docs: https://developer.github.com/v3/issues/#list-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/issues/#list-user-account-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {

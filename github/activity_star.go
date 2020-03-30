@@ -68,6 +68,7 @@ type ActivityListStarredOptions struct {
 // will list the starred repositories for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/activity/starring/#list-repositories-starred-by-a-user
+// GitHub API docs: https://developer.github.com/v3/activity/starring/#list-repositories-starred-by-the-authenticated-user
 func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *ActivityListStarredOptions) ([]*StarredRepository, *Response, error) {
 	var u string
 	if user != "" {

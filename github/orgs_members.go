@@ -72,6 +72,7 @@ type ListMembersOptions struct {
 // public members, otherwise it will only return public members.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#members-list
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#public-members-list
 func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts *ListMembersOptions) ([]*User, *Response, error) {
 	var u string
 	if opts != nil && opts.PublicOnly {
@@ -206,8 +207,8 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *Lis
 // Passing an empty string for user will get the membership for the
 // authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/members/#get-your-organization-membership
 // GitHub API docs: https://developer.github.com/v3/orgs/members/#get-organization-membership
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#get-your-organization-membership
 func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org string) (*Membership, *Response, error) {
 	var u string
 	if user != "" {

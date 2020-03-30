@@ -227,7 +227,7 @@ func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpoin
 					if !foundMatch { // Edit last stdRefLine, then remove it.
 						cmt := endpoint.stdRefLines[len(endpoint.stdRefLines)-1]
 						pos := fileRewriter.Position(cmt.Pos())
-						logf("At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
+						logf("stdRefLines=%v: At byte offset %v:\nFOUND %q\nWANT: %q", len(endpoint.stdRefLines), pos.Offset, cmt.Text, line)
 						fileEdits = append(fileEdits, &FileEdit{
 							pos:      pos,
 							fromText: cmt.Text,
@@ -240,13 +240,14 @@ func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpoin
 					cmt := endpoint.stdRefLines[0]
 					if cmt.Text != line {
 						pos := fileRewriter.Position(cmt.Pos())
-						logf("At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
+						logf("stdRefLines=1: At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
 						fileEdits = append(fileEdits, &FileEdit{
 							pos:      pos,
 							fromText: cmt.Text,
 							toText:   line,
 						})
 					}
+					endpoint.stdRefLines = nil
 				case len(endpoint.endpointComments) > 0:
 					lastCmt := endpoint.endpointComments[len(endpoint.endpointComments)-1]
 					// logf("lastCmt.Text=%q (len=%v)", lastCmt.Text, len(lastCmt.Text))
