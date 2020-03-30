@@ -1,6 +1,3 @@
-// -*- compile-command: "go run gen-doc-urls.go -v"; -*-
-// DO NOT COMMIT WITH COMPILE-COMMAND.
-
 // Copyright 2020 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
