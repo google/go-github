@@ -1160,7 +1160,8 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-performed-by-a-user
+// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-for-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -1190,7 +1191,8 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-that-a-user-has-received
+// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
