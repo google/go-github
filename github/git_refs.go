@@ -55,10 +55,10 @@ type updateRefRequest struct {
 // Note: The GitHub API can return multiple matches.
 // If you wish to use this functionality please use the GetRefs() method.
 //
-// GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
+// GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-single-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(ref))
+	u := fmt.Sprintf("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err

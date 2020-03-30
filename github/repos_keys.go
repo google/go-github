@@ -76,26 +76,6 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 	return k, resp, nil
 }
 
-// EditKey edits a deploy key.
-//
-// GitHub API docs: https://developer.github.com/v3/repos/keys/#edit
-func (s *RepositoriesService) EditKey(ctx context.Context, owner string, repo string, id int64, key *Key) (*Key, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
-
-	req, err := s.client.NewRequest("PATCH", u, key)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	k := new(Key)
-	resp, err := s.client.Do(ctx, req, k)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return k, resp, nil
-}
-
 // DeleteKey deletes a deploy key.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/keys/#remove-a-deploy-key

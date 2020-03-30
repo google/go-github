@@ -214,6 +214,8 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 }
 
 // GetRaw gets a single pull request in raw (diff or patch) format.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/#get-a-single-pull-request
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo string, number int, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)

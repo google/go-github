@@ -16,6 +16,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"go/ast"
@@ -41,14 +42,40 @@ const (
 )
 
 var (
-	verbose = flag.Bool("v", false, "Print verbose log messages")
+	verbose   = flag.Bool("v", false, "Print verbose log messages")
+	debugFile = flag.String("d", "", "Debug named file only")
 
-	// methodBlacklist holds methods that do not have GitHub v3 API URLs.
+	// methodBlacklist holds methods that do not have GitHub v3 API URLs
+	// or are otherwise problematic in parsing, discovering, and/or fixing.
 	methodBlacklist = map[string]bool{
-		"MarketplaceService.marketplaceURI":    true,
-		"RepositoriesService.DownloadContents": true,
-		"SearchService.search":                 true,
-		"UsersService.GetByID":                 true,
+		"ActionsService.DownloadArtifact":            true,
+		"AdminService.CreateOrg":                     true,
+		"AdminService.CreateUser":                    true,
+		"AdminService.CreateUserImpersonation":       true,
+		"AdminService.DeleteUserImpersonation":       true,
+		"AdminService.GetAdminStats":                 true,
+		"AdminService.UpdateTeamLDAPMapping":         true,
+		"AdminService.UpdateUserLDAPMapping":         true,
+		"AppsService.FindRepositoryInstallationByID": true,
+		"AuthorizationsService.CreateImpersonation":  true,
+		"AuthorizationsService.DeleteImpersonation":  true,
+		"GitService.GetRefs":                         true,
+		"GitService.ListRefs":                        true,
+		"MarketplaceService.marketplaceURI":          true,
+		"OrganizationsService.GetByID":               true,
+		"RepositoriesService.DeletePreReceiveHook":   true,
+		"RepositoriesService.DownloadContents":       true,
+		"RepositoriesService.GetArchiveLink":         true,
+		"RepositoriesService.GetByID":                true,
+		"RepositoriesService.GetPreReceiveHook":      true,
+		"RepositoriesService.ListPreReceiveHooks":    true,
+		"RepositoriesService.UpdatePreReceiveHook":   true,
+		"SearchService.search":                       true,
+		"UsersService.DemoteSiteAdmin":               true,
+		"UsersService.GetByID":                       true,
+		"UsersService.PromoteSiteAdmin":              true,
+		"UsersService.Suspend":                       true,
+		"UsersService.Unsuspend":                     true,
 	}
 
 	helperOverrides = map[string]overrideFunc{
@@ -59,8 +86,8 @@ var (
 
 	// methodOverrides contains overrides for troublesome endpoints.
 	methodOverrides = map[string]string{
-		"OrganizationsService.EditOrgMembership: method orgs/%v/memberships/%v":   "PUT",
-		"OrganizationsService.EditOrgMembership: method user/memberships/orgs/%v": "PATCH",
+		"OrganizationsService.EditOrgMembership: method orgs/%v/memberships/%v": "PUT",
+		"OrganizationsService.EditOrgMembership: PUT user/memberships/orgs/%v":  "PATCH",
 	}
 
 	paramRE = regexp.MustCompile(`:[a-z_]+`)
@@ -88,10 +115,317 @@ func main() {
 	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, parser.ParseComments)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	// Step 1 - get a map of all services.
+	services := findAllServices(pkgs)
+
+	// Step 2 - find all the API service endpoints.
+	iter := &realAstFileIterator{fset: fset, pkgs: pkgs}
+	endpoints, err := findAllServiceEndpoints(iter, services)
+	if err != nil {
+		log.Fatalf("\n%v", err)
+	}
+
+	// Step 3 - resolve all missing httpMethods from helperMethods.
+	// Additionally, use existing URLs as hints to pre-cache all apiDocs.
+	docCache := &documentCache{}
+	usedHelpers, endpointsByFilename := resolveHelpersAndCacheDocs(endpoints, docCache)
+
+	// Step 4 - validate and rewrite all URLs, skipping used helper methods.
+	frw := &liveFileRewriter{fset: fset}
+	validateRewriteURLs(usedHelpers, endpointsByFilename, docCache, frw)
+
+	logf("Done.")
+}
+
+type usedHelpersMap map[string]bool
+type endpointsByFilenameMap map[string][]*Endpoint
+
+// FileRewriter read/writes files and converts AST token positions.
+type FileRewriter interface {
+	Position(token.Pos) token.Position
+	ReadFile(filename string) ([]byte, error)
+	WriteFile(filename string, buf []byte, mode os.FileMode) error
+}
+
+// liveFileRewriter implements FileRewriter.
+type liveFileRewriter struct {
+	fset *token.FileSet
+}
+
+func (lfr *liveFileRewriter) Position(pos token.Pos) token.Position { return lfr.fset.Position(pos) }
+func (lfr *liveFileRewriter) ReadFile(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
+}
+func (lfr *liveFileRewriter) WriteFile(filename string, buf []byte, mode os.FileMode) error {
+	return ioutil.WriteFile(filename, buf, mode)
+}
+
+func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpointsByFilenameMap, docCache documentCacheReader, fileRewriter FileRewriter) {
+	for filename, slc := range endpointsByFilename {
+		logf("Step 4 - Processing %v methods in %v ...", len(slc), filename)
+
+		var fileEdits []*FileEdit
+		for _, endpoint := range slc {
+			fullName := fmt.Sprintf("%v.%v", endpoint.serviceName, endpoint.endpointName)
+			if usedHelpers[fullName] {
+				logf("Step 4 - skipping used helper method %q", fullName)
+				continue
+			}
+
+			// First, find the correct GitHub v3 API URL by httpMethod and urlFormat.
+			for _, path := range endpoint.urlFormats {
+				path = strings.ReplaceAll(path, "%d", "%v")
+				path = strings.ReplaceAll(path, "%s", "%v")
+
+				// Check the overrides.
+				endpoint.checkHttpMethodOverride(path)
+
+				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
+				url, ok := docCache.UrlByMethodAndPath(methodAndPath)
+				if !ok {
+					if i := len(endpoint.endpointComments); i > 0 {
+						pos := fileRewriter.Position(endpoint.endpointComments[i-1].Pos())
+						fmt.Printf("%v:%v:%v: WARNING: unable to find online docs for %q: (%v)\nPLEASE CHECK MANUALLY AND FIX.\n", pos.Filename, pos.Line, pos.Column, fullName, methodAndPath)
+					} else {
+						fmt.Printf("%v: WARNING: unable to find online docs for %q: (%v)\nPLEASE CHECK MANUALLY AND FIX.\n", filename, fullName, methodAndPath)
+					}
+					continue
+				}
+				logf("found %q for: %q (%v)", url, fullName, methodAndPath)
+
+				// Make sure URL is up-to-date.
+				switch {
+				case len(endpoint.enterpriseRefLines) > 1:
+					log.Printf("WARNING: multiple Enterprise GitHub URLs found - skipping: %#v", endpoint.enterpriseRefLines)
+				case len(endpoint.enterpriseRefLines) > 0:
+					line := fmt.Sprintf(enterpriseRefFmt, url)
+					cmt := endpoint.enterpriseRefLines[0]
+					if cmt.Text != line {
+						pos := fileRewriter.Position(cmt.Pos())
+						logf("At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
+						fileEdits = append(fileEdits, &FileEdit{
+							pos:      pos,
+							fromText: cmt.Text,
+							toText:   line,
+						})
+					}
+				case len(endpoint.stdRefLines) > 1:
+					var foundMatch bool
+					line := fmt.Sprintf(stdRefFmt, url)
+					for i, stdRefLine := range endpoint.stdRefLines {
+						if stdRefLine.Text == line {
+							foundMatch = true
+							logf("found match with %v, not editing and removing from list", line)
+							// Remove matching line
+							endpoint.stdRefLines = append(endpoint.stdRefLines[:i], endpoint.stdRefLines[i+1:]...)
+							break
+						}
+					}
+					if !foundMatch { // Edit last stdRefLine, then remove it.
+						cmt := endpoint.stdRefLines[len(endpoint.stdRefLines)-1]
+						pos := fileRewriter.Position(cmt.Pos())
+						logf("At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
+						fileEdits = append(fileEdits, &FileEdit{
+							pos:      pos,
+							fromText: cmt.Text,
+							toText:   line,
+						})
+						endpoint.stdRefLines = endpoint.stdRefLines[:len(endpoint.stdRefLines)-1]
+					}
+				case len(endpoint.stdRefLines) > 0:
+					line := fmt.Sprintf(stdRefFmt, url)
+					cmt := endpoint.stdRefLines[0]
+					if cmt.Text != line {
+						pos := fileRewriter.Position(cmt.Pos())
+						logf("At byte offset %v:\nFOUND %q\nWANT: %q", pos.Offset, cmt.Text, line)
+						fileEdits = append(fileEdits, &FileEdit{
+							pos:      pos,
+							fromText: cmt.Text,
+							toText:   line,
+						})
+					}
+				case len(endpoint.endpointComments) > 0:
+					lastCmt := endpoint.endpointComments[len(endpoint.endpointComments)-1]
+					// logf("lastCmt.Text=%q (len=%v)", lastCmt.Text, len(lastCmt.Text))
+					pos := fileRewriter.Position(lastCmt.Pos())
+					pos.Offset += len(lastCmt.Text)
+					line := "\n" + fmt.Sprintf(stdRefFmt, url)
+					if lastCmt.Text != "//" {
+						line = "\n//" + line // Add blank comment line before URL.
+					}
+					// logf("line=%q (len=%v)", line, len(line))
+					// logf("At byte offset %v: adding missing documentation:\n%q", pos.Offset, line)
+					fileEdits = append(fileEdits, &FileEdit{
+						pos:      pos,
+						fromText: "",
+						toText:   line,
+					})
+				default: // Missing documentation - add it.
+					log.Printf("WARNING: file %v has no godoc comment string for method %v", fullName, methodAndPath)
+				}
+			}
+		}
+
+		if len(fileEdits) > 0 {
+			b, err := fileRewriter.ReadFile(filename)
+			if err != nil {
+				log.Fatalf("ReadFile: %v", err)
+			}
+
+			log.Printf("Performing %v edits on file %v", len(fileEdits), filename)
+			b = performBufferEdits(b, fileEdits)
+
+			if err := fileRewriter.WriteFile(filename, b, 0644); err != nil {
+				log.Fatalf("WriteFile: %v", err)
+			}
+		}
+	}
+}
+
+func performBufferEdits(b []byte, fileEdits []*FileEdit) []byte {
+	fileEdits = sortAndMergeFileEdits(fileEdits)
+
+	for _, edit := range fileEdits {
+		prelude := b[0:edit.pos.Offset]
+		postlude := b[edit.pos.Offset+len(edit.fromText):]
+		logf("At byte offset %v, replacing %v bytes with %v bytes\nBEFORE: %v\nAFTER : %v", edit.pos.Offset, len(edit.fromText), len(edit.toText), edit.fromText, edit.toText)
+		b = []byte(fmt.Sprintf("%s%v%s", prelude, edit.toText, postlude))
+	}
+
+	return b
+}
+
+func sortAndMergeFileEdits(fileEdits []*FileEdit) []*FileEdit {
+	// Sort edits from last to first in the file.
+	// If the offsets are identical, sort the comment "toText" strings, ascending.
+	var foundDups bool
+	sort.Slice(fileEdits, func(a, b int) bool {
+		if fileEdits[a].pos.Offset == fileEdits[b].pos.Offset {
+			foundDups = true
+			return fileEdits[a].toText < fileEdits[b].toText
+		}
+		return fileEdits[a].pos.Offset > fileEdits[b].pos.Offset
+	})
+
+	if !foundDups {
+		return fileEdits
+	}
+
+	// Merge the duplicate edits.
+	var mergedEdits []*FileEdit
+	var dupOffsets []*FileEdit
+
+	mergeFunc := func() {
+		if len(dupOffsets) > 1 {
+			isInsert := dupOffsets[0].fromText == ""
+			var hasBlankCommentLine bool
+
+			// Merge dups
+			var lines []string
+			for _, dup := range dupOffsets {
+				if isInsert && strings.HasPrefix(dup.toText, "\n//\n//") {
+					lines = append(lines, strings.TrimPrefix(dup.toText, "\n//"))
+					hasBlankCommentLine = true
+				} else {
+					lines = append(lines, dup.toText)
+				}
+			}
+			sort.Strings(lines)
+
+			var joinStr string
+			// if insert, no extra newlines
+			if !isInsert { // if replacement - add newlines
+				joinStr = "\n"
+			}
+			toText := strings.Join(lines, joinStr)
+			if hasBlankCommentLine { // Add back in
+				toText = "\n//" + toText
+			}
+			mergedEdits = append(mergedEdits, &FileEdit{
+				pos:      dupOffsets[0].pos,
+				fromText: dupOffsets[0].fromText,
+				toText:   toText,
+			})
+		} else if len(dupOffsets) > 0 {
+			// Move non-dup to final output
+			mergedEdits = append(mergedEdits, dupOffsets[0])
+		}
+		dupOffsets = nil
+	}
+
+	lastOffset := -1
+	for _, fileEdit := range fileEdits {
+		if fileEdit.pos.Offset != lastOffset {
+			mergeFunc()
+		}
+		dupOffsets = append(dupOffsets, fileEdit)
+		lastOffset = fileEdit.pos.Offset
+	}
+	mergeFunc()
+	return mergedEdits
+}
+
+// astFileIterator iterates over all files in an ast.Package.
+type astFileIterator interface {
+	// Finds the position of a token.
+	Position(token.Pos) token.Position
+	// Reset resets the iterator.
+	Reset()
+	// Next returns the next filenameAstFilePair pair or nil if done.
+	Next() *filenameAstFilePair
+}
+
+type filenameAstFilePair struct {
+	filename string
+	astFile  *ast.File
+}
+
+// realAstFileIterator implements astFileIterator.
+type realAstFileIterator struct {
+	fset   *token.FileSet
+	pkgs   map[string]*ast.Package
+	ch     chan *filenameAstFilePair
+	closed bool
+}
+
+func (rafi *realAstFileIterator) Position(pos token.Pos) token.Position {
+	return rafi.fset.Position(pos)
+}
+
+func (rafi *realAstFileIterator) Reset() {
+	if !rafi.closed && rafi.ch != nil {
+		logf("Closing old channel on Reset")
+		close(rafi.ch)
+	}
+	rafi.ch = make(chan *filenameAstFilePair, 10)
+	rafi.closed = false
+
+	go func() {
+		var count int
+		for _, pkg := range rafi.pkgs {
+			for filename, f := range pkg.Files {
+				logf("Sending file #%v: %v to channel", count, filename)
+				rafi.ch <- &filenameAstFilePair{filename: filename, astFile: f}
+				count++
+			}
+		}
+		rafi.closed = true
+		close(rafi.ch)
+		logf("Closed channel after sending %v files", count)
+	}()
+}
+
+func (rafi *realAstFileIterator) Next() *filenameAstFilePair {
+	for pair := range rafi.ch {
+		logf("Next: returning file %v", pair.filename)
+		return pair
+	}
+	return nil
+}
+
+func findAllServices(pkgs map[string]*ast.Package) servicesMap {
 	services := servicesMap{}
 	for _, pkg := range pkgs {
 		for filename, f := range pkg.Files {
@@ -105,70 +439,39 @@ func main() {
 			}
 		}
 	}
+	return services
+}
 
-	// Step 2 - find all the API service endpoints.
+func findAllServiceEndpoints(iter astFileIterator, services servicesMap) (endpointsMap, error) {
 	endpoints := endpointsMap{}
-	for _, pkg := range pkgs {
-		for filename, f := range pkg.Files {
-			if filename == "github.go" {
-				continue
-			}
+	iter.Reset()
+	var errs []string // Collect all the errors and return in a big batch.
+	for next := iter.Next(); next != nil; next = iter.Next() {
+		filename, f := next.filename, next.astFile
+		if filename == "github.go" {
+			continue
+		}
 
-			if filename != "activity_events.go" { // DEBUGGING ONLY!!!
-				continue
-			}
+		if *debugFile != "" && !strings.Contains(filename, *debugFile) {
+			continue
+		}
 
-			logf("Step 2 - Processing %v ...", filename)
-			if err := processAST(filename, f, services, endpoints); err != nil {
-				log.Fatal(err)
-			}
+		logf("Step 2 - Processing %v ...", filename)
+		if err := processAST(filename, f, services, endpoints, iter); err != nil {
+			errs = append(errs, err.Error())
 		}
 	}
 
-	apiDocs := map[string]map[string][]*Endpoint{} // cached by URL, then mapped by web fragment identifier.
-	urlByMethodAndPath := map[string]string{}
-	cacheDocs := func(s string) {
-		url := getURL(s)
-		if _, ok := apiDocs[url]; ok {
-			return
-		}
-
-		// TODO: Enterprise URLs are currently causing problems - for example:
-		// GET https://developer.github.com/enterprise/v3/enterprise-admin/users/
-		// returns StatusCode=404
-		if strings.Contains(url, "enterprise") {
-			logf("Skipping troublesome Enterprise URL: %v", url)
-			return
-		}
-
-		logf("GET %q ...", url)
-		resp, err := http.Get(url)
-		check("Unable to get URL: %v: %v", url, err)
-		if resp.StatusCode != http.StatusOK {
-			log.Fatalf("url %v - StatusCode=%v", url, resp.StatusCode)
-		}
-
-		b, err := ioutil.ReadAll(resp.Body)
-		check("Unable to read body of URL: %v, %v", url, err)
-		check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
-		apiDocs[url] = parseWebPageEndpoints(string(b))
-
-		// Now reverse-map the methods+paths to URLs.
-		for fragID, v := range apiDocs[url] {
-			for _, endpoint := range v {
-				for _, path := range endpoint.urlFormats {
-					methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
-					urlByMethodAndPath[methodAndPath] = fmt.Sprintf("%v#%v", url, fragID)
-					logf("urlByMethodAndPath[%q] = %q", methodAndPath, urlByMethodAndPath[methodAndPath])
-				}
-			}
-		}
+	if len(errs) > 0 {
+		return nil, errors.New(strings.Join(errs, "\n"))
 	}
 
-	// Step 3 - resolve all missing httpMethods from helperMethods.
-	// Additionally, use existing URLs as hints to pre-cache all apiDocs.
-	usedHelpers := map[string]bool{}
-	endpointsByFilename := map[string][]*Endpoint{}
+	return endpoints, nil
+}
+
+func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWriter) (usedHelpers usedHelpersMap, endpointsByFilename endpointsByFilenameMap) {
+	usedHelpers = usedHelpersMap{}
+	endpointsByFilename = endpointsByFilenameMap{}
 	for k, v := range endpoints {
 		if _, ok := endpointsByFilename[v.filename]; !ok {
 			endpointsByFilename[v.filename] = []*Endpoint{}
@@ -176,10 +479,10 @@ func main() {
 		endpointsByFilename[v.filename] = append(endpointsByFilename[v.filename], v)
 
 		for _, cmt := range v.enterpriseRefLines {
-			cacheDocs(cmt.Text)
+			docCache.CacheDocFromInternet(cmt.Text)
 		}
 		for _, cmt := range v.stdRefLines {
-			cacheDocs(cmt.Text)
+			docCache.CacheDocFromInternet(cmt.Text)
 		}
 
 		if v.httpMethod == "" && v.helperMethod != "" {
@@ -196,94 +499,69 @@ func main() {
 		}
 	}
 
-	// Step 4 - validate and rewrite all URLs, skipping used helper methods.
-	for filename, slc := range endpointsByFilename {
-		logf("Step 4 - Processing %v methods in %v ...", len(slc), filename)
+	return usedHelpers, endpointsByFilename
+}
 
-		var fileEdits []*FileEdit
-		for _, endpoint := range slc {
-			fullName := fmt.Sprintf("%v.%v", endpoint.serviceName, endpoint.endpointName)
-			if usedHelpers[fullName] {
-				logf("Step 4 - skipping used helper method %q", fullName)
-				continue
-			}
+type documentCacheReader interface {
+	UrlByMethodAndPath(string) (string, bool)
+}
 
-			// First, find the correct GitHub v3 API URL by httpMethod and urlFormat.
+type documentCacheWriter interface {
+	CacheDocFromInternet(urlWithFragmentID string)
+}
+
+// documentCache implements documentCacheReader and documentCachWriter.
+type documentCache struct {
+	apiDocs            map[string]map[string][]*Endpoint // cached by URL, then mapped by web fragment identifier.
+	urlByMethodAndPath map[string]string
+}
+
+func (dc *documentCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+	url, ok := dc.urlByMethodAndPath[methodAndPath]
+	return url, ok
+}
+
+func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
+	if dc.apiDocs == nil {
+		dc.apiDocs = map[string]map[string][]*Endpoint{} // cached by URL, then mapped by web fragment identifier.
+		dc.urlByMethodAndPath = map[string]string{}
+	}
+
+	url := getURL(urlWithID)
+	if _, ok := dc.apiDocs[url]; ok {
+		return // already cached
+	}
+
+	// TODO: Enterprise URLs are currently causing problems - for example:
+	// GET https://developer.github.com/enterprise/v3/enterprise-admin/users/
+	// returns StatusCode=404
+	if strings.Contains(url, "enterprise") {
+		logf("Skipping troublesome Enterprise URL: %v", url)
+		return
+	}
+
+	logf("GET %q ...", url)
+	resp, err := http.Get(url)
+	check("Unable to get URL: %v: %v", url, err)
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("url %v - StatusCode=%v", url, resp.StatusCode)
+	}
+
+	b, err := ioutil.ReadAll(resp.Body)
+	check("Unable to read body of URL: %v, %v", url, err)
+	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
+	dc.apiDocs[url] = parseWebPageEndpoints(string(b))
+
+	// Now reverse-map the methods+paths to URLs.
+	for fragID, v := range dc.apiDocs[url] {
+		for _, endpoint := range v {
 			for _, path := range endpoint.urlFormats {
-				path = strings.ReplaceAll(path, "%d", "%v")
-				path = strings.ReplaceAll(path, "%s", "%v")
 				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
-				url, ok := urlByMethodAndPath[methodAndPath]
-				if !ok {
-					log.Printf("WARNING: Unable to find documentation for %v - %q: (%v)", filename, fullName, methodAndPath)
-					continue
-				}
-				logf("found %q for: %q (%v)", url, fullName, methodAndPath)
-
-				// Make sure URL is up-to-date.
-				switch {
-				case len(endpoint.enterpriseRefLines) > 1:
-					log.Printf("WARNING: multiple Enterprise GitHub URLs found - skipping: %#v", endpoint.enterpriseRefLines)
-				case len(endpoint.enterpriseRefLines) > 0:
-					line := fmt.Sprintf(enterpriseRefFmt, url)
-					cmt := endpoint.enterpriseRefLines[0]
-					if cmt.Text != line {
-						log.Printf("At token.pos=%v:\nFOUND %q\nWANT: %q", cmt.Pos(), cmt.Text, line)
-						fileEdits = append(fileEdits, &FileEdit{
-							pos:      fset.Position(cmt.Pos()),
-							fromText: cmt.Text,
-							toText:   line,
-						})
-					}
-				case len(endpoint.stdRefLines) > 1:
-					log.Printf("WARNING: multiple GitHub URLs found - skipping: %#v", endpoint.stdRefLines)
-				case len(endpoint.stdRefLines) > 0:
-					line := fmt.Sprintf(stdRefFmt, url)
-					cmt := endpoint.stdRefLines[0]
-					if cmt.Text != line {
-						log.Printf("At token.pos=%v:\nFOUND %q\nWANT: %q", cmt.Pos(), cmt.Text, line)
-						fileEdits = append(fileEdits, &FileEdit{
-							pos:      fset.Position(cmt.Pos()),
-							fromText: cmt.Text,
-							toText:   line,
-						})
-					}
-				default: // Missing documentation - add it.
-					log.Printf("TODO: Add missing documentation: %q for: %q (%v)", url, fullName, methodAndPath)
-				}
-			}
-		}
-
-		if len(fileEdits) > 0 {
-			logf("Performing %v edits on file %v", len(fileEdits), filename)
-			// Sort edits from last to first in the file.
-			sort.Slice(fileEdits, func(a, b int) bool { return fileEdits[b].pos.Offset < fileEdits[a].pos.Offset })
-
-			b, err := ioutil.ReadFile(filename)
-			if err != nil {
-				log.Fatalf("ReadFile: %v", err)
-			}
-
-			var lastOffset int
-			for _, edit := range fileEdits {
-				if edit.pos.Offset == lastOffset {
-					logf("TODO: At offset %v, inserting second URL of %v bytes", edit.pos.Offset, len(edit.fromText), len(edit.toText))
-					continue
-				}
-				lastOffset = edit.pos.Offset
-				logf("At offset %v, replacing %v bytes with %v bytes", edit.pos.Offset, len(edit.fromText), len(edit.toText))
-				before := b[0:edit.pos.Offset]
-				after := b[edit.pos.Offset+len(edit.fromText):]
-				b = []byte(fmt.Sprintf("%s%v%s", before, edit.toText, after))
-			}
-
-			if err := ioutil.WriteFile(filename, b, 0644); err != nil {
-				log.Fatalf("WriteFile: %v", err)
+				dc.urlByMethodAndPath[methodAndPath] = fmt.Sprintf("%v#%v", url, fragID)
+				logf("urlByMethodAndPath[%q] = %q", methodAndPath, dc.urlByMethodAndPath[methodAndPath])
 			}
 		}
 	}
-
-	logf("Done.")
 }
 
 // FileEdit represents an edit that needs to be performed on a file.
@@ -300,9 +578,14 @@ func getURL(s string) string {
 	}
 	j := strings.Index(s, "#")
 	if j < i {
-		return s[i:]
+		s = s[i:]
+	} else {
+		s = s[i:j]
 	}
-	return s[i:j]
+	if !strings.HasSuffix(s, "/") { // Prevent unnecessary redirects if possible.
+		s += "/"
+	}
+	return s
 }
 
 // Service represents a go-github service.
@@ -321,18 +604,61 @@ type Endpoint struct {
 
 	enterpriseRefLines []*ast.Comment
 	stdRefLines        []*ast.Comment
+	endpointComments   []*ast.Comment
 }
 
-func processAST(filename string, f *ast.File, services servicesMap, endpoints endpointsMap) error {
+// String helps with debugging by providing an easy-to-read summary of the endpoint.
+func (e *Endpoint) String() string {
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("  filename: %v\n", e.filename))
+	b.WriteString(fmt.Sprintf("  serviceName: %v\n", e.serviceName))
+	b.WriteString(fmt.Sprintf("  endpointName: %v\n", e.endpointName))
+	b.WriteString(fmt.Sprintf("  httpMethod: %v\n", e.httpMethod))
+	if e.helperMethod != "" {
+		b.WriteString(fmt.Sprintf("  helperMethod: %v\n", e.helperMethod))
+	}
+	for i := 0; i < len(e.urlFormats); i++ {
+		b.WriteString(fmt.Sprintf("  urlFormats[%v]: %v\n", i, e.urlFormats[i]))
+	}
+	for i := 0; i < len(e.enterpriseRefLines); i++ {
+		b.WriteString(fmt.Sprintf("  enterpriseRefLines[%v]: comment: %v\n", i, e.enterpriseRefLines[i].Text))
+	}
+	for i := 0; i < len(e.stdRefLines); i++ {
+		b.WriteString(fmt.Sprintf("  stdRefLines[%v]: comment: %v\n", i, e.stdRefLines[i].Text))
+	}
+	return b.String()
+}
+
+func (ep *Endpoint) checkHttpMethodOverride(path string) {
+	lookupOverride := fmt.Sprintf("%v.%v: %v %v", ep.serviceName, ep.endpointName, ep.httpMethod, path)
+	logf("Looking up override for %q", lookupOverride)
+	if v, ok := methodOverrides[lookupOverride]; ok {
+		logf("overriding method for %v to %q", lookupOverride, v)
+		ep.httpMethod = v
+		return
+	}
+}
+
+func processAST(filename string, f *ast.File, services servicesMap, endpoints endpointsMap, iter astFileIterator) error {
+	var errs []string
+
 	for _, decl := range f.Decls {
 		switch decl := decl.(type) {
 		case *ast.FuncDecl: // Doc, Recv, Name, Type, Body
 			if decl.Recv == nil || len(decl.Recv.List) != 1 || decl.Name == nil || decl.Body == nil {
 				continue
 			}
+
 			recv := decl.Recv.List[0]
 			se, ok := recv.Type.(*ast.StarExpr) // Star, X
 			if !ok || se.X == nil || len(recv.Names) != 1 {
+				if decl.Name.Name != "String" && decl.Name.Name != "Equal" && decl.Name.Name != "IsPullRequest" {
+					pos := iter.Position(recv.Pos())
+					if id, ok := recv.Type.(*ast.Ident); ok {
+						pos = iter.Position(id.Pos())
+					}
+					errs = append(errs, fmt.Sprintf("%v:%v:%v: method %v does not use a pointer receiver and needs fixing!", pos.Filename, pos.Line, pos.Column, decl.Name))
+				}
 				continue
 			}
 			recvType, ok := se.X.(*ast.Ident) // NamePos, Name, Obj
@@ -362,7 +688,9 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 			logf("recvType = %#v", recvType)
 			var enterpriseRefLines []*ast.Comment
 			var stdRefLines []*ast.Comment
+			var endpointComments []*ast.Comment
 			if decl.Doc != nil {
+				endpointComments = decl.Doc.List
 				for i, comment := range decl.Doc.List {
 					logf("doc.comment[%v] = %#v", i, *comment)
 					if strings.Contains(comment.Text, enterpriseURL) {
@@ -379,14 +707,6 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 				return fmt.Errorf("parseBody: %v", err)
 			}
 
-			if len(bd.urlFormats) == 1 {
-				lookupOverride := fmt.Sprintf("%v.%v: %v %v", serviceName, endpointName, bd.httpMethod, bd.urlFormats[0])
-				if v, ok := methodOverrides[lookupOverride]; ok {
-					logf("overriding method for %v to %q", lookupOverride, v)
-					bd.httpMethod = v
-				}
-			}
-
 			ep := &Endpoint{
 				endpointName:       endpointName,
 				filename:           filename,
@@ -396,7 +716,9 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 				helperMethod:       bd.helperMethod,
 				enterpriseRefLines: enterpriseRefLines,
 				stdRefLines:        stdRefLines,
+				endpointComments:   endpointComments,
 			}
+			// ep.checkHttpMethodOverride("")
 			endpoints[fullName] = ep
 			logf("endpoints[%q] = %#v", fullName, endpoints[fullName])
 			if ep.httpMethod == "" && (ep.helperMethod == "" || len(ep.urlFormats) == 0) {
@@ -408,9 +730,9 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 		}
 	}
 
-	// for _, comment := range f.Comments {
-	// 	log.Printf("Found %v comments, starting with: %#v", len(comment.List), comment.List[0])
-	// }
+	if len(errs) > 0 {
+		return errors.New(strings.Join(errs, "\n"))
+	}
 
 	return nil
 }
@@ -564,7 +886,10 @@ func processAssignStmt(receiverName string, stmt *ast.AssignStmt) (httpMethod, u
 	for i, expr := range stmt.Rhs {
 		switch expr := expr.(type) {
 		case *ast.BasicLit: // ValuePos, Kind, Value
-			assignments = append(assignments, lhsrhs{lhs: lhs[i], rhs: strings.Trim(expr.Value, `"`)})
+			v := strings.Trim(expr.Value, `"`)
+			if !strings.HasPrefix(v, "?") { // Hack to remove "?recursive=1"
+				assignments = append(assignments, lhsrhs{lhs: lhs[i], rhs: v})
+			}
 		case *ast.BinaryExpr:
 			logf("processAssignStmt: *ast.BinaryExpr: %#v", *expr)
 		case *ast.CallExpr: // Fun, Lparen, Args, Ellipsis, Rparen
@@ -782,7 +1107,13 @@ func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
 				if v := strings.Index(part, "<"); v > len(method) && v < eol {
 					eol = v
 				}
+				if v := strings.Index(part, "{"); v > len(method) && v < eol {
+					eol = v
+				}
 				path := strings.TrimSpace(part[len(method):eol])
+				if strings.HasPrefix(path, ":server") { // Hack to remove :server
+					path = strings.TrimPrefix(path, ":server")
+				}
 				path = paramRE.ReplaceAllString(path, "%v")
 				// strip leading garbage
 				if i := strings.Index(path, "/"); i >= 0 {

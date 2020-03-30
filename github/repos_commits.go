@@ -167,6 +167,8 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 }
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
