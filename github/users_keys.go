@@ -27,7 +27,7 @@ func (k Key) String() string {
 // ListKeys lists the verified public keys for a user. Passing the empty
 // string will fetch keys for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/keys/#list-your-public-keys
+// GitHub API docs: https://developer.github.com/v3/users/keys/#list-public-keys-for-a-user
 func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*Key, *Response, error) {
 	var u string
 	if user != "" {

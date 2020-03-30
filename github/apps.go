@@ -123,7 +123,7 @@ func (i Installation) String() string {
 // You can find this on the settings page for your GitHub App
 // (e.g., https://github.com/settings/apps/:app_slug).
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-the-authenticated-github-app
+// GitHub API docs: https://developer.github.com/v3/apps/#get-a-single-github-app
 func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response, error) {
 	var u string
 	if appSlug != "" {

@@ -182,7 +182,7 @@ type RepositoryListOptions struct {
 // List the repositories for a user. Passing the empty string will list
 // repositories for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#list-repositories-for-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/repos/#list-repositories-for-a-user
 func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
@@ -326,7 +326,7 @@ type createRepoRequest struct {
 // Note that only a subset of the repo fields are used and repo must
 // not be nil.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-for-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/repos/#create-an-organization-repository
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
 	if org != "" {

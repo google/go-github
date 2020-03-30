@@ -144,7 +144,7 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 // List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/#oauth-scope-requirements
+// GitHub API docs: https://developer.github.com/v3/orgs/#list-user-organizations
 func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {

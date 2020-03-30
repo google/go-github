@@ -71,7 +71,7 @@ type ListMembersOptions struct {
 // user is an owner of the organization, this will return both concealed and
 // public members, otherwise it will only return public members.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/members/#public-members-list
+// GitHub API docs: https://developer.github.com/v3/orgs/members/#members-list
 func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts *ListMembersOptions) ([]*User, *Response, error) {
 	var u string
 	if opts != nil && opts.PublicOnly {

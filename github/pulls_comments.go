@@ -66,7 +66,7 @@ type PullRequestListCommentsOptions struct {
 // pull request number of 0 will return all comments on all pull requests for
 // the repository.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-in-a-repository
+// GitHub API docs: https://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
 func (s *PullRequestsService) ListComments(ctx context.Context, owner string, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {

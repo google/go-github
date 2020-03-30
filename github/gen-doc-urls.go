@@ -59,6 +59,7 @@ var (
 		"AppsService.FindRepositoryInstallationByID": true,
 		"AuthorizationsService.CreateImpersonation":  true,
 		"AuthorizationsService.DeleteImpersonation":  true,
+		"GitService.GetRef":                          true,
 		"GitService.GetRefs":                         true,
 		"GitService.ListRefs":                        true,
 		"MarketplaceService.marketplaceURI":          true,
