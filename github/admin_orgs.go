@@ -67,7 +67,7 @@ func (s *AdminService) RenameOrg(ctx context.Context, org *Organization, newName
 // RenameOrgByName renames an organization in GitHub Enterprise using its current name.
 //
 // GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
-func (s *AdminService) RenameOrgByName(ctx context.Context, org string, newName string) (*RenameOrgResponse, *Response, error) {
+func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string) (*RenameOrgResponse, *Response, error) {
 	u := fmt.Sprintf("admin/organizations/%v", org)
 
 	orgReq := &renameOrgRequest{
