@@ -768,8 +768,8 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 // ListIDPGroupsForTeam lists IDP groups connected to a team on GitHub.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team
-func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
+func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -788,8 +788,8 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 // and an IDP group.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
-func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
+func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {

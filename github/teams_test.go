@@ -950,12 +950,12 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "1")
+	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "o", "slug")
 	if err != nil {
 		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
 	}
@@ -978,7 +978,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
@@ -993,7 +993,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "o", "slug", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
 	}
@@ -1016,7 +1016,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": []}`)
 	})
@@ -1025,7 +1025,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
 		Groups: []*IDPGroup{},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "o", "slug", input)
 	if err != nil {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
 	}
