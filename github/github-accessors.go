@@ -9996,6 +9996,22 @@ func (r *Rename) GetTo() string {
 	return *r.To
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (r *RenameOrgResponse) GetMessage() string {
+	if r == nil || r.Message == nil {
+		return ""
+	}
+	return *r.Message
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (r *RenameOrgResponse) GetURL() string {
+	if r == nil || r.URL == nil {
+		return ""
+	}
+	return *r.URL
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (r *RepositoriesSearchResult) GetIncompleteResults() bool {
 	if r == nil || r.IncompleteResults == nil {
