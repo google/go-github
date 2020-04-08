@@ -5,7 +5,10 @@
 
 package github
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 // createOrgRequest is a subset of Organization and is used internally
 // by CreateOrg to pass only the known fields for the endpoint.
@@ -34,6 +37,49 @@ func (s *AdminService) CreateOrg(ctx context.Context, org *Organization, admin s
 	}
 
 	o := new(Organization)
+	resp, err := s.client.Do(ctx, req, o)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return o, resp, nil
+}
+
+// renameOrgRequest is a subset of Organization and is used internally
+// by RenameOrg and RenameOrgByName to pass only the known fields for the endpoint.
+type renameOrgRequest struct {
+	Login *string `json:"login,omitempty"`
+}
+
+// RenameOrgResponse is the response given when renaming an Organization.
+type RenameOrgResponse struct {
+	Message *string `json:"message,omitempty"`
+	URL     *string `json:"url,omitempty"`
+}
+
+// RenameOrg renames an organization in GitHub Enterprise.
+//
+// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+func (s *AdminService) RenameOrg(ctx context.Context, org *Organization, newName string) (*RenameOrgResponse, *Response, error) {
+	return s.RenameOrgByName(ctx, *org.Login, newName)
+}
+
+// RenameOrgByName renames an organization in GitHub Enterprise using its current name.
+//
+// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
+func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string) (*RenameOrgResponse, *Response, error) {
+	u := fmt.Sprintf("admin/organizations/%v", org)
+
+	orgReq := &renameOrgRequest{
+		Login: &newName,
+	}
+
+	req, err := s.client.NewRequest("PATCH", u, orgReq)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	o := new(RenameOrgResponse)
 	resp, err := s.client.Do(ctx, req, o)
 	if err != nil {
 		return nil, resp, err
