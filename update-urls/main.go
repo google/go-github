@@ -3,13 +3,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build ignore
-
-// gen-doc-urls generates GitHub URL docs for each service endpoint.
+// update-urls updates GitHub URL docs for each service endpoint.
 //
-// It is meant to be used by go-github contributors in conjunction with the
-// go generate tool before sending a PR to GitHub.
-// Please see the CONTRIBUTING.md file for more information.
+// It is meant to be used periodically by go-github repo maintainers
+// to update stale GitHub Developer v3 API documenation URLs.
+//
+// Usage (from go-github directory):
+//   go run ./update-urls/main.go
+//   go generate ./...
+//   go test ./...
+//   go vet ./...
 package main
 
 import (
@@ -51,6 +54,8 @@ var (
 		"AdminService.CreateUserImpersonation":       true,
 		"AdminService.DeleteUserImpersonation":       true,
 		"AdminService.GetAdminStats":                 true,
+		"AdminService.RenameOrg":                     true,
+		"AdminService.RenameOrgByName":               true,
 		"AdminService.UpdateTeamLDAPMapping":         true,
 		"AdminService.UpdateUserLDAPMapping":         true,
 		"AppsService.FindRepositoryInstallationByID": true,
@@ -108,6 +113,10 @@ func main() {
 
 	sourceFilter := func(fi os.FileInfo) bool {
 		return !strings.HasSuffix(fi.Name(), "_test.go") && !strings.HasPrefix(fi.Name(), skipPrefix)
+	}
+
+	if err := os.Chdir("./github"); err != nil {
+		log.Fatalf("Please run this from the go-github directory.")
 	}
 
 	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, parser.ParseComments)
@@ -413,6 +422,9 @@ func (rafi *realAstFileIterator) Reset() {
 		rafi.closed = true
 		close(rafi.ch)
 		logf("Closed channel after sending %v files", count)
+		if count == 0 {
+			log.Fatalf("Processed no files. Did you run this from the go-github directory?")
+		}
 	}()
 }
 

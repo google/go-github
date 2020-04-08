@@ -5,7 +5,6 @@
 
 //go:generate go run gen-accessors.go
 //go:generate go run gen-stringify-test.go
-//go:generate go run gen-doc-urls.go
 
 package github
 
