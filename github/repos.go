@@ -416,7 +416,12 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 	// TODO: remove custom Accept header when the license support fully launches
 	// https://developer.github.com/v3/licenses/#get-a-repositorys-license
-	acceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview, mediaTypeRepositoryTemplatePreview}
+	acceptHeaders := []string{
+		mediaTypeCodesOfConductPreview,
+		mediaTypeTopicsPreview,
+		mediaTypeRepositoryTemplatePreview,
+		mediaTypeRepositoryVisibilityPreview,
+	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	repository := new(Repository)

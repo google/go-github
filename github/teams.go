@@ -765,11 +765,12 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 	return groups, resp, nil
 }
 
-// ListIDPGroupsForTeam lists IDP groups connected to a team on GitHub.
+// ListIDPGroupsForTeamByID lists IDP groups connected to a team on GitHub
+// given organization and team IDs.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team-legacy
-func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
+func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -784,12 +785,53 @@ func (s *TeamsService) ListIDPGroupsForTeam(ctx context.Context, teamID string) 
 	return groups, resp, err
 }
 
-// CreateOrUpdateIDPGroupConnections creates, updates, or removes a connection between a team
-// and an IDP group.
+// ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
+// given organization name and team slug.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#list-idp-groups-for-a-team
+func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	groups := new(IDPGroupList)
+	resp, err := s.client.Do(ctx, req, groups)
+	if err != nil {
+		return nil, resp, err
+	}
+	return groups, resp, err
+}
+
+// CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
+// between a team and an IDP group given organization and team IDs.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections-legacy
-func (s *TeamsService) CreateOrUpdateIDPGroupConnections(ctx context.Context, teamID string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
-	u := fmt.Sprintf("teams/%v/team-sync/group-mappings", teamID)
+func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
+
+	req, err := s.client.NewRequest("PATCH", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	groups := new(IDPGroupList)
+	resp, err := s.client.Do(ctx, req, groups)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return groups, resp, nil
+}
+
+// CreateOrUpdateIDPGroupConnectionsBySlug creates, updates, or removes a connection
+// between a team and an IDP group given organization name and team slug.
+//
+// GitHub API docs: https://developer.github.com/v3/teams/team_sync/#create-or-update-idp-group-connections
+func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
