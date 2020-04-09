@@ -946,18 +946,18 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 	}
 }
 
-func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
+func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
 
-	groups, _, err := client.Teams.ListIDPGroupsForTeam(context.Background(), "1")
+	groups, _, err := client.Teams.ListIDPGroupsForTeamByID(context.Background(), 1, 1)
 	if err != nil {
-		t.Errorf("Teams.ListIDPGroupsForTeam returned error: %v", err)
+		t.Errorf("Teams.ListIDPGroupsForTeamByID returned error: %v", err)
 	}
 
 	want := &IDPGroupList{
@@ -970,15 +970,43 @@ func TestTeamsService_ListIDPGroupsForTeam(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(groups, want) {
-		t.Errorf("Teams.ListIDPGroupsForTeam returned %+v. want %+v", groups, want)
+		t.Errorf("Teams.ListIDPGroupsForTeamByID returned %+v. want %+v", groups, want)
 	}
 }
 
-func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
+func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	groups, _, err := client.Teams.ListIDPGroupsForTeamBySlug(context.Background(), "o", "slug")
+	if err != nil {
+		t.Errorf("Teams.ListIDPGroupsForTeamBySlug returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.ListIDPGroupsForTeamBySlug returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
 	})
@@ -993,9 +1021,9 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsByID(context.Background(), 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned error: %v", err)
 	}
 
 	want := &IDPGroupList{
@@ -1008,15 +1036,52 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(groups, want) {
-		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned %+v. want %+v", groups, want)
 	}
 }
 
-func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
+func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/teams/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"groups": [{"group_id": "1",  "group_name": "n", "group_description": "d"}]}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(context.Background(), "o", "slug", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("1"),
+				GroupName:        String("n"),
+				GroupDescription: String("d"),
+			},
+		},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
+	}
+}
+func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/organizations/1/team/1/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"groups": []}`)
 	})
@@ -1025,15 +1090,41 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnections_empty(t *testing.T) {
 		Groups: []*IDPGroup{},
 	}
 
-	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnections(context.Background(), "1", input)
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsByID(context.Background(), 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned error: %v", err)
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned error: %v", err)
 	}
 
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{},
 	}
 	if !reflect.DeepEqual(groups, want) {
-		t.Errorf("Teams.CreateOrUpdateIDPGroupConnections returned %+v. want %+v", groups, want)
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned %+v. want %+v", groups, want)
+	}
+}
+
+func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/slug/team-sync/group-mappings", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"groups": []}`)
+	})
+
+	input := IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+
+	groups, _, err := client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(context.Background(), "o", "slug", input)
+	if err != nil {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned error: %v", err)
+	}
+
+	want := &IDPGroupList{
+		Groups: []*IDPGroup{},
+	}
+	if !reflect.DeepEqual(groups, want) {
+		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
 	}
 }
