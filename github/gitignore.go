@@ -29,7 +29,7 @@ func (g Gitignore) String() string {
 // List all available Gitignore templates.
 //
 // GitHub API docs: https://developer.github.com/v3/gitignore/#listing-available-templates
-func (s GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
+func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
 	req, err := s.client.NewRequest("GET", "gitignore/templates", nil)
 	if err != nil {
 		return nil, nil, err
@@ -47,7 +47,7 @@ func (s GitignoresService) List(ctx context.Context) ([]string, *Response, error
 // Get a Gitignore by name.
 //
 // GitHub API docs: https://developer.github.com/v3/gitignore/#get-a-single-template
-func (s GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
+func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
 	u := fmt.Sprintf("gitignore/templates/%v", name)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

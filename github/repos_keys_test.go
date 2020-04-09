@@ -109,43 +109,6 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestRepositoriesService_EditKey(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	input := &Key{Key: String("k"), Title: String("t")}
-
-	mux.HandleFunc("/repos/o/r/keys/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Key)
-		json.NewDecoder(r.Body).Decode(v)
-
-		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		fmt.Fprint(w, `{"id":1}`)
-	})
-
-	key, _, err := client.Repositories.EditKey(context.Background(), "o", "r", 1, input)
-	if err != nil {
-		t.Errorf("Repositories.EditKey returned error: %v", err)
-	}
-
-	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
-		t.Errorf("Repositories.EditKey returned %+v, want %+v", key, want)
-	}
-}
-
-func TestRepositoriesService_EditKey_invalidOwner(t *testing.T) {
-	client, _, _, teardown := setup()
-	defer teardown()
-
-	_, _, err := client.Repositories.EditKey(context.Background(), "%", "%", 1, nil)
-	testURLParseError(t, err)
-}
-
 func TestRepositoriesService_DeleteKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
