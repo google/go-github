@@ -46,10 +46,22 @@ type Jobs struct {
 	Jobs       []*WorkflowJob `json:"jobs,omitempty"`
 }
 
+// ListWorkflowJobsOptions specifies optional parameters to ListWorkflowJobs.
+type ListWorkflowJobsOptions struct {
+	// Filter specifies how jobs should be filtered by their completed_at timestamp.
+	// Possible values are:
+	//     latest - Returns jobs from the most recent execution of the workflow run
+	//     all - Returns all jobs for a workflow run, including from old executions of the workflow run
+	//
+	// Default value is "latest".
+	Filter string `url:"filter,omitempty"`
+	ListOptions
+}
+
 // ListWorkflowJobs lists all jobs for a workflow run.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-jobs-for-a-workflow-run
-func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListOptions) (*Jobs, *Response, error) {
+func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs/%v/jobs", owner, repo, runID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -96,7 +108,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
-	resp, err := s.getWorkflowJobLogsFromURL(ctx, u, followRedirects)
+	resp, err := s.getWorkflowLogsFromURL(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -108,7 +120,7 @@ func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo str
 	return parsedURL, newResponse(resp), err
 }
 
-func (s *ActionsService) getWorkflowJobLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
+func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -130,7 +142,7 @@ func (s *ActionsService) getWorkflowJobLogsFromURL(ctx context.Context, u string
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
-		resp, err = s.getWorkflowJobLogsFromURL(ctx, u, false)
+		resp, err = s.getWorkflowLogsFromURL(ctx, u, false)
 	}
 	return resp, err
 

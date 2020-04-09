@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v29/github"
+	"github.com/google/go-github/v30/github"
 )
 
 const msgEnvMissing = "Skipping test because the required environment variable (%v) is not present."
@@ -24,124 +24,27 @@ const envKeyGitHubUsername = "GITHUB_USERNAME"
 const envKeyGitHubPassword = "GITHUB_PASSWORD"
 const envKeyClientID = "GITHUB_CLIENT_ID"
 const envKeyClientSecret = "GITHUB_CLIENT_SECRET"
+const envKeyAccessToken = "GITHUB_ACCESS_TOKEN"
 const InvalidTokenValue = "iamnotacroken"
-
-// TestAuthorizationsBasicOperations tests the basic CRUD operations of the API (mostly for
-// the Personal Access Token scenario).
-func TestAuthorizationsBasicOperations(t *testing.T) {
-
-	client := getUserPassClient(t)
-
-	auths, resp, err := client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	initialAuthCount := len(auths)
-
-	authReq := generatePersonalAuthTokenRequest()
-
-	createdAuth, resp, err := client.Authorizations.Create(context.Background(), authReq)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 201)
-
-	if *authReq.Note != *createdAuth.Note {
-		t.Fatal("Returned Authorization does not match the requested Authorization.")
-	}
-
-	auths, resp, err = client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if len(auths) != initialAuthCount+1 {
-		t.Fatalf("The number of Authorizations should have increased. Expected [%v], was [%v]", initialAuthCount+1, len(auths))
-	}
-
-	// Test updating the authorization
-	authUpdate := new(github.AuthorizationUpdateRequest)
-	authUpdate.Note = github.String("Updated note: " + randString())
-
-	updatedAuth, resp, err := client.Authorizations.Edit(context.Background(), *createdAuth.ID, authUpdate)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if *updatedAuth.Note != *authUpdate.Note {
-		t.Fatal("The returned Authorization does not match the requested updated value.")
-	}
-
-	// Verify that the Get operation also reflects the update
-	retrievedAuth, resp, err := client.Authorizations.Get(context.Background(), *createdAuth.ID)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if *retrievedAuth.Note != *updatedAuth.Note {
-		t.Fatal("The retrieved Authorization does not match the expected (updated) value.")
-	}
-
-	// Now, let's delete...
-	resp, err = client.Authorizations.Delete(context.Background(), *createdAuth.ID)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 204)
-
-	// Verify that we can no longer retrieve the auth
-	retrievedAuth, resp, err = client.Authorizations.Get(context.Background(), *createdAuth.ID)
-	if err == nil {
-		t.Fatal("Should have failed due to 404")
-	}
-	failIfNotStatusCode(t, resp, 404)
-
-	// Verify that our count reset back to the initial value
-	auths, resp, err = client.Authorizations.List(context.Background(), nil)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	if len(auths) != initialAuthCount {
-		t.Fatalf("The number of Authorizations should match the initial count Expected [%v], got [%v]", initialAuthCount, len(auths))
-	}
-
-}
 
 // TestAuthorizationsAppOperations tests the application/token related operations, such
 // as creating, testing, resetting and revoking application OAuth tokens.
 func TestAuthorizationsAppOperations(t *testing.T) {
-
-	userAuthenticatedClient := getUserPassClient(t)
 
 	appAuthenticatedClient := getOAuthAppClient(t)
 
 	// We know these vars are set because getOAuthAppClient would have
 	// skipped the test by now
 	clientID := os.Getenv(envKeyClientID)
-	clientSecret := os.Getenv(envKeyClientSecret)
-
-	authRequest := generateAppAuthTokenRequest(clientID, clientSecret)
-
-	createdAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 201)
-
-	// Quick sanity check:
-	if *createdAuth.Note != *authRequest.Note {
-		t.Fatal("The returned auth does not match expected value.")
-	}
-
-	// Let's try the same request again, this time it should return the same
-	// auth instead of creating a new one
-	secondAuth, resp, err := userAuthenticatedClient.Authorizations.GetOrCreateForApp(context.Background(), clientID, authRequest)
-	failOnError(t, err)
-	failIfNotStatusCode(t, resp, 200)
-
-	// Verify that the IDs are the same
-	if *createdAuth.ID != *secondAuth.ID {
-		t.Fatalf("The ID of the second returned auth should be the same as the first. Expected [%v], got [%v]", createdAuth.ID, secondAuth.ID)
-	}
+	accessToken := os.Getenv(envKeyAccessToken)
 
 	// Verify the token
-	appAuth, resp, err := appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *createdAuth.Token)
+	appAuth, resp, err := appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, accessToken)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
 	// Quick sanity check
-	if *appAuth.ID != *createdAuth.ID || *appAuth.Token != *createdAuth.Token {
+	if *appAuth.Token != accessToken {
 		t.Fatal("The returned auth/token does not match.")
 	}
 
@@ -153,7 +56,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 404)
 
 	// Let's reset the token
-	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, *createdAuth.Token)
+	resetAuth, resp, err := appAuthenticatedClient.Authorizations.Reset(context.Background(), clientID, accessToken)
 	failOnError(t, err)
 	failIfNotStatusCode(t, resp, 200)
 
@@ -165,7 +68,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	failIfNotStatusCode(t, resp, 404)
 
 	// Verify that the token has changed
-	if resetAuth.Token == createdAuth.Token {
+	if *resetAuth.Token == accessToken {
 		t.Fatal("The reset token should be different from the original.")
 	}
 
@@ -175,7 +78,7 @@ func TestAuthorizationsAppOperations(t *testing.T) {
 	}
 
 	// Verify that the original token is now invalid
-	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, *createdAuth.Token)
+	_, resp, err = appAuthenticatedClient.Authorizations.Check(context.Background(), clientID, accessToken)
 	if err == nil {
 		t.Fatal("The original token should be invalid.")
 	}

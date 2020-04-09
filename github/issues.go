@@ -26,32 +26,33 @@ type IssuesService service
 // this is an issue, and if PullRequestLinks is not nil, this is a pull request.
 // The IsPullRequest helper method can be used to check that.
 type Issue struct {
-	ID               *int64            `json:"id,omitempty"`
-	Number           *int              `json:"number,omitempty"`
-	State            *string           `json:"state,omitempty"`
-	Locked           *bool             `json:"locked,omitempty"`
-	Title            *string           `json:"title,omitempty"`
-	Body             *string           `json:"body,omitempty"`
-	User             *User             `json:"user,omitempty"`
-	Labels           []*Label          `json:"labels,omitempty"`
-	Assignee         *User             `json:"assignee,omitempty"`
-	Comments         *int              `json:"comments,omitempty"`
-	ClosedAt         *time.Time        `json:"closed_at,omitempty"`
-	CreatedAt        *time.Time        `json:"created_at,omitempty"`
-	UpdatedAt        *time.Time        `json:"updated_at,omitempty"`
-	ClosedBy         *User             `json:"closed_by,omitempty"`
-	URL              *string           `json:"url,omitempty"`
-	HTMLURL          *string           `json:"html_url,omitempty"`
-	CommentsURL      *string           `json:"comments_url,omitempty"`
-	EventsURL        *string           `json:"events_url,omitempty"`
-	LabelsURL        *string           `json:"labels_url,omitempty"`
-	RepositoryURL    *string           `json:"repository_url,omitempty"`
-	Milestone        *Milestone        `json:"milestone,omitempty"`
-	PullRequestLinks *PullRequestLinks `json:"pull_request,omitempty"`
-	Repository       *Repository       `json:"repository,omitempty"`
-	Reactions        *Reactions        `json:"reactions,omitempty"`
-	Assignees        []*User           `json:"assignees,omitempty"`
-	NodeID           *string           `json:"node_id,omitempty"`
+	ID                *int64            `json:"id,omitempty"`
+	Number            *int              `json:"number,omitempty"`
+	State             *string           `json:"state,omitempty"`
+	Locked            *bool             `json:"locked,omitempty"`
+	Title             *string           `json:"title,omitempty"`
+	Body              *string           `json:"body,omitempty"`
+	AuthorAssociation *string           `json:"author_association,omitempty"`
+	User              *User             `json:"user,omitempty"`
+	Labels            []*Label          `json:"labels,omitempty"`
+	Assignee          *User             `json:"assignee,omitempty"`
+	Comments          *int              `json:"comments,omitempty"`
+	ClosedAt          *time.Time        `json:"closed_at,omitempty"`
+	CreatedAt         *time.Time        `json:"created_at,omitempty"`
+	UpdatedAt         *time.Time        `json:"updated_at,omitempty"`
+	ClosedBy          *User             `json:"closed_by,omitempty"`
+	URL               *string           `json:"url,omitempty"`
+	HTMLURL           *string           `json:"html_url,omitempty"`
+	CommentsURL       *string           `json:"comments_url,omitempty"`
+	EventsURL         *string           `json:"events_url,omitempty"`
+	LabelsURL         *string           `json:"labels_url,omitempty"`
+	RepositoryURL     *string           `json:"repository_url,omitempty"`
+	Milestone         *Milestone        `json:"milestone,omitempty"`
+	PullRequestLinks  *PullRequestLinks `json:"pull_request,omitempty"`
+	Repository        *Repository       `json:"repository,omitempty"`
+	Reactions         *Reactions        `json:"reactions,omitempty"`
+	Assignees         []*User           `json:"assignees,omitempty"`
+	NodeID            *string           `json:"node_id,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
@@ -214,7 +215,7 @@ type IssueListByRepoOptions struct {
 
 // ListByRepo lists the issues for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-issues-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/issues/#list-repository-issues
 func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opts)
