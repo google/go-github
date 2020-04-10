@@ -461,7 +461,7 @@ type TeamAddTeamRepoOptions struct {
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-repository
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -476,7 +476,7 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#add-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-repository
 func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -491,7 +491,7 @@ func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, 
 // team given the team ID. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repository
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -506,7 +506,7 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 // team given the team slug. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repo
+// GitHub API docs: https://developer.github.com/v3/teams/#remove-team-repository
 func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)

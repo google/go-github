@@ -182,7 +182,8 @@ type RepositoryListOptions struct {
 // List the repositories for a user. Passing the empty string will list
 // repositories for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#list-user-repositories
+// GitHub API docs: https://developer.github.com/v3/repos/#list-repositories-for-a-user
+// GitHub API docs: https://developer.github.com/v3/repos/#list-repositories-for-the-authenticated-user
 func (s *RepositoriesService) List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error) {
 	var u string
 	if user != "" {
@@ -268,7 +269,7 @@ type RepositoryListAllOptions struct {
 
 // ListAll lists all GitHub repositories in the order that they were created.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#list-all-public-repositories
+// GitHub API docs: https://developer.github.com/v3/repos/#list-public-repositories
 func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error) {
 	u, err := addOptions("repositories", opts)
 	if err != nil {
@@ -326,7 +327,8 @@ type createRepoRequest struct {
 // Note that only a subset of the repo fields are used and repo must
 // not be nil.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#create
+// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-for-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/repos/#create-an-organization-repository
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
 	var u string
 	if org != "" {
@@ -383,7 +385,7 @@ type TemplateRepoRequest struct {
 
 // CreateFromTemplate generates a repository from a template.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#create-repository-using-a-repository-template
+// GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-using-a-template
 func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/generate", templateOwner, templateRepo)
 
@@ -404,7 +406,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 
 // Get fetches a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#get
+// GitHub API docs: https://developer.github.com/v3/repos/#get-a-repository
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -474,7 +476,7 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 
 // Edit updates a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#edit
+// GitHub API docs: https://developer.github.com/v3/repos/#update-a-repository
 func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, repository)
@@ -898,7 +900,7 @@ type SignaturesProtectedBranch struct {
 
 // ListBranches lists branches for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#list-branches
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#list-branches
 func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches", owner, repo)
 	u, err := addOptions(u, opts)
@@ -925,7 +927,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 
 // GetBranch gets the specified branch for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#get-branch
+// GitHub API docs: https://developer.github.com/v3/repos/branches/#get-branch
 func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1304,7 +1306,7 @@ type repositoryTopics struct {
 
 // ListAllTopics lists topics for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#list-all-topics-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/#get-all-repository-topics
 func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -1326,7 +1328,7 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 
 // ReplaceAllTopics replaces topics for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/#replace-all-topics-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/#replace-all-repository-topics
 func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
 	t := &repositoryTopics{

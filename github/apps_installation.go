@@ -90,7 +90,7 @@ func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (
 
 // RemoveRepository removes a single repository from an installation.
 //
-// GitHub docs: https://developer.github.com/v3/apps/installations/#remove-repository-from-installation
+// GitHub API docs: https://developer.github.com/v3/apps/installations/#remove-repository-from-installation
 func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64) (*Response, error) {
 	u := fmt.Sprintf("user/installations/%v/repositories/%v", instID, repoID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -104,7 +104,7 @@ func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64
 
 // RevokeInstallationToken revokes an installation token.
 //
-// GitHub docs: https://developer.github.com/v3/apps/installations/#revoke-an-installation-token
+// GitHub API docs: https://developer.github.com/v3/apps/installations/#revoke-an-installation-token
 func (s *AppsService) RevokeInstallationToken(ctx context.Context) (*Response, error) {
 	u := "installation/token"
 	req, err := s.client.NewRequest("DELETE", u, nil)

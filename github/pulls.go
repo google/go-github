@@ -214,6 +214,8 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 }
 
 // GetRaw gets a single pull request in raw (diff or patch) format.
+//
+// GitHub API docs: https://developer.github.com/v3/pulls/#get-a-single-pull-request
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo string, number int, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -458,7 +460,7 @@ type pullRequestMergeRequest struct {
 // Merge a pull request (Merge Button™).
 // commitMessage is the title for the automatic commit message.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-buttontrade
+// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-button
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 

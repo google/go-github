@@ -84,7 +84,7 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 
 // GetWorkflowJobByID gets a specific job in a workflow run by ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#list-jobs-for-a-workflow-run
+// GitHub API docs: https://developer.github.com/v3/actions/workflow_jobs/#get-a-workflow-job
 func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
 
