@@ -43,7 +43,7 @@ func TestUsersService_CreateProject(t *testing.T) {
 
 	input := &CreateUserProjectOptions{Name: "Project Name", Body: String("Project body.")}
 
-	mux.HandleFunc("/users/projects", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/user/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
