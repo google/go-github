@@ -49,7 +49,7 @@ type CreateUserProjectOptions struct {
 //
 // GitHub API docs: https://developer.github.com/v3/projects/#create-a-user-project
 func (s *UsersService) CreateProject(ctx context.Context, opts *CreateUserProjectOptions) (*Project, *Response, error) {
-	u := "users/projects"
+	u := "user/projects"
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
