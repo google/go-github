@@ -177,7 +177,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 // CreateFile creates a new file in a repository at the given path and returns
 // the commit and file metadata.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/contents/#create-a-file
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#create-or-update-a-file
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -195,7 +195,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // UpdateFile updates a file in a repository at the given path and returns the
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/contents/#update-a-file
+// GitHub API docs: https://developer.github.com/v3/repos/contents/#create-or-update-a-file
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, path)
 	req, err := s.client.NewRequest("PUT", u, opts)

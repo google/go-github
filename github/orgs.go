@@ -145,6 +145,7 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 // organizations for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/orgs/#list-user-organizations
+// GitHub API docs: https://developer.github.com/v3/orgs/#oauth-scope-requirements
 func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
 	if user != "" {
@@ -214,7 +215,7 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 
 // Edit an organization.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/#edit-an-organization
+// GitHub API docs: https://developer.github.com/v3/orgs/#members_can_create_repositories
 func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", u, org)

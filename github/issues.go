@@ -129,7 +129,8 @@ type PullRequestLinks struct {
 // organization repositories; if false, list only owned and member
 // repositories.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-issues
+// GitHub API docs: https://developer.github.com/v3/issues/#list-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/issues/#list-user-account-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
@@ -143,7 +144,7 @@ func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptio
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-issues
+// GitHub API docs: https://developer.github.com/v3/issues/#list-organization-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
 	return s.listIssues(ctx, u, opts)
@@ -243,7 +244,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 
 // Get a single issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#get-a-single-issue
+// GitHub API docs: https://developer.github.com/v3/issues/#get-an-issue
 func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -285,7 +286,7 @@ func (s *IssuesService) Create(ctx context.Context, owner string, repo string, i
 
 // Edit an issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#edit-an-issue
+// GitHub API docs: https://developer.github.com/v3/issues/#update-an-issue
 func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)

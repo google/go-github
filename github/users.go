@@ -78,7 +78,7 @@ func (u User) String() string {
 // user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/#get-a-single-user
-// and: https://developer.github.com/v3/users/#get-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/users/#get-the-authenticated-user
 func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, error) {
 	var u string
 	if user != "" {

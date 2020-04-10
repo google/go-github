@@ -34,7 +34,7 @@ type AppConfig struct {
 // CompleteAppManifest completes the App manifest handshake flow for the given
 // code.
 //
-// GitHub API docs: https://developer.github.com/apps/building-github-apps/creating-github-apps-from-a-manifest/#3-you-exchange-the-temporary-code-to-retrieve-the-app-configuration
+// GitHub API docs: https://developer.github.com/v3/apps/#create-a-github-app-from-a-manifest
 func (s *AppsService) CompleteAppManifest(ctx context.Context, code string) (*AppConfig, *Response, error) {
 	u := fmt.Sprintf("app-manifests/%s/conversions", code)
 	req, err := s.client.NewRequest("POST", u, nil)

@@ -28,6 +28,7 @@ func (k Key) String() string {
 // string will fetch keys for the authenticated user.
 //
 // GitHub API docs: https://developer.github.com/v3/users/keys/#list-public-keys-for-a-user
+// GitHub API docs: https://developer.github.com/v3/users/keys/#list-your-public-keys
 func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*Key, *Response, error) {
 	var u string
 	if user != "" {

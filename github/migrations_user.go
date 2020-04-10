@@ -96,7 +96,7 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 
 // ListUserMigrations lists the most recent migrations.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/users/#get-a-list-of-user-migrations
+// GitHub API docs: https://developer.github.com/v3/migrations/users/#list-user-migrations
 func (s *MigrationService) ListUserMigrations(ctx context.Context) ([]*UserMigration, *Response, error) {
 	u := "user/migrations"
 
