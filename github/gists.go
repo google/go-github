@@ -96,7 +96,8 @@ type GistListOptions struct {
 // is authenticated, it will returns all gists for the authenticated
 // user.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#list-gists
+// GitHub API docs: https://developer.github.com/v3/gists/#list-gists-for-a-user
+// GitHub API docs: https://developer.github.com/v3/gists/#list-gists-for-the-authenticated-user
 func (s *GistsService) List(ctx context.Context, user string, opts *GistListOptions) ([]*Gist, *Response, error) {
 	var u string
 	if user != "" {
@@ -125,7 +126,7 @@ func (s *GistsService) List(ctx context.Context, user string, opts *GistListOpti
 
 // ListAll lists all public gists.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#list-gists
+// GitHub API docs: https://developer.github.com/v3/gists/#list-public-gists
 func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
 	u, err := addOptions("gists/public", opts)
 	if err != nil {
@@ -148,7 +149,7 @@ func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*G
 
 // ListStarred lists starred gists of authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#list-gists
+// GitHub API docs: https://developer.github.com/v3/gists/#list-starred-gists
 func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
 	u, err := addOptions("gists/starred", opts)
 	if err != nil {
@@ -171,7 +172,7 @@ func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) (
 
 // Get a single gist.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#get-a-single-gist
+// GitHub API docs: https://developer.github.com/v3/gists/#get-a-gist
 func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -228,7 +229,7 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 
 // Edit a gist.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#edit-a-gist
+// GitHub API docs: https://developer.github.com/v3/gists/#update-a-gist
 func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest("PATCH", u, gist)

@@ -274,7 +274,7 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-pull-request-review-comment
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -304,7 +304,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-pull-request-review-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
@@ -346,7 +346,7 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion
+// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion-legacy
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 	u, err := addOptions(u, opts)
@@ -373,7 +373,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion
+// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion-legacy
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
@@ -414,7 +414,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion-comment
+// GitHub API docs: https://developer.github.com/v3/reactions/#list-reactions-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 	u, err := addOptions(u, opts)
@@ -440,7 +440,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion-comment
+// GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
