@@ -200,3 +200,38 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
 }
+
+func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":2,
+		"workflow_runs":[
+			{"id":298499444,"run_number":301,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"},
+			{"id":298499445,"run_number":302,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"}]}`)
+
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(context.Background(), "o", "r", opts)
+
+	if err != nil {
+		t.Errorf("Actions.ListRepositoryWorkflowRuns returned error: %v", err)
+	}
+
+	expected := &WorkflowRuns{
+		TotalCount: Int(2),
+		WorkflowRuns: []*WorkflowRun{
+			{ID: Int64(298499444), RunNumber: Int(301), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
+			{ID: Int64(298499445), RunNumber: Int(302), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
+		},
+	}
+
+	if !reflect.DeepEqual(runs, expected) {
+		t.Errorf("Actions.ListRepositoryWorkflowRuns returned %+v, want %+v", runs, expected)
+	}
+
+}
