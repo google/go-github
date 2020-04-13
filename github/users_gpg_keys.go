@@ -45,6 +45,7 @@ type GPGEmail struct {
 // via Basic Auth or via OAuth with at least read:gpg_key scope.
 //
 // GitHub API docs: https://developer.github.com/v3/users/gpg_keys/#list-gpg-keys-for-a-user
+// GitHub API docs: https://developer.github.com/v3/users/gpg_keys/#list-your-gpg-keys
 func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opts *ListOptions) ([]*GPGKey, *Response, error) {
 	var u string
 	if user != "" {

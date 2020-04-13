@@ -96,7 +96,7 @@ func (c CheckSuite) String() string {
 
 // GetCheckRun gets a check-run for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-single-check-run
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#get-a-check-run
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -117,7 +117,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, che
 
 // GetCheckSuite gets a single check suite.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/suites/#get-a-single-check-suite
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#get-a-check-suite
 func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v", owner, repo, checkSuiteID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -214,7 +214,7 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 
 // ListCheckRunAnnotations lists the annotations for a check run.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-annotations-for-a-check-run
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-run-annotations
 func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opts *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
 	u, err := addOptions(u, opts)
@@ -255,7 +255,7 @@ type ListCheckRunsResults struct {
 
 // ListCheckRunsForRef lists check runs for a specific ref.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-for-a-specific-ref
+// GitHub API docs: https://developer.github.com/v3/checks/runs/#list-check-runs-for-a-git-reference
 func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, refURLEscape(ref))
 	u, err := addOptions(u, opts)
@@ -321,7 +321,7 @@ type ListCheckSuiteResults struct {
 
 // ListCheckSuitesForRef lists check suite for a specific ref.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-specific-ref
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#list-check-suites-for-a-git-reference
 func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-suites", owner, repo, refURLEscape(ref))
 	u, err := addOptions(u, opts)
@@ -369,7 +369,7 @@ type PreferenceList struct {
 
 // SetCheckSuitePreferences changes the default automatic flow when creating check suites.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/suites/#set-preferences-for-check-suites-on-a-repository
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#update-repository-preferences-for-check-suites
 func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -417,7 +417,7 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 
 // ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/checks/suites/#rerequest-check-suite
+// GitHub API docs: https://developer.github.com/v3/checks/suites/#rerequest-a-check-suite
 func (s *ChecksService) ReRequestCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/rerequest", owner, repo, checkSuiteID)
 

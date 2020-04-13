@@ -68,7 +68,7 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 // Note: This will return false if the user is not a collaborator OR the user
 // is not a GitHub user.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#get
+// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator
 func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -141,7 +141,7 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 // RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.
 // Note: Does not return error if a valid user that is not a collaborator is removed.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#remove-collaborator
+// GitHub API docs: https://developer.github.com/v3/repos/collaborators/#remove-user-as-a-collaborator
 func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
