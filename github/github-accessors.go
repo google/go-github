@@ -2556,12 +2556,36 @@ func (d *DeploymentStatus) GetDescription() string {
 	return *d.Description
 }
 
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetEnvironment() string {
+	if d == nil || d.Environment == nil {
+		return ""
+	}
+	return *d.Environment
+}
+
+// GetEnvironmentURL returns the EnvironmentURL field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetEnvironmentURL() string {
+	if d == nil || d.EnvironmentURL == nil {
+		return ""
+	}
+	return *d.EnvironmentURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (d *DeploymentStatus) GetID() int64 {
 	if d == nil || d.ID == nil {
 		return 0
 	}
 	return *d.ID
+}
+
+// GetLogURL returns the LogURL field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetLogURL() string {
+	if d == nil || d.LogURL == nil {
+		return ""
+	}
+	return *d.LogURL
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -2602,6 +2626,14 @@ func (d *DeploymentStatus) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *d.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatus) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
 }
 
 // GetDeployment returns the Deployment field.
