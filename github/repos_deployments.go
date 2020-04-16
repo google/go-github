@@ -139,16 +139,16 @@ type DeploymentStatus struct {
 	State          *string    `json:"state,omitempty"`
 	Creator        *User      `json:"creator,omitempty"`
 	Description    *string    `json:"description,omitempty"`
-	TargetURL      *string    `json:"target_url,omitempty"`
+	Environment    *string    `json:"environment,omitempty"`
+	NodeID         *string    `json:"node_id,omitempty"`
 	CreatedAt      *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt      *Timestamp `json:"updated_at,omitempty"`
+	TargetURL      *string    `json:"target_url,omitempty"`
 	DeploymentURL  *string    `json:"deployment_url,omitempty"`
 	RepositoryURL  *string    `json:"repository_url,omitempty"`
 	EnvironmentURL *string    `json:"environment_url,omitempty"`
 	LogURL         *string    `json:"log_url,omitempty"`
-	NodeID         *string    `json:"node_id,omitempty"`
 	URL            *string    `json:"url,omitempty"`
-	Environment    *string    `json:"environment,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request
