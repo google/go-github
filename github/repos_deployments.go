@@ -134,16 +134,21 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 type DeploymentStatus struct {
 	ID *int64 `json:"id,omitempty"`
 	// State is the deployment state.
-	// Possible values are: "pending", "success", "failure", "error", "inactive".
-	State         *string    `json:"state,omitempty"`
-	Creator       *User      `json:"creator,omitempty"`
-	Description   *string    `json:"description,omitempty"`
-	TargetURL     *string    `json:"target_url,omitempty"`
-	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
-	DeploymentURL *string    `json:"deployment_url,omitempty"`
-	RepositoryURL *string    `json:"repository_url,omitempty"`
-	NodeID        *string    `json:"node_id,omitempty"`
+	// Possible values are: "pending", "success", "failure", "error",
+	// "inactive", "in_progress", "queued".
+	State          *string    `json:"state,omitempty"`
+	Creator        *User      `json:"creator,omitempty"`
+	Description    *string    `json:"description,omitempty"`
+	Environment    *string    `json:"environment,omitempty"`
+	NodeID         *string    `json:"node_id,omitempty"`
+	CreatedAt      *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt      *Timestamp `json:"updated_at,omitempty"`
+	TargetURL      *string    `json:"target_url,omitempty"`
+	DeploymentURL  *string    `json:"deployment_url,omitempty"`
+	RepositoryURL  *string    `json:"repository_url,omitempty"`
+	EnvironmentURL *string    `json:"environment_url,omitempty"`
+	LogURL         *string    `json:"log_url,omitempty"`
+	URL            *string    `json:"url,omitempty"`
 }
 
 // DeploymentStatusRequest represents a deployment request
@@ -170,6 +175,10 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var statuses []*DeploymentStatus
 	resp, err := s.client.Do(ctx, req, &statuses)
