@@ -20,7 +20,7 @@ func TestPullRequestsService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeLockReasonPreview, mediaTypeDraftPreview}
+	wantAcceptHeaders := []string{mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -51,7 +51,7 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeDraftPreview, mediaTypeLockReasonPreview}
+	wantAcceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -90,7 +90,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeLockReasonPreview, mediaTypeDraftPreview}
+	wantAcceptHeaders := []string{mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -306,8 +306,6 @@ func TestPullRequestsService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeDraftPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}

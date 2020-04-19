@@ -108,7 +108,6 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 
 	mux.HandleFunc("/installation/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeRevokeTokenPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

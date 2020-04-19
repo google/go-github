@@ -111,7 +111,6 @@ func (s *AppsService) RevokeInstallationToken(ctx context.Context) (*Response, e
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", mediaTypeRevokeTokenPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
