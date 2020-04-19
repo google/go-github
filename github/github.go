@@ -46,9 +46,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2020-01-10-revoke-installation-token/
-	mediaTypeRevokeTokenPreview = "application/vnd.github.gambit-preview+json"
-
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
 
@@ -108,9 +105,6 @@ const (
 
 	// https://developer.github.com/changes/2018-12-18-interactions-preview/
 	mediaTypeInteractionRestrictionsPreview = "application/vnd.github.sombra-preview+json"
-
-	// https://developer.github.com/changes/2019-02-14-draft-pull-requests/
-	mediaTypeDraftPreview = "application/vnd.github.shadow-cat-preview+json"
 
 	// https://developer.github.com/changes/2019-03-14-enabling-disabling-pages/
 	mediaTypeEnablePagesAPIPreview = "application/vnd.github.switcheroo-preview+json"
