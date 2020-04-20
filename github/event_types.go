@@ -819,6 +819,9 @@ type RepositoryVulnerabilityAlertEvent struct {
 		DismissReason       *string    `json:"dismiss_reason,omitempty"`
 		DismissedAt         *Timestamp `json:"dismissed_at,omitempty"`
 	} `json:"alert,omitempty"`
+
+	//The repository of the vulnerable dependency.
+	Repository *Repository `json:"repository,omitempty"`
 }
 
 // StarEvent is triggered when a star is added or removed from a repository.
