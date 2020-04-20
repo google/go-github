@@ -93,7 +93,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 // ListRepositoryWorkflowRuns lists all workflow runs for a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-repository-workflow-runs
-func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListOptions) (*WorkflowRuns, *Response, error) {
+func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {

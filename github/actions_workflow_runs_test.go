@@ -215,7 +215,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(context.Background(), "o", "r", opts)
 
 	if err != nil {
