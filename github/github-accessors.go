@@ -11540,6 +11540,14 @@ func (r *RepositoryVulnerabilityAlertEvent) GetAction() string {
 	return *r.Action
 }
 
+// GetRepository returns the Repository field.
+func (r *RepositoryVulnerabilityAlertEvent) GetRepository() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repository
+}
+
 // GetForkRepos returns the ForkRepos field if it's non-nil, zero value otherwise.
 func (r *RepoStats) GetForkRepos() int {
 	if r == nil || r.ForkRepos == nil {
