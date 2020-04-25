@@ -225,7 +225,7 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 
 // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#list-self-hosted-runners-for-an-organization
+// GitHub API docs: https://developer.github.com/v3/actions/self-hosted-runners/#get-a-self-hosted-runner-for-an-organization
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
