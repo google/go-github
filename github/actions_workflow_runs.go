@@ -76,7 +76,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 
 // ListWorkflowRunsByID lists all workflow runs by workflow ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-workflow-runs
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
 	return s.listWorkflowRuns(ctx, u, opts)
@@ -84,7 +84,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 
 // ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-workflow-runs
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
 	return s.listWorkflowRuns(ctx, u, opts)
@@ -92,7 +92,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 
 // ListRepositoryWorkflowRuns lists all workflow runs for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-repository-workflow-runs
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#list-repository-workflow-runs
 func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
 	u, err := addOptions(u, opts)
@@ -116,7 +116,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 
 // GetWorkflowRunByID gets a specific workflow run by ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#get-a-workflow-run
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#get-a-workflow-run
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
 
@@ -136,7 +136,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 
 // RerunWorkflow re-runs a workflow by ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#re-run-a-workflow
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#re-run-a-workflow
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun", owner, repo, runID)
 
@@ -150,7 +150,7 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 
 // CancelWorkflowRunByID cancels a workflow run by ID.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#cancel-a-workflow-run
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#cancel-a-workflow-run
 func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/cancel", owner, repo, runID)
 
@@ -164,7 +164,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/workflow_runs/#list-workflow-run-logs
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#list-workflow-run-logs
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
