@@ -291,8 +291,9 @@ func NewClient(httpClient *http.Client) *Client {
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
-// base URL and upload URL (often the same URL and is your GitHub Enterprise hostname).
-// If either URL does not have the suffix "/api/v3/", it will be added automatically.
+// base URL and upload URL (often is your GitHub Enterprise hostname).
+// If the base URL does not have the suffix "/api/v3/", it will be added automatically.
+// If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
 // If a nil httpClient is provided, a new http.Client will be used.
 //
 // Note that NewEnterpriseClient is a convenience helper only;
@@ -300,7 +301,8 @@ func NewClient(httpClient *http.Client) *Client {
 // the BaseURL and UploadURL fields.
 //
 // Another important thing is that by default, the GitHub Enterprise URL format
-// should be http(s)://[hostname]/api/v3 or you will always receive the 406 status code.
+// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
+// The Upload URL format should be http(s)://[hostname]/api/uploads/.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
 	baseEndpoint, err := url.Parse(baseURL)
 	if err != nil {
@@ -320,8 +322,8 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
 		uploadEndpoint.Path += "/"
 	}
-	if !strings.HasSuffix(uploadEndpoint.Path, "/api/v3/") {
-		uploadEndpoint.Path += "api/v3/"
+	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") {
+		uploadEndpoint.Path += "api/uploads/"
 	}
 
 	c := NewClient(httpClient)
