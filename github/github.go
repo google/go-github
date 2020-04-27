@@ -302,7 +302,7 @@ func NewClient(httpClient *http.Client) *Client {
 //
 // Another important thing is that by default, the GitHub Enterprise URL format
 // should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
-// The Upload URL format should be http(s)://[hostname]/api/uploads/.
+// The upload URL format should be http(s)://[hostname]/api/uploads/.
 func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
 	baseEndpoint, err := url.Parse(baseURL)
 	if err != nil {
