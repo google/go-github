@@ -235,3 +235,18 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	}
 
 }
+
+func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Actions.DeleteWorkflowRunLogs(context.Background(), "o", "r", 399444496); err != nil {
+		t.Errorf("DeleteWorkflowRunLogs returned error: %v", err)
+	}
+}
