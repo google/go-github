@@ -184,7 +184,7 @@ func TestNewClient(t *testing.T) {
 
 func TestNewEnterpriseClient(t *testing.T) {
 	baseURL := "https://custom-url/api/v3/"
-	uploadURL := "https://custom-upload-url/api/v3/"
+	uploadURL := "https://custom-upload-url/api/uploads/"
 	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
 	if err != nil {
 		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
@@ -200,7 +200,7 @@ func TestNewEnterpriseClient(t *testing.T) {
 
 func TestNewEnterpriseClient_addsTrailingSlashToURLs(t *testing.T) {
 	baseURL := "https://custom-url/api/v3"
-	uploadURL := "https://custom-upload-url/api/v3"
+	uploadURL := "https://custom-upload-url/api/uploads"
 	formattedBaseURL := baseURL + "/"
 	formattedUploadURL := uploadURL + "/"
 
@@ -221,7 +221,7 @@ func TestNewEnterpriseClient_addsEnterpriseSuffixToURLs(t *testing.T) {
 	baseURL := "https://custom-url/"
 	uploadURL := "https://custom-upload-url/"
 	formattedBaseURL := baseURL + "api/v3/"
-	formattedUploadURL := uploadURL + "api/v3/"
+	formattedUploadURL := uploadURL + "api/uploads/"
 
 	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testi
 	baseURL := "https://custom-url"
 	uploadURL := "https://custom-upload-url"
 	formattedBaseURL := baseURL + "/api/v3/"
-	formattedUploadURL := uploadURL + "/api/v3/"
+	formattedUploadURL := uploadURL + "/api/uploads/"
 
 	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
 	if err != nil {
