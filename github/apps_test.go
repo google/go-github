@@ -208,6 +208,22 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 	}
 }
 
+func TestAppsService_DeleteInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
+	})
+
+	_, err := client.Apps.DeleteInstallation(context.Background(), 1)
+	if err != nil {
+		t.Errorf("Apps.DeleteInstallation returned error: %v", err)
+	}
+}
+
 func TestAppsService_CreateInstallationToken(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

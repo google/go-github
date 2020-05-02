@@ -211,6 +211,23 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 	return i.Installations, resp, nil
 }
 
+// DeleteInstallation deletes the specified installation.
+//
+// GitHub API docs: https://developer.github.com/v3/apps/#delete-an-installation
+func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Response, error) {
+	u := fmt.Sprintf("app/installations/%v", id)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeIntegrationPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // CreateInstallationToken creates a new installation token.
 //
 // GitHub API docs: https://developer.github.com/v3/apps/#create-a-new-installation-token
