@@ -452,6 +452,8 @@ type TeamAddTeamRepoOptions struct {
 	//     pull - team members can pull, but not push to or administer this repository
 	//     push - team members can pull and push, but not administer this repository
 	//     admin - team members can pull, push and administer this repository
+	//     maintain - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
+	//     triage - Recommended for contributors who need to proactively manage issues and pull requests without write access.
 	//
 	// If not specified, the team's permission attribute will be used.
 	Permission string `json:"permission,omitempty"`
@@ -652,7 +654,7 @@ type TeamProjectOptions struct {
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
+// GitHub API docs: https://developer.github.co	m/v3/teams/#add-or-update-team-project
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("PUT", u, opts)
