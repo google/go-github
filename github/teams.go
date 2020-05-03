@@ -654,7 +654,7 @@ type TeamProjectOptions struct {
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
-// GitHub API docs: https://developer.github.co	m/v3/teams/#add-or-update-team-project
+// GitHub API docs: https://developer.github.com/v3/teams/#add-or-update-team-project
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
 	req, err := s.client.NewRequest("PUT", u, opts)
