@@ -223,6 +223,21 @@ func TestAppsService_SuspendInstallation(t *testing.T) {
 	}
 }
 
+func TestAppsService_UnsuspendInstallation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/app/installations/1/suspended", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	if _, err := client.Apps.UnsuspendInstallation(context.Background(), 1); err != nil {
+		t.Errorf("Apps.UnsuspendInstallation returned error: %v", err)
+	}
+}
+
 func TestAppsService_CreateInstallationToken(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
