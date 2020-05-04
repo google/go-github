@@ -452,6 +452,8 @@ type TeamAddTeamRepoOptions struct {
 	//     pull - team members can pull, but not push to or administer this repository
 	//     push - team members can pull and push, but not administer this repository
 	//     admin - team members can pull, push and administer this repository
+	//     maintain - team members can manage the repository without access to sensitive or destructive actions.
+	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// If not specified, the team's permission attribute will be used.
 	Permission string `json:"permission,omitempty"`
