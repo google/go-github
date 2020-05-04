@@ -115,8 +115,8 @@ type RepositoryAddCollaboratorOptions struct {
 	//     pull - team members can pull, but not push to or administer this repository
 	//     push - team members can pull and push, but not administer this repository
 	//     admin - team members can pull, push and administer this repository
-	//     maintain - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
-	//     triage - Recommended for contributors who need to proactively manage issues and pull requests without write access.
+	//     maintain - team members can manage the repository without access to sensitive or destructive actions.
+	//     triage - team members can proactively manage issues and pull requests without write access.
 	//
 	// Default value is "push". This option is only valid for organization-owned repositories.
 	Permission string `json:"permission,omitempty"`
