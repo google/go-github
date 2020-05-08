@@ -109,7 +109,7 @@ func (s *RepositoriesService) GetLatestRelease(ctx context.Context, owner, repo 
 //
 // GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
 func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*RepositoryRelease, *Response, error) {
-	u := fmt.Sprintf("repos/%s/%s/releases/tags/%s", owner, repo, tag)
+	u := fmt.Sprintf("repos/%s/%s/releases/tag/%s", owner, repo, tag)
 	return s.getSingleRelease(ctx, u)
 }
 
