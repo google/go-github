@@ -16,10 +16,10 @@ type PublicKey struct {
 	Key   *string `json:"key"`
 }
 
-// GetPublicKey gets a public key that should be used for secret encryption.
+// GetRepositoryPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-your-public-key
-func (s *ActionsService) GetPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-a-repository-public-key
+func (s *ActionsService) GetRepositoryPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/secrets/public-key", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -48,11 +48,11 @@ type Secrets struct {
 	Secrets    []*Secret `json:"secrets"`
 }
 
-// ListSecrets lists all secrets available in a repository
+// ListRepositorySecrets lists all secrets available in a repository
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/secrets/#list-secrets-for-a-repository
-func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#list-repository-secrets
+func (s *ActionsService) ListRepositorySecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/secrets", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -73,10 +73,10 @@ func (s *ActionsService) ListSecrets(ctx context.Context, owner, repo string, op
 	return secrets, resp, nil
 }
 
-// GetSecret gets a single secret without revealing its encrypted value.
+// GetRepositorySecret gets a single repository secret without revealing its encrypted value.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-a-secret
-func (s *ActionsService) GetSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-a-repository-secret
+func (s *ActionsService) GetRepositorySecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, name)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -103,10 +103,10 @@ type EncryptedSecret struct {
 	EncryptedValue string `json:"encrypted_value"`
 }
 
-// CreateOrUpdateSecret creates or updates a secret with an encrypted value.
+// CreateOrUpdateRepositorySecret creates or updates a repository secret with an encrypted value.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/secrets/#create-or-update-a-secret-for-a-repository
-func (s *ActionsService) CreateOrUpdateSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#create-or-update-a-repository-secret
+func (s *ActionsService) CreateOrUpdateRepositorySecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, eSecret.Name)
 
 	req, err := s.client.NewRequest("PUT", u, eSecret)
@@ -117,10 +117,10 @@ func (s *ActionsService) CreateOrUpdateSecret(ctx context.Context, owner, repo s
 	return s.client.Do(ctx, req, nil)
 }
 
-// DeleteSecret deletes a secret in a repository using the secret name.
+// DeleteRepositorySecret deletes a secret in a repository using the secret name.
 //
-// GitHub API docs: https://developer.github.com/v3/actions/secrets/#delete-a-secret-from-a-repository
-func (s *ActionsService) DeleteSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#delete-a-repository-secret
+func (s *ActionsService) DeleteRepositorySecret(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, name)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)

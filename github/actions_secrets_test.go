@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func TestActionsService_GetPublicKey(t *testing.T) {
+func TestActionsService_GetRepositoryPublicKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -23,18 +23,18 @@ func TestActionsService_GetPublicKey(t *testing.T) {
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
-	key, _, err := client.Actions.GetPublicKey(context.Background(), "o", "r")
+	key, _, err := client.Actions.GetRepositoryPublicKey(context.Background(), "o", "r")
 	if err != nil {
-		t.Errorf("Actions.GetPublicKey returned error: %v", err)
+		t.Errorf("Actions.GetRepositoryPublicKey returned error: %v", err)
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !reflect.DeepEqual(key, want) {
-		t.Errorf("Actions.GetPublicKey returned %+v, want %+v", key, want)
+		t.Errorf("Actions.GetRepositoryPublicKey returned %+v, want %+v", key, want)
 	}
 }
 
-func TestActionsService_ListSecrets(t *testing.T) {
+func TestActionsService_ListRepositorySecrets(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -45,9 +45,9 @@ func TestActionsService_ListSecrets(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	secrets, _, err := client.Actions.ListSecrets(context.Background(), "o", "r", opts)
+	secrets, _, err := client.Actions.ListRepositorySecrets(context.Background(), "o", "r", opts)
 	if err != nil {
-		t.Errorf("Actions.ListSecrets returned error: %v", err)
+		t.Errorf("Actions.ListRepositorySecrets returned error: %v", err)
 	}
 
 	want := &Secrets{
@@ -58,11 +58,11 @@ func TestActionsService_ListSecrets(t *testing.T) {
 		},
 	}
 	if !reflect.DeepEqual(secrets, want) {
-		t.Errorf("Actions.ListSecrets returned %+v, want %+v", secrets, want)
+		t.Errorf("Actions.ListRepositorySecrets returned %+v, want %+v", secrets, want)
 	}
 }
 
-func TestActionsService_GetSecret(t *testing.T) {
+func TestActionsService_GetRepositorySecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -71,9 +71,9 @@ func TestActionsService_GetSecret(t *testing.T) {
 		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	secret, _, err := client.Actions.GetSecret(context.Background(), "o", "r", "NAME")
+	secret, _, err := client.Actions.GetRepositorySecret(context.Background(), "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.GetSecret returned error: %v", err)
+		t.Errorf("Actions.GetRepositorySecret returned error: %v", err)
 	}
 
 	want := &Secret{
@@ -82,11 +82,11 @@ func TestActionsService_GetSecret(t *testing.T) {
 		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !reflect.DeepEqual(secret, want) {
-		t.Errorf("Actions.GetSecret returned %+v, want %+v", secret, want)
+		t.Errorf("Actions.GetRepositorySecret returned %+v, want %+v", secret, want)
 	}
 }
 
-func TestActionsService_CreateOrUpdateSecret(t *testing.T) {
+func TestActionsService_CreateOrUpdateRepositorySecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -102,13 +102,13 @@ func TestActionsService_CreateOrUpdateSecret(t *testing.T) {
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
-	_, err := client.Actions.CreateOrUpdateSecret(context.Background(), "o", "r", input)
+	_, err := client.Actions.CreateOrUpdateRepositorySecret(context.Background(), "o", "r", input)
 	if err != nil {
-		t.Errorf("Actions.CreateOrUpdateSecret returned error: %v", err)
+		t.Errorf("Actions.CreateOrUpdateRepositorySecret returned error: %v", err)
 	}
 }
 
-func TestActionsService_DeleteSecret(t *testing.T) {
+func TestActionsService_DeleteRepositorySecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -116,8 +116,8 @@ func TestActionsService_DeleteSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Actions.DeleteSecret(context.Background(), "o", "r", "NAME")
+	_, err := client.Actions.DeleteRepositorySecret(context.Background(), "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.DeleteSecret returned error: %v", err)
+		t.Errorf("Actions.DeleteRepositorySecret returned error: %v", err)
 	}
 }
