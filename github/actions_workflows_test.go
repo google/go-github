@@ -137,14 +137,14 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	}
 
 	want := &WorkflowUsage{
-		Billable: &RunnerEnvironment{
-			Ubuntu: &Bill{
+		Billable: &WorkflowEnvironment{
+			Ubuntu: &WorkflowBill{
 				TotalMS: Int64(180000),
 			},
-			MacOS: &Bill{
+			MacOS: &WorkflowBill{
 				TotalMS: Int64(240000),
 			},
-			Windows: &Bill{
+			Windows: &WorkflowBill{
 				TotalMS: Int64(300000),
 			},
 		},
