@@ -14244,6 +14244,38 @@ func (w *Workflow) GetURL() string {
 	return *w.URL
 }
 
+// GetTotalMS returns the TotalMS field if it's non-nil, zero value otherwise.
+func (w *WorkflowBill) GetTotalMS() int64 {
+	if w == nil || w.TotalMS == nil {
+		return 0
+	}
+	return *w.TotalMS
+}
+
+// GetMacOS returns the MacOS field.
+func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
+	if w == nil {
+		return nil
+	}
+	return w.MacOS
+}
+
+// GetUbuntu returns the Ubuntu field.
+func (w *WorkflowEnvironment) GetUbuntu() *WorkflowBill {
+	if w == nil {
+		return nil
+	}
+	return w.Ubuntu
+}
+
+// GetWindows returns the Windows field.
+func (w *WorkflowEnvironment) GetWindows() *WorkflowBill {
+	if w == nil {
+		return nil
+	}
+	return w.Windows
+}
+
 // GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetCheckRunURL() string {
 	if w == nil || w.CheckRunURL == nil {
@@ -14524,6 +14556,46 @@ func (w *WorkflowRun) GetWorkflowURL() string {
 	return *w.WorkflowURL
 }
 
+// GetJobs returns the Jobs field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunBill) GetJobs() int {
+	if w == nil || w.Jobs == nil {
+		return 0
+	}
+	return *w.Jobs
+}
+
+// GetTotalMS returns the TotalMS field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunBill) GetTotalMS() int64 {
+	if w == nil || w.TotalMS == nil {
+		return 0
+	}
+	return *w.TotalMS
+}
+
+// GetMacOS returns the MacOS field.
+func (w *WorkflowRunEnvironment) GetMacOS() *WorkflowRunBill {
+	if w == nil {
+		return nil
+	}
+	return w.MacOS
+}
+
+// GetUbuntu returns the Ubuntu field.
+func (w *WorkflowRunEnvironment) GetUbuntu() *WorkflowRunBill {
+	if w == nil {
+		return nil
+	}
+	return w.Ubuntu
+}
+
+// GetWindows returns the Windows field.
+func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
+	if w == nil {
+		return nil
+	}
+	return w.Windows
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (w *WorkflowRuns) GetTotalCount() int {
 	if w == nil || w.TotalCount == nil {
@@ -14532,10 +14604,34 @@ func (w *WorkflowRuns) GetTotalCount() int {
 	return *w.TotalCount
 }
 
+// GetBillable returns the Billable field.
+func (w *WorkflowRunUsage) GetBillable() *WorkflowRunEnvironment {
+	if w == nil {
+		return nil
+	}
+	return w.Billable
+}
+
+// GetRunDuration returns the RunDuration field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunUsage) GetRunDuration() int64 {
+	if w == nil || w.RunDuration == nil {
+		return 0
+	}
+	return *w.RunDuration
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (w *Workflows) GetTotalCount() int {
 	if w == nil || w.TotalCount == nil {
 		return 0
 	}
 	return *w.TotalCount
+}
+
+// GetBillable returns the Billable field.
+func (w *WorkflowUsage) GetBillable() *WorkflowEnvironment {
+	if w == nil {
+		return nil
+	}
+	return w.Billable
 }
