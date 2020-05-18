@@ -82,7 +82,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 
 	runs, _, err := client.Actions.GetWorkflowRunByID(context.Background(), "o", "r", 29679449)
 	if err != nil {
-		t.Errorf("Actions.ListWorkFlowRunsByFileName returned error: %v", err)
+		t.Errorf("Actions.GetWorkflowRunByID returned error: %v", err)
 	}
 
 	want := &WorkflowRun{
