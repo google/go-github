@@ -56,19 +56,19 @@ type ListWorkflowRunsOptions struct {
 
 // WorkflowRunUsage represents a usage of a specific workflow run.
 type WorkflowRunUsage struct {
-	Billable    *RunnerEnvironment `json:"billable,omitempty"`
-	RunDuration *int64             `json:"run_duration_ms,omitempty"`
+	Billable    *WorkflowRunEnvironment `json:"billable,omitempty"`
+	RunDuration *int64                  `json:"run_duration_ms,omitempty"`
 }
 
-// RunnerEnvironment represents different runner environments available for workflow run.
-type RunnerEnvironment struct {
-	Ubuntu  *Bill `json:"UBUNTU,omitempty"`
-	MacOS   *Bill `json:"MACOS,omitempty"`
-	Windows *Bill `json:"WINDOWS,omitempty"`
+// WorkflowRunEnvironment represents different runner environments available for workflow run.
+type WorkflowRunEnvironment struct {
+	Ubuntu  *WorkflowRunBill `json:"UBUNTU,omitempty"`
+	MacOS   *WorkflowRunBill `json:"MACOS,omitempty"`
+	Windows *WorkflowRunBill `json:"WINDOWS,omitempty"`
 }
 
-// Bill specifies a bill for a specific environment of workflow run.
-type Bill struct {
+// WorkflowRunBill specifies a bill for a specific environment of workflow run.
+type WorkflowRunBill struct {
 	TotalMS *int64 `json:"total_ms,omitempty"`
 	Jobs    *int   `json:"jobs,omitempty"`
 }
