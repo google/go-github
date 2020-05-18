@@ -54,6 +54,25 @@ type ListWorkflowRunsOptions struct {
 	ListOptions
 }
 
+// WorkflowRunUsage represents a usage of a specific workflow run.
+type WorkflowRunUsage struct {
+	Billable    *RunnerEnvironment `json:"billable,omitempty"`
+	RunDuration *int64             `json:"run_duration_ms,omitempty"`
+}
+
+// RunnerEnvironment represents different runner environments available for workflow run.
+type RunnerEnvironment struct {
+	Ubuntu  *Bill `json:"UBUNTU,omitempty"`
+	MacOS   *Bill `json:"MACOS,omitempty"`
+	Windows *Bill `json:"WINDOWS,omitempty"`
+}
+
+// Bill specifies a bill for a specific environment of workflow run.
+type Bill struct {
+	TotalMS *int64 `json:"total_ms,omitempty"`
+	Jobs    *int   `json:"jobs,omitempty"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -192,4 +211,24 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// GetWorkflowRunUsage gets a specific workflow usage run by run ID in the unit of billable minutes.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#get-workflow-run-usage
+func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/timing", owner, repo, runID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	workflowRunUsage := new(WorkflowRunUsage)
+	resp, err := s.client.Do(ctx, req, workflowRunUsage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return workflowRunUsage, resp, nil
 }
