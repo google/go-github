@@ -250,3 +250,40 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 		t.Errorf("DeleteWorkflowRunLogs returned error: %v", err)
 	}
 }
+
+func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/29679449", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000,"jobs":1},"MACOS":{"total_ms":240000,"jobs":4},"WINDOWS":{"total_ms":300000,"jobs":2}},"run_duration_ms":500000}`)
+	})
+
+	workflowRunUsage, _, err := client.Actions.GetWorkflowRunUsageByID(context.Background(), "o", "r", 29679449)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunUsageByID returned error: %v", err)
+	}
+
+	want := &WorkflowRunUsage{
+		Billable: &WorkflowRunEnvironment{
+			Ubuntu: &WorkflowRunBill{
+				TotalMS: Int64(180000),
+				Jobs:    Int(1),
+			},
+			MacOS: &WorkflowRunBill{
+				TotalMS: Int64(240000),
+				Jobs:    Int(4),
+			},
+			Windows: &WorkflowRunBill{
+				TotalMS: Int64(300000),
+				Jobs:    Int(2),
+			},
+		},
+		RunDuration: Int64(500000),
+	}
+
+	if !reflect.DeepEqual(workflowRunUsage, want) {
+		t.Errorf("Actions.GetWorkflowRunUsageByID returned %+v, want %+v", workflowRunUsage, want)
+	}
+}
