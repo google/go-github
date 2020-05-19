@@ -14612,12 +14612,12 @@ func (w *WorkflowRunUsage) GetBillable() *WorkflowRunEnvironment {
 	return w.Billable
 }
 
-// GetRunDuration returns the RunDuration field if it's non-nil, zero value otherwise.
-func (w *WorkflowRunUsage) GetRunDuration() int64 {
-	if w == nil || w.RunDuration == nil {
+// GetRunDurationMS returns the RunDurationMS field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunUsage) GetRunDurationMS() int64 {
+	if w == nil || w.RunDurationMS == nil {
 		return 0
 	}
-	return *w.RunDuration
+	return *w.RunDurationMS
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

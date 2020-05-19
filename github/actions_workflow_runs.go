@@ -56,8 +56,8 @@ type ListWorkflowRunsOptions struct {
 
 // WorkflowRunUsage represents a usage of a specific workflow run.
 type WorkflowRunUsage struct {
-	Billable    *WorkflowRunEnvironment `json:"billable,omitempty"`
-	RunDuration *int64                  `json:"run_duration_ms,omitempty"`
+	Billable      *WorkflowRunEnvironment `json:"billable,omitempty"`
+	RunDurationMS *int64                  `json:"run_duration_ms,omitempty"`
 }
 
 // WorkflowRunEnvironment represents different runner environments available for workflow run.

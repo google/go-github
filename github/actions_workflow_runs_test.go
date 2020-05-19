@@ -280,7 +280,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 				Jobs:    Int(2),
 			},
 		},
-		RunDuration: Int64(500000),
+		RunDurationMS: Int64(500000),
 	}
 
 	if !reflect.DeepEqual(workflowRunUsage, want) {
