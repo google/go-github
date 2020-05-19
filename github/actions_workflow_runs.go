@@ -213,7 +213,7 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 	return s.client.Do(ctx, req, nil)
 }
 
-// GetWorkflowRunUsage gets a specific workflow usage run by run ID in the unit of billable minutes.
+// GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#get-workflow-run-usage
 func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
