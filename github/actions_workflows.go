@@ -104,7 +104,7 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 	return workflow, resp, nil
 }
 
-// GetWorkflowByID gets a specific workflow usage by ID in the unit of billable minutes.
+// GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error) {
@@ -113,7 +113,7 @@ func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo s
 	return s.getWorkflowUsage(ctx, u)
 }
 
-// GetWorkflowByFileName gets a specific workflow usage by file name in the unit of billable minutes.
+// GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error) {
