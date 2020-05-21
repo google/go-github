@@ -60,14 +60,14 @@ type WorkflowRunUsage struct {
 	RunDurationMS *int64                  `json:"run_duration_ms,omitempty"`
 }
 
-// WorkflowRunEnvironment represents different runner environments available for workflow run.
+// WorkflowRunEnvironment represents different runner environments available for a workflow run.
 type WorkflowRunEnvironment struct {
 	Ubuntu  *WorkflowRunBill `json:"UBUNTU,omitempty"`
 	MacOS   *WorkflowRunBill `json:"MACOS,omitempty"`
 	Windows *WorkflowRunBill `json:"WINDOWS,omitempty"`
 }
 
-// WorkflowRunBill specifies a bill for a specific environment of workflow run.
+// WorkflowRunBill specifies billable time for a specific environment in a workflow run.
 type WorkflowRunBill struct {
 	TotalMS *int64 `json:"total_ms,omitempty"`
 	Jobs    *int   `json:"jobs,omitempty"`
