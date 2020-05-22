@@ -240,7 +240,7 @@ const (
 )
 
 // GetArchiveLink returns an URL to download a tarball or zipball archive for a
-// repository. The ArchiveFormat can be specified by either the github.Tarball
+// repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
