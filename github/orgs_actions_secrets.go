@@ -86,3 +86,31 @@ func (s *OrganizationsService) GetSecret(ctx context.Context, owner, name string
 
 	return secret, resp, nil
 }
+
+type OrganizationEncryptedSecret struct {
+	Name                  string   `json:"-"`
+	KeyID                 string   `json:"key_id"`
+	EncryptedValue        string   `json:"encrypted_value"`
+	Visibility            string   `json:"visibility"`
+	SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
+}
+
+// OrganizationEncryptedSecret represents an Organization secret that is encrypted using a public key.
+//
+// The value of EncryptedValue must be your secret, encrypted with
+// LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
+// using the public key retrieved using the GetPublicKey method.
+
+// CreateOrUpdateSecret creates or updates a secret with an encrypted value.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#create-or-update-an-organization-secret
+func (s *OrganizationsService) CreateOrUpdateSecret(ctx context.Context, owner string, eSecret *OrganizationEncryptedSecret) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v", owner, eSecret.Name)
+
+	req, err := s.client.NewRequest("PUT", u, eSecret)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

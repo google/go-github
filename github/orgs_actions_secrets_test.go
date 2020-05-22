@@ -84,3 +84,26 @@ func TestOrganizationsService_GetSecret(t *testing.T) {
 		t.Errorf("Organizations.GetSecret returned %+v, want %+v", secret, want)
 	}
 }
+
+func TestOrgnizationsService_CreateOrUpdateSecret(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":["A","B","C"]}`+"\n")
+	})
+
+	input := &OrganizationEncryptedSecret{
+		Name:                  "NAME",
+		EncryptedValue:        "QIv=",
+		KeyID:                 "1234",
+		Visibility:            "selected",
+		SelectedRepositoryIDs: []string{"A", "B", "C"},
+	}
+	_, err := client.Organizations.CreateOrUpdateSecret(context.Background(), "o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateOrUpdateSecret returned error: %v", err)
+	}
+}
