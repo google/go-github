@@ -166,3 +166,17 @@ func (s *OrganizationsService) SetSecretSelectedRepositories(ctx context.Context
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// Adds a repository to an organization secret when the visibility for repository access is set to selected.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#add-selected-repository-to-an-organization-secret
+func (s *OrganizationsService) AddSelectedRepositoryToSecret(ctx context.Context, owner, name string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", owner, name, repositoryID)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

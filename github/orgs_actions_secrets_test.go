@@ -159,3 +159,17 @@ func TestOrganizationsService_SetSecretSelectedRepositories(t *testing.T) {
 		t.Errorf("Organizations.SetSecretSelectedRepositories returned error: %v", err)
 	}
 }
+
+func TestOrganizationsService_AddSelectedRepositoryToSecret(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets/SECRET_NAME/repositories/64780797", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+	})
+
+	_, err := client.Organizations.AddSelectedRepositoryToSecret(context.Background(), "o", "SECRET_NAME", int64(64780797))
+	if err != nil {
+		t.Errorf("Organizations.AddSelectedRepositoryToSecret returned error: %v", err)
+	}
+}
