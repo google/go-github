@@ -180,3 +180,17 @@ func (s *OrganizationsService) AddSelectedRepositoryToSecret(ctx context.Context
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// Removes a repository from an organization secret when the visibility for repository access is set to selected
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#remove-selected-repository-from-an-organization-secret
+func (s *OrganizationsService) RemoveSelectedRepositoryFromSecret(ctx context.Context, owner, name string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories/%v", owner, name, repositoryID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

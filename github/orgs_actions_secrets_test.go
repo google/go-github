@@ -173,3 +173,17 @@ func TestOrganizationsService_AddSelectedRepositoryToSecret(t *testing.T) {
 		t.Errorf("Organizations.AddSelectedRepositoryToSecret returned error: %v", err)
 	}
 }
+
+func TestOrganizationsService_RemoveSelectedRepositoryFromSecret(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets/SECRET_NAME/repositories/64780797", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Organizations.RemoveSelectedRepositoryFromSecret(context.Background(), "o", "SECRET_NAME", int64(64780797))
+	if err != nil {
+		t.Errorf("Organizations.RemoveSelectedRepositoryFromSecret returned error: %v", err)
+	}
+}
