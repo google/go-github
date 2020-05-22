@@ -6972,6 +6972,14 @@ func (o *OrganizationPublicKey) GetKeyID() string {
 	return *o.KeyID
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (o *OrganizationSecretSelectedRepositories) GetTotalCount() int64 {
+	if o == nil || o.TotalCount == nil {
+		return 0
+	}
+	return *o.TotalCount
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (o *OrgBlockEvent) GetAction() string {
 	if o == nil || o.Action == nil {

@@ -87,6 +87,11 @@ func (s *OrganizationsService) GetSecret(ctx context.Context, owner, name string
 	return secret, resp, nil
 }
 
+// OrganizationEncryptedSecret represents an Organization secret that is encrypted using a public key.
+//
+// The value of EncryptedValue must be your secret, encrypted with
+// LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
+// using the public key retrieved using the GetPublicKey method.
 type OrganizationEncryptedSecret struct {
 	Name                  string   `json:"-"`
 	KeyID                 string   `json:"key_id"`
@@ -94,12 +99,6 @@ type OrganizationEncryptedSecret struct {
 	Visibility            string   `json:"visibility"`
 	SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
 }
-
-// OrganizationEncryptedSecret represents an Organization secret that is encrypted using a public key.
-//
-// The value of EncryptedValue must be your secret, encrypted with
-// LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
-// using the public key retrieved using the GetPublicKey method.
 
 // CreateOrUpdateSecret creates or updates a secret with an encrypted value.
 //
@@ -127,4 +126,29 @@ func (s *OrganizationsService) DeleteSecret(ctx context.Context, owner, name str
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// OrganizationSecretSelectedRepositories represents all repositories that have been selected to  have access to an OrganizationSecret
+type OrganizationSecretSelectedRepositories struct {
+	TotalCount   *int64        `json:"total_count,omitempty"`
+	Repositories []*Repository `json:"repositories,omitempty"`
+}
+
+// Lists all repositories that have been selected when the visibility for repository access to a secret is set to selected.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#list-selected-repositories-for-an-organization-secret
+func (s *OrganizationsService) ListSecretSelectedRepositories(ctx context.Context, owner, name string) (*OrganizationSecretSelectedRepositories, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", owner, name)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	secretSelectedRepositories := new(OrganizationSecretSelectedRepositories)
+	resp, err := s.client.Do(ctx, req, secretSelectedRepositories)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secretSelectedRepositories, resp, nil
 }

@@ -121,3 +121,27 @@ func TestOrgnizationsService_DeleteSecret(t *testing.T) {
 		t.Errorf("Organizations.DeleteSecret returned error: %v", err)
 	}
 }
+
+func TestOrganizationsService_ListSecretSelectedRepositories(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets/SECRET_NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":1},{"id":2}]}`)
+	})
+
+	secretSelectedRepositories, _, err := client.Organizations.ListSecretSelectedRepositories(context.Background(), "o", "SECRET_NAME")
+	if err != nil {
+		t.Errorf("Organizations.ListSecretSelectedRepositories returned error: %v", err)
+	}
+
+	want := &OrganizationSecretSelectedRepositories{
+		TotalCount:   Int64(2),
+		Repositories: []*Repository{{ID: Int64(1)}, {ID: Int64(2)}},
+	}
+
+	if !reflect.DeepEqual(secretSelectedRepositories, want) {
+		t.Errorf("Organizations.ListSecretSelectedRepositories returned %+v, want %+v", secretSelectedRepositories, want)
+	}
+}
