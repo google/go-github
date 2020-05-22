@@ -89,3 +89,67 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)
 	}
 }
+
+func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/timing", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000},"MACOS":{"total_ms":240000},"WINDOWS":{"total_ms":300000}}}`)
+	})
+
+	workflowUsage, _, err := client.Actions.GetWorkflowUsageByID(context.Background(), "o", "r", 72844)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowUsageByID returned error: %v", err)
+	}
+
+	want := &WorkflowUsage{
+		Billable: &WorkflowEnvironment{
+			Ubuntu: &WorkflowBill{
+				TotalMS: Int64(180000),
+			},
+			MacOS: &WorkflowBill{
+				TotalMS: Int64(240000),
+			},
+			Windows: &WorkflowBill{
+				TotalMS: Int64(300000),
+			},
+		},
+	}
+	if !reflect.DeepEqual(workflowUsage, want) {
+		t.Errorf("Actions.GetWorkflowUsageByID returned %+v, want %+v", workflowUsage, want)
+	}
+}
+
+func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/timing", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000},"MACOS":{"total_ms":240000},"WINDOWS":{"total_ms":300000}}}`)
+	})
+
+	workflowUsage, _, err := client.Actions.GetWorkflowUsageByFileName(context.Background(), "o", "r", "main.yml")
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowUsageByFileName returned error: %v", err)
+	}
+
+	want := &WorkflowUsage{
+		Billable: &WorkflowEnvironment{
+			Ubuntu: &WorkflowBill{
+				TotalMS: Int64(180000),
+			},
+			MacOS: &WorkflowBill{
+				TotalMS: Int64(240000),
+			},
+			Windows: &WorkflowBill{
+				TotalMS: Int64(300000),
+			},
+		},
+	}
+	if !reflect.DeepEqual(workflowUsage, want) {
+		t.Errorf("Actions.GetWorkflowUsageByFileName returned %+v, want %+v", workflowUsage, want)
+	}
+}

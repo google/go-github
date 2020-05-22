@@ -30,6 +30,23 @@ type Workflows struct {
 	Workflows  []*Workflow `json:"workflows,omitempty"`
 }
 
+// WorkflowUsage represents a usage of a specific workflow.
+type WorkflowUsage struct {
+	Billable *WorkflowEnvironment `json:"billable,omitempty"`
+}
+
+// WorkflowEnvironment represents different runner environments available for a workflow.
+type WorkflowEnvironment struct {
+	Ubuntu  *WorkflowBill `json:"UBUNTU,omitempty"`
+	MacOS   *WorkflowBill `json:"MACOS,omitempty"`
+	Windows *WorkflowBill `json:"WINDOWS,omitempty"`
+}
+
+// WorkflowBill specifies billable time for a specific environment in a workflow.
+type WorkflowBill struct {
+	TotalMS *int64 `json:"total_ms,omitempty"`
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#list-repository-workflows
@@ -85,4 +102,37 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 	}
 
 	return workflow, resp, nil
+}
+
+// GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-workflow-usage
+func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowID)
+
+	return s.getWorkflowUsage(ctx, u)
+}
+
+// GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/workflows/#get-workflow-usage
+func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowFileName)
+
+	return s.getWorkflowUsage(ctx, u)
+}
+
+func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*WorkflowUsage, *Response, error) {
+	req, err := s.client.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	workflowUsage := new(WorkflowUsage)
+	resp, err := s.client.Do(ctx, req, workflowUsage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return workflowUsage, resp, nil
 }
