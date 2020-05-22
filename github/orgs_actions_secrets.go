@@ -114,3 +114,17 @@ func (s *OrganizationsService) CreateOrUpdateSecret(ctx context.Context, owner s
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// DeleteSecret deletes a secret in a repository using the secret name.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#delete-an-organization-secret
+func (s *OrganizationsService) DeleteSecret(ctx context.Context, owner, name string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v", owner, name)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
