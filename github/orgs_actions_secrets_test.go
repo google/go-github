@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestOrganizationsService_GetPublicKey(t *testing.T) {
@@ -19,11 +20,40 @@ func TestOrganizationsService_GetPublicKey(t *testing.T) {
 
 	key, _, err := client.Organizations.GetPublicKey(context.Background(), "o")
 	if err != nil {
-		t.Errorf("OrgsActions.GetPublicKey returned error: %v", err)
+		t.Errorf("Organizations.GetPublicKey returned error: %v", err)
 	}
 
-	want := &OrgsActionsPublicKey{KeyID: String("012345678912345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &OrganizationPublicKey{KeyID: String("012345678912345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !reflect.DeepEqual(key, want) {
-		t.Errorf("OrgsActions.GetPublicKey returned %+v, want %+v", key, want)
+		t.Errorf("Organizations.GetPublicKey returned %+v, want %+v", key, want)
+	}
+}
+
+func TestOrganizationsService_ListSecrets(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{"total_count":3,"secrets":[{"name":"GIST_ID","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"private"},{"name":"DEPLOY_TOKEN","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"all"},{"name":"GH_TOKEN","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"}]}`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	secrets, _, err := client.Organizations.ListSecrets(context.Background(), "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListSecrets returned error: %v", err)
+	}
+
+	want := &OrganizationSecrets{
+		TotalCount: 3,
+		Secrets: []*OrganizationSecret{
+			{Name: "GIST_ID", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "private"},
+			{Name: "DEPLOY_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "all"},
+			{Name: "GH_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "selected", SelectedRepositoriesUrl: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"},
+		},
+	}
+	if !reflect.DeepEqual(secrets, want) {
+		t.Errorf("Organizations.ListSecrets returned %+v, want %+v", secrets, want)
 	}
 }

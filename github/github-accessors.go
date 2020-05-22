@@ -6956,6 +6956,22 @@ func (o *OrganizationInstallations) GetTotalCount() int {
 	return *o.TotalCount
 }
 
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (o *OrganizationPublicKey) GetKey() string {
+	if o == nil || o.Key == nil {
+		return ""
+	}
+	return *o.Key
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (o *OrganizationPublicKey) GetKeyID() string {
+	if o == nil || o.KeyID == nil {
+		return ""
+	}
+	return *o.KeyID
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (o *OrgBlockEvent) GetAction() string {
 	if o == nil || o.Action == nil {
