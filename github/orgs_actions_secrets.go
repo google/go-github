@@ -67,3 +67,22 @@ func (s *OrganizationsService) ListSecrets(ctx context.Context, owner string, op
 
 	return secrets, resp, nil
 }
+
+// GetSecret gets a single secret without revealing its encrypted value.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#get-an-organization-secret
+func (s *OrganizationsService) GetSecret(ctx context.Context, owner, name string) (*OrganizationSecret, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v", owner, name)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	secret := new(OrganizationSecret)
+	resp, err := s.client.Do(ctx, req, secret)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secret, resp, nil
+}

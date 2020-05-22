@@ -57,3 +57,30 @@ func TestOrganizationsService_ListSecrets(t *testing.T) {
 		t.Errorf("Organizations.ListSecrets returned %+v, want %+v", secrets, want)
 	}
 }
+
+func TestOrganizationsService_GetSecret(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/secrets/GH_TOKEN", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"name":"GH_TOKEN","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"}`)
+	})
+
+	secret, _, err := client.Organizations.GetSecret(context.Background(), "o", "GH_TOKEN")
+	if err != nil {
+		t.Errorf("Organizations.GetSecret returned error: %v", err)
+	}
+
+	want := &OrganizationSecret{
+		Name:                    "GH_TOKEN",
+		CreatedAt:               Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
+		UpdatedAt:               Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
+		Visibility:              "selected",
+		SelectedRepositoriesUrl: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories",
+	}
+
+	if !reflect.DeepEqual(secret, want) {
+		t.Errorf("Organizations.GetSecret returned %+v, want %+v", secret, want)
+	}
+}
