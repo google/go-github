@@ -93,6 +93,7 @@ func TestOrgnizationsService_CreateOrUpdateSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":["A","B","C"]}`+"\n")
+		w.WriteHeader(http.StatusCreated)
 	})
 
 	input := &OrganizationEncryptedSecret{
@@ -114,6 +115,7 @@ func TestOrgnizationsService_DeleteSecret(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	_, err := client.Organizations.DeleteSecret(context.Background(), "o", "NAME")
@@ -180,6 +182,7 @@ func TestOrganizationsService_RemoveSelectedRepositoryFromSecret(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/secrets/SECRET_NAME/repositories/64780797", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	_, err := client.Organizations.RemoveSelectedRepositoryFromSecret(context.Background(), "o", "SECRET_NAME", int64(64780797))
