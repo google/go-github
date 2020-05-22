@@ -152,3 +152,17 @@ func (s *OrganizationsService) ListSecretSelectedRepositories(ctx context.Contex
 
 	return secretSelectedRepositories, resp, nil
 }
+
+// Replaces all repositories for an organization secret when the visibility for repository access is set to selected.
+//
+// GitHub API docs: https://developer.github.com/v3/actions/secrets/#set-selected-repositories-for-an-organization-secret
+func (s *OrganizationsService) SetSecretSelectedRepositories(ctx context.Context, owner, name string, repositoryIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", owner, name)
+
+	req, err := s.client.NewRequest("PUT", u, repositoryIDs)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
