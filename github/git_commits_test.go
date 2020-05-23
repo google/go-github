@@ -146,6 +146,37 @@ func TestGitService_GetCommit_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestGitService_ListCommits(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		_, ok := r.URL.Query()["sha"]
+
+		if !ok {
+			t.Error("The query param sha was not set, want: s")
+		}
+
+		fmt.Fprint(w, `[{"sha":"s","message":"Commit Message.","author":{"name":"n"}}]`)
+	})
+
+	commits, _, err := client.Git.ListCommits(context.Background(), "o", "r", "s")
+
+	if err != nil {
+		t.Errorf("Git.ListCommits returned error: %v", err)
+	}
+
+	want := &CommitList{
+		&Commit{SHA: String("s"), Message: String("Commit Message."), Author: &CommitAuthor{Name: String("n")}},
+	}
+
+	if !reflect.DeepEqual(commits, want) {
+		t.Errorf("Git.ListCommits returned %+v, want %+v", commits, want)
+	}
+}
+
 func TestGitService_CreateCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

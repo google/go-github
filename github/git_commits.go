@@ -49,6 +49,9 @@ type Commit struct {
 	SigningKey *openpgp.Entity `json:"-"`
 }
 
+// CommitList is a list of commits
+type CommitList []*Commit
+
 func (c Commit) String() string {
 	return Stringify(c)
 }
@@ -85,6 +88,29 @@ func (s *GitService) GetCommit(ctx context.Context, owner string, repo string, s
 	}
 
 	return c, resp, nil
+}
+
+// ListCommits fetches latest commits
+func (s *GitService) ListCommits(ctx context.Context, owner string, repo string, sha string) (*CommitList, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/git/commits", owner, repo)
+	req, err := s.client.NewRequest("GET", u, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	q := req.URL.Query()
+	q.Add("sha", sha)
+	req.URL.RawQuery = q.Encode()
+
+	commits := new(CommitList)
+	resp, err := s.client.Do(ctx, req, commits)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return commits, resp, nil
 }
 
 // createCommit represents the body of a CreateCommit request.
