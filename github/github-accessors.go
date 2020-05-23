@@ -11757,7 +11757,7 @@ func (r *RunnerApplicationDownload) GetOS() string {
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (s *SelectedRepositoriesList) GetTotalCount() int {
+func (s *SelectedReposList) GetTotalCount() int {
 	if s == nil || s.TotalCount == nil {
 		return 0
 	}
