@@ -98,6 +98,31 @@ type createHookRequest struct {
 	Active *bool                  `json:"active,omitempty"`
 }
 
+// PubSubHubBubRequest represents the request to be send
+// for the GitHub's publish/subscribe hub protocol.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#subscribing
+type PubSubHubBubRequest struct {
+	HubMode     string `json:"hub_mode,omitempty"`
+	HubTopic    Topic  `json:"hub_topic,omitempty"`
+	HubCallback string `json:"hub_callback,omitempty"`
+	HubSecret   string `json:"hub_secret,omitempty"`
+}
+
+// Topic represents GitHub repository and its particular event.
+type Topic struct {
+	Owner string `json:"owner,omitempty"`
+	Repo  string `json:"repo,omitempty"`
+	Event string `json:"events,omitempty"`
+}
+
+type pubSubHubBubPayload struct {
+	HubMode     string `json:"hub.mode,omitempty"`
+	HubTopic    string `json:"hub.topic,omitempty"`
+	HubCallback string `json:"hub.callback,omitempty"`
+	HubSecret   string `json:"hub.secret,omitempty"`
+}
+
 // CreateHook creates a Hook for the specified repository.
 // Config is a required field.
 //
@@ -222,5 +247,29 @@ func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, err
 	}
+	return s.client.Do(ctx, req, nil)
+}
+
+// CreatePubSubHubBubrequest lets servers register receive updates when a topic is updated
+// using publish/subscribe protocol with GitHub as the hub for the repositories.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/hooks/#pubsubhubbub
+func (s *RepositoriesService) CreatePubSubHubBubRequest(ctx context.Context, request *PubSubHubBubRequest) (*Response, error) {
+	u := fmt.Sprintf("api.github.com/hub")
+
+	hubTopic := fmt.Sprintf("/%v/%v/events/%v", request.HubTopic.Owner, request.HubTopic.Repo, request.HubTopic.Event)
+
+	pubSubHubBubReq := &pubSubHubBubPayload{
+		HubMode:     request.HubMode,
+		HubTopic:    hubTopic,
+		HubCallback: request.HubCallback,
+		HubSecret:   request.HubSecret,
+	}
+
+	req, err := s.client.NewRequest("POST", u, pubSubHubBubReq)
+	if err != nil {
+		return nil, err
+	}
+
 	return s.client.Do(ctx, req, nil)
 }

@@ -197,3 +197,27 @@ func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.TestHook(context.Background(), "%", "%", 1)
 	testURLParseError(t, err)
 }
+
+func TestRepositoriesService_TestPubSubHubBub(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+	})
+
+	pubSubHubBubreq := &PubSubHubBubRequest{
+		HubMode: "subscribe",
+		HubTopic: Topic{
+			Owner: "o",
+			Repo:  "r",
+			Event: "push",
+		},
+		HubCallback: "http://postbin.org/123",
+	}
+
+	_, err := client.Repositories.CreatePubSubHubBubRequest(context.Background(), pubSubHubBubreq)
+	if err != nil {
+		t.Errorf("Repositories.CreatePubSubHubBubrequest returned error: %v", err)
+	}
+}
