@@ -14,6 +14,70 @@ import (
 	"testing"
 )
 
+func TestActionsService_ListArtifacts(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/artifacts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
+		fmt.Fprint(w,
+			`{
+				"total_count":1, 
+				"artifacts":[{"id":1}]
+			}`,
+		)
+	})
+
+	opts := &ListOptions{Page: 2}
+	artifacts, _, err := client.Actions.ListArtifacts(context.Background(), "o", "r", opts)
+	if err != nil {
+		t.Errorf("Actions.ListArtifacts returned error: %v", err)
+	}
+
+	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
+	if !reflect.DeepEqual(artifacts, want) {
+		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
+	}
+}
+
+func TestActionsService_ListArtifacts_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Actions.ListArtifacts(context.Background(), "%", "r", nil)
+	testURLParseError(t, err)
+}
+
+func TestActionsService_ListArtifacts_invalidRepo(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Actions.ListArtifacts(context.Background(), "o", "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestActionsService_ListArtifacts_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/artifacts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	artifacts, resp, err := client.Actions.ListArtifacts(context.Background(), "o", "r", nil)
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Actions.ListArtifacts return status %d, want %d", got, want)
+	}
+	if artifacts != nil {
+		t.Errorf("Actions.ListArtifacts return %+v, want nil", artifacts)
+	}
+}
+
 func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
