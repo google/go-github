@@ -11756,6 +11756,14 @@ func (r *RunnerApplicationDownload) GetOS() string {
 	return *r.OS
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (s *SelectedReposList) GetTotalCount() int {
+	if s == nil || s.TotalCount == nil {
+		return 0
+	}
+	return *s.TotalCount
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (s *ServiceHook) GetName() string {
 	if s == nil || s.Name == nil {
