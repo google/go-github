@@ -228,15 +228,15 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path 
 	return deleteResponse, resp, nil
 }
 
-// archiveFormat is used to define the archive type when calling GetArchiveLink.
-type archiveFormat string
+// ArchiveFormat is used to define the archive type when calling GetArchiveLink.
+type ArchiveFormat string
 
 const (
 	// Tarball specifies an archive in gzipped tar format.
-	Tarball archiveFormat = "tarball"
+	Tarball ArchiveFormat = "tarball"
 
 	// Zipball specifies an archive in zip format.
-	Zipball archiveFormat = "zipball"
+	Zipball ArchiveFormat = "zipball"
 )
 
 // GetArchiveLink returns an URL to download a tarball or zipball archive for a
@@ -244,7 +244,7 @@ const (
 // or github.Zipball constant.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/contents/#get-archive-link
-func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat archiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
+func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opts != nil && opts.Ref != "" {
 		u += fmt.Sprintf("/%s", opts.Ref)
