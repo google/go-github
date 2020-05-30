@@ -109,9 +109,9 @@ func (a *AdminStats) GetUsers() *UserStats {
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
-func (a *Alert) GetClosedAt() time.Time {
+func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *a.ClosedAt
 }
@@ -125,9 +125,9 @@ func (a *Alert) GetClosedBy() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (a *Alert) GetCreatedAt() time.Time {
+func (a *Alert) GetCreatedAt() Timestamp {
 	if a == nil || a.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *a.CreatedAt
 }

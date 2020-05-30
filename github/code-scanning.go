@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // CodeScanningService handles communication with the code scanning related
@@ -22,10 +21,10 @@ type Alert struct {
 	RuleSeverity    *string    `json:"rule_severity,omitempty"`
 	RuleDescription *string    `json:"rule_description,omitempty"`
 	Tool            *string    `json:"tool,omitempty"`
-	CreatedAt       *time.Time `json:"created_at,omitempty"`
+	CreatedAt       *Timestamp `json:"created_at,omitempty"`
 	Open            *bool      `json:"open,omitempty"`
 	ClosedBy        *string    `json:"closed_by,omitempty"`
-	ClosedAt        *time.Time `json:"closed_at,omitempty"`
+	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
 	URL             *string    `json:"url,omitempty"`
 	HTMLURL         *string    `json:"html_url,omitempty"`
 }

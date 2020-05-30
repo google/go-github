@@ -53,7 +53,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)
+	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
 	want := []*Alert{
 		{
 			RuleID:          String("js/trivial-conditional"),
@@ -108,7 +108,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
 	}
 
-	date := time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)
+	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
 	want := &Alert{
 		RuleID:          String("js/useless-expression"),
 		RuleSeverity:    String("warning"),
