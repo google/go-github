@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -17,16 +18,16 @@ import (
 type CodeScanningService service
 
 type Alert struct {
-	RuleID		*string `json:"rule_id,omitempty"`
-	RuleSeverity	*string `json:"rule_severity,omitempty"`
-	RuleDescription	*string	`json:"rule_description,omitempty"`
-	Tool		*string	`json:"tool,omitempty"`
-	CreatedAt	*time.Time `json:"created_at,omitempty"`
-	Open		*bool `json:"open,omitempty"`
-	ClosedBy	*string	`json:"closed_by,omitempty"`
-	ClosedAt	*time.Time `json:"closed_at,omitempty"`
-	URL		*string `json:"url,omitempty"`
-	HTMLURL		*string `json:"html_url,omitempty"`
+	RuleID          *string    `json:"rule_id,omitempty"`
+	RuleSeverity    *string    `json:"rule_severity,omitempty"`
+	RuleDescription *string    `json:"rule_description,omitempty"`
+	Tool            *string    `json:"tool,omitempty"`
+	CreatedAt       *time.Time `json:"created_at,omitempty"`
+	Open            *bool      `json:"open,omitempty"`
+	ClosedBy        *string    `json:"closed_by,omitempty"`
+	ClosedAt        *time.Time `json:"closed_at,omitempty"`
+	URL             *string    `json:"url,omitempty"`
+	HTMLURL         *string    `json:"html_url,omitempty"`
 }
 
 // AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts
@@ -39,16 +40,14 @@ type AlertListOptions struct {
 	Ref string `url:"ref,omitempty"`
 }
 
-// ListAlerts lists code scanning alerts for a repository.
+// ListAlertsForRepo lists code scanning alerts for a repository.
 //
 // Lists all open code scanning alerts for the default branch (usually master) and protected branches in a repository.
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// state: Set to closed to  list only closed code scanning alerts. Default: open
-// ref: Returns a list of code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
 // GitHub API docs: https://developer.github.com/v3/code-scanning/#list-code-scanning-alerts-for-a-repository
-func (s *CodeScanningService) ListAlerts(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
+func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -85,7 +84,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	a := new(RegistrationToken)
+	a := new(Alert)
 	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err

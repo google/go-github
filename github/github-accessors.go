@@ -108,6 +108,86 @@ func (a *AdminStats) GetUsers() *UserStats {
 	return a.Users
 }
 
+// GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
+func (a *Alert) GetClosedAt() time.Time {
+	if a == nil || a.ClosedAt == nil {
+		return time.Time{}
+	}
+	return *a.ClosedAt
+}
+
+// GetClosedBy returns the ClosedBy field if it's non-nil, zero value otherwise.
+func (a *Alert) GetClosedBy() string {
+	if a == nil || a.ClosedBy == nil {
+		return ""
+	}
+	return *a.ClosedBy
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *Alert) GetCreatedAt() time.Time {
+	if a == nil || a.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *a.CreatedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (a *Alert) GetHTMLURL() string {
+	if a == nil || a.HTMLURL == nil {
+		return ""
+	}
+	return *a.HTMLURL
+}
+
+// GetOpen returns the Open field if it's non-nil, zero value otherwise.
+func (a *Alert) GetOpen() bool {
+	if a == nil || a.Open == nil {
+		return false
+	}
+	return *a.Open
+}
+
+// GetRuleDescription returns the RuleDescription field if it's non-nil, zero value otherwise.
+func (a *Alert) GetRuleDescription() string {
+	if a == nil || a.RuleDescription == nil {
+		return ""
+	}
+	return *a.RuleDescription
+}
+
+// GetRuleID returns the RuleID field if it's non-nil, zero value otherwise.
+func (a *Alert) GetRuleID() string {
+	if a == nil || a.RuleID == nil {
+		return ""
+	}
+	return *a.RuleID
+}
+
+// GetRuleSeverity returns the RuleSeverity field if it's non-nil, zero value otherwise.
+func (a *Alert) GetRuleSeverity() string {
+	if a == nil || a.RuleSeverity == nil {
+		return ""
+	}
+	return *a.RuleSeverity
+}
+
+// GetTool returns the Tool field if it's non-nil, zero value otherwise.
+func (a *Alert) GetTool() string {
+	if a == nil || a.Tool == nil {
+		return ""
+	}
+	return *a.Tool
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *Alert) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {
