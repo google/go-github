@@ -117,26 +117,30 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // specified file. This function will work with files of any size, as opposed
 // to GetContents which is limited to 1 Mb files. It is the caller's
 // responsibility to close the ReadCloser.
-func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, error) {
+//
+// It is possible for the download to result in a failed response. Callers
+// should check the returned http.Response status code to verify the content
+// is from a successful response.
+func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *http.Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
 	_, dirContents, _, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
-				return nil, fmt.Errorf("No download link found for %s", filepath)
+				return nil, nil, fmt.Errorf("No download link found for %s", filepath)
 			}
 			resp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
-				return nil, err
+				return nil, resp, err
 			}
-			return resp.Body, nil
+			return resp.Body, resp, nil
 		}
 	}
-	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
+	return nil, nil, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
