@@ -131,7 +131,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
-				return nil, nil, fmt.Errorf("No download link found for %s", filepath)
+				return nil, resp, fmt.Errorf("No download link found for %s", filepath)
 			}
 			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
