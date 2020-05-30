@@ -119,8 +119,8 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // responsibility to close the ReadCloser.
 //
 // It is possible for the download to result in a failed response when the
-// returned error is nil. Callers should check the returned http.Response
-// status code to verify the content is from a successful response.
+// returned error is nil. Callers should check the returned Response status
+// code to verify the content is from a successful response.
 func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
