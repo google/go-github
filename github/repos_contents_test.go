@@ -123,7 +123,7 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
 	}
 
-	if got, want := resp.StatusCode, http.StatusOK; got != want {
+	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
 		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
 	}
 
@@ -160,7 +160,7 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
 	}
 
-	if got, want := resp.StatusCode, http.StatusInternalServerError; got != want {
+	if got, want := resp.Response.StatusCode, http.StatusInternalServerError; got != want {
 		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
 	}
 
@@ -186,9 +186,13 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 		}]`)
 	})
 
-	_, _, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	_, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
 }
 
@@ -200,9 +204,13 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	_, _, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	_, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
 }
 
