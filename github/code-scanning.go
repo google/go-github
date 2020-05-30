@@ -8,6 +8,8 @@ package github
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 // CodeScanningService handles communication with the code scanning related
@@ -27,6 +29,45 @@ type Alert struct {
 	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
 	URL             *string    `json:"url,omitempty"`
 	HTMLURL         *string    `json:"html_url,omitempty"`
+}
+
+// ID() returns the ID associated with an alert. It is the number at the end of the security alert's URL.
+func (a *Alert) ID() int64 {
+	if a == nil {
+		return 0
+	}
+
+	// Set the url to check to "" and index of last forward slash to -1
+	s := string("")
+	i := int(-1)
+
+	// Check if HTMLURL is valid
+	if a.HTMLURL != nil {
+		s = *a.HTMLURL
+	}
+
+	// Check HTMLURL for an ID to parse first, since it was used in the example
+	if i = strings.LastIndex(s, "/"); i != -1 {
+		s = s[i+1:]
+	} else {
+		// HTMLURL had no forward slashes, try URL as a fallback
+		// Check if URL is valid
+		if a.URL != nil {
+			s = *a.URL
+		}
+		if i = strings.LastIndex(s, "/"); i != -1 {
+			s = s[i+1:]
+		} else {
+			// Both HTMLURL and URL were invalid and had no ID
+			return 0
+		}
+	}
+
+	// Return the alert ID as a 64-bit integer. Unable to convert or out of range returns 0.
+	if id, err := strconv.ParseInt(s, 10, 64); err == nil {
+		return id
+	}
+	return 0
 }
 
 // AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts

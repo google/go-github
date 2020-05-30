@@ -14,6 +14,56 @@ import (
 	"time"
 )
 
+func TestActionsService_Alert_ID(t *testing.T) {
+	// Test: nil Alert ID == 0
+	a := (*Alert)(nil)
+	id := a.ID()
+	want := int64(0)
+	if id != want {
+		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
+	}
+
+	// Test: Valid HTMLURL
+	a = &Alert{
+		HTMLURL: String("https://github.com/o/r/security/code-scanning/88"),
+		URL:     String("https://github.com/repos/o/r/code-scanning/alerts/25"),
+	}
+	id = a.ID()
+	want = 88
+	if !reflect.DeepEqual(id, want) {
+		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
+	}
+
+	// Test: nil HTMLURL, valid URL
+	a = &Alert{
+		URL: String("https://github.com/repos/o/r/code-scanning/alerts/25"),
+	}
+	id = a.ID()
+	want = 25
+	if !reflect.DeepEqual(id, want) {
+		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
+	}
+
+	// Test: Both HTMLURL and URL are nil
+	a = &Alert{}
+	id = a.ID()
+	want = 0
+	if !reflect.DeepEqual(id, want) {
+		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
+	}
+
+	// Test: ID can't be parsed as an int
+	a = &Alert{
+		HTMLURL: String("https://github.com/o/r/security/code-scanning/bad88"),
+		URL:     String("https://github.com/repos/o/r/code-scanning/alerts/25"),
+	}
+	id = a.ID()
+	want = 0
+	if !reflect.DeepEqual(id, want) {
+		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
+	}
+}
+
 func TestActionsService_ListAlertsForRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
