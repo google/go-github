@@ -50,6 +50,7 @@ var (
 		"deployment":                     "DeploymentEvent",
 		"deployment_status":              "DeploymentStatusEvent",
 		"fork":                           "ForkEvent",
+		"github_app_authorization":       "GitHubAppAuthorizationEvent",
 		"gollum":                         "GollumEvent",
 		"installation":                   "InstallationEvent",
 		"installation_repositories":      "InstallationRepositoriesEvent",
