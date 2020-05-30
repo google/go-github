@@ -220,6 +220,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "fork",
 		},
 		{
+			payload:     &GitHubAppAuthorizationEvent{},
+			messageType: "github_app_authorization",
+		},
+		{
 			payload:     &GollumEvent{},
 			messageType: "gollum",
 		},
