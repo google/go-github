@@ -6692,20 +6692,20 @@ func (o *Organization) GetFollowing() int {
 	return *o.Following
 }
 
-// GetHasOrgProjects returns the HasOrgProjects field if it's non-nil, zero value otherwise.
-func (o *Organization) GetHasOrgProjects() bool {
-	if o == nil || o.HasOrgProjects == nil {
+// GetHasOrganizationProjects returns the HasOrganizationProjects field if it's non-nil, zero value otherwise.
+func (o *Organization) GetHasOrganizationProjects() bool {
+	if o == nil || o.HasOrganizationProjects == nil {
 		return false
 	}
-	return *o.HasOrgProjects
+	return *o.HasOrganizationProjects
 }
 
-// GetHasRepoProjects returns the HasRepoProjects field if it's non-nil, zero value otherwise.
-func (o *Organization) GetHasRepoProjects() bool {
-	if o == nil || o.HasRepoProjects == nil {
+// GetHasRepositoryProjects returns the HasRepositoryProjects field if it's non-nil, zero value otherwise.
+func (o *Organization) GetHasRepositoryProjects() bool {
+	if o == nil || o.HasRepositoryProjects == nil {
 		return false
 	}
-	return *o.HasRepoProjects
+	return *o.HasRepositoryProjects
 }
 
 // GetHooksURL returns the HooksURL field if it's non-nil, zero value otherwise.
