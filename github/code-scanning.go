@@ -37,37 +37,20 @@ func (a *Alert) ID() int64 {
 		return 0
 	}
 
-	// Set the url to check to "" and index of last forward slash to -1
-	s := string("")
-	i := int(-1)
+	s := a.GetHTMLURL()
 
-	// Check if HTMLURL is valid
-	if a.HTMLURL != nil {
-		s = *a.HTMLURL
-	}
-
-	// Check HTMLURL for an ID to parse first, since it was used in the example
-	if i = strings.LastIndex(s, "/"); i != -1 {
+	// Check for an ID to parse at the end of the url
+	if i := strings.LastIndex(s, "/"); i >= 0 {
 		s = s[i+1:]
-	} else {
-		// HTMLURL had no forward slashes, try URL as a fallback
-		// Check if URL is valid
-		if a.URL != nil {
-			s = *a.URL
-		}
-		if i = strings.LastIndex(s, "/"); i != -1 {
-			s = s[i+1:]
-		} else {
-			// Both HTMLURL and URL were invalid and had no ID
-			return 0
-		}
 	}
 
 	// Return the alert ID as a 64-bit integer. Unable to convert or out of range returns 0.
-	if id, err := strconv.ParseInt(s, 10, 64); err == nil {
-		return id
+	id, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0
 	}
-	return 0
+
+	return id
 }
 
 // AlertListOptions specifies optional parameters to the CodeScanningService.ListAlerts
