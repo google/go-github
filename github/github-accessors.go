@@ -6692,6 +6692,22 @@ func (o *Organization) GetFollowing() int {
 	return *o.Following
 }
 
+// GetHasOrganizationProjects returns the HasOrganizationProjects field if it's non-nil, zero value otherwise.
+func (o *Organization) GetHasOrganizationProjects() bool {
+	if o == nil || o.HasOrganizationProjects == nil {
+		return false
+	}
+	return *o.HasOrganizationProjects
+}
+
+// GetHasRepositoryProjects returns the HasRepositoryProjects field if it's non-nil, zero value otherwise.
+func (o *Organization) GetHasRepositoryProjects() bool {
+	if o == nil || o.HasRepositoryProjects == nil {
+		return false
+	}
+	return *o.HasRepositoryProjects
+}
+
 // GetHooksURL returns the HooksURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetHooksURL() string {
 	if o == nil || o.HooksURL == nil {
@@ -6722,6 +6738,14 @@ func (o *Organization) GetIssuesURL() string {
 		return ""
 	}
 	return *o.IssuesURL
+}
+
+// GetIsVerified returns the IsVerified field if it's non-nil, zero value otherwise.
+func (o *Organization) GetIsVerified() bool {
+	if o == nil || o.IsVerified == nil {
+		return false
+	}
+	return *o.IsVerified
 }
 
 // GetLocation returns the Location field if it's non-nil, zero value otherwise.
@@ -6866,6 +6890,14 @@ func (o *Organization) GetTotalPrivateRepos() int {
 		return 0
 	}
 	return *o.TotalPrivateRepos
+}
+
+// GetTwitterUsername returns the TwitterUsername field if it's non-nil, zero value otherwise.
+func (o *Organization) GetTwitterUsername() string {
+	if o == nil || o.TwitterUsername == nil {
+		return ""
+	}
+	return *o.TwitterUsername
 }
 
 // GetTwoFactorRequirementEnabled returns the TwoFactorRequirementEnabled field if it's non-nil, zero value otherwise.
@@ -13482,6 +13514,14 @@ func (u *User) GetTotalPrivateRepos() int {
 		return 0
 	}
 	return *u.TotalPrivateRepos
+}
+
+// GetTwitterUsername returns the TwitterUsername field if it's non-nil, zero value otherwise.
+func (u *User) GetTwitterUsername() string {
+	if u == nil || u.TwitterUsername == nil {
+		return ""
+	}
+	return *u.TwitterUsername
 }
 
 // GetTwoFactorAuthentication returns the TwoFactorAuthentication field if it's non-nil, zero value otherwise.

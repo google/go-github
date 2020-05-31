@@ -854,6 +854,7 @@ func TestOrganization_String(t *testing.T) {
 		Blog:                                 String(""),
 		Location:                             String(""),
 		Email:                                String(""),
+		TwitterUsername:                      String(""),
 		Description:                          String(""),
 		PublicRepos:                          Int(0),
 		PublicGists:                          Int(0),
@@ -868,6 +869,9 @@ func TestOrganization_String(t *testing.T) {
 		Type:                                 String(""),
 		Plan:                                 &Plan{},
 		TwoFactorRequirementEnabled:          Bool(false),
+		IsVerified:                           Bool(false),
+		HasOrganizationProjects:              Bool(false),
+		HasRepositoryProjects:                Bool(false),
 		DefaultRepoPermission:                String(""),
 		DefaultRepoSettings:                  String(""),
 		MembersCanCreateRepos:                Bool(false),
@@ -883,7 +887,7 @@ func TestOrganization_String(t *testing.T) {
 		PublicMembersURL:                     String(""),
 		ReposURL:                             String(""),
 	}
-	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersAllowedRepositoryCreationType:"", URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
+	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersAllowedRepositoryCreationType:"", URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Organization.String = %v, want %v", got, want)
 	}
@@ -1555,6 +1559,7 @@ func TestUser_String(t *testing.T) {
 		Email:                   String(""),
 		Hireable:                Bool(false),
 		Bio:                     String(""),
+		TwitterUsername:         String(""),
 		PublicRepos:             Int(0),
 		PublicGists:             Int(0),
 		Followers:               Int(0),
@@ -1583,7 +1588,7 @@ func TestUser_String(t *testing.T) {
 		StarredURL:              String(""),
 		SubscriptionsURL:        String(""),
 	}
-	want := `github.User{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", Hireable:false, Bio:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:""}`
+	want := `github.User{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("User.String = %v, want %v", got, want)
 	}
