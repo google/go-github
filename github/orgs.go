@@ -29,6 +29,7 @@ type Organization struct {
 	Blog                        *string    `json:"blog,omitempty"`
 	Location                    *string    `json:"location,omitempty"`
 	Email                       *string    `json:"email,omitempty"`
+	TwitterUsername             *string    `json:"twitter_username,omitempty"`
 	Description                 *string    `json:"description,omitempty"`
 	PublicRepos                 *int       `json:"public_repos,omitempty"`
 	PublicGists                 *int       `json:"public_gists,omitempty"`
@@ -45,6 +46,9 @@ type Organization struct {
 	Type                        *string    `json:"type,omitempty"`
 	Plan                        *Plan      `json:"plan,omitempty"`
 	TwoFactorRequirementEnabled *bool      `json:"two_factor_requirement_enabled,omitempty"`
+	IsVerified                  *bool      `json:"is_verified,omitempty"`
+	HasOrgProjects              *bool      `json:"has_organization_projects,omitempty"`
+	HasRepoProjects             *bool      `json:"has_repository_projects,omitempty"`
 
 	// DefaultRepoPermission can be one of: "read", "write", "admin", or "none". (Default: "read").
 	// It is only used in OrganizationsService.Edit.

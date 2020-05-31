@@ -31,6 +31,7 @@ type User struct {
 	Email                   *string    `json:"email,omitempty"`
 	Hireable                *bool      `json:"hireable,omitempty"`
 	Bio                     *string    `json:"bio,omitempty"`
+	TwitterUsername         *string    `json:"twitter_username,omitempty"`
 	PublicRepos             *int       `json:"public_repos,omitempty"`
 	PublicGists             *int       `json:"public_gists,omitempty"`
 	Followers               *int       `json:"followers,omitempty"`
