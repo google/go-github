@@ -25,7 +25,7 @@ type Alert struct {
 	Tool            *string    `json:"tool,omitempty"`
 	CreatedAt       *Timestamp `json:"created_at,omitempty"`
 	Open            *bool      `json:"open,omitempty"`
-	ClosedBy        *string    `json:"closed_by,omitempty"`
+	ClosedBy        *User      `json:"closed_by,omitempty"`
 	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
 	URL             *string    `json:"url,omitempty"`
 	HTMLURL         *string    `json:"html_url,omitempty"`

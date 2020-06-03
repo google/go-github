@@ -116,12 +116,12 @@ func (a *Alert) GetClosedAt() Timestamp {
 	return *a.ClosedAt
 }
 
-// GetClosedBy returns the ClosedBy field if it's non-nil, zero value otherwise.
-func (a *Alert) GetClosedBy() string {
-	if a == nil || a.ClosedBy == nil {
-		return ""
+// GetClosedBy returns the ClosedBy field.
+func (a *Alert) GetClosedBy() *User {
+	if a == nil {
+		return nil
 	}
-	return *a.ClosedBy
+	return a.ClosedBy
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
