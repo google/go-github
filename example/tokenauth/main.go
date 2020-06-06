@@ -3,7 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The tokenauth command demonstrates using the oauth2.StaticTokenSource
+// The tokenauth command demonstrates using the oauth2.StaticTokenSource.
 package main
 
 import (
