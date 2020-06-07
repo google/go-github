@@ -122,7 +122,7 @@ func getFileContent(fileArg string) (targetName string, b []byte, err error) {
 	return targetName, b, err
 }
 
-// createCommit creates the commit in the given reference using the given tree.
+// pushCommit creates the commit in the given reference using the given tree.
 func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	// Get the parent commit to attach the commit to.
 	parent, _, err := client.Repositories.GetCommit(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA)
