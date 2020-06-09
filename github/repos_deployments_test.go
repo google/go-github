@@ -89,6 +89,20 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DeleteDeployment(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/deployments/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	_, err := client.Repositories.DeleteDeployment(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.DeleteDeployment returned error: %v", err)
+	}
+}
+
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
