@@ -22,6 +22,7 @@ type WorkflowRun struct {
 	Event          *string        `json:"event,omitempty"`
 	Status         *string        `json:"status,omitempty"`
 	Conclusion     *string        `json:"conclusion,omitempty"`
+	WorkflowID     *int           `json:"workflow_id,omitempty"`
 	URL            *string        `json:"url,omitempty"`
 	HTMLURL        *string        `json:"html_url,omitempty"`
 	PullRequests   []*PullRequest `json:"pull_requests,omitempty"`
