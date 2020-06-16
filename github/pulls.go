@@ -439,7 +439,7 @@ type PullRequestMergeResult struct {
 
 // PullRequestOptions lets you define how a pull request will be merged.
 type PullRequestOptions struct {
-	CommitTitle string // Extra detail to append to automatic commit message. (Optional.)
+	CommitTitle string // Title for the automatic commit message. (Optional.)
 	SHA         string // SHA that pull request head must match to allow merge. (Optional.)
 
 	// The merge method to use. Possible values include: "merge", "squash", and "rebase" with the default being merge. (Optional.)
@@ -453,10 +453,10 @@ type pullRequestMergeRequest struct {
 	SHA           string `json:"sha,omitempty"`
 }
 
-// Merge a pull request (Merge Button™).
-// commitMessage is the title for the automatic commit message.
+// Merge a pull request.
+// commitMessage is an extra detail to append to automatic commit message.
 //
-// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-button
+// GitHub API docs: https://developer.github.com/v3/pulls/#merge-a-pull-request
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
