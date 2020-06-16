@@ -14597,7 +14597,7 @@ func (w *WorkflowRun) GetURL() string {
 }
 
 // GetWorkflowID returns the WorkflowID field if it's non-nil, zero value otherwise.
-func (w *WorkflowRun) GetWorkflowID() int {
+func (w *WorkflowRun) GetWorkflowID() int64 {
 	if w == nil || w.WorkflowID == nil {
 		return 0
 	}
