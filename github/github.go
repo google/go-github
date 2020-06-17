@@ -165,6 +165,7 @@ type Client struct {
 	Apps           *AppsService
 	Authorizations *AuthorizationsService
 	Checks         *ChecksService
+	CodeScanning   *CodeScanningService
 	Gists          *GistsService
 	Git            *GitService
 	Gitignores     *GitignoresService
@@ -271,6 +272,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
+	c.CodeScanning = (*CodeScanningService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
