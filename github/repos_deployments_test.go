@@ -89,6 +89,32 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DeleteDeployment(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/deployments/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	resp, err := client.Repositories.DeleteDeployment(context.Background(), "o", "r", 1)
+	if err != nil {
+		t.Errorf("Repositories.DeleteDeployment returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusNoContent {
+		t.Error("Repositories.DeleteDeployment should return a 204 status")
+	}
+
+	resp, err = client.Repositories.DeleteDeployment(context.Background(), "o", "r", 2)
+	if err == nil {
+		t.Error("Repositories.DeleteDeployment should return an error")
+	}
+	if resp.StatusCode != http.StatusNotFound {
+		t.Error("Repositories.DeleteDeployment should return a 404 status")
+	}
+}
+
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
