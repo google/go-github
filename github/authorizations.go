@@ -41,6 +41,7 @@ const (
 	ScopeReadGPGKey     Scope = "read:gpg_key"
 	ScopeWriteGPGKey    Scope = "write:gpg_key"
 	ScopeAdminGPGKey    Scope = "admin:gpg_key"
+	ScopeSecurityEvents Scope = "security_events"
 )
 
 // AuthorizationsService handles communication with the authorization related
