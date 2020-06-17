@@ -129,6 +129,18 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 	return d, resp, nil
 }
 
+// DeleteDeployment deletes an existing deployment for a repository.
+//
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#delete-a-deployment
+func (s *RepositoriesService) DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
+}
+
 // DeploymentStatus represents the status of a
 // particular deployment.
 type DeploymentStatus struct {
