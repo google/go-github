@@ -68,7 +68,7 @@ func (r ReleaseAsset) String() string {
 
 // ListReleases lists the releases for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#list-releases
 func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 	u, err := addOptions(u, opts)
@@ -91,7 +91,7 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 
 // GetRelease fetches a single release.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-release
 func (s *RepositoriesService) GetRelease(ctx context.Context, owner, repo string, id int64) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 	return s.getSingleRelease(ctx, u)
@@ -178,7 +178,7 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 // Note that only a subset of the release fields are used.
 // See RepositoryRelease for more information.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#edit-a-release
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#update-a-release
 func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
@@ -219,7 +219,7 @@ func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo str
 
 // ListReleaseAssets lists the release's assets.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#list-assets-for-a-release
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#list-release-assets
 func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/%d/assets", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -242,7 +242,7 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 
 // GetReleaseAsset fetches a single release asset.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-release-asset
 func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo string, id int64) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -271,7 +271,7 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // exist, but it's possible to pass any http.Client. If nil is passed the
 // redirectURL will be returned instead.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-single-release-asset
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#get-a-release-asset
 func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
@@ -333,7 +333,7 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 
 // EditReleaseAsset edits a repository release asset.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/releases/#edit-a-release-asset
+// GitHub API docs: https://developer.github.com/v3/repos/releases/#update-a-release-asset
 func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/releases/assets/%d", owner, repo, id)
 
