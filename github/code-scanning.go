@@ -31,7 +31,7 @@ type Alert struct {
 	HTMLURL         *string    `json:"html_url,omitempty"`
 }
 
-// ID() returns the ID associated with an alert. It is the number at the end of the security alert's URL.
+// ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.
 func (a *Alert) ID() int64 {
 	if a == nil {
 		return 0
