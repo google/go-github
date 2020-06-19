@@ -45,9 +45,9 @@ var (
 	verbose   = flag.Bool("v", false, "Print verbose log messages")
 	debugFile = flag.String("d", "", "Debug named file only")
 
-	// methodBlacklist holds methods that do not have GitHub v3 API URLs
-	// or are otherwise problematic in parsing, discovering, and/or fixing.
-	methodBlacklist = map[string]bool{
+	// skipMethods holds methods which are skipped because they do not have GitHub v3
+	// API URLs or are otherwise problematic in parsing, discovering, and/or fixing.
+	skipMethods = map[string]bool{
 		"ActionsService.DownloadArtifact":            true,
 		"AdminService.CreateOrg":                     true,
 		"AdminService.CreateUser":                    true,
@@ -679,7 +679,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 			}
 			endpointName := decl.Name.Name
 			fullName := fmt.Sprintf("%v.%v", serviceName, endpointName)
-			if methodBlacklist[fullName] {
+			if skipMethods[fullName] {
 				logf("skipping %v", fullName)
 				continue
 			}
