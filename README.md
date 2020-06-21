@@ -216,16 +216,14 @@ for {
 ```
 
 For complete usage of go-github, see the full [package docs][].
-Also, take a look at [documentation][].
 
 [GitHub API v3]: https://developer.github.com/v3/
 [oauth2]: https://github.com/golang/oauth2
 [oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://godoc.org/github.com/google/go-github/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v32/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
-[documentation]: https://pkg.go.dev/github.com/google/go-github/v32/github?tab=doc
 
 ### Integration Tests ###
 
