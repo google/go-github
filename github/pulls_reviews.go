@@ -7,9 +7,12 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 )
+
+var ErrMixedCommentStyles = errors.New("cannot use both position and side/line form comments")
 
 // PullRequestReview represents a review of a pull request.
 type PullRequestReview struct {
@@ -36,6 +39,12 @@ type DraftReviewComment struct {
 	Path     *string `json:"path,omitempty"`
 	Position *int    `json:"position,omitempty"`
 	Body     *string `json:"body,omitempty"`
+
+	// The new comfort-fade-preview fields
+	StartSide *string `json:"start_side,omitempty"`
+	Side      *string `json:"side,omitempty"`
+	StartLine *int    `json:"start_line,omitempty"`
+	Line      *int    `json:"line,omitempty"`
 }
 
 func (c DraftReviewComment) String() string {
@@ -53,6 +62,32 @@ type PullRequestReviewRequest struct {
 
 func (r PullRequestReviewRequest) String() string {
 	return Stringify(r)
+}
+
+func (r PullRequestReviewRequest) isComfortFadePreview() (bool, error) {
+	var isCF *bool
+	for _, comment := range r.Comments {
+		if comment == nil {
+			continue
+		}
+		hasPos := comment.Position != nil
+		hasComfortFade := (comment.StartSide != nil) || (comment.Side != nil) ||
+			(comment.StartLine != nil) || (comment.Line != nil)
+
+		switch {
+		case hasPos && hasComfortFade:
+			return false, ErrMixedCommentStyles
+		case hasPos && isCF != nil && *isCF:
+			return false, ErrMixedCommentStyles
+		case hasComfortFade && isCF != nil && !*isCF:
+			return false, ErrMixedCommentStyles
+		}
+		isCF = &hasComfortFade
+	}
+	if isCF != nil {
+		return *isCF, nil
+	}
+	return false, nil
 }
 
 // PullRequestReviewDismissalRequest represents a request to dismiss a review.
@@ -181,6 +216,15 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	// Detect which style of review comment is being used.
+	if isCF, err := review.isComfortFadePreview(); err != nil {
+		return nil, nil, err
+	} else if isCF {
+		// If the review comments are using the comfort fade preview fields,
+		// then pass the comfort fade header.
+		req.Header.Set("Accept", "application/vnd.github.comfort-fade-preview+json")
 	}
 
 	r := new(PullRequestReview)
