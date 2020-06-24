@@ -12,7 +12,7 @@ import (
 
 // ListBlockedUsers lists all the blocked users by the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/blocking/#list-blocked-users
+// GitHub API docs: https://developer.github.com/v3/users/blocking/#list-users-blocked-by-the-authenticated-user
 func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) ([]*User, *Response, error) {
 	u := "user/blocks"
 	u, err := addOptions(u, opts)
@@ -39,7 +39,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 
 // IsBlocked reports whether specified user is blocked by the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/blocking/#check-whether-youve-blocked-a-user
+// GitHub API docs: https://developer.github.com/v3/users/blocking/#check-if-a-user-is-blocked-by-the-authenticated-user
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("user/blocks/%v", user)
 

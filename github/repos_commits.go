@@ -123,7 +123,7 @@ type BranchCommit struct {
 
 // ListCommits lists the commits of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#list-commits
 func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits", owner, repo)
 	u, err := addOptions(u, opts)
@@ -148,7 +148,7 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 // GetCommit fetches the specified commit, including all details about it.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
-// See also: https://developer.github.com/v3/git/commits/#get-a-single-commit provides the same functionality
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-commit
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
 
@@ -168,7 +168,7 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-commit
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -197,7 +197,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner string, re
 // GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
 // supplied and no new commits have occurred, a 304 Unmodified response is returned.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-single-commit
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#get-a-commit
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
 

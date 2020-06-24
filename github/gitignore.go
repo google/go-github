@@ -46,7 +46,7 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 
 // Get a Gitignore by name.
 //
-// GitHub API docs: https://developer.github.com/v3/gitignore/#get-a-single-template
+// GitHub API docs: https://developer.github.com/v3/gitignore/#get-a-gitignore-template
 func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
 	u := fmt.Sprintf("gitignore/templates/%v", name)
 	req, err := s.client.NewRequest("GET", u, nil)

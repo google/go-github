@@ -39,7 +39,7 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 // for the given repository.
 // Possible values are: "existing_users", "contributors_only", "collaborators_only".
 //
-// GitHub API docs: https://developer.github.com/v3/interactions/repos/#add-or-update-interaction-restrictions-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/interactions/repos/#set-interaction-restrictions-for-a-repository
 func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
 

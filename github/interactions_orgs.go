@@ -39,7 +39,7 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 // in public repositories for the given organization.
 // Possible values are: "existing_users", "contributors_only", "collaborators_only".
 //
-// GitHub API docs: https://developer.github.com/v3/interactions/orgs/#add-or-update-interaction-restrictions-for-an-organization
+// GitHub API docs: https://developer.github.com/v3/interactions/orgs/#set-interaction-restrictions-for-an-organization
 func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
 

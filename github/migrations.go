@@ -131,7 +131,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 // MigrationStatus gets the status of a specific migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/orgs/#get-the-status-of-an-organization-migration
+// GitHub API docs: https://developer.github.com/v3/migrations/orgs/#get-an-organization-migration-status
 func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id int64) (*Migration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/migrations/%v", org, id)
 

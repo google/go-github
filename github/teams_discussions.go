@@ -99,7 +99,7 @@ func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug stri
 // GetDiscussionByID gets a specific discussion on a team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-single-discussion
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-discussion
 func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -119,7 +119,7 @@ func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int6
 // GetDiscussionBySlug gets a specific discussion on a team's page given Organization name and Team's slug.
 // Authenticated user must grant read:discussion scope.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-single-discussion
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#get-a-discussion
 func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -180,7 +180,7 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 // Authenticated user must grant write:discussion scope.
 // User is allowed to change Title and Body of a discussion only.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#update-a-discussion
 func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
 	req, err := s.client.NewRequest("PATCH", u, discussion)
@@ -201,7 +201,7 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 // Authenticated user must grant write:discussion scope.
 // User is allowed to change Title and Body of a discussion only.
 //
-// GitHub API docs: https://developer.github.com/v3/teams/discussions/#edit-a-discussion
+// GitHub API docs: https://developer.github.com/v3/teams/discussions/#update-a-discussion
 func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
 	req, err := s.client.NewRequest("PATCH", u, discussion)

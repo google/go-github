@@ -95,7 +95,7 @@ type DismissedReview struct {
 
 // ListIssueEvents lists events for the specified issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/events/#list-events-for-an-issue
+// GitHub API docs: https://developer.github.com/v3/issues/events/#list-issue-events
 func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/events", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -122,7 +122,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 
 // ListRepositoryEvents lists events for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/events/#list-events-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/issues/events/#list-issue-events-for-a-repository
 func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -146,7 +146,7 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 
 // GetEvent returns the specified issue event.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/events/#get-a-single-event
+// GitHub API docs: https://developer.github.com/v3/issues/events/#get-an-issue-event
 func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events/%v", owner, repo, id)
 

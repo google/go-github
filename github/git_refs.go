@@ -49,7 +49,7 @@ type updateRefRequest struct {
 
 // GetRef fetches a single reference in a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-single-reference
+// GitHub API docs: https://developer.github.com/v3/git/refs/#get-a-reference
 func (s *GitService) GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))

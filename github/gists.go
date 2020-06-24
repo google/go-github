@@ -191,7 +191,7 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 
 // GetRevision gets a specific revision of a gist.
 //
-// GitHub API docs: https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist
+// GitHub API docs: https://developer.github.com/v3/gists/#get-a-gist-revision
 func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v/%v", id, sha)
 	req, err := s.client.NewRequest("GET", u, nil)

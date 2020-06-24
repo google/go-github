@@ -165,7 +165,7 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 
 // ImportProgress queries for the status and progress of an ongoing repository import.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#get-import-progress
+// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#get-an-import-status
 func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo string) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -184,7 +184,7 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 
 // UpdateImport initiates a repository import.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#update-existing-import
+// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#update-an-import
 func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, in)
@@ -255,7 +255,7 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 // files larger than 100MB. Only the UseLFS field on the provided Import is
 // used.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#set-git-lfs-preference
+// GitHub API docs: https://developer.github.com/v3/migrations/source_imports/#update-git-lfs-preference
 func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/lfs", owner, repo)
 	req, err := s.client.NewRequest("PATCH", u, in)

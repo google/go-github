@@ -483,7 +483,7 @@ type ProjectCollaboratorOptions struct {
 // AddProjectCollaborator adds a collaborator to an organization project and sets
 // their permission level. You must be an organization owner or a project admin to add a collaborator.
 //
-// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#add-user-as-a-collaborator
+// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#add-project-collaborator
 func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, username string, opts *ProjectCollaboratorOptions) (*Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -500,7 +500,7 @@ func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, 
 // RemoveProjectCollaborator removes a collaborator from an organization project.
 // You must be an organization owner or a project admin to remove a collaborator.
 //
-// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#remove-user-as-a-collaborator
+// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#remove-project-collaborator
 func (s *ProjectsService) RemoveProjectCollaborator(ctx context.Context, id int64, username string) (*Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v", id, username)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -536,7 +536,7 @@ type ListCollaboratorOptions struct {
 // with access through default organization permissions, and organization owners. You must be an
 // organization owner or a project admin to list collaborators.
 //
-// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#list-collaborators
+// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#list-project-collaborators
 func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64, opts *ListCollaboratorOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators", id)
 	u, err := addOptions(u, opts)
@@ -574,7 +574,7 @@ type ProjectPermissionLevel struct {
 // project. Possible values for the permission key: "admin", "write", "read", "none".
 // You must be an organization owner or a project admin to review a user's permission level.
 //
-// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#review-a-users-permission-level
+// GitHub API docs: https://developer.github.com/v3/projects/collaborators/#get-project-permission-for-a-user
 func (s *ProjectsService) ReviewProjectCollaboratorPermission(ctx context.Context, id int64, username string) (*ProjectPermissionLevel, *Response, error) {
 	u := fmt.Sprintf("projects/%v/collaborators/%v/permission", id, username)
 	req, err := s.client.NewRequest("GET", u, nil)

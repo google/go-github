@@ -17,7 +17,7 @@ type UserEmail struct {
 
 // ListEmails lists all email addresses for the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user
+// GitHub API docs: https://developer.github.com/v3/users/emails/#list-email-addresses-for-the-authenticated-user
 func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*UserEmail, *Response, error) {
 	u := "user/emails"
 	u, err := addOptions(u, opts)
@@ -41,7 +41,7 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 
 // AddEmails adds email addresses of the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/emails/#add-email-addresses
+// GitHub API docs: https://developer.github.com/v3/users/emails/#add-an-email-address-for-the-authenticated-user
 func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserEmail, *Response, error) {
 	u := "user/emails"
 	req, err := s.client.NewRequest("POST", u, emails)
@@ -60,7 +60,7 @@ func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserE
 
 // DeleteEmails deletes email addresses from authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/users/emails/#delete-email-addresses
+// GitHub API docs: https://developer.github.com/v3/users/emails/#delete-an-email-address-for-the-authenticated-user
 func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Response, error) {
 	u := "user/emails"
 	req, err := s.client.NewRequest("DELETE", u, emails)

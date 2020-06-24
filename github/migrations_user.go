@@ -120,7 +120,7 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context) ([]*UserMigra
 // UserMigrationStatus gets the status of a specific migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://developer.github.com/v3/migrations/users/#get-the-status-of-a-user-migration
+// GitHub API docs: https://developer.github.com/v3/migrations/users/#get-a-user-migration-status
 func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*UserMigration, *Response, error) {
 	u := fmt.Sprintf("user/migrations/%v", id)
 

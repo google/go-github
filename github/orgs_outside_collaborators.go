@@ -27,7 +27,7 @@ type ListOutsideCollaboratorsOptions struct {
 // Warning: The API may change without advance notice during the preview period.
 // Preview features are not supported for production use.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators
+// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#list-outside-collaborators-for-an-organization
 func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators", org)
 	u, err := addOptions(u, opts)
@@ -52,7 +52,7 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 // RemoveOutsideCollaborator removes a user from the list of outside collaborators;
 // consequently, removing them from all the organization's repositories.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#remove-outside-collaborator
+// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#remove-outside-collaborator-from-an-organization
 func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -69,7 +69,7 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 // Responses for converting a non-member or the last owner to an outside collaborator
 // are listed in GitHub API docs.
 //
-// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#convert-member-to-outside-collaborator
+// GitHub API docs: https://developer.github.com/v3/orgs/outside_collaborators/#convert-an-organization-member-to-outside-collaborator
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
 	req, err := s.client.NewRequest("PUT", u, nil)
