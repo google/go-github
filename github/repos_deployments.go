@@ -87,7 +87,7 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 
 // GetDeployment returns a single deployment of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-single-deployment
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-deployment
 func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 
@@ -203,7 +203,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 
 // GetDeploymentStatus returns a single deployment status of a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-single-deployment-status
+// GitHub API docs: https://developer.github.com/v3/repos/deployments/#get-a-deployment-status
 func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
 

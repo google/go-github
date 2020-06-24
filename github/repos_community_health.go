@@ -38,7 +38,7 @@ type CommunityHealthMetrics struct {
 
 // GetCommunityHealthMetrics retrieves all the community health  metrics for a  repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/community/#retrieve-community-profile-metrics
+// GitHub API docs: https://developer.github.com/v3/repos/community/#get-community-profile-metrics
 func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, owner, repo string) (*CommunityHealthMetrics, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/community/profile", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -55,7 +55,7 @@ type MilestoneListOptions struct {
 
 // ListMilestones lists all milestones for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#list-milestones
 func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo string, opts *MilestoneListOptions) ([]*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
 	u, err := addOptions(u, opts)
@@ -79,7 +79,7 @@ func (s *IssuesService) ListMilestones(ctx context.Context, owner string, repo s
 
 // GetMilestone gets a single milestone.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
+// GitHub API docs: https://developer.github.com/v3/issues/milestones/#get-a-milestone
 func (s *IssuesService) GetMilestone(ctx context.Context, owner string, repo string, number int) (*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
