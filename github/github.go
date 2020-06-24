@@ -231,7 +231,7 @@ type RawOptions struct {
 	Type RawType
 }
 
-// addOptions adds the parameters in opt as URL query parameters to s. opt
+// addOptions adds the parameters in opts as URL query parameters to s. opts
 // must be a struct whose fields may contain "url" tags.
 func addOptions(s string, opts interface{}) (string, error) {
 	v := reflect.ValueOf(opts)

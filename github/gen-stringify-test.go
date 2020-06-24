@@ -39,10 +39,10 @@ const (
 var (
 	verbose = flag.Bool("v", false, "Print verbose log messages")
 
-	// blacklistStructMethod lists "struct.method" combos to skip.
-	blacklistStructMethod = map[string]bool{}
-	// blacklistStruct lists structs to skip.
-	blacklistStruct = map[string]bool{
+	// skipStructMethods lists "struct.method" combos to skip.
+	skipStructMethods = map[string]bool{}
+	// skipStructs lists structs to skip.
+	skipStructs = map[string]bool{
 		"RateLimits": true,
 	}
 
@@ -166,9 +166,9 @@ func (t *templateData) processAST(f *ast.File) error {
 				logf("Struct %v is unexported; skipping.", ts.Name)
 				continue
 			}
-			// Check if the struct is blacklisted.
-			if blacklistStruct[ts.Name.Name] {
-				logf("Struct %v is blacklisted; skipping.", ts.Name)
+			// Check if the struct should be skipped.
+			if skipStructs[ts.Name.Name] {
+				logf("Struct %v is in skip list; skipping.", ts.Name)
 				continue
 			}
 			st, ok := ts.Type.(*ast.StructType)
@@ -203,9 +203,9 @@ func (t *templateData) processAST(f *ast.File) error {
 					logf("Field %v is unexported; skipping.", fieldName)
 					continue
 				}
-				// Check if "struct.method" is blacklisted.
-				if key := fmt.Sprintf("%v.Get%v", ts.Name, fieldName); blacklistStructMethod[key] {
-					logf("Method %v is blacklisted; skipping.", key)
+				// Check if "struct.method" should be skipped.
+				if key := fmt.Sprintf("%v.Get%v", ts.Name, fieldName); skipStructMethods[key] {
+					logf("Method %v is in skip list; skipping.", key)
 					continue
 				}
 

@@ -7,9 +7,12 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 )
+
+var ErrMixedCommentStyles = errors.New("cannot use both position and side/line form comments")
 
 // PullRequestReview represents a review of a pull request.
 type PullRequestReview struct {
@@ -36,6 +39,12 @@ type DraftReviewComment struct {
 	Path     *string `json:"path,omitempty"`
 	Position *int    `json:"position,omitempty"`
 	Body     *string `json:"body,omitempty"`
+
+	// The new comfort-fade-preview fields
+	StartSide *string `json:"start_side,omitempty"`
+	Side      *string `json:"side,omitempty"`
+	StartLine *int    `json:"start_line,omitempty"`
+	Line      *int    `json:"line,omitempty"`
 }
 
 func (c DraftReviewComment) String() string {
@@ -53,6 +62,32 @@ type PullRequestReviewRequest struct {
 
 func (r PullRequestReviewRequest) String() string {
 	return Stringify(r)
+}
+
+func (r PullRequestReviewRequest) isComfortFadePreview() (bool, error) {
+	var isCF *bool
+	for _, comment := range r.Comments {
+		if comment == nil {
+			continue
+		}
+		hasPos := comment.Position != nil
+		hasComfortFade := (comment.StartSide != nil) || (comment.Side != nil) ||
+			(comment.StartLine != nil) || (comment.Line != nil)
+
+		switch {
+		case hasPos && hasComfortFade:
+			return false, ErrMixedCommentStyles
+		case hasPos && isCF != nil && *isCF:
+			return false, ErrMixedCommentStyles
+		case hasComfortFade && isCF != nil && !*isCF:
+			return false, ErrMixedCommentStyles
+		}
+		isCF = &hasComfortFade
+	}
+	if isCF != nil {
+		return *isCF, nil
+	}
+	return false, nil
 }
 
 // PullRequestReviewDismissalRequest represents a request to dismiss a review.
@@ -175,12 +210,53 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 // Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://developer.github.com/v3/pulls/reviews/#create-a-review-for-a-pull-request
+//
+// In order to use multi-line comments, you must use the "comfort fade" preview.
+// This replaces the use of the "Position" field in comments with 4 new fields:
+//   [Start]Side, and [Start]Line.
+// These new fields must be used for ALL comments (including single-line),
+// with the following restrictions (empirically observed, so subject to change).
+//
+// For single-line "comfort fade" comments, you must use:
+//
+//    Path:  &path,  // as before
+//    Body:  &body,  // as before
+//    Side:  &"RIGHT" (or "LEFT")
+//    Line:  &123,  // NOT THE SAME AS POSITION, this is an actual line number.
+//
+// If StartSide or StartLine is used with single-line comments, a 422 is returned.
+//
+// For multi-line "comfort fade" comments, you must use:
+//
+//    Path:      &path,  // as before
+//    Body:      &body,  // as before
+//    StartSide: &"RIGHT" (or "LEFT")
+//    Side:      &"RIGHT" (or "LEFT")
+//    StartLine: &120,
+//    Line:      &125,
+//
+// Suggested edits are made by commenting on the lines to replace, and including the
+// suggested edit in a block like this (it may be surrounded in non-suggestion markdown):
+//
+//    ```suggestion
+//    Use this instead.
+//    It is waaaaaay better.
+//    ```
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
 	req, err := s.client.NewRequest("POST", u, review)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	// Detect which style of review comment is being used.
+	if isCF, err := review.isComfortFadePreview(); err != nil {
+		return nil, nil, err
+	} else if isCF {
+		// If the review comments are using the comfort fade preview fields,
+		// then pass the comfort fade header.
+		req.Header.Set("Accept", mediaTypeMultiLineCommentsPreview)
 	}
 
 	r := new(PullRequestReview)

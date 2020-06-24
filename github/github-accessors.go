@@ -2972,6 +2972,14 @@ func (d *DraftReviewComment) GetBody() string {
 	return *d.Body
 }
 
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetLine() int {
+	if d == nil || d.Line == nil {
+		return 0
+	}
+	return *d.Line
+}
+
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
 func (d *DraftReviewComment) GetPath() string {
 	if d == nil || d.Path == nil {
@@ -2986,6 +2994,30 @@ func (d *DraftReviewComment) GetPosition() int {
 		return 0
 	}
 	return *d.Position
+}
+
+// GetSide returns the Side field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetSide() string {
+	if d == nil || d.Side == nil {
+		return ""
+	}
+	return *d.Side
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetStartLine() int {
+	if d == nil || d.StartLine == nil {
+		return 0
+	}
+	return *d.StartLine
+}
+
+// GetStartSide returns the StartSide field if it's non-nil, zero value otherwise.
+func (d *DraftReviewComment) GetStartSide() string {
+	if d == nil || d.StartSide == nil {
+		return ""
+	}
+	return *d.StartSide
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
