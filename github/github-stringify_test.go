@@ -297,11 +297,15 @@ func TestDiscussionComment_String(t *testing.T) {
 
 func TestDraftReviewComment_String(t *testing.T) {
 	v := DraftReviewComment{
-		Path:     String(""),
-		Position: Int(0),
-		Body:     String(""),
+		Path:      String(""),
+		Position:  Int(0),
+		Body:      String(""),
+		StartSide: String(""),
+		Side:      String(""),
+		StartLine: Int(0),
+		Line:      Int(0),
 	}
-	want := `github.DraftReviewComment{Path:"", Position:0, Body:""}`
+	want := `github.DraftReviewComment{Path:"", Position:0, Body:"", StartSide:"", Side:"", StartLine:0, Line:0}`
 	if got := v.String(); got != want {
 		t.Errorf("DraftReviewComment.String = %v, want %v", got, want)
 	}

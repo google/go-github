@@ -73,7 +73,7 @@ func TestReviewers_marshall(t *testing.T) {
 				"created_at": ` + referenceTimeStr + `,
 				"url": "u"
 			}
-		], 
+		],
 		"teams" : [
 			{
 				"id": 1,
@@ -225,6 +225,121 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
+	}
+}
+
+func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
+	path := "path/to/file.go"
+	body := "this is a comment body"
+	left, right := "LEFT", "RIGHT"
+	pos1, pos2, pos3 := 1, 2, 3
+	line1, line2, line3 := 11, 22, 33
+
+	tests := []struct {
+		name     string
+		review   *PullRequestReviewRequest
+		wantErr  error
+		wantBool bool
+	}{{
+		name:     "empty review",
+		review:   &PullRequestReviewRequest{},
+		wantBool: false,
+	}, {
+		name: "old-style review",
+		review: &PullRequestReviewRequest{
+			Comments: []*DraftReviewComment{{
+				Path:     &path,
+				Body:     &body,
+				Position: &pos1,
+			}, {
+				Path:     &path,
+				Body:     &body,
+				Position: &pos2,
+			}, {
+				Path:     &path,
+				Body:     &body,
+				Position: &pos3,
+			}},
+		},
+		wantBool: false,
+	}, {
+		name: "new-style review",
+		review: &PullRequestReviewRequest{
+			Comments: []*DraftReviewComment{{
+				Path: &path,
+				Body: &body,
+				Side: &right,
+				Line: &line1,
+			}, {
+				Path: &path,
+				Body: &body,
+				Side: &left,
+				Line: &line2,
+			}, {
+				Path: &path,
+				Body: &body,
+				Side: &right,
+				Line: &line3,
+			}},
+		},
+		wantBool: true,
+	}, {
+		name: "blended comment",
+		review: &PullRequestReviewRequest{
+			Comments: []*DraftReviewComment{{
+				Path:     &path,
+				Body:     &body,
+				Position: &pos1, // can't have both styles.
+				Side:     &right,
+				Line:     &line1,
+			}},
+		},
+		wantErr: ErrMixedCommentStyles,
+	}, {
+		name: "position then line",
+		review: &PullRequestReviewRequest{
+			Comments: []*DraftReviewComment{{
+				Path:     &path,
+				Body:     &body,
+				Position: &pos1,
+			}, {
+				Path: &path,
+				Body: &body,
+				Side: &right,
+				Line: &line1,
+			}},
+		},
+		wantErr: ErrMixedCommentStyles,
+	}, {
+		name: "line then position",
+		review: &PullRequestReviewRequest{
+			Comments: []*DraftReviewComment{{
+				Path: &path,
+				Body: &body,
+				Side: &right,
+				Line: &line1,
+			}, {
+				Path:     &path,
+				Body:     &body,
+				Position: &pos1,
+			}},
+		},
+		wantErr: ErrMixedCommentStyles,
+	}}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			gotBool, gotErr := tc.review.isComfortFadePreview()
+			if tc.wantErr != nil {
+				if gotErr != tc.wantErr {
+					t.Errorf("isComfortFadePreview() = %v, wanted %v", gotErr, tc.wantErr)
+				}
+			} else {
+				if gotBool != tc.wantBool {
+					t.Errorf("isComfortFadePreview() = %v, wanted %v", gotBool, tc.wantBool)
+				}
+			}
+		})
 	}
 }
 
