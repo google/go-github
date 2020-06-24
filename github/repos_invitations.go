@@ -27,7 +27,7 @@ type RepositoryInvitation struct {
 
 // ListInvitations lists all currently-open repository invitations.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/invitations/#list-invitations-for-a-repository
+// GitHub API docs: https://developer.github.com/v3/repos/invitations/#list-repository-invitations
 func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/invitations", owner, repo)
 	u, err := addOptions(u, opts)

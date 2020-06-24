@@ -58,7 +58,7 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner string, repo str
 
 // CreateKey adds a deploy key for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/keys/#add-a-new-deploy-key
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#create-a-deploy-key
 func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo string, key *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
@@ -78,7 +78,7 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner string, repo 
 
 // DeleteKey deletes a deploy key.
 //
-// GitHub API docs: https://developer.github.com/v3/repos/keys/#remove-a-deploy-key
+// GitHub API docs: https://developer.github.com/v3/repos/keys/#delete-a-deploy-key
 func (s *RepositoriesService) DeleteKey(ctx context.Context, owner string, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 

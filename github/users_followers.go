@@ -44,8 +44,8 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *Lis
 // ListFollowing lists the people that a user is following. Passing the empty
 // string will list people the authenticated user is following.
 //
-// GitHub API docs: https://developer.github.com/v3/users/followers/#list-users-followed-by-another-user
-// GitHub API docs: https://developer.github.com/v3/users/followers/#list-users-followed-by-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/users/followers/#list-the-people-the-authenticated-user-follows
+// GitHub API docs: https://developer.github.com/v3/users/followers/#list-the-people-a-user-follows
 func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error) {
 	var u string
 	if user != "" {
@@ -75,8 +75,8 @@ func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *Lis
 // IsFollowing checks if "user" is following "target". Passing the empty
 // string for "user" will check if the authenticated user is following "target".
 //
-// GitHub API docs: https://developer.github.com/v3/users/followers/#check-if-one-user-follows-another
-// GitHub API docs: https://developer.github.com/v3/users/followers/#check-if-you-are-following-a-user
+// GitHub API docs: https://developer.github.com/v3/users/followers/#check-if-a-person-is-followed-by-the-authenticated-user
+// GitHub API docs: https://developer.github.com/v3/users/followers/#check-if-a-user-follows-another-user
 func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bool, *Response, error) {
 	var u string
 	if user != "" {
