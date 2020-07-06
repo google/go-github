@@ -468,6 +468,22 @@ type OrgBlockEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// PackageEvent represents activity related to GitHub Packages.
+// The Webhook event name is "package".
+//
+// This event is triggered when a GitHub Package is published or updated.
+//
+// GitHub API docs: https://developer.github.com/webhooks/event-payloads/#package
+type PackageEvent struct {
+	// Action is the action that was performed.
+	// Can be "published" or "updated".
+	Action  *string       `json:"action,omitempty"`
+	Package *Package      `json:"package,omitempty"`
+	Repo    *Repository   `json:"repository,omitempty"`
+	Org     *Organization `json:"organization,omitempty"`
+	Sender  *User         `json:"sender,omitempty"`
+}
+
 // PageBuildEvent represents an attempted build of a GitHub Pages site, whether
 // successful or not.
 // The Webhook event name is "page_build".

@@ -76,6 +76,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &OrganizationEvent{}
 	case "OrgBlockEvent":
 		payload = &OrgBlockEvent{}
+	case "PackageEvent":
+		payload = &PackageEvent{}
 	case "PageBuildEvent":
 		payload = &PageBuildEvent{}
 	case "PingEvent":
