@@ -39,7 +39,7 @@ type PackageVersion struct {
 	Prerelease          *bool           `json:"prerelease,omitempty"`
 	CreatedAt           *Timestamp      `json:"created_at,omitempty"`
 	UpdatedAt           *Timestamp      `json:"updated_at,omitempty"`
-	PackageFiles        *[]PackageFile  `json:"package_files,omitempty"`
+	PackageFiles        []*PackageFile  `json:"package_files,omitempty"`
 	Author              *User           `json:"author,omitempty"`
 	InstallationCommand *string         `json:"installation_command,omitempty"`
 }
@@ -72,8 +72,8 @@ type PackageFile struct {
 	DownloadURL *string    `json:"download_url,omitempty"`
 	ID          *int64     `json:"id,omitempty"`
 	Name        *string    `json:"name,omitempty"`
-	Sha256      *string    `json:"sha256,omitempty"`
-	Sha1        *string    `json:"sha1,omitempty"`
+	SHA256      *string    `json:"sha256,omitempty"`
+	SHA1        *string    `json:"sha1,omitempty"`
 	MD5         *string    `json:"md5,omitempty"`
 	ContentType *string    `json:"content_type,omitempty"`
 	State       *string    `json:"state,omitempty"`

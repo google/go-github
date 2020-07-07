@@ -920,8 +920,8 @@ func TestPackageFile_String(t *testing.T) {
 		DownloadURL: String(""),
 		ID:          Int64(0),
 		Name:        String(""),
-		Sha256:      String(""),
-		Sha1:        String(""),
+		SHA256:      String(""),
+		SHA1:        String(""),
 		MD5:         String(""),
 		ContentType: String(""),
 		State:       String(""),
@@ -930,7 +930,7 @@ func TestPackageFile_String(t *testing.T) {
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
 	}
-	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", Sha256:"", Sha1:"", MD5:"", ContentType:"", State:"", Author:github.User{}, Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", SHA256:"", SHA1:"", MD5:"", ContentType:"", State:"", Author:github.User{}, Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageFile.String = %v, want %v", got, want)
 	}

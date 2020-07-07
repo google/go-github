@@ -7340,20 +7340,20 @@ func (p *PackageFile) GetName() string {
 	return *p.Name
 }
 
-// GetSha1 returns the Sha1 field if it's non-nil, zero value otherwise.
-func (p *PackageFile) GetSha1() string {
-	if p == nil || p.Sha1 == nil {
+// GetSHA1 returns the SHA1 field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetSHA1() string {
+	if p == nil || p.SHA1 == nil {
 		return ""
 	}
-	return *p.Sha1
+	return *p.SHA1
 }
 
-// GetSha256 returns the Sha256 field if it's non-nil, zero value otherwise.
-func (p *PackageFile) GetSha256() string {
-	if p == nil || p.Sha256 == nil {
+// GetSHA256 returns the SHA256 field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetSHA256() string {
+	if p == nil || p.SHA256 == nil {
 		return ""
 	}
-	return *p.Sha256
+	return *p.SHA256
 }
 
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
@@ -7581,11 +7581,11 @@ func (p *PackageVersion) GetManifest() string {
 }
 
 // GetPackageFiles returns the PackageFiles field if it's non-nil, zero value otherwise.
-func (p *PackageVersion) GetPackageFiles() []PackageFile {
+func (p *PackageVersion) GetPackageFiles() []*PackageFile {
 	if p == nil || p.PackageFiles == nil {
 		return nil
 	}
-	return *p.PackageFiles
+	return p.PackageFiles
 }
 
 // GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
