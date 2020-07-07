@@ -7580,14 +7580,6 @@ func (p *PackageVersion) GetManifest() string {
 	return *p.Manifest
 }
 
-// GetPackageFiles returns the PackageFiles field if it's non-nil, zero value otherwise.
-func (p *PackageVersion) GetPackageFiles() []*PackageFile {
-	if p == nil || p.PackageFiles == nil {
-		return nil
-	}
-	return p.PackageFiles
-}
-
 // GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
 func (p *PackageVersion) GetPrerelease() bool {
 	if p == nil || p.Prerelease == nil {
