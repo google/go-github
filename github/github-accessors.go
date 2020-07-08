@@ -7172,6 +7172,478 @@ func (o *OrgStats) GetTotalTeams() int {
 	return *o.TotalTeams
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *Package) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (p *Package) GetHTMLURL() string {
+	if p == nil || p.HTMLURL == nil {
+		return ""
+	}
+	return *p.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *Package) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *Package) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetOwner returns the Owner field.
+func (p *Package) GetOwner() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Owner
+}
+
+// GetPackageType returns the PackageType field if it's non-nil, zero value otherwise.
+func (p *Package) GetPackageType() string {
+	if p == nil || p.PackageType == nil {
+		return ""
+	}
+	return *p.PackageType
+}
+
+// GetPackageVersion returns the PackageVersion field.
+func (p *Package) GetPackageVersion() *PackageVersion {
+	if p == nil {
+		return nil
+	}
+	return p.PackageVersion
+}
+
+// GetRegistry returns the Registry field.
+func (p *Package) GetRegistry() *PackageRegistry {
+	if p == nil {
+		return nil
+	}
+	return p.Registry
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *Package) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *PackageEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetOrg returns the Org field.
+func (p *PackageEvent) GetOrg() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Org
+}
+
+// GetPackage returns the Package field.
+func (p *PackageEvent) GetPackage() *Package {
+	if p == nil {
+		return nil
+	}
+	return p.Package
+}
+
+// GetRepo returns the Repo field.
+func (p *PackageEvent) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSender returns the Sender field.
+func (p *PackageEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
+}
+
+// GetAuthor returns the Author field.
+func (p *PackageFile) GetAuthor() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Author
+}
+
+// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetContentType() string {
+	if p == nil || p.ContentType == nil {
+		return ""
+	}
+	return *p.ContentType
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetDownloadURL returns the DownloadURL field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetDownloadURL() string {
+	if p == nil || p.DownloadURL == nil {
+		return ""
+	}
+	return *p.DownloadURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetMD5 returns the MD5 field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetMD5() string {
+	if p == nil || p.MD5 == nil {
+		return ""
+	}
+	return *p.MD5
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetSHA1 returns the SHA1 field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetSHA1() string {
+	if p == nil || p.SHA1 == nil {
+		return ""
+	}
+	return *p.SHA1
+}
+
+// GetSHA256 returns the SHA256 field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetSHA256() string {
+	if p == nil || p.SHA256 == nil {
+		return ""
+	}
+	return *p.SHA256
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetSize() int64 {
+	if p == nil || p.Size == nil {
+		return 0
+	}
+	return *p.Size
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetState() string {
+	if p == nil || p.State == nil {
+		return ""
+	}
+	return *p.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *PackageFile) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetAboutURL returns the AboutURL field if it's non-nil, zero value otherwise.
+func (p *PackageRegistry) GetAboutURL() string {
+	if p == nil || p.AboutURL == nil {
+		return ""
+	}
+	return *p.AboutURL
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PackageRegistry) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (p *PackageRegistry) GetType() string {
+	if p == nil || p.Type == nil {
+		return ""
+	}
+	return *p.Type
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PackageRegistry) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
+}
+
+// GetVendor returns the Vendor field if it's non-nil, zero value otherwise.
+func (p *PackageRegistry) GetVendor() string {
+	if p == nil || p.Vendor == nil {
+		return ""
+	}
+	return *p.Vendor
+}
+
+// GetAuthor returns the Author field.
+func (p *PackageRelease) GetAuthor() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Author
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetDraft() bool {
+	if p == nil || p.Draft == nil {
+		return false
+	}
+	return *p.Draft
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetHTMLURL() string {
+	if p == nil || p.HTMLURL == nil {
+		return ""
+	}
+	return *p.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetPrerelease() bool {
+	if p == nil || p.Prerelease == nil {
+		return false
+	}
+	return *p.Prerelease
+}
+
+// GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetPublishedAt() Timestamp {
+	if p == nil || p.PublishedAt == nil {
+		return Timestamp{}
+	}
+	return *p.PublishedAt
+}
+
+// GetTagName returns the TagName field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetTagName() string {
+	if p == nil || p.TagName == nil {
+		return ""
+	}
+	return *p.TagName
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetTargetCommitish() string {
+	if p == nil || p.TargetCommitish == nil {
+		return ""
+	}
+	return *p.TargetCommitish
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PackageRelease) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
+}
+
+// GetAuthor returns the Author field.
+func (p *PackageVersion) GetAuthor() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Author
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetBodyHTML() string {
+	if p == nil || p.BodyHTML == nil {
+		return ""
+	}
+	return *p.BodyHTML
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetDraft() bool {
+	if p == nil || p.Draft == nil {
+		return false
+	}
+	return *p.Draft
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetHTMLURL() string {
+	if p == nil || p.HTMLURL == nil {
+		return ""
+	}
+	return *p.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetInstallationCommand returns the InstallationCommand field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetInstallationCommand() string {
+	if p == nil || p.InstallationCommand == nil {
+		return ""
+	}
+	return *p.InstallationCommand
+}
+
+// GetManifest returns the Manifest field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetManifest() string {
+	if p == nil || p.Manifest == nil {
+		return ""
+	}
+	return *p.Manifest
+}
+
+// GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetPrerelease() bool {
+	if p == nil || p.Prerelease == nil {
+		return false
+	}
+	return *p.Prerelease
+}
+
+// GetRelease returns the Release field.
+func (p *PackageVersion) GetRelease() *PackageRelease {
+	if p == nil {
+		return nil
+	}
+	return p.Release
+}
+
+// GetSummary returns the Summary field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetSummary() string {
+	if p == nil || p.Summary == nil {
+		return ""
+	}
+	return *p.Summary
+}
+
+// GetTagName returns the TagName field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetTagName() string {
+	if p == nil || p.TagName == nil {
+		return ""
+	}
+	return *p.TagName
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetTargetCommitish() string {
+	if p == nil || p.TargetCommitish == nil {
+		return ""
+	}
+	return *p.TargetCommitish
+}
+
+// GetTargetOID returns the TargetOID field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetTargetOID() string {
+	if p == nil || p.TargetOID == nil {
+		return ""
+	}
+	return *p.TargetOID
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (p *PackageVersion) GetVersion() string {
+	if p == nil || p.Version == nil {
+		return ""
+	}
+	return *p.Version
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *Page) GetAction() string {
 	if p == nil || p.Action == nil {
