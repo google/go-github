@@ -897,6 +897,105 @@ func TestOrganization_String(t *testing.T) {
 	}
 }
 
+func TestPackage_String(t *testing.T) {
+	v := Package{
+		ID:             Int64(0),
+		Name:           String(""),
+		PackageType:    String(""),
+		HTMLURL:        String(""),
+		CreatedAt:      &Timestamp{},
+		UpdatedAt:      &Timestamp{},
+		Owner:          &User{},
+		PackageVersion: &PackageVersion{},
+		Registry:       &PackageRegistry{},
+	}
+	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Owner:github.User{}, PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}}`
+	if got := v.String(); got != want {
+		t.Errorf("Package.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageFile_String(t *testing.T) {
+	v := PackageFile{
+		DownloadURL: String(""),
+		ID:          Int64(0),
+		Name:        String(""),
+		SHA256:      String(""),
+		SHA1:        String(""),
+		MD5:         String(""),
+		ContentType: String(""),
+		State:       String(""),
+		Author:      &User{},
+		Size:        Int64(0),
+		CreatedAt:   &Timestamp{},
+		UpdatedAt:   &Timestamp{},
+	}
+	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", SHA256:"", SHA1:"", MD5:"", ContentType:"", State:"", Author:github.User{}, Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageFile.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageRegistry_String(t *testing.T) {
+	v := PackageRegistry{
+		AboutURL: String(""),
+		Name:     String(""),
+		Type:     String(""),
+		URL:      String(""),
+		Vendor:   String(""),
+	}
+	want := `github.PackageRegistry{AboutURL:"", Name:"", Type:"", URL:"", Vendor:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageRegistry.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageRelease_String(t *testing.T) {
+	v := PackageRelease{
+		URL:             String(""),
+		HTMLURL:         String(""),
+		ID:              Int64(0),
+		TagName:         String(""),
+		TargetCommitish: String(""),
+		Name:            String(""),
+		Draft:           Bool(false),
+		Author:          &User{},
+		Prerelease:      Bool(false),
+		CreatedAt:       &Timestamp{},
+		PublishedAt:     &Timestamp{},
+	}
+	want := `github.PackageRelease{URL:"", HTMLURL:"", ID:0, TagName:"", TargetCommitish:"", Name:"", Draft:false, Author:github.User{}, Prerelease:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageRelease.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageVersion_String(t *testing.T) {
+	v := PackageVersion{
+		ID:                  Int64(0),
+		Version:             String(""),
+		Summary:             String(""),
+		Body:                String(""),
+		BodyHTML:            String(""),
+		Release:             &PackageRelease{},
+		Manifest:            String(""),
+		HTMLURL:             String(""),
+		TagName:             String(""),
+		TargetCommitish:     String(""),
+		TargetOID:           String(""),
+		Draft:               Bool(false),
+		Prerelease:          Bool(false),
+		CreatedAt:           &Timestamp{},
+		UpdatedAt:           &Timestamp{},
+		Author:              &User{},
+		InstallationCommand: String(""),
+	}
+	want := `github.PackageVersion{ID:0, Version:"", Summary:"", Body:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Author:github.User{}, InstallationCommand:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageVersion.String = %v, want %v", got, want)
+	}
+}
+
 func TestPageStats_String(t *testing.T) {
 	v := PageStats{
 		TotalPages: Int(0),

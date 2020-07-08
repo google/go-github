@@ -276,6 +276,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "org_block",
 		},
 		{
+			payload:     &PackageEvent{},
+			messageType: "package",
+		},
+		{
 			payload:     &PageBuildEvent{},
 			messageType: "page_build",
 		},

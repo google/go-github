@@ -64,6 +64,7 @@ var (
 		"milestone":                      "MilestoneEvent",
 		"organization":                   "OrganizationEvent",
 		"org_block":                      "OrgBlockEvent",
+		"package":                        "PackageEvent",
 		"page_build":                     "PageBuildEvent",
 		"ping":                           "PingEvent",
 		"project":                        "ProjectEvent",
