@@ -864,9 +864,9 @@ type BranchRestrictions struct {
 // different from the response structure.
 type BranchRestrictionsRequest struct {
 	// The list of user logins with push access. (Required; use []string{} instead of nil for empty list.)
-	Users []string `json:"users,omitempty"`
+	Users []string `json:"users"`
 	// The list of team slugs with push access. (Required; use []string{} instead of nil for empty list.)
-	Teams []string `json:"teams,omitempty"`
+	Teams []string `json:"teams"`
 	// The list of app slugs with push access.
 	Apps []string `json:"apps,omitempty"`
 }
