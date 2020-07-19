@@ -967,8 +967,6 @@ func processCallExpr(expr *ast.CallExpr) (recv, funcName string, args []string) 
 			if r == "fmt" && fn == "Sprintf" && len(as) > 0 { // Special case - return format string.
 				args = append(args, as[0])
 			}
-		case *ast.CompositeLit:
-			logf("processCallExpr: *ast.CompositeLit: %#v", arg) // Type, Lbrace, Elts, Rbrace, Incomplete
 		case *ast.Ident: // NamePos, Name, Obj
 			args = append(args, arg.Name)
 		case *ast.MapType:

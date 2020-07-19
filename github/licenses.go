@@ -78,7 +78,7 @@ func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, erro
 
 // Get extended metadata for one license.
 //
-// GitHub API docs: https://developer.github.com/v3/licenses/#get-a-license
+// GitHub API docs: https://developer.github.com/v3/licenses/#get-an-individual-license
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
 	u := fmt.Sprintf("licenses/%s", licenseName)
 
