@@ -129,8 +129,7 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 // Deprecated: Use ParsePayload instead, which returns an error
 // rather than panics if JSON unmarshaling raw payload fails.
 func (e *Event) Payload() (payload interface{}) {
-	var err error
-	payload, err = e.ParsePayload()
+	payload, err := e.ParsePayload()
 	if err != nil {
 		panic(err)
 	}
