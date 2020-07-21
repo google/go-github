@@ -400,6 +400,63 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	const rawStr = "@@diff content"
+
+	mux.HandleFunc("/repos/o/r/compare/b...h", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Diff)
+		fmt.Fprint(w, rawStr)
+	})
+
+	got, _, err := client.Repositories.CompareCommitsRaw(context.Background(), "o", "r", "b", "h", RawOptions{Type: Diff})
+	if err != nil {
+		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+	}
+	want := rawStr
+	if got != want {
+		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+	}
+}
+
+func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	const rawStr = "@@patch content"
+
+	mux.HandleFunc("/repos/o/r/compare/b...h", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeV3Patch)
+		fmt.Fprint(w, rawStr)
+	})
+
+	got, _, err := client.Repositories.CompareCommitsRaw(context.Background(), "o", "r", "b", "h", RawOptions{Type: Patch})
+	if err != nil {
+		t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+	}
+	want := rawStr
+	if got != want {
+		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
+	}
+}
+
+func TestRepositoriesService_CompareCommitsRaw_invalid(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.Repositories.CompareCommitsRaw(context.Background(), "o", "r", "s", "h", RawOptions{100})
+	if err == nil {
+		t.Fatal("Repositories.GetCommitRaw should return error")
+	}
+	if !strings.Contains(err.Error(), "unsupported raw type") {
+		t.Error("Repositories.GetCommitRaw should return unsupported raw type error")
+	}
+}
+
 func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
