@@ -242,6 +242,10 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 
 // CompareCommitsRaw compares a range of commits with each other in raw (diff or patch) format.
 //
+// Both "base" and "head" must be branch names in "repo".
+// To compare branches across other repositories in the same network as "repo",
+// use the format "<USERNAME>:branch".
+//
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#compare-two-commits
 func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo, base, head string, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, base, head)
