@@ -10364,6 +10364,14 @@ func (r *Reactions) GetConfused() int {
 	return *r.Confused
 }
 
+// GetEyes returns the Eyes field if it's non-nil, zero value otherwise.
+func (r *Reactions) GetEyes() int {
+	if r == nil || r.Eyes == nil {
+		return 0
+	}
+	return *r.Eyes
+}
+
 // GetHeart returns the Heart field if it's non-nil, zero value otherwise.
 func (r *Reactions) GetHeart() int {
 	if r == nil || r.Heart == nil {
@@ -10402,6 +10410,14 @@ func (r *Reactions) GetPlusOne() int {
 		return 0
 	}
 	return *r.PlusOne
+}
+
+// GetRocket returns the Rocket field if it's non-nil, zero value otherwise.
+func (r *Reactions) GetRocket() int {
+	if r == nil || r.Rocket == nil {
+		return 0
+	}
+	return *r.Rocket
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

@@ -43,6 +43,8 @@ func TestReactions_Marshal(t *testing.T) {
 		Confused:   Int(1),
 		Heart:      Int(1),
 		Hooray:     Int(1),
+		Rocket:     Int(1),
+		Eyes:       Int(1),
 		URL:        String("u"),
 	}
 
@@ -54,6 +56,8 @@ func TestReactions_Marshal(t *testing.T) {
 		"confused": 1,
 		"heart": 1,
 		"hooray": 1,
+		"rocket": 1,
+		"eyes": 1,		
 		"url": "u"
 	}`
 
