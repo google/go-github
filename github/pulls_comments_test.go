@@ -29,6 +29,8 @@ func TestPullComments_marshall(t *testing.T) {
 		Confused:   Int(0),
 		Heart:      Int(0),
 		Hooray:     Int(0),
+		Rocket:     Int(0),
+		Eyes:       Int(0),
 		URL:        String("u"),
 	}
 
@@ -116,6 +118,8 @@ func TestPullComments_marshall(t *testing.T) {
 			"confused": 0,
 			"heart": 0,
 			"hooray": 0,
+			"rocket": 0,
+			"eyes": 0,
 			"url": "u"
 		},
 		"created_at": "2002-02-10T15:30:00Z",

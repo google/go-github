@@ -25,7 +25,7 @@ type Reaction struct {
 	NodeID *string `json:"node_id,omitempty"`
 	// Content is the type of reaction.
 	// Possible values are:
-	//     "+1", "-1", "laugh", "confused", "heart", "hooray".
+	//     "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 	Content *string `json:"content,omitempty"`
 }
 
@@ -38,6 +38,8 @@ type Reactions struct {
 	Confused   *int    `json:"confused,omitempty"`
 	Heart      *int    `json:"heart,omitempty"`
 	Hooray     *int    `json:"hooray,omitempty"`
+	Rocket     *int    `json:"rocket,omitempty"`
+	Eyes       *int    `json:"eyes,omitempty"`
 	URL        *string `json:"url,omitempty"`
 }
 
@@ -86,7 +88,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 // CreateCommentReaction creates a reaction for a commit comment.
 // Note that if you have already created a reaction of type content, the
 // previously created reaction will be returned with Status: 200 OK.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-commit-comment
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -158,7 +160,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 // CreateIssueReaction creates a reaction for an issue.
 // Note that if you have already created a reaction of type content, the
 // previously created reaction will be returned with Status: 200 OK.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-an-issue
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
@@ -230,7 +232,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 // CreateIssueCommentReaction creates a reaction for an issue comment.
 // Note that if you have already created a reaction of type content, the
 // previously created reaction will be returned with Status: 200 OK.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -302,7 +304,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // CreatePullRequestCommentReaction creates a reaction for a pull request review comment.
 // Note that if you have already created a reaction of type content, the
 // previously created reaction will be returned with Status: 200 OK.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-pull-request-review-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -371,7 +373,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 }
 
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion-legacy
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
@@ -438,7 +440,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 }
 
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
-// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
 // GitHub API docs: https://developer.github.com/v3/reactions/#create-reaction-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
