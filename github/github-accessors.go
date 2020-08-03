@@ -12324,6 +12324,14 @@ func (r *ReviewersRequest) GetNodeID() string {
 	return *r.NodeID
 }
 
+// GetBusy returns the Busy field if it's non-nil, zero value otherwise.
+func (r *Runner) GetBusy() bool {
+	if r == nil || r.Busy == nil {
+		return false
+	}
+	return *r.Busy
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Runner) GetID() int64 {
 	if r == nil || r.ID == nil {

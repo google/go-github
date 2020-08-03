@@ -69,6 +69,7 @@ type Runner struct {
 	Name   *string `json:"name,omitempty"`
 	OS     *string `json:"os,omitempty"`
 	Status *string `json:"status,omitempty"`
+	Busy   *bool   `json:"busy,omitempty"`
 }
 
 // Runners represents a collection of self-hosted runners for a repository.
