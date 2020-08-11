@@ -13,26 +13,24 @@ import (
 	"reflect"
 	"testing"
 	"time"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssueImportService_Create(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	now := time.Now()
+	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
 			Assignee:  String("developer"),
 			Body:      "Dummy description",
-			CreatedAt: &now,
+			CreatedAt: &createdAt,
 			Labels:    []string{"l1", "l2"},
 			Milestone: Int(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{&Comment{
-			CreatedAt: now,
+			CreatedAt: createdAt,
 			Body:      "Comment body",
 		}},
 	}
@@ -42,7 +40,7 @@ func TestIssueImportService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
+		if !reflect.DeepEqual(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
