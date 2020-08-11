@@ -171,8 +171,8 @@ type Client struct {
 	Git            *GitService
 	Gitignores     *GitignoresService
 	Interactions   *InteractionsService
-	Issues         *IssuesService
 	IssueImport    *IssueImportService
+	Issues         *IssuesService
 	Licenses       *LicensesService
 	Marketplace    *MarketplaceService
 	Migrations     *MigrationService
@@ -279,8 +279,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Interactions = (*InteractionsService)(&c.common)
-	c.Issues = (*IssuesService)(&c.common)
 	c.IssueImport = (*IssueImportService)(&c.common)
+	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Marketplace = &MarketplaceService{client: c}
 	c.Migrations = (*MigrationService)(&c.common)

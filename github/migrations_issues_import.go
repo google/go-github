@@ -1,4 +1,4 @@
-// Copyright 2020 Asier Marruedo
+// Copyright 2020 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -22,73 +22,72 @@ type IssueImportService service
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#supported-issue-and-comment-fields
 type IssueImportRequest struct {
 	IssueImport IssueImport `json:"issue"`
-	Comments    []Comment   `json:"comments,omitempty"`
+	Comments    []*Comment  `json:"comments,omitempty"`
 }
 
-// IssueImport represents body of issue to import
+// IssueImport represents body of issue to import.
 type IssueImport struct {
 	Title     string     `json:"title"`
-	Body      string     `json:"body,"`
+	Body      string     `json:"body"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	ClosedAt  *time.Time `json:"closed_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	Assignee  *string    `json:"assignee,omitempty"`
 	Milestone *int       `json:"milestone,omitempty"`
-	Closed    bool       `json:"closed"`
+	Closed    *bool      `json:"closed"`
 	Labels    []string   `json:"labels,omitempty"`
 }
 
-// Comment represents comments of issue to import
+// Comment represents comments of issue to import.
 type Comment struct {
 	CreatedAt time.Time `json:"created_at"`
 	Body      string    `json:"body"`
 }
 
-// IssueImportResponse represents the response of a issue import create request.
+// IssueImportResponse represents the response of an issue import create request.
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#import-issue-response
 type IssueImportResponse struct {
-	ID               *int       `json:"id,omitempty"`
-	Status           *string    `json:"status,omitempty"`
-	URL              *string    `json:"url,omitempty"`
-	ImportIssuesURL  *string    `json:"import_issues_url,omitempty"`
-	RepositoryURL    *string    `json:"repository_url,omitempty"`
-	CreatedAt        *time.Time `json:"created_at,omitempty"`
-	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
-	Message          *string    `json:"message,omitempty"`
-	DocumentationURL *string    `json:"documentation_url,omitempty"`
-	Errors           []struct {
-		Location *string `json:"location,omitempty"`
-		Resource *string `json:"resource,omitempty"`
-		Field    *string `json:"field,omitempty"`
-		Value    *string `json:"value,omitempty"`
-		Code     *string `json:"code,omitempty"`
-	} `json:"errors,omitempty"`
+	ID               *int                `json:"id,omitempty"`
+	Status           *string             `json:"status,omitempty"`
+	URL              *string             `json:"url,omitempty"`
+	ImportIssuesURL  *string             `json:"import_issues_url,omitempty"`
+	RepositoryURL    *string             `json:"repository_url,omitempty"`
+	CreatedAt        *time.Time          `json:"created_at,omitempty"`
+	UpdatedAt        *time.Time          `json:"updated_at,omitempty"`
+	Message          *string             `json:"message,omitempty"`
+	DocumentationURL *string             `json:"documentation_url,omitempty"`
+	Errors           []*IssueImportError `json:"errors,omitempty"`
+}
+
+// IssueImportError represents errors of an issue import create request.
+type IssueImportError struct {
+	Location *string `json:"location,omitempty"`
+	Resource *string `json:"resource,omitempty"`
+	Field    *string `json:"field,omitempty"`
+	Value    *string `json:"value,omitempty"`
+	Code     *string `json:"code,omitempty"`
 }
 
 // Create a new imported issue on the specified repository.
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
-func (s *IssueImportService) Create(ctx context.Context, owner string, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
-
+func (s *IssueImportService) Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
-
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	i := new(IssueImportResponse)
 	resp, err := s.client.Do(ctx, req, i)
-
 	if err != nil {
 		aerr, ok := err.(*AcceptedError)
-
 		if ok {
 			decErr := json.Unmarshal(aerr.Raw, i)
-
 			if decErr != nil {
 				err = decErr
 			}
@@ -102,23 +101,21 @@ func (s *IssueImportService) Create(ctx context.Context, owner string, repo stri
 	return i, resp, nil
 }
 
-// CheckStatus of an imported issue
+// CheckStatus checks the status of an imported issue.
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
-func (s *IssueImportService) CheckStatus(ctx context.Context, owner string, repo string, issueID int) (*IssueImportResponse, *Response, error) {
-
+func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string, issueID int64) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues/%v", owner, repo, issueID)
 	req, err := s.client.NewRequest("GET", u, nil)
-
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	i := new(IssueImportResponse)
 	resp, err := s.client.Do(ctx, req, i)
-
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,30 +123,27 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner string, repo
 	return i, resp, nil
 }
 
-// CheckStatusSince checks status of multiple imported issues since given date
+// CheckStatusSince checks the status of multiple imported issues since a given date.
 //
 // https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
-func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner string, repo string, since time.Time) ([]*IssueImportResponse, *Response, error) {
-
+func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo string, since time.Time) ([]*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues?since=%v", owner, repo, since.Format("2006-01-02"))
 	req, err := s.client.NewRequest("GET", u, nil)
-
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	var b bytes.Buffer
 	resp, err := s.client.Do(ctx, req, &b)
-
 	if err != nil {
 		return nil, resp, err
 	}
 
 	var i []*IssueImportResponse
 	err = json.Unmarshal(b.Bytes(), &i)
-
 	if err != nil {
 		return nil, resp, err
 	}
