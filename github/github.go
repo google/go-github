@@ -567,9 +567,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 			io.CopyN(ioutil.Discard, resp.Body, maxBodySlurpSize)
 		}
 
-		if rerr := resp.Body.Close(); err == nil {
-			err = rerr
-		}
+		resp.Body.Close()
 	}()
 
 	response := newResponse(resp)
