@@ -34,14 +34,14 @@ type IssueImport struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	Assignee  *string    `json:"assignee,omitempty"`
 	Milestone *int       `json:"milestone,omitempty"`
-	Closed    *bool      `json:"closed"`
+	Closed    *bool      `json:"closed,omitempty"`
 	Labels    []string   `json:"labels,omitempty"`
 }
 
 // Comment represents comments of issue to import.
 type Comment struct {
-	CreatedAt time.Time `json:"created_at"`
-	Body      string    `json:"body"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Body      string     `json:"body"`
 }
 
 // IssueImportResponse represents the response of an issue import create request.

@@ -30,7 +30,7 @@ func TestIssueImportService_Create(t *testing.T) {
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
-			CreatedAt: createdAt,
+			CreatedAt: &createdAt,
 			Body:      "Comment body",
 		}},
 	}
@@ -59,6 +59,14 @@ func TestIssueImportService_Create(t *testing.T) {
 	}
 }
 
+func TestIssueImportService_Create_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.IssueImport.Create(context.Background(), "%", "r", nil)
+	testURLParseError(t, err)
+}
+
 func TestIssueImportService_CheckStatus(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -74,10 +82,19 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 	if err != nil {
 		t.Errorf("CheckStatus returned error: %v", err)
 	}
+
 	want := wantIssueImportResponse
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CheckStatus = %+v, want %+v", got, want)
 	}
+}
+
+func TestIssueImportService_CheckStatus_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.IssueImport.CheckStatus(context.Background(), "%", "r", 1)
+	testURLParseError(t, err)
 }
 
 func TestIssueImportService_CheckStatusSince(t *testing.T) {
@@ -100,6 +117,14 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("CheckStatusSince = %v, want = %v", got, want)
 	}
+}
+
+func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	_, _, err := client.IssueImport.CheckStatusSince(context.Background(), "%", "r", time.Now())
+	testURLParseError(t, err)
 }
 
 var issueImportResponseJSON = []byte(`{

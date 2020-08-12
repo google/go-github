@@ -1460,6 +1460,14 @@ func (c *CombinedStatus) GetTotalCount() int {
 	return *c.TotalCount
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *Comment) GetCreatedAt() time.Time {
+	if c == nil || c.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *c.CreatedAt
+}
+
 // GetTotalCommitComments returns the TotalCommitComments field if it's non-nil, zero value otherwise.
 func (c *CommentStats) GetTotalCommitComments() int {
 	if c == nil || c.TotalCommitComments == nil {
