@@ -29,7 +29,7 @@ func TestIssueImportService_Create(t *testing.T) {
 			Milestone: Int(1),
 			Title:     "Dummy Issue",
 		},
-		Comments: []*Comment{&Comment{
+		Comments: []*Comment{{
 			CreatedAt: createdAt,
 			Body:      "Comment body",
 		}},
