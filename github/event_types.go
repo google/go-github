@@ -71,10 +71,11 @@ type CommitCommentEvent struct {
 //
 // GitHub API docs: https://developer.github.com/webhooks/event-payloads/#content_reference
 type ContentReferenceEvent struct {
-	Action       *string       `json:"action,omitempty"`
-	Repo         *Repository   `json:"repository,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
+	Action           *string           `json:"action,omitempty"`
+	ContentReference *ContentReference `json:"content_reference,omitempty"`
+	Repo             *Repository       `json:"repository,omitempty"`
+	Sender           *User             `json:"sender,omitempty"`
+	Installation     *Installation     `json:"installation,omitempty"`
 }
 
 // CreateEvent represents a created repository, branch, or tag.
