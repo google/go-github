@@ -118,6 +118,10 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &UserEvent{}
 	case "WatchEvent":
 		payload = &WatchEvent{}
+	case "WorkflowRunEvent":
+		payload = &WorkflowRunEvent{}
+	case "WorkflowDispatchEvent":
+		payload = &WorkflowDispatchEvent{}
 	}
 	err = json.Unmarshal(*e.RawPayload, &payload)
 	return payload, err

@@ -14892,6 +14892,46 @@ func (w *WorkflowBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
+// GetOrg returns the Org field.
+func (w *WorkflowDispatchEvent) GetOrg() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Org
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (w *WorkflowDispatchEvent) GetRef() string {
+	if w == nil || w.Ref == nil {
+		return ""
+	}
+	return *w.Ref
+}
+
+// GetRepo returns the Repo field.
+func (w *WorkflowDispatchEvent) GetRepo() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repo
+}
+
+// GetSender returns the Sender field.
+func (w *WorkflowDispatchEvent) GetSender() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Sender
+}
+
+// GetWorkflow returns the Workflow field if it's non-nil, zero value otherwise.
+func (w *WorkflowDispatchEvent) GetWorkflow() string {
+	if w == nil || w.Workflow == nil {
+		return ""
+	}
+	return *w.Workflow
+}
+
 // GetMacOS returns the MacOS field.
 func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
 	if w == nil {
@@ -15242,6 +15282,38 @@ func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
 		return nil
 	}
 	return w.Windows
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunEvent) GetAction() string {
+	if w == nil || w.Action == nil {
+		return ""
+	}
+	return *w.Action
+}
+
+// GetOrg returns the Org field.
+func (w *WorkflowRunEvent) GetOrg() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Org
+}
+
+// GetRepo returns the Repo field.
+func (w *WorkflowRunEvent) GetRepo() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repo
+}
+
+// GetSender returns the Sender field.
+func (w *WorkflowRunEvent) GetSender() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Sender
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

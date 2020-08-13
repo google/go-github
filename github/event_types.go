@@ -945,3 +945,30 @@ type WatchEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
+// sends a POST request to the create a workflow dispatch event endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
+type WorkflowDispatchEvent struct {
+	Inputs   json.RawMessage `json:"inputs,omitempty"`
+	Ref      *string         `json:"ref,omitempty"`
+	Workflow *string         `json:"workflow,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo   *Repository   `json:"repository,omitempty"`
+	Org    *Organization `json:"organization,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
+}
+
+// WorkflowRunEvent is triggered when a GitHub Actions workflow run is requested or completed.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run
+type WorkflowRunEvent struct {
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org    *Organization `json:"organization,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
+}
