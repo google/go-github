@@ -556,7 +556,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 	}
 
 	//Closing nil response will throw a panic. 
-	if resp != nil{
+	if resp != nil {
 		defer func() {
 			// Ensure the response body is fully read and closed
 			// before we reconnect, so that we reuse the same TCP connection.
