@@ -64,6 +64,19 @@ type CommitCommentEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ContentReferenceEvent is triggered when the body or comment of an issue or
+// pull request includes a URL that matches a configured content reference
+// domain.
+// The Webhook event name is "content_reference".
+//
+// GitHub API docs: https://developer.github.com/webhooks/event-payloads/#content_reference
+type ContentReferenceEvent struct {
+	Action       *string       `json:"action,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // CreateEvent represents a created repository, branch, or tag.
 // The Webhook event name is "create".
 //
