@@ -313,7 +313,9 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	if !strings.HasSuffix(baseEndpoint.Path, "/") {
 		baseEndpoint.Path += "/"
 	}
-	if !strings.HasSuffix(baseEndpoint.Path, "/api/v3/") {
+	if !strings.HasSuffix(baseEndpoint.Path, "/api/v3/") &&
+		!strings.HasPrefix(baseEndpoint.Host, "api.") &&
+		!strings.Contains(baseEndpoint.Host, ".api.") {
 		baseEndpoint.Path += "api/v3/"
 	}
 
@@ -324,7 +326,9 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
 		uploadEndpoint.Path += "/"
 	}
-	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") {
+	if !strings.HasSuffix(uploadEndpoint.Path, "/api/uploads/") &&
+		!strings.HasPrefix(uploadEndpoint.Host, "api.") &&
+		!strings.Contains(uploadEndpoint.Host, ".api.") {
 		uploadEndpoint.Path += "api/uploads/"
 	}
 

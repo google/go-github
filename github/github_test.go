@@ -255,6 +255,116 @@ func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testi
 	}
 }
 
+func TestNewEnterpriseClient_URLHasExistingAPIPrefix_AddTrailingSlash(t *testing.T) {
+	baseURL := "https://api.custom-url"
+	uploadURL := "https://api.custom-upload-url"
+	formattedBaseURL := baseURL + "/"
+	formattedUploadURL := uploadURL + "/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_URLHasExistingAPIPrefixAndTrailingSlash(t *testing.T) {
+	baseURL := "https://api.custom-url/"
+	uploadURL := "https://api.custom-upload-url/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), baseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), uploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_URLHasAPISubdomain_AddTrailingSlash(t *testing.T) {
+	baseURL := "https://catalog.api.custom-url"
+	uploadURL := "https://catalog.api.custom-upload-url"
+	formattedBaseURL := baseURL + "/"
+	formattedUploadURL := uploadURL + "/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_URLHasAPISubdomainAndTrailingSlash(t *testing.T) {
+	baseURL := "https://catalog.api.custom-url/"
+	uploadURL := "https://catalog.api.custom-upload-url/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), baseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), uploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_URLIsNotAProperAPISubdomain_addsEnterpriseSuffixAndSlash(t *testing.T) {
+	baseURL := "https://cloud-api.custom-url"
+	uploadURL := "https://cloud-api.custom-upload-url"
+	formattedBaseURL := baseURL + "/api/v3/"
+	formattedUploadURL := uploadURL + "/api/uploads/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
+func TestNewEnterpriseClient_URLIsNotAProperAPISubdomain_addsEnterpriseSuffix(t *testing.T) {
+	baseURL := "https://cloud-api.custom-url/"
+	uploadURL := "https://cloud-api.custom-upload-url/"
+	formattedBaseURL := baseURL + "api/v3/"
+	formattedUploadURL := uploadURL + "api/uploads/"
+
+	c, err := NewEnterpriseClient(baseURL, uploadURL, nil)
+	if err != nil {
+		t.Fatalf("NewEnterpriseClient returned unexpected error: %v", err)
+	}
+
+	if got, want := c.BaseURL.String(), formattedBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+	if got, want := c.UploadURL.String(), formattedUploadURL; got != want {
+		t.Errorf("NewClient UploadURL is %v, want %v", got, want)
+	}
+}
+
 // Ensure that length of Client.rateLimits is the same as number of fields in RateLimits struct.
 func TestClient_rateLimits(t *testing.T) {
 	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
