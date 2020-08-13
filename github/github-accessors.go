@@ -2044,6 +2044,14 @@ func (c *ContentReferenceEvent) GetAction() string {
 	return *c.Action
 }
 
+// GetContentReference returns the ContentReference field.
+func (c *ContentReferenceEvent) GetContentReference() *ContentReference {
+	if c == nil {
+		return nil
+	}
+	return c.ContentReference
+}
+
 // GetInstallation returns the Installation field.
 func (c *ContentReferenceEvent) GetInstallation() *Installation {
 	if c == nil {
