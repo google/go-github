@@ -135,6 +135,9 @@ const (
 
 	// https://developer.github.com/changes/2019-12-03-internal-visibility-changes/
 	mediaTypeRepositoryVisibilityPreview = "application/vnd.github.nebula-preview+json"
+
+	// https://developer.github.com/changes/2018-12-10-content-attachments-api/
+	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
 // A Client manages communication with the GitHub API.
