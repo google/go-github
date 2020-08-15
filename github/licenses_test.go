@@ -13,6 +13,100 @@ import (
 	"testing"
 )
 
+func TestRepositoryLicense_marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryLicense{}, "{}")
+
+	rl := &RepositoryLicense{
+		Name:        String("n"),
+		Path:        String("p"),
+		SHA:         String("s"),
+		Size:        Int(1),
+		URL:         String("u"),
+		HTMLURL:     String("h"),
+		GitURL:      String("g"),
+		DownloadURL: String("d"),
+		Type:        String("t"),
+		Content:     String("c"),
+		Encoding:    String("e"),
+		License: &License{
+			Key:            String("k"),
+			Name:           String("n"),
+			URL:            String("u"),
+			SPDXID:         String("s"),
+			HTMLURL:        String("h"),
+			Featured:       Bool(true),
+			Description:    String("d"),
+			Implementation: String("i"),
+			Permissions:    &[]string{"p"},
+			Conditions:     &[]string{"c"},
+			Limitations:    &[]string{"l"},
+			Body:           String("b"),
+		},
+	}
+	want := `{
+		"name": "n",
+		"path": "p",
+		"sha": "s",
+		"size": 1,
+		"url": "u",
+		"html_url": "h",
+		"git_url": "g",
+		"download_url": "d",
+		"type": "t",
+		"content": "c",
+		"encoding": "e",
+		"license": {
+			"key": "k",
+			"name": "n",
+			"url": "u",
+			"spdx_id": "s",
+			"html_url": "h",
+			"featured": true,
+			"description": "d",
+			"implementation": "i",
+			"permissions": ["p"],
+			"conditions": ["c"],
+			"limitations": ["l"],
+			"body": "b"
+		}
+	}`
+	testJSONMarshal(t, rl, want)
+}
+
+func TestLicense_marshal(t *testing.T) {
+	testJSONMarshal(t, &License{}, "{}")
+
+	l := &License{
+		Key:            String("k"),
+		Name:           String("n"),
+		URL:            String("u"),
+		SPDXID:         String("s"),
+		HTMLURL:        String("h"),
+		Featured:       Bool(true),
+		Description:    String("d"),
+		Implementation: String("i"),
+		Permissions:    &[]string{"p"},
+		Conditions:     &[]string{"c"},
+		Limitations:    &[]string{"l"},
+		Body:           String("b"),
+	}
+	want := `{
+		"key": "k",
+		"name": "n",
+		"url": "u",
+		"spdx_id": "s",
+		"html_url": "h",
+		"featured": true,
+		"description": "d",
+		"implementation": "i",
+		"permissions": ["p"],
+		"conditions": ["c"],
+		"limitations": ["l"],
+		"body": "b"
+	}`
+	testJSONMarshal(t, l, want)
+}
+
 func TestLicensesService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
