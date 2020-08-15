@@ -18,6 +18,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"path"
 	"reflect"
 	"strconv"
 	"strings"
@@ -343,6 +344,15 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
+
+	// clean up the URL path
+	origURLStr := urlStr
+	urlStr = path.Clean(origURLStr)
+	// put the trailing slash back if necessary
+	if origURLStr[len(origURLStr)-1] == '/' && origURLStr != "/" {
+		urlStr += "/"
+	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
