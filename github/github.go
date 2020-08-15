@@ -43,6 +43,7 @@ const (
 	mediaTypeV3Diff            = "application/vnd.github.v3.diff"
 	mediaTypeV3Patch           = "application/vnd.github.v3.patch"
 	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
+	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
 
 	// Media Type values to access preview APIs
 
@@ -170,6 +171,7 @@ type Client struct {
 	Git            *GitService
 	Gitignores     *GitignoresService
 	Interactions   *InteractionsService
+	IssueImport    *IssueImportService
 	Issues         *IssuesService
 	Licenses       *LicensesService
 	Marketplace    *MarketplaceService
@@ -277,6 +279,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
 	c.Interactions = (*InteractionsService)(&c.common)
+	c.IssueImport = (*IssueImportService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Marketplace = &MarketplaceService{client: c}
