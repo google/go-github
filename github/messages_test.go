@@ -362,7 +362,8 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &WorkflowDispatchEvent{},
 			messageType: "workflow_dispatch",
-		}, {
+		},
+		{
 			payload:     &WorkflowRunEvent{},
 			messageType: "workflow_run",
 		},
