@@ -85,6 +85,8 @@ var (
 		"team_add":                       "TeamAddEvent",
 		"user":                           "UserEvent",
 		"watch":                          "WatchEvent",
+		"workflow_dispatch":              "WorkflowDispatchEvent",
+		"workflow_run":                   "WorkflowRunEvent",
 	}
 )
 
