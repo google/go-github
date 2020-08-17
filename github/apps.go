@@ -291,7 +291,7 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
+	req.Header.Set("Accept", mediaTypeContentAttachmentsPreview)
 
 	m := &Attachment{}
 	resp, err := s.client.Do(ctx, req, m)

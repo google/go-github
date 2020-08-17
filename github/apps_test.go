@@ -328,7 +328,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 
 	mux.HandleFunc("/content_references/11/attachments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testHeader(t, r, "Accept", mediaTypeContentAttachmentsPreview)
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"id":1,"title":"title1","body":"body1"}`))
