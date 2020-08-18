@@ -6,8 +6,6 @@
 // The simple command demonstrates the functionality that
 // prompts the user for a GitHub topic and lists all the entities
 // that are related to the specified topic or subject.
-//
-// [START main.go]
 package main
 
 import (
@@ -18,8 +16,7 @@ import (
 )
 
 // Fetch and lists all the public topics associated with the specified GitHub topic
-//
-func FetchTopics(topic string) (*github.TopicsSearchResult, error) {
+func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
 	client := github.NewClient(nil)
 	topics, _, err := client.Search.Topics(context.Background(), topic, nil)
 	return topics, err
@@ -30,7 +27,7 @@ func main() {
 	fmt.Print("Enter GitHub topic: ")
 	fmt.Scanf("%s", &topic)
 
-	topics, err := FetchTopics(topic)
+	topics, err := fetchTopics(topic)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
@@ -40,4 +37,3 @@ func main() {
 		fmt.Println(*topic.Name)
 	}
 }
-// [END main.go]
