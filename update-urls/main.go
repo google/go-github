@@ -6,7 +6,7 @@
 // update-urls updates GitHub URL docs for each service endpoint.
 //
 // It is meant to be used periodically by go-github repo maintainers
-// to update stale GitHub Developer v3 API documenation URLs.
+// to update stale GitHub Developer v3 API documentation URLs.
 //
 // Usage (from go-github directory):
 //   go run ./update-urls/main.go
