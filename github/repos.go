@@ -327,6 +327,11 @@ type createRepoRequest struct {
 // Note that only a subset of the repo fields are used and repo must
 // not be nil.
 //
+// Also note that this method will return the response without actually
+// waiting for Github to finish creating the repository and letting the
+// changes propagate throughout its servers. You may set up a loop with
+// exponential back-off to verify repository's creation.
+//
 // GitHub API docs: https://developer.github.com/v3/repos/#create-a-repository-for-the-authenticated-user
 // GitHub API docs: https://developer.github.com/v3/repos/#create-an-organization-repository
 func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error) {
