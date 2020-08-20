@@ -328,7 +328,7 @@ type createRepoRequest struct {
 // not be nil.
 //
 // Also note that this method will return the response without actually
-// waiting for Github to finish creating the repository and letting the
+// waiting for GitHub to finish creating the repository and letting the
 // changes propagate throughout its servers. You may set up a loop with
 // exponential back-off to verify repository's creation.
 //
@@ -1359,8 +1359,8 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 	return t.Names, resp, nil
 }
 
-// ListApps lists the Github apps that have push access to a given protected branch.
-// It requires the Github apps to have `write` access to the `content` permission.
+// ListApps lists the GitHub apps that have push access to a given protected branch.
+// It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // GitHub API docs: https://developer.github.com/v3/repos/branches/#list-apps-with-access-to-the-protected-branch
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
@@ -1381,7 +1381,7 @@ func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch 
 
 // ReplaceAppRestrictions replaces the apps that have push access to a given protected branch.
 // It removes all apps that previously had push access and grants push access to the new list of apps.
-// It requires the Github apps to have `write` access to the `content` permission.
+// It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
@@ -1403,7 +1403,7 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 }
 
 // AddAppRestrictions grants the specified apps push access to a given protected branch.
-// It requires the Github apps to have `write` access to the `content` permission.
+// It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
@@ -1425,7 +1425,7 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 }
 
 // RemoveAppRestrictions removes the ability of an app to push to this branch.
-// It requires the Github apps to have `write` access to the `content` permission.
+// It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
