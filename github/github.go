@@ -569,7 +569,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		// re-used. No need to check for errors: if it fails, the Transport
 		// won't reuse it anyway.
 		const maxBodySlurpSize = 2 << 10
-		if resp.ContentLength == -1 || resp.ContentLength <= maxBodySlurpSize {
+		if resp.ContentLength <= maxBodySlurpSize {
 			io.CopyN(ioutil.Discard, resp.Body, maxBodySlurpSize)
 		}
 
