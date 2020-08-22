@@ -44,6 +44,7 @@ var (
 		"check_run":                      "CheckRunEvent",
 		"check_suite":                    "CheckSuiteEvent",
 		"commit_comment":                 "CommitCommentEvent",
+		"content_reference":              "ContentReferenceEvent",
 		"create":                         "CreateEvent",
 		"delete":                         "DeleteEvent",
 		"deploy_key":                     "DeployKeyEvent",

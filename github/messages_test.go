@@ -195,6 +195,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "commit_comment",
 		},
 		{
+			payload:     &ContentReferenceEvent{},
+			messageType: "content_reference",
+		},
+		{
 			payload:     &CreateEvent{},
 			messageType: "create",
 		},

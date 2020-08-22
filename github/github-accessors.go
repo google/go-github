@@ -2020,6 +2020,70 @@ func (c *CommunityHealthMetrics) GetUpdatedAt() time.Time {
 	return *c.UpdatedAt
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
+// GetReference returns the Reference field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetReference() string {
+	if c == nil || c.Reference == nil {
+		return ""
+	}
+	return *c.Reference
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *ContentReferenceEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetContentReference returns the ContentReference field.
+func (c *ContentReferenceEvent) GetContentReference() *ContentReference {
+	if c == nil {
+		return nil
+	}
+	return c.ContentReference
+}
+
+// GetInstallation returns the Installation field.
+func (c *ContentReferenceEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetRepo returns the Repo field.
+func (c *ContentReferenceEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *ContentReferenceEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (c *Contributor) GetAvatarURL() string {
 	if c == nil || c.AvatarURL == nil {
