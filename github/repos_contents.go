@@ -117,26 +117,30 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // specified file. This function will work with files of any size, as opposed
 // to GetContents which is limited to 1 Mb files. It is the caller's
 // responsibility to close the ReadCloser.
-func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, error) {
+//
+// It is possible for the download to result in a failed response when the
+// returned error is nil. Callers should check the returned Response status
+// code to verify the content is from a successful response.
+func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
 	dir := path.Dir(filepath)
 	filename := path.Base(filepath)
-	_, dirContents, _, err := s.GetContents(ctx, owner, repo, dir, opts)
+	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
-		return nil, err
+		return nil, resp, err
 	}
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
-				return nil, fmt.Errorf("No download link found for %s", filepath)
+				return nil, resp, fmt.Errorf("No download link found for %s", filepath)
 			}
-			resp, err := s.client.client.Get(*contents.DownloadURL)
+			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
-				return nil, err
+				return nil, &Response{Response: dlResp}, err
 			}
-			return resp.Body, nil
+			return dlResp.Body, &Response{Response: dlResp}, nil
 		}
 	}
-	return nil, fmt.Errorf("No file named %s found in %s", filename, dir)
+	return nil, resp, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
