@@ -221,7 +221,6 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 }
 
 // CompareCommits compares a range of commits with each other.
-// todo: support media formats - https://github.com/google/go-github/issues/6
 //
 // GitHub API docs: https://developer.github.com/v3/repos/commits/#compare-two-commits
 func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string) (*CommitsComparison, *Response, error) {
@@ -239,6 +238,38 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 	}
 
 	return comp, resp, nil
+}
+
+// CompareCommitsRaw compares a range of commits with each other in raw (diff or patch) format.
+//
+// Both "base" and "head" must be branch names in "repo".
+// To compare branches across other repositories in the same network as "repo",
+// use the format "<USERNAME>:branch".
+//
+// GitHub API docs: https://developer.github.com/v3/repos/commits/#compare-two-commits
+func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo, base, head string, opts RawOptions) (string, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, base, head)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return "", nil, err
+	}
+
+	switch opts.Type {
+	case Diff:
+		req.Header.Set("Accept", mediaTypeV3Diff)
+	case Patch:
+		req.Header.Set("Accept", mediaTypeV3Patch)
+	default:
+		return "", nil, fmt.Errorf("unsupported raw type %d", opts.Type)
+	}
+
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
+	if err != nil {
+		return "", resp, err
+	}
+
+	return buf.String(), resp, nil
 }
 
 // ListBranchesHeadCommit gets all branches where the given commit SHA is the HEAD,
