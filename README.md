@@ -217,7 +217,7 @@ for {
 
 For complete usage of go-github, see the full [package docs][].
 
-[GitHub API v3]: https://developer.github.com/v3/
+[GitHub API v3]: https://docs.github.com/en/rest
 [oauth2]: https://github.com/golang/oauth2
 [oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
