@@ -112,6 +112,13 @@ type Attachment struct {
 	Body  *string `json:"body,omitempty"`
 }
 
+// ContentReference represents a reference to a URL in an issue or pull request.
+type ContentReference struct {
+	ID        *int64  `json:"id,omitempty"`
+	NodeID    *string `json:"node_id,omitempty"`
+	Reference *string `json:"reference,omitempty"`
+}
+
 func (i Installation) String() string {
 	return Stringify(i)
 }
@@ -291,7 +298,7 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
+	req.Header.Set("Accept", mediaTypeContentAttachmentsPreview)
 
 	m := &Attachment{}
 	resp, err := s.client.Do(ctx, req, m)

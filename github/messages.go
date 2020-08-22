@@ -44,6 +44,7 @@ var (
 		"check_run":                      "CheckRunEvent",
 		"check_suite":                    "CheckSuiteEvent",
 		"commit_comment":                 "CommitCommentEvent",
+		"content_reference":              "ContentReferenceEvent",
 		"create":                         "CreateEvent",
 		"delete":                         "DeleteEvent",
 		"deploy_key":                     "DeployKeyEvent",
@@ -85,6 +86,8 @@ var (
 		"team_add":                       "TeamAddEvent",
 		"user":                           "UserEvent",
 		"watch":                          "WatchEvent",
+		"workflow_dispatch":              "WorkflowDispatchEvent",
+		"workflow_run":                   "WorkflowRunEvent",
 	}
 )
 

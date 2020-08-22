@@ -195,6 +195,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "commit_comment",
 		},
 		{
+			payload:     &ContentReferenceEvent{},
+			messageType: "content_reference",
+		},
+		{
 			payload:     &CreateEvent{},
 			messageType: "create",
 		},
@@ -358,6 +362,14 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &RepositoryDispatchEvent{},
 			messageType: "repository_dispatch",
+		},
+		{
+			payload:     &WorkflowDispatchEvent{},
+			messageType: "workflow_dispatch",
+		},
+		{
+			payload:     &WorkflowRunEvent{},
+			messageType: "workflow_run",
 		},
 	}
 

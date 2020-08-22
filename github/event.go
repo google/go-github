@@ -36,6 +36,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &CheckSuiteEvent{}
 	case "CommitCommentEvent":
 		payload = &CommitCommentEvent{}
+	case "ContentReferenceEvent":
+		payload = &ContentReferenceEvent{}
 	case "CreateEvent":
 		payload = &CreateEvent{}
 	case "DeleteEvent":
@@ -118,6 +120,10 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &UserEvent{}
 	case "WatchEvent":
 		payload = &WatchEvent{}
+	case "WorkflowDispatchEvent":
+		payload = &WorkflowDispatchEvent{}
+	case "WorkflowRunEvent":
+		payload = &WorkflowRunEvent{}
 	}
 	err = json.Unmarshal(*e.RawPayload, &payload)
 	return payload, err

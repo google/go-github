@@ -64,6 +64,20 @@ type CommitCommentEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// ContentReferenceEvent is triggered when the body or comment of an issue or
+// pull request includes a URL that matches a configured content reference
+// domain.
+// The Webhook event name is "content_reference".
+//
+// GitHub API docs: https://developer.github.com/webhooks/event-payloads/#content_reference
+type ContentReferenceEvent struct {
+	Action           *string           `json:"action,omitempty"`
+	ContentReference *ContentReference `json:"content_reference,omitempty"`
+	Repo             *Repository       `json:"repository,omitempty"`
+	Sender           *User             `json:"sender,omitempty"`
+	Installation     *Installation     `json:"installation,omitempty"`
+}
+
 // CreateEvent represents a created repository, branch, or tag.
 // The Webhook event name is "create".
 //
@@ -344,7 +358,7 @@ type LabelEvent struct {
 // their GitHub Marketplace plan.
 // Webhook event name "marketplace_purchase".
 //
-// Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
 type MarketplacePurchaseEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "purchased", "cancelled", "pending_change", "pending_change_cancelled", "changed".
@@ -944,4 +958,31 @@ type WatchEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// WorkflowDispatchEvent is triggered when someone triggers a workflow run on GitHub or
+// sends a POST request to the create a workflow dispatch event endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_dispatch
+type WorkflowDispatchEvent struct {
+	Inputs   json.RawMessage `json:"inputs,omitempty"`
+	Ref      *string         `json:"ref,omitempty"`
+	Workflow *string         `json:"workflow,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo   *Repository   `json:"repository,omitempty"`
+	Org    *Organization `json:"organization,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
+}
+
+// WorkflowRunEvent is triggered when a GitHub Actions workflow run is requested or completed.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run
+type WorkflowRunEvent struct {
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org    *Organization `json:"organization,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
 }

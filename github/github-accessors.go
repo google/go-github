@@ -1460,6 +1460,14 @@ func (c *CombinedStatus) GetTotalCount() int {
 	return *c.TotalCount
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *Comment) GetCreatedAt() time.Time {
+	if c == nil || c.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *c.CreatedAt
+}
+
 // GetTotalCommitComments returns the TotalCommitComments field if it's non-nil, zero value otherwise.
 func (c *CommentStats) GetTotalCommitComments() int {
 	if c == nil || c.TotalCommitComments == nil {
@@ -2010,6 +2018,70 @@ func (c *CommunityHealthMetrics) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return *c.UpdatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
+// GetReference returns the Reference field if it's non-nil, zero value otherwise.
+func (c *ContentReference) GetReference() string {
+	if c == nil || c.Reference == nil {
+		return ""
+	}
+	return *c.Reference
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *ContentReferenceEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetContentReference returns the ContentReference field.
+func (c *ContentReferenceEvent) GetContentReference() *ContentReference {
+	if c == nil {
+		return nil
+	}
+	return c.ContentReference
+}
+
+// GetInstallation returns the Installation field.
+func (c *ContentReferenceEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
+// GetRepo returns the Repo field.
+func (c *ContentReferenceEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *ContentReferenceEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
@@ -5078,6 +5150,166 @@ func (i *IssueEvent) GetRename() *Rename {
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (i *IssueEvent) GetURL() string {
+	if i == nil || i.URL == nil {
+		return ""
+	}
+	return *i.URL
+}
+
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetAssignee() string {
+	if i == nil || i.Assignee == nil {
+		return ""
+	}
+	return *i.Assignee
+}
+
+// GetClosed returns the Closed field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetClosed() bool {
+	if i == nil || i.Closed == nil {
+		return false
+	}
+	return *i.Closed
+}
+
+// GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetClosedAt() time.Time {
+	if i == nil || i.ClosedAt == nil {
+		return time.Time{}
+	}
+	return *i.ClosedAt
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetCreatedAt() time.Time {
+	if i == nil || i.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *i.CreatedAt
+}
+
+// GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetMilestone() int {
+	if i == nil || i.Milestone == nil {
+		return 0
+	}
+	return *i.Milestone
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueImport) GetUpdatedAt() time.Time {
+	if i == nil || i.UpdatedAt == nil {
+		return time.Time{}
+	}
+	return *i.UpdatedAt
+}
+
+// GetCode returns the Code field if it's non-nil, zero value otherwise.
+func (i *IssueImportError) GetCode() string {
+	if i == nil || i.Code == nil {
+		return ""
+	}
+	return *i.Code
+}
+
+// GetField returns the Field field if it's non-nil, zero value otherwise.
+func (i *IssueImportError) GetField() string {
+	if i == nil || i.Field == nil {
+		return ""
+	}
+	return *i.Field
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (i *IssueImportError) GetLocation() string {
+	if i == nil || i.Location == nil {
+		return ""
+	}
+	return *i.Location
+}
+
+// GetResource returns the Resource field if it's non-nil, zero value otherwise.
+func (i *IssueImportError) GetResource() string {
+	if i == nil || i.Resource == nil {
+		return ""
+	}
+	return *i.Resource
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (i *IssueImportError) GetValue() string {
+	if i == nil || i.Value == nil {
+		return ""
+	}
+	return *i.Value
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetCreatedAt() time.Time {
+	if i == nil || i.CreatedAt == nil {
+		return time.Time{}
+	}
+	return *i.CreatedAt
+}
+
+// GetDocumentationURL returns the DocumentationURL field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetDocumentationURL() string {
+	if i == nil || i.DocumentationURL == nil {
+		return ""
+	}
+	return *i.DocumentationURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetID() int {
+	if i == nil || i.ID == nil {
+		return 0
+	}
+	return *i.ID
+}
+
+// GetImportIssuesURL returns the ImportIssuesURL field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetImportIssuesURL() string {
+	if i == nil || i.ImportIssuesURL == nil {
+		return ""
+	}
+	return *i.ImportIssuesURL
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetMessage() string {
+	if i == nil || i.Message == nil {
+		return ""
+	}
+	return *i.Message
+}
+
+// GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetRepositoryURL() string {
+	if i == nil || i.RepositoryURL == nil {
+		return ""
+	}
+	return *i.RepositoryURL
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetStatus() string {
+	if i == nil || i.Status == nil {
+		return ""
+	}
+	return *i.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetUpdatedAt() time.Time {
+	if i == nil || i.UpdatedAt == nil {
+		return time.Time{}
+	}
+	return *i.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (i *IssueImportResponse) GetURL() string {
 	if i == nil || i.URL == nil {
 		return ""
 	}
@@ -14892,6 +15124,46 @@ func (w *WorkflowBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
+// GetOrg returns the Org field.
+func (w *WorkflowDispatchEvent) GetOrg() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Org
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (w *WorkflowDispatchEvent) GetRef() string {
+	if w == nil || w.Ref == nil {
+		return ""
+	}
+	return *w.Ref
+}
+
+// GetRepo returns the Repo field.
+func (w *WorkflowDispatchEvent) GetRepo() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repo
+}
+
+// GetSender returns the Sender field.
+func (w *WorkflowDispatchEvent) GetSender() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Sender
+}
+
+// GetWorkflow returns the Workflow field if it's non-nil, zero value otherwise.
+func (w *WorkflowDispatchEvent) GetWorkflow() string {
+	if w == nil || w.Workflow == nil {
+		return ""
+	}
+	return *w.Workflow
+}
+
 // GetMacOS returns the MacOS field.
 func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
 	if w == nil {
@@ -15242,6 +15514,38 @@ func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
 		return nil
 	}
 	return w.Windows
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunEvent) GetAction() string {
+	if w == nil || w.Action == nil {
+		return ""
+	}
+	return *w.Action
+}
+
+// GetOrg returns the Org field.
+func (w *WorkflowRunEvent) GetOrg() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Org
+}
+
+// GetRepo returns the Repo field.
+func (w *WorkflowRunEvent) GetRepo() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repo
+}
+
+// GetSender returns the Sender field.
+func (w *WorkflowRunEvent) GetSender() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Sender
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

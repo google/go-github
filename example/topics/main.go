@@ -3,9 +3,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The simple command demonstrates a simple functionality which
-// prompts the user for a GitHub topic and lists all the public
-// organization memberships of the specified topic.
+// The simple command demonstrates the functionality that
+// prompts the user for a GitHub topic and lists all the entities
+// that are related to the specified topic or subject.
 package main
 
 import (
@@ -15,9 +15,8 @@ import (
 	"github.com/google/go-github/v32/github"
 )
 
-// Fetch all the public organizations' membership of a user.
-//
-func FetchTopics(topic string) (*github.TopicsSearchResult, error) {
+// Fetch and lists all the public topics associated with the specified GitHub topic
+func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
 	client := github.NewClient(nil)
 	topics, _, err := client.Search.Topics(context.Background(), topic, nil)
 	return topics, err
@@ -28,7 +27,7 @@ func main() {
 	fmt.Print("Enter GitHub topic: ")
 	fmt.Scanf("%s", &topic)
 
-	topics, err := FetchTopics(topic)
+	topics, err := fetchTopics(topic)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
