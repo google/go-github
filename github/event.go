@@ -36,6 +36,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &CheckSuiteEvent{}
 	case "CommitCommentEvent":
 		payload = &CommitCommentEvent{}
+	case "ContentReferenceEvent":
+		payload = &ContentReferenceEvent{}
 	case "CreateEvent":
 		payload = &CreateEvent{}
 	case "DeleteEvent":
