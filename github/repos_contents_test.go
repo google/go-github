@@ -118,9 +118,13 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 		fmt.Fprint(w, "foo")
 	})
 
-	r, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	r, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
+	}
+
+	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
 	}
 
 	bytes, err := ioutil.ReadAll(r)
@@ -130,6 +134,43 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 	r.Close()
 
 	if got, want := string(bytes), "foo"; got != want {
+		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
+	}
+}
+
+func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+			"type": "file",
+			"name": "f",
+			"download_url": "`+serverURL+baseURLPath+`/download/f"
+		  }]`)
+	})
+	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "foo error")
+	})
+
+	r, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	if err != nil {
+		t.Errorf("Repositories.DownloadContents returned error: %v", err)
+	}
+
+	if got, want := resp.Response.StatusCode, http.StatusInternalServerError; got != want {
+		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
+	}
+
+	bytes, err := ioutil.ReadAll(r)
+	if err != nil {
+		t.Errorf("Error reading response body: %v", err)
+	}
+	r.Close()
+
+	if got, want := string(bytes), "foo error"; got != want {
 		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
 	}
 }
@@ -145,9 +186,13 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 		}]`)
 	})
 
-	_, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	_, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
 }
 
@@ -159,9 +204,13 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	_, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
+	_, resp, err := client.Repositories.DownloadContents(context.Background(), "o", "r", "d/f", nil)
 	if err == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
 }
 
