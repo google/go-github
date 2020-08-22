@@ -1,3 +1,4 @@
 *.sh
 *.test
 coverage.out
+vendor/
