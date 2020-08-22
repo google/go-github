@@ -124,7 +124,7 @@ type TeamAddTeamMembershipOptions struct {
 	Role string `json:"role,omitempty"`
 }
 
-// AddTeamMembership adds or invites a user to a team, given a specified
+// AddTeamMembershipByID adds or invites a user to a team, given a specified
 // organization ID, by team ID.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#add-or-update-team-membership-for-a-user
@@ -164,7 +164,7 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 	return t, resp, nil
 }
 
-// RemoveTeamMembership removes a user from a team, given a specified
+// RemoveTeamMembershipByID removes a user from a team, given a specified
 // organization ID, by team ID.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#remove-team-membership-for-a-user
@@ -178,7 +178,7 @@ func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, team
 	return s.client.Do(ctx, req, nil)
 }
 
-// RemoveTeamMembership removes a user from a team, given a specified
+// RemoveTeamMembershipBySlug removes a user from a team, given a specified
 // organization name, by team slug.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#remove-team-membership-for-a-user
@@ -217,7 +217,7 @@ func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID
 	return pendingInvitations, resp, nil
 }
 
-// ListPendingTeamInvitationsByID get pending invitation list of a team, given a specified
+// ListPendingTeamInvitationsBySlug get pending invitation list of a team, given a specified
 // organization name, by team slug.
 //
 // GitHub API docs: https://developer.github.com/v3/teams/members/#list-pending-team-invitations

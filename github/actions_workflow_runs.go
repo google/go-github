@@ -154,7 +154,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 	return run, resp, nil
 }
 
-// RerunWorkflow re-runs a workflow by ID.
+// RerunWorkflowByID re-runs a workflow by ID.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflow-runs/#re-run-a-workflow
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
