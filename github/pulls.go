@@ -81,12 +81,12 @@ func (p PullRequest) String() string {
 	return Stringify(p)
 }
 
-// PRLink represents a single link object from Github pull request _links.
+// PRLink represents a single link object from GitHub pull request _links.
 type PRLink struct {
 	HRef *string `json:"href,omitempty"`
 }
 
-// PRLinks represents the "_links" object in a Github pull request.
+// PRLinks represents the "_links" object in a GitHub pull request.
 type PRLinks struct {
 	Self           *PRLink `json:"self,omitempty"`
 	HTML           *PRLink `json:"html,omitempty"`

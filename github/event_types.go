@@ -344,7 +344,7 @@ type LabelEvent struct {
 // their GitHub Marketplace plan.
 // Webhook event name "marketplace_purchase".
 //
-// Github API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
+// GitHub API docs: https://developer.github.com/v3/activity/events/types/#marketplacepurchaseevent
 type MarketplacePurchaseEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "purchased", "cancelled", "pending_change", "pending_change_cancelled", "changed".
