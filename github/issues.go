@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -161,9 +160,8 @@ func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueLis
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	// TODO: remove custom Accept header when this API fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
 	resp, err := s.client.Do(ctx, req, &issues)
@@ -229,9 +227,8 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeIntegrationPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
 	resp, err := s.client.Do(ctx, req, &issues)
@@ -252,9 +249,8 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	// TODO: remove custom Accept header when this API fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	issue := new(Issue)
 	resp, err := s.client.Do(ctx, req, issue)
@@ -320,10 +316,6 @@ func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, num
 	req, err := s.client.NewRequest("PUT", u, opts)
 	if err != nil {
 		return nil, err
-	}
-
-	if opts != nil {
-		req.Header.Set("Accept", mediaTypeLockReasonPreview)
 	}
 
 	return s.client.Do(ctx, req, nil)

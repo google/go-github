@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -108,8 +107,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeLockReasonPreview, mediaTypeProjectCardDetailsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeProjectCardDetailsPreview)
 
 	var events []*IssueEvent
 	resp, err := s.client.Do(ctx, req, &events)
