@@ -221,6 +221,14 @@ type EditChange struct {
 	Body *struct {
 		From *string `json:"from,omitempty"`
 	} `json:"body,omitempty"`
+	Base *struct {
+		Ref *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"ref,omitempty"`
+		Sha *struct {
+			From *string `json:"from,omitempty"`
+		} `json:"sha,omitempty"`
+	} `json:"base,omitempty"`
 }
 
 // ProjectChange represents the changes when a project has been edited.
