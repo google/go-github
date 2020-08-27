@@ -225,7 +225,7 @@ type EditChange struct {
 		Ref *struct {
 			From *string `json:"from,omitempty"`
 		} `json:"ref,omitempty"`
-		Sha *struct {
+		SHA *struct {
 			From *string `json:"from,omitempty"`
 		} `json:"sha,omitempty"`
 	} `json:"base,omitempty"`
