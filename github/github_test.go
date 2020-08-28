@@ -770,7 +770,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
    "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
-   "documentation_url": "https://docs.github.com/en/rest/reference/#rate-limiting"
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
 	})
 
@@ -811,7 +811,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
    "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
-   "documentation_url": "https://docs.github.com/en/rest/reference/#rate-limiting"
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
 	})
 
@@ -863,7 +863,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 		// there is no "Retry-After" header.
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.",
-   "documentation_url": "https://docs.github.com/en/rest/reference/#abuse-rate-limits"
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
 	})
 
@@ -897,7 +897,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 		// url changes between versions but follows roughly the same format.
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.",
-   "documentation_url": "https://developer.github.com/enterprise/2.12/v3/#abuse-rate-limits"
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
 	})
 
@@ -927,7 +927,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism ...",
-   "documentation_url": "https://docs.github.com/en/rest/reference/#abuse-rate-limits"
+   "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
 	})
 
@@ -1049,7 +1049,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
 		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
-			"documentation_url": "developer.github.com/v3/#abuse-rate-limits"}`)),
+			"documentation_url": "docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"}`)),
 	}
 	err := CheckResponse(res).(*AbuseRateLimitError)
 
