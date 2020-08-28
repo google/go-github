@@ -23,7 +23,7 @@ type TeamListTeamMembersOptions struct {
 // ListTeamMembersByID lists all of the users who are members of a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/teams/members/#list-team-members
+// GitHub API docs: https://docs.github.com/en/rest/reference/teams/#list-team-members
 func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID int64, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/members", orgID, teamID)
 	u, err := addOptions(u, opts)
