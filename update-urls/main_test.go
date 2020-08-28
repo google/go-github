@@ -512,18 +512,18 @@ func TestGitURL(t *testing.T) {
 		{name: "non-http", s: "howdy"},
 		{
 			name: "normal URL, no slash",
-			s:    "https://developer.github.com/v3/activity/events",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 		{
 			name: "normal URL, with slash",
-			s:    "https://developer.github.com/v3/activity/events/",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events/",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 		{
 			name: "normal URL, with fragment identifier",
-			s:    "https://developer.github.com/v3/activity/events/#list-public-events",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events/#list-public-events",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 	}
 

@@ -34,8 +34,8 @@ import (
 const (
 	skipPrefix = "gen-"
 
-	enterpriseURL = "developer.github.com/enterprise"
-	stdURL        = "developer.github.com"
+	enterpriseURL = "docs.github.com"
+	stdURL        = "docs.github.com"
 
 	enterpriseRefFmt = "// GitHub Enterprise API docs: %v"
 	stdRefFmt        = "// GitHub API docs: %v"
@@ -541,7 +541,7 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
 	}
 
 	// TODO: Enterprise URLs are currently causing problems - for example:
-	// GET https://developer.github.com/enterprise/v3/enterprise-admin/users/
+	// GET https://docs.github.com/enterprise/v3/enterprise-admin/users/
 	// returns StatusCode=404
 	if strings.Contains(url, "enterprise") {
 		logf("Skipping troublesome Enterprise URL: %v", url)

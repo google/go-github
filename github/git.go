@@ -8,5 +8,5 @@ package github
 // GitService handles communication with the git data related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://developer.github.com/v3/git/
+// GitHub API docs: https://docs.github.com/en/rest/reference/git/
 type GitService service

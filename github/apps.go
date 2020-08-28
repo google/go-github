@@ -14,7 +14,7 @@ import (
 // AppsService provides access to the installation related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/
 type AppsService service
 
 // App represents a GitHub App.
@@ -55,7 +55,7 @@ type InstallationTokenOptions struct {
 // InstallationPermissions lists the repository and organization permissions for an installation.
 //
 // Permission names taken from:
-//   https://developer.github.com/v3/apps/permissions/
+//   https://docs.github.com/en/rest/reference/apps/permissions/
 //   https://developer.github.com/enterprise/v3/apps/permissions/
 type InstallationPermissions struct {
 	Administration              *string `json:"administration,omitempty"`
@@ -130,8 +130,8 @@ func (i Installation) String() string {
 // You can find this on the settings page for your GitHub App
 // (e.g., https://github.com/settings/apps/:app_slug).
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-the-authenticated-app
-// GitHub API docs: https://developer.github.com/v3/apps/#get-an-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-an-app
 func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response, error) {
 	var u string
 	if appSlug != "" {
@@ -159,7 +159,7 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 
 // ListInstallations lists the installations that the current GitHub App has.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#list-installations-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#list-installations-for-the-authenticated-app
 func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
 	u, err := addOptions("app/installations", opts)
 	if err != nil {
@@ -185,14 +185,14 @@ func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) 
 
 // GetInstallation returns the specified installation.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-an-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-an-installation-for-the-authenticated-app
 func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("app/installations/%v", id))
 }
 
 // ListUserInstallations lists installations that are accessible to the authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/installations/#list-app-installations-accessible-to-the-user-access-token
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/installations/#list-app-installations-accessible-to-the-user-access-token
 func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
 	u, err := addOptions("user/installations", opts)
 	if err != nil {
@@ -220,7 +220,7 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 
 // SuspendInstallation suspends the specified installation.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#suspend-an-app-installation
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#suspend-an-app-installation
 func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/suspended", id)
 
@@ -234,7 +234,7 @@ func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Respo
 
 // UnsuspendInstallation unsuspends the specified installation.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#unsuspend-an-app-installation
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#unsuspend-an-app-installation
 func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/suspended", id)
 
@@ -248,7 +248,7 @@ func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Res
 
 // DeleteInstallation deletes the specified installation.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#delete-an-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#delete-an-installation-for-the-authenticated-app
 func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v", id)
 
@@ -265,7 +265,7 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 
 // CreateInstallationToken creates a new installation token.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#create-an-installation-access-token-for-an-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#create-an-installation-access-token-for-an-app
 func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
@@ -288,7 +288,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 
 // CreateAttachment creates a new attachment on user comment containing a url.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/installations/#create-a-content-attachment
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/installations/#create-a-content-attachment
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
 	payload := &Attachment{Title: String(title), Body: String(body)}
@@ -311,14 +311,14 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 
 // FindOrganizationInstallation finds the organization's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-an-organization-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-an-organization-installation-for-the-authenticated-app
 func (s *AppsService) FindOrganizationInstallation(ctx context.Context, org string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("orgs/%v/installation", org))
 }
 
 // FindRepositoryInstallation finds the repository's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-a-repository-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-a-repository-installation-for-the-authenticated-app
 func (s *AppsService) FindRepositoryInstallation(ctx context.Context, owner, repo string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("repos/%v/%v/installation", owner, repo))
 }
@@ -332,7 +332,7 @@ func (s *AppsService) FindRepositoryInstallationByID(ctx context.Context, id int
 
 // FindUserInstallation finds the user's installation information.
 //
-// GitHub API docs: https://developer.github.com/v3/apps/#get-a-user-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/#get-a-user-installation-for-the-authenticated-app
 func (s *AppsService) FindUserInstallation(ctx context.Context, user string) (*Installation, *Response, error) {
 	return s.getInstallation(ctx, fmt.Sprintf("users/%v/installation", user))
 }

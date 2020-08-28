@@ -11,7 +11,7 @@ import (
 
 func newActivitiesEventsPipeline() *pipelineSetup {
 	return &pipelineSetup{
-		baseURL:              "https://developer.github.com/v3/activity/events/",
+		baseURL:              "https://docs.github.com/en/rest/reference/activity/events/",
 		endpointsFromWebsite: activityEventsWant,
 		filename:             "activity_events.go",
 		serviceName:          "ActivityService",
@@ -97,7 +97,7 @@ var activityEventsTestWebPage = `<!DOCTYPE html>
   <meta name="MSSmartTagsPreventParsing" content="true" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Events | GitHub Developer Guide</title>
-  <meta property="og:url" content="https://developer.github.com/v3/activity/events/" />
+  <meta property="og:url" content="https://docs.github.com/en/rest/reference/activity/events/" />
 <meta property="og:site_name" content="GitHub Developer" />
 <meta property="og:title" content="Events" />
 <meta property="og:description" content="Get started with one of our guides, or jump straight into the API documentation." />
@@ -1058,7 +1058,7 @@ import (
 
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
 	u, err := addOptions("events", opts)
 	if err != nil {
@@ -1081,7 +1081,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 
 // ListRepositoryEvents lists events for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-repository-events
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1108,7 +1108,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListEventsForRepoNetwork lists public events for a network of repositories.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-a-network-of-repositories
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1132,7 +1132,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 
 // ListEventsForOrganization lists public events for an organization.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-an-organization
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	u, err := addOptions(u, opts)
@@ -1157,8 +1157,8 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-for-the-authenticated-user
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -1188,8 +1188,8 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-received-by-the-authenticated-user
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-received-by-a-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -1219,7 +1219,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 // ListUserEventsForOrganization provides the user’s organization dashboard. You
 // must be authenticated as the user to view this.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-an-organization
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
 	u, err := addOptions(u, opts)
@@ -1256,7 +1256,7 @@ import (
 
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
 	u, err := addOptions("events", opts)
 	if err != nil {
@@ -1279,7 +1279,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 
 // ListRepositoryEvents lists events for a repository.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-repository-events
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1306,7 +1306,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListEventsForRepoNetwork lists public events for a network of repositories.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-a-network-of-repositories
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -1330,7 +1330,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 
 // ListEventsForOrganization lists public events for an organization.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-organization-events
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-organization-events
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	u, err := addOptions(u, opts)
@@ -1355,8 +1355,8 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-for-the-authenticated-user
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -1386,8 +1386,8 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-events-received-by-the-authenticated-user
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-public-events-received-by-a-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -1417,7 +1417,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 // ListUserEventsForOrganization provides the user’s organization dashboard. You
 // must be authenticated as the user to view this.
 //
-// GitHub API docs: https://developer.github.com/v3/activity/events/#list-organization-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-organization-events-for-the-authenticated-user
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
 	u, err := addOptions(u, opts)
