@@ -148,7 +148,7 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 // List the organizations for a user. Passing the empty string will list
 // organizations for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/orgs/#oauth-scope-requirements
+// GitHub API docs: https://docs.github.com/en/rest/reference/orgs/#list-organizations-for-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/orgs/#list-organizations-for-a-user
 func (s *OrganizationsService) List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error) {
 	var u string
@@ -219,7 +219,7 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 
 // Edit an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/orgs/#members_can_create_repositories
+// GitHub API docs: https://docs.github.com/en/rest/reference/orgs/#update-an-organization
 func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
 	req, err := s.client.NewRequest("PATCH", u, org)

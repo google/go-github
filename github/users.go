@@ -226,7 +226,7 @@ func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*U
 // ListInvitations lists all currently-open repository invitations for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/invitations/#list-repository-invitations-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos/forks/#list-repository-invitations-for-the-authenticated-user
 func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
 	u, err := addOptions("user/repository_invitations", opts)
 	if err != nil {
@@ -250,7 +250,7 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 // AcceptInvitation accepts the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/invitations/#accept-a-repository-invitation
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos/forks/#accept-a-repository-invitation
 func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
 	req, err := s.client.NewRequest("PATCH", u, nil)
@@ -264,7 +264,7 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 // DeclineInvitation declines the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/invitations/#decline-a-repository-invitation
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos/forks/#decline-a-repository-invitation
 func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
 	req, err := s.client.NewRequest("DELETE", u, nil)

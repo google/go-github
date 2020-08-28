@@ -131,7 +131,7 @@ type Source struct {
 
 // ListIssueTimeline lists events for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/timeline/#list-timeline-events-for-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/milestones/#list-timeline-events-for-an-issue
 func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Timeline, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/timeline", owner, repo, number)
 	u, err := addOptions(u, opts)

@@ -957,6 +957,10 @@ func processAssignStmt(receiverName string, stmt *ast.AssignStmt) (httpMethod, u
 			logf("processAssignStmt: *ast.SelectorExpr: %#v", *expr)
 		case *ast.UnaryExpr: // OpPos, Op, X
 			logf("processAssignStmt: *ast.UnaryExpr: %#v", *expr)
+		case *ast.TypeAssertExpr: // X, Lparen, Type, Rparen
+			logf("processAssignStmt: *ast.TypeAssertExpr: %#v", *expr)
+		case *ast.Ident: // NamePos, Name, Obj
+			logf("processAssignStmt: *ast.Ident: %#v", *expr)
 		default:
 			log.Fatalf("unhandled AssignStmt Rhs type: %T", expr)
 		}

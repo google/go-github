@@ -49,7 +49,7 @@ type WorkflowBill struct {
 
 // ListWorkflows lists all workflows in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/workflows/#list-repository-workflows
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#list-repository-workflows
 func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows", owner, repo)
 	u, err := addOptions(u, opts)
@@ -73,7 +73,7 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 
 // GetWorkflowByID gets a specific workflow by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/workflows/#get-a-workflow
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#get-a-workflow
 func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowID)
 
@@ -82,7 +82,7 @@ func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string
 
 // GetWorkflowByFileName gets a specific workflow by file name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/workflows/#get-a-workflow
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#get-a-workflow
 func (s *ActionsService) GetWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Workflow, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v", owner, repo, workflowFileName)
 
@@ -106,7 +106,7 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 
 // GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/workflows/#get-workflow-usage
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowID)
 
@@ -115,7 +115,7 @@ func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo s
 
 // GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/workflows/#get-workflow-usage
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#get-workflow-usage
 func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/timing", owner, repo, workflowFileName)
 

@@ -96,7 +96,7 @@ func (c CheckSuite) String() string {
 
 // GetCheckRun gets a check-run for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#get-a-check-run
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#get-a-check-run
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -159,7 +159,7 @@ type CheckRunAction struct {
 
 // CreateCheckRun creates a check run for repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#create-a-check-run
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#create-a-check-run
 func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -193,7 +193,7 @@ type UpdateCheckRunOptions struct {
 
 // UpdateCheckRun updates a check run for a specific commit in a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#update-a-check-run
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#update-a-check-run
 func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -214,7 +214,7 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 
 // ListCheckRunAnnotations lists the annotations for a check run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#list-check-run-annotations
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#list-check-run-annotations
 func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opts *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/annotations", owner, repo, checkRunID)
 	u, err := addOptions(u, opts)
@@ -255,7 +255,7 @@ type ListCheckRunsResults struct {
 
 // ListCheckRunsForRef lists check runs for a specific ref.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#list-check-runs-for-a-git-reference
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#list-check-runs-for-a-git-reference
 func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/check-runs", owner, repo, refURLEscape(ref))
 	u, err := addOptions(u, opts)
@@ -281,7 +281,7 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 
 // ListCheckRunsCheckSuite lists check runs for a check suite.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/runs/#list-check-runs-in-a-check-suite
+// GitHub API docs: https://docs.github.com/en/rest/reference/checks/suites/#list-check-runs-in-a-check-suite
 func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/check-runs", owner, repo, checkSuiteID)
 	u, err := addOptions(u, opts)

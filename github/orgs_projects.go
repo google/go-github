@@ -12,7 +12,7 @@ import (
 
 // ListProjects lists the projects for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/projects#list-organization-projects
+// GitHub API docs: https://docs.github.com/en/rest/reference/projects/#list-organization-projects
 func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opts *ProjectListOptions) ([]*Project, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projects", org)
 	u, err := addOptions(u, opts)
