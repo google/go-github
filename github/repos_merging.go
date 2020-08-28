@@ -20,7 +20,7 @@ type RepositoryMergeRequest struct {
 
 // Merge a branch in the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/forks/#merge-a-branch
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos/commits/#merge-a-branch
 func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merges", owner, repo)
 	req, err := s.client.NewRequest("POST", u, request)

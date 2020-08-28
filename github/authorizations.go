@@ -143,7 +143,7 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/apps/oauth_applications/#check-a-token
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/marketplace/#check-a-token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -176,7 +176,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/apps/oauth_applications/#reset-a-token
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/marketplace/#reset-a-token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -205,7 +205,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 // username is the OAuth application clientID, and the password is its
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/apps/oauth_applications/#delete-an-app-token
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/marketplace/#delete-an-app-token
 func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -226,7 +226,7 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 // grant will also delete all OAuth tokens associated with the application for
 // the user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/apps/oauth_applications/#delete-an-app-authorization
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps/marketplace/#delete-an-app-authorization
 func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/grant", clientID)
 
