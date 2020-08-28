@@ -38,7 +38,7 @@ type ArtifactList struct {
 
 // ListArtifacts lists all artifacts that belong to a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#list-artifacts-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/#list-artifacts-for-a-repository
 func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -62,7 +62,7 @@ func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, 
 
 // ListWorkflowRunArtifacts lists all artifacts that belong to a workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#list-workflow-run-artifacts
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/#list-workflow-run-artifacts
 func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, repo string, runID int64, opts *ListOptions) (*ArtifactList, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/artifacts", owner, repo, runID)
 	u, err := addOptions(u, opts)
@@ -86,7 +86,7 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 
 // GetArtifact gets a specific artifact for a workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#get-an-artifact
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/#get-an-artifact
 func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
 
@@ -151,7 +151,7 @@ func (s *ActionsService) getDownloadArtifactFromURL(ctx context.Context, u strin
 
 // DeleteArtifact deletes a workflow run artifact.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions/artifacts/#delete-an-artifact
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions/#delete-an-artifact
 func (s *ActionsService) DeleteArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
 

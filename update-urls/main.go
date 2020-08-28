@@ -562,6 +562,10 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
 		log.Fatalf("url %v - StatusCode=%v", url, resp.StatusCode)
 	}
 
+	finalURL := resp.Request.URL.String()
+	url = getURL(finalURL)
+	logf("The final URL is: %v; url=%v\n", finalURL, url)
+
 	b, err := ioutil.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
 	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
