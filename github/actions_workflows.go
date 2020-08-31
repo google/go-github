@@ -47,6 +47,12 @@ type WorkflowBill struct {
 	TotalMS *int64 `json:"total_ms,omitempty"`
 }
 
+// CreateWorkflowDispatchEventRequest represents a request to create a workflow dispatch event
+type CreateWorkflowDispatchEventRequest struct {
+	// Ref is required when creating a workflow dispatch event
+	Ref string `json:"ref,omitempty"`
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://developer.github.com/v3/actions/workflows/#list-repository-workflows
@@ -135,4 +141,18 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 	}
 
 	return workflowUsage, resp, nil
+}
+
+// CreateWorkflowDispatchEvent manually triggers a Github Actions workflow run
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+func (s *ActionsService) CreateWorkflowDispatchEvent(ctx context.Context, owner, repo string, workflowID int64, createWorkflowDispatchEvent CreateWorkflowDispatchEventRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
+
+	req, err := s.client.NewRequest("POST", u, &createWorkflowDispatchEvent)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
