@@ -15,7 +15,7 @@ import (
 // IssuesService handles communication with the issue related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/
 type IssuesService service
 
 // Issue represents a GitHub issue on a repository.
@@ -55,7 +55,7 @@ type Issue struct {
 	NodeID            *string           `json:"node_id,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://developer.github.com/v3/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/en/rest/reference/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
@@ -129,8 +129,8 @@ type PullRequestLinks struct {
 // organization repositories; if false, list only owned and member
 // repositories.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-issues-assigned-to-the-authenticated-user
-// GitHub API docs: https://developer.github.com/v3/issues/#list-user-account-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-user-account-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	var u string
 	if all {
@@ -144,7 +144,7 @@ func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptio
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-organization-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-organization-issues-assigned-to-the-authenticated-user
 func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
 	return s.listIssues(ctx, u, opts)
@@ -216,7 +216,7 @@ type IssueListByRepoOptions struct {
 
 // ListByRepo lists the issues for the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#list-repository-issues
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-repository-issues
 func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	u, err := addOptions(u, opts)
@@ -244,7 +244,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner string, repo strin
 
 // Get a single issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#get-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#get-an-issue
 func (s *IssuesService) Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -267,7 +267,7 @@ func (s *IssuesService) Get(ctx context.Context, owner string, repo string, numb
 
 // Create a new issue on the specified repository.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#create-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#create-an-issue
 func (s *IssuesService) Create(ctx context.Context, owner string, repo string, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest("POST", u, issue)
@@ -286,7 +286,7 @@ func (s *IssuesService) Create(ctx context.Context, owner string, repo string, i
 
 // Edit an issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#update-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#update-an-issue
 func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, number)
 	req, err := s.client.NewRequest("PATCH", u, issue)
@@ -314,7 +314,7 @@ type LockIssueOptions struct {
 
 // Lock an issue's conversation.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#lock-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#lock-an-issue
 func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, number int, opts *LockIssueOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -331,7 +331,7 @@ func (s *IssuesService) Lock(ctx context.Context, owner string, repo string, num
 
 // Unlock an issue's conversation.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/#unlock-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#unlock-an-issue
 func (s *IssuesService) Unlock(ctx context.Context, owner string, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%d/lock", owner, repo, number)
 	req, err := s.client.NewRequest("DELETE", u, nil)

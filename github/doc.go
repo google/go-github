@@ -29,7 +29,7 @@ Some API methods have optional parameters that can be passed. For example:
 
 The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
-https://developer.github.com/v3/.
+https://docs.github.com/en/rest/reference/.
 
 NOTE: Using the https://godoc.org/context package, one can easily
 pass cancelation signals and deadlines to various services of the client for
@@ -112,7 +112,7 @@ To detect an API rate limit error, you can check if its type is *github.RateLimi
 	}
 
 Learn more about GitHub rate limiting at
-https://developer.github.com/v3/#rate-limiting.
+https://docs.github.com/en/rest/reference/#rate-limiting.
 
 Accepted Status
 
@@ -138,7 +138,7 @@ instead designed to work with a caching http.Transport. We recommend using
 https://github.com/gregjones/httpcache for that.
 
 Learn more about GitHub conditional requests at
-https://developer.github.com/v3/#conditional-requests.
+https://docs.github.com/en/rest/reference/#conditional-requests.
 
 Creating and Updating Resources
 
