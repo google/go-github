@@ -90,6 +90,7 @@ type InstallationPermissions struct {
 // Installation represents a GitHub Apps installation.
 type Installation struct {
 	ID                  *int64                   `json:"id,omitempty"`
+	NodeID              *string                  `json:"node_id,omitempty"`
 	AppID               *int64                   `json:"app_id,omitempty"`
 	TargetID            *int64                   `json:"target_id,omitempty"`
 	Account             *User                    `json:"account,omitempty"`

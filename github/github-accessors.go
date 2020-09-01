@@ -4228,6 +4228,14 @@ func (i *Installation) GetID() int64 {
 	return *i.ID
 }
 
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *Installation) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
 // GetPermissions returns the Permissions field.
 func (i *Installation) GetPermissions() *InstallationPermissions {
 	if i == nil {
