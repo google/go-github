@@ -15,7 +15,7 @@ import (
 // Timeline represents an event that occurred around an Issue or Pull Request.
 //
 // It is similar to an IssueEvent but may contain more information.
-// GitHub API docs: https://developer.github.com/v3/issues/timeline/
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/timeline/
 type Timeline struct {
 	ID        *int64  `json:"id,omitempty"`
 	URL       *string `json:"url,omitempty"`
@@ -131,7 +131,7 @@ type Source struct {
 
 // ListIssueTimeline lists events for the specified issue.
 //
-// GitHub API docs: https://developer.github.com/v3/issues/timeline/#list-timeline-events-for-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-timeline-events-for-an-issue
 func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Timeline, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/timeline", owner, repo, number)
 	u, err := addOptions(u, opts)

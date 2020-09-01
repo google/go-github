@@ -122,10 +122,10 @@ const (
 	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
 	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
 
-	// https://developer.github.com/v3/previews/#repository-creation-permissions
+	// https://docs.github.com/en/rest/reference/previews/#repository-creation-permissions
 	mediaTypeMemberAllowedRepoCreationTypePreview = "application/vnd.github.surtur-preview+json"
 
-	// https://developer.github.com/v3/previews/#create-and-use-repository-templates
+	// https://docs.github.com/en/rest/reference/previews/#create-and-use-repository-templates
 	mediaTypeRepositoryTemplatePreview = "application/vnd.github.baptiste-preview+json"
 
 	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
@@ -654,7 +654,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
-GitHub API docs: https://developer.github.com/v3/#client-errors
+GitHub API docs: https://docs.github.com/en/rest/reference/#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response // HTTP response that caused this error
@@ -669,7 +669,7 @@ type ErrorResponse struct {
 	} `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
-	// https://developer.github.com/v3/#client-errors
+	// https://docs.github.com/en/rest/reference/#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
@@ -716,7 +716,7 @@ func (*AcceptedError) Error() string {
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
-// "documentation_url" field value equal to "https://developer.github.com/v3/#abuse-rate-limits".
+// "documentation_url" field value equal to "https://docs.github.com/en/rest/reference/#abuse-rate-limits".
 type AbuseRateLimitError struct {
 	Response *http.Response // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
@@ -767,7 +767,7 @@ GitHub error responses structure are often undocumented and inconsistent.
 Sometimes error is just a simple string (Issue #540).
 In such cases, Message represents an error message as a workaround.
 
-GitHub API docs: https://developer.github.com/v3/#client-errors
+GitHub API docs: https://docs.github.com/en/rest/reference/#client-errors
 */
 type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
@@ -823,7 +823,7 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-	case r.StatusCode == http.StatusForbidden && strings.HasSuffix(errorResponse.DocumentationURL, "/v3/#abuse-rate-limits"):
+	case r.StatusCode == http.StatusForbidden && strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits"):
 		abuseRateLimitError := &AbuseRateLimitError{
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
@@ -883,14 +883,14 @@ type RateLimits struct {
 	// requests are limited to 60 per hour. Authenticated requests are
 	// limited to 5,000 per hour.
 	//
-	// GitHub API docs: https://developer.github.com/v3/#rate-limiting
+	// GitHub API docs: https://docs.github.com/en/rest/reference/#rate-limiting
 	Core *Rate `json:"core"`
 
 	// The rate limit for search API requests. Unauthenticated requests
 	// are limited to 10 requests per minutes. Authenticated requests are
 	// limited to 30 per minute.
 	//
-	// GitHub API docs: https://developer.github.com/v3/search/#rate-limit
+	// GitHub API docs: https://docs.github.com/en/rest/reference/search/#rate-limit
 	Search *Rate `json:"search"`
 }
 
@@ -977,7 +977,7 @@ that need to use a higher rate limit associated with your OAuth application.
 This will add the client id and secret as a base64-encoded string in the format
 ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
 
-See https://developer.github.com/v3/#unauthenticated-rate-limited-requests for
+See https://docs.github.com/en/rest/reference/#unauthenticated-rate-limited-requests for
 more information.
 */
 type UnauthenticatedRateLimitedTransport struct {

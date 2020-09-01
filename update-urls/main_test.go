@@ -234,6 +234,7 @@ type fakeDocCache struct {
 }
 
 func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+	f.t.Helper()
 	for fragmentID, endpoints := range f.endpoints {
 		for _, endpoint := range endpoints {
 			for _, urlFormat := range endpoint.urlFormats {
@@ -512,18 +513,18 @@ func TestGitURL(t *testing.T) {
 		{name: "non-http", s: "howdy"},
 		{
 			name: "normal URL, no slash",
-			s:    "https://developer.github.com/v3/activity/events",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 		{
 			name: "normal URL, with slash",
-			s:    "https://developer.github.com/v3/activity/events/",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events/",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 		{
 			name: "normal URL, with fragment identifier",
-			s:    "https://developer.github.com/v3/activity/events/#list-public-events",
-			want: "https://developer.github.com/v3/activity/events/",
+			s:    "https://docs.github.com/en/rest/reference/activity/events/#list-public-events",
+			want: "https://docs.github.com/en/rest/reference/activity/events/",
 		},
 	}
 
@@ -559,5 +560,39 @@ func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 		if _, ok := got[k]; !ok {
 			t.Errorf("got[%q] = nil\nwant[%q]:\n%#v", k, k, want[k])
 		}
+	}
+}
+
+func TestParseEndpoint(t *testing.T) {
+	tests := []struct {
+		name   string
+		s      string
+		method string
+		want   *Endpoint
+	}{
+		{
+			name: "orgs_projects: list-repository-projects",
+			s: `GET /repos/{owner}/{repo}/projects&apos;</span>, {
+`,
+			method: "GET",
+			want:   &Endpoint{urlFormats: []string{"repos/%v/%v/projects"}, httpMethod: "GET"},
+		},
+		{
+			name: "orgs_projects: ListProjects",
+			s: `GET /orgs/{org}/projects&apos;</span>, {
+`,
+			method: "GET",
+			want:   &Endpoint{urlFormats: []string{"orgs/%v/projects"}, httpMethod: "GET"},
+		},
+	}
+
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
+			got := parseEndpoint(tt.s, tt.method)
+
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("parseEndpoint = %#v, want %#v", got, tt.want)
+			}
+		})
 	}
 }
