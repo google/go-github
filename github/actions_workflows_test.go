@@ -159,25 +159,30 @@ func TestActionsService_CreateWorkflowDispatchEvent(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := CreateWorkflowDispatchEventRequest{Ref: "d4cfb6e7"}
+	event := CreateWorkflowDispatchEventRequest{
+		Ref: "d4cfb6e7",
+		Inputs: map[string]interface{}{
+			"key": "value",
+		},
+	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
+		if !reflect.DeepEqual(v, event) {
+			t.Errorf("Request body = %+v, want %+v", v, event)
 		}
 	})
 
-	_, err := client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, input)
+	_, err := client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEvent returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, input)
+	_, err = client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEvent err = nil, want error")
 	}

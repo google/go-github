@@ -53,6 +53,10 @@ type CreateWorkflowDispatchEventRequest struct {
 	// The reference can be a branch, tag, or a commit SHA.
 	// Ref is required when creating a workflow dispatch event.
 	Ref string `json:"ref"`
+	// Inputs represents input keys and values configured in the workflow file.
+	// The maximum number of properties is 10.
+	// Default: Any default properties configured in the workflow file will be used when `inputs` are omitted.
+	Inputs map[string]interface{} `json:"inputs,omitempty"`
 }
 
 // ListWorkflows lists all workflows in a repository.
