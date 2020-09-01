@@ -47,6 +47,18 @@ type WorkflowBill struct {
 	TotalMS *int64 `json:"total_ms,omitempty"`
 }
 
+// CreateWorkflowDispatchEventRequest represents a request to create a workflow dispatch event.
+type CreateWorkflowDispatchEventRequest struct {
+	// Ref represents the reference of the workflow run.
+	// The reference can be a branch, tag, or a commit SHA.
+	// Ref is required when creating a workflow dispatch event.
+	Ref string `json:"ref"`
+	// Inputs represents input keys and values configured in the workflow file.
+	// The maximum number of properties is 10.
+	// Default: Any default properties configured in the workflow file will be used when `inputs` are omitted.
+	Inputs map[string]interface{} `json:"inputs,omitempty"`
+}
+
 // ListWorkflows lists all workflows in a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions/#list-repository-workflows
@@ -135,4 +147,18 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 	}
 
 	return workflowUsage, resp, nil
+}
+
+// CreateWorkflowDispatchEvent manually triggers a GitHub Actions workflow run.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+func (s *ActionsService) CreateWorkflowDispatchEvent(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
+
+	req, err := s.client.NewRequest("POST", u, &event)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
