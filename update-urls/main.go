@@ -32,10 +32,13 @@ import (
 )
 
 const (
-	skipPrefix = "gen-"
+	codeLegacySplitString = `<code>`
+	codeSplitString       = `<code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;`
+	fragmentIDString      = `<h3 id="`
+	skipPrefix            = "gen-"
 
-	enterpriseURL = "developer.github.com/enterprise"
-	stdURL        = "developer.github.com"
+	// enterpriseURL = "docs.github.com"
+	stdURL = "docs.github.com"
 
 	enterpriseRefFmt = "// GitHub Enterprise API docs: %v"
 	stdRefFmt        = "// GitHub API docs: %v"
@@ -61,6 +64,9 @@ var (
 		"AppsService.FindRepositoryInstallationByID": true,
 		"AuthorizationsService.CreateImpersonation":  true,
 		"AuthorizationsService.DeleteImpersonation":  true,
+		"IssueImportService.CheckStatus":             true,
+		"IssueImportService.CheckStatusSince":        true,
+		"IssueImportService.Create":                  true,
 		"MarketplaceService.marketplaceURI":          true,
 		"OrganizationsService.GetByID":               true,
 		"RepositoriesService.DeletePreReceiveHook":   true,
@@ -71,6 +77,7 @@ var (
 		"RepositoriesService.ListPreReceiveHooks":    true,
 		"RepositoriesService.UpdatePreReceiveHook":   true,
 		"SearchService.search":                       true,
+		"TeamsService.ListTeamMembersByID":           true,
 		"UsersService.DemoteSiteAdmin":               true,
 		"UsersService.GetByID":                       true,
 		"UsersService.PromoteSiteAdmin":              true,
@@ -90,7 +97,8 @@ var (
 		"OrganizationsService.EditOrgMembership: PUT user/memberships/orgs/%v":  "PATCH",
 	}
 
-	paramRE = regexp.MustCompile(`:[a-z_]+`)
+	paramLegacyRE = regexp.MustCompile(`:[a-z_]+`)
+	paramRE       = regexp.MustCompile(`{[a-z_]+}`)
 )
 
 type overrideFunc func(arg string) (httpMethod, url string)
@@ -202,7 +210,10 @@ func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpoin
 				// Make sure URL is up-to-date.
 				switch {
 				case len(endpoint.enterpriseRefLines) > 1:
-					log.Printf("WARNING: multiple Enterprise GitHub URLs found - skipping: %#v", endpoint.enterpriseRefLines)
+					log.Printf("WARNING: multiple Enterprise GitHub URLs found - skipping:")
+					for i, refLine := range endpoint.enterpriseRefLines {
+						log.Printf("line %v: %#v", i, refLine)
+					}
 				case len(endpoint.enterpriseRefLines) > 0:
 					line := fmt.Sprintf(enterpriseRefFmt, url)
 					cmt := endpoint.enterpriseRefLines[0]
@@ -541,7 +552,7 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
 	}
 
 	// TODO: Enterprise URLs are currently causing problems - for example:
-	// GET https://developer.github.com/enterprise/v3/enterprise-admin/users/
+	// GET https://docs.github.com/enterprise/v3/enterprise-admin/users/
 	// returns StatusCode=404
 	if strings.Contains(url, "enterprise") {
 		logf("Skipping troublesome Enterprise URL: %v", url)
@@ -555,14 +566,24 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
 		log.Fatalf("url %v - StatusCode=%v", url, resp.StatusCode)
 	}
 
+	finalURL := resp.Request.URL.String()
+	url = getURL(finalURL)
+	logf("The final URL is: %v; url=%v\n", finalURL, url)
+
 	b, err := ioutil.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
 	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
 	dc.apiDocs[url] = parseWebPageEndpoints(string(b))
+	logf("Found %v web page fragment identifiers.", len(dc.apiDocs[url]))
+	if len(dc.apiDocs[url]) == 0 {
+		logf("webage text: %s", b)
+	}
 
 	// Now reverse-map the methods+paths to URLs.
 	for fragID, v := range dc.apiDocs[url] {
+		logf("For fragID=%q, found %v endpoints.", fragID, len(v))
 		for _, endpoint := range v {
+			logf("For fragID=%q, endpoint=%q, found %v paths.", fragID, endpoint, len(endpoint.urlFormats))
 			for _, path := range endpoint.urlFormats {
 				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
 				dc.urlByMethodAndPath[methodAndPath] = fmt.Sprintf("%v#%v", url, fragID)
@@ -701,9 +722,10 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 				endpointComments = decl.Doc.List
 				for i, comment := range decl.Doc.List {
 					logf("doc.comment[%v] = %#v", i, *comment)
-					if strings.Contains(comment.Text, enterpriseURL) {
-						enterpriseRefLines = append(enterpriseRefLines, comment)
-					} else if strings.Contains(comment.Text, stdURL) {
+					// if strings.Contains(comment.Text, enterpriseURL) {
+					// 	enterpriseRefLines = append(enterpriseRefLines, comment)
+					// } else
+					if strings.Contains(comment.Text, stdURL) {
 						stdRefLines = append(stdRefLines, comment)
 					}
 				}
@@ -943,6 +965,10 @@ func processAssignStmt(receiverName string, stmt *ast.AssignStmt) (httpMethod, u
 			logf("processAssignStmt: *ast.SelectorExpr: %#v", *expr)
 		case *ast.UnaryExpr: // OpPos, Op, X
 			logf("processAssignStmt: *ast.UnaryExpr: %#v", *expr)
+		case *ast.TypeAssertExpr: // X, Lparen, Type, Rparen
+			logf("processAssignStmt: *ast.TypeAssertExpr: %#v", *expr)
+		case *ast.Ident: // NamePos, Name, Obj
+			logf("processAssignStmt: *ast.Ident: %#v", *expr)
 		default:
 			log.Fatalf("unhandled AssignStmt Rhs type: %T", expr)
 		}
@@ -1105,41 +1131,21 @@ func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
 	//   ...
 	//   </optgroup>
 
-	parts := strings.Split(buf, "<code>")
+	parts := splitHTML(buf)
 	var lastFragmentID string
 	for _, part := range parts {
 		for _, method := range httpMethods {
 			if strings.HasPrefix(part, method) {
-				eol := strings.Index(part, "\n")
-				if eol < 0 {
-					eol = len(part)
+				endpoint := parseEndpoint(part, method)
+				if lastFragmentID == "" {
+					log.Fatalf("parseWebPageEndpoints: empty lastFragmentID")
 				}
-				if v := strings.Index(part, "<"); v > len(method) && v < eol {
-					eol = v
-				}
-				if v := strings.Index(part, "{"); v > len(method) && v < eol {
-					eol = v
-				}
-				path := strings.TrimSpace(part[len(method):eol])
-				if strings.HasPrefix(path, ":server") { // Hack to remove :server
-					path = strings.TrimPrefix(path, ":server")
-				}
-				path = paramRE.ReplaceAllString(path, "%v")
-				// strip leading garbage
-				if i := strings.Index(path, "/"); i >= 0 {
-					path = path[i+1:]
-				}
-				path = strings.TrimSuffix(path, ".")
-				logf("Found %v %v", method, path)
-				result[lastFragmentID] = append(result[lastFragmentID], &Endpoint{
-					urlFormats: []string{path},
-					httpMethod: method,
-				})
+				result[lastFragmentID] = append(result[lastFragmentID], endpoint)
 			}
 		}
 
-		if i := strings.LastIndex(part, "<a id="); i >= 0 {
-			b := part[i+7:]
+		if i := strings.LastIndex(part, fragmentIDString); i >= 0 {
+			b := part[i+len(fragmentIDString):]
 			i = strings.Index(b, `"`)
 			if i >= 0 {
 				lastFragmentID = b[:i]
@@ -1149,6 +1155,60 @@ func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
 	}
 
 	return result
+}
+
+func splitHTML(buf string) []string {
+	var result []string
+	for buf != "" {
+		i := strings.Index(buf, codeLegacySplitString)
+		j := strings.Index(buf, codeSplitString)
+		switch {
+		case i < 0 && j < 0:
+			result = append(result, buf)
+			buf = ""
+		case j < 0, i >= 0 && j >= 0 && i < j:
+			result = append(result, buf[:i])
+			buf = buf[i+len(codeLegacySplitString):]
+		case i < 0, i >= 0 && j >= 0 && j < i:
+			result = append(result, buf[:j])
+			buf = buf[j+len(codeSplitString):]
+		default:
+			log.Fatalf("splitHTML: i=%v, j=%v", i, j)
+		}
+	}
+	return result
+}
+
+func parseEndpoint(s, method string) *Endpoint {
+	eol := strings.Index(s, "\n")
+	if eol < 0 {
+		eol = len(s)
+	}
+	if v := strings.Index(s, "&apos;"); v > len(method) && v < eol {
+		eol = v
+	}
+	if v := strings.Index(s, "<"); v > len(method) && v < eol {
+		eol = v
+	}
+	// if v := strings.Index(s, "{"); v > len(method) && v < eol {
+	// 	eol = v
+	// }
+	path := strings.TrimSpace(s[len(method):eol])
+	if strings.HasPrefix(path, "{server}") { // Hack to remove {server}
+		path = strings.TrimPrefix(path, "{server}")
+	}
+	path = paramLegacyRE.ReplaceAllString(path, "%v")
+	path = paramRE.ReplaceAllString(path, "%v")
+	// strip leading garbage
+	if i := strings.Index(path, "/"); i >= 0 {
+		path = path[i+1:]
+	}
+	path = strings.TrimSuffix(path, ".")
+	logf("Found endpoint: %v %v", method, path)
+	return &Endpoint{
+		urlFormats: []string{path},
+		httpMethod: method,
+	}
 }
 
 var httpMethods = []string{
