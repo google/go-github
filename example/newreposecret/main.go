@@ -1,14 +1,14 @@
-// Copyright 2018 The go-github AUTHORS. All rights reserved.
+// Copyright 2020 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// newreposecret creates a new secret in GitHub for a given owner/repo
+// newreposecret creates a new secret in GitHub for a given owner/repo.
 // It has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
 // Provide the value of the secret you want to add with an environment variable of the same name.
-// To authenticate with GitHub provide it via an environment variable GITHUB_AUTH_TOKEN
+// To authenticate with GitHub provide it via an environment variable GITHUB_AUTH_TOKEN.
 //
-// To verify the new secret navigate to GitHub Repository > Settings > left side options bar > Secrets
+// To verify the new secret, navigate to GitHub Repository > Settings > left side options bar > Secrets.
 //
 // Usage:
 //	export GITHUB_AUTH_TOKEN=<auth token from github that has secret create rights>
@@ -27,11 +27,12 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"log"
+	"os"
+
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
 	"github.com/google/go-github/v32/github"
 	"golang.org/x/oauth2"
-	"log"
-	"os"
 )
 
 var (
