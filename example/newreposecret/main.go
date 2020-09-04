@@ -81,8 +81,7 @@ func main() {
 func getSecretName() (string, error) {
 	secretName := flag.Arg(0)
 	if secretName == "" {
-		err := fmt.Errorf("missing argument secret name")
-		return "", err
+		return "", fmt.Errorf("missing argument secret name")
 	}
 	return secretName, nil
 }
