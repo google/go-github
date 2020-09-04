@@ -137,7 +137,7 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 //
 // Finally it passes in the github.EncodedSecret object to CreateOrUpdateRepoSecret which creates or updates the secret
 // in GitHub
-func addRepoSecret(ctx context.Context, client *github.Client, owner string, repo string, secretName string, secretValue string) error {
+func addRepoSecret(ctx context.Context, client *github.Client, owner string, repo, secretName string, secretValue string) error {
 	publicKey, _, err := client.Actions.GetRepoPublicKey(ctx, owner, repo)
 	if err != nil {
 		return err
