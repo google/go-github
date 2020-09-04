@@ -108,7 +108,6 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 
 // addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions.
 //
-// To determine what repository to add this secret to, it will use the owner and repo combination.
 // Finally the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
