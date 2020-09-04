@@ -89,8 +89,7 @@ func getSecretName() (string, error) {
 func getSecretValue(secretName string) (string, error) {
 	secretValue := os.Getenv(secretName)
 	if secretValue == "" {
-		err := fmt.Errorf("secret value not found under env variable %q", secretName)
-		return "", err
+		return "", fmt.Errorf("secret value not found under env variable %q", secretName)
 	}
 	return secretValue, nil
 }
@@ -158,7 +157,7 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, secretValue string) (*github.EncryptedSecret, error) {
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err))
+		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
 	}
 
 	secretBytes := []byte(secretValue)
