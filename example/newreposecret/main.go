@@ -71,7 +71,7 @@ func main() {
 		log.Fatalf("unable to authorize using env GITHUB_AUTH_TOKEN: %v", err)
 	}
 
-	err = addRepoSecret(ctx, client, *owner, *repo, secretName, secretValue)
+	if err := addRepoSecret(ctx, client, *owner, *repo, secretName, secretValue); err != nil {
 	if err != nil {
 		log.Fatal(err)
 	}
