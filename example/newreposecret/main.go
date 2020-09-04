@@ -72,7 +72,6 @@ func main() {
 	}
 
 	if err := addRepoSecret(ctx, client, *owner, *repo, secretName, secretValue); err != nil {
-	if err != nil {
 		log.Fatal(err)
 	}
 
