@@ -53,7 +53,7 @@ func main() {
 	}
 
 	if *owner == "" {
-		log.Fatal("please provide required flag --owner to speify GitHub user/org owner")
+		log.Fatal("please provide required flag --owner to specify GitHub user/org owner")
 	}
 
 	secretName, err := getSecretName()
