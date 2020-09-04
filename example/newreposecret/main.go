@@ -94,10 +94,7 @@ func getSecretValue(secretName string) (string, error) {
 	return secretValue, nil
 }
 
-// githubAuth returns a GitHub client and context
-// It reads an environment variable GITHUB_AUTH_TOKEN
-// for a GitHub API token with secret read/write permissions
-// cannot be the default token from GitHub actions
+// githubAuth returns a GitHub client and context.
 func githubAuth(token string) (context.Context, *github.Client, error) {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
@@ -109,11 +106,11 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 	return ctx, client, nil
 }
 
-// addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions
+// addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions.
 //
-// To communicate with GitHub addRepoSecret requires a client and context.
-// To determine what repository to add this secret to it will use the owner and repo combination
-// Finally the secretName and secretValue will determine the name of the secret added and it's corresponding value
+// To communicate with GitHub, addRepoSecret requires a client and context.
+// To determine what repository to add this secret to, it will use the owner and repo combination.
+// Finally the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
 // using the public key of the target repo. This encryption must be done using sodium. This function has a hard
