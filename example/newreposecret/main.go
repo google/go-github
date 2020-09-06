@@ -113,7 +113,7 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
 // using the public key of the target repo. This encryption must be done using sodium. This function has a hard
 // dependency on sodium being installed where this is run. Sodium can be installed from this url:
-// https://formulae.brew.sh/formula/libsodium
+// https://github.com/jedisct1/libsodium
 //
 // First step of the upload process by this function is to get the public key of the repo. The public key comes base64
 // encoded, so it must be decoded prior to use in sodiumlib.
