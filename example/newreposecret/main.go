@@ -114,9 +114,7 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 // Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
-// using the public key of the target repo. This encryption must be done using sodium. addRepoSecret depends on sodium
-// being installed, and instructions can be found at this url:
-// https://github.com/jedisct1/libsodium
+// using the public key of the target repo. This encryption must be done using sodium.
 //
 // First, the public key of the repo is retrieved. The public key comes base64
 // encoded, so it must be decoded prior to use in sodiumlib.
