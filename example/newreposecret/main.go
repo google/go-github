@@ -4,9 +4,12 @@
 // license that can be found in the LICENSE file.
 
 // newreposecret creates a new secret in GitHub for a given owner/repo.
-// It has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
-// Provide the value of the secret you want to add with an environment variable of the same name.
-// To authenticate with GitHub provide it via an environment variable GITHUB_AUTH_TOKEN.
+// newreposecret depends on sodium being installed. Installation instructions for Sodium can be found at this url:
+// https://github.com/jedisct1/libsodium
+//
+// newreposecret has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
+// The secret value is pulled from an environment variable based on the secret name.
+// To authenticate with GitHub, provide your token via an environment variable GITHUB_AUTH_TOKEN.
 //
 // To verify the new secret, navigate to GitHub Repository > Settings > left side options bar > Secrets.
 //
@@ -108,28 +111,28 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 
 // addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions.
 //
-// Finally the secretName and secretValue will determine the name of the secret added and it's corresponding value.
+// Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
-// using the public key of the target repo. This encryption must be done using sodium. This function has a hard
-// dependency on sodium being installed where this is run. Sodium can be installed from this url:
+// using the public key of the target repo. This encryption must be done using sodium. addRepoSecret depends on sodium
+// being installed, and instructions can be found at this url:
 // https://github.com/jedisct1/libsodium
 //
-// First step of the upload process by this function is to get the public key of the repo. The public key comes base64
+// First, the public key of the repo is retrieved. The public key comes base64
 // encoded, so it must be decoded prior to use in sodiumlib.
 //
-// Second the secret value starts as a string type, but must be converted into a slice of bytes.
-// Third the decoded public key of the repo is used to encrypt the secret with sodium.CryptoBoxSeal resulting
-// in a secret encrypted as bytes
+// Second, the secret value is converted into a slice of bytes.
 //
-// Finally the secret bytes need to be encoded as a base64 string and used in a github.EncodedSecret type
-// that is passed into the GitHub client.Actions.CreateOrUpdateRepoSecret method to populate the secret in GitHub.
+// Third, the secret is encrypted with sodium.CryptoBoxSeal using the repo's decoded public key.
 //
-// The other two properties of the github.EncodedSecret type are the name of the secret to be added (string not base64)
-// and the KeyID of the public key used to encrypt the secret, which is gettable from the public key's GetKeyID method.
+// Fourth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
 //
-// Finally it passes in the github.EncodedSecret object to CreateOrUpdateRepoSecret which creates or updates the secret
-// in GitHub
+// Fifth, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
+// (string not base64), and the KeyID of the public key used to encrypt the secret.
+// This can be retrieved via the public key's GetKeyID method.
+//
+// Finally, the github.EncodedSecret is passed into the GitHub client.Actions.CreateOrUpdateRepoSecret method to
+// populate the secret in the GitHub repo.
 func addRepoSecret(ctx context.Context, client *github.Client, owner string, repo, secretName string, secretValue string) error {
 	publicKey, _, err := client.Actions.GetRepoPublicKey(ctx, owner, repo)
 	if err != nil {
