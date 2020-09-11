@@ -476,3 +476,16 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
 }
+
+func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/.github", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{}`)
+	})
+	_, _, _, err := client.Repositories.GetContents(context.Background(), "o", "r", ".github/", &RepositoryContentGetOptions{})
+	if err != nil {
+		t.Fatalf("Repositories.GetContents returned error: %v", err)
+	}
+}
