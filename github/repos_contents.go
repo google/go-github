@@ -18,6 +18,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"strings"
 )
 
 // RepositoryContent represents a file or directory in a github repository.
@@ -152,7 +153,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos/#get-repository-content
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
-	escapedPath := (&url.URL{Path: path}).String()
+	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
 	u := fmt.Sprintf("repos/%s/%s/contents/%s", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)
 	if err != nil {
