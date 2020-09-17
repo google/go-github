@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"strings"
 	"testing"
 	"time"
 )
@@ -20,10 +19,9 @@ func TestIssuesService_List_all(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{
 			"filter":    "all",
 			"state":     "closed",
@@ -57,10 +55,9 @@ func TestIssuesService_List_owned(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
@@ -79,10 +76,9 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
@@ -109,10 +105,9 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeIntegrationPreview}
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{
 			"milestone": "*",
 			"state":     "closed",
@@ -155,10 +150,9 @@ func TestIssuesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		fmt.Fprint(w, `{"number":1, "author_association": "MEMBER","labels": [{"url": "u", "name": "n", "color": "c"}]}`)
 	})
 
@@ -289,7 +283,6 @@ func TestIssuesService_LockWithReason(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeLockReasonPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
