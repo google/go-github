@@ -146,9 +146,6 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
-
 	app := new(App)
 	resp, err := s.client.Do(ctx, req, app)
 	if err != nil {
@@ -171,9 +168,6 @@ func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	var i []*Installation
 	resp, err := s.client.Do(ctx, req, &i)
@@ -204,9 +198,6 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	var i struct {
 		Installations []*Installation `json:"installations"`
@@ -258,9 +249,6 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -274,9 +262,6 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	t := new(InstallationToken)
 	resp, err := s.client.Do(ctx, req, t)
@@ -343,9 +328,6 @@ func (s *AppsService) getInstallation(ctx context.Context, url string) (*Install
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	i := new(Installation)
 	resp, err := s.client.Do(ctx, req, i)

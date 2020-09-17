@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -148,10 +147,6 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	var pulls []*PullRequest
 	resp, err := s.client.Do(ctx, req, &pulls)
 	if err != nil {
@@ -179,8 +174,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+	req.Header.Set("Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 	var pulls []*PullRequest
 	resp, err := s.client.Do(ctx, req, &pulls)
 	if err != nil {
@@ -199,10 +193,6 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	pull := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, pull)
@@ -353,10 +343,6 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeLockReasonPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	p := new(PullRequest)
 	resp, err := s.client.Do(ctx, req, p)

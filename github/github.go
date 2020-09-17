@@ -68,9 +68,6 @@ const (
 	// https://developer.github.com/changes/2016-09-14-projects-api/
 	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
 
-	// https://developer.github.com/changes/2016-09-14-Integrations-Early-Access/
-	mediaTypeIntegrationPreview = "application/vnd.github.machine-man-preview+json"
-
 	// https://developer.github.com/changes/2017-01-05-commit-search-api/
 	mediaTypeCommitSearchPreview = "application/vnd.github.cloak-preview+json"
 
@@ -88,9 +85,6 @@ const (
 
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeRequiredApprovingReviewsPreview = "application/vnd.github.luke-cage-preview+json"
-
-	// https://developer.github.com/changes/2018-01-10-lock-reason-api-preview/
-	mediaTypeLockReasonPreview = "application/vnd.github.sailor-v-preview+json"
 
 	// https://developer.github.com/changes/2018-05-07-new-checks-api-public-beta/
 	mediaTypeCheckRunsPreview = "application/vnd.github.antiope-preview+json"

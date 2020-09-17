@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"strings"
 	"testing"
 )
 
@@ -18,10 +17,9 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeLockReasonPreview, mediaTypeProjectCardDetailsPreview}
 	mux.HandleFunc("/repos/o/r/issues/1/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeProjectCardDetailsPreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",

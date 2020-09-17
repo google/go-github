@@ -24,7 +24,6 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 
 	mux.HandleFunc("/app", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -45,7 +44,6 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 
 	mux.HandleFunc("/apps/a", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"html_url":"https://github.com/apps/a"}`)
 	})
 
@@ -66,7 +64,6 @@ func TestAppsService_ListInstallations(t *testing.T) {
 
 	mux.HandleFunc("/app/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
@@ -167,7 +164,6 @@ func TestAppsService_GetInstallation(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
@@ -188,7 +184,6 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 
 	mux.HandleFunc("/user/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
@@ -245,7 +240,6 @@ func TestAppsService_DeleteInstallation(t *testing.T) {
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 	})
 
 	_, err := client.Apps.DeleteInstallation(context.Background(), 1)
@@ -260,7 +254,6 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
@@ -307,7 +300,6 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		}
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
@@ -351,7 +343,6 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
@@ -372,7 +363,6 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
@@ -393,7 +383,6 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 
 	mux.HandleFunc("/repositories/1/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
@@ -414,7 +403,6 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 
 	mux.HandleFunc("/users/u/installation", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "User"}`)
 	})
 
