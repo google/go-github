@@ -24,9 +24,6 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) ([]*Repo
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
-
 	var r struct {
 		Repositories []*Repository `json:"repositories"`
 	}
@@ -54,9 +51,6 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
-
 	var r struct {
 		Repositories []*Repository `json:"repositories"`
 	}
@@ -77,7 +71,6 @@ func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
@@ -97,7 +90,6 @@ func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

@@ -226,7 +226,6 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		fmt.Fprint(w, `{"total_count": 1, "installations": [{ "id": 1, "app_id": 5}]}`)
 	})
 
@@ -256,7 +255,6 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/installations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeIntegrationPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `{"total_count": 2, "installations": [{ "id": 2, "app_id": 10}]}`)
 	})

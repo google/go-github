@@ -255,9 +255,6 @@ func (s *OrganizationsService) ListInstallations(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeIntegrationPreview)
-
 	result := new(OrganizationInstallations)
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {

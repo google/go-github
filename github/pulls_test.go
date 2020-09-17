@@ -20,10 +20,8 @@ func TestPullRequestsService_List(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"state":     "closed",
 			"head":      "h",
@@ -51,10 +49,9 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeListPullsOrBranchesForCommitPreview, mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
+		testHeader(t, r, "Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 		testFormValues(t, r, values{
 			"state":     "closed",
 			"head":      "h",
@@ -90,10 +87,8 @@ func TestPullRequestsService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeLockReasonPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -396,10 +391,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 
 	for i, tt := range tests {
 		madeRequest := false
-		wantAcceptHeaders := []string{mediaTypeLockReasonPreview}
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
-			testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 			testBody(t, r, tt.wantUpdate+"\n")
 			io.WriteString(w, tt.sendResponse)
 			madeRequest = true
