@@ -226,7 +226,7 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo
 	if err != nil {
 		return nil, nil, err
 	}
-
+  
 	req.Header.Set("Accept", mediaTypeV3)
 
 	var checkRunAnnotations []*CheckRunAnnotation
@@ -267,7 +267,7 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 	if err != nil {
 		return nil, nil, err
 	}
-
+  
 	req.Header.Set("Accept", mediaTypeV3)
 
 	var checkRunResults *ListCheckRunsResults
@@ -333,7 +333,7 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, 
 	if err != nil {
 		return nil, nil, err
 	}
-
+  
 	req.Header.Set("Accept", mediaTypeV3)
 
 	var checkSuiteResults *ListCheckSuiteResults
