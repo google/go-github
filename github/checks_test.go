@@ -20,7 +20,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testCheckRun",
@@ -55,7 +55,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-suites/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		fmt.Fprint(w, `{
 			"id": 1,
                         "head_branch":"master",
@@ -89,7 +89,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testCreateCheckRun",
@@ -141,7 +141,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-runs/1/annotations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		testFormValues(t, r, values{
 			"page": "1",
 		})
@@ -186,7 +186,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-runs/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testUpdateCheckRun",
@@ -240,7 +240,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		testFormValues(t, r, values{
 			"check_name": "testing",
 			"page":       "1",
@@ -292,7 +292,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/check-runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		testFormValues(t, r, values{
 			"check_name": "testing",
 			"page":       "1",
@@ -344,7 +344,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/master/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		testFormValues(t, r, values{
 			"check_name": "testing",
 			"page":       "1",
@@ -395,7 +395,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		testBody(t, r, `{"auto_trigger_checks":[{"app_id":2,"setting":false}]}`+"\n")
 		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
 	})
@@ -427,7 +427,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		fmt.Fprint(w, `{
 			"id": 2,
                         "head_branch":"master",
@@ -468,7 +468,7 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/check-suites/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeV3)
+
 		w.WriteHeader(http.StatusCreated)
 	})
 	resp, err := client.Checks.ReRequestCheckSuite(context.Background(), "o", "r", 1)
