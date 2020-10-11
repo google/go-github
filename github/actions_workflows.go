@@ -163,18 +163,18 @@ func (s *ActionsService) CreateWorkflowDispatchEvent(ctx context.Context, owner,
 	return s.client.Do(ctx, req, nil)
 }
 
-// EnableWorkflowByID enables a workflow and sets the state of the workflow to active
+// EnableWorkflowByID enables a workflow and sets the state of the workflow to "active".
 //
-// https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#enable-a-workflow
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#enable-a-workflow
 func (s *ActionsService) EnableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowID)
 	return s.enableWorkflow(ctx, u)
 }
 
-// EnableWorkflowByFileName enables a workflow and sets the state of the workflow to active
+// EnableWorkflowByFileName enables a workflow and sets the state of the workflow to "active".
 //
-// https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#enable-a-workflow
-func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, repo string, workflowFileName string) (*Response, error) {
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#enable-a-workflow
+func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/enable", owner, repo, workflowFileName)
 	return s.enableWorkflow(ctx, u)
 }
@@ -188,18 +188,18 @@ func (s *ActionsService) enableWorkflow(ctx context.Context, url string) (*Respo
 	return s.client.Do(ctx, req, nil)
 }
 
-// DisableWorkflowByID disables a workflow and sets the state of the workflow to disabled_manually
+// DisableWorkflowByID disables a workflow and sets the state of the workflow to "disabled_manually".
 //
-// https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#disable-a-workflow
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#disable-a-workflow
 func (s *ActionsService) DisableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowID)
 	return s.enableWorkflow(ctx, u)
 }
 
-// DisableWorkflowByFileName disables a workflow and sets the state of the workflow to disabled_manually
+// DisableWorkflowByFileName disables a workflow and sets the state of the workflow to "disabled_manually".
 //
-// https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#disable-a-workflow
-func (s *ActionsService) DisableWorkflowByFileName(ctx context.Context, owner, repo string, workflowFileName string) (*Response, error) {
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#disable-a-workflow
+func (s *ActionsService) DisableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/disable", owner, repo, workflowFileName)
 	return s.enableWorkflow(ctx, u)
 }
