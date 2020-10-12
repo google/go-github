@@ -175,14 +175,14 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		}
 	})
 
-	_, err := client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, &event)
+	_, err := client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, &event)
+	_, err = client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByID err = nil, want error")
 	}
@@ -208,14 +208,14 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		}
 	})
 
-	_, err := client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", &event)
+	_, err := client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", &event)
+	_, err = client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
 	}
