@@ -155,7 +155,7 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	}
 }
 
-func TestActionsService_CreateWorkflowDispatchEvent(t *testing.T) {
+func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -175,15 +175,48 @@ func TestActionsService_CreateWorkflowDispatchEvent(t *testing.T) {
 		}
 	})
 
-	_, err := client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, event)
+	_, err := client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, &event)
 	if err != nil {
-		t.Errorf("Actions.CreateWorkflowDispatchEvent returned error: %v", err)
+		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEvent(context.Background(), "o", "r", 72844, event)
+	_, err = client.Actions.CreateWorkflowDispatchEventByID(context.Background(), "o", "r", 72844, &event)
 	if err == nil {
-		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEvent err = nil, want error")
+		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByID err = nil, want error")
+	}
+}
+
+func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	event := CreateWorkflowDispatchEventRequest{
+		Ref: "d4cfb6e7",
+		Inputs: map[string]interface{}{
+			"key": "value",
+		},
+	}
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
+		var v CreateWorkflowDispatchEventRequest
+		json.NewDecoder(r.Body).Decode(&v)
+
+		testMethod(t, r, "POST")
+		if !reflect.DeepEqual(v, event) {
+			t.Errorf("Request body = %+v, want %+v", v, event)
+		}
+	})
+
+	_, err := client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", &event)
+	if err != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, err = client.Actions.CreateWorkflowDispatchEventByFileName(context.Background(), "o", "r", "main.yml", &event)
+	if err == nil {
+		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
 	}
 }

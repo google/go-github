@@ -149,13 +149,26 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 	return workflowUsage, resp, nil
 }
 
-// CreateWorkflowDispatchEvent manually triggers a GitHub Actions workflow run.
+// CreateWorkflowDispatchEventByID manually triggers a GitHub Actions workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
-func (s *ActionsService) CreateWorkflowDispatchEvent(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*Response, error) {
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#create-a-workflow-dispatch-event
+func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event *CreateWorkflowDispatchEventRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
 
-	req, err := s.client.NewRequest("POST", u, &event)
+	return s.createWorkflowDispatchEvent(ctx, u, event)
+}
+
+// CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions#create-a-workflow-dispatch-event
+func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event *CreateWorkflowDispatchEventRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
+
+	return s.createWorkflowDispatchEvent(ctx, u, event)
+}
+
+func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*Response, error) {
+	req, err := s.client.NewRequest("POST", url, event)
 	if err != nil {
 		return nil, err
 	}
