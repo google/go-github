@@ -5156,6 +5156,22 @@ func (i *IssueEvent) GetRename() *Rename {
 	return i.Rename
 }
 
+// GetRequestedReviewer returns the RequestedReviewer field.
+func (i *IssueEvent) GetRequestedReviewer() *User {
+	if i == nil {
+		return nil
+	}
+	return i.RequestedReviewer
+}
+
+// GetReviewRequester returns the ReviewRequester field.
+func (i *IssueEvent) GetReviewRequester() *User {
+	if i == nil {
+		return nil
+	}
+	return i.ReviewRequester
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (i *IssueEvent) GetURL() string {
 	if i == nil || i.URL == nil {
