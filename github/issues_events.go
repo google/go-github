@@ -65,21 +65,27 @@ type IssueEvent struct {
 	//    review_dismissed
 	//       The review was dismissed and `DismissedReview` will be populated below.
 	//
+	//    review_requested, review_request_removed
+	//       The Actor requested or removed the request for a review.
+	//       RequestedReviewer and ReviewRequester will be populated below.
+	//
 	Event *string `json:"event,omitempty"`
 
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Issue     *Issue     `json:"issue,omitempty"`
 
 	// Only present on certain events; see above.
-	Assignee        *User            `json:"assignee,omitempty"`
-	Assigner        *User            `json:"assigner,omitempty"`
-	CommitID        *string          `json:"commit_id,omitempty"`
-	Milestone       *Milestone       `json:"milestone,omitempty"`
-	Label           *Label           `json:"label,omitempty"`
-	Rename          *Rename          `json:"rename,omitempty"`
-	LockReason      *string          `json:"lock_reason,omitempty"`
-	ProjectCard     *ProjectCard     `json:"project_card,omitempty"`
-	DismissedReview *DismissedReview `json:"dismissed_review,omitempty"`
+	Assignee          *User            `json:"assignee,omitempty"`
+	Assigner          *User            `json:"assigner,omitempty"`
+	CommitID          *string          `json:"commit_id,omitempty"`
+	Milestone         *Milestone       `json:"milestone,omitempty"`
+	Label             *Label           `json:"label,omitempty"`
+	Rename            *Rename          `json:"rename,omitempty"`
+	LockReason        *string          `json:"lock_reason,omitempty"`
+	ProjectCard       *ProjectCard     `json:"project_card,omitempty"`
+	DismissedReview   *DismissedReview `json:"dismissed_review,omitempty"`
+	RequestedReviewer *User            `json:"requested_reviewer,omitempty"`
+	ReviewRequester   *User            `json:"review_requester,omitempty"`
 }
 
 // DismissedReview represents details for 'dismissed_review' events.
