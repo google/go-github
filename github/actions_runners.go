@@ -65,11 +65,19 @@ func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, rep
 
 // Runner represents a self-hosted runner registered with a repository.
 type Runner struct {
-	ID     *int64  `json:"id,omitempty"`
-	Name   *string `json:"name,omitempty"`
-	OS     *string `json:"os,omitempty"`
-	Status *string `json:"status,omitempty"`
-	Busy   *bool   `json:"busy,omitempty"`
+	ID     *int64          `json:"id,omitempty"`
+	Name   *string         `json:"name,omitempty"`
+	OS     *string         `json:"os,omitempty"`
+	Status *string         `json:"status,omitempty"`
+	Busy   *bool           `json:"busy,omitempty"`
+	Labels []*RunnerLabels `json:"labels,omitempty"`
+}
+
+// RunnerLabels represents a collection of labels attached to each runner.
+type RunnerLabels struct {
+	ID   *int64  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // Runners represents a collection of self-hosted runners for a repository.
