@@ -4,3 +4,4 @@ coverage.out
 # intellij files
 .idea/
 vendor/
+.DS_Store
