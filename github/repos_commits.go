@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -223,7 +224,10 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 // CompareCommits compares a range of commits with each other.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos/#compare-two-commits
-func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string) (*CommitsComparison, *Response, error) {
+func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, base, head string) (*CommitsComparison, *Response, error) {
+	base = strings.ReplaceAll(base, "#", "%23")
+	head = strings.ReplaceAll(head, "#", "%23")
+
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, base, head)
 
 	req, err := s.client.NewRequest("GET", u, nil)
