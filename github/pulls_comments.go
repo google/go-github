@@ -71,9 +71,9 @@ type PullRequestListCommentsOptions struct {
 func (s *PullRequestsService) ListComments(ctx context.Context, owner string, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error) {
 	var u string
 	if number == 0 {
-		u = fmt.Sprintf("repos/%v/%v/pulls/comments", owner, repo)
+		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
 	} else {
-		u = fmt.Sprintf("repos/%v/%v/pulls/%d/comments", owner, repo, number)
+		u = fmt.Sprintf("repos/%v/%v/issues/%d/comments", owner, repo, number)
 	}
 	u, err := addOptions(u, opts)
 	if err != nil {
