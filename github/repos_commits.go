@@ -223,7 +223,7 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 
 // CompareCommits compares a range of commits with each other.
 //
-// The url string u is escaped before making the request to api
+// The url query string is escaped before making the request.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos/#compare-two-commits
 func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, base, head string) (*CommitsComparison, *Response, error) {
