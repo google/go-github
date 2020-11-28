@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // RunnerApplicationDownload represents a binary for the self-hosted runner application that can be downloaded.
@@ -16,6 +17,12 @@ type RunnerApplicationDownload struct {
 	Architecture *string `json:"architecture,omitempty"`
 	DownloadURL  *string `json:"download_url,omitempty"`
 	Filename     *string `json:"filename,omitempty"`
+}
+
+// ActionsEnabledOnOrgRepos represents all the repsositories in an organization for which Actions is enabled.
+type ActionsEnabledOnOrgRepos struct {
+	TotalCount   int           `json:"total_count"`
+	Repositories []*Repository `json:"repositories"`
 }
 
 // ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
@@ -230,6 +237,30 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 	}
 
 	return runners, resp, nil
+}
+
+// ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-selected-repositories-enabled-for-github-actions-in-an-organization
+func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string) (*ActionsEnabledOnOrgRepos, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeTopicsPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
+
+	repos := &ActionsEnabledOnOrgRepos{}
+	resp, err := s.client.Do(ctx, req, &repos)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return repos, resp, nil
 }
 
 // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
