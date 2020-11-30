@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 )
 
 // RunnerApplicationDownload represents a binary for the self-hosted runner application that can be downloaded.
@@ -242,20 +241,20 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 // ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-selected-repositories-enabled-for-github-actions-in-an-organization
-func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string) (*ActionsEnabledOnOrgRepos, *Response, error) {
+func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	repos := &ActionsEnabledOnOrgRepos{}
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(ctx, req, repos)
 	if err != nil {
 		return nil, resp, err
 	}
