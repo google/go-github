@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strings"
 	"testing"
@@ -306,118 +305,99 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	cases := []struct {
-		name string
-		b    string
-		h    string
-	}{
-		{name: "case 1", b: "b", h: "h"},
-		{name: "case 2", b: "#b#", h: "#h#"},
+	mux.HandleFunc("/repos/o/r/compare/b...h", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `{
+		  "base_commit": {
+		    "sha": "s",
+		    "commit": {
+		      "author": { "name": "n" },
+		      "committer": { "name": "n" },
+		      "message": "m",
+		      "tree": { "sha": "t" }
+		    },
+		    "author": { "login": "l" },
+		    "committer": { "login": "l" },
+		    "parents": [ { "sha": "s" } ]
+		  },
+		  "status": "s",
+		  "ahead_by": 1,
+		  "behind_by": 2,
+		  "total_commits": 1,
+		  "commits": [
+		    {
+		      "sha": "s",
+		      "commit": { "author": { "name": "n" } },
+		      "author": { "login": "l" },
+		      "committer": { "login": "l" },
+		      "parents": [ { "sha": "s" } ]
+		    }
+		  ],
+		  "files": [ { "filename": "f" } ],
+		  "html_url":      "https://github.com/o/r/compare/b...h",
+		  "permalink_url": "https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17",
+		  "diff_url":      "https://github.com/o/r/compare/b...h.diff",
+		  "patch_url":     "https://github.com/o/r/compare/b...h.patch",
+		  "url":           "https://api.github.com/repos/o/r/compare/b...h"
+		}`)
+	})
+
+	got, _, err := client.Repositories.CompareCommits(context.Background(), "o", "r", "b", "h")
+	if err != nil {
+		t.Errorf("Repositories.CompareCommits returned error: %v", err)
 	}
 
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			b := url.QueryEscape(c.b)
-			h := url.QueryEscape(c.h)
-
-			u := fmt.Sprintf("/repos/o/r/compare/%v...%v", c.b, c.h)
-
-			mux.HandleFunc(u, func(w http.ResponseWriter, r *http.Request) {
-				testMethod(t, r, "GET")
-				fmt.Fprintf(w, `{
-				  "base_commit": {
-					"sha": "s",
-					"commit": {
-					  "author": { "name": "n" },
-					  "committer": { "name": "n" },
-					  "message": "m",
-					  "tree": { "sha": "t" }
-					},
-					"author": { "login": "l" },
-					"committer": { "login": "l" },
-					"parents": [ { "sha": "s" } ]
-				  },
-				  "status": "s",
-				  "ahead_by": 1,
-				  "behind_by": 2,
-				  "total_commits": 1,
-				  "commits": [
-					{
-					  "sha": "s",
-					  "commit": { "author": { "name": "n" } },
-					  "author": { "login": "l" },
-					  "committer": { "login": "l" },
-					  "parents": [ { "sha": "s" } ]
-					}
-				  ],
-				  "files": [ { "filename": "f" } ],
-				  "html_url":      "https://github.com/o/r/compare/%[1]v...%[2]v",
-				  "permalink_url": "https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17",
-				  "diff_url":      "https://github.com/o/r/compare/%[1]v...%[2]v.diff",
-				  "patch_url":     "https://github.com/o/r/compare/%[1]v...%[2]v.patch",
-				  "url":           "https://api.github.com/repos/o/r/compare/%[1]v...%[2]v"
-				}`, b, h)
-			})
-
-			got, _, err := client.Repositories.CompareCommits(context.Background(), "o", "r", c.b, c.h)
-			if err != nil {
-				t.Errorf("Repositories.CompareCommits returned error: %v", err)
-			}
-
-			want := &CommitsComparison{
-				BaseCommit: &RepositoryCommit{
+	want := &CommitsComparison{
+		BaseCommit: &RepositoryCommit{
+			SHA: String("s"),
+			Commit: &Commit{
+				Author:    &CommitAuthor{Name: String("n")},
+				Committer: &CommitAuthor{Name: String("n")},
+				Message:   String("m"),
+				Tree:      &Tree{SHA: String("t")},
+			},
+			Author:    &User{Login: String("l")},
+			Committer: &User{Login: String("l")},
+			Parents: []*Commit{
+				{
 					SHA: String("s"),
-					Commit: &Commit{
-						Author:    &CommitAuthor{Name: String("n")},
-						Committer: &CommitAuthor{Name: String("n")},
-						Message:   String("m"),
-						Tree:      &Tree{SHA: String("t")},
-					},
-					Author:    &User{Login: String("l")},
-					Committer: &User{Login: String("l")},
-					Parents: []*Commit{
-						{
-							SHA: String("s"),
-						},
-					},
 				},
-				Status:       String("s"),
-				AheadBy:      Int(1),
-				BehindBy:     Int(2),
-				TotalCommits: Int(1),
-				Commits: []*RepositoryCommit{
+			},
+		},
+		Status:       String("s"),
+		AheadBy:      Int(1),
+		BehindBy:     Int(2),
+		TotalCommits: Int(1),
+		Commits: []*RepositoryCommit{
+			{
+				SHA: String("s"),
+				Commit: &Commit{
+					Author: &CommitAuthor{Name: String("n")},
+				},
+				Author:    &User{Login: String("l")},
+				Committer: &User{Login: String("l")},
+				Parents: []*Commit{
 					{
 						SHA: String("s"),
-						Commit: &Commit{
-							Author: &CommitAuthor{Name: String("n")},
-						},
-						Author:    &User{Login: String("l")},
-						Committer: &User{Login: String("l")},
-						Parents: []*Commit{
-							{
-								SHA: String("s"),
-							},
-						},
 					},
 				},
-				Files: []*CommitFile{
-					{
-						Filename: String("f"),
-					},
-				},
-				HTMLURL:      String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v", b, h)),
-				PermalinkURL: String("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
-				DiffURL:      String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.diff", b, h)),
-				PatchURL:     String(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.patch", b, h)),
-				URL:          String(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", b, h)),
-			}
-
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
-			}
-		})
+			},
+		},
+		Files: []*CommitFile{
+			{
+				Filename: String("f"),
+			},
+		},
+		HTMLURL:      String("https://github.com/o/r/compare/b...h"),
+		PermalinkURL: String("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
+		DiffURL:      String("https://github.com/o/r/compare/b...h.diff"),
+		PatchURL:     String("https://github.com/o/r/compare/b...h.patch"),
+		URL:          String("https://api.github.com/repos/o/r/compare/b...h"),
 	}
 
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
+	}
 }
 
 func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
