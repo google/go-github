@@ -18,7 +18,7 @@ type RunnerApplicationDownload struct {
 	Filename     *string `json:"filename,omitempty"`
 }
 
-// ActionsEnabledOnOrgRepos represents all the repsositories in an organization for which Actions is enabled.
+// ActionsEnabledOnOrgRepos represents all the repositories in an organization for which Actions is enabled.
 type ActionsEnabledOnOrgRepos struct {
 	TotalCount   int           `json:"total_count"`
 	Repositories []*Repository `json:"repositories"`
