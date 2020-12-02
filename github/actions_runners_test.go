@@ -225,6 +225,56 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	}
 }
 
+func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page": "1",
+		})
+		fmt.Fprint(w, `{"total_count":2,"repositories":[{"id":2}, {"id": 3}]}`)
+	})
+
+	ctx := context.Background()
+	opt := &ListOptions{
+		Page: 1,
+	}
+	got, _, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
+	if err != nil {
+		t.Errorf("Actions.ListEnabledReposInOrg returned error: %v", err)
+	}
+
+	want := &ActionsEnabledOnOrgRepos{TotalCount: int(2), Repositories: []*Repository{
+		{ID: Int64(2)},
+		{ID: Int64(3)},
+	}}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
+	if err == nil {
+		t.Error("bad options ListEnabledReposInOrg err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListEnabledReposInOrg = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListEnabledReposInOrg resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListEnabledReposInOrg err = nil, want error")
+	}
+}
+
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
