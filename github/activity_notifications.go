@@ -19,7 +19,7 @@ type Notification struct {
 
 	// Reason identifies the event that triggered the notification.
 	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/activity/#notification-reasons
+	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity#notification-reasons
 	Reason *string `json:"reason,omitempty"`
 
 	Unread     *bool      `json:"unread,omitempty"`
@@ -102,7 +102,7 @@ type markReadOptions struct {
 
 // MarkNotificationsRead marks all notifications up to lastRead as read.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/#mark-as-read
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity#mark-as-read
 func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead time.Time) (*Response, error) {
 	opts := &markReadOptions{
 		LastReadAt: lastRead,
