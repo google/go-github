@@ -11,7 +11,7 @@ import (
 
 func newReactionsPipeline() *pipelineSetup {
 	return &pipelineSetup{
-		baseURL:              "https://docs.github.com/en/rest/reference/reactions/",
+		baseURL:              "https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/",
 		endpointsFromWebsite: reactionsWant,
 		filename:             "reactions.go",
 		serviceName:          "ReactionsService",
@@ -147,7 +147,7 @@ var reactionsTestWebPage = `
     <link
       rel="alternate"
       hreflang="en"
-      href="https://docs.github.com/en/rest/reference/reactions"
+      href="https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions"
     />
   
     <link
@@ -226,7 +226,7 @@ var reactionsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/overview" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Overview</a>
+          <a href="/en/free-pro-team@latest/rest/overview" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Overview</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -236,37 +236,37 @@ var reactionsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/resources-in-the-rest-api" class="pl-4 pr-5 py-1">Resources in the REST API</a>
+          <a href="/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api" class="pl-4 pr-5 py-1">Resources in the REST API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/media-types" class="pl-4 pr-5 py-1">Media types</a>
+          <a href="/en/free-pro-team@latest/rest/overview/media-types" class="pl-4 pr-5 py-1">Media types</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/other-authentication-methods" class="pl-4 pr-5 py-1">Other authentication methods</a>
+          <a href="/en/free-pro-team@latest/rest/overview/other-authentication-methods" class="pl-4 pr-5 py-1">Other authentication methods</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/troubleshooting" class="pl-4 pr-5 py-1">Troubleshooting</a>
+          <a href="/en/free-pro-team@latest/rest/overview/troubleshooting" class="pl-4 pr-5 py-1">Troubleshooting</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/api-previews" class="pl-4 pr-5 py-1">API previews</a>
+          <a href="/en/free-pro-team@latest/rest/overview/api-previews" class="pl-4 pr-5 py-1">API previews</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/libraries" class="pl-4 pr-5 py-1">Libraries</a>
+          <a href="/en/free-pro-team@latest/rest/overview/libraries" class="pl-4 pr-5 py-1">Libraries</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/endpoints-available-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Endpoints available for GitHub Apps</a>
+          <a href="/en/free-pro-team@latest/rest/overview/endpoints-available-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Endpoints available for GitHub Apps</a>
         </li>
         
       </ul>
@@ -280,7 +280,7 @@ var reactionsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/reference" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Reference</a>
+          <a href="/en/free-pro-team@latest/rest/reference" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Reference</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -290,152 +290,152 @@ var reactionsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
+          <a href="/en/free-pro-team@latest/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
+          <a href="/en/free-pro-team@latest/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
+          <a href="/en/free-pro-team@latest/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
+          <a href="/en/free-pro-team@latest/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
+          <a href="/en/free-pro-team@latest/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
+          <a href="/en/free-pro-team@latest/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
+          <a href="/en/free-pro-team@latest/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
+          <a href="/en/free-pro-team@latest/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
+          <a href="/en/free-pro-team@latest/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
+          <a href="/en/free-pro-team@latest/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
+          <a href="/en/free-pro-team@latest/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
+          <a href="/en/free-pro-team@latest/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
+          <a href="/en/free-pro-team@latest/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
+          <a href="/en/free-pro-team@latest/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
+          <a href="/en/free-pro-team@latest/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
+          <a href="/en/free-pro-team@latest/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
+          <a href="/en/free-pro-team@latest/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
+          <a href="/en/free-pro-team@latest/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
         </li>
         
         
         <li class="sidebar-article active is-current-page">
-          <a href="/en/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
+          <a href="/en/free-pro-team@latest/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
+          <a href="/en/free-pro-team@latest/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
+          <a href="/en/free-pro-team@latest/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
+          <a href="/en/free-pro-team@latest/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
+          <a href="/en/free-pro-team@latest/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
+          <a href="/en/free-pro-team@latest/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
         </li>
         
       </ul>
@@ -449,7 +449,7 @@ var reactionsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/guides" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Guides</a>
+          <a href="/en/free-pro-team@latest/rest/guides" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Guides</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -459,57 +459,57 @@ var reactionsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-rest-api" class="pl-4 pr-5 py-1">Getting started with the REST API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-rest-api" class="pl-4 pr-5 py-1">Getting started with the REST API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/basics-of-authentication" class="pl-4 pr-5 py-1">Basics of authentication</a>
+          <a href="/en/free-pro-team@latest/rest/guides/basics-of-authentication" class="pl-4 pr-5 py-1">Basics of authentication</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/discovering-resources-for-a-user" class="pl-4 pr-5 py-1">Discovering resources for a user</a>
+          <a href="/en/free-pro-team@latest/rest/guides/discovering-resources-for-a-user" class="pl-4 pr-5 py-1">Discovering resources for a user</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/delivering-deployments" class="pl-4 pr-5 py-1">Delivering deployments</a>
+          <a href="/en/free-pro-team@latest/rest/guides/delivering-deployments" class="pl-4 pr-5 py-1">Delivering deployments</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/rendering-data-as-graphs" class="pl-4 pr-5 py-1">Rendering data as graphs</a>
+          <a href="/en/free-pro-team@latest/rest/guides/rendering-data-as-graphs" class="pl-4 pr-5 py-1">Rendering data as graphs</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/working-with-comments" class="pl-4 pr-5 py-1">Working with comments</a>
+          <a href="/en/free-pro-team@latest/rest/guides/working-with-comments" class="pl-4 pr-5 py-1">Working with comments</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/traversing-with-pagination" class="pl-4 pr-5 py-1">Traversing with pagination</a>
+          <a href="/en/free-pro-team@latest/rest/guides/traversing-with-pagination" class="pl-4 pr-5 py-1">Traversing with pagination</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/building-a-ci-server" class="pl-4 pr-5 py-1">Building a CI server</a>
+          <a href="/en/free-pro-team@latest/rest/guides/building-a-ci-server" class="pl-4 pr-5 py-1">Building a CI server</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/best-practices-for-integrators" class="pl-4 pr-5 py-1">Best practices for integrators</a>
+          <a href="/en/free-pro-team@latest/rest/guides/best-practices-for-integrators" class="pl-4 pr-5 py-1">Best practices for integrators</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-git-database-api" class="pl-4 pr-5 py-1">Getting started with the Git Database API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-git-database-api" class="pl-4 pr-5 py-1">Getting started with the Git Database API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-checks-api" class="pl-4 pr-5 py-1 pb-2">Getting started with the Checks API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-checks-api" class="pl-4 pr-5 py-1 pb-2">Getting started with the Checks API</a>
         </li>
         
       </ul>
@@ -651,7 +651,7 @@ var reactionsTestWebPage = `
                       
                         
                           <a
-                            href="/en/rest/reference/reactions"
+                            href="/en/free-pro-team@latest/rest/reference/reactions"
                             class="d-block py-2 no-underline active link-gray"
                             style="white-space: nowrap"
                           >
@@ -764,7 +764,7 @@ var reactionsTestWebPage = `
     <div class="nav-dropdown position-md-absolute bg-white rounded-1 px-4 py-3 top-7 box-shadow-large" style="z-index: 6; width: 210px;">
       
       <a
-      href="/en/rest/reference/reactions"
+      href="/en/free-pro-team@latest/rest/reference/reactions"
       class="d-block py-2 link-blue active"
       >GitHub.com</a>
       
@@ -794,10 +794,10 @@ var reactionsTestWebPage = `
   <a title="product: REST API" href="/en/rest" class="d-inline-block ">
     REST API</a>
   
-  <a title="category: Reference" href="/en/rest/reference" class="d-inline-block ">
+  <a title="category: Reference" href="/en/free-pro-team@latest/rest/reference" class="d-inline-block ">
     Reference</a>
   
-  <a title="article: Reactions" href="/en/rest/reference/reactions" class="d-inline-block text-gray-light">
+  <a title="article: Reactions" href="/en/free-pro-team@latest/rest/reference/reactions" class="d-inline-block text-gray-light">
     Reactions</a>
   
 </nav>
@@ -5879,7 +5879,7 @@ type ListCommentReactionOptions struct {
 
 // ListCommentReactions lists the reactions for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-commit-comment
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -5909,7 +5909,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-commit-comment
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 
@@ -5933,7 +5933,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReaction deletes the reaction for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -5942,7 +5942,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -5951,7 +5951,7 @@ func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID
 
 // ListIssueReactions lists the reactions for an issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-an-issue
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue
 func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -5981,7 +5981,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-an-issue
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 
@@ -6005,7 +6005,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReaction deletes the reaction to an issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
 
@@ -6014,7 +6014,7 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
 
@@ -6023,7 +6023,7 @@ func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, 
 
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -6053,7 +6053,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 
@@ -6077,7 +6077,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReaction deletes the reaction to an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -6086,7 +6086,7 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -6095,7 +6095,7 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -6125,7 +6125,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
@@ -6149,7 +6149,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -6158,7 +6158,7 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -6167,7 +6167,7 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-team-discussion
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 	u, err := addOptions(u, opts)
@@ -6194,7 +6194,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-team-discussion
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
@@ -6217,7 +6217,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 // DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
 
@@ -6226,7 +6226,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 
 // DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
 
@@ -6235,7 +6235,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 	u, err := addOptions(u, opts)
@@ -6261,7 +6261,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
@@ -6284,7 +6284,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
 
@@ -6293,7 +6293,7 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
 
@@ -6371,7 +6371,7 @@ type ListCommentReactionOptions struct {
 
 // ListCommentReactions lists the reactions for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-commit-comment
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -6401,7 +6401,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-commit-comment
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 
@@ -6425,7 +6425,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReaction deletes the reaction for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -6434,7 +6434,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -6443,7 +6443,7 @@ func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID
 
 // ListIssueReactions lists the reactions for an issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-an-issue
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue
 func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -6473,7 +6473,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-an-issue
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 
@@ -6497,7 +6497,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReaction deletes the reaction to an issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
 
@@ -6506,7 +6506,7 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
 
@@ -6515,7 +6515,7 @@ func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, 
 
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -6545,7 +6545,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 
@@ -6569,7 +6569,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReaction deletes the reaction to an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -6578,7 +6578,7 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -6587,7 +6587,7 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-pull-request-review-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-pull-request-review-comment
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -6617,7 +6617,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-pull-request-review-comment
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-pull-request-review-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
@@ -6641,7 +6641,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -6650,7 +6650,7 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -6659,7 +6659,7 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-team-discussion-legacy
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion-legacy
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 	u, err := addOptions(u, opts)
@@ -6686,7 +6686,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-team-discussion-legacy
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion-legacy
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
@@ -6709,7 +6709,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 // DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
 
@@ -6718,7 +6718,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 
 // DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
 
@@ -6727,7 +6727,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment-legacy
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 	u, err := addOptions(u, opts)
@@ -6753,7 +6753,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment-legacy
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment-legacy
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
@@ -6776,7 +6776,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
 
@@ -6785,7 +6785,7 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
 
