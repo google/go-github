@@ -175,7 +175,6 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, 
 // UpdateCheckRunOptions sets up parameters needed to update a CheckRun.
 type UpdateCheckRunOptions struct {
 	Name        string            `json:"name"`                   // The name of the check (e.g., "code-coverage"). (Required.)
-	HeadSHA     *string           `json:"head_sha,omitempty"`     // The SHA of the commit. (Optional.)
 	DetailsURL  *string           `json:"details_url,omitempty"`  // The URL of the integrator's site that has the full details of the check. (Optional.)
 	ExternalID  *string           `json:"external_id,omitempty"`  // A reference for the run on the integrator's system. (Optional.)
 	Status      *string           `json:"status,omitempty"`       // The current status. Can be one of "queued", "in_progress", or "completed". Default: "queued". (Optional.)
