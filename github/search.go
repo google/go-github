@@ -29,7 +29,7 @@ import (
 // For example, querying with "language:c++" and "leveldb", then query should be
 // "language:c++ leveldb" but not "language:c+++leveldb".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/search/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/
 type SearchService service
 
 // SearchOptions specifies optional parameters to the SearchService methods.

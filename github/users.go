@@ -13,7 +13,7 @@ import (
 // UsersService handles communication with the user related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/users/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/
 type UsersService service
 
 // User represents a GitHub user.
@@ -63,7 +63,7 @@ type User struct {
 	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/en/rest/reference/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// Permissions identifies the permissions that a user has on a given

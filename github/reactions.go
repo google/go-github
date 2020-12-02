@@ -14,7 +14,7 @@ import (
 // ReactionsService provides access to the reactions-related functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/reactions/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/
 type ReactionsService service
 
 // Reaction represents a GitHub reaction.

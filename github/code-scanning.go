@@ -15,7 +15,7 @@ import (
 // CodeScanningService handles communication with the code scanning related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
 type Alert struct {

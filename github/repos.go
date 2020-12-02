@@ -15,7 +15,7 @@ import (
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/
 type RepositoriesService service
 
 // Repository represents a GitHub repository.
@@ -119,7 +119,7 @@ type Repository struct {
 	TeamsURL         *string `json:"teams_url,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/en/rest/reference/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// Visibility is only used for Create and Edit endpoints. The visibility field
@@ -420,7 +420,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	}
 
 	// TODO: remove custom Accept header when the license support fully launches
-	// https://docs.github.com/en/rest/reference/licenses/#get-a-repositorys-license
+	// https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-a-repositorys-license
 	acceptHeaders := []string{
 		mediaTypeCodesOfConductPreview,
 		mediaTypeTopicsPreview,

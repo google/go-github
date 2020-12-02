@@ -15,7 +15,7 @@ import (
 // Timeline represents an event that occurred around an Issue or Pull Request.
 //
 // It is similar to an IssueEvent but may contain more information.
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/timeline/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/timeline/
 type Timeline struct {
 	ID        *int64  `json:"id,omitempty"`
 	URL       *string `json:"url,omitempty"`

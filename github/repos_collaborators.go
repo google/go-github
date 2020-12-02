@@ -27,7 +27,7 @@ type ListCollaboratorsOptions struct {
 }
 
 // CollaboratorInvitation represents an invitation created when adding a collaborator.
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/collaborators/#response-when-a-new-invitation-is-created
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/collaborators/#response-when-a-new-invitation-is-created
 type CollaboratorInvitation struct {
 	ID          *int64      `json:"id,omitempty"`
 	Repo        *Repository `json:"repository,omitempty"`

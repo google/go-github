@@ -16,7 +16,7 @@ import (
 // MigrationService provides access to the migration related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/migration/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migration/
 type MigrationService service
 
 // Migration represents a GitHub migration (archival).

@@ -12,7 +12,7 @@ import (
 
 // Scope models a GitHub authorization scope.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/oauth/#scopes
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth/#scopes
 type Scope string
 
 // This is the set of scopes for GitHub API V3
@@ -50,7 +50,7 @@ const (
 // This service requires HTTP Basic Authentication; it cannot be accessed using
 // an OAuth token.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/oauth_authorizations/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth_authorizations/
 type AuthorizationsService service
 
 // Authorization represents an individual GitHub authorization.
@@ -121,7 +121,7 @@ func (a AuthorizationRequest) String() string {
 // fields. That is, you may provide only one of "Scopes", or "AddScopes", or
 // "RemoveScopes".
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/oauth_authorizations/#update-an-existing-authorization
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth_authorizations/#update-an-existing-authorization
 type AuthorizationUpdateRequest struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	AddScopes    []string `json:"add_scopes,omitempty"`

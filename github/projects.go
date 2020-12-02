@@ -13,7 +13,7 @@ import (
 // ProjectsService provides access to the projects functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/projects/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/
 type ProjectsService service
 
 // Project represents a GitHub Project.
@@ -126,7 +126,7 @@ func (s *ProjectsService) DeleteProject(ctx context.Context, id int64) (*Respons
 
 // ProjectColumn represents a column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/projects/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/projects/
 type ProjectColumn struct {
 	ID         *int64     `json:"id,omitempty"`
 	Name       *string    `json:"name,omitempty"`
@@ -281,7 +281,7 @@ func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64,
 
 // ProjectCard represents a card in a column of a GitHub Project.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/projects/cards/#get-a-project-card
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/cards/#get-a-project-card
 type ProjectCard struct {
 	URL        *string    `json:"url,omitempty"`
 	ColumnURL  *string    `json:"column_url,omitempty"`

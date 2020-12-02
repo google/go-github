@@ -16,7 +16,7 @@ import (
 // TeamsService provides access to the team-related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/teams/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/
 type TeamsService service
 
 // Team represents a team within a GitHub organization. Teams are used to

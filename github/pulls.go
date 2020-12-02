@@ -15,7 +15,7 @@ import (
 // PullRequestsService handles communication with the pull request related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/pulls/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/
 type PullRequestsService service
 
 // PullRequest represents a GitHub pull request on a repository.
@@ -64,7 +64,7 @@ type PullRequest struct {
 	RequestedReviewers  []*User    `json:"requested_reviewers,omitempty"`
 
 	// RequestedTeams is populated as part of the PullRequestEvent.
-	// See, https://docs.github.com/en/rest/reference/activity/events/types/#pullrequestevent for an example.
+	// See, https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/types/#pullrequestevent for an example.
 	RequestedTeams []*Team `json:"requested_teams,omitempty"`
 
 	Links *PRLinks           `json:"_links,omitempty"`

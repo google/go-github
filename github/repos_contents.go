@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // Repository contents API methods.
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/contents/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/contents/
 
 package github
 
@@ -248,7 +248,7 @@ const (
 // repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/contents/#get-archive-link
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/contents/#get-archive-link
 func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/%s", owner, repo, archiveformat)
 	if opts != nil && opts.Ref != "" {

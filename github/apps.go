@@ -14,7 +14,7 @@ import (
 // AppsService provides access to the installation related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/apps/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/
 type AppsService service
 
 // App represents a GitHub App.
@@ -55,7 +55,7 @@ type InstallationTokenOptions struct {
 // InstallationPermissions lists the repository and organization permissions for an installation.
 //
 // Permission names taken from:
-//   https://docs.github.com/en/rest/reference/apps/permissions/
+//   https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/permissions/
 //   https://developer.github.com/enterprise/v3/apps/permissions/
 type InstallationPermissions struct {
 	Administration              *string `json:"administration,omitempty"`

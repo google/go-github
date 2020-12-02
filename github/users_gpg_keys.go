@@ -95,7 +95,7 @@ func (s *UsersService) GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Respo
 // CreateGPGKey creates a GPG key. It requires authenticatation via Basic Auth
 // or OAuth with at least write:gpg_key scope.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/users/#create-a-gpg-key
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#create-a-gpg-key
 func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string) (*GPGKey, *Response, error) {
 	gpgKey := &struct {
 		ArmoredPublicKey string `json:"armored_public_key"`

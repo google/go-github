@@ -14,7 +14,7 @@ import (
 // GistsService handles communication with the Gist related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/gists/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/
 type GistsService service
 
 // Gist represents a GitHub's gist.

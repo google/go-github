@@ -13,7 +13,7 @@ import (
 // ChecksService provides access to the Checks API in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/checks/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/
 type ChecksService service
 
 // CheckRun represents a GitHub check run on a repository associated with a GitHub app.

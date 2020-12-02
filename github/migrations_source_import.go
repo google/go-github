@@ -115,7 +115,7 @@ func (i Import) String() string {
 
 // SourceImportAuthor identifies an author imported from a source repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/migration/source_imports/#get-commit-authors
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migration/source_imports/#get-commit-authors
 type SourceImportAuthor struct {
 	ID         *int64  `json:"id,omitempty"`
 	RemoteID   *string `json:"remote_id,omitempty"`
@@ -132,7 +132,7 @@ func (a SourceImportAuthor) String() string {
 
 // LargeFile identifies a file larger than 100MB found during a repository import.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/migration/source_imports/#get-large-files
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migration/source_imports/#get-large-files
 type LargeFile struct {
 	RefName *string `json:"ref_name,omitempty"`
 	Path    *string `json:"path,omitempty"`

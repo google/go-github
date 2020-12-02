@@ -14,7 +14,7 @@ import (
 // OrganizationsService provides access to the organization related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/orgs/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/
 type OrganizationsService service
 
 // Organization represents a GitHub organization account.

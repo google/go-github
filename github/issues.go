@@ -14,7 +14,7 @@ import (
 // IssuesService handles communication with the issue related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/
 type IssuesService service
 
 // Issue represents a GitHub issue on a repository.
@@ -54,7 +54,7 @@ type Issue struct {
 	NodeID            *string           `json:"node_id,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/en/rest/reference/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// ActiveLockReason is populated only when LockReason is provided while locking the issue.
