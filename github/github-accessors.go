@@ -14068,14 +14068,6 @@ func (u *UpdateCheckRunOptions) GetExternalID() string {
 	return *u.ExternalID
 }
 
-// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
-func (u *UpdateCheckRunOptions) GetHeadSHA() string {
-	if u == nil || u.HeadSHA == nil {
-		return ""
-	}
-	return *u.HeadSHA
-}
-
 // GetOutput returns the Output field.
 func (u *UpdateCheckRunOptions) GetOutput() *CheckRunOutput {
 	if u == nil {

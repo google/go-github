@@ -190,8 +190,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		fmt.Fprint(w, `{
 			"id": 1,
                         "name":"testUpdateCheckRun",
-                        "head_sha":"deadbeef",
-			"status": "completed",
+			"status": "completed",            
 			"conclusion": "neutral",
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z",
@@ -200,7 +199,6 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	updateCheckRunOpt := UpdateCheckRunOptions{
 		Name:        "testUpdateCheckRun",
-		HeadSHA:     String("deadbeef"),
 		Status:      String("completed"),
 		CompletedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
@@ -221,7 +219,6 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		StartedAt:   &Timestamp{startedAt},
 		CompletedAt: &Timestamp{startedAt},
 		Conclusion:  String("neutral"),
-		HeadSHA:     String("deadbeef"),
 		Name:        String("testUpdateCheckRun"),
 		Output: &CheckRunOutput{
 			Title:   String("Mighty test report"),
