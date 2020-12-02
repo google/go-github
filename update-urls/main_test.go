@@ -251,7 +251,7 @@ func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
 	return "", false
 }
 
-func (f *fakeDocCache) CacheDocFromInternet(url string) {} // no-op
+func (f *fakeDocCache) CacheDocFromInternet(url, filename string) {} // no-op
 
 // fakeFileRewriter implements FileRewriter.
 type fakeFileRewriter struct {

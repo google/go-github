@@ -13,6 +13,10 @@
 //   go generate ./...
 //   go test ./...
 //   go vet ./...
+//
+// When confronted with "PLEASE CHECK MANUALLY AND FIX", the problematic
+// URL needs to be debugged. To debug a specific file, run like this:
+//   go run ./update-urls/main.go -v -d enterprise_actions_runners.go
 package main
 
 import (
@@ -498,10 +502,10 @@ func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWr
 		endpointsByFilename[v.filename] = append(endpointsByFilename[v.filename], v)
 
 		for _, cmt := range v.enterpriseRefLines {
-			docCache.CacheDocFromInternet(cmt.Text)
+			docCache.CacheDocFromInternet(cmt.Text, v.filename)
 		}
 		for _, cmt := range v.stdRefLines {
-			docCache.CacheDocFromInternet(cmt.Text)
+			docCache.CacheDocFromInternet(cmt.Text, v.filename)
 		}
 
 		if v.httpMethod == "" && v.helperMethod != "" {
@@ -526,7 +530,7 @@ type documentCacheReader interface {
 }
 
 type documentCacheWriter interface {
-	CacheDocFromInternet(urlWithFragmentID string)
+	CacheDocFromInternet(urlWithFragmentID, filename string)
 }
 
 // documentCache implements documentCacheReader and documentCachWriter.
@@ -540,7 +544,7 @@ func (dc *documentCache) UrlByMethodAndPath(methodAndPath string) (string, bool)
 	return url, ok
 }
 
-func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
+func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string) {
 	if dc.apiDocs == nil {
 		dc.apiDocs = map[string]map[string][]*Endpoint{} // cached by URL, then mapped by web fragment identifier.
 		dc.urlByMethodAndPath = map[string]string{}
@@ -551,19 +555,11 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID string) {
 		return // already cached
 	}
 
-	// TODO: Enterprise URLs are currently causing problems - for example:
-	// GET https://docs.github.com/enterprise/v3/enterprise-admin/users/
-	// returns StatusCode=404
-	if strings.Contains(url, "enterprise") {
-		logf("Skipping troublesome Enterprise URL: %v", url)
-		return
-	}
-
 	logf("GET %q ...", url)
 	resp, err := http.Get(url)
 	check("Unable to get URL: %v: %v", url, err)
 	if resp.StatusCode != http.StatusOK {
-		log.Fatalf("url %v - StatusCode=%v", url, resp.StatusCode)
+		log.Fatalf("filename: %v - url %v - StatusCode=%v", filename, url, resp.StatusCode)
 	}
 
 	finalURL := resp.Request.URL.String()

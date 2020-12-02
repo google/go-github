@@ -51,7 +51,7 @@ type createPagesRequest struct {
 
 // EnablePages enables GitHub Pages for the named repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#create-a-github-pages-site
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-github-pages-site
 func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo string, pages *Pages) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
@@ -87,7 +87,7 @@ type PagesUpdate struct {
 
 // UpdatePages updates GitHub Pages for the named repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#update-information-about-a-github-pages-site
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-information-about-a-github-pages-site
 func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
@@ -106,7 +106,7 @@ func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo strin
 
 // DisablePages disables GitHub Pages for the named repo.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#delete-a-github-pages-site
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-github-pages-site
 func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -122,7 +122,7 @@ func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo stri
 
 // GetPagesInfo fetches information about a GitHub Pages site.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#get-a-github-pages-site
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-github-pages-site
 func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -141,7 +141,7 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 
 // ListPagesBuilds lists the builds for a GitHub Pages site.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#list-github-pages-builds
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-github-pages-builds
 func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
 	u, err := addOptions(u, opts)
@@ -165,7 +165,7 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 
 // GetLatestPagesBuild fetches the latest build information for a GitHub pages site.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#get-latest-pages-build
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-latest-pages-build
 func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/latest", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -184,7 +184,7 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 
 // GetPageBuild fetches the specific build information for a GitHub pages site.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#get-github-pages-build
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-github-pages-build
 func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo string, id int64) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/%v", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -203,7 +203,7 @@ func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo stri
 
 // RequestPageBuild requests a build of a GitHub Pages site without needing to push new commit.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos/#request-a-github-pages-build
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#request-a-github-pages-build
 func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
 	req, err := s.client.NewRequest("POST", u, nil)
