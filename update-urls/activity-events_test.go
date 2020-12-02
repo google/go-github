@@ -11,7 +11,7 @@ import (
 
 func newActivitiesEventsPipeline() *pipelineSetup {
 	return &pipelineSetup{
-		baseURL:              "https://docs.github.com/en/rest/reference/activity/events/",
+		baseURL:              "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/",
 		endpointsFromWebsite: activityEventsWant,
 		filename:             "activity_events.go",
 		serviceName:          "ActivityService",
@@ -197,7 +197,7 @@ var activityEventsTestWebPage = `
     <link
       rel="alternate"
       hreflang="en"
-      href="https://docs.github.com/en/rest/reference/activity"
+      href="https://docs.github.com/en/free-pro-team@latest/rest/reference/activity"
     />
   
     <link
@@ -276,7 +276,7 @@ var activityEventsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/overview" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Overview</a>
+          <a href="/en/free-pro-team@latest/rest/overview" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Overview</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -286,37 +286,37 @@ var activityEventsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/resources-in-the-rest-api" class="pl-4 pr-5 py-1">Resources in the REST API</a>
+          <a href="/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api" class="pl-4 pr-5 py-1">Resources in the REST API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/media-types" class="pl-4 pr-5 py-1">Media types</a>
+          <a href="/en/free-pro-team@latest/rest/overview/media-types" class="pl-4 pr-5 py-1">Media types</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/other-authentication-methods" class="pl-4 pr-5 py-1">Other authentication methods</a>
+          <a href="/en/free-pro-team@latest/rest/overview/other-authentication-methods" class="pl-4 pr-5 py-1">Other authentication methods</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/troubleshooting" class="pl-4 pr-5 py-1">Troubleshooting</a>
+          <a href="/en/free-pro-team@latest/rest/overview/troubleshooting" class="pl-4 pr-5 py-1">Troubleshooting</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/api-previews" class="pl-4 pr-5 py-1">API previews</a>
+          <a href="/en/free-pro-team@latest/rest/overview/api-previews" class="pl-4 pr-5 py-1">API previews</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/libraries" class="pl-4 pr-5 py-1">Libraries</a>
+          <a href="/en/free-pro-team@latest/rest/overview/libraries" class="pl-4 pr-5 py-1">Libraries</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/overview/endpoints-available-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Endpoints available for GitHub Apps</a>
+          <a href="/en/free-pro-team@latest/rest/overview/endpoints-available-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Endpoints available for GitHub Apps</a>
         </li>
         
       </ul>
@@ -330,7 +330,7 @@ var activityEventsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/reference" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Reference</a>
+          <a href="/en/free-pro-team@latest/rest/reference" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Reference</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -340,152 +340,152 @@ var activityEventsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
         </li>
         
         
         <li class="sidebar-article active is-current-page">
-          <a href="/en/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
+          <a href="/en/free-pro-team@latest/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
+          <a href="/en/free-pro-team@latest/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
+          <a href="/en/free-pro-team@latest/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
+          <a href="/en/free-pro-team@latest/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
+          <a href="/en/free-pro-team@latest/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
+          <a href="/en/free-pro-team@latest/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
+          <a href="/en/free-pro-team@latest/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
+          <a href="/en/free-pro-team@latest/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
+          <a href="/en/free-pro-team@latest/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
+          <a href="/en/free-pro-team@latest/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
+          <a href="/en/free-pro-team@latest/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
+          <a href="/en/free-pro-team@latest/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
+          <a href="/en/free-pro-team@latest/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
+          <a href="/en/free-pro-team@latest/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
+          <a href="/en/free-pro-team@latest/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
+          <a href="/en/free-pro-team@latest/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
+          <a href="/en/free-pro-team@latest/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
+          <a href="/en/free-pro-team@latest/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
+          <a href="/en/free-pro-team@latest/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
+          <a href="/en/free-pro-team@latest/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
+          <a href="/en/free-pro-team@latest/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
+          <a href="/en/free-pro-team@latest/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
+          <a href="/en/free-pro-team@latest/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
+          <a href="/en/free-pro-team@latest/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
+          <a href="/en/free-pro-team@latest/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
+          <a href="/en/free-pro-team@latest/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
         </li>
         
       </ul>
@@ -499,7 +499,7 @@ var activityEventsTestWebPage = `
     <details class="dropdown-withArrow details details-reset" open>
       <summary>
         <div class="d-flex flex-justify-between">
-          <a href="/en/rest/guides" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Guides</a>
+          <a href="/en/free-pro-team@latest/rest/guides" class="pl-4 pr-2 py-2 f6 text-uppercase d-block flex-auto mr-3">Guides</a>
           <svg xmlns="http://www.w3.org/2000/svg" class="octicon flex-shrink-0 arrow mr-3" style="margin-top:7px" viewBox="0 0 16 16" width="16" height="16"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7803 6.21967C13.0732 6.51256 13.0732 6.98744 12.7803 7.28033L8.53033 11.5303C8.23744 11.8232 7.76256 11.8232 7.46967 11.5303L3.21967 7.28033C2.92678 6.98744 2.92678 6.51256 3.21967 6.21967C3.51256 5.92678 3.98744 5.92678 4.28033 6.21967L8 9.93934L11.7197 6.21967C12.0126 5.92678 12.4874 5.92678 12.7803 6.21967Z"></path></svg>
         </div>
       </summary>
@@ -509,57 +509,57 @@ var activityEventsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-rest-api" class="pl-4 pr-5 py-1">Getting started with the REST API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-rest-api" class="pl-4 pr-5 py-1">Getting started with the REST API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/basics-of-authentication" class="pl-4 pr-5 py-1">Basics of authentication</a>
+          <a href="/en/free-pro-team@latest/rest/guides/basics-of-authentication" class="pl-4 pr-5 py-1">Basics of authentication</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/discovering-resources-for-a-user" class="pl-4 pr-5 py-1">Discovering resources for a user</a>
+          <a href="/en/free-pro-team@latest/rest/guides/discovering-resources-for-a-user" class="pl-4 pr-5 py-1">Discovering resources for a user</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/delivering-deployments" class="pl-4 pr-5 py-1">Delivering deployments</a>
+          <a href="/en/free-pro-team@latest/rest/guides/delivering-deployments" class="pl-4 pr-5 py-1">Delivering deployments</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/rendering-data-as-graphs" class="pl-4 pr-5 py-1">Rendering data as graphs</a>
+          <a href="/en/free-pro-team@latest/rest/guides/rendering-data-as-graphs" class="pl-4 pr-5 py-1">Rendering data as graphs</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/working-with-comments" class="pl-4 pr-5 py-1">Working with comments</a>
+          <a href="/en/free-pro-team@latest/rest/guides/working-with-comments" class="pl-4 pr-5 py-1">Working with comments</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/traversing-with-pagination" class="pl-4 pr-5 py-1">Traversing with pagination</a>
+          <a href="/en/free-pro-team@latest/rest/guides/traversing-with-pagination" class="pl-4 pr-5 py-1">Traversing with pagination</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/building-a-ci-server" class="pl-4 pr-5 py-1">Building a CI server</a>
+          <a href="/en/free-pro-team@latest/rest/guides/building-a-ci-server" class="pl-4 pr-5 py-1">Building a CI server</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/best-practices-for-integrators" class="pl-4 pr-5 py-1">Best practices for integrators</a>
+          <a href="/en/free-pro-team@latest/rest/guides/best-practices-for-integrators" class="pl-4 pr-5 py-1">Best practices for integrators</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-git-database-api" class="pl-4 pr-5 py-1">Getting started with the Git Database API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-git-database-api" class="pl-4 pr-5 py-1">Getting started with the Git Database API</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/rest/guides/getting-started-with-the-checks-api" class="pl-4 pr-5 py-1 pb-2">Getting started with the Checks API</a>
+          <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-checks-api" class="pl-4 pr-5 py-1 pb-2">Getting started with the Checks API</a>
         </li>
         
       </ul>
@@ -701,7 +701,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/en/rest/reference/activity"
+                            href="/en/free-pro-team@latest/rest/reference/activity"
                             class="d-block py-2 no-underline active link-gray"
                             style="white-space: nowrap"
                           >
@@ -814,7 +814,7 @@ var activityEventsTestWebPage = `
     <div class="nav-dropdown position-md-absolute bg-white rounded-1 px-4 py-3 top-7 box-shadow-large" style="z-index: 6; width: 210px;">
       
       <a
-      href="/en/rest/reference/activity"
+      href="/en/free-pro-team@latest/rest/reference/activity"
       class="d-block py-2 link-blue active"
       >GitHub.com</a>
       
@@ -844,10 +844,10 @@ var activityEventsTestWebPage = `
   <a title="product: REST API" href="/en/rest" class="d-inline-block ">
     REST API</a>
   
-  <a title="category: Reference" href="/en/rest/reference" class="d-inline-block ">
+  <a title="category: Reference" href="/en/free-pro-team@latest/rest/reference" class="d-inline-block ">
     Reference</a>
   
-  <a title="article: Activity" href="/en/rest/reference/activity" class="d-inline-block text-gray-light">
+  <a title="article: Activity" href="/en/free-pro-team@latest/rest/reference/activity" class="d-inline-block text-gray-light">
     Activity</a>
   
 </nav>
@@ -1170,7 +1170,7 @@ var activityEventsTestWebPage = `
       
       <h2 id="events"><a href="#events">Events</a></h2>
 <p>The Events API is a read-only API to the GitHub events. These events power the various activity streams on the site.</p>
-<p>The Events API can return different types of events triggered by activity on GitHub. For more information about the specific events that you can receive from the Events API, see &quot;<a href="/en/developers/webhooks-and-events/github-event-types">GitHub Event types</a>.&quot; An events API for repository issues is also available. For more information, see the &quot;<a href="/en/rest/reference/issues#events">Issue Events API</a>.&quot;</p>
+<p>The Events API can return different types of events triggered by activity on GitHub. For more information about the specific events that you can receive from the Events API, see &quot;<a href="/en/developers/webhooks-and-events/github-event-types">GitHub Event types</a>.&quot; An events API for repository issues is also available. For more information, see the &quot;<a href="/en/free-pro-team@latest/rest/reference/issues#events">Issue Events API</a>.&quot;</p>
 <p>Events are optimized for polling with the &quot;ETag&quot; header. If no new events have been triggered, you will see a &quot;304 Not Modified&quot; response, and your current rate limit will be untouched. There is also an &quot;X-Poll-Interval&quot; header that specifies how often (in seconds) you are allowed to poll. In times of high server load, the time may increase. Please obey the header.</p>
 <pre><code class="hljs language-shell">$ curl -I https://api.github.com/users/tater/events
 &gt; HTTP/1.1 200 OK
@@ -1182,7 +1182,7 @@ $ curl -I https://api.github.com/users/tater/events \
 $    -H &apos;If-None-Match: &quot;a18c3bded88eb5dbb5c849a489412bf3&quot;&apos;
 &gt; HTTP/1.1 304 Not Modified
 &gt; X-Poll-Interval: 60</code></pre>
-<p>Events support pagination, however the <code>per_page</code> option is unsupported. The fixed page size is 30 items. Fetching up to ten pages is supported, for a total of 300 events. For information, see &quot;<a href="/en/rest/guides/traversing-with-pagination">Traversing with pagination</a>.&quot;</p>
+<p>Events support pagination, however the <code>per_page</code> option is unsupported. The fixed page size is 30 items. Fetching up to ten pages is supported, for a total of 300 events. For information, see &quot;<a href="/en/free-pro-team@latest/rest/guides/traversing-with-pagination">Traversing with pagination</a>.&quot;</p>
 <p>Only events created within the past 90 days will be included in timelines. Events older than 90 days will not be included (even if the total number of events in the timeline is less than 300).</p>
   <div>
   <div>
@@ -3736,12 +3736,12 @@ $    -H &quot;If-Modified-Since: Thu, 25 Oct 2012 15:16:27 GMT&quot;
 works</a> on GitHub. Many API
 client applications may be using the original &quot;watcher&quot; endpoints for accessing
 this data. You can now start using the &quot;star&quot; endpoints instead (described
-below). For more information, see the <a href="https://developer.github.com/changes/2012-09-05-watcher-api/">Watcher API Change post</a> and the &quot;<a href="/en/rest/reference/activity#watching">Repository Watching API</a>.&quot;</p>
+below). For more information, see the <a href="https://developer.github.com/changes/2012-09-05-watcher-api/">Watcher API Change post</a> and the &quot;<a href="/en/free-pro-team@latest/rest/reference/activity#watching">Repository Watching API</a>.&quot;</p>
 <h3 id="custom-media-types-for-starring"><a href="#custom-media-types-for-starring">Custom media types for starring</a></h3>
 <p>There is one supported custom media type for the Starring REST API. When you use this custom media type, you will receive a response with the <code>starred_at</code> timestamp property that indicates the time the star was created. The response also has a second property that includes the resource that is returned when the custom media type is not included. The property that contains the resource will be either <code>user</code> or <code>repo</code>.</p>
 <pre><code>application/vnd.github.v3.star+json
 </code></pre>
-<p>For more information about media types, see &quot;<a href="/en/rest/overview/media-types">Custom media types</a>.&quot;</p>
+<p>For more information about media types, see &quot;<a href="/en/free-pro-team@latest/rest/overview/media-types">Custom media types</a>.&quot;</p>
   <div>
   <div>
     <h3 id="list-stargazers" class="pt-3">
@@ -4674,7 +4674,7 @@ below). For more information, see the <a href="https://developer.github.com/chan
   <hr>
 </div>
 <h2 id="watching"><a href="#watching">Watching</a></h2>
-<p>Watching a repository registers the user to receive notifications on new discussions, as well as events in the user&apos;s activity feed. For simple repository bookmarks, see &quot;<a href="/en/rest/reference/activity#starring">Repository starring</a>.&quot;</p>
+<p>Watching a repository registers the user to receive notifications on new discussions, as well as events in the user&apos;s activity feed. For simple repository bookmarks, see &quot;<a href="/en/free-pro-team@latest/rest/reference/activity#starring">Repository starring</a>.&quot;</p>
   <div>
   <div>
     <h3 id="list-watchers" class="pt-3">
@@ -5881,7 +5881,7 @@ import (
 
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
 	u, err := addOptions("events", opts)
 	if err != nil {
@@ -5904,7 +5904,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 
 // ListRepositoryEvents lists events for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-repository-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -5931,7 +5931,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListEventsForRepoNetwork lists public events for a network of repositories.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -5955,7 +5955,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 
 // ListEventsForOrganization lists public events for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-an-organization
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-for-an-organization
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	u, err := addOptions(u, opts)
@@ -5980,8 +5980,8 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -6011,8 +6011,8 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-received-by-a-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -6042,7 +6042,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 // ListUserEventsForOrganization provides the user’s organization dashboard. You
 // must be authenticated as the user to view this.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-an-organization
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-events-for-an-organization
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
 	u, err := addOptions(u, opts)
@@ -6079,7 +6079,7 @@ import (
 
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
 	u, err := addOptions("events", opts)
 	if err != nil {
@@ -6102,7 +6102,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 
 // ListRepositoryEvents lists events for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-repository-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-repository-events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -6129,7 +6129,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListEventsForRepoNetwork lists public events for a network of repositories.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-for-a-network-of-repositories
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("networks/%v/%v/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -6153,7 +6153,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 
 // ListEventsForOrganization lists public events for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-organization-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-organization-events
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/events", org)
 	u, err := addOptions(u, opts)
@@ -6178,8 +6178,8 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-for-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-for-a-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-for-a-user
 func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -6209,8 +6209,8 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-public-events-received-by-a-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events-received-by-a-user
 func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error) {
 	var u string
 	if publicOnly {
@@ -6240,7 +6240,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 // ListUserEventsForOrganization provides the user’s organization dashboard. You
 // must be authenticated as the user to view this.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/activity/events/#list-organization-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-organization-events-for-the-authenticated-user
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {
 	u := fmt.Sprintf("users/%v/events/orgs/%v", user, org)
 	u, err := addOptions(u, opts)

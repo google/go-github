@@ -220,3 +220,99 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
 	}
 }
+
+func TestActionsService_EnableWorkflowByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/enable", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		if r.Body != http.NoBody {
+			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
+		}
+	})
+
+	_, err := client.Actions.EnableWorkflowByID(context.Background(), "o", "r", 72844)
+	if err != nil {
+		t.Errorf("Actions.EnableWorkflowByID returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, err = client.Actions.EnableWorkflowByID(context.Background(), "o", "r", 72844)
+	if err == nil {
+		t.Error("client.BaseURL.Path='' EnableWorkflowByID err = nil, want error")
+	}
+}
+
+func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/enable", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		if r.Body != http.NoBody {
+			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
+		}
+	})
+
+	_, err := client.Actions.EnableWorkflowByFileName(context.Background(), "o", "r", "main.yml")
+	if err != nil {
+		t.Errorf("Actions.EnableWorkflowByFilename returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, err = client.Actions.EnableWorkflowByFileName(context.Background(), "o", "r", "main.yml")
+	if err == nil {
+		t.Error("client.BaseURL.Path='' EnableWorkflowByFilename err = nil, want error")
+	}
+}
+
+func TestActionsService_DisableWorkflowByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/disable", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		if r.Body != http.NoBody {
+			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
+		}
+	})
+
+	_, err := client.Actions.DisableWorkflowByID(context.Background(), "o", "r", 72844)
+	if err != nil {
+		t.Errorf("Actions.DisableWorkflowByID returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, err = client.Actions.DisableWorkflowByID(context.Background(), "o", "r", 72844)
+	if err == nil {
+		t.Error("client.BaseURL.Path='' DisableWorkflowByID err = nil, want error")
+	}
+}
+
+func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/disable", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		if r.Body != http.NoBody {
+			t.Errorf("Request body = %+v, want %+v", r.Body, http.NoBody)
+		}
+	})
+
+	_, err := client.Actions.DisableWorkflowByFileName(context.Background(), "o", "r", "main.yml")
+	if err != nil {
+		t.Errorf("Actions.DisableWorkflowByFileName returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, err = client.Actions.DisableWorkflowByFileName(context.Background(), "o", "r", "main.yml")
+	if err == nil {
+		t.Error("client.BaseURL.Path='' DisableWorkflowByFileName err = nil, want error")
+	}
+}

@@ -5156,6 +5156,22 @@ func (i *IssueEvent) GetRename() *Rename {
 	return i.Rename
 }
 
+// GetRequestedReviewer returns the RequestedReviewer field.
+func (i *IssueEvent) GetRequestedReviewer() *User {
+	if i == nil {
+		return nil
+	}
+	return i.RequestedReviewer
+}
+
+// GetReviewRequester returns the ReviewRequester field.
+func (i *IssueEvent) GetReviewRequester() *User {
+	if i == nil {
+		return nil
+	}
+	return i.ReviewRequester
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (i *IssueEvent) GetURL() string {
 	if i == nil || i.URL == nil {
@@ -12618,6 +12634,30 @@ func (r *RunnerApplicationDownload) GetOS() string {
 		return ""
 	}
 	return *r.OS
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RunnerLabels) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RunnerLabels) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (r *RunnerLabels) GetType() string {
+	if r == nil || r.Type == nil {
+		return ""
+	}
+	return *r.Type
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

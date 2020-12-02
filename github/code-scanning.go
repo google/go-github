@@ -15,7 +15,7 @@ import (
 // CodeScanningService handles communication with the code scanning related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
 type Alert struct {
@@ -69,7 +69,7 @@ type AlertListOptions struct {
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning/#list-code-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#list-code-scanning-alerts-for-a-repository
 func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -98,7 +98,7 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning/#get-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#get-a-code-scanning-alert
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 

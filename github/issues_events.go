@@ -65,21 +65,27 @@ type IssueEvent struct {
 	//    review_dismissed
 	//       The review was dismissed and `DismissedReview` will be populated below.
 	//
+	//    review_requested, review_request_removed
+	//       The Actor requested or removed the request for a review.
+	//       RequestedReviewer and ReviewRequester will be populated below.
+	//
 	Event *string `json:"event,omitempty"`
 
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Issue     *Issue     `json:"issue,omitempty"`
 
 	// Only present on certain events; see above.
-	Assignee        *User            `json:"assignee,omitempty"`
-	Assigner        *User            `json:"assigner,omitempty"`
-	CommitID        *string          `json:"commit_id,omitempty"`
-	Milestone       *Milestone       `json:"milestone,omitempty"`
-	Label           *Label           `json:"label,omitempty"`
-	Rename          *Rename          `json:"rename,omitempty"`
-	LockReason      *string          `json:"lock_reason,omitempty"`
-	ProjectCard     *ProjectCard     `json:"project_card,omitempty"`
-	DismissedReview *DismissedReview `json:"dismissed_review,omitempty"`
+	Assignee          *User            `json:"assignee,omitempty"`
+	Assigner          *User            `json:"assigner,omitempty"`
+	CommitID          *string          `json:"commit_id,omitempty"`
+	Milestone         *Milestone       `json:"milestone,omitempty"`
+	Label             *Label           `json:"label,omitempty"`
+	Rename            *Rename          `json:"rename,omitempty"`
+	LockReason        *string          `json:"lock_reason,omitempty"`
+	ProjectCard       *ProjectCard     `json:"project_card,omitempty"`
+	DismissedReview   *DismissedReview `json:"dismissed_review,omitempty"`
+	RequestedReviewer *User            `json:"requested_reviewer,omitempty"`
+	ReviewRequester   *User            `json:"review_requester,omitempty"`
 }
 
 // DismissedReview represents details for 'dismissed_review' events.
@@ -94,7 +100,7 @@ type DismissedReview struct {
 
 // ListIssueEvents lists events for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-issue-events
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-events
 func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/events", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -120,7 +126,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 
 // ListRepositoryEvents lists events for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#list-issue-events-for-a-repository
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-events-for-a-repository
 func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
 	u, err := addOptions(u, opts)
@@ -144,7 +150,7 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 
 // GetEvent returns the specified issue event.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/issues/#get-an-issue-event
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-an-issue-event
 func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events/%v", owner, repo, id)
 
