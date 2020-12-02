@@ -191,7 +191,6 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 			"id": 1,
                         "name":"testUpdateCheckRun",
 			"status": "completed",            
-			"status": "completed",
 			"conclusion": "neutral",
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z",
