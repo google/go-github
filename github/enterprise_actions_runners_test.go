@@ -23,7 +23,8 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Enterprise.CreateRegistrationToken(context.Background(), "e")
+	ctx := context.Background()
+	token, _, err := client.Enterprise.CreateRegistrationToken(ctx, "e")
 	if err != nil {
 		t.Errorf("Enterprise.CreateRegistrationToken returned error: %v", err)
 	}
@@ -33,6 +34,39 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 			123000000, time.UTC)}}
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned %+v, want %+v", token, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Enterprise.CreateRegistrationToken(ctx, "\n")
+	if err == nil {
+		t.Error("bad options CreateRegistrationToken err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Enterprise.CreateRegistrationToken(ctx, "e")
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' CreateRegistrationToken = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' CreateRegistrationToken resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' CreateRegistrationToken err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Enterprise.CreateRegistrationToken(ctx, "e")
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now CreateRegistrationToken = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now CreateRegistrationToken resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now CreateRegistrationToken err = nil, want error")
 	}
 }
 
@@ -47,7 +81,8 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	runners, _, err := client.Enterprise.ListRunners(context.Background(), "e", opts)
+	ctx := context.Background()
+	runners, _, err := client.Enterprise.ListRunners(ctx, "e", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListRunners returned error: %v", err)
 	}
@@ -61,5 +96,38 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	}
 	if !reflect.DeepEqual(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Enterprise.ListRunners(ctx, "\n", &ListOptions{})
+	if err == nil {
+		t.Error("bad options ListRunners err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Enterprise.ListRunners(ctx, "e", nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListRunners = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListRunners resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListRunners err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Enterprise.ListRunners(ctx, "e", nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListRunners = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListRunners resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListRunners err = nil, want error")
 	}
 }
