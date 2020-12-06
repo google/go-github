@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
@@ -27,7 +28,8 @@ func TestAppsService_ListRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	repositories, _, err := client.Apps.ListRepos(context.Background(), opt)
+	ctx := context.Background()
+	repositories, _, err := client.Apps.ListRepos(ctx, opt)
 	if err != nil {
 		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
@@ -35,6 +37,33 @@ func TestAppsService_ListRepos(t *testing.T) {
 	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Apps.ListRepos(ctx, nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListRepos = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListRepos resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListRepos err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Apps.ListRepos(ctx, nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListRepos = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListRepos resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListRepos err = nil, want error")
 	}
 }
 
@@ -52,7 +81,8 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	repositories, _, err := client.Apps.ListUserRepos(context.Background(), 1, opt)
+	ctx := context.Background()
+	repositories, _, err := client.Apps.ListUserRepos(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Apps.ListUserRepos returned error: %v", err)
 	}
@@ -60,6 +90,39 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	want := []*Repository{{ID: Int64(1)}}
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Apps.ListUserRepos(ctx, -1, &ListOptions{})
+	if err == nil {
+		t.Error("bad options ListUserRepos err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Apps.ListUserRepos(ctx, 1, nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListUserRepos = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListUserRepos resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListUserRepos err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Apps.ListUserRepos(ctx, 1, nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListUserRepos = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListUserRepos resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListUserRepos err = nil, want error")
 	}
 }
 
@@ -72,7 +135,8 @@ func TestAppsService_AddRepository(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
-	repo, _, err := client.Apps.AddRepository(context.Background(), 1, 1)
+	ctx := context.Background()
+	repo, _, err := client.Apps.AddRepository(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Apps.AddRepository returned error: %v", err)
 	}
@@ -80,6 +144,33 @@ func TestAppsService_AddRepository(t *testing.T) {
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Apps.AddRepository(ctx, 1, 1)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' AddRepository = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' AddRepository resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' AddRepository err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Apps.AddRepository(ctx, 1, 1)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now AddRepository = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now AddRepository resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now AddRepository err = nil, want error")
 	}
 }
 
@@ -92,9 +183,31 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.RemoveRepository(context.Background(), 1, 1)
+	ctx := context.Background()
+	_, err := client.Apps.RemoveRepository(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Apps.RemoveRepository returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	resp, err := client.Apps.RemoveRepository(ctx, 1, 1)
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' RemoveRepository resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' RemoveRepository err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	resp, err = client.Apps.RemoveRepository(ctx, 1, 1)
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now RemoveRepository resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now RemoveRepository err = nil, want error")
 	}
 }
 
@@ -107,8 +220,30 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.RevokeInstallationToken(context.Background())
+	ctx := context.Background()
+	_, err := client.Apps.RevokeInstallationToken(ctx)
 	if err != nil {
 		t.Errorf("Apps.RevokeInstallationToken returned error: %v", err)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	resp, err := client.Apps.RevokeInstallationToken(ctx)
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' RevokeInstallationToken resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' RevokeInstallationToken err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	resp, err = client.Apps.RevokeInstallationToken(ctx)
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now RevokeInstallationToken resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now RevokeInstallationToken err = nil, want error")
 	}
 }
