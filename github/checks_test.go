@@ -29,7 +29,8 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 			"started_at": "2018-05-04T01:14:52Z",
 			"completed_at": "2018-05-04T01:14:52Z"}`)
 	})
-	checkRun, _, err := client.Checks.GetCheckRun(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	checkRun, _, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.GetCheckRun return error: %v", err)
 	}
@@ -46,6 +47,26 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checkRun, want) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.GetCheckRun(ctx, "\n", "\n", -1)
+	if err == nil {
+		t.Error("bad options GetCheckRun err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -65,7 +86,8 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
                         "after": "deadbeefa",
 			"status": "completed"}`)
 	})
-	checkSuite, _, err := client.Checks.GetCheckSuite(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	checkSuite, _, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.GetCheckSuite return error: %v", err)
 	}
@@ -80,6 +102,26 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checkSuite, want) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.GetCheckSuite(ctx, "\n", "\n", -1)
+	if err == nil {
+		t.Error("bad options GetCheckSuite err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -113,7 +155,8 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 		},
 	}
 
-	checkRun, _, err := client.Checks.CreateCheckRun(context.Background(), "o", "r", checkRunOpt)
+	ctx := context.Background()
+	checkRun, _, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckRun return error: %v", err)
 	}
@@ -132,6 +175,26 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checkRun, want) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.CreateCheckRun(ctx, "\n", "\n", CreateCheckRunOptions{})
+	if err == nil {
+		t.Error("bad options CreateCheckRun err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -158,7 +221,8 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		)
 	})
 
-	checkRunAnnotations, _, err := client.Checks.ListCheckRunAnnotations(context.Background(), "o", "r", 1, &ListOptions{Page: 1})
+	ctx := context.Background()
+	checkRunAnnotations, _, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, &ListOptions{Page: 1})
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunAnnotations return error: %v", err)
 	}
@@ -177,6 +241,39 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 
 	if !reflect.DeepEqual(checkRunAnnotations, want) {
 		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.ListCheckRunAnnotations(ctx, "\n", "\n", -1, &ListOptions{})
+	if err == nil {
+		t.Error("bad options ListCheckRunAnnotations err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -208,7 +305,8 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		},
 	}
 
-	checkRun, _, err := client.Checks.UpdateCheckRun(context.Background(), "o", "r", 1, updateCheckRunOpt)
+	ctx := context.Background()
+	checkRun, _, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
 	if err != nil {
 		t.Errorf("Checks.UpdateCheckRun return error: %v", err)
 	}
@@ -228,6 +326,26 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	}
 	if !reflect.DeepEqual(checkRun, want) {
 		t.Errorf("Checks.UpdateCheckRun return %+v, want %+v", checkRun, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.UpdateCheckRun(ctx, "\n", "\n", -1, UpdateCheckRunOptions{})
+	if err == nil {
+		t.Error("bad options UpdateCheckRun err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -261,7 +379,8 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		Filter:      String("all"),
 		ListOptions: ListOptions{Page: 1},
 	}
-	checkRuns, _, err := client.Checks.ListCheckRunsForRef(context.Background(), "o", "r", "master", opt)
+	ctx := context.Background()
+	checkRuns, _, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunsForRef return error: %v", err)
 	}
@@ -280,6 +399,39 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 
 	if !reflect.DeepEqual(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsForRef returned %+v, want %+v", checkRuns, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.ListCheckRunsForRef(ctx, "\n", "\n", "\n", &ListCheckRunsOptions{})
+	if err == nil {
+		t.Error("bad options ListCheckRunsForRef err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -313,7 +465,8 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		Filter:      String("all"),
 		ListOptions: ListOptions{Page: 1},
 	}
-	checkRuns, _, err := client.Checks.ListCheckRunsCheckSuite(context.Background(), "o", "r", 1, opt)
+	ctx := context.Background()
+	checkRuns, _, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckRunsCheckSuite return error: %v", err)
 	}
@@ -332,6 +485,39 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 
 	if !reflect.DeepEqual(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.ListCheckRunsCheckSuite(ctx, "\n", "\n", -1, &ListCheckRunsOptions{})
+	if err == nil {
+		t.Error("bad options ListCheckRunsCheckSuite err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -364,7 +550,8 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		AppID:       Int(2),
 		ListOptions: ListOptions{Page: 1},
 	}
-	checkSuites, _, err := client.Checks.ListCheckSuitesForRef(context.Background(), "o", "r", "master", opt)
+	ctx := context.Background()
+	checkSuites, _, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
 	if err != nil {
 		t.Errorf("Checks.ListCheckSuitesForRef return error: %v", err)
 	}
@@ -384,6 +571,39 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	if !reflect.DeepEqual(checkSuites, want) {
 		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
 	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.ListCheckSuitesForRef(ctx, "\n", "\n", "\n", &ListCheckSuiteOptions{})
+	if err == nil {
+		t.Error("bad options ListCheckSuitesForRef err = nil, want error")
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	got, resp, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
+	if got != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+	}
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+	}
+	if err == nil {
+		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err = client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+	}
 }
 
 func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
@@ -401,7 +621,8 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		Setting: Bool(false),
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
-	prefResults, _, err := client.Checks.SetCheckSuitePreferences(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	prefResults, _, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Checks.SetCheckSuitePreferences return error: %v", err)
 	}
@@ -415,6 +636,26 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 
 	if !reflect.DeepEqual(prefResults, want) {
 		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.SetCheckSuitePreferences(ctx, "\n", "\n", CheckSuitePreferenceOptions{})
+	if err == nil {
+		t.Error("bad options SetCheckSuitePreferences err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
 	}
 }
 
@@ -440,7 +681,8 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		HeadBranch: String("master"),
 	}
 
-	checkSuite, _, err := client.Checks.CreateCheckSuite(context.Background(), "o", "r", checkSuiteOpt)
+	ctx := context.Background()
+	checkSuite, _, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
 	if err != nil {
 		t.Errorf("Checks.CreateCheckSuite return error: %v", err)
 	}
@@ -457,6 +699,26 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	if !reflect.DeepEqual(checkSuite, want) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
+
+	// Test addOptions failure
+	_, _, err = client.Checks.CreateCheckSuite(ctx, "\n", "\n", CreateCheckSuiteOptions{})
+	if err == nil {
+		t.Error("bad options CreateCheckSuite err = nil, want error")
+	}
+
+	// Test s.client.Do failure
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
+	if got != nil {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+	}
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+	}
+	if err == nil {
+		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+	}
 }
 
 func TestChecksService_ReRequestCheckSuite(t *testing.T) {
@@ -468,12 +730,19 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 
 		w.WriteHeader(http.StatusCreated)
 	})
-	resp, err := client.Checks.ReRequestCheckSuite(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	resp, err := client.Checks.ReRequestCheckSuite(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
 	}
 	if got, want := resp.StatusCode, http.StatusCreated; got != want {
 		t.Errorf("Checks.ReRequestCheckSuite = %v, want %v", got, want)
+	}
+
+	// Test addOptions failure
+	_, err = client.Checks.ReRequestCheckSuite(ctx, "\n", "\n", 1)
+	if err == nil {
+		t.Error("bad options ReRequestCheckSuite err = nil, want error")
 	}
 }
 
