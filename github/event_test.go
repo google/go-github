@@ -17,7 +17,9 @@ func TestPayload_Panic(t *testing.T) {
 		}
 	}()
 
-	e := &Event{}
+	name := "UserEvent"
+	body := json.RawMessage("[") // bogus JSON
+	e := &Event{Type: &name, RawPayload: &body}
 	e.Payload()
 }
 
