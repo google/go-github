@@ -117,7 +117,8 @@ func TestTeamsService_ListComments(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handleFunc)
 
-	commentsByID, _, err := client.Teams.ListCommentsByID(context.Background(), 1, 2, 3,
+	ctx := context.Background()
+	commentsByID, _, err := client.Teams.ListCommentsByID(ctx, 1, 2, 3,
 		&DiscussionCommentListOptions{Direction: "desc"})
 	if err != nil {
 		t.Errorf("Teams.ListCommentsByID returned error: %v", err)
@@ -130,7 +131,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "")
 	mux.HandleFunc(e, handleFunc)
 
-	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(context.Background(), "a", "b", 3,
+	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(ctx, "a", "b", 3,
 		&DiscussionCommentListOptions{Direction: "desc"})
 	if err != nil {
 		t.Errorf("Teams.ListCommentsBySlug returned error: %v", err)
@@ -154,7 +155,8 @@ func TestTeamsService_GetComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentByID, _, err := client.Teams.GetCommentByID(context.Background(), 1, 2, 3, 4)
+	ctx := context.Background()
+	commentByID, _, err := client.Teams.GetCommentByID(ctx, 1, 2, 3, 4)
 	if err != nil {
 		t.Errorf("Teams.GetCommentByID returned error: %v", err)
 	}
@@ -166,7 +168,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentBySlug, _, err := client.Teams.GetCommentBySlug(context.Background(), "a", "b", 3, 4)
+	commentBySlug, _, err := client.Teams.GetCommentBySlug(ctx, "a", "b", 3, 4)
 	if err != nil {
 		t.Errorf("Teams.GetCommentBySlug returned error: %v", err)
 	}
@@ -199,7 +201,8 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentByID, _, err := client.Teams.CreateCommentByID(context.Background(), 1, 2, 3, input)
+	ctx := context.Background()
+	commentByID, _, err := client.Teams.CreateCommentByID(ctx, 1, 2, 3, input)
 	if err != nil {
 		t.Errorf("Teams.CreateCommentByID returned error: %v", err)
 	}
@@ -211,7 +214,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentBySlug, _, err := client.Teams.CreateCommentBySlug(context.Background(), "a", "b", 3, input)
+	commentBySlug, _, err := client.Teams.CreateCommentBySlug(ctx, "a", "b", 3, input)
 	if err != nil {
 		t.Errorf("Teams.CreateCommentBySlug returned error: %v", err)
 	}
@@ -242,7 +245,8 @@ func TestTeamsService_EditComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentByID, _, err := client.Teams.EditCommentByID(context.Background(), 1, 2, 3, 4, input)
+	ctx := context.Background()
+	commentByID, _, err := client.Teams.EditCommentByID(ctx, 1, 2, 3, 4, input)
 	if err != nil {
 		t.Errorf("Teams.EditCommentByID returned error: %v", err)
 	}
@@ -254,7 +258,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	commentBySlug, _, err := client.Teams.EditCommentBySlug(context.Background(), "a", "b", 3, 4, input)
+	commentBySlug, _, err := client.Teams.EditCommentBySlug(ctx, "a", "b", 3, 4, input)
 	if err != nil {
 		t.Errorf("Teams.EditCommentBySlug returned error: %v", err)
 	}
@@ -275,7 +279,8 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	e := tdcEndpointByID("1", "2", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	_, err := client.Teams.DeleteCommentByID(context.Background(), 1, 2, 3, 4)
+	ctx := context.Background()
+	_, err := client.Teams.DeleteCommentByID(ctx, 1, 2, 3, 4)
 	if err != nil {
 		t.Errorf("Teams.DeleteCommentByID returned error: %v", err)
 	}
@@ -283,7 +288,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	e = tdcEndpointBySlug("a", "b", "3", "4")
 	mux.HandleFunc(e, handlerFunc)
 
-	_, err = client.Teams.DeleteCommentBySlug(context.Background(), "a", "b", 3, 4)
+	_, err = client.Teams.DeleteCommentBySlug(ctx, "a", "b", 3, 4)
 	if err != nil {
 		t.Errorf("Teams.DeleteCommentBySlug returned error: %v", err)
 	}

@@ -42,7 +42,8 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
-	page, _, err := client.Repositories.EnablePages(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	page, _, err := client.Repositories.EnablePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
@@ -76,7 +77,8 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 		fmt.Fprint(w, `{"cname":"www.my-domain.com","source":"gh-pages"}`)
 	})
 
-	_, err := client.Repositories.UpdatePages(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	_, err := client.Repositories.UpdatePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
 	}
@@ -104,7 +106,8 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 		fmt.Fprint(w, `{"cname":null,"source":"gh-pages"}`)
 	})
 
-	_, err := client.Repositories.UpdatePages(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	_, err := client.Repositories.UpdatePages(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
 	}
@@ -119,7 +122,8 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 	})
 
-	_, err := client.Repositories.DisablePages(context.Background(), "o", "r")
+	ctx := context.Background()
+	_, err := client.Repositories.DisablePages(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.DisablePages returned error: %v", err)
 	}
@@ -134,7 +138,8 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h"}`)
 	})
 
-	page, _, err := client.Repositories.GetPagesInfo(context.Background(), "o", "r")
+	ctx := context.Background()
+	page, _, err := client.Repositories.GetPagesInfo(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
@@ -154,7 +159,8 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		fmt.Fprint(w, `[{"url":"u","status":"s","commit":"c"}]`)
 	})
 
-	pages, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", nil)
+	ctx := context.Background()
+	pages, _, err := client.Repositories.ListPagesBuilds(ctx, "o", "r", nil)
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
@@ -177,7 +183,8 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	_, _, err := client.Repositories.ListPagesBuilds(context.Background(), "o", "r", &ListOptions{Page: 2})
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListPagesBuilds(ctx, "o", "r", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
@@ -192,7 +199,8 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
 	})
 
-	build, _, err := client.Repositories.GetLatestPagesBuild(context.Background(), "o", "r")
+	ctx := context.Background()
+	build, _, err := client.Repositories.GetLatestPagesBuild(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetLatestPagesBuild returned error: %v", err)
 	}
@@ -212,7 +220,8 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s","commit":"c"}`)
 	})
 
-	build, _, err := client.Repositories.GetPageBuild(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	build, _, err := client.Repositories.GetPageBuild(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetPageBuild returned error: %v", err)
 	}
@@ -232,7 +241,8 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u","status":"s"}`)
 	})
 
-	build, _, err := client.Repositories.RequestPageBuild(context.Background(), "o", "r")
+	ctx := context.Background()
+	build, _, err := client.Repositories.RequestPageBuild(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.RequestPageBuild returned error: %v", err)
 	}

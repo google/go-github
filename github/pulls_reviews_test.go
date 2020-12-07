@@ -109,7 +109,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	reviews, _, err := client.PullRequests.ListReviews(context.Background(), "o", "r", 1, opt)
+	ctx := context.Background()
+	reviews, _, err := client.PullRequests.ListReviews(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviews returned error: %v", err)
 	}
@@ -127,7 +128,8 @@ func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.ListReviews(context.Background(), "%", "r", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.ListReviews(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -140,7 +142,8 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.GetReview(context.Background(), "o", "r", 1, 1)
+	ctx := context.Background()
+	review, _, err := client.PullRequests.GetReview(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
@@ -155,7 +158,8 @@ func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.GetReview(context.Background(), "%", "r", 1, 1)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.GetReview(ctx, "%", "r", 1, 1)
 	testURLParseError(t, err)
 }
 
@@ -168,7 +172,8 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.DeletePendingReview(context.Background(), "o", "r", 1, 1)
+	ctx := context.Background()
+	review, _, err := client.PullRequests.DeletePendingReview(ctx, "o", "r", 1, 1)
 	if err != nil {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
 	}
@@ -183,7 +188,8 @@ func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.DeletePendingReview(context.Background(), "%", "r", 1, 1)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.DeletePendingReview(ctx, "%", "r", 1, 1)
 	testURLParseError(t, err)
 }
 
@@ -196,7 +202,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	comments, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1, nil)
+	ctx := context.Background()
+	comments, _, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, nil)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}
@@ -222,7 +229,8 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 
-	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "o", "r", 1, 1, &ListOptions{Page: 2})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}
@@ -347,7 +355,8 @@ func TestPullRequestsService_ListReviewComments_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.ListReviewComments(context.Background(), "%", "r", 1, 1, nil)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.ListReviewComments(ctx, "%", "r", 1, 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -373,7 +382,8 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.CreateReview(context.Background(), "o", "r", 1, input)
+	ctx := context.Background()
+	review, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
 	}
@@ -388,7 +398,8 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.CreateReview(context.Background(), "%", "r", 1, &PullRequestReviewRequest{})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.CreateReview(ctx, "%", "r", 1, &PullRequestReviewRequest{})
 	testURLParseError(t, err)
 }
 
@@ -401,7 +412,8 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 
-	got, _, err := client.PullRequests.UpdateReview(context.Background(), "o", "r", 1, 1, "updated_body")
+	ctx := context.Background()
+	got, _, err := client.PullRequests.UpdateReview(ctx, "o", "r", 1, 1, "updated_body")
 	if err != nil {
 		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
 	}
@@ -433,7 +445,8 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.SubmitReview(context.Background(), "o", "r", 1, 1, input)
+	ctx := context.Background()
+	review, _, err := client.PullRequests.SubmitReview(ctx, "o", "r", 1, 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
 	}
@@ -448,7 +461,8 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.SubmitReview(context.Background(), "%", "r", 1, 1, &PullRequestReviewRequest{})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, &PullRequestReviewRequest{})
 	testURLParseError(t, err)
 }
 
@@ -470,7 +484,8 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	review, _, err := client.PullRequests.DismissReview(context.Background(), "o", "r", 1, 1, input)
+	ctx := context.Background()
+	review, _, err := client.PullRequests.DismissReview(ctx, "o", "r", 1, 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
 	}
@@ -485,6 +500,7 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.DismissReview(context.Background(), "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
 	testURLParseError(t, err)
 }

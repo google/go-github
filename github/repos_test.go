@@ -84,7 +84,8 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 		Direction:   "asc",
 		ListOptions: ListOptions{Page: 2},
 	}
-	repos, _, err := client.Repositories.List(context.Background(), "u", opt)
+	ctx := context.Background()
+	repos, _, err := client.Repositories.List(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
@@ -112,7 +113,8 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 	opt := &RepositoryListOptions{
 		Type: "owner",
 	}
-	repos, _, err := client.Repositories.List(context.Background(), "u", opt)
+	ctx := context.Background()
+	repos, _, err := client.Repositories.List(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Repositories.List returned error: %v", err)
 	}
@@ -127,7 +129,8 @@ func TestRepositoriesService_List_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.List(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.List(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -186,7 +189,8 @@ func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.ListByOrg(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListByOrg(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -329,7 +333,8 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	repo, _, err := client.Repositories.Create(context.Background(), "o", input)
+	ctx := context.Background()
+	repo, _, err := client.Repositories.Create(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
@@ -621,7 +626,8 @@ func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.Get(context.Background(), "%", "r")
+	ctx := context.Background()
+	_, _, err := client.Repositories.Get(ctx, "%", "r")
 	testURLParseError(t, err)
 }
 
@@ -629,7 +635,8 @@ func TestRepositoriesService_Edit_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.Edit(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.Edit(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -644,7 +651,8 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	vulnerabilityAlertsEnabled, _, err := client.Repositories.GetVulnerabilityAlerts(context.Background(), "o", "r")
+	ctx := context.Background()
+	vulnerabilityAlertsEnabled, _, err := client.Repositories.GetVulnerabilityAlerts(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetVulnerabilityAlerts returned error: %v", err)
 	}
@@ -665,7 +673,8 @@ func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Repositories.EnableVulnerabilityAlerts(context.Background(), "o", "r"); err != nil {
+	ctx := context.Background()
+	if _, err := client.Repositories.EnableVulnerabilityAlerts(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.EnableVulnerabilityAlerts returned error: %v", err)
 	}
 }
@@ -681,7 +690,8 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Repositories.DisableVulnerabilityAlerts(context.Background(), "o", "r"); err != nil {
+	ctx := context.Background()
+	if _, err := client.Repositories.DisableVulnerabilityAlerts(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.DisableVulnerabilityAlerts returned error: %v", err)
 	}
 }
@@ -697,7 +707,8 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Repositories.EnableAutomatedSecurityFixes(context.Background(), "o", "r"); err != nil {
+	ctx := context.Background()
+	if _, err := client.Repositories.EnableAutomatedSecurityFixes(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.EnableAutomatedSecurityFixes returned error: %v", err)
 	}
 }
@@ -713,7 +724,8 @@ func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Repositories.DisableAutomatedSecurityFixes(context.Background(), "o", "r"); err != nil {
+	ctx := context.Background()
+	if _, err := client.Repositories.DisableAutomatedSecurityFixes(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.DisableAutomatedSecurityFixes returned error: %v", err)
 	}
 }
@@ -732,7 +744,8 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 	})
 
 	opts := &ListContributorsOptions{Anon: "true", ListOptions: ListOptions{Page: 2}}
-	contributors, _, err := client.Repositories.ListContributors(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	contributors, _, err := client.Repositories.ListContributors(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Repositories.ListContributors returned error: %v", err)
 	}
@@ -752,7 +765,8 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 		fmt.Fprint(w, `{"go":1}`)
 	})
 
-	languages, _, err := client.Repositories.ListLanguages(context.Background(), "o", "r")
+	ctx := context.Background()
+	languages, _, err := client.Repositories.ListLanguages(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListLanguages returned error: %v", err)
 	}
@@ -774,7 +788,8 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	teams, _, err := client.Repositories.ListTeams(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	teams, _, err := client.Repositories.ListTeams(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListTeams returned error: %v", err)
 	}
@@ -796,7 +811,8 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	tags, _, err := client.Repositories.ListTags(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	tags, _, err := client.Repositories.ListTags(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListTags returned error: %v", err)
 	}
@@ -833,7 +849,8 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 		Protected:   nil,
 		ListOptions: ListOptions{Page: 2},
 	}
-	branches, _, err := client.Repositories.ListBranches(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	branches, _, err := client.Repositories.ListBranches(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListBranches returned error: %v", err)
 	}
@@ -855,7 +872,8 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
 	})
 
-	branch, _, err := client.Repositories.GetBranch(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -918,7 +936,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 				}`)
 	})
 
-	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
 	}
@@ -989,7 +1008,8 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 				}`)
 	})
 
-	protection, _, err := client.Repositories.GetBranchProtection(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetBranchProtection returned error: %v", err)
 	}
@@ -1084,7 +1104,8 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		}`)
 	})
 
-	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
 	}
@@ -1134,7 +1155,8 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.RemoveBranchProtection(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	_, err := client.Repositories.RemoveBranchProtection(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RemoveBranchProtection returned error: %v", err)
 	}
@@ -1144,7 +1166,8 @@ func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.ListLanguages(context.Background(), "%", "%")
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListLanguages(ctx, "%", "%")
 	testURLParseError(t, err)
 }
 
@@ -1157,7 +1180,8 @@ func TestRepositoriesService_License(t *testing.T) {
 		fmt.Fprint(w, `{"name": "LICENSE", "path": "LICENSE", "license":{"key":"mit","name":"MIT License","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","featured":true}}`)
 	})
 
-	got, _, err := client.Repositories.License(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.License(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.License returned error: %v", err)
 	}
@@ -1193,7 +1217,8 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		fmt.Fprint(w, `{"strict": true,"contexts": ["x","y","z"]}`)
 	})
 
-	checks, _, err := client.Repositories.GetRequiredStatusChecks(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned error: %v", err)
 	}
@@ -1228,7 +1253,8 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 		fmt.Fprintf(w, `{"strict":true,"contexts":["continuous-integration"]}`)
 	})
 
-	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
 	}
@@ -1256,7 +1282,8 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 		fmt.Fprint(w, `["x", "y", "z"]`)
 	})
 
-	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned error: %v", err)
 	}
@@ -1286,7 +1313,8 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		}`)
 	})
 
-	enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	enforcement, _, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetPullRequestReviewEnforcement returned error: %v", err)
 	}
@@ -1342,7 +1370,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		}`)
 	})
 
-	enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	enforcement, _, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned error: %v", err)
 	}
@@ -1377,7 +1406,8 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 		fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 	})
 
-	enforcement, _, err := client.Repositories.DisableDismissalRestrictions(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	enforcement, _, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.DisableDismissalRestrictions returned error: %v", err)
 	}
@@ -1403,7 +1433,8 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.RemovePullRequestReviewEnforcement(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	_, err := client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RemovePullRequestReviewEnforcement returned error: %v", err)
 	}
@@ -1419,7 +1450,8 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 	})
 
-	enforcement, _, err := client.Repositories.GetAdminEnforcement(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	enforcement, _, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetAdminEnforcement returned error: %v", err)
 	}
@@ -1444,7 +1476,8 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/enforce_admins","enabled":true}`)
 	})
 
-	enforcement, _, err := client.Repositories.AddAdminEnforcement(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	enforcement, _, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.AddAdminEnforcement returned error: %v", err)
 	}
@@ -1468,7 +1501,8 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.RemoveAdminEnforcement(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	_, err := client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
 	}
@@ -1484,7 +1518,8 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
 	})
 
-	signature, _, err := client.Repositories.GetSignaturesProtectedBranch(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	signature, _, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.GetSignaturesProtectedBranch returned error: %v", err)
 	}
@@ -1509,7 +1544,8 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
 	})
 
-	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	signature, _, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned error: %v", err)
 	}
@@ -1534,7 +1570,8 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	_, err := client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
 	}
@@ -1595,7 +1632,8 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
-	got, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r")
 	if err != nil {
 		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
 	}
@@ -1616,7 +1654,8 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
-	got, _, err := client.Repositories.ListAllTopics(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r")
 	if err != nil {
 		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
 	}
@@ -1637,7 +1676,8 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
-	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", []string{"go", "go-github", "github"})
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", []string{"go", "go-github", "github"})
 	if err != nil {
 		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
@@ -1659,7 +1699,8 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
-	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", nil)
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
@@ -1681,7 +1722,8 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
-	got, _, err := client.Repositories.ReplaceAllTopics(context.Background(), "o", "r", []string{})
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", []string{})
 	if err != nil {
 		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
@@ -1700,7 +1742,8 @@ func TestRepositoriesService_ListApps(t *testing.T) {
 		testMethod(t, r, "GET")
 	})
 
-	_, _, err := client.Repositories.ListApps(context.Background(), "o", "r", "b")
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListApps(ctx, "o", "r", "b")
 	if err != nil {
 		t.Errorf("Repositories.ListApps returned error: %v", err)
 	}
@@ -1717,7 +1760,8 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 			}]`)
 	})
 	input := []string{"octocat"}
-	got, _, err := client.Repositories.ReplaceAppRestrictions(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
 	}
@@ -1740,7 +1784,8 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 			}]`)
 	})
 	input := []string{"octocat"}
-	got, _, err := client.Repositories.AddAppRestrictions(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	got, _, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
 	}
@@ -1761,7 +1806,8 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 	input := []string{"octocat"}
-	got, _, err := client.Repositories.RemoveAppRestrictions(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	got, _, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Repositories.RemoveAppRestrictions returned error: %v", err)
 	}
@@ -1789,7 +1835,8 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
 	})
 
-	got, _, err := client.Repositories.Transfer(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	got, _, err := client.Repositories.Transfer(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Transfer returned error: %v", err)
 	}

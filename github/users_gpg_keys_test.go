@@ -25,7 +25,8 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	keys, _, err := client.Users.ListGPGKeys(context.Background(), "", opt)
+	ctx := context.Background()
+	keys, _, err := client.Users.ListGPGKeys(ctx, "", opt)
 	if err != nil {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
@@ -45,7 +46,8 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"primary_key_id":2}]`)
 	})
 
-	keys, _, err := client.Users.ListGPGKeys(context.Background(), "u", nil)
+	ctx := context.Background()
+	keys, _, err := client.Users.ListGPGKeys(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
@@ -60,7 +62,8 @@ func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Users.ListGPGKeys(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Users.ListGPGKeys(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -73,7 +76,8 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	key, _, err := client.Users.GetGPGKey(context.Background(), 1)
+	ctx := context.Background()
+	key, _, err := client.Users.GetGPGKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
@@ -111,7 +115,8 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	gpgKey, _, err := client.Users.CreateGPGKey(context.Background(), input)
+	ctx := context.Background()
+	gpgKey, _, err := client.Users.CreateGPGKey(ctx, input)
 	if err != nil {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
@@ -130,7 +135,8 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Users.DeleteGPGKey(context.Background(), 1)
+	ctx := context.Background()
+	_, err := client.Users.DeleteGPGKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.DeleteGPGKey returned error: %v", err)
 	}

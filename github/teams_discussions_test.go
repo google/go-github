@@ -66,7 +66,8 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 				}
 			]`)
 	})
-	discussions, _, err := client.Teams.ListDiscussionsByID(context.Background(), 1, 2, &DiscussionListOptions{"desc", ListOptions{Page: 2}})
+	ctx := context.Background()
+	discussions, _, err := client.Teams.ListDiscussionsByID(ctx, 1, 2, &DiscussionListOptions{"desc", ListOptions{Page: 2}})
 	if err != nil {
 		t.Errorf("Teams.ListDiscussionsByID returned error: %v", err)
 	}
@@ -166,7 +167,8 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 				}
 			]`)
 	})
-	discussions, _, err := client.Teams.ListDiscussionsBySlug(context.Background(), "o", "s", &DiscussionListOptions{"desc", ListOptions{Page: 2}})
+	ctx := context.Background()
+	discussions, _, err := client.Teams.ListDiscussionsBySlug(ctx, "o", "s", &DiscussionListOptions{"desc", ListOptions{Page: 2}})
 	if err != nil {
 		t.Errorf("Teams.ListDiscussionsBySlug returned error: %v", err)
 	}
@@ -224,7 +226,8 @@ func TestTeamsService_GetDiscussionByID(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	discussion, _, err := client.Teams.GetDiscussionByID(context.Background(), 1, 2, 3)
+	ctx := context.Background()
+	discussion, _, err := client.Teams.GetDiscussionByID(ctx, 1, 2, 3)
 	if err != nil {
 		t.Errorf("Teams.GetDiscussionByID returned error: %v", err)
 	}
@@ -244,7 +247,8 @@ func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	discussion, _, err := client.Teams.GetDiscussionBySlug(context.Background(), "o", "s", 3)
+	ctx := context.Background()
+	discussion, _, err := client.Teams.GetDiscussionBySlug(ctx, "o", "s", 3)
 	if err != nil {
 		t.Errorf("Teams.GetDiscussionBySlug returned error: %v", err)
 	}
@@ -273,7 +277,8 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.CreateDiscussionByID(context.Background(), 1, 2, input)
+	ctx := context.Background()
+	comment, _, err := client.Teams.CreateDiscussionByID(ctx, 1, 2, input)
 	if err != nil {
 		t.Errorf("Teams.CreateDiscussionByID returned error: %v", err)
 	}
@@ -302,7 +307,8 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.CreateDiscussionBySlug(context.Background(), "o", "s", input)
+	ctx := context.Background()
+	comment, _, err := client.Teams.CreateDiscussionBySlug(ctx, "o", "s", input)
 	if err != nil {
 		t.Errorf("Teams.CreateDiscussionBySlug returned error: %v", err)
 	}
@@ -331,7 +337,8 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.EditDiscussionByID(context.Background(), 1, 2, 3, input)
+	ctx := context.Background()
+	comment, _, err := client.Teams.EditDiscussionByID(ctx, 1, 2, 3, input)
 	if err != nil {
 		t.Errorf("Teams.EditDiscussionByID returned error: %v", err)
 	}
@@ -360,7 +367,8 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
-	comment, _, err := client.Teams.EditDiscussionBySlug(context.Background(), "o", "s", 3, input)
+	ctx := context.Background()
+	comment, _, err := client.Teams.EditDiscussionBySlug(ctx, "o", "s", 3, input)
 	if err != nil {
 		t.Errorf("Teams.EditDiscussionBySlug returned error: %v", err)
 	}
@@ -379,7 +387,8 @@ func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Teams.DeleteDiscussionByID(context.Background(), 1, 2, 3)
+	ctx := context.Background()
+	_, err := client.Teams.DeleteDiscussionByID(ctx, 1, 2, 3)
 	if err != nil {
 		t.Errorf("Teams.DeleteDiscussionByID returned error: %v", err)
 	}
@@ -393,7 +402,8 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Teams.DeleteDiscussionBySlug(context.Background(), "o", "s", 3)
+	ctx := context.Background()
+	_, err := client.Teams.DeleteDiscussionBySlug(ctx, "o", "s", 3)
 	if err != nil {
 		t.Errorf("Teams.DeleteDiscussionBySlug returned error: %v", err)
 	}

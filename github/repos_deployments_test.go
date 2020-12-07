@@ -26,7 +26,8 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 	})
 
 	opt := &DeploymentsListOptions{Environment: "test"}
-	deployments, _, err := client.Repositories.ListDeployments(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	deployments, _, err := client.Repositories.ListDeployments(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListDeployments returned error: %v", err)
 	}
@@ -46,7 +47,8 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 		fmt.Fprint(w, `{"id":3}`)
 	})
 
-	deployment, _, err := client.Repositories.GetDeployment(context.Background(), "o", "r", 3)
+	ctx := context.Background()
+	deployment, _, err := client.Repositories.GetDeployment(ctx, "o", "r", 3)
 	if err != nil {
 		t.Errorf("Repositories.GetDeployment returned error: %v", err)
 	}
@@ -78,7 +80,8 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		fmt.Fprint(w, `{"ref": "1111", "task": "deploy"}`)
 	})
 
-	deployment, _, err := client.Repositories.CreateDeployment(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	deployment, _, err := client.Repositories.CreateDeployment(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.CreateDeployment returned error: %v", err)
 	}
@@ -98,7 +101,8 @@ func TestRepositoriesService_DeleteDeployment(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	resp, err := client.Repositories.DeleteDeployment(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	resp, err := client.Repositories.DeleteDeployment(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteDeployment returned error: %v", err)
 	}
@@ -106,7 +110,7 @@ func TestRepositoriesService_DeleteDeployment(t *testing.T) {
 		t.Error("Repositories.DeleteDeployment should return a 204 status")
 	}
 
-	resp, err = client.Repositories.DeleteDeployment(context.Background(), "o", "r", 2)
+	resp, err = client.Repositories.DeleteDeployment(ctx, "o", "r", 2)
 	if err == nil {
 		t.Error("Repositories.DeleteDeployment should return an error")
 	}
@@ -128,7 +132,8 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	statutses, _, err := client.Repositories.ListDeploymentStatuses(context.Background(), "o", "r", 1, opt)
+	ctx := context.Background()
+	statutses, _, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
 	}
@@ -150,7 +155,8 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 		fmt.Fprint(w, `{"id":4}`)
 	})
 
-	deploymentStatus, _, err := client.Repositories.GetDeploymentStatus(context.Background(), "o", "r", 3, 4)
+	ctx := context.Background()
+	deploymentStatus, _, err := client.Repositories.GetDeploymentStatus(ctx, "o", "r", 3, 4)
 	if err != nil {
 		t.Errorf("Repositories.GetDeploymentStatus returned error: %v", err)
 	}
@@ -181,7 +187,8 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		fmt.Fprint(w, `{"state": "inactive", "description": "deploy"}`)
 	})
 
-	deploymentStatus, _, err := client.Repositories.CreateDeploymentStatus(context.Background(), "o", "r", 1, input)
+	ctx := context.Background()
+	deploymentStatus, _, err := client.Repositories.CreateDeploymentStatus(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.CreateDeploymentStatus returned error: %v", err)
 	}

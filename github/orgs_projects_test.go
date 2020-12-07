@@ -26,7 +26,8 @@ func TestOrganizationsService_ListProjects(t *testing.T) {
 	})
 
 	opt := &ProjectListOptions{State: "open", ListOptions: ListOptions{Page: 2}}
-	projects, _, err := client.Organizations.ListProjects(context.Background(), "o", opt)
+	ctx := context.Background()
+	projects, _, err := client.Organizations.ListProjects(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListProjects returned error: %v", err)
 	}
@@ -56,7 +57,8 @@ func TestOrganizationsService_CreateProject(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	project, _, err := client.Organizations.CreateProject(context.Background(), "o", input)
+	ctx := context.Background()
+	project, _, err := client.Organizations.CreateProject(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateProject returned error: %v", err)
 	}

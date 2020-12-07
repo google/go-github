@@ -49,7 +49,8 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 			}`)
 	})
 
-	got, _, err := client.Repositories.GetCommunityHealthMetrics(context.Background(), "o", "r")
+	ctx := context.Background()
+	got, _, err := client.Repositories.GetCommunityHealthMetrics(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.GetCommunityHealthMetrics returned error: %v", err)
 	}

@@ -28,7 +28,8 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
-	plans, _, err := client.Marketplace.ListPlans(context.Background(), opt)
+	ctx := context.Background()
+	plans, _, err := client.Marketplace.ListPlans(ctx, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlans returned error: %v", err)
 	}
@@ -50,7 +51,8 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
-	plans, _, err := client.Marketplace.ListPlans(context.Background(), opt)
+	ctx := context.Background()
+	plans, _, err := client.Marketplace.ListPlans(ctx, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned error: %v", err)
 	}
@@ -72,7 +74,8 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
-	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(context.Background(), 1, opt)
+	ctx := context.Background()
+	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned error: %v", err)
 	}
@@ -94,7 +97,8 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
-	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(context.Background(), 1, opt)
+	ctx := context.Background()
+	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned error: %v", err)
 	}
@@ -116,7 +120,8 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(context.Background(), 1, opt)
+	ctx := context.Background()
+	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
 	}
@@ -138,7 +143,8 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(context.Background(), 1, opt)
+	ctx := context.Background()
+	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned error: %v", err)
 	}
@@ -160,7 +166,8 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
-	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(context.Background(), opt)
+	ctx := context.Background()
+	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(ctx, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned error: %v", err)
 	}
@@ -182,7 +189,8 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
-	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(context.Background(), opt)
+	ctx := context.Background()
+	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(ctx, opt)
 	if err != nil {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned error: %v", err)
 	}

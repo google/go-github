@@ -30,7 +30,8 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	artifacts, _, err := client.Actions.ListArtifacts(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	artifacts, _, err := client.Actions.ListArtifacts(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListArtifacts returned error: %v", err)
 	}
@@ -45,7 +46,8 @@ func TestActionsService_ListArtifacts_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.ListArtifacts(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.Actions.ListArtifacts(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -53,7 +55,8 @@ func TestActionsService_ListArtifacts_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.ListArtifacts(context.Background(), "o", "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Actions.ListArtifacts(ctx, "o", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -66,7 +69,8 @@ func TestActionsService_ListArtifacts_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	artifacts, resp, err := client.Actions.ListArtifacts(context.Background(), "o", "r", nil)
+	ctx := context.Background()
+	artifacts, resp, err := client.Actions.ListArtifacts(ctx, "o", "r", nil)
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -94,7 +98,8 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "o", "r", 1, opts)
+	ctx := context.Background()
+	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned error: %v", err)
 	}
@@ -109,7 +114,8 @@ func TestActionsService_ListWorkflowRunArtifacts_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "%", "r", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.Actions.ListWorkflowRunArtifacts(ctx, "%", "r", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -117,7 +123,8 @@ func TestActionsService_ListWorkflowRunArtifacts_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "o", "%", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -130,7 +137,8 @@ func TestActionsService_ListWorkflowRunArtifacts_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	artifacts, resp, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), "o", "r", 1, nil)
+	ctx := context.Background()
+	artifacts, resp, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "r", 1, nil)
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -157,7 +165,8 @@ func TestActionsService_GetArtifact(t *testing.T) {
 		}`)
 	})
 
-	artifact, _, err := client.Actions.GetArtifact(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	artifact, _, err := client.Actions.GetArtifact(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Actions.GetArtifact returned error: %v", err)
 	}
@@ -178,7 +187,8 @@ func TestActionsService_GetArtifact_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.GetArtifact(context.Background(), "%", "r", 1)
+	ctx := context.Background()
+	_, _, err := client.Actions.GetArtifact(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -186,7 +196,8 @@ func TestActionsService_GetArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.GetArtifact(context.Background(), "o", "%", 1)
+	ctx := context.Background()
+	_, _, err := client.Actions.GetArtifact(ctx, "o", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -199,7 +210,8 @@ func TestActionsService_GetArtifact_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	artifact, resp, err := client.Actions.GetArtifact(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	artifact, resp, err := client.Actions.GetArtifact(ctx, "o", "r", 1)
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}
@@ -220,7 +232,8 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 		http.Redirect(w, r, "https://github.com/artifact", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
 	if err != nil {
 		t.Errorf("Actions.DownloadArtifact returned error: %v", err)
 	}
@@ -238,7 +251,8 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.DownloadArtifact(context.Background(), "%", "r", 1, true)
+	ctx := context.Background()
+	_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, true)
 	testURLParseError(t, err)
 }
 
@@ -246,7 +260,8 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Actions.DownloadArtifact(context.Background(), "o", "%", 1, true)
+	ctx := context.Background()
+	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, true)
 	testURLParseError(t, err)
 }
 
@@ -259,7 +274,8 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 		http.Redirect(w, r, "https://github.com/artifact", http.StatusMovedPermanently)
 	})
 
-	_, resp, _ := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, false)
+	ctx := context.Background()
+	_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -279,7 +295,8 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 		http.Redirect(w, r, "http://github.com/artifact", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.DownloadArtifact(context.Background(), "o", "r", 1, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
 	if err != nil {
 		t.Errorf("Actions.DownloadArtifact return error: %v", err)
 	}
@@ -300,7 +317,8 @@ func TestActionsService_DeleteArtifact(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Actions.DeleteArtifact(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	_, err := client.Actions.DeleteArtifact(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Actions.DeleteArtifact return error: %v", err)
 	}
@@ -310,7 +328,8 @@ func TestActionsService_DeleteArtifact_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DeleteArtifact(context.Background(), "%", "r", 1)
+	ctx := context.Background()
+	_, err := client.Actions.DeleteArtifact(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -318,7 +337,8 @@ func TestActionsService_DeleteArtifact_invalidRepo(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Actions.DeleteArtifact(context.Background(), "o", "%", 1)
+	ctx := context.Background()
+	_, err := client.Actions.DeleteArtifact(ctx, "o", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -331,7 +351,8 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	resp, err := client.Actions.DeleteArtifact(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	resp, err := client.Actions.DeleteArtifact(ctx, "o", "r", 1)
 	if err == nil {
 		t.Errorf("Expected HTTP 404 response")
 	}

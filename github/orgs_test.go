@@ -72,7 +72,8 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	})
 
 	opt := &OrganizationsListOptions{Since: since}
-	orgs, _, err := client.Organizations.ListAll(context.Background(), opt)
+	ctx := context.Background()
+	orgs, _, err := client.Organizations.ListAll(ctx, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
 	}
@@ -92,7 +93,8 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
-	orgs, _, err := client.Organizations.List(context.Background(), "", nil)
+	ctx := context.Background()
+	orgs, _, err := client.Organizations.List(ctx, "", nil)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -114,7 +116,8 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	orgs, _, err := client.Organizations.List(context.Background(), "u", opt)
+	ctx := context.Background()
+	orgs, _, err := client.Organizations.List(ctx, "u", opt)
 	if err != nil {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
@@ -129,7 +132,8 @@ func TestOrganizationsService_List_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.List(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.List(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -143,7 +147,8 @@ func TestOrganizationsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	org, _, err := client.Organizations.Get(context.Background(), "o")
+	ctx := context.Background()
+	org, _, err := client.Organizations.Get(ctx, "o")
 	if err != nil {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
@@ -158,7 +163,8 @@ func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.Get(context.Background(), "%")
+	ctx := context.Background()
+	_, _, err := client.Organizations.Get(ctx, "%")
 	testURLParseError(t, err)
 }
 
@@ -171,7 +177,8 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
-	org, _, err := client.Organizations.GetByID(context.Background(), 1)
+	ctx := context.Background()
+	org, _, err := client.Organizations.GetByID(ctx, 1)
 	if err != nil {
 		t.Fatalf("Organizations.GetByID returned error: %v", err)
 	}
@@ -201,7 +208,8 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	org, _, err := client.Organizations.Edit(context.Background(), "o", input)
+	ctx := context.Background()
+	org, _, err := client.Organizations.Edit(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
@@ -216,7 +224,8 @@ func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.Edit(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.Edit(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -229,7 +238,8 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 1, "installations": [{ "id": 1, "app_id": 5}]}`)
 	})
 
-	apps, _, err := client.Organizations.ListInstallations(context.Background(), "o", nil)
+	ctx := context.Background()
+	apps, _, err := client.Organizations.ListInstallations(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
@@ -244,7 +254,8 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.ListInstallations(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListInstallations(ctx, "%", nil)
 	testURLParseError(t, err)
 
 }
@@ -259,7 +270,8 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 2, "installations": [{ "id": 2, "app_id": 10}]}`)
 	})
 
-	apps, _, err := client.Organizations.ListInstallations(context.Background(), "o", &ListOptions{Page: 2})
+	ctx := context.Background()
+	apps, _, err := client.Organizations.ListInstallations(ctx, "o", &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
@@ -270,7 +282,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 	}
 
 	// Test ListOptions failure
-	_, _, err = client.Organizations.ListInstallations(context.Background(), "%", &ListOptions{})
+	_, _, err = client.Organizations.ListInstallations(ctx, "%", &ListOptions{})
 	if err == nil {
 		t.Error("Organizations.ListInstallations returned error: nil")
 	}

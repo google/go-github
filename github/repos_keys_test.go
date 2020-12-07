@@ -25,7 +25,8 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	keys, _, err := client.Repositories.ListKeys(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	keys, _, err := client.Repositories.ListKeys(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
@@ -40,7 +41,8 @@ func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.ListKeys(context.Background(), "%", "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListKeys(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -53,7 +55,8 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	key, _, err := client.Repositories.GetKey(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	key, _, err := client.Repositories.GetKey(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
@@ -68,7 +71,8 @@ func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.GetKey(context.Background(), "%", "%", 1)
+	ctx := context.Background()
+	_, _, err := client.Repositories.GetKey(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -90,7 +94,8 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	key, _, err := client.Repositories.CreateKey(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	key, _, err := client.Repositories.CreateKey(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
@@ -105,7 +110,8 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.CreateKey(context.Background(), "%", "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -117,7 +123,8 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Repositories.DeleteKey(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	_, err := client.Repositories.DeleteKey(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeleteKey returned error: %v", err)
 	}
@@ -127,6 +134,7 @@ func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Repositories.DeleteKey(context.Background(), "%", "%", 1)
+	ctx := context.Background()
+	_, err := client.Repositories.DeleteKey(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }

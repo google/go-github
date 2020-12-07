@@ -24,7 +24,8 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	got, _, err := client.Repositories.ListInvitations(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	got, _, err := client.Repositories.ListInvitations(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListInvitations returned error: %v", err)
 	}
@@ -44,7 +45,8 @@ func TestRepositoriesService_DeleteInvitation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Repositories.DeleteInvitation(context.Background(), "o", "r", 2)
+	ctx := context.Background()
+	_, err := client.Repositories.DeleteInvitation(ctx, "o", "r", 2)
 	if err != nil {
 		t.Errorf("Repositories.DeleteInvitation returned error: %v", err)
 	}
@@ -59,7 +61,8 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 		fmt.Fprintf(w, `{"id":1}`)
 	})
 
-	got, _, err := client.Repositories.UpdateInvitation(context.Background(), "o", "r", 2, "write")
+	ctx := context.Background()
+	got, _, err := client.Repositories.UpdateInvitation(ctx, "o", "r", 2, "write")
 	if err != nil {
 		t.Errorf("Repositories.UpdateInvitation returned error: %v", err)
 	}

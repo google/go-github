@@ -27,7 +27,8 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 
-	hooks, _, err := client.Repositories.ListPreReceiveHooks(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	hooks, _, err := client.Repositories.ListPreReceiveHooks(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
@@ -42,7 +43,8 @@ func TestRepositoriesService_ListPreReceiveHooks_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.ListPreReceiveHooks(context.Background(), "%", "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListPreReceiveHooks(ctx, "%", "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -56,7 +58,8 @@ func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Repositories.GetPreReceiveHook(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	hook, _, err := client.Repositories.GetPreReceiveHook(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.GetPreReceiveHook returned error: %v", err)
 	}
@@ -71,7 +74,8 @@ func TestRepositoriesService_GetPreReceiveHook_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.GetPreReceiveHook(context.Background(), "%", "%", 1)
+	ctx := context.Background()
+	_, _, err := client.Repositories.GetPreReceiveHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -93,7 +97,8 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Repositories.UpdatePreReceiveHook(context.Background(), "o", "r", 1, input)
+	ctx := context.Background()
+	hook, _, err := client.Repositories.UpdatePreReceiveHook(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdatePreReceiveHook returned error: %v", err)
 	}
@@ -108,7 +113,8 @@ func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.UpdatePreReceiveHook(context.Background(), "%", "%", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.UpdatePreReceiveHook(ctx, "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -120,7 +126,8 @@ func TestRepositoriesService_DeletePreReceiveHook(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Repositories.DeletePreReceiveHook(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	_, err := client.Repositories.DeletePreReceiveHook(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("Repositories.DeletePreReceiveHook returned error: %v", err)
 	}
@@ -130,6 +137,7 @@ func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Repositories.DeletePreReceiveHook(context.Background(), "%", "%", 1)
+	ctx := context.Background()
+	_, err := client.Repositories.DeletePreReceiveHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
