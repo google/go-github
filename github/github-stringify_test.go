@@ -1781,19 +1781,22 @@ func TestWebHookCommit_String(t *testing.T) {
 
 func TestWebHookPayload_String(t *testing.T) {
 	v := WebHookPayload{
-		After:      String(""),
-		Before:     String(""),
-		Compare:    String(""),
-		Created:    Bool(false),
-		Deleted:    Bool(false),
-		Forced:     Bool(false),
-		HeadCommit: &WebHookCommit{},
-		Pusher:     &User{},
-		Ref:        String(""),
-		Repo:       &Repository{},
-		Sender:     &User{},
+		Action:       String(""),
+		After:        String(""),
+		Before:       String(""),
+		Compare:      String(""),
+		Created:      Bool(false),
+		Deleted:      Bool(false),
+		Forced:       Bool(false),
+		HeadCommit:   &WebHookCommit{},
+		Installation: &Installation{},
+		Organization: &Organization{},
+		Pusher:       &User{},
+		Ref:          String(""),
+		Repo:         &Repository{},
+		Sender:       &User{},
 	}
-	want := `github.WebHookPayload{After:"", Before:"", Compare:"", Created:false, Deleted:false, Forced:false, HeadCommit:github.WebHookCommit{}, Pusher:github.User{}, Ref:"", Repo:github.Repository{}, Sender:github.User{}}`
+	want := `github.WebHookPayload{Action:"", After:"", Before:"", Compare:"", Created:false, Deleted:false, Forced:false, HeadCommit:github.WebHookCommit{}, Installation:github.Installation{}, Organization:github.Organization{}, Pusher:github.User{}, Ref:"", Repo:github.Repository{}, Sender:github.User{}}`
 	if got := v.String(); got != want {
 		t.Errorf("WebHookPayload.String = %v, want %v", got, want)
 	}

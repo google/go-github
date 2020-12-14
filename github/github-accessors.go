@@ -14940,6 +14940,14 @@ func (w *WebHookCommit) GetTimestamp() time.Time {
 	return *w.Timestamp
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (w *WebHookPayload) GetAction() string {
+	if w == nil || w.Action == nil {
+		return ""
+	}
+	return *w.Action
+}
+
 // GetAfter returns the After field if it's non-nil, zero value otherwise.
 func (w *WebHookPayload) GetAfter() string {
 	if w == nil || w.After == nil {
@@ -14994,6 +15002,22 @@ func (w *WebHookPayload) GetHeadCommit() *WebHookCommit {
 		return nil
 	}
 	return w.HeadCommit
+}
+
+// GetInstallation returns the Installation field.
+func (w *WebHookPayload) GetInstallation() *Installation {
+	if w == nil {
+		return nil
+	}
+	return w.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (w *WebHookPayload) GetOrganization() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Organization
 }
 
 // GetPusher returns the Pusher field.
