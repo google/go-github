@@ -26,7 +26,8 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	runs, _, err := client.Actions.ListWorkflowRunsByID(context.Background(), "o", "r", 29679449, opts)
+	ctx := context.Background()
+	runs, _, err := client.Actions.ListWorkflowRunsByID(ctx, "o", "r", 29679449, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkFlowRunsByID returned error: %v", err)
 	}
@@ -54,7 +55,8 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	runs, _, err := client.Actions.ListWorkflowRunsByFileName(context.Background(), "o", "r", "29679449", opts)
+	ctx := context.Background()
+	runs, _, err := client.Actions.ListWorkflowRunsByFileName(ctx, "o", "r", "29679449", opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkFlowRunsByFileName returned error: %v", err)
 	}
@@ -80,7 +82,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}}`)
 	})
 
-	runs, _, err := client.Actions.GetWorkflowRunByID(context.Background(), "o", "r", 29679449)
+	ctx := context.Background()
+	runs, _, err := client.Actions.GetWorkflowRunByID(ctx, "o", "r", 29679449)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunByID returned error: %v", err)
 	}
@@ -106,7 +109,8 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	resp, err := client.Actions.RerunWorkflowByID(context.Background(), "o", "r", 3434)
+	ctx := context.Background()
+	resp, err := client.Actions.RerunWorkflowByID(ctx, "o", "r", 3434)
 	if err != nil {
 		t.Errorf("Actions.RerunWorkflowByID returned error: %v", err)
 	}
@@ -124,7 +128,8 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	resp, err := client.Actions.CancelWorkflowRunByID(context.Background(), "o", "r", 3434)
+	ctx := context.Background()
+	resp, err := client.Actions.CancelWorkflowRunByID(ctx, "o", "r", 3434)
 	if _, ok := err.(*AcceptedError); !ok {
 		t.Errorf("Actions.CancelWorkflowRunByID returned error: %v (want AcceptedError)", err)
 	}
@@ -142,7 +147,8 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.GetWorkflowRunLogs(context.Background(), "o", "r", 399444496, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
 	}
@@ -164,7 +170,8 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
 
-	_, resp, _ := client.Actions.GetWorkflowRunLogs(context.Background(), "o", "r", 399444496, false)
+	ctx := context.Background()
+	_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, false)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -186,7 +193,8 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.GetWorkflowRunLogs(context.Background(), "o", "r", 399444496, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, true)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -216,7 +224,8 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(ctx, "o", "r", opts)
 
 	if err != nil {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned error: %v", err)
@@ -246,7 +255,8 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Actions.DeleteWorkflowRunLogs(context.Background(), "o", "r", 399444496); err != nil {
+	ctx := context.Background()
+	if _, err := client.Actions.DeleteWorkflowRunLogs(ctx, "o", "r", 399444496); err != nil {
 		t.Errorf("DeleteWorkflowRunLogs returned error: %v", err)
 	}
 }
@@ -260,7 +270,8 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000,"jobs":1},"MACOS":{"total_ms":240000,"jobs":4},"WINDOWS":{"total_ms":300000,"jobs":2}},"run_duration_ms":500000}`)
 	})
 
-	workflowRunUsage, _, err := client.Actions.GetWorkflowRunUsageByID(context.Background(), "o", "r", 29679449)
+	ctx := context.Background()
+	workflowRunUsage, _, err := client.Actions.GetWorkflowRunUsageByID(ctx, "o", "r", 29679449)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowRunUsageByID returned error: %v", err)
 	}

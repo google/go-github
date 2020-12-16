@@ -31,7 +31,8 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 		Sort:        "newest",
 		ListOptions: ListOptions{Page: 3},
 	}
-	repos, _, err := client.Repositories.ListForks(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	repos, _, err := client.Repositories.ListForks(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListForks returned error: %v", err)
 	}
@@ -46,7 +47,8 @@ func TestRepositoriesService_ListForks_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.ListForks(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListForks(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -61,7 +63,8 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	})
 
 	opt := &RepositoryCreateForkOptions{Organization: "o"}
-	repo, _, err := client.Repositories.CreateFork(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.CreateFork returned error: %v", err)
 	}
@@ -85,7 +88,8 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	})
 
 	opt := &RepositoryCreateForkOptions{Organization: "o"}
-	repo, _, err := client.Repositories.CreateFork(context.Background(), "o", "r", opt)
+	ctx := context.Background()
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if _, ok := err.(*AcceptedError); !ok {
 		t.Errorf("Repositories.CreateFork returned error: %v (want AcceptedError)", err)
 	}
@@ -100,6 +104,7 @@ func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Repositories.CreateFork(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.Repositories.CreateFork(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }

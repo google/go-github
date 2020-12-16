@@ -30,7 +30,8 @@ func TestMigrationService_StartMigration(t *testing.T) {
 		LockRepositories:   true,
 		ExcludeAttachments: false,
 	}
-	got, _, err := client.Migrations.StartMigration(context.Background(), "o", []string{"r"}, opt)
+	ctx := context.Background()
+	got, _, err := client.Migrations.StartMigration(ctx, "o", []string{"r"}, opt)
 	if err != nil {
 		t.Errorf("StartMigration returned error: %v", err)
 	}
@@ -51,7 +52,8 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 		w.Write([]byte(fmt.Sprintf("[%s]", migrationJSON)))
 	})
 
-	got, _, err := client.Migrations.ListMigrations(context.Background(), "o", &ListOptions{Page: 1, PerPage: 2})
+	ctx := context.Background()
+	got, _, err := client.Migrations.ListMigrations(ctx, "o", &ListOptions{Page: 1, PerPage: 2})
 	if err != nil {
 		t.Errorf("ListMigrations returned error: %v", err)
 	}
@@ -72,7 +74,8 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 		w.Write(migrationJSON)
 	})
 
-	got, _, err := client.Migrations.MigrationStatus(context.Background(), "o", 1)
+	ctx := context.Background()
+	got, _, err := client.Migrations.MigrationStatus(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
 	}
@@ -98,7 +101,8 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 		w.Write([]byte("0123456789abcdef"))
 	})
 
-	got, err := client.Migrations.MigrationArchiveURL(context.Background(), "o", 1)
+	ctx := context.Background()
+	got, err := client.Migrations.MigrationArchiveURL(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
 	}
@@ -118,7 +122,8 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Migrations.DeleteMigration(context.Background(), "o", 1); err != nil {
+	ctx := context.Background()
+	if _, err := client.Migrations.DeleteMigration(ctx, "o", 1); err != nil {
 		t.Errorf("DeleteMigration returned error: %v", err)
 	}
 }
@@ -134,7 +139,8 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Migrations.UnlockRepo(context.Background(), "o", 1, "r"); err != nil {
+	ctx := context.Background()
+	if _, err := client.Migrations.UnlockRepo(ctx, "o", 1, "r"); err != nil {
 		t.Errorf("UnlockRepo returned error: %v", err)
 	}
 }

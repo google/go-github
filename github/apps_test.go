@@ -27,7 +27,8 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	app, _, err := client.Apps.Get(context.Background(), "")
+	ctx := context.Background()
+	app, _, err := client.Apps.Get(ctx, "")
 	if err != nil {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
@@ -47,7 +48,8 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 		fmt.Fprint(w, `{"html_url":"https://github.com/apps/a"}`)
 	})
 
-	app, _, err := client.Apps.Get(context.Background(), "a")
+	ctx := context.Background()
+	app, _, err := client.Apps.Get(ctx, "a")
 	if err != nil {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
@@ -111,7 +113,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	installations, _, err := client.Apps.ListInstallations(context.Background(), opt)
+	ctx := context.Background()
+	installations, _, err := client.Apps.ListInstallations(ctx, opt)
 	if err != nil {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
@@ -167,7 +170,8 @@ func TestAppsService_GetInstallation(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
-	installation, _, err := client.Apps.GetInstallation(context.Background(), 1)
+	ctx := context.Background()
+	installation, _, err := client.Apps.GetInstallation(ctx, 1)
 	if err != nil {
 		t.Errorf("Apps.GetInstallation returned error: %v", err)
 	}
@@ -192,7 +196,8 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	installations, _, err := client.Apps.ListUserInstallations(context.Background(), opt)
+	ctx := context.Background()
+	installations, _, err := client.Apps.ListUserInstallations(ctx, opt)
 	if err != nil {
 		t.Errorf("Apps.ListUserInstallations returned error: %v", err)
 	}
@@ -213,7 +218,8 @@ func TestAppsService_SuspendInstallation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Apps.SuspendInstallation(context.Background(), 1); err != nil {
+	ctx := context.Background()
+	if _, err := client.Apps.SuspendInstallation(ctx, 1); err != nil {
 		t.Errorf("Apps.SuspendInstallation returned error: %v", err)
 	}
 }
@@ -228,7 +234,8 @@ func TestAppsService_UnsuspendInstallation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Apps.UnsuspendInstallation(context.Background(), 1); err != nil {
+	ctx := context.Background()
+	if _, err := client.Apps.UnsuspendInstallation(ctx, 1); err != nil {
 		t.Errorf("Apps.UnsuspendInstallation returned error: %v", err)
 	}
 }
@@ -242,7 +249,8 @@ func TestAppsService_DeleteInstallation(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.DeleteInstallation(context.Background(), 1)
+	ctx := context.Background()
+	_, err := client.Apps.DeleteInstallation(ctx, 1)
 	if err != nil {
 		t.Errorf("Apps.DeleteInstallation returned error: %v", err)
 	}
@@ -257,7 +265,8 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
-	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, nil)
+	ctx := context.Background()
+	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, nil)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -303,7 +312,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
-	token, _, err := client.Apps.CreateInstallationToken(context.Background(), 1, installationTokenOptions)
+	ctx := context.Background()
+	token, _, err := client.Apps.CreateInstallationToken(ctx, 1, installationTokenOptions)
 	if err != nil {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
@@ -326,7 +336,8 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 		w.Write([]byte(`{"id":1,"title":"title1","body":"body1"}`))
 	})
 
-	got, _, err := client.Apps.CreateAttachment(context.Background(), 11, "title1", "body1")
+	ctx := context.Background()
+	got, _, err := client.Apps.CreateAttachment(ctx, 11, "title1", "body1")
 	if err != nil {
 		t.Errorf("CreateAttachment returned error: %v", err)
 	}
@@ -346,7 +357,8 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
-	installation, _, err := client.Apps.FindOrganizationInstallation(context.Background(), "o")
+	ctx := context.Background()
+	installation, _, err := client.Apps.FindOrganizationInstallation(ctx, "o")
 	if err != nil {
 		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
 	}
@@ -366,7 +378,8 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
-	installation, _, err := client.Apps.FindRepositoryInstallation(context.Background(), "o", "r")
+	ctx := context.Background()
+	installation, _, err := client.Apps.FindRepositoryInstallation(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
 	}
@@ -386,7 +399,8 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Organization"}`)
 	})
 
-	installation, _, err := client.Apps.FindRepositoryInstallationByID(context.Background(), 1)
+	ctx := context.Background()
+	installation, _, err := client.Apps.FindRepositoryInstallationByID(ctx, 1)
 	if err != nil {
 		t.Errorf("Apps.FindRepositoryInstallationByID returned error: %v", err)
 	}
@@ -406,7 +420,8 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "User"}`)
 	})
 
-	installation, _, err := client.Apps.FindUserInstallation(context.Background(), "u")
+	ctx := context.Background()
+	installation, _, err := client.Apps.FindUserInstallation(ctx, "u")
 	if err != nil {
 		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
 	}

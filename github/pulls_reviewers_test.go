@@ -162,13 +162,14 @@ func TestListReviewers_withOptions(t *testing.T) {
 		fmt.Fprint(w, `{}`)
 	})
 
-	_, _, err := client.PullRequests.ListReviewers(context.Background(), "o", "r", 1, &ListOptions{Page: 2})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, &ListOptions{Page: 2})
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
 
 	// Test addOptions failure
-	_, _, err = client.PullRequests.ListReviewers(context.Background(), "\n", "\n", 1, &ListOptions{Page: 2})
+	_, _, err = client.PullRequests.ListReviewers(ctx, "\n", "\n", 1, &ListOptions{Page: 2})
 	if err == nil {
 		t.Error("bad options ListReviewers err = nil, want error")
 	}

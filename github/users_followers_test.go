@@ -24,7 +24,8 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	users, _, err := client.Users.ListFollowers(context.Background(), "", opt)
+	ctx := context.Background()
+	users, _, err := client.Users.ListFollowers(ctx, "", opt)
 	if err != nil {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
@@ -44,7 +45,8 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowers(context.Background(), "u", nil)
+	ctx := context.Background()
+	users, _, err := client.Users.ListFollowers(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowers returned error: %v", err)
 	}
@@ -59,7 +61,8 @@ func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Users.ListFollowers(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Users.ListFollowers(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -74,7 +77,8 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	users, _, err := client.Users.ListFollowing(context.Background(), "", opts)
+	ctx := context.Background()
+	users, _, err := client.Users.ListFollowing(ctx, "", opts)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -94,7 +98,8 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	users, _, err := client.Users.ListFollowing(context.Background(), "u", nil)
+	ctx := context.Background()
+	users, _, err := client.Users.ListFollowing(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListFollowing returned error: %v", err)
 	}
@@ -109,7 +114,8 @@ func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Users.ListFollowing(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Users.ListFollowing(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -122,7 +128,8 @@ func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	following, _, err := client.Users.IsFollowing(context.Background(), "", "t")
+	ctx := context.Background()
+	following, _, err := client.Users.IsFollowing(ctx, "", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -140,7 +147,8 @@ func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
+	ctx := context.Background()
+	following, _, err := client.Users.IsFollowing(ctx, "u", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -158,7 +166,8 @@ func TestUsersService_IsFollowing_false(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
+	ctx := context.Background()
+	following, _, err := client.Users.IsFollowing(ctx, "u", "t")
 	if err != nil {
 		t.Errorf("Users.IsFollowing returned error: %v", err)
 	}
@@ -176,7 +185,8 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	following, _, err := client.Users.IsFollowing(context.Background(), "u", "t")
+	ctx := context.Background()
+	following, _, err := client.Users.IsFollowing(ctx, "u", "t")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -189,7 +199,8 @@ func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Users.IsFollowing(context.Background(), "%", "%")
+	ctx := context.Background()
+	_, _, err := client.Users.IsFollowing(ctx, "%", "%")
 	testURLParseError(t, err)
 }
 
@@ -201,7 +212,8 @@ func TestUsersService_Follow(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	_, err := client.Users.Follow(context.Background(), "u")
+	ctx := context.Background()
+	_, err := client.Users.Follow(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
@@ -211,7 +223,8 @@ func TestUsersService_Follow_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Users.Follow(context.Background(), "%")
+	ctx := context.Background()
+	_, err := client.Users.Follow(ctx, "%")
 	testURLParseError(t, err)
 }
 
@@ -223,7 +236,8 @@ func TestUsersService_Unfollow(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Users.Unfollow(context.Background(), "u")
+	ctx := context.Background()
+	_, err := client.Users.Unfollow(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
@@ -233,6 +247,7 @@ func TestUsersService_Unfollow_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Users.Unfollow(context.Background(), "%")
+	ctx := context.Background()
+	_, err := client.Users.Unfollow(ctx, "%")
 	testURLParseError(t, err)
 }

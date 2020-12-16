@@ -30,7 +30,8 @@ func TestOrganizationsService_ListOutsideCollaborators(t *testing.T) {
 		Filter:      "2fa_disabled",
 		ListOptions: ListOptions{Page: 2},
 	}
-	members, _, err := client.Organizations.ListOutsideCollaborators(context.Background(), "o", opt)
+	ctx := context.Background()
+	members, _, err := client.Organizations.ListOutsideCollaborators(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListOutsideCollaborators returned error: %v", err)
 	}
@@ -45,7 +46,8 @@ func TestOrganizationsService_ListOutsideCollaborators_invalidOrg(t *testing.T) 
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.ListOutsideCollaborators(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListOutsideCollaborators(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -58,7 +60,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveOutsideCollaborator returned error: %v", err)
 	}
@@ -74,7 +77,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator_NonMember(t *testing.T) 
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
 		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusNotFound {
@@ -92,7 +96,8 @@ func TestOrganizationsService_RemoveOutsideCollaborator_Member(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	_, err := client.Organizations.RemoveOutsideCollaborator(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
 		t.Errorf("Organizations.RemoveOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusUnprocessableEntity {
@@ -109,7 +114,8 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator(t *testing.T) {
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator returned error: %v", err)
 	}
@@ -125,7 +131,8 @@ func TestOrganizationsService_ConvertMemberToOutsideCollaborator_NonMemberOrLast
 	}
 	mux.HandleFunc("/orgs/o/outside_collaborators/u", handler)
 
-	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.ConvertMemberToOutsideCollaborator(ctx, "o", "u")
 	if err, ok := err.(*ErrorResponse); !ok {
 		t.Errorf("Organizations.ConvertMemberToOutsideCollaborator did not return an error")
 	} else if err.Response.StatusCode != http.StatusForbidden {

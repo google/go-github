@@ -36,7 +36,8 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
-	commit, _, err := client.Repositories.Merge(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	commit, _, err := client.Repositories.Merge(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Repositories.Merge returned error: %v", err)
 	}

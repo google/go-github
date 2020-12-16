@@ -32,7 +32,8 @@ func TestAdminUsers_Create(t *testing.T) {
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 
-	org, _, err := client.Admin.CreateUser(context.Background(), "github", "email@domain.com")
+	ctx := context.Background()
+	org, _, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
@@ -51,7 +52,8 @@ func TestAdminUsers_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Admin.DeleteUser(context.Background(), "github")
+	ctx := context.Background()
+	_, err := client.Admin.DeleteUser(ctx, "github")
 	if err != nil {
 		t.Errorf("Admin.DeleteUser returned error: %v", err)
 	}
@@ -85,7 +87,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 	})
 
 	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
-	auth, _, err := client.Admin.CreateUserImpersonation(context.Background(), "github", opt)
+	ctx := context.Background()
+	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
 	if err != nil {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
 	}
@@ -122,7 +125,8 @@ func TestUserImpersonation_Delete(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Admin.DeleteUserImpersonation(context.Background(), "github")
+	ctx := context.Background()
+	_, err := client.Admin.DeleteUserImpersonation(ctx, "github")
 	if err != nil {
 		t.Errorf("Admin.DeleteUserImpersonation returned error: %v", err)
 	}

@@ -28,7 +28,8 @@ func TestGitService_GetTree(t *testing.T) {
 			}`)
 	})
 
-	tree, _, err := client.Git.GetTree(context.Background(), "o", "r", "s", true)
+	ctx := context.Background()
+	tree, _, err := client.Git.GetTree(ctx, "o", "r", "s", true)
 	if err != nil {
 		t.Errorf("Git.GetTree returned error: %v", err)
 	}
@@ -51,7 +52,8 @@ func TestGitService_GetTree_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Git.GetTree(context.Background(), "%", "%", "%", false)
+	ctx := context.Background()
+	_, _, err := client.Git.GetTree(ctx, "%", "%", "%", false)
 	testURLParseError(t, err)
 }
 
@@ -95,7 +97,8 @@ func TestGitService_CreateTree(t *testing.T) {
 		}`)
 	})
 
-	tree, _, err := client.Git.CreateTree(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
 	}
@@ -160,7 +163,8 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 		}`)
 	})
 
-	tree, _, err := client.Git.CreateTree(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
 	}
@@ -225,7 +229,8 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 		}`)
 	})
 
-	tree, _, err := client.Git.CreateTree(context.Background(), "o", "r", "b", input)
+	ctx := context.Background()
+	tree, _, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
 	if err != nil {
 		t.Errorf("Git.CreateTree returned error: %v", err)
 	}
@@ -254,6 +259,7 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Git.CreateTree(context.Background(), "%", "%", "", nil)
+	ctx := context.Background()
+	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)
 	testURLParseError(t, err)
 }

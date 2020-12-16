@@ -26,7 +26,8 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 
 	opt := &ListOptions{Page: 2}
 
-	hooks, _, err := client.Organizations.ListHooks(context.Background(), "o", opt)
+	ctx := context.Background()
+	hooks, _, err := client.Organizations.ListHooks(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListHooks returned error: %v", err)
 	}
@@ -41,7 +42,8 @@ func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.ListHooks(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListHooks(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -64,7 +66,8 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Organizations.CreateHook(context.Background(), "o", input)
+	ctx := context.Background()
+	hook, _, err := client.Organizations.CreateHook(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateHook returned error: %v", err)
 	}
@@ -84,7 +87,8 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Organizations.GetHook(context.Background(), "o", 1)
+	ctx := context.Background()
+	hook, _, err := client.Organizations.GetHook(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.GetHook returned error: %v", err)
 	}
@@ -99,7 +103,8 @@ func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.GetHook(context.Background(), "%", 1)
+	ctx := context.Background()
+	_, _, err := client.Organizations.GetHook(ctx, "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -121,7 +126,8 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	hook, _, err := client.Organizations.EditHook(context.Background(), "o", 1, input)
+	ctx := context.Background()
+	hook, _, err := client.Organizations.EditHook(ctx, "o", 1, input)
 	if err != nil {
 		t.Errorf("Organizations.EditHook returned error: %v", err)
 	}
@@ -136,7 +142,8 @@ func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.EditHook(context.Background(), "%", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.EditHook(ctx, "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -148,7 +155,8 @@ func TestOrganizationsService_PingHook(t *testing.T) {
 		testMethod(t, r, "POST")
 	})
 
-	_, err := client.Organizations.PingHook(context.Background(), "o", 1)
+	ctx := context.Background()
+	_, err := client.Organizations.PingHook(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.PingHook returned error: %v", err)
 	}
@@ -162,7 +170,8 @@ func TestOrganizationsService_DeleteHook(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Organizations.DeleteHook(context.Background(), "o", 1)
+	ctx := context.Background()
+	_, err := client.Organizations.DeleteHook(ctx, "o", 1)
 	if err != nil {
 		t.Errorf("Organizations.DeleteHook returned error: %v", err)
 	}
@@ -172,6 +181,7 @@ func TestOrganizationsService_DeleteHook_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Organizations.DeleteHook(context.Background(), "%", 1)
+	ctx := context.Background()
+	_, err := client.Organizations.DeleteHook(ctx, "%", 1)
 	testURLParseError(t, err)
 }

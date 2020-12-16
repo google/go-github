@@ -34,7 +34,8 @@ func TestPullRequestsService_List(t *testing.T) {
 	})
 
 	opts := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
-	pulls, _, err := client.PullRequests.List(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	pulls, _, err := client.PullRequests.List(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
@@ -64,7 +65,8 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 	})
 
 	opts := &PullRequestListOptions{"closed", "h", "b", "created", "desc", ListOptions{Page: 2}}
-	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(context.Background(), "o", "r", "sha", opts)
+	ctx := context.Background()
+	pulls, _, err := client.PullRequests.ListPullRequestsWithCommit(ctx, "o", "r", "sha", opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
 	}
@@ -79,7 +81,8 @@ func TestPullRequestsService_List_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.List(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.List(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -92,7 +95,8 @@ func TestPullRequestsService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	pull, _, err := client.PullRequests.Get(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.Get(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -115,7 +119,8 @@ func TestPullRequestsService_GetRaw_diff(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	got, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Diff})
+	ctx := context.Background()
+	got, _, err := client.PullRequests.GetRaw(ctx, "o", "r", 1, RawOptions{Diff})
 	if err != nil {
 		t.Fatalf("PullRequests.GetRaw returned error: %v", err)
 	}
@@ -137,7 +142,8 @@ func TestPullRequestsService_GetRaw_patch(t *testing.T) {
 		fmt.Fprint(w, rawStr)
 	})
 
-	got, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{Patch})
+	ctx := context.Background()
+	got, _, err := client.PullRequests.GetRaw(ctx, "o", "r", 1, RawOptions{Patch})
 	if err != nil {
 		t.Fatalf("PullRequests.GetRaw returned error: %v", err)
 	}
@@ -151,7 +157,8 @@ func TestPullRequestsService_GetRaw_invalid(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.GetRaw(context.Background(), "o", "r", 1, RawOptions{100})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.GetRaw(ctx, "o", "r", 1, RawOptions{100})
 	if err == nil {
 		t.Fatal("PullRequests.GetRaw should return error")
 	}
@@ -181,7 +188,8 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 			}`)
 	})
 
-	pull, _, err := client.PullRequests.Get(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.Get(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -222,7 +230,8 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 		fmt.Fprint(w, `{"number":1,"head":{"ref":"r2","repo":{"id":2}},"base":{"ref":"r1","repo":{"id":1}}}`)
 	})
 
-	pull, _, err := client.PullRequests.Get(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.Get(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -260,7 +269,8 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 			"review_comment_url": "https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"}`)
 	})
 
-	pull, _, err := client.PullRequests.Get(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.Get(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
@@ -286,7 +296,8 @@ func TestPullRequestsService_Get_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.Get(context.Background(), "%", "r", 1)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.Get(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -308,7 +319,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
-	pull, _, err := client.PullRequests.Create(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.Create(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("PullRequests.Create returned error: %v", err)
 	}
@@ -323,7 +335,8 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.Create(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.PullRequests.Create(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -345,7 +358,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 		ExpectedHeadSHA: String("s"),
 	}
 
-	pull, _, err := client.PullRequests.UpdateBranch(context.Background(), "o", "r", 1, opts)
+	ctx := context.Background()
+	pull, _, err := client.PullRequests.UpdateBranch(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.UpdateBranch returned error: %v", err)
 	}
@@ -398,7 +412,8 @@ func TestPullRequestsService_Edit(t *testing.T) {
 			madeRequest = true
 		})
 
-		pull, _, err := client.PullRequests.Edit(context.Background(), "o", "r", i, tt.input)
+		ctx := context.Background()
+		pull, _, err := client.PullRequests.Edit(ctx, "o", "r", i, tt.input)
 		if err != nil {
 			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
 		}
@@ -417,7 +432,8 @@ func TestPullRequestsService_Edit_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.PullRequests.Edit(context.Background(), "%", "r", 1, &PullRequest{})
+	ctx := context.Background()
+	_, _, err := client.PullRequests.Edit(ctx, "%", "r", 1, &PullRequest{})
 	testURLParseError(t, err)
 }
 
@@ -450,7 +466,8 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	commits, _, err := client.PullRequests.ListCommits(context.Background(), "o", "r", 1, opts)
+	ctx := context.Background()
+	commits, _, err := client.PullRequests.ListCommits(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListCommits returned error: %v", err)
 	}
@@ -509,7 +526,8 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2}
-	commitFiles, _, err := client.PullRequests.ListFiles(context.Background(), "o", "r", 1, opts)
+	ctx := context.Background()
+	commitFiles, _, err := client.PullRequests.ListFiles(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("PullRequests.ListFiles returned error: %v", err)
 	}
@@ -549,7 +567,8 @@ func TestPullRequestsService_IsMerged(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	isMerged, _, err := client.PullRequests.IsMerged(context.Background(), "o", "r", 1)
+	ctx := context.Background()
+	isMerged, _, err := client.PullRequests.IsMerged(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.IsMerged returned error: %v", err)
 	}
@@ -575,7 +594,8 @@ func TestPullRequestsService_Merge(t *testing.T) {
 	})
 
 	options := &PullRequestOptions{MergeMethod: "rebase"}
-	merge, _, err := client.PullRequests.Merge(context.Background(), "o", "r", 1, "merging pull request", options)
+	ctx := context.Background()
+	merge, _, err := client.PullRequests.Merge(ctx, "o", "r", 1, "merging pull request", options)
 	if err != nil {
 		t.Errorf("PullRequests.Merge returned error: %v", err)
 	}
@@ -632,7 +652,8 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 			testBody(t, r, test.wantBody+"\n")
 			madeRequest = true
 		})
-		_, _, _ = client.PullRequests.Merge(context.Background(), "o", "r", i, "merging pull request", test.options)
+		ctx := context.Background()
+		_, _, _ = client.PullRequests.Merge(ctx, "o", "r", i, "merging pull request", test.options)
 		if !madeRequest {
 			t.Errorf("%d: PullRequests.Merge(%#v): expected request was not made", i, test.options)
 		}

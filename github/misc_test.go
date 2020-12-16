@@ -34,7 +34,8 @@ func TestMarkdown(t *testing.T) {
 		fmt.Fprint(w, `<h1>text</h1>`)
 	})
 
-	md, _, err := client.Markdown(context.Background(), "# text #", &MarkdownOptions{
+	ctx := context.Background()
+	md, _, err := client.Markdown(ctx, "# text #", &MarkdownOptions{
 		Mode:    "gfm",
 		Context: "google/go-github",
 	})
@@ -56,7 +57,8 @@ func TestListEmojis(t *testing.T) {
 		fmt.Fprint(w, `{"+1": "+1.png"}`)
 	})
 
-	emoji, _, err := client.ListEmojis(context.Background())
+	ctx := context.Background()
+	emoji, _, err := client.ListEmojis(ctx)
 	if err != nil {
 		t.Errorf("ListEmojis returned error: %v", err)
 	}
@@ -81,7 +83,8 @@ func TestListCodesOfConduct(t *testing.T) {
 						]`)
 	})
 
-	cs, _, err := client.ListCodesOfConduct(context.Background())
+	ctx := context.Background()
+	cs, _, err := client.ListCodesOfConduct(ctx)
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -112,7 +115,8 @@ func TestGetCodeOfConduct(t *testing.T) {
 		)
 	})
 
-	coc, _, err := client.GetCodeOfConduct(context.Background(), "k")
+	ctx := context.Background()
+	coc, _, err := client.GetCodeOfConduct(ctx, "k")
 	if err != nil {
 		t.Errorf("ListCodesOfConduct returned error: %v", err)
 	}
@@ -157,7 +161,8 @@ func TestAPIMeta(t *testing.T) {
 		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "verifiable_password_authentication": true}`)
 	})
 
-	meta, _, err := client.APIMeta(context.Background())
+	ctx := context.Background()
+	meta, _, err := client.APIMeta(ctx)
 	if err != nil {
 		t.Errorf("APIMeta returned error: %v", err)
 	}
@@ -189,7 +194,8 @@ func TestOctocat(t *testing.T) {
 		fmt.Fprint(w, output)
 	})
 
-	got, _, err := client.Octocat(context.Background(), input)
+	ctx := context.Background()
+	got, _, err := client.Octocat(ctx, input)
 	if err != nil {
 		t.Errorf("Octocat returned error: %v", err)
 	}
@@ -211,7 +217,8 @@ func TestZen(t *testing.T) {
 		fmt.Fprint(w, output)
 	})
 
-	got, _, err := client.Zen(context.Background())
+	ctx := context.Background()
+	got, _, err := client.Zen(ctx)
 	if err != nil {
 		t.Errorf("Zen returned error: %v", err)
 	}
@@ -237,7 +244,8 @@ func TestListServiceHooks(t *testing.T) {
 		}]`)
 	})
 
-	hooks, _, err := client.ListServiceHooks(context.Background())
+	ctx := context.Background()
+	hooks, _, err := client.ListServiceHooks(ctx)
 	if err != nil {
 		t.Errorf("ListServiceHooks returned error: %v", err)
 	}

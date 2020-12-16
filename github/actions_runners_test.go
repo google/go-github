@@ -23,7 +23,8 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 		fmt.Fprint(w, `[{"os":"osx","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz","filename":"actions-runner-osx-x64-2.164.0.tar.gz"},{"os":"linux","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz","filename":"actions-runner-linux-x64-2.164.0.tar.gz"},{"os": "linux","architecture":"arm","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz","filename":"actions-runner-linux-arm-2.164.0.tar.gz"},{"os":"win","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip","filename":"actions-runner-win-x64-2.164.0.zip"},{"os":"linux","architecture":"arm64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz","filename":"actions-runner-linux-arm64-2.164.0.tar.gz"}]`)
 	})
 
-	downloads, _, err := client.Actions.ListRunnerApplicationDownloads(context.Background(), "o", "r")
+	ctx := context.Background()
+	downloads, _, err := client.Actions.ListRunnerApplicationDownloads(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned error: %v", err)
 	}
@@ -49,7 +50,8 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Actions.CreateRegistrationToken(context.Background(), "o", "r")
+	ctx := context.Background()
+	token, _, err := client.Actions.CreateRegistrationToken(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.CreateRegistrationToken returned error: %v", err)
 	}
@@ -73,7 +75,8 @@ func TestActionsService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	runners, _, err := client.Actions.ListRunners(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	runners, _, err := client.Actions.ListRunners(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRunners returned error: %v", err)
 	}
@@ -99,7 +102,8 @@ func TestActionsService_GetRunner(t *testing.T) {
 		fmt.Fprint(w, `{"id":23,"name":"MBP","os":"macos","status":"online"}`)
 	})
 
-	runner, _, err := client.Actions.GetRunner(context.Background(), "o", "r", 23)
+	ctx := context.Background()
+	runner, _, err := client.Actions.GetRunner(ctx, "o", "r", 23)
 	if err != nil {
 		t.Errorf("Actions.GetRunner returned error: %v", err)
 	}
@@ -124,7 +128,8 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-29T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Actions.CreateRemoveToken(context.Background(), "o", "r")
+	ctx := context.Background()
+	token, _, err := client.Actions.CreateRemoveToken(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
@@ -143,7 +148,8 @@ func TestActionsService_RemoveRunner(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Actions.RemoveRunner(context.Background(), "o", "r", 21)
+	ctx := context.Background()
+	_, err := client.Actions.RemoveRunner(ctx, "o", "r", 21)
 	if err != nil {
 		t.Errorf("Actions.RemoveRunner returned error: %v", err)
 	}
@@ -158,7 +164,8 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 		fmt.Fprint(w, `[{"os":"osx","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz","filename":"actions-runner-osx-x64-2.164.0.tar.gz"},{"os":"linux","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz","filename":"actions-runner-linux-x64-2.164.0.tar.gz"},{"os": "linux","architecture":"arm","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz","filename":"actions-runner-linux-arm-2.164.0.tar.gz"},{"os":"win","architecture":"x64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip","filename":"actions-runner-win-x64-2.164.0.zip"},{"os":"linux","architecture":"arm64","download_url":"https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz","filename":"actions-runner-linux-arm64-2.164.0.tar.gz"}]`)
 	})
 
-	downloads, _, err := client.Actions.ListOrganizationRunnerApplicationDownloads(context.Background(), "o")
+	ctx := context.Background()
+	downloads, _, err := client.Actions.ListOrganizationRunnerApplicationDownloads(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned error: %v", err)
 	}
@@ -184,7 +191,8 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Actions.CreateOrganizationRegistrationToken(context.Background(), "o")
+	ctx := context.Background()
+	token, _, err := client.Actions.CreateOrganizationRegistrationToken(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.CreateRegistrationToken returned error: %v", err)
 	}
@@ -208,7 +216,8 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	runners, _, err := client.Actions.ListOrganizationRunners(context.Background(), "o", opts)
+	ctx := context.Background()
+	runners, _, err := client.Actions.ListOrganizationRunners(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Actions.ListRunners returned error: %v", err)
 	}
@@ -284,7 +293,8 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 		fmt.Fprint(w, `{"id":23,"name":"MBP","os":"macos","status":"online"}`)
 	})
 
-	runner, _, err := client.Actions.GetOrganizationRunner(context.Background(), "o", 23)
+	ctx := context.Background()
+	runner, _, err := client.Actions.GetOrganizationRunner(ctx, "o", 23)
 	if err != nil {
 		t.Errorf("Actions.GetRunner returned error: %v", err)
 	}
@@ -309,7 +319,8 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-29T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Actions.CreateOrganizationRemoveToken(context.Background(), "o")
+	ctx := context.Background()
+	token, _, err := client.Actions.CreateOrganizationRemoveToken(ctx, "o")
 	if err != nil {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
@@ -328,7 +339,8 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Actions.RemoveOrganizationRunner(context.Background(), "o", 21)
+	ctx := context.Background()
+	_, err := client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	if err != nil {
 		t.Errorf("Actions.RemoveOganizationRunner returned error: %v", err)
 	}

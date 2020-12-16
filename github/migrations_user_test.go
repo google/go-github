@@ -31,7 +31,8 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 		ExcludeAttachments: false,
 	}
 
-	got, _, err := client.Migrations.StartUserMigration(context.Background(), []string{"r"}, opt)
+	ctx := context.Background()
+	got, _, err := client.Migrations.StartUserMigration(ctx, []string{"r"}, opt)
 	if err != nil {
 		t.Errorf("StartUserMigration returned error: %v", err)
 	}
@@ -54,7 +55,8 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 		w.Write([]byte(fmt.Sprintf("[%s]", userMigrationJSON)))
 	})
 
-	got, _, err := client.Migrations.ListUserMigrations(context.Background())
+	ctx := context.Background()
+	got, _, err := client.Migrations.ListUserMigrations(ctx)
 	if err != nil {
 		t.Errorf("ListUserMigrations returned error %v", err)
 	}
@@ -77,7 +79,8 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 		w.Write(userMigrationJSON)
 	})
 
-	got, _, err := client.Migrations.UserMigrationStatus(context.Background(), 1)
+	ctx := context.Background()
+	got, _, err := client.Migrations.UserMigrationStatus(ctx, 1)
 	if err != nil {
 		t.Errorf("UserMigrationStatus returned error %v", err)
 	}
@@ -105,7 +108,8 @@ func TestMigrationService_UserMigrationArchiveURL(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	got, err := client.Migrations.UserMigrationArchiveURL(context.Background(), 1)
+	ctx := context.Background()
+	got, err := client.Migrations.UserMigrationArchiveURL(ctx, 1)
 	if err != nil {
 		t.Errorf("UserMigrationArchiveURL returned error %v", err)
 	}
@@ -127,7 +131,8 @@ func TestMigrationService_DeleteUserMigration(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	got, err := client.Migrations.DeleteUserMigration(context.Background(), 1)
+	ctx := context.Background()
+	got, err := client.Migrations.DeleteUserMigration(ctx, 1)
 	if err != nil {
 		t.Errorf("DeleteUserMigration returned error %v", err)
 	}
@@ -148,7 +153,8 @@ func TestMigrationService_UnlockUserRepo(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	got, err := client.Migrations.UnlockUserRepo(context.Background(), 1, "r")
+	ctx := context.Background()
+	got, err := client.Migrations.UnlockUserRepo(ctx, 1, "r")
 	if err != nil {
 		t.Errorf("UnlockUserRepo returned error %v", err)
 	}

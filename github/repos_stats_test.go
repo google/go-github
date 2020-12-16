@@ -42,7 +42,8 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 `)
 	})
 
-	stats, _, err := client.Repositories.ListContributorsStats(context.Background(), "o", "r")
+	ctx := context.Background()
+	stats, _, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListContributorsStats returned error: %v", err)
 	}
@@ -88,7 +89,8 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 `)
 	})
 
-	activity, _, err := client.Repositories.ListCommitActivity(context.Background(), "o", "r")
+	ctx := context.Background()
+	activity, _, err := client.Repositories.ListCommitActivity(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCommitActivity returned error: %v", err)
 	}
@@ -116,7 +118,8 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 		fmt.Fprint(w, `[[1302998400, 1124, -435]]`)
 	})
 
-	code, _, err := client.Repositories.ListCodeFrequency(context.Background(), "o", "r")
+	ctx := context.Background()
+	code, _, err := client.Repositories.ListCodeFrequency(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListCodeFrequency returned error: %v", err)
 	}
@@ -157,7 +160,8 @@ func TestRepositoriesService_Participation(t *testing.T) {
 `)
 	})
 
-	participation, _, err := client.Repositories.ListParticipation(context.Background(), "o", "r")
+	ctx := context.Background()
+	participation, _, err := client.Repositories.ListParticipation(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListParticipation returned error: %v", err)
 	}
@@ -196,7 +200,8 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 		]`)
 	})
 
-	card, _, err := client.Repositories.ListPunchCard(context.Background(), "o", "r")
+	ctx := context.Background()
+	card, _, err := client.Repositories.ListPunchCard(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("RepositoriesService.ListPunchCard returned error: %v", err)
 	}
@@ -223,7 +228,8 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	stats, _, err := client.Repositories.ListContributorsStats(context.Background(), "o", "r")
+	ctx := context.Background()
+	stats, _, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
 	if err == nil {
 		t.Errorf("RepositoriesService.AcceptedError should have returned an error")
 	}

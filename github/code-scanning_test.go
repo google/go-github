@@ -86,7 +86,8 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 	})
 
 	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
-	alerts, _, err := client.CodeScanning.ListAlertsForRepo(context.Background(), "o", "r", opts)
+	ctx := context.Background()
+	alerts, _, err := client.CodeScanning.ListAlertsForRepo(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned error: %v", err)
 	}
@@ -141,7 +142,8 @@ func TestActionsService_GetAlert(t *testing.T) {
 				"html_url":"https://github.com/o/r/security/code-scanning/88"}`)
 	})
 
-	alert, _, err := client.CodeScanning.GetAlert(context.Background(), "o", "r", 88)
+	ctx := context.Background()
+	alert, _, err := client.CodeScanning.GetAlert(ctx, "o", "r", 88)
 	if err != nil {
 		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
 	}

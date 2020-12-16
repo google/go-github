@@ -23,7 +23,8 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
 	})
 
-	token, _, err := client.Enterprise.CreateRegistrationToken(context.Background(), "e")
+	ctx := context.Background()
+	token, _, err := client.Enterprise.CreateRegistrationToken(ctx, "e")
 	if err != nil {
 		t.Errorf("Enterprise.CreateRegistrationToken returned error: %v", err)
 	}
@@ -47,7 +48,8 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
-	runners, _, err := client.Enterprise.ListRunners(context.Background(), "e", opts)
+	ctx := context.Background()
+	runners, _, err := client.Enterprise.ListRunners(ctx, "e", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListRunners returned error: %v", err)
 	}

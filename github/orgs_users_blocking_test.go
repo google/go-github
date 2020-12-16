@@ -27,7 +27,8 @@ func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	blockedUsers, _, err := client.Organizations.ListBlockedUsers(context.Background(), "o", opt)
+	ctx := context.Background()
+	blockedUsers, _, err := client.Organizations.ListBlockedUsers(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListBlockedUsers returned error: %v", err)
 	}
@@ -48,7 +49,8 @@ func TestOrganizationsService_IsBlocked(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	isBlocked, _, err := client.Organizations.IsBlocked(context.Background(), "o", "u")
+	ctx := context.Background()
+	isBlocked, _, err := client.Organizations.IsBlocked(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.IsBlocked returned error: %v", err)
 	}
@@ -67,7 +69,8 @@ func TestOrganizationsService_BlockUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.BlockUser(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.BlockUser(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.BlockUser returned error: %v", err)
 	}
@@ -83,7 +86,8 @@ func TestOrganizationsService_UnblockUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.UnblockUser(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.UnblockUser(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.UnblockUser returned error: %v", err)
 	}

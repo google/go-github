@@ -34,7 +34,8 @@ func TestGetConfig(t *testing.T) {
 		fmt.Fprint(w, manifestJSON)
 	})
 
-	cfg, _, err := client.Apps.CompleteAppManifest(context.Background(), "code")
+	ctx := context.Background()
+	cfg, _, err := client.Apps.CompleteAppManifest(ctx, "code")
 	if err != nil {
 		t.Errorf("AppManifest.GetConfig returned error: %v", err)
 	}
