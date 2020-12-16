@@ -23,7 +23,8 @@ func TestGitService_GetTag(t *testing.T) {
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
-	tag, _, err := client.Git.GetTag(context.Background(), "o", "r", "s")
+	ctx := context.Background()
+	tag, _, err := client.Git.GetTag(ctx, "o", "r", "s")
 	if err != nil {
 		t.Errorf("Git.GetTag returned error: %v", err)
 	}
@@ -52,7 +53,8 @@ func TestGitService_CreateTag(t *testing.T) {
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
-	tag, _, err := client.Git.CreateTag(context.Background(), "o", "r", &Tag{
+	ctx := context.Background()
+	tag, _, err := client.Git.CreateTag(ctx, "o", "r", &Tag{
 		Tag:    input.Tag,
 		Object: &GitObject{SHA: input.Object},
 	})

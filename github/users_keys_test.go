@@ -25,7 +25,8 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	keys, _, err := client.Users.ListKeys(context.Background(), "", opt)
+	ctx := context.Background()
+	keys, _, err := client.Users.ListKeys(ctx, "", opt)
 	if err != nil {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
@@ -45,7 +46,8 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	keys, _, err := client.Users.ListKeys(context.Background(), "u", nil)
+	ctx := context.Background()
+	keys, _, err := client.Users.ListKeys(ctx, "u", nil)
 	if err != nil {
 		t.Errorf("Users.ListKeys returned error: %v", err)
 	}
@@ -60,7 +62,8 @@ func TestUsersService_ListKeys_invalidUser(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Users.ListKeys(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Users.ListKeys(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -73,7 +76,8 @@ func TestUsersService_GetKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	key, _, err := client.Users.GetKey(context.Background(), 1)
+	ctx := context.Background()
+	key, _, err := client.Users.GetKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.GetKey returned error: %v", err)
 	}
@@ -102,7 +106,8 @@ func TestUsersService_CreateKey(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	key, _, err := client.Users.CreateKey(context.Background(), input)
+	ctx := context.Background()
+	key, _, err := client.Users.CreateKey(ctx, input)
 	if err != nil {
 		t.Errorf("Users.GetKey returned error: %v", err)
 	}
@@ -121,7 +126,8 @@ func TestUsersService_DeleteKey(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Users.DeleteKey(context.Background(), 1)
+	ctx := context.Background()
+	_, err := client.Users.DeleteKey(ctx, 1)
 	if err != nil {
 		t.Errorf("Users.DeleteKey returned error: %v", err)
 	}

@@ -116,7 +116,8 @@ func TestLicensesService_List(t *testing.T) {
 		fmt.Fprint(w, `[{"key":"mit","name":"MIT","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","featured":true}]`)
 	})
 
-	licenses, _, err := client.Licenses.List(context.Background())
+	ctx := context.Background()
+	licenses, _, err := client.Licenses.List(ctx)
 	if err != nil {
 		t.Errorf("Licenses.List returned error: %v", err)
 	}
@@ -142,7 +143,8 @@ func TestLicensesService_Get(t *testing.T) {
 		fmt.Fprint(w, `{"key":"mit","name":"MIT"}`)
 	})
 
-	license, _, err := client.Licenses.Get(context.Background(), "mit")
+	ctx := context.Background()
+	license, _, err := client.Licenses.Get(ctx, "mit")
 	if err != nil {
 		t.Errorf("Licenses.Get returned error: %v", err)
 	}
@@ -157,6 +159,7 @@ func TestLicensesService_Get_invalidTemplate(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Licenses.Get(context.Background(), "%")
+	ctx := context.Background()
+	_, _, err := client.Licenses.Get(ctx, "%")
 	testURLParseError(t, err)
 }

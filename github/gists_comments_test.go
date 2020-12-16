@@ -81,7 +81,8 @@ func TestGistsService_ListComments(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	comments, _, err := client.Gists.ListComments(context.Background(), "1", opt)
+	ctx := context.Background()
+	comments, _, err := client.Gists.ListComments(ctx, "1", opt)
 	if err != nil {
 		t.Errorf("Gists.Comments returned error: %v", err)
 	}
@@ -96,7 +97,8 @@ func TestGistsService_ListComments_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Gists.ListComments(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Gists.ListComments(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -109,7 +111,8 @@ func TestGistsService_GetComment(t *testing.T) {
 		fmt.Fprint(w, `{"id": 1}`)
 	})
 
-	comment, _, err := client.Gists.GetComment(context.Background(), "1", 2)
+	ctx := context.Background()
+	comment, _, err := client.Gists.GetComment(ctx, "1", 2)
 	if err != nil {
 		t.Errorf("Gists.GetComment returned error: %v", err)
 	}
@@ -124,7 +127,8 @@ func TestGistsService_GetComment_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Gists.GetComment(context.Background(), "%", 1)
+	ctx := context.Background()
+	_, _, err := client.Gists.GetComment(ctx, "%", 1)
 	testURLParseError(t, err)
 }
 
@@ -146,7 +150,8 @@ func TestGistsService_CreateComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	comment, _, err := client.Gists.CreateComment(context.Background(), "1", input)
+	ctx := context.Background()
+	comment, _, err := client.Gists.CreateComment(ctx, "1", input)
 	if err != nil {
 		t.Errorf("Gists.CreateComment returned error: %v", err)
 	}
@@ -161,7 +166,8 @@ func TestGistsService_CreateComment_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Gists.CreateComment(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Gists.CreateComment(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -183,7 +189,8 @@ func TestGistsService_EditComment(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	comment, _, err := client.Gists.EditComment(context.Background(), "1", 2, input)
+	ctx := context.Background()
+	comment, _, err := client.Gists.EditComment(ctx, "1", 2, input)
 	if err != nil {
 		t.Errorf("Gists.EditComment returned error: %v", err)
 	}
@@ -198,7 +205,8 @@ func TestGistsService_EditComment_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Gists.EditComment(context.Background(), "%", 1, nil)
+	ctx := context.Background()
+	_, _, err := client.Gists.EditComment(ctx, "%", 1, nil)
 	testURLParseError(t, err)
 }
 
@@ -210,7 +218,8 @@ func TestGistsService_DeleteComment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Gists.DeleteComment(context.Background(), "1", 2)
+	ctx := context.Background()
+	_, err := client.Gists.DeleteComment(ctx, "1", 2)
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
@@ -220,6 +229,7 @@ func TestGistsService_DeleteComment_invalidID(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Gists.DeleteComment(context.Background(), "%", 1)
+	ctx := context.Background()
+	_, err := client.Gists.DeleteComment(ctx, "%", 1)
 	testURLParseError(t, err)
 }

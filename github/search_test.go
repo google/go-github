@@ -31,7 +31,8 @@ func TestSearchService_Repositories(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Repositories(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Repositories(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Repositories returned error: %v", err)
 	}
@@ -62,7 +63,8 @@ func TestSearchService_Topics(t *testing.T) {
 	})
 
 	opts := &SearchOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Topics(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Topics(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Topics returned error: %v", err)
 	}
@@ -93,7 +95,8 @@ func TestSearchService_Commits(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "author-date", Order: "desc"}
-	result, _, err := client.Search.Commits(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Commits(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Commits returned error: %v", err)
 	}
@@ -126,7 +129,8 @@ func TestSearchService_Issues(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Issues(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Issues(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
@@ -159,7 +163,8 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	})
 
 	opts := &SearchOptions{}
-	result, _, err := client.Search.Issues(context.Background(), q, opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Issues(ctx, q, opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
@@ -197,7 +202,8 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks"}
-	result, _, err := client.Search.Issues(context.Background(), q, opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Issues(ctx, q, opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
@@ -234,7 +240,8 @@ func TestSearchService_Users(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Users(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Users(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Issues returned error: %v", err)
 	}
@@ -267,7 +274,8 @@ func TestSearchService_Code(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Code(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Code(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}
@@ -319,7 +327,8 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, TextMatch: true}
-	result, _, err := client.Search.Code(context.Background(), "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Code(ctx, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}
@@ -362,7 +371,8 @@ func TestSearchService_Labels(t *testing.T) {
 	})
 
 	opts := &SearchOptions{Sort: "updated", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	result, _, err := client.Search.Labels(context.Background(), 1234, "blah", opts)
+	ctx := context.Background()
+	result, _, err := client.Search.Labels(ctx, 1234, "blah", opts)
 	if err != nil {
 		t.Errorf("Search.Code returned error: %v", err)
 	}

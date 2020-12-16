@@ -615,7 +615,8 @@ func TestDo(t *testing.T) {
 
 	req, _ := client.NewRequest("GET", ".", nil)
 	body := new(foo)
-	client.Do(context.Background(), req, body)
+	ctx := context.Background()
+	client.Do(ctx, req, body)
 
 	want := &foo{"a"}
 	if !reflect.DeepEqual(body, want) {
@@ -644,7 +645,8 @@ func TestDo_httpError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	resp, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Fatal("Expected HTTP 400 error, got no error.")
@@ -666,7 +668,8 @@ func TestDo_redirectLoop(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -689,7 +692,8 @@ func TestDo_sanitizeURL(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
-	_, err = unauthedClient.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err = unauthedClient.Do(ctx, req, nil)
 	if err == nil {
 		t.Fatal("Expected error to be returned.")
 	}
@@ -709,7 +713,8 @@ func TestDo_rateLimit(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	resp, err := client.Do(ctx, req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -738,7 +743,8 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	resp, err := client.Do(ctx, req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
@@ -775,7 +781,8 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -822,11 +829,12 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 
 	// First request is made, and it makes the client aware of rate reset time being in the future.
 	req, _ := client.NewRequest("GET", "first", nil)
-	client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	client.Do(ctx, req, nil)
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
 	req, _ = client.NewRequest("GET", "second", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	_, err := client.Do(ctx, req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -868,7 +876,8 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -902,7 +911,8 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -932,7 +942,8 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	})
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -960,7 +971,8 @@ func TestDo_noContent(t *testing.T) {
 	var body json.RawMessage
 
 	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.Background(), req, &body)
+	ctx := context.Background()
+	_, err := client.Do(ctx, req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
 	}
@@ -1180,7 +1192,8 @@ func TestRateLimits(t *testing.T) {
 		}}`)
 	})
 
-	rate, _, err := client.RateLimits(context.Background())
+	ctx := context.Background()
+	rate, _, err := client.RateLimits(ctx)
 	if err != nil {
 		t.Errorf("RateLimits returned error: %v", err)
 	}
@@ -1253,7 +1266,8 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	unauthedClient := NewClient(tp.Client())
 	unauthedClient.BaseURL = client.BaseURL
 	req, _ := unauthedClient.NewRequest("GET", ".", nil)
-	unauthedClient.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	unauthedClient.Do(ctx, req, nil)
 }
 
 func TestUnauthenticatedRateLimitedTransport_missingFields(t *testing.T) {
@@ -1327,7 +1341,8 @@ func TestBasicAuthTransport(t *testing.T) {
 	basicAuthClient := NewClient(tp.Client())
 	basicAuthClient.BaseURL = client.BaseURL
 	req, _ := basicAuthClient.NewRequest("GET", ".", nil)
-	basicAuthClient.Do(context.Background(), req, nil)
+	ctx := context.Background()
+	basicAuthClient.Do(ctx, req, nil)
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {

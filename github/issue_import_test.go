@@ -48,7 +48,8 @@ func TestIssueImportService_Create(t *testing.T) {
 		w.Write(issueImportResponseJSON)
 	})
 
-	got, _, err := client.IssueImport.Create(context.Background(), "o", "r", input)
+	ctx := context.Background()
+	got, _, err := client.IssueImport.Create(ctx, "o", "r", input)
 	if err != nil {
 		t.Errorf("Create returned error: %v", err)
 	}
@@ -63,7 +64,8 @@ func TestIssueImportService_Create_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.IssueImport.Create(context.Background(), "%", "r", nil)
+	ctx := context.Background()
+	_, _, err := client.IssueImport.Create(ctx, "%", "r", nil)
 	testURLParseError(t, err)
 }
 
@@ -78,7 +80,8 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 		w.Write(issueImportResponseJSON)
 	})
 
-	got, _, err := client.IssueImport.CheckStatus(context.Background(), "o", "r", 3)
+	ctx := context.Background()
+	got, _, err := client.IssueImport.CheckStatus(ctx, "o", "r", 3)
 	if err != nil {
 		t.Errorf("CheckStatus returned error: %v", err)
 	}
@@ -93,7 +96,8 @@ func TestIssueImportService_CheckStatus_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.IssueImport.CheckStatus(context.Background(), "%", "r", 1)
+	ctx := context.Background()
+	_, _, err := client.IssueImport.CheckStatus(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
 
@@ -108,7 +112,8 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 		w.Write([]byte(fmt.Sprintf("[%s]", issueImportResponseJSON)))
 	})
 
-	got, _, err := client.IssueImport.CheckStatusSince(context.Background(), "o", "r", time.Now())
+	ctx := context.Background()
+	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now())
 	if err != nil {
 		t.Errorf("CheckStatusSince returned error: %v", err)
 	}
@@ -123,7 +128,8 @@ func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.IssueImport.CheckStatusSince(context.Background(), "%", "r", time.Now())
+	ctx := context.Background()
+	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", time.Now())
 	testURLParseError(t, err)
 }
 

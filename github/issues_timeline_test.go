@@ -30,7 +30,8 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	events, _, err := client.Issues.ListIssueTimeline(context.Background(), "o", "r", 1, opt)
+	ctx := context.Background()
+	events, _, err := client.Issues.ListIssueTimeline(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
 	}

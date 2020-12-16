@@ -26,7 +26,8 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	})
 
 	opts := &ListWorkflowJobsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	jobs, _, err := client.Actions.ListWorkflowJobs(context.Background(), "o", "r", 29679449, opts)
+	ctx := context.Background()
+	jobs, _, err := client.Actions.ListWorkflowJobs(ctx, "o", "r", 29679449, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowJobs returned error: %v", err)
 	}
@@ -54,7 +55,8 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	})
 
 	opts := &ListWorkflowJobsOptions{Filter: "all", ListOptions: ListOptions{Page: 2, PerPage: 2}}
-	jobs, _, err := client.Actions.ListWorkflowJobs(context.Background(), "o", "r", 29679449, opts)
+	ctx := context.Background()
+	jobs, _, err := client.Actions.ListWorkflowJobs(ctx, "o", "r", 29679449, opts)
 	if err != nil {
 		t.Errorf("Actions.ListWorkflowJobs returned error: %v", err)
 	}
@@ -80,7 +82,8 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"started_at":"2019-01-02T15:04:05Z","completed_at":"2020-01-02T15:04:05Z"}`)
 	})
 
-	job, _, err := client.Actions.GetWorkflowJobByID(context.Background(), "o", "r", 399444496)
+	ctx := context.Background()
+	job, _, err := client.Actions.GetWorkflowJobByID(ctx, "o", "r", 399444496)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobByID returned error: %v", err)
 	}
@@ -104,7 +107,8 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}
@@ -126,7 +130,8 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 		http.Redirect(w, r, "http://github.com/a", http.StatusMovedPermanently)
 	})
 
-	_, resp, _ := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, false)
+	ctx := context.Background()
+	_, resp, _ := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, false)
 	if resp.StatusCode != http.StatusMovedPermanently {
 		t.Errorf("Actions.GetWorkflowJobLogs returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
 	}
@@ -148,7 +153,8 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 
-	url, resp, err := client.Actions.GetWorkflowJobLogs(context.Background(), "o", "r", 399444496, true)
+	ctx := context.Background()
+	url, resp, err := client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
 	if err != nil {
 		t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
 	}

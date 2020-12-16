@@ -35,7 +35,8 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 		Role:        "admin",
 		ListOptions: ListOptions{Page: 2},
 	}
-	members, _, err := client.Organizations.ListMembers(context.Background(), "o", opt)
+	ctx := context.Background()
+	members, _, err := client.Organizations.ListMembers(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
@@ -50,7 +51,8 @@ func TestOrganizationsService_ListMembers_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.ListMembers(context.Background(), "%", nil)
+	ctx := context.Background()
+	_, _, err := client.Organizations.ListMembers(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
@@ -64,7 +66,8 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 	})
 
 	opt := &ListMembersOptions{PublicOnly: true}
-	members, _, err := client.Organizations.ListMembers(context.Background(), "o", opt)
+	ctx := context.Background()
+	members, _, err := client.Organizations.ListMembers(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
@@ -84,7 +87,8 @@ func TestOrganizationsService_IsMember(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, _, err := client.Organizations.IsMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsMember(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.IsMember returned error: %v", err)
 	}
@@ -103,7 +107,8 @@ func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.IsMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsMember(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.IsMember returned error: %+v", err)
 	}
@@ -123,7 +128,8 @@ func TestOrganizationsService_IsMember_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.IsMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsMember(ctx, "o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -136,7 +142,8 @@ func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.IsMember(context.Background(), "%", "u")
+	ctx := context.Background()
+	_, _, err := client.Organizations.IsMember(ctx, "%", "u")
 	testURLParseError(t, err)
 }
 
@@ -149,7 +156,8 @@ func TestOrganizationsService_IsPublicMember(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	member, _, err := client.Organizations.IsPublicMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsPublicMember(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.IsPublicMember returned error: %v", err)
 	}
@@ -168,7 +176,8 @@ func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	member, _, err := client.Organizations.IsPublicMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsPublicMember(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.IsPublicMember returned error: %v", err)
 	}
@@ -188,7 +197,8 @@ func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	})
 
-	member, _, err := client.Organizations.IsPublicMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	member, _, err := client.Organizations.IsPublicMember(ctx, "o", "u")
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
@@ -201,7 +211,8 @@ func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, _, err := client.Organizations.IsPublicMember(context.Background(), "%", "u")
+	ctx := context.Background()
+	_, _, err := client.Organizations.IsPublicMember(ctx, "%", "u")
 	testURLParseError(t, err)
 }
 
@@ -213,7 +224,8 @@ func TestOrganizationsService_RemoveMember(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	_, err := client.Organizations.RemoveMember(context.Background(), "o", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveMember(ctx, "o", "u")
 	if err != nil {
 		t.Errorf("Organizations.RemoveMember returned error: %v", err)
 	}
@@ -223,7 +235,8 @@ func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
 
-	_, err := client.Organizations.RemoveMember(context.Background(), "%", "u")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveMember(ctx, "%", "u")
 	testURLParseError(t, err)
 }
 
@@ -244,7 +257,8 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 		State:       "active",
 		ListOptions: ListOptions{Page: 2},
 	}
-	memberships, _, err := client.Organizations.ListOrgMemberships(context.Background(), opt)
+	ctx := context.Background()
+	memberships, _, err := client.Organizations.ListOrgMemberships(ctx, opt)
 	if err != nil {
 		t.Errorf("Organizations.ListOrgMemberships returned error: %v", err)
 	}
@@ -264,7 +278,8 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
-	membership, _, err := client.Organizations.GetOrgMembership(context.Background(), "", "o")
+	ctx := context.Background()
+	membership, _, err := client.Organizations.GetOrgMembership(ctx, "", "o")
 	if err != nil {
 		t.Errorf("Organizations.GetOrgMembership returned error: %v", err)
 	}
@@ -284,7 +299,8 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
-	membership, _, err := client.Organizations.GetOrgMembership(context.Background(), "u", "o")
+	ctx := context.Background()
+	membership, _, err := client.Organizations.GetOrgMembership(ctx, "u", "o")
 	if err != nil {
 		t.Errorf("Organizations.GetOrgMembership returned error: %v", err)
 	}
@@ -313,7 +329,8 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
-	membership, _, err := client.Organizations.EditOrgMembership(context.Background(), "", "o", input)
+	ctx := context.Background()
+	membership, _, err := client.Organizations.EditOrgMembership(ctx, "", "o", input)
 	if err != nil {
 		t.Errorf("Organizations.EditOrgMembership returned error: %v", err)
 	}
@@ -342,7 +359,8 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
-	membership, _, err := client.Organizations.EditOrgMembership(context.Background(), "u", "o", input)
+	ctx := context.Background()
+	membership, _, err := client.Organizations.EditOrgMembership(ctx, "u", "o", input)
 	if err != nil {
 		t.Errorf("Organizations.EditOrgMembership returned error: %v", err)
 	}
@@ -362,7 +380,8 @@ func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Organizations.RemoveOrgMembership(context.Background(), "u", "o")
+	ctx := context.Background()
+	_, err := client.Organizations.RemoveOrgMembership(ctx, "u", "o")
 	if err != nil {
 		t.Errorf("Organizations.RemoveOrgMembership returned error: %v", err)
 	}
@@ -408,7 +427,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	invitations, _, err := client.Organizations.ListPendingOrgInvitations(context.Background(), "o", opt)
+	ctx := context.Background()
+	invitations, _, err := client.Organizations.ListPendingOrgInvitations(ctx, "o", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
@@ -474,7 +494,8 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 
 	})
 
-	invitations, _, err := client.Organizations.CreateOrgInvitation(context.Background(), "o", input)
+	ctx := context.Background()
+	invitations, _, err := client.Organizations.CreateOrgInvitation(ctx, "o", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateOrgInvitation returned error: %v", err)
 	}
@@ -508,7 +529,8 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1}
-	invitations, _, err := client.Organizations.ListOrgInvitationTeams(context.Background(), "o", "22", opt)
+	ctx := context.Background()
+	invitations, _, err := client.Organizations.ListOrgInvitationTeams(ctx, "o", "22", opt)
 	if err != nil {
 		t.Errorf("Organizations.ListOrgInvitationTeams returned error: %v", err)
 	}

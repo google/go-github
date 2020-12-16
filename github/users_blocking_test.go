@@ -27,7 +27,8 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 2}
-	blockedUsers, _, err := client.Users.ListBlockedUsers(context.Background(), opt)
+	ctx := context.Background()
+	blockedUsers, _, err := client.Users.ListBlockedUsers(ctx, opt)
 	if err != nil {
 		t.Errorf("Users.ListBlockedUsers returned error: %v", err)
 	}
@@ -48,7 +49,8 @@ func TestUsersService_IsBlocked(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	isBlocked, _, err := client.Users.IsBlocked(context.Background(), "u")
+	ctx := context.Background()
+	isBlocked, _, err := client.Users.IsBlocked(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.IsBlocked returned error: %v", err)
 	}
@@ -67,7 +69,8 @@ func TestUsersService_BlockUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.BlockUser(context.Background(), "u")
+	ctx := context.Background()
+	_, err := client.Users.BlockUser(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.BlockUser returned error: %v", err)
 	}
@@ -83,7 +86,8 @@ func TestUsersService_UnblockUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Users.UnblockUser(context.Background(), "u")
+	ctx := context.Background()
+	_, err := client.Users.UnblockUser(ctx, "u")
 	if err != nil {
 		t.Errorf("Users.UnblockUser returned error: %v", err)
 	}

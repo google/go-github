@@ -24,7 +24,8 @@ func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"organization"}`)
 	})
 
-	organizationInteractions, _, err := client.Interactions.GetRestrictionsForOrg(context.Background(), "o")
+	ctx := context.Background()
+	organizationInteractions, _, err := client.Interactions.GetRestrictionsForOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned error: %v", err)
 	}
@@ -53,7 +54,8 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 		fmt.Fprint(w, `{"origin":"organization"}`)
 	})
 
-	organizationInteractions, _, err := client.Interactions.UpdateRestrictionsForOrg(context.Background(), "o", input.GetLimit())
+	ctx := context.Background()
+	organizationInteractions, _, err := client.Interactions.UpdateRestrictionsForOrg(ctx, "o", input.GetLimit())
 	if err != nil {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned error: %v", err)
 	}
@@ -73,7 +75,8 @@ func TestInteractionsService_RemoveRestrictionsFromOrg(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 	})
 
-	_, err := client.Interactions.RemoveRestrictionsFromOrg(context.Background(), "o")
+	ctx := context.Background()
+	_, err := client.Interactions.RemoveRestrictionsFromOrg(ctx, "o")
 	if err != nil {
 		t.Errorf("Interactions.RemoveRestrictionsFromOrg returned error: %v", err)
 	}

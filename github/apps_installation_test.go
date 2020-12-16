@@ -27,7 +27,8 @@ func TestAppsService_ListRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	repositories, _, err := client.Apps.ListRepos(context.Background(), opt)
+	ctx := context.Background()
+	repositories, _, err := client.Apps.ListRepos(ctx, opt)
 	if err != nil {
 		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
@@ -52,7 +53,8 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	repositories, _, err := client.Apps.ListUserRepos(context.Background(), 1, opt)
+	ctx := context.Background()
+	repositories, _, err := client.Apps.ListUserRepos(ctx, 1, opt)
 	if err != nil {
 		t.Errorf("Apps.ListUserRepos returned error: %v", err)
 	}
@@ -72,7 +74,8 @@ func TestAppsService_AddRepository(t *testing.T) {
 		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"}}`)
 	})
 
-	repo, _, err := client.Apps.AddRepository(context.Background(), 1, 1)
+	ctx := context.Background()
+	repo, _, err := client.Apps.AddRepository(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Apps.AddRepository returned error: %v", err)
 	}
@@ -92,7 +95,8 @@ func TestAppsService_RemoveRepository(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.RemoveRepository(context.Background(), 1, 1)
+	ctx := context.Background()
+	_, err := client.Apps.RemoveRepository(ctx, 1, 1)
 	if err != nil {
 		t.Errorf("Apps.RemoveRepository returned error: %v", err)
 	}
@@ -107,7 +111,8 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Apps.RevokeInstallationToken(context.Background())
+	ctx := context.Background()
+	_, err := client.Apps.RevokeInstallationToken(ctx)
 	if err != nil {
 		t.Errorf("Apps.RevokeInstallationToken returned error: %v", err)
 	}

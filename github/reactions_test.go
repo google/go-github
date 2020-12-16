@@ -77,7 +77,8 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 	})
 
 	opt := &ListCommentReactionOptions{Content: "+1"}
-	reactions, _, err := client.Reactions.ListCommentReactions(context.Background(), "o", "r", 1, opt)
+	ctx := context.Background()
+	reactions, _, err := client.Reactions.ListCommentReactions(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("ListCommentReactions returned error: %v", err)
 	}
@@ -99,7 +100,8 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateCommentReaction(context.Background(), "o", "r", 1, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateCommentReaction(ctx, "o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateCommentReaction returned error: %v", err)
 	}
@@ -121,7 +123,8 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListIssueReactions(context.Background(), "o", "r", 1, nil)
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListIssueReactions(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListIssueReactions returned error: %v", err)
 	}
@@ -143,7 +146,8 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateIssueReaction(context.Background(), "o", "r", 1, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateIssueReaction(ctx, "o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateIssueReaction returned error: %v", err)
 	}
@@ -165,7 +169,8 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListIssueCommentReactions(context.Background(), "o", "r", 1, nil)
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListIssueCommentReactions(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListIssueCommentReactions returned error: %v", err)
 	}
@@ -187,7 +192,8 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateIssueCommentReaction(context.Background(), "o", "r", 1, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateIssueCommentReaction(ctx, "o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreateIssueCommentReaction returned error: %v", err)
 	}
@@ -209,7 +215,8 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListPullRequestCommentReactions(context.Background(), "o", "r", 1, nil)
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListPullRequestCommentReactions(ctx, "o", "r", 1, nil)
 	if err != nil {
 		t.Errorf("ListPullRequestCommentReactions returned error: %v", err)
 	}
@@ -231,7 +238,8 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreatePullRequestCommentReaction(context.Background(), "o", "r", 1, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreatePullRequestCommentReaction(ctx, "o", "r", 1, "+1")
 	if err != nil {
 		t.Errorf("CreatePullRequestCommentReaction returned error: %v", err)
 	}
@@ -253,7 +261,8 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListTeamDiscussionReactions(context.Background(), 1, 2, nil)
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListTeamDiscussionReactions(ctx, 1, 2, nil)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
@@ -275,7 +284,8 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateTeamDiscussionReaction(context.Background(), 1, 2, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateTeamDiscussionReaction(ctx, 1, 2, "+1")
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionReaction returned error: %v", err)
 	}
@@ -297,7 +307,8 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 		w.Write([]byte(`[{"id":1,"user":{"login":"l","id":2},"content":"+1"}]`))
 	})
 
-	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(context.Background(), 1, 2, 3, nil)
+	ctx := context.Background()
+	got, _, err := client.Reactions.ListTeamDiscussionCommentReactions(ctx, 1, 2, 3, nil)
 	if err != nil {
 		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
 	}
@@ -319,7 +330,8 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"+1"}`))
 	})
 
-	got, _, err := client.Reactions.CreateTeamDiscussionCommentReaction(context.Background(), 1, 2, 3, "+1")
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateTeamDiscussionCommentReaction(ctx, 1, 2, 3, "+1")
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionCommentReaction returned error: %v", err)
 	}
@@ -340,7 +352,8 @@ func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteCommentReaction(ctx, "o", "r", 1, 2); err != nil {
 		t.Errorf("DeleteCommentReaction returned error: %v", err)
 	}
 }
@@ -356,7 +369,8 @@ func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteCommentReactionByID(ctx, 1, 2, 3); err != nil {
 		t.Errorf("DeleteCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -372,7 +386,8 @@ func TestReactionsService_DeleteIssueReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueReaction(context.Background(), "o", "r", 1, 2); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteIssueReaction(ctx, "o", "r", 1, 2); err != nil {
 		t.Errorf("DeleteIssueReaction returned error: %v", err)
 	}
 }
@@ -388,7 +403,8 @@ func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueReactionByID(context.Background(), 1, 2, 3); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteIssueReactionByID(ctx, 1, 2, 3); err != nil {
 		t.Errorf("DeleteIssueReactionByRepoID returned error: %v", err)
 	}
 }
@@ -404,7 +420,8 @@ func TestReactionsService_DeleteIssueCommentReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteIssueCommentReaction(ctx, "o", "r", 1, 2); err != nil {
 		t.Errorf("DeleteIssueCommentReaction returned error: %v", err)
 	}
 }
@@ -420,7 +437,8 @@ func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteIssueCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteIssueCommentReactionByID(ctx, 1, 2, 3); err != nil {
 		t.Errorf("DeleteIssueCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -436,7 +454,8 @@ func TestReactionsService_DeletePullRequestCommentReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeletePullRequestCommentReaction(context.Background(), "o", "r", 1, 2); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeletePullRequestCommentReaction(ctx, "o", "r", 1, 2); err != nil {
 		t.Errorf("DeletePullRequestCommentReaction returned error: %v", err)
 	}
 }
@@ -452,7 +471,8 @@ func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeletePullRequestCommentReactionByID(context.Background(), 1, 2, 3); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeletePullRequestCommentReactionByID(ctx, 1, 2, 3); err != nil {
 		t.Errorf("DeletePullRequestCommentReactionByRepoID returned error: %v", err)
 	}
 }
@@ -468,7 +488,8 @@ func TestReactionsService_DeleteTeamDiscussionReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionReaction(context.Background(), "o", "s", 1, 2); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteTeamDiscussionReaction(ctx, "o", "s", 1, 2); err != nil {
 		t.Errorf("DeleteTeamDiscussionReaction returned error: %v", err)
 	}
 }
@@ -484,7 +505,8 @@ func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testin
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionReactionByOrgIDAndTeamID(context.Background(), 1, 2, 3, 4); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx, 1, 2, 3, 4); err != nil {
 		t.Errorf("DeleteTeamDiscussionReactionByTeamIDAndOrgID returned error: %v", err)
 	}
 }
@@ -500,7 +522,8 @@ func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionCommentReaction(context.Background(), "o", "s", 1, 2, 3); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteTeamDiscussionCommentReaction(ctx, "o", "s", 1, 2, 3); err != nil {
 		t.Errorf("DeleteTeamDiscussionCommentReaction returned error: %v", err)
 	}
 }
@@ -516,7 +539,8 @@ func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t 
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(context.Background(), 1, 2, 3, 4, 5); err != nil {
+	ctx := context.Background()
+	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx, 1, 2, 3, 4, 5); err != nil {
 		t.Errorf("DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID returned error: %v", err)
 	}
 }
