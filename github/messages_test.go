@@ -8,12 +8,21 @@ package github
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"reflect"
 	"strings"
 	"testing"
 )
+
+func TestMessageMAC_BadHashTypePrefix(t *testing.T) {
+	const signature = "bogus1=1234567"
+	if _, _, err := messageMAC(signature); err == nil {
+		t.Fatal("messageMAC returned nil; wanted error")
+	}
+}
 
 func TestValidatePayload(t *testing.T) {
 	const defaultBody = `{"yo":true}` // All tests below use the default request body and signature.
@@ -174,6 +183,36 @@ func TestValidatePayload_NoSecretKey(t *testing.T) {
 	}
 	if string(got) != payload {
 		t.Errorf("ValidatePayload = %q, want %q", got, payload)
+	}
+}
+
+// badReader satisfies io.Reader but always returns an error.
+type badReader struct{}
+
+func (b *badReader) Read(p []byte) (int, error) {
+	return 0, errors.New("bad reader")
+}
+
+func (b *badReader) Close() error { return errors.New("bad reader") }
+
+func TestValidatePayload_BadRequestBody(t *testing.T) {
+	tests := []struct {
+		contentType string
+	}{
+		{contentType: "application/json"},
+		{contentType: "application/x-www-form-urlencoded"},
+	}
+
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
+			req := &http.Request{
+				Header: http.Header{"Content-Type": []string{tt.contentType}},
+				Body:   &badReader{},
+			}
+			if _, err := ValidatePayload(req, nil); err == nil {
+				t.Fatal("ValidatePayload returned nil; want error")
+			}
+		})
 	}
 }
 
@@ -388,6 +427,12 @@ func TestParseWebHook(t *testing.T) {
 	}
 }
 
+func TestParseWebHook_BadMessageType(t *testing.T) {
+	if _, err := ParseWebHook("bogus message type", []byte("{}")); err == nil {
+		t.Fatal("ParseWebHook returned nil; wanted error")
+	}
+}
+
 func TestDeliveryID(t *testing.T) {
 	id := "8970a780-244e-11e7-91ca-da3aabcb9793"
 	req, err := http.NewRequest("POST", "http://localhost", nil)
@@ -399,5 +444,15 @@ func TestDeliveryID(t *testing.T) {
 	got := DeliveryID(req)
 	if got != id {
 		t.Errorf("DeliveryID(%#v) = %q, want %q", req, got, id)
+	}
+}
+
+func TestWebHookType(t *testing.T) {
+	want := "yo"
+	req := &http.Request{
+		Header: http.Header{eventTypeHeader: []string{want}},
+	}
+	if got := WebHookType(req); got != want {
+		t.Errorf("WebHookType = %q, want %q", got, want)
 	}
 }
