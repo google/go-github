@@ -17506,6 +17506,16 @@ func TestWebHookCommit_GetTimestamp(tt *testing.T) {
 	w.GetTimestamp()
 }
 
+func TestWebHookPayload_GetAction(tt *testing.T) {
+	var zeroValue string
+	w := &WebHookPayload{Action: &zeroValue}
+	w.GetAction()
+	w = &WebHookPayload{}
+	w.GetAction()
+	w = nil
+	w.GetAction()
+}
+
 func TestWebHookPayload_GetAfter(tt *testing.T) {
 	var zeroValue string
 	w := &WebHookPayload{After: &zeroValue}
@@ -17571,6 +17581,20 @@ func TestWebHookPayload_GetHeadCommit(tt *testing.T) {
 	w.GetHeadCommit()
 	w = nil
 	w.GetHeadCommit()
+}
+
+func TestWebHookPayload_GetInstallation(tt *testing.T) {
+	w := &WebHookPayload{}
+	w.GetInstallation()
+	w = nil
+	w.GetInstallation()
+}
+
+func TestWebHookPayload_GetOrganization(tt *testing.T) {
+	w := &WebHookPayload{}
+	w.GetOrganization()
+	w = nil
+	w.GetOrganization()
 }
 
 func TestWebHookPayload_GetPusher(tt *testing.T) {
