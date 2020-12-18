@@ -164,12 +164,12 @@ func TestIssuesService_GetEvent(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Issues.GetEvent(ctx, "o", "r", 1)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListRepositoryEvents = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now GetEvent = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListRepositoryEvents resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now GetEvent resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListRepositoryEvents err = nil, want error")
+		t.Error("rate.Reset.Time > now GetEvent err = nil, want error")
 	}
 }
