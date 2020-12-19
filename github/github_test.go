@@ -255,6 +255,22 @@ func TestNewEnterpriseClient_addsEnterpriseSuffixAndTrailingSlashToURLs(t *testi
 	}
 }
 
+func TestNewEnterpriseClient_badBaseURL(t *testing.T) {
+	baseURL := "bogus\nbase\nURL"
+	uploadURL := "https://custom-upload-url/api/uploads/"
+	if _, err := NewEnterpriseClient(baseURL, uploadURL, nil); err == nil {
+		t.Fatal("NewEnterpriseClient returned nil, expected error")
+	}
+}
+
+func TestNewEnterpriseClient_badUploadURL(t *testing.T) {
+	baseURL := "https://custom-url/api/v3/"
+	uploadURL := "bogus\nupload\nURL"
+	if _, err := NewEnterpriseClient(baseURL, uploadURL, nil); err == nil {
+		t.Fatal("NewEnterpriseClient returned nil, expected error")
+	}
+}
+
 func TestNewEnterpriseClient_URLHasExistingAPIPrefix_AddTrailingSlash(t *testing.T) {
 	baseURL := "https://api.custom-url"
 	uploadURL := "https://api.custom-upload-url"
@@ -429,6 +445,13 @@ func TestNewRequest_badURL(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestNewRequest_badMethod(t *testing.T) {
+	c := NewClient(nil)
+	if _, err := c.NewRequest("BOGUS\nMETHOD", ".", nil); err == nil {
+		t.Fatal("NewRequest returned nil; expected error")
+	}
+}
+
 // ensure that no User-Agent header is set if the client's UserAgent is empty.
 // This caused a problem with Google's internal http client.
 func TestNewRequest_emptyUserAgent(t *testing.T) {
@@ -481,6 +504,12 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
 		}
 	}
+}
+
+func TestNewUploadRequest_badURL(t *testing.T) {
+	c := NewClient(nil)
+	_, err := c.NewUploadRequest(":", nil, 0, "")
+	testURLParseError(t, err)
 }
 
 func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
@@ -1404,5 +1433,72 @@ func TestNestedStructAccessorNoPanic(t *testing.T) {
 	want := ""
 	if got != want {
 		t.Errorf("Issues.Get.GetUser().GetPlan().GetName() returned %+v, want %+v", got, want)
+	}
+}
+
+func TestTwoFactorAuthError(t *testing.T) {
+	u, err := url.Parse("https://example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	e := &TwoFactorAuthError{
+		Response: &http.Response{
+			Request:    &http.Request{Method: "PUT", URL: u},
+			StatusCode: http.StatusTooManyRequests,
+		},
+		Message: "<msg>",
+	}
+	if got, want := e.Error(), "PUT https://example.com: 429 <msg> []"; got != want {
+		t.Errorf("TwoFactorAuthError = %q, want %q", got, want)
+	}
+}
+
+func TestRateLimitError(t *testing.T) {
+	u, err := url.Parse("https://example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	r := &RateLimitError{
+		Response: &http.Response{
+			Request:    &http.Request{Method: "PUT", URL: u},
+			StatusCode: http.StatusTooManyRequests,
+		},
+		Message: "<msg>",
+	}
+	if got, want := r.Error(), "PUT https://example.com: 429 <msg> [rate limit was reset"; !strings.Contains(got, want) {
+		t.Errorf("RateLimitError = %q, want %q", got, want)
+	}
+}
+
+func TestAcceptedError(t *testing.T) {
+	a := &AcceptedError{}
+	if got, want := a.Error(), "try again later"; !strings.Contains(got, want) {
+		t.Errorf("AcceptedError = %q, want %q", got, want)
+	}
+}
+
+func TestAbuseRateLimitError(t *testing.T) {
+	u, err := url.Parse("https://example.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	r := &AbuseRateLimitError{
+		Response: &http.Response{
+			Request:    &http.Request{Method: "PUT", URL: u},
+			StatusCode: http.StatusTooManyRequests,
+		},
+		Message: "<msg>",
+	}
+	if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
+		t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+	}
+}
+
+func TestAddOptions_QueryValues(t *testing.T) {
+	if _, err := addOptions("yo", ""); err == nil {
+		t.Error("addOptions err = nil, want error")
 	}
 }
