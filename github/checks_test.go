@@ -60,13 +60,13 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now GetCheckRun = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now GetCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now GetCheckRun err = nil, want error")
 	}
 }
 
@@ -115,13 +115,13 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now Getchecksuite = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now Getchecksuite resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now Getchecksuite err = nil, want error")
 	}
 }
 
@@ -188,13 +188,13 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now CreateCheckRun = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now CreateCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now CreateCheckRun err = nil, want error")
 	}
 }
 
@@ -253,13 +253,13 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	client.BaseURL.Path = ""
 	got, resp, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
 	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunAnnotations = %#v, want nil", got)
 	}
 	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunAnnotations resp = %#v, want nil", resp)
 	}
 	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+		t.Error("client.BaseURL.Path='' ListCheckRunAnnotations err = nil, want error")
 	}
 
 	// Test s.client.Do failure
@@ -267,13 +267,13 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err = client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now ListCheckRunAnnotations = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now ListCheckRunAnnotations resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now ListCheckRunAnnotations err = nil, want error")
 	}
 }
 
@@ -339,13 +339,13 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now UpdateCheckRun = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now UpdateCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now UpdateCheckRun err = nil, want error")
 	}
 }
 
@@ -411,13 +411,13 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	client.BaseURL.Path = ""
 	got, resp, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
 	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunsForRef = %#v, want nil", got)
 	}
 	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunsForRef resp = %#v, want nil", resp)
 	}
 	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+		t.Error("client.BaseURL.Path='' ListCheckRunsForRef err = nil, want error")
 	}
 
 	// Test s.client.Do failure
@@ -425,13 +425,13 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err = client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now ListCheckRunsForRef = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now ListCheckRunsForRef resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now ListCheckRunsForRef err = nil, want error")
 	}
 }
 
@@ -497,13 +497,13 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	client.BaseURL.Path = ""
 	got, resp, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
 	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunsCheckSuite = %#v, want nil", got)
 	}
 	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+		t.Errorf("client.BaseURL.Path='' ListCheckRunsCheckSuite resp = %#v, want nil", resp)
 	}
 	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+		t.Error("client.BaseURL.Path='' ListCheckRunsCheckSuite err = nil, want error")
 	}
 
 	// Test s.client.Do failure
@@ -511,13 +511,13 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err = client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now ListCheckRunsCheckSuite = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now ListCheckRunsCheckSuite resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now ListCheckRunsCheckSuite err = nil, want error")
 	}
 }
 
@@ -582,13 +582,13 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	client.BaseURL.Path = ""
 	got, resp, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
 	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
+		t.Errorf("client.BaseURL.Path='' ListCheckSuitesForRef = %#v, want nil", got)
 	}
 	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
+		t.Errorf("client.BaseURL.Path='' ListCheckSuitesForRef resp = %#v, want nil", resp)
 	}
 	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
+		t.Error("client.BaseURL.Path='' ListCheckSuitesForRef err = nil, want error")
 	}
 
 	// Test s.client.Do failure
@@ -596,13 +596,13 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err = client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now ListCheckSuitesForRef = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now ListCheckSuitesForRef resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now ListCheckSuitesForRef err = nil, want error")
 	}
 }
 
@@ -649,13 +649,13 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now SetCheckSuitePreferences = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now SetCheckSuitePreferences resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now SetCheckSuitePreferences err = nil, want error")
 	}
 }
 
@@ -711,13 +711,13 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
 	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
+		t.Errorf("rate.Reset.Time > now CreateCheckSuite = %#v, want nil", got)
 	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
+		t.Errorf("rate.Reset.Time > now CreateCheckSuite resp = %#v, want StatusCode=%v", resp.Response, want)
 	}
 	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
+		t.Error("rate.Reset.Time > now CreateCheckSuite err = nil, want error")
 	}
 }
 

@@ -140,6 +140,21 @@ func TestTeamsService_ListComments(t *testing.T) {
 	if !reflect.DeepEqual(commentsBySlug, want) {
 		t.Errorf("Teams.ListCommentsBySlug returned %+v, want %+v", commentsBySlug, want)
 	}
+
+	// Test addOptions failure
+	_, _, err = client.Teams.ListCommentsByID(ctx, -1, -2, -3,
+		&DiscussionCommentListOptions{Direction: "desc"})
+	if err == nil {
+		t.Error("bad options ListCommentsByID err = nil, want error")
+	}
+
+	// Test addOptions failure
+	_, _, err = client.Teams.ListCommentsBySlug(ctx, "a\na", "b\nb", -3,
+		&DiscussionCommentListOptions{Direction: "desc"})
+	if err == nil {
+		t.Error("bad options ListCommentsBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_GetComment(t *testing.T) {
@@ -175,6 +190,16 @@ func TestTeamsService_GetComment(t *testing.T) {
 
 	if !reflect.DeepEqual(commentBySlug, want) {
 		t.Errorf("Teams.GetCommentBySlug returned %+v, want %+v", commentBySlug, want)
+	}
+
+	_, _, err = client.Teams.GetCommentByID(ctx, -1, -2, -3, -4)
+	if err == nil {
+		t.Error("bad options GetCommentByID err = nil, want error")
+	}
+
+	_, _, err = client.Teams.GetCommentBySlug(ctx, "a\na", "b\nb", -3, -4)
+	if err == nil {
+		t.Error("bad options GetCommentBySlug err = nil, want error")
 	}
 
 }
@@ -222,6 +247,17 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	if !reflect.DeepEqual(commentBySlug, want) {
 		t.Errorf("Teams.CreateCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
+
+	_, _, err = client.Teams.CreateCommentByID(ctx, -1, -2, -3, input)
+	if err == nil {
+		t.Error("bad options CreateCommentByID err = nil, want error")
+	}
+
+	_, _, err = client.Teams.CreateCommentBySlug(ctx, "a\na", "b\nb", -3, input)
+	if err == nil {
+		t.Error("bad options CreateCommentBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_EditComment(t *testing.T) {
@@ -266,6 +302,17 @@ func TestTeamsService_EditComment(t *testing.T) {
 	if !reflect.DeepEqual(commentBySlug, want) {
 		t.Errorf("Teams.EditCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
+
+	_, _, err = client.Teams.EditCommentByID(ctx, -1, -2, -3, -4, input)
+	if err == nil {
+		t.Error("bad options EditCommentByID err = nil, want error")
+	}
+
+	_, _, err = client.Teams.EditCommentBySlug(ctx, "a\na", "b\nb", -3, -4, input)
+	if err == nil {
+		t.Error("bad options EditCommentBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_DeleteComment(t *testing.T) {
@@ -292,4 +339,15 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.DeleteCommentBySlug returned error: %v", err)
 	}
+
+	_, err = client.Teams.DeleteCommentByID(ctx, -1, -2, -3, -4)
+	if err == nil {
+		t.Error("bad options DeleteCommentByID err = nil, want error")
+	}
+
+	_, err = client.Teams.DeleteCommentBySlug(ctx, "a\na", "b\nb", -3, -4)
+	if err == nil {
+		t.Error("bad options DeleteCommentBySlug err = nil, want error")
+	}
+
 }
