@@ -114,6 +114,12 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 	if !reflect.DeepEqual(discussions, want) {
 		t.Errorf("Teams.ListDiscussionsByID returned %+v, want %+v", discussions, want)
 	}
+
+	_, _, err = client.Teams.ListDiscussionsByID(ctx, -1, -2, nil)
+	if err == nil {
+		t.Error("bad options ListDiscussionsByID err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
@@ -215,6 +221,12 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 	if !reflect.DeepEqual(discussions, want) {
 		t.Errorf("Teams.ListDiscussionsBySlug returned %+v, want %+v", discussions, want)
 	}
+
+	_, _, err = client.Teams.ListDiscussionsBySlug(ctx, "o\no", "s\ns", nil)
+	if err == nil {
+		t.Error("bad options ListDiscussionsBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_GetDiscussionByID(t *testing.T) {
@@ -236,6 +248,12 @@ func TestTeamsService_GetDiscussionByID(t *testing.T) {
 	if !reflect.DeepEqual(discussion, want) {
 		t.Errorf("Teams.GetDiscussionByID returned %+v, want %+v", discussion, want)
 	}
+
+	_, _, err = client.Teams.GetDiscussionByID(ctx, -1, -2, -3)
+	if err == nil {
+		t.Error("bad options GetDiscussionByID err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
@@ -257,6 +275,12 @@ func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
 	if !reflect.DeepEqual(discussion, want) {
 		t.Errorf("Teams.GetDiscussionBySlug returned %+v, want %+v", discussion, want)
 	}
+
+	_, _, err = client.Teams.GetDiscussionBySlug(ctx, "o\no", "s\ns", -3)
+	if err == nil {
+		t.Error("bad options GetDiscussionBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_CreateDiscussionByID(t *testing.T) {
@@ -287,6 +311,12 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.CreateDiscussionByID returned %+v, want %+v", comment, want)
 	}
+
+	_, _, err = client.Teams.CreateDiscussionByID(ctx, -1, -2, input)
+	if err == nil {
+		t.Error("bad options CreateDiscussionByID err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
@@ -317,6 +347,12 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.CreateDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
+
+	_, _, err = client.Teams.CreateDiscussionBySlug(ctx, "o\no", "s\ns", input)
+	if err == nil {
+		t.Error("bad options CreateDiscussionBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_EditDiscussionByID(t *testing.T) {
@@ -347,6 +383,12 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditDiscussionByID returned %+v, want %+v", comment, want)
 	}
+
+	_, _, err = client.Teams.EditDiscussionByID(ctx, -1, -2, -3, input)
+	if err == nil {
+		t.Error("bad options EditDiscussionByID err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
@@ -377,6 +419,12 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Teams.EditDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
+
+	_, _, err = client.Teams.EditDiscussionBySlug(ctx, "o\no", "s\ns", -3, input)
+	if err == nil {
+		t.Error("bad options EditDiscussionBySlug err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
@@ -392,6 +440,12 @@ func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.DeleteDiscussionByID returned error: %v", err)
 	}
+
+	_, err = client.Teams.DeleteDiscussionByID(ctx, -1, -2, -3)
+	if err == nil {
+		t.Error("bad options DeleteDiscussionByID err = nil, want error")
+	}
+
 }
 
 func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
@@ -407,4 +461,10 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.DeleteDiscussionBySlug returned error: %v", err)
 	}
+
+	_, err = client.Teams.DeleteDiscussionBySlug(ctx, "o\no", "s\ns", -3)
+	if err == nil {
+		t.Error("bad options DeleteDiscussionBySlug err = nil, want error")
+	}
+
 }
