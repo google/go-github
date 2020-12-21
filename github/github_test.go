@@ -166,6 +166,45 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	}
 }
 
+// Test how bad options are handled. Method f under test should
+// return an error.
+func testBadOptions(t *testing.T, name string, f func() error) {
+	t.Helper()
+	if err := f(); err == nil {
+		t.Errorf("bad options %v err = nil, want error", name)
+	}
+}
+
+// Test function under NewRequest failure and then s.client.Do failure.
+// Method f should be a regular call that would normally succeed, but
+// should return an error when NewRequest or s.client.Do fails.
+func testNewRequestAndDoFailure(t *testing.T, name string, client *Client, f func() (*Response, error)) {
+	t.Helper()
+
+	client.BaseURL.Path = ""
+	resp, err := f()
+	if resp != nil {
+		t.Errorf("client.BaseURL.Path='' %v resp = %#v, want nil", name, resp)
+	}
+	if err == nil {
+		t.Errorf("client.BaseURL.Path='' %v err = nil, want error", name)
+	}
+
+	client.BaseURL.Path = "/api-v3/"
+	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	resp, err = f()
+	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
+		if resp != nil {
+			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", name, resp.Response, want)
+		} else {
+			t.Errorf("rate.Reset.Time > now %v resp = nil, want StatusCode=%v", name, want)
+		}
+	}
+	if err == nil {
+		t.Errorf("rate.Reset.Time > now %v err = nil, want error", name)
+	}
+}
+
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 

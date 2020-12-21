@@ -49,25 +49,19 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.GetCheckRun(ctx, "\n", "\n", -1)
-	if err == nil {
-		t.Error("bad options GetCheckRun err = nil, want error")
-	}
+	const methodName = "GetCheckRun"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.GetCheckRun(ctx, "\n", "\n", -1)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now GetCheckRun = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now GetCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now GetCheckRun err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.GetCheckRun(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_GetCheckSuite(t *testing.T) {
@@ -104,25 +98,19 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.GetCheckSuite(ctx, "\n", "\n", -1)
-	if err == nil {
-		t.Error("bad options GetCheckSuite err = nil, want error")
-	}
+	const methodName = "GetCheckSuite"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.GetCheckSuite(ctx, "\n", "\n", -1)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now Getchecksuite = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now Getchecksuite resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now Getchecksuite err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_CreateCheckRun(t *testing.T) {
@@ -177,25 +165,19 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.CreateCheckRun(ctx, "\n", "\n", CreateCheckRunOptions{})
-	if err == nil {
-		t.Error("bad options CreateCheckRun err = nil, want error")
-	}
+	const methodName = "CreateCheckRun"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.CreateCheckRun(ctx, "\n", "\n", CreateCheckRunOptions{})
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now CreateCheckRun = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now CreateCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now CreateCheckRun err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
+		if got != nil {
+			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
@@ -243,38 +225,19 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.ListCheckRunAnnotations(ctx, "\n", "\n", -1, &ListOptions{})
-	if err == nil {
-		t.Error("bad options ListCheckRunAnnotations err = nil, want error")
-	}
+	const methodName = "ListCheckRunAnnotations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.ListCheckRunAnnotations(ctx, "\n", "\n", -1, &ListOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunAnnotations = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunAnnotations resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListCheckRunAnnotations err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListCheckRunAnnotations = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListCheckRunAnnotations resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListCheckRunAnnotations err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
+		if got != nil {
+			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_UpdateCheckRun(t *testing.T) {
@@ -328,25 +291,19 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 		t.Errorf("Checks.UpdateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.UpdateCheckRun(ctx, "\n", "\n", -1, UpdateCheckRunOptions{})
-	if err == nil {
-		t.Error("bad options UpdateCheckRun err = nil, want error")
-	}
+	const methodName = "UpdateCheckRun"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.UpdateCheckRun(ctx, "\n", "\n", -1, UpdateCheckRunOptions{})
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now UpdateCheckRun = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now UpdateCheckRun resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now UpdateCheckRun err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.UpdateCheckRun(ctx, "o", "r", 1, updateCheckRunOpt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_ListCheckRunsForRef(t *testing.T) {
@@ -401,38 +358,19 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunsForRef returned %+v, want %+v", checkRuns, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.ListCheckRunsForRef(ctx, "\n", "\n", "\n", &ListCheckRunsOptions{})
-	if err == nil {
-		t.Error("bad options ListCheckRunsForRef err = nil, want error")
-	}
+	const methodName = "ListCheckRunsForRef"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.ListCheckRunsForRef(ctx, "\n", "\n", "\n", &ListCheckRunsOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunsForRef = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunsForRef resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListCheckRunsForRef err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListCheckRunsForRef = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListCheckRunsForRef resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListCheckRunsForRef err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.ListCheckRunsForRef(ctx, "o", "r", "master", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
@@ -487,38 +425,19 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.ListCheckRunsCheckSuite(ctx, "\n", "\n", -1, &ListCheckRunsOptions{})
-	if err == nil {
-		t.Error("bad options ListCheckRunsCheckSuite err = nil, want error")
-	}
+	const methodName = "ListCheckRunsCheckSuite"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.ListCheckRunsCheckSuite(ctx, "\n", "\n", -1, &ListCheckRunsOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunsCheckSuite = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckRunsCheckSuite resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListCheckRunsCheckSuite err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListCheckRunsCheckSuite = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListCheckRunsCheckSuite resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListCheckRunsCheckSuite err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.ListCheckRunsCheckSuite(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
@@ -572,38 +491,19 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.ListCheckSuitesForRef(ctx, "\n", "\n", "\n", &ListCheckSuiteOptions{})
-	if err == nil {
-		t.Error("bad options ListCheckSuitesForRef err = nil, want error")
-	}
+	const methodName = "ListCheckSuitesForRef"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.ListCheckSuitesForRef(ctx, "\n", "\n", "\n", &ListCheckSuiteOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckSuitesForRef = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListCheckSuitesForRef resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListCheckSuitesForRef err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListCheckSuitesForRef = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListCheckSuitesForRef resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListCheckSuitesForRef err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.ListCheckSuitesForRef(ctx, "o", "r", "master", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
@@ -638,25 +538,19 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.SetCheckSuitePreferences(ctx, "\n", "\n", CheckSuitePreferenceOptions{})
-	if err == nil {
-		t.Error("bad options SetCheckSuitePreferences err = nil, want error")
-	}
+	const methodName = "SetCheckSuitePreferences"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.SetCheckSuitePreferences(ctx, "\n", "\n", CheckSuitePreferenceOptions{})
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now SetCheckSuitePreferences = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now SetCheckSuitePreferences resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now SetCheckSuitePreferences err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_CreateCheckSuite(t *testing.T) {
@@ -700,25 +594,19 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Checks.CreateCheckSuite(ctx, "\n", "\n", CreateCheckSuiteOptions{})
-	if err == nil {
-		t.Error("bad options CreateCheckSuite err = nil, want error")
-	}
+	const methodName = "CreateCheckSuite"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Checks.CreateCheckSuite(ctx, "\n", "\n", CreateCheckSuiteOptions{})
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now CreateCheckSuite = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now CreateCheckSuite resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now CreateCheckSuite err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Checks.CreateCheckSuite(ctx, "o", "r", checkSuiteOpt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestChecksService_ReRequestCheckSuite(t *testing.T) {
@@ -739,11 +627,11 @@ func TestChecksService_ReRequestCheckSuite(t *testing.T) {
 		t.Errorf("Checks.ReRequestCheckSuite = %v, want %v", got, want)
 	}
 
-	// Test addOptions failure
-	_, err = client.Checks.ReRequestCheckSuite(ctx, "\n", "\n", 1)
-	if err == nil {
-		t.Error("bad options ReRequestCheckSuite err = nil, want error")
-	}
+	const methodName = "ReRequestCheckSuite"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Checks.ReRequestCheckSuite(ctx, "\n", "\n", 1)
+		return err
+	})
 }
 
 func Test_CheckRunMarshal(t *testing.T) {
