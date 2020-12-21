@@ -107,7 +107,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Checks.GetCheckSuite(ctx, "o", "r", 1)
 		if got != nil {
-			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
@@ -174,7 +174,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Checks.CreateCheckRun(ctx, "o", "r", checkRunOpt)
 		if got != nil {
-			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
@@ -234,7 +234,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Checks.ListCheckRunAnnotations(ctx, "o", "r", 1, nil)
 		if got != nil {
-			t.Errorf("rate.Reset.Time > now %v = %#v, want nil", methodName, got)
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
