@@ -80,7 +80,7 @@ func TestTimestamp_Unmarshal(t *testing.T) {
 	}
 }
 
-func TestTimstamp_MarshalReflexivity(t *testing.T) {
+func TestTimestamp_MarshalReflexivity(t *testing.T) {
 	testCases := []struct {
 		desc string
 		data Timestamp
@@ -109,7 +109,7 @@ type WrappedTimestamp struct {
 	Time Timestamp
 }
 
-func TestWrappedTimstamp_Marshal(t *testing.T) {
+func TestWrappedTimestamp_Marshal(t *testing.T) {
 	testCases := []struct {
 		desc    string
 		data    WrappedTimestamp
@@ -134,7 +134,7 @@ func TestWrappedTimstamp_Marshal(t *testing.T) {
 	}
 }
 
-func TestWrappedTimstamp_Unmarshal(t *testing.T) {
+func TestWrappedTimestamp_Unmarshal(t *testing.T) {
 	testCases := []struct {
 		desc    string
 		data    string
@@ -164,7 +164,7 @@ func TestWrappedTimstamp_Unmarshal(t *testing.T) {
 	}
 }
 
-func TestWrappedTimstamp_MarshalReflexivity(t *testing.T) {
+func TestWrappedTimestamp_MarshalReflexivity(t *testing.T) {
 	testCases := []struct {
 		desc string
 		data WrappedTimestamp
