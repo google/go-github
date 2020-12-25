@@ -115,11 +115,19 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 		t.Errorf("Teams.ListDiscussionsByID returned %+v, want %+v", discussions, want)
 	}
 
-	_, _, err = client.Teams.ListDiscussionsByID(ctx, -1, -2, nil)
-	if err == nil {
-		t.Error("bad options ListDiscussionsByID err = nil, want error")
-	}
+	const methodName = "ListDiscussionsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListDiscussionsByID(ctx, -1, -2, nil)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListDiscussionsByID(ctx, 1, 2, &DiscussionListOptions{"desc", ListOptions{Page: 2}})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
@@ -222,11 +230,19 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 		t.Errorf("Teams.ListDiscussionsBySlug returned %+v, want %+v", discussions, want)
 	}
 
-	_, _, err = client.Teams.ListDiscussionsBySlug(ctx, "o\no", "s\ns", nil)
-	if err == nil {
-		t.Error("bad options ListDiscussionsBySlug err = nil, want error")
-	}
+	const methodName = "ListDiscussionsBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListDiscussionsBySlug(ctx, "o\no", "s\ns", nil)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListDiscussionsBySlug(ctx, "o", "s", &DiscussionListOptions{"desc", ListOptions{Page: 2}})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_GetDiscussionByID(t *testing.T) {
@@ -249,11 +265,19 @@ func TestTeamsService_GetDiscussionByID(t *testing.T) {
 		t.Errorf("Teams.GetDiscussionByID returned %+v, want %+v", discussion, want)
 	}
 
-	_, _, err = client.Teams.GetDiscussionByID(ctx, -1, -2, -3)
-	if err == nil {
-		t.Error("bad options GetDiscussionByID err = nil, want error")
-	}
+	const methodName = "GetDiscussionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.GetDiscussionByID(ctx, -1, -2, -3)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.GetDiscussionByID(ctx, 1, 2, 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
@@ -276,11 +300,19 @@ func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
 		t.Errorf("Teams.GetDiscussionBySlug returned %+v, want %+v", discussion, want)
 	}
 
-	_, _, err = client.Teams.GetDiscussionBySlug(ctx, "o\no", "s\ns", -3)
-	if err == nil {
-		t.Error("bad options GetDiscussionBySlug err = nil, want error")
-	}
+	const methodName = "GetDiscussionBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.GetDiscussionBySlug(ctx, "o\no", "s\ns", -3)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.GetDiscussionBySlug(ctx, "o", "s", 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_CreateDiscussionByID(t *testing.T) {
@@ -312,11 +344,19 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 		t.Errorf("Teams.CreateDiscussionByID returned %+v, want %+v", comment, want)
 	}
 
-	_, _, err = client.Teams.CreateDiscussionByID(ctx, -1, -2, input)
-	if err == nil {
-		t.Error("bad options CreateDiscussionByID err = nil, want error")
-	}
+	const methodName = "CreateDiscussionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.CreateDiscussionByID(ctx, -1, -2, input)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.CreateDiscussionByID(ctx, 1, 2, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
@@ -348,11 +388,19 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 		t.Errorf("Teams.CreateDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
 
-	_, _, err = client.Teams.CreateDiscussionBySlug(ctx, "o\no", "s\ns", input)
-	if err == nil {
-		t.Error("bad options CreateDiscussionBySlug err = nil, want error")
-	}
+	const methodName = "CreateDiscussionBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.CreateDiscussionBySlug(ctx, "o\no", "s\ns", input)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.CreateDiscussionBySlug(ctx, "o", "s", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_EditDiscussionByID(t *testing.T) {
@@ -384,11 +432,19 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 		t.Errorf("Teams.EditDiscussionByID returned %+v, want %+v", comment, want)
 	}
 
-	_, _, err = client.Teams.EditDiscussionByID(ctx, -1, -2, -3, input)
-	if err == nil {
-		t.Error("bad options EditDiscussionByID err = nil, want error")
-	}
+	const methodName = "EditDiscussionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.EditDiscussionByID(ctx, -1, -2, -3, input)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.EditDiscussionByID(ctx, 1, 2, 3, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
@@ -420,11 +476,19 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 		t.Errorf("Teams.EditDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
 
-	_, _, err = client.Teams.EditDiscussionBySlug(ctx, "o\no", "s\ns", -3, input)
-	if err == nil {
-		t.Error("bad options EditDiscussionBySlug err = nil, want error")
-	}
+	const methodName = "EditDiscussionBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.EditDiscussionBySlug(ctx, "o\no", "s\ns", -3, input)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.EditDiscussionBySlug(ctx, "o", "s", 3, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
@@ -441,11 +505,15 @@ func TestTeamsService_DeleteDiscussionByID(t *testing.T) {
 		t.Errorf("Teams.DeleteDiscussionByID returned error: %v", err)
 	}
 
-	_, err = client.Teams.DeleteDiscussionByID(ctx, -1, -2, -3)
-	if err == nil {
-		t.Error("bad options DeleteDiscussionByID err = nil, want error")
-	}
+	const methodName = "DeleteDiscussionByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.DeleteDiscussionByID(ctx, -1, -2, -3)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.DeleteDiscussionByID(ctx, 1, 2, 3)
+	})
 }
 
 func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
@@ -462,9 +530,13 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 		t.Errorf("Teams.DeleteDiscussionBySlug returned error: %v", err)
 	}
 
-	_, err = client.Teams.DeleteDiscussionBySlug(ctx, "o\no", "s\ns", -3)
-	if err == nil {
-		t.Error("bad options DeleteDiscussionBySlug err = nil, want error")
-	}
+	const methodName = "DeleteDiscussionBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.DeleteDiscussionBySlug(ctx, "o\no", "s\ns", -3)
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.DeleteDiscussionBySlug(ctx, "o", "s", 3)
+	})
 }

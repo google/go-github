@@ -13,7 +13,6 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-	"time"
 )
 
 func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
@@ -38,25 +37,19 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Repositories.List returned %+v, want %+v", got, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Repositories.List(ctx, "\n", &RepositoryListOptions{})
-	if err == nil {
-		t.Error("bad options List err = nil, want error")
-	}
+	const methodName = "List"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.List(ctx, "\n", &RepositoryListOptions{})
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Repositories.List(ctx, "", nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now List = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now List resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now List err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.List(ctx, "", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_List_specifiedUser(t *testing.T) {
@@ -164,25 +157,19 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", got, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Repositories.ListByOrg(ctx, "\n", opt)
-	if err == nil {
-		t.Error("bad options ListByOrg err = nil, want error")
-	}
+	const methodName = "ListByOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListByOrg(ctx, "\n", opt)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Repositories.ListByOrg(ctx, "o", opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListByOrg = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListByOrg resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListByOrg err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListByOrg(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListByOrg_invalidOrg(t *testing.T) {
@@ -218,32 +205,14 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 		t.Errorf("Repositories.ListAll returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.ListAll(ctx, &RepositoryListAllOptions{1})
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListAll = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListAll resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListAll err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.ListAll(ctx, &RepositoryListAllOptions{1})
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListAll = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListAll resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListAll err = nil, want error")
-	}
+	const methodName = "ListAll"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListAll(ctx, &RepositoryListAllOptions{1})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Create_user(t *testing.T) {
@@ -281,32 +250,19 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.Create(ctx, "", input)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' Create = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' Create resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' Create err = nil, want error")
-	}
+	const methodName = "Create"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Create(ctx, "\n", input)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.Create(ctx, "", input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now Create = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now Create resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now Create err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Create(ctx, "", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Create_org(t *testing.T) {
@@ -378,32 +334,19 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 		t.Errorf("Repositories.CreateFromTemplate returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' CreateFromTemplate = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' CreateFromTemplate resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' CreateFromTemplate err = nil, want error")
-	}
+	const methodName = "CreateFromTemplate"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateFromTemplate(ctx, "\n", "\n", templateRepoReq)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now CreateFromTemplate = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now CreateFromTemplate resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now CreateFromTemplate err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateFromTemplate(ctx, "to", "tr", templateRepoReq)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Get(t *testing.T) {
@@ -428,19 +371,19 @@ func TestRepositoriesService_Get(t *testing.T) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Repositories.Get(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now Get = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now Get resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now Get err = nil, want error")
-	}
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Get(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Get(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
@@ -475,32 +418,19 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		t.Errorf("Repositories.GetCodeOfConduct returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.GetCodeOfConduct(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' GetCodeOfConduct = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' GetCodeOfConduct resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' GetCodeOfConduct err = nil, want error")
-	}
+	const methodName = "GetCodeOfConduct"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCodeOfConduct(ctx, "\n", "\n")
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.GetCodeOfConduct(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now GetCodeOfConduct = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now GetCodeOfConduct resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now GetCodeOfConduct err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCodeOfConduct(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetByID(t *testing.T) {
@@ -523,32 +453,14 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 		t.Errorf("Repositories.GetByID returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.GetByID(ctx, 1)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' GetByID = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' GetByID resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' GetByID err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.GetByID(ctx, 1)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now GetByID = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now GetByID resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now GetByID err = nil, want error")
-	}
+	const methodName = "GetByID"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetByID(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Edit(t *testing.T) {
@@ -582,19 +494,19 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		t.Errorf("Repositories.Edit returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Repositories.Edit(ctx, "o", "r", input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now Edit = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now Edit resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now Edit err = nil, want error")
-	}
+	const methodName = "Edit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Edit(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Edit(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Delete(t *testing.T) {
@@ -611,15 +523,15 @@ func TestRepositoriesService_Delete(t *testing.T) {
 		t.Errorf("Repositories.Delete returned error: %v", err)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	resp, err := client.Repositories.Delete(ctx, "o", "r")
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' Delete resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' Delete err = nil, want error")
-	}
+	const methodName = "Delete"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.Delete(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.Delete(ctx, "o", "r")
+	})
 }
 
 func TestRepositoriesService_Get_invalidOwner(t *testing.T) {
@@ -1910,30 +1822,17 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		}
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.Dispatch(ctx, "o", "r", input)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' Dispatch = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' Dispatch resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' Dispatch err = nil, want error")
-	}
+	const methodName = "Dispatch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Dispatch(ctx, "\n", "\n", input)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.Dispatch(ctx, "o", "r", input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now Dispatch = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now Dispatch resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now Dispatch err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Dispatch(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
