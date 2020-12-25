@@ -42,6 +42,20 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	if !reflect.DeepEqual(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
+
+	const methodName = "ListWorkflowJobs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowJobs(ctx, "\n", "\n", 29679449, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowJobs(ctx, "o", "r", 29679449, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
@@ -71,6 +85,20 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	if !reflect.DeepEqual(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
+
+	const methodName = "ListWorkflowJobs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowJobs(ctx, "\n", "\n", 29679449, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowJobs(ctx, "o", "r", 29679449, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetWorkflowJobByID(t *testing.T) {
@@ -96,6 +124,20 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	if !reflect.DeepEqual(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
 	}
+
+	const methodName = "GetWorkflowJobByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowJobByID(ctx, "\n", "\n", 399444496)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetWorkflowJobByID(ctx, "o", "r", 399444496)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
@@ -119,6 +161,12 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	if url.String() != want {
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "GetWorkflowJobLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
 }
 
 func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
@@ -167,4 +215,10 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 	if url.String() != want {
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "GetWorkflowJobLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
 }
