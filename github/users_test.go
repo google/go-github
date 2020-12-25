@@ -79,6 +79,20 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.Get(ctx, "")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_Get_specifiedUser(t *testing.T) {
@@ -100,6 +114,20 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.Get(ctx, "u")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
@@ -130,6 +158,15 @@ func TestUsersService_GetByID(t *testing.T) {
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.GetByID returned %+v, want %+v", user, want)
 	}
+
+	const methodName = "GetByID"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.GetByID(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_Edit(t *testing.T) {
@@ -160,6 +197,15 @@ func TestUsersService_Edit(t *testing.T) {
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
 	}
+
+	const methodName = "Edit"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.Edit(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_GetHovercard(t *testing.T) {
@@ -183,6 +229,20 @@ func TestUsersService_GetHovercard(t *testing.T) {
 	if !reflect.DeepEqual(hovercard, want) {
 		t.Errorf("Users.GetHovercard returned %+v, want %+v", hovercard, want)
 	}
+
+	const methodName = "GetHovercard"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.GetHovercard(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.GetHovercard(ctx, "u", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListAll(t *testing.T) {
@@ -206,6 +266,15 @@ func TestUsersService_ListAll(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
+
+	const methodName = "ListAll"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListAll(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListInvitations(t *testing.T) {
@@ -227,6 +296,15 @@ func TestUsersService_ListInvitations(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListInvitations"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListInvitations(ctx, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListInvitations_withOptions(t *testing.T) {
@@ -246,7 +324,17 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
 	}
+
+	const methodName = "ListInvitations"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListInvitations(ctx, &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
+
 func TestUsersService_AcceptInvitation(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -260,6 +348,11 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 	if _, err := client.Users.AcceptInvitation(ctx, 1); err != nil {
 		t.Errorf("Users.AcceptInvitation returned error: %v", err)
 	}
+
+	const methodName = "AcceptInvitation"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.AcceptInvitation(ctx, 1)
+	})
 }
 
 func TestUsersService_DeclineInvitation(t *testing.T) {
@@ -275,4 +368,9 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 	if _, err := client.Users.DeclineInvitation(ctx, 1); err != nil {
 		t.Errorf("Users.DeclineInvitation returned error: %v", err)
 	}
+
+	const methodName = "DeclineInvitation"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DeclineInvitation(ctx, 1)
+	})
 }
