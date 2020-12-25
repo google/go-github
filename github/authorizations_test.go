@@ -34,6 +34,20 @@ func TestAuthorizationsService_Check(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.Check returned auth %+v, want %+v", got, want)
 	}
+
+	const methodName = "Check"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Authorizations.Check(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Authorizations.Check(ctx, "id", "a")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAuthorizationsService_Reset(t *testing.T) {
@@ -57,6 +71,20 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.Reset returned auth %+v, want %+v", got, want)
 	}
+
+	const methodName = "Reset"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Authorizations.Reset(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Authorizations.Reset(ctx, "id", "a")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAuthorizationsService_Revoke(t *testing.T) {
@@ -75,6 +103,16 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 	if err != nil {
 		t.Errorf("Authorizations.Revoke returned error: %v", err)
 	}
+
+	const methodName = "Revoke"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Authorizations.Revoke(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Authorizations.Revoke(ctx, "id", "a")
+	})
 }
 
 func TestDeleteGrant(t *testing.T) {
@@ -92,6 +130,16 @@ func TestDeleteGrant(t *testing.T) {
 	if err != nil {
 		t.Errorf("OAuthAuthorizations.DeleteGrant returned error: %v", err)
 	}
+
+	const methodName = "DeleteGrant"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Authorizations.DeleteGrant(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Authorizations.DeleteGrant(ctx, "id", "a")
+	})
 }
 
 func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
@@ -114,6 +162,20 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
 	}
+
+	const methodName = "CreateImpersonation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Authorizations.CreateImpersonation(ctx, "\n", req)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Authorizations.CreateImpersonation(ctx, "u", req)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
@@ -129,4 +191,14 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 	if err != nil {
 		t.Errorf("Authorizations.DeleteImpersonation returned error: %+v", err)
 	}
+
+	const methodName = "DeleteImpersonation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Authorizations.DeleteImpersonation(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Authorizations.DeleteImpersonation(ctx, "u")
+	})
 }
