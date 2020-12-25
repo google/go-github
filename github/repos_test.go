@@ -572,6 +572,20 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 	if want := true; vulnerabilityAlertsEnabled != want {
 		t.Errorf("Repositories.GetVulnerabilityAlerts returned %+v, want %+v", vulnerabilityAlertsEnabled, want)
 	}
+
+	const methodName = "GetVulnerabilityAlerts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetVulnerabilityAlerts(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetVulnerabilityAlerts(ctx, "o", "r")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
@@ -589,6 +603,16 @@ func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 	if _, err := client.Repositories.EnableVulnerabilityAlerts(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.EnableVulnerabilityAlerts returned error: %v", err)
 	}
+
+	const methodName = "EnableVulnerabilityAlerts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.EnableVulnerabilityAlerts(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.EnableVulnerabilityAlerts(ctx, "o", "r")
+	})
 }
 
 func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
@@ -606,6 +630,16 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 	if _, err := client.Repositories.DisableVulnerabilityAlerts(ctx, "o", "r"); err != nil {
 		t.Errorf("Repositories.DisableVulnerabilityAlerts returned error: %v", err)
 	}
+
+	const methodName = "DisableVulnerabilityAlerts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DisableVulnerabilityAlerts(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DisableVulnerabilityAlerts(ctx, "o", "r")
+	})
 }
 
 func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
@@ -666,6 +700,12 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 	if !reflect.DeepEqual(contributors, want) {
 		t.Errorf("Repositories.ListContributors returned %+v, want %+v", contributors, want)
 	}
+
+	const methodName = "ListContributors"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListContributors(ctx, "\n", "\n", opts)
+		return err
+	})
 }
 
 func TestRepositoriesService_ListLanguages(t *testing.T) {
@@ -687,6 +727,20 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	if !reflect.DeepEqual(languages, want) {
 		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
 	}
+
+	const methodName = "ListLanguages"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListLanguages(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListLanguages(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListTeams(t *testing.T) {
@@ -710,6 +764,20 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Repositories.ListTeams returned %+v, want %+v", teams, want)
 	}
+
+	const methodName = "ListTeams"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTeams(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTeams(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListTags(t *testing.T) {
@@ -743,6 +811,20 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 	if !reflect.DeepEqual(tags, want) {
 		t.Errorf("Repositories.ListTags returned %+v, want %+v", tags, want)
 	}
+
+	const methodName = "ListTags"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTags(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTags(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListBranches(t *testing.T) {
@@ -771,6 +853,20 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
 	}
+
+	const methodName = "ListBranches"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListBranches(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListBranches(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetBranch(t *testing.T) {
@@ -804,6 +900,20 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	if !reflect.DeepEqual(branch, want) {
 		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
 	}
+
+	const methodName = "GetBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {
@@ -888,6 +998,20 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	if !reflect.DeepEqual(protection, want) {
 		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
 	}
+
+	const methodName = "GetBranchProtection"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetBranchProtection(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *testing.T) {
@@ -1054,6 +1178,20 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 	if !reflect.DeepEqual(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
 	}
+
+	const methodName = "UpdateBranchProtection"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdateBranchProtection(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
@@ -1072,6 +1210,16 @@ func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.RemoveBranchProtection returned error: %v", err)
 	}
+
+	const methodName = "RemoveBranchProtection"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.RemoveBranchProtection(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.RemoveBranchProtection(ctx, "o", "r", "b")
+	})
 }
 
 func TestRepositoriesService_ListLanguages_invalidOwner(t *testing.T) {
@@ -1113,6 +1261,20 @@ func TestRepositoriesService_License(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.License returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "License"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.License(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.License(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
@@ -1142,6 +1304,20 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	if !reflect.DeepEqual(checks, want) {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
 	}
+
+	const methodName = "GetRequiredStatusChecks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetRequiredStatusChecks(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
@@ -1178,6 +1354,20 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 	if !reflect.DeepEqual(statusChecks, want) {
 		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
 	}
+
+	const methodName = "UpdateRequiredStatusChecks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdateRequiredStatusChecks(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
@@ -1204,6 +1394,20 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	if !reflect.DeepEqual(contexts, want) {
 		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
 	}
+
+	const methodName = "ListRequiredStatusChecksContexts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListRequiredStatusChecksContexts(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
@@ -1248,6 +1452,20 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.GetPullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
 	}
+
+	const methodName = "GetPullRequestReviewEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetPullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetPullRequestReviewEnforcement(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
@@ -1304,6 +1522,20 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
 	}
+
+	const methodName = "UpdatePullRequestReviewEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdatePullRequestReviewEnforcement(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
@@ -1333,6 +1565,20 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
 	}
+
+	const methodName = "DisableDismissalRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.DisableDismissalRestrictions(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.DisableDismissalRestrictions(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
@@ -1350,6 +1596,16 @@ func TestRepositoriesService_RemovePullRequestReviewEnforcement(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.RemovePullRequestReviewEnforcement returned error: %v", err)
 	}
+
+	const methodName = "RemovePullRequestReviewEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.RemovePullRequestReviewEnforcement(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.RemovePullRequestReviewEnforcement(ctx, "o", "r", "b")
+	})
 }
 
 func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
@@ -1376,6 +1632,20 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.GetAdminEnforcement returned %+v, want %+v", enforcement, want)
 	}
+
+	const methodName = "GetAdminEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetAdminEnforcement(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetAdminEnforcement(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
@@ -1401,6 +1671,20 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 	if !reflect.DeepEqual(enforcement, want) {
 		t.Errorf("Repositories.AddAdminEnforcement returned %+v, want %+v", enforcement, want)
 	}
+
+	const methodName = "AddAdminEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.AddAdminEnforcement(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.AddAdminEnforcement(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
@@ -1418,6 +1702,16 @@ func TestRepositoriesService_RemoveAdminEnforcement(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.RemoveAdminEnforcement returned error: %v", err)
 	}
+
+	const methodName = "RemoveAdminEnforcement"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.RemoveAdminEnforcement(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.RemoveAdminEnforcement(ctx, "o", "r", "b")
+	})
 }
 
 func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
@@ -1444,6 +1738,20 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	if !reflect.DeepEqual(signature, want) {
 		t.Errorf("Repositories.GetSignaturesProtectedBranch returned %+v, want %+v", signature, want)
 	}
+
+	const methodName = "GetSignaturesProtectedBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetSignaturesProtectedBranch(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
@@ -1470,6 +1778,20 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	if !reflect.DeepEqual(signature, want) {
 		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
 	}
+
+	const methodName = "RequireSignaturesOnProtectedBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RequireSignaturesOnProtectedBranch(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
@@ -1487,6 +1809,16 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.OptionalSignaturesOnProtectedBranch returned error: %v", err)
 	}
+
+	const methodName = "OptionalSignaturesOnProtectedBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.OptionalSignaturesOnProtectedBranch(ctx, "o", "r", "b")
+	})
 }
 
 func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctions(t *testing.T) {
@@ -1554,6 +1886,20 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.ListAllTopics returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListAllTopics"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListAllTopics(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListAllTopics(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
@@ -1598,6 +1944,20 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ReplaceAllTopics"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ReplaceAllTopics(ctx, "\n", "\n", []string{"\n", "\n", "\n"})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", []string{"go", "go-github", "github"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
@@ -1659,6 +2019,20 @@ func TestRepositoriesService_ListApps(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListApps returned error: %v", err)
 	}
+
+	const methodName = "ListApps"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListApps(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListApps(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
@@ -1683,6 +2057,12 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ReplaceAppRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ReplaceAppRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
 }
 
 func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
@@ -1707,6 +2087,12 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "AddAppRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.AddAppRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
 }
 
 func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
@@ -1727,6 +2113,12 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.RemoveAppRestrictions returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "RemoveAppRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RemoveAppRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
 }
 
 func TestRepositoriesService_Transfer(t *testing.T) {
@@ -1757,6 +2149,20 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "Transfer"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Transfer(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Transfer(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Dispatch(t *testing.T) {
