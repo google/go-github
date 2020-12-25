@@ -35,6 +35,20 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
+
+	const methodName = "ListKeys"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListKeys(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListKeys(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListKeys_invalidOwner(t *testing.T) {
@@ -65,6 +79,20 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "GetKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetKey(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetKey(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetKey_invalidOwner(t *testing.T) {
@@ -104,6 +132,20 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "CreateKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateKey(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateKey(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
@@ -128,6 +170,16 @@ func TestRepositoriesService_DeleteKey(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteKey returned error: %v", err)
 	}
+
+	const methodName = "DeleteKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteKey(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteKey(ctx, "o", "r", 1)
+	})
 }
 
 func TestRepositoriesService_DeleteKey_invalidOwner(t *testing.T) {
