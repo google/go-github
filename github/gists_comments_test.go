@@ -91,6 +91,20 @@ func TestGistsService_ListComments(t *testing.T) {
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
 	}
+
+	const methodName = "ListComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.ListComments(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListComments(ctx, "1", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListComments_invalidID(t *testing.T) {
@@ -121,6 +135,20 @@ func TestGistsService_GetComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "GetComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.GetComment(ctx, "\n", -2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.GetComment(ctx, "1", 2)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_GetComment_invalidID(t *testing.T) {
@@ -160,6 +188,20 @@ func TestGistsService_CreateComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "CreateComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.CreateComment(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.CreateComment(ctx, "1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_CreateComment_invalidID(t *testing.T) {
@@ -199,6 +241,20 @@ func TestGistsService_EditComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "EditComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.EditComment(ctx, "\n", -2, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.EditComment(ctx, "1", 2, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_EditComment_invalidID(t *testing.T) {
@@ -223,6 +279,16 @@ func TestGistsService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
+
+	const methodName = "DeleteComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Gists.DeleteComment(ctx, "\n", -2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Gists.DeleteComment(ctx, "1", 2)
+	})
 }
 
 func TestGistsService_DeleteComment_invalidID(t *testing.T) {
