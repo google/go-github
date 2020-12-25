@@ -39,6 +39,20 @@ func TestActivityService_ListStargazers(t *testing.T) {
 	if !reflect.DeepEqual(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
+
+	const methodName = "ListStargazers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListStargazers(ctx, "\n", "\n", &ListOptions{Page: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListStargazers(ctx, "o", "r", &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
@@ -61,6 +75,20 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
+
+	const methodName = "ListStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListStarred(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListStarred(ctx, "", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
@@ -89,6 +117,20 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
+
+	const methodName = "ListStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListStarred(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListStarred(ctx, "u", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListStarred_invalidUser(t *testing.T) {
@@ -117,6 +159,20 @@ func TestActivityService_IsStarred_hasStar(t *testing.T) {
 	if want := true; star != want {
 		t.Errorf("Activity.IsStarred returned %+v, want %+v", star, want)
 	}
+
+	const methodName = "IsStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.IsStarred(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.IsStarred(ctx, "o", "r")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_IsStarred_noStar(t *testing.T) {
@@ -136,6 +192,20 @@ func TestActivityService_IsStarred_noStar(t *testing.T) {
 	if want := false; star != want {
 		t.Errorf("Activity.IsStarred returned %+v, want %+v", star, want)
 	}
+
+	const methodName = "IsStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.IsStarred(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.IsStarred(ctx, "o", "r")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_IsStarred_invalidID(t *testing.T) {
@@ -160,6 +230,16 @@ func TestActivityService_Star(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.Star returned error: %v", err)
 	}
+
+	const methodName = "Star"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.Star(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.Star(ctx, "o", "r")
+	})
 }
 
 func TestActivityService_Star_invalidID(t *testing.T) {
@@ -184,6 +264,16 @@ func TestActivityService_Unstar(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.Unstar returned error: %v", err)
 	}
+
+	const methodName = "Unstar"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.Unstar(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.Unstar(ctx, "o", "r")
+	})
 }
 
 func TestActivityService_Unstar_invalidID(t *testing.T) {
