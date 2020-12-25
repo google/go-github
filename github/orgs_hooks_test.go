@@ -36,6 +36,20 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 	if !reflect.DeepEqual(hooks, want) {
 		t.Errorf("Organizations.ListHooks returned %+v, want %+v", hooks, want)
 	}
+
+	const methodName = "ListHooks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListHooks(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListHooks(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_ListHooks_invalidOrg(t *testing.T) {
@@ -76,6 +90,20 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Organizations.CreateHook returned %+v, want %+v", hook, want)
 	}
+
+	const methodName = "CreateHook"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateHook(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateHook(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_GetHook(t *testing.T) {
@@ -97,6 +125,12 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Organizations.GetHook returned %+v, want %+v", hook, want)
 	}
+
+	const methodName = "GetHook"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetHook(ctx, "\n", -1)
+		return err
+	})
 }
 
 func TestOrganizationsService_GetHook_invalidOrg(t *testing.T) {
@@ -136,6 +170,12 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 	if !reflect.DeepEqual(hook, want) {
 		t.Errorf("Organizations.EditHook returned %+v, want %+v", hook, want)
 	}
+
+	const methodName = "EditHook"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.EditHook(ctx, "\n", -1, input)
+		return err
+	})
 }
 
 func TestOrganizationsService_EditHook_invalidOrg(t *testing.T) {
@@ -160,6 +200,16 @@ func TestOrganizationsService_PingHook(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.PingHook returned error: %v", err)
 	}
+
+	const methodName = "PingHook"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.PingHook(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.PingHook(ctx, "o", 1)
+	})
 }
 
 func TestOrganizationsService_DeleteHook(t *testing.T) {
@@ -175,6 +225,16 @@ func TestOrganizationsService_DeleteHook(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.DeleteHook returned error: %v", err)
 	}
+
+	const methodName = "DeleteHook"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.DeleteHook(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.DeleteHook(ctx, "o", 1)
+	})
 }
 
 func TestOrganizationsService_DeleteHook_invalidOrg(t *testing.T) {
