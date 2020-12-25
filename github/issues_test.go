@@ -50,6 +50,15 @@ func TestIssuesService_List_all(t *testing.T) {
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
+
+	const methodName = "List"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.List(ctx, true, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_List_owned(t *testing.T) {
@@ -94,6 +103,20 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
+
+	const methodName = "ListByOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListByOrg(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListByOrg(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
@@ -141,6 +164,20 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	if !reflect.DeepEqual(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
+
+	const methodName = "ListByRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListByRepo(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
@@ -180,6 +217,20 @@ func TestIssuesService_Get(t *testing.T) {
 	if !reflect.DeepEqual(issue, want) {
 		t.Errorf("Issues.Get returned %+v, want %+v", issue, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.Get(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.Get(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_Get_invalidOwner(t *testing.T) {
@@ -224,6 +275,20 @@ func TestIssuesService_Create(t *testing.T) {
 	if !reflect.DeepEqual(issue, want) {
 		t.Errorf("Issues.Create returned %+v, want %+v", issue, want)
 	}
+
+	const methodName = "Create"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.Create(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.Create(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_Create_invalidOwner(t *testing.T) {
@@ -263,6 +328,20 @@ func TestIssuesService_Edit(t *testing.T) {
 	if !reflect.DeepEqual(issue, want) {
 		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
 	}
+
+	const methodName = "Edit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.Edit(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.Edit(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
@@ -288,6 +367,16 @@ func TestIssuesService_Lock(t *testing.T) {
 	if _, err := client.Issues.Lock(ctx, "o", "r", 1, nil); err != nil {
 		t.Errorf("Issues.Lock returned error: %v", err)
 	}
+
+	const methodName = "Lock"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Issues.Lock(ctx, "\n", "\n", -1, nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Issues.Lock(ctx, "o", "r", 1, nil)
+	})
 }
 
 func TestIssuesService_LockWithReason(t *testing.T) {
@@ -321,6 +410,16 @@ func TestIssuesService_Unlock(t *testing.T) {
 	if _, err := client.Issues.Unlock(ctx, "o", "r", 1); err != nil {
 		t.Errorf("Issues.Unlock returned error: %v", err)
 	}
+
+	const methodName = "Unlock"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Issues.Unlock(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Issues.Unlock(ctx, "o", "r", 1)
+	})
 }
 
 func TestIsPullRequest(t *testing.T) {
