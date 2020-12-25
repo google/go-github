@@ -58,6 +58,20 @@ func TestIssueImportService_Create(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Create = %+v, want %+v", got, want)
 	}
+
+	const methodName = "Create"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.IssueImport.Create(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.IssueImport.Create(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssueImportService_Create_invalidOwner(t *testing.T) {
@@ -90,6 +104,20 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("CheckStatus = %+v, want %+v", got, want)
 	}
+
+	const methodName = "CheckStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.IssueImport.CheckStatus(ctx, "\n", "\n", -3)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.IssueImport.CheckStatus(ctx, "o", "r", 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssueImportService_CheckStatus_invalidOwner(t *testing.T) {
@@ -122,6 +150,20 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("CheckStatusSince = %v, want = %v", got, want)
 	}
+
+	const methodName = "CheckStatusSince"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.IssueImport.CheckStatusSince(ctx, "\n", "\n", time.Now())
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now())
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
