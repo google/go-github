@@ -37,6 +37,15 @@ func TestActivityService_ListEvents(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListEvents returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEvents"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEvents(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListRepositoryEvents(t *testing.T) {
@@ -62,6 +71,20 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListRepositoryEvents"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListRepositoryEvents(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListRepositoryEvents(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListRepositoryEvents_invalidOwner(t *testing.T) {
@@ -96,6 +119,20 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListIssueEventsForRepository"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListIssueEventsForRepository(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListIssueEventsForRepository(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListIssueEventsForRepository_invalidOwner(t *testing.T) {
@@ -130,6 +167,20 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsForRepoNetwork"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsForRepoNetwork(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsForRepoNetwork(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsForRepoNetwork_invalidOwner(t *testing.T) {
@@ -164,6 +215,20 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsForOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsForOrganization(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsForOrganization(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsForOrganization_invalidOrg(t *testing.T) {
@@ -198,6 +263,20 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsPerformedByUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsPerformedByUser(ctx, "\n", false, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsPerformedByUser(ctx, "u", false, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
@@ -219,6 +298,20 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsPerformedByUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsPerformedByUser(ctx, "\n", true, nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsPerformedByUser(ctx, "u", true, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
@@ -253,6 +346,20 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListReceivedUser returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsReceivedByUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsReceivedByUser(ctx, "\n", false, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsReceivedByUser(ctx, "u", false, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
@@ -274,6 +381,20 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListReceivedByUser returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListEventsReceivedByUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListEventsReceivedByUser(ctx, "\n", true, nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListEventsReceivedByUser(ctx, "u", true, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
@@ -308,6 +429,20 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Activities.ListUserEventsForOrganization returned %+v, want %+v", events, want)
 	}
+
+	const methodName = "ListUserEventsForOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListUserEventsForOrganization(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListUserEventsForOrganization(ctx, "o", "u", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_EventParsePayload_typed(t *testing.T) {
