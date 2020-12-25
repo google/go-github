@@ -36,6 +36,20 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
+
+	const methodName = "ListComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListComments(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListComments(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListComments_invalidOwner(t *testing.T) {
@@ -69,6 +83,20 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
+
+	const methodName = "ListCommitComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCommitComments(ctx, "\n", "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListCommitComments(ctx, "o", "r", "s", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListCommitComments_invalidOwner(t *testing.T) {
@@ -108,6 +136,20 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.CreateComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "CreateComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateComment(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateComment(ctx, "o", "r", "s", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
@@ -139,6 +181,20 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "GetComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetComment(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetComment(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetComment_invalidOwner(t *testing.T) {
@@ -178,6 +234,20 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("Repositories.UpdateComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "UpdateComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdateComment(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateComment(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
@@ -202,6 +272,16 @@ func TestRepositoriesService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteComment returned error: %v", err)
 	}
+
+	const methodName = "DeleteComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteComment(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteComment(ctx, "o", "r", 1)
+	})
 }
 
 func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
