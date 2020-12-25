@@ -41,32 +41,19 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 		t.Errorf("Repositories.ListTrafficReferrers returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficReferrers = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficReferrers resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficReferrers err = nil, want error")
-	}
+	const methodName = "ListTrafficReferrers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTrafficReferrers(ctx, "\n", "\n")
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.ListTrafficReferrers(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficReferrers = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficReferrers resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficReferrers err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTrafficReferrers(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
@@ -98,32 +85,19 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 		t.Errorf("Repositories.ListTrafficPaths returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficPaths = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficPaths resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficPaths err = nil, want error")
-	}
+	const methodName = "ListTrafficPaths"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTrafficPaths(ctx, "\n", "\n")
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.ListTrafficPaths(ctx, "o", "r")
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficPaths = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficPaths resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficPaths err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTrafficPaths(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListTrafficViews(t *testing.T) {
@@ -161,38 +135,19 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 		t.Errorf("Repositories.ListTrafficViews returned %+v, want %+v", got, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Repositories.ListTrafficViews(ctx, "\n", "\n", &TrafficBreakdownOptions{})
-	if err == nil {
-		t.Error("bad options ListTrafficViews err = nil, want error")
-	}
+	const methodName = "ListTrafficViews"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTrafficViews(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficViews = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficViews resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficViews err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficViews = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficViews resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficViews err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTrafficViews(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListTrafficClones(t *testing.T) {
@@ -230,36 +185,17 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		t.Errorf("Repositories.ListTrafficClones returned %+v, want %+v", got, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Repositories.ListTrafficClones(ctx, "\n", "\n", &TrafficBreakdownOptions{})
-	if err == nil {
-		t.Error("bad options ListTrafficViews err = nil, want error")
-	}
+	const methodName = "ListTrafficClones"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTrafficClones(ctx, "\n", "\n", &TrafficBreakdownOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListTrafficClones resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListTrafficClones err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListTrafficClones resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListTrafficClones err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTrafficClones(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

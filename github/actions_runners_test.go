@@ -263,25 +263,19 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
-	if err == nil {
-		t.Error("bad options ListEnabledReposInOrg err = nil, want error")
-	}
+	const methodName = "ListEnabledReposInOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListEnabledReposInOrg(ctx, "\n", opt)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListEnabledReposInOrg = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListEnabledReposInOrg resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListEnabledReposInOrg err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
