@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestRequestReviewers(t *testing.T) {
@@ -35,32 +34,14 @@ func TestRequestReviewers(t *testing.T) {
 		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' RequestReviewers = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' RequestReviewers resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' RequestReviewers err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now RequestReviewers = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now RequestReviewers resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now RequestReviewers err = nil, want error")
-	}
+	const methodName = "RequestReviewers"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRemoveReviewers(t *testing.T) {
@@ -78,15 +59,10 @@ func TestRemoveReviewers(t *testing.T) {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	resp, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' RemoveReviewers resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' RemoveReviewers err = nil, want error")
-	}
+	const methodName = "RemoveReviewers"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
+	})
 }
 
 func TestListReviewers(t *testing.T) {
@@ -122,32 +98,14 @@ func TestListReviewers(t *testing.T) {
 		t.Errorf("PullRequests.ListReviewers returned %+v, want %+v", got, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListReviewers = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListReviewers resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListReviewers err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListReviewers = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListReviewers resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListReviewers err = nil, want error")
-	}
+	const methodName = "ListReviewers"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestListReviewers_withOptions(t *testing.T) {
@@ -168,10 +126,17 @@ func TestListReviewers_withOptions(t *testing.T) {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.PullRequests.ListReviewers(ctx, "\n", "\n", 1, &ListOptions{Page: 2})
-	if err == nil {
-		t.Error("bad options ListReviewers err = nil, want error")
-	}
+	const methodName = "ListReviewers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.ListReviewers(ctx, "\n", "\n", 1, &ListOptions{Page: 2})
+		return err
+	})
 
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

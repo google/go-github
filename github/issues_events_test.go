@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestIssuesService_ListIssueEvents(t *testing.T) {
@@ -40,38 +39,19 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 		t.Errorf("Issues.ListIssueEvents returned %+v, want %+v", events, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Issues.ListIssueEvents(ctx, "\n", "\n", -1, &ListOptions{})
-	if err == nil {
-		t.Error("bad options ListIssueEvents err = nil, want error")
-	}
+	const methodName = "ListIssueEvents"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListIssueEvents(ctx, "\n", "\n", -1, &ListOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Issues.ListIssueEvents(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListIssueEvents = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListIssueEvents resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListIssueEvents err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Issues.ListIssueEvents(ctx, "o", "r", 1, nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListIssueEvents = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListIssueEvents resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListIssueEvents err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListIssueEvents(ctx, "o", "r", 1, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListRepositoryEvents(t *testing.T) {
@@ -99,38 +79,19 @@ func TestIssuesService_ListRepositoryEvents(t *testing.T) {
 		t.Errorf("Issues.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Issues.ListRepositoryEvents(ctx, "\n", "\n", &ListOptions{})
-	if err == nil {
-		t.Error("bad options ListRepositoryEvents err = nil, want error")
-	}
+	const methodName = "ListRepositoryEvents"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListRepositoryEvents(ctx, "\n", "\n", &ListOptions{})
+		return err
+	})
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Issues.ListRepositoryEvents(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListRepositoryEvents = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListRepositoryEvents resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListRepositoryEvents err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Issues.ListRepositoryEvents(ctx, "o", "r", nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListRepositoryEvents = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListRepositoryEvents resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListRepositoryEvents err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListRepositoryEvents(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_GetEvent(t *testing.T) {
@@ -153,23 +114,17 @@ func TestIssuesService_GetEvent(t *testing.T) {
 		t.Errorf("Issues.GetEvent returned %+v, want %+v", event, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Issues.GetEvent(ctx, "\n", "\n", -1)
-	if err == nil {
-		t.Error("bad options GetEvent err = nil, want error")
-	}
+	const methodName = "GetEvent"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.GetEvent(ctx, "\n", "\n", -1)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err := client.Issues.GetEvent(ctx, "o", "r", 1)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now GetEvent = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now GetEvent resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now GetEvent err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.GetEvent(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
