@@ -27,6 +27,16 @@ func TestUsersService_PromoteSiteAdmin(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.PromoteSiteAdmin returned error: %v", err)
 	}
+
+	const methodName = "PromoteSiteAdmin"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.PromoteSiteAdmin(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.PromoteSiteAdmin(ctx, "u")
+	})
 }
 
 func TestUsersService_DemoteSiteAdmin(t *testing.T) {
@@ -43,6 +53,16 @@ func TestUsersService_DemoteSiteAdmin(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.DemoteSiteAdmin returned error: %v", err)
 	}
+
+	const methodName = "DemoteSiteAdmin"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.DemoteSiteAdmin(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DemoteSiteAdmin(ctx, "u")
+	})
 }
 
 func TestUsersService_Suspend(t *testing.T) {
@@ -59,6 +79,16 @@ func TestUsersService_Suspend(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
+
+	const methodName = "Suspend"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.Suspend(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.Suspend(ctx, "u", nil)
+	})
 }
 
 func TestUsersServiceReason_Suspend(t *testing.T) {
@@ -84,6 +114,16 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
+
+	const methodName = "Suspend"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.Suspend(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.Suspend(ctx, "u", input)
+	})
 }
 
 func TestUsersService_Unsuspend(t *testing.T) {
@@ -100,4 +140,14 @@ func TestUsersService_Unsuspend(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Unsuspend returned error: %v", err)
 	}
+
+	const methodName = "Unsuspend"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.Unsuspend(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.Unsuspend(ctx, "u")
+	})
 }
