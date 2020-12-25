@@ -249,6 +249,20 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
+
+	const methodName = "List"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.List(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.List(ctx, "u", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_List_authenticatedUser(t *testing.T) {
@@ -306,6 +320,15 @@ func TestGistsService_ListAll(t *testing.T) {
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
+
+	const methodName = "ListAll"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListAll(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListStarred(t *testing.T) {
@@ -333,6 +356,15 @@ func TestGistsService_ListStarred(t *testing.T) {
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}
+
+	const methodName = "ListStarred"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListStarred(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_Get(t *testing.T) {
@@ -354,6 +386,20 @@ func TestGistsService_Get(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.Get(ctx, "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_Get_invalidID(t *testing.T) {
@@ -384,6 +430,20 @@ func TestGistsService_GetRevision(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
+
+	const methodName = "GetRevision"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.GetRevision(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.GetRevision(ctx, "1", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_GetRevision_invalidID(t *testing.T) {
@@ -447,6 +507,15 @@ func TestGistsService_Create(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Create returned %+v, want %+v", gist, want)
 	}
+
+	const methodName = "Create"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.Create(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_Edit(t *testing.T) {
@@ -504,6 +573,20 @@ func TestGistsService_Edit(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Edit returned %+v, want %+v", gist, want)
 	}
+
+	const methodName = "Edit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.Edit(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.Edit(ctx, "1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_Edit_invalidID(t *testing.T) {
@@ -561,6 +644,20 @@ func TestGistsService_ListCommits(t *testing.T) {
 	if !reflect.DeepEqual(gistCommits, want) {
 		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistCommits, want)
 	}
+
+	const methodName = "ListCommits"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.ListCommits(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListCommits(ctx, "1", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListCommits_withOptions(t *testing.T) {
@@ -604,6 +701,16 @@ func TestGistsService_Delete(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Delete returned error: %v", err)
 	}
+
+	const methodName = "Delete"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Gists.Delete(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Gists.Delete(ctx, "1")
+	})
 }
 
 func TestGistsService_Delete_invalidID(t *testing.T) {
@@ -628,6 +735,16 @@ func TestGistsService_Star(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Star returned error: %v", err)
 	}
+
+	const methodName = "Star"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Gists.Star(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Gists.Star(ctx, "1")
+	})
 }
 
 func TestGistsService_Star_invalidID(t *testing.T) {
@@ -652,6 +769,16 @@ func TestGistsService_Unstar(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.Unstar returned error: %v", err)
 	}
+
+	const methodName = "Unstar"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Gists.Unstar(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Gists.Unstar(ctx, "1")
+	})
 }
 
 func TestGistsService_Unstar_invalidID(t *testing.T) {
@@ -680,6 +807,20 @@ func TestGistsService_IsStarred_hasStar(t *testing.T) {
 	if want := true; star != want {
 		t.Errorf("Gists.Starred returned %+v, want %+v", star, want)
 	}
+
+	const methodName = "IsStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.IsStarred(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.IsStarred(ctx, "1")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_IsStarred_noStar(t *testing.T) {
@@ -729,6 +870,20 @@ func TestGistsService_Fork(t *testing.T) {
 	if !reflect.DeepEqual(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}
+
+	const methodName = "Fork"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.Fork(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.Fork(ctx, "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListForks(t *testing.T) {
@@ -767,6 +922,19 @@ func TestGistsService_ListForks(t *testing.T) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
 
+	const methodName = "ListForks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.ListForks(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListForks(ctx, "1", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListForks_withOptions(t *testing.T) {
@@ -790,36 +958,5 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 	want := []*GistFork{}
 	if !reflect.DeepEqual(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
-	}
-
-	// Test addOptions failure
-	_, _, err = client.Gists.ListForks(ctx, "%", &ListOptions{})
-	if err == nil {
-		t.Error("Gists.ListForks returned err = nil")
-	}
-
-	// Test client.NewRequest failure
-	got, resp, err := client.Gists.ListForks(ctx, "%", nil)
-	if got != nil {
-		t.Errorf("Gists.ListForks = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("Gists.ListForks resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("Gists.ListForks err = nil, want error")
-	}
-
-	// Test client.Do failure
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Gists.ListForks(ctx, "1", &ListOptions{Page: 2})
-	if got != nil {
-		t.Errorf("Gists.ListForks returned = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("Gists.ListForks returned resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rGists.ListForks returned err = nil, want error")
 	}
 }
