@@ -35,6 +35,20 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
+
+	const methodName = "ListGPGKeys"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListGPGKeys(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListGPGKeys(ctx, "", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
@@ -56,6 +70,20 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
+
+	const methodName = "ListGPGKeys"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListGPGKeys(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListGPGKeys(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
@@ -86,6 +114,20 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", key, want)
 	}
+
+	const methodName = "GetGPGKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.GetGPGKey(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.GetGPGKey(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_CreateGPGKey(t *testing.T) {
@@ -125,6 +167,15 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 	if !reflect.DeepEqual(gpgKey, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", gpgKey, want)
 	}
+
+	const methodName = "CreateGPGKey"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.CreateGPGKey(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_DeleteGPGKey(t *testing.T) {
@@ -140,4 +191,14 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.DeleteGPGKey returned error: %v", err)
 	}
+
+	const methodName = "DeleteGPGKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.DeleteGPGKey(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DeleteGPGKey(ctx, 1)
+	})
 }
