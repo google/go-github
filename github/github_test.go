@@ -168,26 +168,32 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 
 // Test how bad options are handled. Method f under test should
 // return an error.
-func testBadOptions(t *testing.T, name string, f func() error) {
+func testBadOptions(t *testing.T, methodName string, f func() error) {
 	t.Helper()
+	if methodName == "" {
+		t.Error("testBadOptions: must supply method methodName")
+	}
 	if err := f(); err == nil {
-		t.Errorf("bad options %v err = nil, want error", name)
+		t.Errorf("bad options %v err = nil, want error", methodName)
 	}
 }
 
 // Test function under NewRequest failure and then s.client.Do failure.
 // Method f should be a regular call that would normally succeed, but
 // should return an error when NewRequest or s.client.Do fails.
-func testNewRequestAndDoFailure(t *testing.T, name string, client *Client, f func() (*Response, error)) {
+func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client, f func() (*Response, error)) {
 	t.Helper()
+	if methodName == "" {
+		t.Error("testNewRequestAndDoFailure: must supply method methodName")
+	}
 
 	client.BaseURL.Path = ""
 	resp, err := f()
 	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' %v resp = %#v, want nil", name, resp)
+		t.Errorf("client.BaseURL.Path='' %v resp = %#v, want nil", methodName, resp)
 	}
 	if err == nil {
-		t.Errorf("client.BaseURL.Path='' %v err = nil, want error", name)
+		t.Errorf("client.BaseURL.Path='' %v err = nil, want error", methodName)
 	}
 
 	client.BaseURL.Path = "/api-v3/"
@@ -195,13 +201,13 @@ func testNewRequestAndDoFailure(t *testing.T, name string, client *Client, f fun
 	resp, err = f()
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
 		if resp != nil {
-			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", name, resp.Response, want)
+			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", methodName, resp.Response, want)
 		} else {
-			t.Errorf("rate.Reset.Time > now %v resp = nil, want StatusCode=%v", name, want)
+			t.Errorf("rate.Reset.Time > now %v resp = nil, want StatusCode=%v", methodName, want)
 		}
 	}
 	if err == nil {
-		t.Errorf("rate.Reset.Time > now %v err = nil, want error", name)
+		t.Errorf("rate.Reset.Time > now %v err = nil, want error", methodName)
 	}
 }
 

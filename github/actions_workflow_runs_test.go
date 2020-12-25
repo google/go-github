@@ -42,6 +42,20 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	if !reflect.DeepEqual(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByID returned %+v, want %+v", runs, want)
 	}
+
+	const methodName = "ListWorkflowRunsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowRunsByID(ctx, "\n", "\n", 29679449, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowRunsByID(ctx, "o", "r", 29679449, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
@@ -71,6 +85,20 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	if !reflect.DeepEqual(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByFileName returned %+v, want %+v", runs, want)
 	}
+
+	const methodName = "ListWorkflowRunsByFileName"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowRunsByFileName(ctx, "\n", "\n", "29679449", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowRunsByFileName(ctx, "o", "r", "29679449", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetWorkflowRunByID(t *testing.T) {
@@ -98,6 +126,20 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	if !reflect.DeepEqual(runs, want) {
 		t.Errorf("Actions.GetWorkflowRunByID returned %+v, want %+v", runs, want)
 	}
+
+	const methodName = "GetWorkflowRunByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunByID(ctx, "\n", "\n", 29679449)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetWorkflowRunByID(ctx, "o", "r", 29679449)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
@@ -117,6 +159,16 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 	if resp.StatusCode != http.StatusCreated {
 		t.Errorf("Actions.RerunWorkflowRunByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
 	}
+
+	const methodName = "RerunWorkflowByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RerunWorkflowByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RerunWorkflowByID(ctx, "o", "r", 3434)
+	})
 }
 
 func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
@@ -136,6 +188,16 @@ func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 	if resp.StatusCode != http.StatusAccepted {
 		t.Errorf("Actions.CancelWorkflowRunByID returned status: %d, want %d", resp.StatusCode, http.StatusAccepted)
 	}
+
+	const methodName = "CancelWorkflowRunByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CancelWorkflowRunByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.CancelWorkflowRunByID(ctx, "o", "r", 3434)
+	})
 }
 
 func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
@@ -159,6 +221,12 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 	if url.String() != want {
 		t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "GetWorkflowRunLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
 }
 
 func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
@@ -207,6 +275,12 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 	if url.String() != want {
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "GetWorkflowRunLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
 }
 
 func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
@@ -243,6 +317,21 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned %+v, want %+v", runs, expected)
 	}
 
+	const methodName = "ListRepositoryWorkflowRuns"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRepositoryWorkflowRuns(ctx, "\n", "\n", opts)
+
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRepositoryWorkflowRuns(ctx, "o", "r", opts)
+
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
@@ -259,6 +348,16 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 	if _, err := client.Actions.DeleteWorkflowRunLogs(ctx, "o", "r", 399444496); err != nil {
 		t.Errorf("DeleteWorkflowRunLogs returned error: %v", err)
 	}
+
+	const methodName = "DeleteWorkflowRunLogs"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteWorkflowRunLogs(ctx, "\n", "\n", 399444496)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteWorkflowRunLogs(ctx, "o", "r", 399444496)
+	})
 }
 
 func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
@@ -297,4 +396,18 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	if !reflect.DeepEqual(workflowRunUsage, want) {
 		t.Errorf("Actions.GetWorkflowRunUsageByID returned %+v, want %+v", workflowRunUsage, want)
 	}
+
+	const methodName = "GetWorkflowRunUsageByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunUsageByID(ctx, "\n", "\n", 29679449)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetWorkflowRunUsageByID(ctx, "o", "r", 29679449)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
