@@ -35,6 +35,20 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
+
+	const methodName = "ListKeys"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListKeys(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListKeys(ctx, "", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
@@ -56,6 +70,20 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
+
+	const methodName = "ListKeys"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListKeys(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListKeys(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListKeys_invalidUser(t *testing.T) {
@@ -86,6 +114,20 @@ func TestUsersService_GetKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "GetKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.GetKey(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.GetKey(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_CreateKey(t *testing.T) {
@@ -116,6 +158,15 @@ func TestUsersService_CreateKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "CreateKey"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.CreateKey(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_DeleteKey(t *testing.T) {
@@ -131,4 +182,14 @@ func TestUsersService_DeleteKey(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.DeleteKey returned error: %v", err)
 	}
+
+	const methodName = "DeleteKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.DeleteKey(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DeleteKey(ctx, 1)
+	})
 }
