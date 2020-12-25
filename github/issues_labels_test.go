@@ -35,6 +35,20 @@ func TestIssuesService_ListLabels(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabels returned %+v, want %+v", labels, want)
 	}
+
+	const methodName = "ListLabels"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListLabels(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListLabels(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListLabels_invalidOwner(t *testing.T) {
@@ -65,6 +79,20 @@ func TestIssuesService_GetLabel(t *testing.T) {
 	if !reflect.DeepEqual(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}
+
+	const methodName = "GetLabel"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.GetLabel(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.GetLabel(ctx, "o", "r", "n")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_GetLabel_invalidOwner(t *testing.T) {
@@ -104,6 +132,20 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	if !reflect.DeepEqual(label, want) {
 		t.Errorf("Issues.CreateLabel returned %+v, want %+v", label, want)
 	}
+
+	const methodName = "CreateLabel"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.CreateLabel(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.CreateLabel(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
@@ -143,6 +185,20 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	if !reflect.DeepEqual(label, want) {
 		t.Errorf("Issues.EditLabel returned %+v, want %+v", label, want)
 	}
+
+	const methodName = "EditLabel"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.EditLabel(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.EditLabel(ctx, "o", "r", "n", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
@@ -167,6 +223,16 @@ func TestIssuesService_DeleteLabel(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.DeleteLabel returned error: %v", err)
 	}
+
+	const methodName = "DeleteLabel"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Issues.DeleteLabel(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Issues.DeleteLabel(ctx, "o", "r", "n")
+	})
 }
 
 func TestIssuesService_DeleteLabel_invalidOwner(t *testing.T) {
@@ -202,6 +268,20 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
 	}
+
+	const methodName = "ListLabelsByIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListLabelsByIssue(ctx, "\n", "\n", -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListLabelsByIssue(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListLabelsByIssue_invalidOwner(t *testing.T) {
@@ -241,6 +321,20 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.AddLabelsToIssue returned %+v, want %+v", labels, want)
 	}
+
+	const methodName = "AddLabelsToIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.AddLabelsToIssue(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.AddLabelsToIssue(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_AddLabelsToIssue_invalidOwner(t *testing.T) {
@@ -265,6 +359,16 @@ func TestIssuesService_RemoveLabelForIssue(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.RemoveLabelForIssue returned error: %v", err)
 	}
+
+	const methodName = "RemoveLabelForIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Issues.RemoveLabelForIssue(ctx, "\n", "\n", -1, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Issues.RemoveLabelForIssue(ctx, "o", "r", 1, "l")
+	})
 }
 
 func TestIssuesService_RemoveLabelForIssue_invalidOwner(t *testing.T) {
@@ -304,6 +408,20 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned %+v, want %+v", labels, want)
 	}
+
+	const methodName = "ReplaceLabelsForIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ReplaceLabelsForIssue(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ReplaceLabelsForIssue(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ReplaceLabelsForIssue_invalidOwner(t *testing.T) {
@@ -328,6 +446,16 @@ func TestIssuesService_RemoveLabelsForIssue(t *testing.T) {
 	if err != nil {
 		t.Errorf("Issues.RemoveLabelsForIssue returned error: %v", err)
 	}
+
+	const methodName = "RemoveLabelsForIssue"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Issues.RemoveLabelsForIssue(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Issues.RemoveLabelsForIssue(ctx, "o", "r", 1)
+	})
 }
 
 func TestIssuesService_RemoveLabelsForIssue_invalidOwner(t *testing.T) {
@@ -360,6 +488,20 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 	if !reflect.DeepEqual(labels, want) {
 		t.Errorf("Issues.ListLabelsForMilestone returned %+v, want %+v", labels, want)
 	}
+
+	const methodName = "ListLabelsForMilestone"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListLabelsForMilestone(ctx, "\n", "\n", -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListLabelsForMilestone(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
