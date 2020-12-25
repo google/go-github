@@ -42,6 +42,12 @@ func TestGitService_GetBlob(t *testing.T) {
 	if !reflect.DeepEqual(*blob, want) {
 		t.Errorf("Blob.Get returned %+v, want %+v", *blob, want)
 	}
+
+	const methodName = "GetBlob"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.GetBlob(ctx, "\n", "\n", "\n")
+		return err
+	})
 }
 
 func TestGitService_GetBlob_invalidOwner(t *testing.T) {
@@ -74,6 +80,20 @@ func TestGitService_GetBlobRaw(t *testing.T) {
 	if !bytes.Equal(blob, want) {
 		t.Errorf("GetBlobRaw returned %q, want %q", blob, want)
 	}
+
+	const methodName = "GetBlobRaw"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.GetBlobRaw(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.GetBlobRaw(ctx, "o", "r", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_CreateBlob(t *testing.T) {
@@ -117,6 +137,12 @@ func TestGitService_CreateBlob(t *testing.T) {
 	if !reflect.DeepEqual(*blob, *want) {
 		t.Errorf("Git.CreateBlob returned %+v, want %+v", *blob, *want)
 	}
+
+	const methodName = "CreateBlob"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateBlob(ctx, "\n", "\n", input)
+		return err
+	})
 }
 
 func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
