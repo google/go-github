@@ -82,6 +82,15 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.ListAll returned %+v, want %+v", orgs, want)
 	}
+
+	const methodName = "ListAll"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListAll(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
@@ -103,6 +112,20 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
+
+	const methodName = "List"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.List(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.List(ctx, "", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_List_specifiedUser(t *testing.T) {
@@ -126,6 +149,20 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
+
+	const methodName = "List"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.List(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.List(ctx, "u", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_List_invalidUser(t *testing.T) {
@@ -157,6 +194,20 @@ func TestOrganizationsService_Get(t *testing.T) {
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.Get(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_Get_invalidOrg(t *testing.T) {
@@ -187,6 +238,20 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
 	}
+
+	const methodName = "GetByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetByID(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetByID(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_Edit(t *testing.T) {
@@ -218,6 +283,20 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}
+
+	const methodName = "Edit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.Edit(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.Edit(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_Edit_invalidOrg(t *testing.T) {
@@ -248,6 +327,20 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 	if !reflect.DeepEqual(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
+
+	const methodName = "ListInstallations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListInstallations(ctx, "\no", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListInstallations(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
@@ -286,4 +379,18 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 	if err == nil {
 		t.Error("Organizations.ListInstallations returned error: nil")
 	}
+
+	const methodName = "ListInstallations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListInstallations(ctx, "\n", &ListOptions{Page: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListInstallations(ctx, "o", &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
