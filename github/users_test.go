@@ -160,6 +160,11 @@ func TestUsersService_GetByID(t *testing.T) {
 	}
 
 	const methodName = "GetByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.GetByID(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.GetByID(ctx, 1)
 		if got != nil {
@@ -350,6 +355,11 @@ func TestUsersService_AcceptInvitation(t *testing.T) {
 	}
 
 	const methodName = "AcceptInvitation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.AcceptInvitation(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.AcceptInvitation(ctx, 1)
 	})
@@ -370,6 +380,11 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 	}
 
 	const methodName = "DeclineInvitation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.DeclineInvitation(ctx, -1)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeclineInvitation(ctx, 1)
 	})
