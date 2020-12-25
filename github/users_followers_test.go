@@ -34,6 +34,20 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
+
+	const methodName = "ListFollowers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListFollowers(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListFollowers(ctx, "", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
@@ -55,6 +69,20 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
+
+	const methodName = "ListFollowers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListFollowers(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListFollowers(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListFollowers_invalidUser(t *testing.T) {
@@ -87,6 +115,20 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}
+
+	const methodName = "ListFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListFollowing(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListFollowing(ctx, "", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
@@ -108,6 +150,20 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}
+
+	const methodName = "ListFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.ListFollowing(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListFollowing(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_ListFollowing_invalidUser(t *testing.T) {
@@ -136,6 +192,20 @@ func TestUsersService_IsFollowing_authenticatedUser(t *testing.T) {
 	if want := true; following != want {
 		t.Errorf("Users.IsFollowing returned %+v, want %+v", following, want)
 	}
+
+	const methodName = "IsFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.IsFollowing(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.IsFollowing(ctx, "", "t")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
@@ -155,6 +225,20 @@ func TestUsersService_IsFollowing_specifiedUser(t *testing.T) {
 	if want := true; following != want {
 		t.Errorf("Users.IsFollowing returned %+v, want %+v", following, want)
 	}
+
+	const methodName = "IsFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.IsFollowing(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.IsFollowing(ctx, "u", "t")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_IsFollowing_false(t *testing.T) {
@@ -174,6 +258,20 @@ func TestUsersService_IsFollowing_false(t *testing.T) {
 	if want := false; following != want {
 		t.Errorf("Users.IsFollowing returned %+v, want %+v", following, want)
 	}
+
+	const methodName = "IsFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.IsFollowing(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.IsFollowing(ctx, "u", "t")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_IsFollowing_error(t *testing.T) {
@@ -193,6 +291,20 @@ func TestUsersService_IsFollowing_error(t *testing.T) {
 	if want := false; following != want {
 		t.Errorf("Users.IsFollowing returned %+v, want %+v", following, want)
 	}
+
+	const methodName = "IsFollowing"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.IsFollowing(ctx, "u", "t")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.IsFollowing(ctx, "u", "t")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_IsFollowing_invalidUser(t *testing.T) {
@@ -217,6 +329,16 @@ func TestUsersService_Follow(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
+
+	const methodName = "Follow"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.Follow(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.Follow(ctx, "u")
+	})
 }
 
 func TestUsersService_Follow_invalidUser(t *testing.T) {
@@ -241,6 +363,16 @@ func TestUsersService_Unfollow(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Follow returned error: %v", err)
 	}
+
+	const methodName = "Unfollow"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.Unfollow(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.Unfollow(ctx, "u")
+	})
 }
 
 func TestUsersService_Unfollow_invalidUser(t *testing.T) {
