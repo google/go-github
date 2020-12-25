@@ -32,6 +32,15 @@ func TestGitignoresService_List(t *testing.T) {
 	if !reflect.DeepEqual(available, want) {
 		t.Errorf("Gitignores.List returned %+v, want %+v", available, want)
 	}
+
+	const methodName = "List"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gitignores.List(ctx)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitignoresService_Get(t *testing.T) {
@@ -53,6 +62,20 @@ func TestGitignoresService_Get(t *testing.T) {
 	if !reflect.DeepEqual(gitignore, want) {
 		t.Errorf("Gitignores.Get returned %+v, want %+v", gitignore, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gitignores.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gitignores.Get(ctx, "name")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
