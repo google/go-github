@@ -35,6 +35,20 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 	if !reflect.DeepEqual(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
+
+	const methodName = "ListStatuses"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListStatuses(ctx, "\n", "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListStatuses(ctx, "o", "r", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListStatuses_invalidOwner(t *testing.T) {
@@ -73,6 +87,20 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}
+
+	const methodName = "CreateStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateStatus(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateStatus(ctx, "o", "r", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateStatus_invalidOwner(t *testing.T) {
@@ -105,4 +133,18 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 	if !reflect.DeepEqual(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}
+
+	const methodName = "GetCombinedStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCombinedStatus(ctx, "\n", "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCombinedStatus(ctx, "o", "r", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
