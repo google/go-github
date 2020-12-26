@@ -114,20 +114,6 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
-
-	const methodName = "Get"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.Get(ctx, "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.Get(ctx, "u")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestUsersService_Get_invalidUser(t *testing.T) {
@@ -329,15 +315,6 @@ func TestUsersService_ListInvitations_withOptions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
 	}
-
-	const methodName = "ListInvitations"
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListInvitations(ctx, &ListOptions{Page: 2})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestUsersService_AcceptInvitation(t *testing.T) {
