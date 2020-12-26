@@ -36,6 +36,20 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 	if !reflect.DeepEqual(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
+
+	const methodName = "ListDeployments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListDeployments(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListDeployments(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetDeployment(t *testing.T) {
@@ -58,6 +72,20 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 	if !reflect.DeepEqual(deployment, want) {
 		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
 	}
+
+	const methodName = "GetDeployment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetDeployment(ctx, "\n", "\n", 3)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetDeployment(ctx, "o", "r", 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateDeployment(t *testing.T) {
@@ -90,6 +118,20 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	if !reflect.DeepEqual(deployment, want) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
+
+	const methodName = "CreateDeployment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateDeployment(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateDeployment(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DeleteDeployment(t *testing.T) {
@@ -117,6 +159,16 @@ func TestRepositoriesService_DeleteDeployment(t *testing.T) {
 	if resp.StatusCode != http.StatusNotFound {
 		t.Error("Repositories.DeleteDeployment should return a 404 status")
 	}
+
+	const methodName = "DeleteDeployment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteDeployment(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteDeployment(ctx, "o", "r", 1)
+	})
 }
 
 func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
@@ -142,6 +194,20 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	if !reflect.DeepEqual(statutses, want) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
 	}
+
+	const methodName = "ListDeploymentStatuses"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListDeploymentStatuses(ctx, "\n", "\n", 1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListDeploymentStatuses(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
@@ -165,6 +231,20 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	if !reflect.DeepEqual(deploymentStatus, want) {
 		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
+
+	const methodName = "GetDeploymentStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetDeploymentStatus(ctx, "\n", "\n", 3, 4)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetDeploymentStatus(ctx, "o", "r", 3, 4)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
@@ -197,4 +277,18 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	if !reflect.DeepEqual(deploymentStatus, want) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
+
+	const methodName = "CreateDeploymentStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateDeploymentStatus(ctx, "\n", "\n", 1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateDeploymentStatus(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
