@@ -46,4 +46,18 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Repositories.Merge returned %+v, want %+v", commit, want)
 	}
+
+	const methodName = "Merge"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.Merge(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.Merge(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
