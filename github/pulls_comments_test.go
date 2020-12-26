@@ -315,6 +315,50 @@ func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &PullRequestComment{Body: String("b")}
+
+	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PullRequestComment)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	comment, _, err := client.PullRequests.CreateCommentInReplyTo(ctx, "o", "r", 1, "b", 2)
+	if err != nil {
+		t.Errorf("PullRequests.CreateCommentInReplyTo returned error: %v", err)
+	}
+
+	want := &PullRequestComment{ID: Int64(1)}
+	if !reflect.DeepEqual(comment, want) {
+		t.Errorf("PullRequests.CreateCommentInReplyTo returned %+v, want %+v", comment, want)
+	}
+
+	const methodName = "CreateCommentInReplyTo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.CreateCommentInReplyTo(ctx, "\n", "\n", -1, "\n", -2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.CreateCommentInReplyTo(ctx, "o", "r", 1, "b", 2)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestPullRequestsService_EditComment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
