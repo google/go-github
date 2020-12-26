@@ -34,6 +34,20 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.ListInvitations = %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListInvitations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListInvitations(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListInvitations(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DeleteInvitation(t *testing.T) {
@@ -50,6 +64,16 @@ func TestRepositoriesService_DeleteInvitation(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteInvitation returned error: %v", err)
 	}
+
+	const methodName = "DeleteInvitation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteInvitation(ctx, "\n", "\n", 2)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteInvitation(ctx, "o", "r", 2)
+	})
 }
 
 func TestRepositoriesService_UpdateInvitation(t *testing.T) {
@@ -71,4 +95,18 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.UpdateInvitation = %+v, want %+v", got, want)
 	}
+
+	const methodName = "UpdateInvitation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdateInvitation(ctx, "\n", "\n", 2, "write")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateInvitation(ctx, "o", "r", 2, "write")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
