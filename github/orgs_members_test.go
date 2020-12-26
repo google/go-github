@@ -90,20 +90,6 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
-
-	const methodName = "ListMembers"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListMembers(ctx, "\n", opt)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListMembers(ctx, "o", opt)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestOrganizationsService_IsMember(t *testing.T) {
@@ -157,20 +143,6 @@ func TestOrganizationsService_IsMember_notMember(t *testing.T) {
 	if want := false; member != want {
 		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
 	}
-
-	const methodName = "IsMember"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.IsMember(ctx, "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.IsMember(ctx, "o", "u")
-		if got {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 // ensure that a 400 response is interpreted as an actual error, and not simply
@@ -192,20 +164,6 @@ func TestOrganizationsService_IsMember_error(t *testing.T) {
 	if want := false; member != want {
 		t.Errorf("Organizations.IsMember returned %+v, want %+v", member, want)
 	}
-
-	const methodName = "IsMember"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.IsMember(ctx, "o", "u")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.IsMember(ctx, "o", "u")
-		if got {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestOrganizationsService_IsMember_invalidOrg(t *testing.T) {
@@ -268,20 +226,6 @@ func TestOrganizationsService_IsPublicMember_notMember(t *testing.T) {
 	if want := false; member != want {
 		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)
 	}
-
-	const methodName = "IsPublicMember"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.IsPublicMember(ctx, "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.IsPublicMember(ctx, "o", "u")
-		if got {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 // ensure that a 400 response is interpreted as an actual error, and not simply
@@ -303,20 +247,6 @@ func TestOrganizationsService_IsPublicMember_error(t *testing.T) {
 	if want := false; member != want {
 		t.Errorf("Organizations.IsPublicMember returned %+v, want %+v", member, want)
 	}
-
-	const methodName = "IsPublicMember"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.IsPublicMember(ctx, "o", "u")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.IsPublicMember(ctx, "o", "u")
-		if got {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestOrganizationsService_IsPublicMember_invalidOrg(t *testing.T) {
@@ -454,20 +384,6 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
-
-	const methodName = "GetOrgMembership"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetOrgMembership(ctx, "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetOrgMembership(ctx, "u", "o")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) {
@@ -542,20 +458,6 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
-
-	const methodName = "EditOrgMembership"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditOrgMembership(ctx, "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.EditOrgMembership(ctx, "u", "o", input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestOrganizationsService_RemoveOrgMembership(t *testing.T) {
