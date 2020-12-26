@@ -34,6 +34,20 @@ func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
 	if !reflect.DeepEqual(organizationInteractions, want) {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}
+
+	const methodName = "GetRestrictionsForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Interactions.GetRestrictionsForOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Interactions.GetRestrictionsForOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
@@ -64,6 +78,20 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 	if !reflect.DeepEqual(organizationInteractions, want) {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}
+
+	const methodName = "UpdateRestrictionsForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Interactions.UpdateRestrictionsForOrg(ctx, "\n", input.GetLimit())
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Interactions.UpdateRestrictionsForOrg(ctx, "o", input.GetLimit())
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestInteractionsService_RemoveRestrictionsFromOrg(t *testing.T) {
@@ -80,4 +108,14 @@ func TestInteractionsService_RemoveRestrictionsFromOrg(t *testing.T) {
 	if err != nil {
 		t.Errorf("Interactions.RemoveRestrictionsFromOrg returned error: %v", err)
 	}
+
+	const methodName = "RemoveRestrictionsFromOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Interactions.RemoveRestrictionsFromOrg(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Interactions.RemoveRestrictionsFromOrg(ctx, "o")
+	})
 }
