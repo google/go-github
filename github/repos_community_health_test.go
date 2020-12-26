@@ -84,4 +84,18 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.GetCommunityHealthMetrics:\ngot:\n%v\nwant:\n%v", Stringify(got), Stringify(want))
 	}
+
+	const methodName = "GetCommunityHealthMetrics"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCommunityHealthMetrics(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCommunityHealthMetrics(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
