@@ -37,6 +37,15 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 	if !reflect.DeepEqual(blockedUsers, want) {
 		t.Errorf("Users.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}
+
+	const methodName = "ListBlockedUsers"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListBlockedUsers(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_IsBlocked(t *testing.T) {
@@ -57,6 +66,20 @@ func TestUsersService_IsBlocked(t *testing.T) {
 	if want := true; isBlocked != want {
 		t.Errorf("Users.IsBlocked returned %+v, want %+v", isBlocked, want)
 	}
+
+	const methodName = "IsBlocked"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Users.IsBlocked(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.IsBlocked(ctx, "u")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_BlockUser(t *testing.T) {
@@ -74,6 +97,16 @@ func TestUsersService_BlockUser(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.BlockUser returned error: %v", err)
 	}
+
+	const methodName = "BlockUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.BlockUser(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.BlockUser(ctx, "u")
+	})
 }
 
 func TestUsersService_UnblockUser(t *testing.T) {
@@ -91,4 +124,14 @@ func TestUsersService_UnblockUser(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.UnblockUser returned error: %v", err)
 	}
+
+	const methodName = "UnblockUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Users.UnblockUser(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.UnblockUser(ctx, "u")
+	})
 }
