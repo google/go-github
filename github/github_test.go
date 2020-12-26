@@ -1296,6 +1296,19 @@ func TestRateLimits(t *testing.T) {
 	}
 }
 
+func TestRateLimits_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+
+	const methodName = "RateLimits"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.RateLimits(ctx)
+		return resp, err
+	})
+}
+
 func TestSetCredentialsAsHeaders(t *testing.T) {
 	req := new(http.Request)
 	id, secret := "id", "secret"
