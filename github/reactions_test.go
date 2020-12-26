@@ -89,7 +89,7 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 
 	const methodName = "ListCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListCommentReactions(ctx, "\n", "\n", 1, opt)
+		_, _, err = client.Reactions.ListCommentReactions(ctx, "\n", "\n", -1, opt)
 		return err
 	})
 
@@ -126,7 +126,7 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 
 	const methodName = "CreateCommentReaction"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.CreateCommentReaction(ctx, "\n", "\n", 1, "+1")
+		_, _, err = client.Reactions.CreateCommentReaction(ctx, "\n", "\n", -1, "\n")
 		return err
 	})
 
@@ -160,10 +160,17 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueReactions = %+v, want %+v", got, want)
 	}
+}
+
+func TestReactionsService_ListIssueReactions_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
 
 	const methodName = "ListIssueReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", 1, nil)
+		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", -1, nil)
 		return err
 	})
 
@@ -200,7 +207,7 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 
 	const methodName = "CreateIssueReaction"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.CreateIssueReaction(ctx, "\n", "\n", 1, "+1")
+		_, _, err = client.Reactions.CreateIssueReaction(ctx, "\n", "\n", -1, "\n")
 		return err
 	})
 
@@ -234,10 +241,17 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListIssueCommentReactions = %+v, want %+v", got, want)
 	}
+}
+
+func TestReactionsService_ListIssueCommentReactions_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
 
 	const methodName = "ListIssueCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", 1, nil)
+		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", -1, nil)
 		return err
 	})
 
@@ -274,7 +288,7 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 
 	const methodName = "CreateIssueCommentReaction"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.CreateIssueCommentReaction(ctx, "\n", "\n", 1, "+1")
+		_, _, err = client.Reactions.CreateIssueCommentReaction(ctx, "\n", "\n", -1, "\n")
 		return err
 	})
 
@@ -308,10 +322,17 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListPullRequestCommentReactions = %+v, want %+v", got, want)
 	}
+}
+
+func TestReactionsService_ListPullRequestCommentReactions_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
 
 	const methodName = "ListPullRequestCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", 1, nil)
+		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", -1, nil)
 		return err
 	})
 
@@ -348,7 +369,7 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 
 	const methodName = "CreatePullRequestCommentReaction"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.CreatePullRequestCommentReaction(ctx, "\n", "\n", 1, "+1")
+		_, _, err = client.Reactions.CreatePullRequestCommentReaction(ctx, "\n", "\n", -1, "\n")
 		return err
 	})
 
@@ -382,6 +403,13 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListTeamDiscussionReactions = %+v, want %+v", got, want)
 	}
+}
+
+func TestReactionsService_ListTeamDiscussionReactions_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
 
 	const methodName = "ListTeamDiscussionReactions"
 	testBadOptions(t, methodName, func() (err error) {
@@ -456,11 +484,26 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("ListTeamDiscussionCommentReactions = %+v, want %+v", got, want)
 	}
+}
+
+func TestReactionService_ListTeamDiscussionCommentReactions_coverage(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
 
 	const methodName = "ListTeamDiscussionCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Reactions.ListTeamDiscussionCommentReactions(ctx, -1, -2, -3, nil)
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Reactions.ListTeamDiscussionCommentReactions(ctx, 1, 2, 3, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
