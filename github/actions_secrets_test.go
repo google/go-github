@@ -33,6 +33,20 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "GetRepoPublicKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetRepoPublicKey(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetRepoPublicKey(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListRepoSecrets(t *testing.T) {
@@ -62,6 +76,20 @@ func TestActionsService_ListRepoSecrets(t *testing.T) {
 	if !reflect.DeepEqual(secrets, want) {
 		t.Errorf("Actions.ListRepoSecrets returned %+v, want %+v", secrets, want)
 	}
+
+	const methodName = "ListRepoSecrets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRepoSecrets(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRepoSecrets(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetRepoSecret(t *testing.T) {
@@ -87,6 +115,20 @@ func TestActionsService_GetRepoSecret(t *testing.T) {
 	if !reflect.DeepEqual(secret, want) {
 		t.Errorf("Actions.GetRepoSecret returned %+v, want %+v", secret, want)
 	}
+
+	const methodName = "GetRepoSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetRepoSecret(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetRepoSecret(ctx, "o", "r", "NAME")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
@@ -110,6 +152,16 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
+
+	const methodName = "CreateOrUpdateRepoSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
+	})
 }
 
 func TestActionsService_DeleteRepoSecret(t *testing.T) {
@@ -125,6 +177,16 @@ func TestActionsService_DeleteRepoSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.DeleteRepoSecret returned error: %v", err)
 	}
+
+	const methodName = "DeleteRepoSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteRepoSecret(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteRepoSecret(ctx, "o", "r", "NAME")
+	})
 }
 
 func TestActionsService_GetOrgPublicKey(t *testing.T) {
@@ -146,6 +208,20 @@ func TestActionsService_GetOrgPublicKey(t *testing.T) {
 	if !reflect.DeepEqual(key, want) {
 		t.Errorf("Actions.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
+
+	const methodName = "GetOrgPublicKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetOrgPublicKey(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetOrgPublicKey(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListOrgSecrets(t *testing.T) {
@@ -176,6 +252,20 @@ func TestActionsService_ListOrgSecrets(t *testing.T) {
 	if !reflect.DeepEqual(secrets, want) {
 		t.Errorf("Actions.ListOrgSecrets returned %+v, want %+v", secrets, want)
 	}
+
+	const methodName = "ListOrgSecrets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListOrgSecrets(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListOrgSecrets(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetOrgSecret(t *testing.T) {
@@ -203,6 +293,20 @@ func TestActionsService_GetOrgSecret(t *testing.T) {
 	if !reflect.DeepEqual(secret, want) {
 		t.Errorf("Actions.GetOrgSecret returned %+v, want %+v", secret, want)
 	}
+
+	const methodName = "GetOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetOrgSecret(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetOrgSecret(ctx, "o", "NAME")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
@@ -228,6 +332,16 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateOrgSecret returned error: %v", err)
 	}
+
+	const methodName = "CreateOrUpdateOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
+	})
 }
 
 func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
@@ -254,6 +368,20 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 	if !reflect.DeepEqual(repos, want) {
 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned %+v, want %+v", repos, want)
 	}
+
+	const methodName = "ListSelectedReposForOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListSelectedReposForOrgSecret(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
@@ -271,6 +399,16 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
+
+	const methodName = "SetSelectedReposForOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{64780797})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+	})
 }
 
 func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
@@ -287,6 +425,16 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.AddSelectedRepoToOrgSecret returned error: %v", err)
 	}
+
+	const methodName = "AddSelectedRepoToOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
+	})
 }
 
 func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
@@ -303,6 +451,16 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
 	}
+
+	const methodName = "RemoveSelectedRepoFromOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
+	})
 }
 
 func TestActionsService_DeleteOrgSecret(t *testing.T) {
@@ -318,4 +476,14 @@ func TestActionsService_DeleteOrgSecret(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.DeleteOrgSecret returned error: %v", err)
 	}
+
+	const methodName = "DeleteOrgSecret"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteOrgSecret(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteOrgSecret(ctx, "o", "NAME")
+	})
 }

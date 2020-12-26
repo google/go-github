@@ -47,6 +47,15 @@ func TestActivityService_ListNotification(t *testing.T) {
 	if !reflect.DeepEqual(notifications, want) {
 		t.Errorf("Activity.ListNotifications returned %+v, want %+v", notifications, want)
 	}
+
+	const methodName = "ListNotifications"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListNotifications(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_ListRepositoryNotification(t *testing.T) {
@@ -68,6 +77,20 @@ func TestActivityService_ListRepositoryNotification(t *testing.T) {
 	if !reflect.DeepEqual(notifications, want) {
 		t.Errorf("Activity.ListRepositoryNotifications returned %+v, want %+v", notifications, want)
 	}
+
+	const methodName = "ListRepositoryNotifications"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.ListRepositoryNotifications(ctx, "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.ListRepositoryNotifications(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_MarkNotificationsRead(t *testing.T) {
@@ -87,6 +110,11 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
+
+	const methodName = "MarkNotificationsRead"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.MarkNotificationsRead(ctx, time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+	})
 }
 
 func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
@@ -106,6 +134,16 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}
+
+	const methodName = "MarkRepositoryNotificationsRead"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+	})
 }
 
 func TestActivityService_GetThread(t *testing.T) {
@@ -127,6 +165,20 @@ func TestActivityService_GetThread(t *testing.T) {
 	if !reflect.DeepEqual(notification, want) {
 		t.Errorf("Activity.GetThread returned %+v, want %+v", notification, want)
 	}
+
+	const methodName = "GetThread"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.GetThread(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.GetThread(ctx, "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_MarkThreadRead(t *testing.T) {
@@ -143,6 +195,16 @@ func TestActivityService_MarkThreadRead(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.MarkThreadRead returned error: %v", err)
 	}
+
+	const methodName = "MarkThreadRead"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.MarkThreadRead(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.MarkThreadRead(ctx, "1")
+	})
 }
 
 func TestActivityService_GetThreadSubscription(t *testing.T) {
@@ -164,6 +226,20 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 	if !reflect.DeepEqual(sub, want) {
 		t.Errorf("Activity.GetThreadSubscription returned %+v, want %+v", sub, want)
 	}
+
+	const methodName = "GetThreadSubscription"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.GetThreadSubscription(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.GetThreadSubscription(ctx, "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_SetThreadSubscription(t *testing.T) {
@@ -194,6 +270,20 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 	if !reflect.DeepEqual(sub, want) {
 		t.Errorf("Activity.SetThreadSubscription returned %+v, want %+v", sub, want)
 	}
+
+	const methodName = "SetThreadSubscription"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Activity.SetThreadSubscription(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Activity.SetThreadSubscription(ctx, "1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActivityService_DeleteThreadSubscription(t *testing.T) {
@@ -210,4 +300,14 @@ func TestActivityService_DeleteThreadSubscription(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.DeleteThreadSubscription returned error: %v", err)
 	}
+
+	const methodName = "DeleteThreadSubscription"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Activity.DeleteThreadSubscription(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Activity.DeleteThreadSubscription(ctx, "1")
+	})
 }

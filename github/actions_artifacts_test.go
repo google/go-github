@@ -40,6 +40,20 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	if !reflect.DeepEqual(artifacts, want) {
 		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
 	}
+
+	const methodName = "ListArtifacts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListArtifacts(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListArtifacts(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListArtifacts_invalidOwner(t *testing.T) {
@@ -108,6 +122,20 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 	if !reflect.DeepEqual(artifacts, want) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned %+v, want %+v", artifacts, want)
 	}
+
+	const methodName = "ListWorkflowRunArtifacts"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListWorkflowRunArtifacts(ctx, "\n", "\n", -1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListWorkflowRunArtifacts(ctx, "o", "r", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListWorkflowRunArtifacts_invalidOwner(t *testing.T) {
@@ -181,6 +209,20 @@ func TestActionsService_GetArtifact(t *testing.T) {
 	if !reflect.DeepEqual(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)
 	}
+
+	const methodName = "GetArtifact"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetArtifact(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetArtifact(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetArtifact_invalidOwner(t *testing.T) {
@@ -245,6 +287,12 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 	if url.String() != want {
 		t.Errorf("Actions.DownloadArtifact returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "DownloadArtifact"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, true)
+		return err
+	})
 }
 
 func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
@@ -322,6 +370,16 @@ func TestActionsService_DeleteArtifact(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.DeleteArtifact return error: %v", err)
 	}
+
+	const methodName = "DeleteArtifact"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteArtifact(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteArtifact(ctx, "o", "r", 1)
+	})
 }
 
 func TestActionsService_DeleteArtifact_invalidOwner(t *testing.T) {

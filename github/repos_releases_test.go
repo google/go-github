@@ -38,6 +38,20 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	if !reflect.DeepEqual(releases, want) {
 		t.Errorf("Repositories.ListReleases returned %+v, want %+v", releases, want)
 	}
+
+	const methodName = "ListReleases"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListReleases(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListReleases(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetRelease(t *testing.T) {
@@ -59,6 +73,20 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
+
+	const methodName = "GetRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetRelease(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetRelease(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetLatestRelease(t *testing.T) {
@@ -80,6 +108,20 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetLatestRelease returned %+v, want %+v", release, want)
 	}
+
+	const methodName = "GetLatestRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetLatestRelease(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetLatestRelease(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
@@ -101,6 +143,20 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetReleaseByTag returned %+v, want %+v", release, want)
 	}
+
+	const methodName = "GetReleaseByTag"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetReleaseByTag(ctx, "\n", "\n", "foo")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetReleaseByTag(ctx, "o", "r", "foo")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateRelease(t *testing.T) {
@@ -146,6 +202,20 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.CreateRelease returned %+v, want %+v", release, want)
 	}
+
+	const methodName = "CreateRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateRelease(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateRelease(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_EditRelease(t *testing.T) {
@@ -190,6 +260,20 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.EditRelease returned = %+v, want %+v", release, want)
 	}
+
+	const methodName = "EditRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.EditRelease(ctx, "\n", "\n", 1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.EditRelease(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DeleteRelease(t *testing.T) {
@@ -205,6 +289,16 @@ func TestRepositoriesService_DeleteRelease(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteRelease returned error: %v", err)
 	}
+
+	const methodName = "DeleteRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteRelease(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteRelease(ctx, "o", "r", 1)
+	})
 }
 
 func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
@@ -227,6 +321,20 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 	if !reflect.DeepEqual(assets, want) {
 		t.Errorf("Repositories.ListReleaseAssets returned %+v, want %+v", assets, want)
 	}
+
+	const methodName = "ListReleaseAssets"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListReleaseAssets(ctx, "\n", "\n", 1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListReleaseAssets(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
@@ -247,6 +355,20 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.GetReleaseAsset returned %+v, want %+v", asset, want)
 	}
+
+	const methodName = "GetReleaseAsset"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetReleaseAsset(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetReleaseAsset(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
@@ -274,6 +396,12 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 	if !bytes.Equal(want, content) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
 	}
+
+	const methodName = "DownloadReleaseAsset"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", -1, nil)
+		return err
+	})
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
@@ -381,6 +509,20 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	if !reflect.DeepEqual(asset, want) {
 		t.Errorf("Repositories.EditReleaseAsset returned = %+v, want %+v", asset, want)
 	}
+
+	const methodName = "EditReleaseAsset"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.EditReleaseAsset(ctx, "\n", "\n", 1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.EditReleaseAsset(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
@@ -396,6 +538,16 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.DeleteReleaseAsset returned error: %v", err)
 	}
+
+	const methodName = "DeleteReleaseAsset"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteReleaseAsset(ctx, "\n", "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteReleaseAsset(ctx, "o", "r", 1)
+	})
 }
 
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
@@ -484,5 +636,11 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		if !reflect.DeepEqual(asset, want) {
 			t.Errorf("Repositories.UploadReleaseAssert returned %+v, want %+v", asset, want)
 		}
+
+		const methodName = "UploadReleaseAsset"
+		testBadOptions(t, methodName, func() (err error) {
+			_, _, err = client.Repositories.UploadReleaseAsset(ctx, "\n", "\n", int64(key), test.uploadOpts, file)
+			return err
+		})
 	}
 }

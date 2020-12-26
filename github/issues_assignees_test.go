@@ -35,6 +35,20 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 	if !reflect.DeepEqual(assignees, want) {
 		t.Errorf("Issues.ListAssignees returned %+v, want %+v", assignees, want)
 	}
+
+	const methodName = "ListAssignees"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.ListAssignees(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListAssignees(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListAssignees_invalidOwner(t *testing.T) {
@@ -62,6 +76,20 @@ func TestIssuesService_IsAssignee_true(t *testing.T) {
 	if want := true; assignee != want {
 		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
+
+	const methodName = "IsAssignee"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.IsAssignee(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_IsAssignee_false(t *testing.T) {
@@ -81,6 +109,20 @@ func TestIssuesService_IsAssignee_false(t *testing.T) {
 	if want := false; assignee != want {
 		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
+
+	const methodName = "IsAssignee"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.IsAssignee(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_IsAssignee_error(t *testing.T) {
@@ -100,6 +142,20 @@ func TestIssuesService_IsAssignee_error(t *testing.T) {
 	if want := false; assignee != want {
 		t.Errorf("Issues.IsAssignee returned %+v, want %+v", assignee, want)
 	}
+
+	const methodName = "IsAssignee"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.IsAssignee(ctx, "o", "r", "u")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.IsAssignee(ctx, "o", "r", "u")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
@@ -139,6 +195,12 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Issues.AddAssignees = %+v, want %+v", got, want)
 	}
+
+	const methodName = "AddAssignees"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.AddAssignees(ctx, "\n", "\n", -1, []string{"\n", "\n"})
+		return err
+	})
 }
 
 func TestIssuesService_RemoveAssignees(t *testing.T) {
@@ -169,4 +231,10 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Issues.RemoveAssignees = %+v, want %+v", got, want)
 	}
+
+	const methodName = "RemoveAssignees"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.RemoveAssignees(ctx, "\n", "\n", -1, []string{"\n", "\n"})
+		return err
+	})
 }

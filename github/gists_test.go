@@ -284,6 +284,20 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 	if !reflect.DeepEqual(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
+
+	const methodName = "List"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.List(ctx, "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.List(ctx, "", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_List_invalidUser(t *testing.T) {
@@ -677,6 +691,20 @@ func TestGistsService_ListCommits_withOptions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Gists.ListCommits returned error: %v", err)
 	}
+
+	const methodName = "ListCommits"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.ListCommits(ctx, "\n", &ListOptions{Page: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListCommits(ctx, "1", &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_ListCommits_invalidID(t *testing.T) {
@@ -840,6 +868,20 @@ func TestGistsService_IsStarred_noStar(t *testing.T) {
 	if want := false; star != want {
 		t.Errorf("Gists.Starred returned %+v, want %+v", star, want)
 	}
+
+	const methodName = "IsStarred"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.IsStarred(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.IsStarred(ctx, "1")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGistsService_IsStarred_invalidID(t *testing.T) {
@@ -959,4 +1001,18 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 	if !reflect.DeepEqual(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
+
+	const methodName = "ListForks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Gists.ListForks(ctx, "\n", &ListOptions{Page: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Gists.ListForks(ctx, "1", &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

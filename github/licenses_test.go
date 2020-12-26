@@ -132,6 +132,15 @@ func TestLicensesService_List(t *testing.T) {
 	if !reflect.DeepEqual(licenses, want) {
 		t.Errorf("Licenses.List returned %+v, want %+v", licenses, want)
 	}
+
+	const methodName = "List"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Licenses.List(ctx)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestLicensesService_Get(t *testing.T) {
@@ -153,6 +162,20 @@ func TestLicensesService_Get(t *testing.T) {
 	if !reflect.DeepEqual(license, want) {
 		t.Errorf("Licenses.Get returned %+v, want %+v", license, want)
 	}
+
+	const methodName = "Get"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Licenses.Get(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Licenses.Get(ctx, "mit")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestLicensesService_Get_invalidTemplate(t *testing.T) {

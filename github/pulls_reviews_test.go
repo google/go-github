@@ -122,6 +122,20 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	if !reflect.DeepEqual(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
 	}
+
+	const methodName = "ListReviews"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.ListReviews(ctx, "\n", "\n", -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListReviews(ctx, "o", "r", 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_ListReviews_invalidOwner(t *testing.T) {
@@ -152,6 +166,20 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
+
+	const methodName = "GetReview"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.GetReview(ctx, "\n", "\n", -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.GetReview(ctx, "o", "r", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_GetReview_invalidOwner(t *testing.T) {
@@ -182,6 +210,20 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
+
+	const methodName = "DeletePendingReview"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.DeletePendingReview(ctx, "\n", "\n", -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.DeletePendingReview(ctx, "o", "r", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_DeletePendingReview_invalidOwner(t *testing.T) {
@@ -215,6 +257,20 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	if !reflect.DeepEqual(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
 	}
+
+	const methodName = "ListReviewComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.ListReviewComments(ctx, "\n", "\n", -1, -1, nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
@@ -234,6 +290,20 @@ func TestPullRequestsService_ListReviewComments_withOptions(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewComments returned error: %v", err)
 	}
+
+	const methodName = "ListReviewComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.ListReviewComments(ctx, "\n", "\n", -1, -1, &ListOptions{Page: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListReviewComments(ctx, "o", "r", 1, 1, &ListOptions{Page: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
@@ -392,6 +462,20 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
+
+	const methodName = "CreateReview"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.CreateReview(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
@@ -422,6 +506,20 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
 	}
+
+	const methodName = "UpdateReview"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.UpdateReview(ctx, "\n", "\n", -1, -1, "updated_body")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.UpdateReview(ctx, "o", "r", 1, 1, "updated_body")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_SubmitReview(t *testing.T) {
@@ -455,6 +553,20 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
+
+	const methodName = "SubmitReview"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.SubmitReview(ctx, "\n", "\n", -1, -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.SubmitReview(ctx, "o", "r", 1, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
@@ -494,6 +606,20 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	if !reflect.DeepEqual(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}
+
+	const methodName = "ListReviews"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.DismissReview(ctx, "\n", "\n", -1, -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.DismissReview(ctx, "o", "r", 1, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {

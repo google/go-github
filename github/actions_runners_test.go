@@ -39,6 +39,20 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 	if !reflect.DeepEqual(downloads, want) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
+
+	const methodName = "ListRunnerApplicationDownloads"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRunnerApplicationDownloads(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRunnerApplicationDownloads(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateRegistrationToken(t *testing.T) {
@@ -62,6 +76,20 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
+
+	const methodName = "CreateRegistrationToken"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.CreateRegistrationToken(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.CreateRegistrationToken(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListRunners(t *testing.T) {
@@ -91,6 +119,20 @@ func TestActionsService_ListRunners(t *testing.T) {
 	if !reflect.DeepEqual(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
+
+	const methodName = "ListRunners"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRunners(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRunners(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetRunner(t *testing.T) {
@@ -117,6 +159,20 @@ func TestActionsService_GetRunner(t *testing.T) {
 	if !reflect.DeepEqual(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
+
+	const methodName = "GetRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetRunner(ctx, "\n", "\n", 23)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetRunner(ctx, "o", "r", 23)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateRemoveToken(t *testing.T) {
@@ -138,6 +194,20 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
+
+	const methodName = "CreateRemoveToken"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.CreateRemoveToken(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.CreateRemoveToken(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_RemoveRunner(t *testing.T) {
@@ -153,6 +223,16 @@ func TestActionsService_RemoveRunner(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.RemoveRunner returned error: %v", err)
 	}
+
+	const methodName = "RemoveRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveRunner(ctx, "\n", "\n", 21)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveRunner(ctx, "o", "r", 21)
+	})
 }
 
 func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T) {
@@ -180,6 +260,20 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 	if !reflect.DeepEqual(downloads, want) {
 		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
+
+	const methodName = "ListOrganizationRunnerApplicationDownloads"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListOrganizationRunnerApplicationDownloads(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListOrganizationRunnerApplicationDownloads(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
@@ -203,6 +297,20 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
+
+	const methodName = "CreateOrganizationRegistrationToken"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.CreateOrganizationRegistrationToken(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.CreateOrganizationRegistrationToken(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListOrganizationRunners(t *testing.T) {
@@ -232,6 +340,20 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	if !reflect.DeepEqual(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
+
+	const methodName = "ListOrganizationRunners"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListOrganizationRunners(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListOrganizationRunners(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
@@ -302,6 +424,20 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	if !reflect.DeepEqual(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
+
+	const methodName = "GetOrganizationRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetOrganizationRunner(ctx, "\n", 23)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetOrganizationRunner(ctx, "o", 23)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
@@ -323,6 +459,20 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
+
+	const methodName = "CreateOrganizationRemoveToken"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.CreateOrganizationRemoveToken(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.CreateOrganizationRemoveToken(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
@@ -338,4 +488,14 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.RemoveOganizationRunner returned error: %v", err)
 	}
+
+	const methodName = "RemoveOrganizationRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveOrganizationRunner(ctx, "\n", 21)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
+	})
 }

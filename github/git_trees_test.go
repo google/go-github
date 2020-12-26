@@ -46,6 +46,20 @@ func TestGitService_GetTree(t *testing.T) {
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Tree.Get returned %+v, want %+v", *tree, want)
 	}
+
+	const methodName = "GetTree"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.GetTree(ctx, "\n", "\n", "\n", true)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.GetTree(ctx, "o", "r", "s", true)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_GetTree_invalidOwner(t *testing.T) {
@@ -120,6 +134,20 @@ func TestGitService_CreateTree(t *testing.T) {
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
+
+	const methodName = "CreateTree"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateTree(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_CreateTree_Content(t *testing.T) {
@@ -187,6 +215,20 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
+
+	const methodName = "CreateTree"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateTree(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_CreateTree_Delete(t *testing.T) {
@@ -253,6 +295,20 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	if !reflect.DeepEqual(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
+
+	const methodName = "CreateTree"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Git.CreateTree(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.CreateTree(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_CreateTree_invalidOwner(t *testing.T) {

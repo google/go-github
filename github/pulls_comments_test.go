@@ -165,6 +165,20 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
+
+	const methodName = "ListComments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.ListComments(ctx, "\n", "\n", -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.ListComments(ctx, "o", "r", 0, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
@@ -220,6 +234,20 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.GetComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "GetComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.GetComment(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.GetComment(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_GetComment_invalidOwner(t *testing.T) {
@@ -262,6 +290,20 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.CreateComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "CreateComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.CreateComment(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.CreateComment(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
@@ -301,6 +343,20 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	if !reflect.DeepEqual(comment, want) {
 		t.Errorf("PullRequests.EditComment returned %+v, want %+v", comment, want)
 	}
+
+	const methodName = "EditComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.EditComment(ctx, "\n", "\n", -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.EditComment(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
@@ -325,6 +381,16 @@ func TestPullRequestsService_DeleteComment(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.DeleteComment returned error: %v", err)
 	}
+
+	const methodName = "DeleteComment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.PullRequests.DeleteComment(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.PullRequests.DeleteComment(ctx, "o", "r", 1)
+	})
 }
 
 func TestPullRequestsService_DeleteComment_invalidOwner(t *testing.T) {

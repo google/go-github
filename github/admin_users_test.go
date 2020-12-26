@@ -42,6 +42,15 @@ func TestAdminUsers_Create(t *testing.T) {
 	if !reflect.DeepEqual(org, want) {
 		t.Errorf("Admin.CreateUser returned %+v, want %+v", org, want)
 	}
+
+	const methodName = "CreateUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Admin.CreateUser(ctx, "github", "email@domain.com")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAdminUsers_Delete(t *testing.T) {
@@ -57,6 +66,16 @@ func TestAdminUsers_Delete(t *testing.T) {
 	if err != nil {
 		t.Errorf("Admin.DeleteUser returned error: %v", err)
 	}
+
+	const methodName = "DeleteUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Admin.DeleteUser(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Admin.DeleteUser(ctx, "github")
+	})
 }
 
 func TestUserImpersonation_Create(t *testing.T) {
@@ -115,6 +134,20 @@ func TestUserImpersonation_Create(t *testing.T) {
 	if !reflect.DeepEqual(auth, want) {
 		t.Errorf("Admin.CreateUserImpersonation returned %+v, want %+v", auth, want)
 	}
+
+	const methodName = "CreateUserImpersonation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Admin.CreateUserImpersonation(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUserImpersonation_Delete(t *testing.T) {
@@ -130,4 +163,14 @@ func TestUserImpersonation_Delete(t *testing.T) {
 	if err != nil {
 		t.Errorf("Admin.DeleteUserImpersonation returned error: %v", err)
 	}
+
+	const methodName = "DeleteUserImpersonation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Admin.DeleteUserImpersonation(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Admin.DeleteUserImpersonation(ctx, "github")
+	})
 }
