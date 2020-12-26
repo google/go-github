@@ -202,20 +202,6 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	if !reflect.DeepEqual(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
-
-	const methodName = "ListComments"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PullRequests.ListComments(ctx, "\n", "\n", -1, nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.ListComments(ctx, "o", "r", 1, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestPullRequestsService_ListComments_invalidOwner(t *testing.T) {
