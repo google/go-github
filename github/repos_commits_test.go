@@ -50,6 +50,20 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 	if !reflect.DeepEqual(commits, want) {
 		t.Errorf("Repositories.ListCommits returned %+v, want %+v", commits, want)
 	}
+
+	const methodName = "ListCommits"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCommits(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListCommits(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetCommit(t *testing.T) {
@@ -125,6 +139,20 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	if !reflect.DeepEqual(commit, want) {
 		t.Errorf("Repositories.GetCommit returned \n%+v, want \n%+v", commit, want)
 	}
+
+	const methodName = "GetCommit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCommit(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCommit(ctx, "o", "r", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
@@ -148,6 +176,20 @@ func TestRepositoriesService_GetCommitRaw_diff(t *testing.T) {
 	if got != want {
 		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
 	}
+
+	const methodName = "GetCommitRaw"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCommitRaw(ctx, "\n", "\n", "\n", RawOptions{Type: Diff})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCommitRaw(ctx, "o", "r", "s", RawOptions{Type: Diff})
+		if got != "" {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want ''", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetCommitRaw_patch(t *testing.T) {
@@ -227,6 +269,20 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 	if got != want {
 		t.Errorf("Repositories.GetCommitSHA1 = %v, want %v", got, want)
 	}
+
+	const methodName = "GetCommitSHA1"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetCommitSHA1(ctx, "\n", "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetCommitSHA1(ctx, "o", "r", "master", "")
+		if got != "" {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want ''", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_NonAlphabetCharacter_GetCommitSHA1(t *testing.T) {
@@ -407,6 +463,20 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
 	}
+
+	const methodName = "CompareCommits"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CompareCommits(ctx, "\n", "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CompareCommits(ctx, "o", "r", "b", "h")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
@@ -430,6 +500,20 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 	if got != want {
 		t.Errorf("Repositories.GetCommitRaw returned %s want %s", got, want)
 	}
+
+	const methodName = "CompareCommitsRaw"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CompareCommitsRaw(ctx, "\n", "\n", "\n", "\n", RawOptions{Type: Diff})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", "b", "h", RawOptions{Type: Diff})
+		if got != "" {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want ''", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
@@ -497,4 +581,18 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 	if !reflect.DeepEqual(branches, want) {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned %+v, want %+v", branches, want)
 	}
+
+	const methodName = "ListBranchesHeadCommit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListBranchesHeadCommit(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListBranchesHeadCommit(ctx, "o", "r", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
