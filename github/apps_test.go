@@ -72,20 +72,6 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 	if !reflect.DeepEqual(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", *app.HTMLURL, *want.HTMLURL)
 	}
-
-	const methodName = "Get"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.Get(ctx, "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.Get(ctx, "a")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestAppsService_ListInstallations(t *testing.T) {
@@ -426,20 +412,6 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	if !reflect.DeepEqual(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
-
-	const methodName = "CreateInstallationToken"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.CreateInstallationToken(ctx, -1, installationTokenOptions)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.CreateInstallationToken(ctx, 1, installationTokenOptions)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestAppsService_CreateAttachement(t *testing.T) {
