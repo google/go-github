@@ -126,20 +126,6 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}
-
-	const methodName = "CreateFork"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.CreateFork(ctx, "o", "r", opt)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
