@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestUsersService_ListEmails(t *testing.T) {
@@ -41,32 +40,14 @@ func TestUsersService_ListEmails(t *testing.T) {
 		t.Errorf("Users.ListEmails returned %+v, want %+v", emails, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Users.ListEmails(ctx, nil)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' ListEmails = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' ListEmails resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' ListEmails err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Users.ListEmails(ctx, nil)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now ListEmails = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now ListEmails resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now ListEmails err = nil, want error")
-	}
+	const methodName = "ListEmails"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.ListEmails(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_AddEmails(t *testing.T) {
@@ -101,32 +82,14 @@ func TestUsersService_AddEmails(t *testing.T) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Users.AddEmails(ctx, input)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' AddEmails = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' AddEmails resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' AddEmails err = nil, want error")
-	}
-
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Users.AddEmails(ctx, input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now AddEmails = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now AddEmails resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now AddEmails err = nil, want error")
-	}
+	const methodName = "AddEmails"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Users.AddEmails(ctx, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestUsersService_DeleteEmails(t *testing.T) {
@@ -151,13 +114,8 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 		t.Errorf("Users.DeleteEmails returned error: %v", err)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	resp, err := client.Users.DeleteEmails(ctx, input)
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' DeleteEmails resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' DeleteEmails err = nil, want error")
-	}
+	const methodName = "DeleteEmails"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Users.DeleteEmails(ctx, input)
+	})
 }

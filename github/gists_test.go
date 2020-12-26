@@ -1002,37 +1002,6 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
 
-	// Test addOptions failure
-	_, _, err = client.Gists.ListForks(ctx, "%", &ListOptions{})
-	if err == nil {
-		t.Error("Gists.ListForks returned err = nil")
-	}
-
-	// Test client.NewRequest failure
-	got, resp, err := client.Gists.ListForks(ctx, "%", nil)
-	if got != nil {
-		t.Errorf("Gists.ListForks = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("Gists.ListForks resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("Gists.ListForks err = nil, want error")
-	}
-
-	// Test client.Do failure
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Gists.ListForks(ctx, "1", &ListOptions{Page: 2})
-	if got != nil {
-		t.Errorf("Gists.ListForks returned = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("Gists.ListForks returned resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rGists.ListForks returned err = nil, want error")
-	}
-
 	const methodName = "ListForks"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Gists.ListForks(ctx, "\n", &ListOptions{Page: 2})
