@@ -706,6 +706,14 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 		_, _, err = client.Repositories.ListContributors(ctx, "\n", "\n", opts)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListContributors(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListLanguages(t *testing.T) {
@@ -2063,6 +2071,14 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 		_, _, err = client.Repositories.ReplaceAppRestrictions(ctx, "\n", "\n", "\n", input)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ReplaceAppRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
@@ -2093,6 +2109,14 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 		_, _, err = client.Repositories.AddAppRestrictions(ctx, "\n", "\n", "\n", input)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.AddAppRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
@@ -2118,6 +2142,14 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.RemoveAppRestrictions(ctx, "\n", "\n", "\n", input)
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RemoveAppRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
