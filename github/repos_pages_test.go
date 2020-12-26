@@ -135,16 +135,6 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.UpdatePages returned error: %v", err)
 	}
-
-	const methodName = "UpdatePages"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Repositories.UpdatePages(ctx, "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.UpdatePages(ctx, "o", "r", input)
-	})
 }
 
 func TestRepositoriesService_DisablePages(t *testing.T) {
@@ -260,20 +250,6 @@ func TestRepositoriesService_ListPagesBuilds_withOptions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
-
-	const methodName = "ListPagesBuilds"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListPagesBuilds(ctx, "\n", "\n", &ListOptions{Page: 2})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListPagesBuilds(ctx, "o", "r", &ListOptions{Page: 2})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
@@ -333,7 +309,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 
 	const methodName = "GetPageBuild"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetPageBuild(ctx, "\n", "\n", 1)
+		_, _, err = client.Repositories.GetPageBuild(ctx, "\n", "\n", -1)
 		return err
 	})
 
