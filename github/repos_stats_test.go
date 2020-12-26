@@ -69,6 +69,20 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	if !reflect.DeepEqual(stats, want) {
 		t.Errorf("RepositoriesService.ListContributorsStats returned %+v, want %+v", stats, want)
 	}
+
+	const methodName = "ListContributorsStats"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListContributorsStats(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListCommitActivity(t *testing.T) {
@@ -106,6 +120,20 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 	if !reflect.DeepEqual(activity, want) {
 		t.Errorf("RepositoriesService.ListCommitActivity returned %+v, want %+v", activity, want)
 	}
+
+	const methodName = "ListCommitActivity"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCommitActivity(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListCommitActivity(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
@@ -133,6 +161,20 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 	if !reflect.DeepEqual(code, want) {
 		t.Errorf("RepositoriesService.ListCodeFrequency returned %+v, want %+v", code, want)
 	}
+
+	const methodName = "ListCodeFrequency"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCodeFrequency(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListCodeFrequency(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_Participation(t *testing.T) {
@@ -184,6 +226,20 @@ func TestRepositoriesService_Participation(t *testing.T) {
 	if !reflect.DeepEqual(participation, want) {
 		t.Errorf("RepositoriesService.ListParticipation returned %+v, want %+v", participation, want)
 	}
+
+	const methodName = "ListParticipation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListParticipation(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListParticipation(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_ListPunchCard(t *testing.T) {
@@ -215,6 +271,20 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 	if !reflect.DeepEqual(card, want) {
 		t.Errorf("RepositoriesService.ListPunchCard returned %+v, want %+v", card, want)
 	}
+
+	const methodName = "ListPunchCard"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListPunchCard(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListPunchCard(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_AcceptedError(t *testing.T) {
@@ -241,4 +311,18 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 	if stats != nil {
 		t.Errorf("RepositoriesService.AcceptedError expected stats to be nil: %v", stats)
 	}
+
+	const methodName = "ListContributorsStats"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListContributorsStats(ctx, "o", "r")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListContributorsStats(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
