@@ -298,20 +298,6 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
-
-	const methodName = "ListEventsPerformedByUser"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.ListEventsPerformedByUser(ctx, "\n", true, nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.ListEventsPerformedByUser(ctx, "u", true, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestActivityService_ListEventsPerformedByUser_invalidUser(t *testing.T) {
@@ -381,20 +367,6 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 	if !reflect.DeepEqual(events, want) {
 		t.Errorf("Events.ListReceivedByUser returned %+v, want %+v", events, want)
 	}
-
-	const methodName = "ListEventsReceivedByUser"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.ListEventsReceivedByUser(ctx, "\n", true, nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.ListEventsReceivedByUser(ctx, "u", true, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestActivityService_ListEventsReceivedByUser_invalidUser(t *testing.T) {
