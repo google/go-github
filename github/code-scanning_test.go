@@ -122,6 +122,20 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 	if !reflect.DeepEqual(alerts, want) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned %+v, want %+v", alerts, want)
 	}
+
+	const methodName = "ListAlertsForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.ListAlertsForRepo(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.ListAlertsForRepo(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsService_GetAlert(t *testing.T) {
@@ -164,4 +178,18 @@ func TestActionsService_GetAlert(t *testing.T) {
 	if !reflect.DeepEqual(alert, want) {
 		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)
 	}
+
+	const methodName = "GetAlert"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetAlert(ctx, "\n", "\n", -88)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetAlert(ctx, "o", "r", 88)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
