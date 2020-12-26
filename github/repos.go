@@ -651,7 +651,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner string
 	var contributor []*Contributor
 	resp, err := s.client.Do(ctx, req, &contributor)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return contributor, resp, nil
@@ -1396,7 +1396,7 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 	var apps []*App
 	resp, err := s.client.Do(ctx, req, &apps)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return apps, resp, nil
@@ -1418,7 +1418,7 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 	var apps []*App
 	resp, err := s.client.Do(ctx, req, &apps)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return apps, resp, nil
@@ -1440,7 +1440,7 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 	var apps []*App
 	resp, err := s.client.Do(ctx, req, &apps)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return apps, resp, nil

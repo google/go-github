@@ -909,7 +909,7 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 	})
 	resp, err := c.Do(ctx, req, response)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	if response.Resources != nil {
