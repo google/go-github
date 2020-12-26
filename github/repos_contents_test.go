@@ -101,6 +101,20 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	if !reflect.DeepEqual(readme, want) {
 		t.Errorf("Repositories.GetReadme returned %+v, want %+v", readme, want)
 	}
+
+	const methodName = "GetReadme"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetReadme(ctx, "\n", "\n", &RepositoryContentGetOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GetReadme(ctx, "o", "r", &RepositoryContentGetOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
@@ -138,6 +152,20 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 	if got, want := string(bytes), "foo"; got != want {
 		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
 	}
+
+	const methodName = "DownloadContents"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
@@ -241,6 +269,20 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 	if !reflect.DeepEqual(fileContents, want) {
 		t.Errorf("Repositories.GetContents returned %+v, want %+v", fileContents, want)
 	}
+
+	const methodName = "GetContents"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", "p", &RepositoryContentGetOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
@@ -351,6 +393,20 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 	if !reflect.DeepEqual(createResponse, want) {
 		t.Errorf("Repositories.CreateFile returned %+v, want %+v", createResponse, want)
 	}
+
+	const methodName = "CreateFile"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateFile(ctx, "\n", "\n", "\n", repositoryContentsOptions)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateFile(ctx, "o", "r", "p", repositoryContentsOptions)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_UpdateFile(t *testing.T) {
@@ -392,6 +448,20 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 	if !reflect.DeepEqual(updateResponse, want) {
 		t.Errorf("Repositories.UpdateFile returned %+v, want %+v", updateResponse, want)
 	}
+
+	const methodName = "UpdateFile"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UpdateFile(ctx, "\n", "\n", "\n", repositoryContentsOptions)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UpdateFile(ctx, "o", "r", "p", repositoryContentsOptions)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_DeleteFile(t *testing.T) {
@@ -429,6 +499,20 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	if !reflect.DeepEqual(deleteResponse, want) {
 		t.Errorf("Repositories.DeleteFile returned %+v, want %+v", deleteResponse, want)
 	}
+
+	const methodName = "DeleteFile"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.DeleteFile(ctx, "\n", "\n", "\n", repositoryContentsOptions)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.DeleteFile(ctx, "o", "r", "p", repositoryContentsOptions)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
@@ -450,6 +534,12 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	if url.String() != want {
 		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
+
+	const methodName = "GetArchiveLink"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
+		return err
+	})
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
