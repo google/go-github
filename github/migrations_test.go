@@ -38,6 +38,20 @@ func TestMigrationService_StartMigration(t *testing.T) {
 	if want := wantMigration; !reflect.DeepEqual(got, want) {
 		t.Errorf("StartMigration = %+v, want %+v", got, want)
 	}
+
+	const methodName = "StartMigration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Migrations.StartMigration(ctx, "\n", []string{"\n"}, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Migrations.StartMigration(ctx, "o", []string{"r"}, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMigrationService_ListMigrations(t *testing.T) {
@@ -60,6 +74,20 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 	if want := []*Migration{wantMigration}; !reflect.DeepEqual(got, want) {
 		t.Errorf("ListMigrations = %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListMigrations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Migrations.ListMigrations(ctx, "\n", &ListOptions{Page: 1, PerPage: 2})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Migrations.ListMigrations(ctx, "o", &ListOptions{Page: 1, PerPage: 2})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMigrationService_MigrationStatus(t *testing.T) {
@@ -82,6 +110,20 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	if want := wantMigration; !reflect.DeepEqual(got, want) {
 		t.Errorf("MigrationStatus = %+v, want %+v", got, want)
 	}
+
+	const methodName = "MigrationStatus"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Migrations.MigrationStatus(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Migrations.MigrationStatus(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMigrationService_MigrationArchiveURL(t *testing.T) {
@@ -109,6 +151,12 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 	if want := "/yo"; !strings.HasSuffix(got, want) {
 		t.Errorf("MigrationArchiveURL = %+v, want %+v", got, want)
 	}
+
+	const methodName = "MigrationArchiveURL"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Migrations.MigrationArchiveURL(ctx, "\n", -1)
+		return err
+	})
 }
 
 func TestMigrationService_DeleteMigration(t *testing.T) {
@@ -126,6 +174,16 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 	if _, err := client.Migrations.DeleteMigration(ctx, "o", 1); err != nil {
 		t.Errorf("DeleteMigration returned error: %v", err)
 	}
+
+	const methodName = "DeleteMigration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Migrations.DeleteMigration(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Migrations.DeleteMigration(ctx, "o", 1)
+	})
 }
 
 func TestMigrationService_UnlockRepo(t *testing.T) {
@@ -143,6 +201,16 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 	if _, err := client.Migrations.UnlockRepo(ctx, "o", 1, "r"); err != nil {
 		t.Errorf("UnlockRepo returned error: %v", err)
 	}
+
+	const methodName = "UnlockRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Migrations.UnlockRepo(ctx, "\n", -1, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Migrations.UnlockRepo(ctx, "o", 1, "r")
+	})
 }
 
 var migrationJSON = []byte(`{
