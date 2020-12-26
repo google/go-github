@@ -70,20 +70,6 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
-
-	const methodName = "ListGPGKeys"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListGPGKeys(ctx, "\n", nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListGPGKeys(ctx, "u", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestUsersService_ListGPGKeys_invalidUser(t *testing.T) {
