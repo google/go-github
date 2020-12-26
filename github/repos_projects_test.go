@@ -36,6 +36,20 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 	if !reflect.DeepEqual(projects, want) {
 		t.Errorf("Repositories.ListProjects returned %+v, want %+v", projects, want)
 	}
+
+	const methodName = "ListProjects"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListProjects(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListProjects(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoriesService_CreateProject(t *testing.T) {
@@ -67,4 +81,18 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 	if !reflect.DeepEqual(project, want) {
 		t.Errorf("Repositories.CreateProject returned %+v, want %+v", project, want)
 	}
+
+	const methodName = "CreateProject"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.CreateProject(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.CreateProject(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
