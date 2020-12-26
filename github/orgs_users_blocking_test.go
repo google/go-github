@@ -37,6 +37,20 @@ func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
 	if !reflect.DeepEqual(blockedUsers, want) {
 		t.Errorf("Organizations.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}
+
+	const methodName = "ListBlockedUsers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListBlockedUsers(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListBlockedUsers(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_IsBlocked(t *testing.T) {
@@ -57,6 +71,20 @@ func TestOrganizationsService_IsBlocked(t *testing.T) {
 	if want := true; isBlocked != want {
 		t.Errorf("Organizations.IsBlocked returned %+v, want %+v", isBlocked, want)
 	}
+
+	const methodName = "IsBlocked"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.IsBlocked(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.IsBlocked(ctx, "o", "u")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_BlockUser(t *testing.T) {
@@ -74,6 +102,16 @@ func TestOrganizationsService_BlockUser(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.BlockUser returned error: %v", err)
 	}
+
+	const methodName = "BlockUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.BlockUser(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.BlockUser(ctx, "o", "u")
+	})
 }
 
 func TestOrganizationsService_UnblockUser(t *testing.T) {
@@ -91,4 +129,14 @@ func TestOrganizationsService_UnblockUser(t *testing.T) {
 	if err != nil {
 		t.Errorf("Organizations.UnblockUser returned error: %v", err)
 	}
+
+	const methodName = "UnblockUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.UnblockUser(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.UnblockUser(ctx, "o", "u")
+	})
 }
