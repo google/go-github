@@ -204,20 +204,6 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 	if got, want := string(bytes), "foo error"; got != want {
 		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
 	}
-
-	const methodName = "DownloadContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
@@ -240,20 +226,6 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 	if resp == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
-
-	const methodName = "DownloadContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
@@ -273,20 +245,6 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	if resp == nil {
 		t.Errorf("Repositories.DownloadContents did not return expected response")
 	}
-
-	const methodName = "DownloadContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetContents_File(t *testing.T) {
@@ -339,20 +297,6 @@ func TestRepositoriesService_GetContents_FilenameNeedsEscape(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
-
-	const methodName = "GetContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", "p#?%/中.go", &RepositoryContentGetOptions{})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
@@ -367,20 +311,6 @@ func TestRepositoriesService_GetContents_DirectoryWithSpaces(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
-
-	const methodName = "GetContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", "some directory/file.go", &RepositoryContentGetOptions{})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
@@ -395,20 +325,6 @@ func TestRepositoriesService_GetContents_DirectoryWithPlusChars(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
-
-	const methodName = "GetContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", "some directory+name/file.go", &RepositoryContentGetOptions{})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_GetContents_Directory(t *testing.T) {
@@ -438,20 +354,6 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	if !reflect.DeepEqual(directoryContents, want) {
 		t.Errorf("Repositories.GetContents_Directory returned %+v, want %+v", directoryContents, want)
 	}
-
-	const methodName = "GetContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", "p", &RepositoryContentGetOptions{})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestRepositoriesService_CreateFile(t *testing.T) {
@@ -679,12 +581,6 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 	if url.String() != want {
 		t.Errorf("Repositories.GetArchiveLink returned %+v, want %+v", url.String(), want)
 	}
-
-	const methodName = "GetArchiveLink"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
-		return err
-	})
 }
 
 func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *testing.T) {
@@ -705,22 +601,4 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
-
-	const methodName = "GetContents"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.GetContents(ctx, "\n", "\n", "\n", &RepositoryContentGetOptions{
-			Ref: "mybranch",
-		})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, _, resp, err := client.Repositories.GetContents(ctx, "o", "r", ".github/", &RepositoryContentGetOptions{
-			Ref: "mybranch",
-		})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
