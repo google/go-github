@@ -51,4 +51,18 @@ func TestGetConfig(t *testing.T) {
 	if !reflect.DeepEqual(cfg, want) {
 		t.Errorf("GetConfig returned %+v, want %+v", cfg, want)
 	}
+
+	const methodName = "CompleteAppManifest"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Apps.CompleteAppManifest(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.CompleteAppManifest(ctx, "code")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
