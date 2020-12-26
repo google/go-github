@@ -38,6 +38,20 @@ func TestTeamsService_ListTeams(t *testing.T) {
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Teams.ListTeams returned %+v, want %+v", teams, want)
 	}
+
+	const methodName = "ListTeams"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListTeams(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListTeams(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
@@ -68,6 +82,20 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.GetTeamByID returned %+v, want %+v", team, want)
 	}
+
+	const methodName = "GetTeamByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.GetTeamByID(ctx, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.GetTeamByID(ctx, 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_GetTeamByID_notFound(t *testing.T) {
@@ -111,6 +139,20 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.GetTeamBySlug returned %+v, want %+v", team, want)
 	}
+
+	const methodName = "GetTeamBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.GetTeamBySlug(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.GetTeamBySlug(ctx, "o", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_GetTeamBySlug_invalidOrg(t *testing.T) {
@@ -172,6 +214,20 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.CreateTeam returned %+v, want %+v", team, want)
 	}
+
+	const methodName = "CreateTeam"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.CreateTeam(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.CreateTeam(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
@@ -211,6 +267,20 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
 	}
+
+	const methodName = "EditTeamByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.EditTeamByID(ctx, -1, -1, input, false)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
@@ -281,6 +351,20 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	if !reflect.DeepEqual(team, want) {
 		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
 	}
+
+	const methodName = "EditTeamBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.EditTeamBySlug(ctx, "\n", "\n", input, false)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
@@ -336,6 +420,16 @@ func TestTeamsService_DeleteTeamByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.DeleteTeamByID returned error: %v", err)
 	}
+
+	const methodName = "DeleteTeamByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.DeleteTeamByID(ctx, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.DeleteTeamByID(ctx, 1, 1)
+	})
 }
 
 func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
@@ -351,6 +445,16 @@ func TestTeamsService_DeleteTeamBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.DeleteTeamBySlug returned error: %v", err)
 	}
+
+	const methodName = "DeleteTeamBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.DeleteTeamBySlug(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.DeleteTeamBySlug(ctx, "o", "s")
+	})
 }
 
 func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
@@ -374,6 +478,20 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentID returned %+v, want %+v", teams, want)
 	}
+
+	const methodName = "ListChildTeamsByParentID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListChildTeamsByParentID(ctx, -1, -2, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListChildTeamsByParentID(ctx, 1, 2, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
@@ -397,6 +515,20 @@ func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentSlug returned %+v, want %+v", teams, want)
 	}
+
+	const methodName = "ListChildTeamsByParentSlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListChildTeamsByParentSlug(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListChildTeamsByParentSlug(ctx, "o", "s", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListTeamReposByID(t *testing.T) {
@@ -422,6 +554,20 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Teams.ListTeamReposByID returned %+v, want %+v", members, want)
 	}
+
+	const methodName = "ListTeamReposByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListTeamReposByID(ctx, -1, -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListTeamReposByID(ctx, 1, 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
@@ -447,6 +593,20 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 	if !reflect.DeepEqual(members, want) {
 		t.Errorf("Teams.ListTeamReposBySlug returned %+v, want %+v", members, want)
 	}
+
+	const methodName = "ListTeamReposBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListTeamReposBySlug(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListTeamReposBySlug(ctx, "o", "s", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
@@ -470,6 +630,20 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want %+v", repo, want)
 	}
+
+	const methodName = "IsTeamRepoByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.IsTeamRepoByID(ctx, -1, -1, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.IsTeamRepoByID(ctx, 1, 1, "owner", "repo")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
@@ -493,6 +667,20 @@ func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 	if !reflect.DeepEqual(repo, want) {
 		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want %+v", repo, want)
 	}
+
+	const methodName = "IsTeamRepoBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.IsTeamRepoBySlug(ctx, "\n", "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.IsTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_IsTeamRepoByID_false(t *testing.T) {
@@ -624,6 +812,16 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoByID returned error: %v", err)
 	}
+
+	const methodName = "AddTeamRepoByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.AddTeamRepoByID(ctx, 1, 1, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.AddTeamRepoByID(ctx, 1, 1, "owner", "repo", opt)
+	})
 }
 
 func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
@@ -649,6 +847,16 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.AddTeamRepoBySlug returned error: %v", err)
 	}
+
+	const methodName = "AddTeamRepoBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.AddTeamRepoBySlug(ctx, "\n", "\n", "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.AddTeamRepoBySlug(ctx, "org", "slug", "owner", "repo", opt)
+	})
 }
 
 func TestTeamsService_AddTeamRepoByID_noAccess(t *testing.T) {
@@ -715,6 +923,16 @@ func TestTeamsService_RemoveTeamRepoByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamRepoByID returned error: %v", err)
 	}
+
+	const methodName = "RemoveTeamRepoByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.RemoveTeamRepoByID(ctx, -1, -1, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.RemoveTeamRepoByID(ctx, 1, 1, "owner", "repo")
+	})
 }
 
 func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
@@ -731,6 +949,16 @@ func TestTeamsService_RemoveTeamRepoBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamRepoBySlug returned error: %v", err)
 	}
+
+	const methodName = "RemoveTeamRepoBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.RemoveTeamRepoBySlug(ctx, "\n", "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.RemoveTeamRepoBySlug(ctx, "org", "slug", "owner", "repo")
+	})
 }
 
 func TestTeamsService_RemoveTeamRepoByID_invalidOwner(t *testing.T) {
@@ -772,6 +1000,15 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 	if !reflect.DeepEqual(teams, want) {
 		t.Errorf("Teams.ListUserTeams returned %+v, want %+v", teams, want)
 	}
+
+	const methodName = "ListUserTeams"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListUserTeams(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListProjectsByID(t *testing.T) {
@@ -795,6 +1032,20 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 	if !reflect.DeepEqual(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsByID returned %+v, want %+v", projects, want)
 	}
+
+	const methodName = "ListTeamProjectsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListTeamProjectsByID(ctx, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListTeamProjectsByID(ctx, 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListProjectsBySlug(t *testing.T) {
@@ -818,6 +1069,20 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 	if !reflect.DeepEqual(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned %+v, want %+v", projects, want)
 	}
+
+	const methodName = "ListTeamProjectsBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListTeamProjectsBySlug(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListTeamProjectsBySlug(ctx, "o", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ReviewProjectsByID(t *testing.T) {
@@ -841,6 +1106,20 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 	if !reflect.DeepEqual(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned %+v, want %+v", project, want)
 	}
+
+	const methodName = "ReviewTeamProjectsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ReviewTeamProjectsByID(ctx, -1, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ReviewTeamProjectsByID(ctx, 1, 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
@@ -864,6 +1143,20 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 	if !reflect.DeepEqual(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned %+v, want %+v", project, want)
 	}
+
+	const methodName = "ReviewTeamProjectsBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ReviewTeamProjectsBySlug(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ReviewTeamProjectsBySlug(ctx, "o", "s", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_AddTeamProjectByID(t *testing.T) {
@@ -893,6 +1186,16 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectByID returned error: %v", err)
 	}
+
+	const methodName = "AddTeamProjectByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.AddTeamProjectByID(ctx, -1, -1, -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.AddTeamProjectByID(ctx, 1, 1, 1, opt)
+	})
 }
 
 func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
@@ -922,6 +1225,16 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.AddTeamProjectBySlug returned error: %v", err)
 	}
+
+	const methodName = "AddTeamProjectBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.AddTeamProjectBySlug(ctx, "\n", "\n", -1, opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.AddTeamProjectBySlug(ctx, "o", "s", 1, opt)
+	})
 }
 
 func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
@@ -940,6 +1253,16 @@ func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamProjectByID returned error: %v", err)
 	}
+
+	const methodName = "RemoveTeamProjectByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.RemoveTeamProjectByID(ctx, -1, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.RemoveTeamProjectByID(ctx, 1, 1, 1)
+	})
 }
 
 func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
@@ -958,6 +1281,16 @@ func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
 	if err != nil {
 		t.Errorf("Teams.RemoveTeamProjectBySlug returned error: %v", err)
 	}
+
+	const methodName = "RemoveTeamProjectBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.RemoveTeamProjectBySlug(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.RemoveTeamProjectBySlug(ctx, "o", "s", 1)
+	})
 }
 
 func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
@@ -991,6 +1324,20 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 	if !reflect.DeepEqual(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsInOrganization returned %+v. want %+v", groups, want)
 	}
+
+	const methodName = "ListIDPGroupsInOrganization"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListIDPGroupsInOrganization(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListIDPGroupsInOrganization(ctx, "o", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
@@ -1020,6 +1367,20 @@ func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 	if !reflect.DeepEqual(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsForTeamByID returned %+v. want %+v", groups, want)
 	}
+
+	const methodName = "ListIDPGroupsForTeamByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListIDPGroupsForTeamByID(ctx, -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListIDPGroupsForTeamByID(ctx, 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
@@ -1049,6 +1410,20 @@ func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 	if !reflect.DeepEqual(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsForTeamBySlug returned %+v. want %+v", groups, want)
 	}
+
+	const methodName = "ListIDPGroupsForTeamBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListIDPGroupsForTeamBySlug(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListIDPGroupsForTeamBySlug(ctx, "o", "slug")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
@@ -1088,6 +1463,20 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 	if !reflect.DeepEqual(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned %+v. want %+v", groups, want)
 	}
+
+	const methodName = "CreateOrUpdateIDPGroupConnectionsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.CreateOrUpdateIDPGroupConnectionsByID(ctx, -1, -1, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.CreateOrUpdateIDPGroupConnectionsByID(ctx, 1, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
@@ -1127,6 +1516,20 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 	if !reflect.DeepEqual(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
 	}
+
+	const methodName = "CreateOrUpdateIDPGroupConnectionsBySlug"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.CreateOrUpdateIDPGroupConnectionsBySlug(ctx, "o", "slug", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) {
 	client, mux, _, teardown := setup()
