@@ -15,6 +15,26 @@ import (
 	"testing"
 )
 
+func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
+	te := &TreeEntry{
+		Path: String("path"),
+		Mode: String("mode"),
+		Type: String("type"),
+		Size: Int(1),
+		URL:  String("url"),
+	}
+
+	got, err := te.MarshalJSON()
+	if err != nil {
+		t.Errorf("MarshalJSON: %v", err)
+	}
+
+	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
+	if string(got) != want {
+		t.Errorf("MarshalJSON = %s, want %v", got, want)
+	}
+}
+
 func TestGitService_GetTree(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
