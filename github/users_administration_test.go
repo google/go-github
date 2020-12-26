@@ -114,16 +114,6 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	if err != nil {
 		t.Errorf("Users.Suspend returned error: %v", err)
 	}
-
-	const methodName = "Suspend"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Users.Suspend(ctx, "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Users.Suspend(ctx, "u", input)
-	})
 }
 
 func TestUsersService_Unsuspend(t *testing.T) {
