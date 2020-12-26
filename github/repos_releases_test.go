@@ -399,7 +399,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 
 	const methodName = "DownloadReleaseAsset"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", 1, nil)
+		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", -1, nil)
 		return err
 	})
 }
@@ -423,12 +423,6 @@ func TestRepositoriesService_DownloadReleaseAsset_Redirect(t *testing.T) {
 	if !strings.HasSuffix(got, want) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", got, want)
 	}
-
-	const methodName = "DownloadReleaseAsset"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", 1, nil)
-		return err
-	})
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
@@ -460,12 +454,6 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 	if !bytes.Equal(want, content) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned %+v, want %+v", content, want)
 	}
-
-	const methodName = "DownloadReleaseAsset"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", 1, http.DefaultClient)
-		return err
-	})
 }
 
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
@@ -493,12 +481,6 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	if loc != "" {
 		t.Errorf(`Repositories.DownloadReleaseAsset returned "%s", want empty ""`, loc)
 	}
-
-	const methodName = "DownloadReleaseAsset"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadReleaseAsset(ctx, "\n", "\n", 1, nil)
-		return err
-	})
 }
 
 func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
