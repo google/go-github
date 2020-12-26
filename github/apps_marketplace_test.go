@@ -38,6 +38,15 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 	if !reflect.DeepEqual(plans, want) {
 		t.Errorf("Marketplace.ListPlans returned %+v, want %+v", plans, want)
 	}
+
+	const methodName = "ListPlans"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Marketplace.ListPlans(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
@@ -84,6 +93,15 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned %+v, want %+v", accounts, want)
 	}
+
+	const methodName = "ListPlanAccountsForPlan"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Marketplace.ListPlanAccountsForPlan(ctx, 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
@@ -130,6 +148,15 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 	if !reflect.DeepEqual(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", accounts, want)
 	}
+
+	const methodName = "ListPlanAccountsForAccount"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
@@ -176,6 +203,15 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 	if !reflect.DeepEqual(purchases, want) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
+
+	const methodName = "ListMarketplacePurchasesForUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Marketplace.ListMarketplacePurchasesForUser(ctx, opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T) {
