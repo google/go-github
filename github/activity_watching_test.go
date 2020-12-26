@@ -113,20 +113,6 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	if !reflect.DeepEqual(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
-
-	const methodName = "ListWatched"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.ListWatched(ctx, "\n", &ListOptions{Page: 2})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.ListWatched(ctx, "u", &ListOptions{Page: 2})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
@@ -183,20 +169,6 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 	if !reflect.DeepEqual(sub, want) {
 		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
-
-	const methodName = "GetRepositorySubscription"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.GetRepositorySubscription(ctx, "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.GetRepositorySubscription(ctx, "o", "r")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
@@ -213,20 +185,6 @@ func TestActivityService_GetRepositorySubscription_error(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected HTTP 400 response")
 	}
-
-	const methodName = "GetRepositorySubscription"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.GetRepositorySubscription(ctx, "\n", "\n")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Activity.GetRepositorySubscription(ctx, "o", "r")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestActivityService_SetRepositorySubscription(t *testing.T) {
