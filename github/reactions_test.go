@@ -170,7 +170,7 @@ func TestReactionsService_ListIssueReactions_coverage(t *testing.T) {
 
 	const methodName = "ListIssueReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", -1, nil)
+		_, _, err = client.Reactions.ListIssueReactions(ctx, "\n", "\n", -1, &ListOptions{})
 		return err
 	})
 
@@ -251,7 +251,7 @@ func TestReactionsService_ListIssueCommentReactions_coverage(t *testing.T) {
 
 	const methodName = "ListIssueCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", -1, nil)
+		_, _, err = client.Reactions.ListIssueCommentReactions(ctx, "\n", "\n", -1, &ListOptions{})
 		return err
 	})
 
@@ -332,7 +332,7 @@ func TestReactionsService_ListPullRequestCommentReactions_coverage(t *testing.T)
 
 	const methodName = "ListPullRequestCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", -1, nil)
+		_, _, err = client.Reactions.ListPullRequestCommentReactions(ctx, "\n", "\n", -1, &ListOptions{})
 		return err
 	})
 
@@ -413,7 +413,7 @@ func TestReactionsService_ListTeamDiscussionReactions_coverage(t *testing.T) {
 
 	const methodName = "ListTeamDiscussionReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListTeamDiscussionReactions(ctx, -1, -2, nil)
+		_, _, err = client.Reactions.ListTeamDiscussionReactions(ctx, -1, -2, &ListOptions{})
 		return err
 	})
 
@@ -494,7 +494,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions_coverage(t *testing.
 
 	const methodName = "ListTeamDiscussionCommentReactions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Reactions.ListTeamDiscussionCommentReactions(ctx, -1, -2, -3, nil)
+		_, _, err = client.Reactions.ListTeamDiscussionCommentReactions(ctx, -1, -2, -3, &ListOptions{})
 		return err
 	})
 
