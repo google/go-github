@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
@@ -48,32 +47,19 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 		t.Errorf("Admin.UpdateUserLDAPMapping returned %+v, want %+v", mapping, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Admin.UpdateUserLDAPMapping(ctx, "u", input)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' UpdateUserLDAPMapping = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' UpdateUserLDAPMapping resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' UpdateUserLDAPMapping err = nil, want error")
-	}
+	const methodName = "UpdateUserLDAPMapping"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Admin.UpdateUserLDAPMapping(ctx, "\n", input)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Admin.UpdateUserLDAPMapping(ctx, "u", input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now UpdateUserLDAPMapping = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now UpdateUserLDAPMapping resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now UpdateUserLDAPMapping err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Admin.UpdateUserLDAPMapping(ctx, "u", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
@@ -109,32 +95,19 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 		t.Errorf("Admin.UpdateTeamLDAPMapping returned %+v, want %+v", mapping, want)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	got, resp, err := client.Admin.UpdateTeamLDAPMapping(ctx, 1, input)
-	if got != nil {
-		t.Errorf("client.BaseURL.Path='' UpdateTeamLDAPMapping = %#v, want nil", got)
-	}
-	if resp != nil {
-		t.Errorf("client.BaseURL.Path='' UpdateTeamLDAPMapping resp = %#v, want nil", resp)
-	}
-	if err == nil {
-		t.Error("client.BaseURL.Path='' UpdateTeamLDAPMapping err = nil, want error")
-	}
+	const methodName = "UpdateTeamLDAPMapping"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Admin.UpdateTeamLDAPMapping(ctx, -1, input)
+		return err
+	})
 
-	// Test s.client.Do failure
-	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
-	got, resp, err = client.Admin.UpdateTeamLDAPMapping(ctx, 1, input)
-	if got != nil {
-		t.Errorf("rate.Reset.Time > now UpdateTeamLDAPMapping = %#v, want nil", got)
-	}
-	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
-		t.Errorf("rate.Reset.Time > now UpdateTeamLDAPMapping resp = %#v, want StatusCode=%v", resp.Response, want)
-	}
-	if err == nil {
-		t.Error("rate.Reset.Time > now UpdateTeamLDAPMapping err = nil, want error")
-	}
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Admin.UpdateTeamLDAPMapping(ctx, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestAdminService_TeamLDAPMapping_String(t *testing.T) {
