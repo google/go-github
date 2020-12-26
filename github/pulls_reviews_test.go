@@ -323,6 +323,10 @@ func TestPullRequestReviewRequest_isComfortFadePreview(t *testing.T) {
 		review:   &PullRequestReviewRequest{},
 		wantBool: false,
 	}, {
+		name:     "nil comment",
+		review:   &PullRequestReviewRequest{Comments: []*DraftReviewComment{nil}},
+		wantBool: false,
+	}, {
 		name: "old-style review",
 		review: &PullRequestReviewRequest{
 			Comments: []*DraftReviewComment{{
@@ -485,6 +489,82 @@ func TestPullRequestsService_CreateReview_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.PullRequests.CreateReview(ctx, "%", "r", 1, &PullRequestReviewRequest{})
 	testURLParseError(t, err)
+}
+
+func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+
+	path := "path/to/file.go"
+	body := "this is a comment body"
+	right := "RIGHT"
+	pos1 := 1
+	line1 := 11
+	badReview := &PullRequestReviewRequest{
+		Comments: []*DraftReviewComment{{
+			Path: &path,
+			Body: &body,
+			Side: &right,
+			Line: &line1,
+		}, {
+			Path:     &path,
+			Body:     &body,
+			Position: &pos1,
+		}}}
+
+	_, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, badReview)
+	if err == nil {
+		t.Errorf("CreateReview badReview err = nil, want err")
+	}
+}
+
+func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	path := "path/to/file.go"
+	body := "this is a comment body"
+	left, right := "LEFT", "RIGHT"
+	line1, line2, line3 := 11, 22, 33
+	input := &PullRequestReviewRequest{
+		Comments: []*DraftReviewComment{{
+			Path: &path,
+			Body: &body,
+			Side: &right,
+			Line: &line1,
+		}, {
+			Path: &path,
+			Body: &body,
+			Side: &left,
+			Line: &line2,
+		}, {
+			Path: &path,
+			Body: &body,
+			Side: &right,
+			Line: &line3,
+		}},
+	}
+
+	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PullRequestReviewRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !reflect.DeepEqual(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+
+	_, _, err := client.PullRequests.CreateReview(ctx, "o", "r", 1, input)
+	if err != nil {
+		t.Errorf("CreateReview addHeader err = %v, want nil", err)
+	}
 }
 
 func TestPullRequestsService_UpdateReview(t *testing.T) {
