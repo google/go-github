@@ -292,6 +292,56 @@ func TestOrganizationsService_RemoveMember_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestOrganizationsService_PublicizeMembership(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.PublicizeMembership(ctx, "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.PublicizeMembership returned error: %v", err)
+	}
+
+	const methodName = "PublicizeMembership"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.PublicizeMembership(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.PublicizeMembership(ctx, "o", "u")
+	})
+}
+
+func TestOrganizationsService_ConcealMembership(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/public_members/u", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Organizations.ConcealMembership(ctx, "o", "u")
+	if err != nil {
+		t.Errorf("Organizations.ConcealMembership returned error: %v", err)
+	}
+
+	const methodName = "ConcealMembership"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.ConcealMembership(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Organizations.ConcealMembership(ctx, "o", "u")
+	})
+}
+
 func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
