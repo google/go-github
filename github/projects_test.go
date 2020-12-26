@@ -804,20 +804,6 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 	if !reflect.DeepEqual(users, want) {
 		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
 	}
-
-	const methodName = "ListProjectCollaborators"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectCollaborators(ctx, -1, opt)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectCollaborators(ctx, 1, opt)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
 }
 
 func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
