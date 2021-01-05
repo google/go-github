@@ -514,13 +514,14 @@ func parseRate(r *http.Response) Rate {
 
 // Do sends an API request and returns the API response. The API response is
 // JSON decoded and stored in the value pointed to by v, or returned as an
-// error if an API error has occurred. If v implements the io.Writer
-// interface, the raw response body will be written to v, without attempting to
-// first decode it. If rate limit is exceeded and reset time is in the future,
-// Do returns *RateLimitError immediately without making a network API call.
+// error if an API error has occurred. If v implements the io.Writer interface,
+// the raw response body will be written to v, without attempting to first
+// decode it. If v is nil, and no error hapens, the response is returned as is.
+// If rate limit is exceeded and reset time is in the future, Do returns
+// *RateLimitError immediately without making a network API call.
 //
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is canceled or times out,
-// ctx.Err() will be returned.
+// The provided ctx must be non-nil, if it is nil an error is returned. If it
+// is canceled or times out, ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
 	if ctx == nil {
 		return nil, errors.New("context must be non-nil")
@@ -558,8 +559,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		return nil, err
 	}
 
-	defer resp.Body.Close()
-
 	response := newResponse(resp)
 
 	c.rateMu.Lock()
@@ -568,6 +567,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 
 	err = CheckResponse(resp)
 	if err != nil {
+		defer resp.Body.Close()
 		// Special case for AcceptedErrors. If an AcceptedError
 		// has been encountered, the response's payload will be
 		// added to the AcceptedError and returned.
@@ -587,21 +587,24 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		return response, err
 	}
 
-	if v != nil {
-		if w, ok := v.(io.Writer); ok {
-			io.Copy(w, resp.Body)
-		} else {
-			decErr := json.NewDecoder(resp.Body).Decode(v)
-			if decErr == io.EOF {
-				decErr = nil // ignore EOF errors caused by empty response body
-			}
-			if decErr != nil {
-				err = decErr
-			}
+	switch v := v.(type) {
+	case nil:
+		return response, err
+	case io.Writer:
+		defer resp.Body.Close()
+		_, _ = io.Copy(v, resp.Body)
+		return response, err
+	default:
+		defer resp.Body.Close()
+		decErr := json.NewDecoder(resp.Body).Decode(v)
+		if decErr == io.EOF {
+			decErr = nil // ignore EOF errors caused by empty response body
 		}
+		if decErr != nil {
+			err = decErr
+		}
+		return response, err
 	}
-
-	return response, err
 }
 
 // checkRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
