@@ -512,17 +512,13 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
-// Do sends an API request and returns the API response. The API response is
-// JSON decoded and stored in the value pointed to by v, or returned as an
-// error if an API error has occurred. If v implements the io.Writer interface,
-// the raw response body will be written to v, without attempting to first
-// decode it. If v is nil, and no error hapens, the response is returned as is.
-// If rate limit is exceeded and reset time is in the future, Do returns
-// *RateLimitError immediately without making a network API call.
+// BareDo sends an API request and lets you handle the api response. If an
+// error or API Error occurs, the error will contain more information.
+// Otherwise you are supposed to read and close the response's Body.
 //
 // The provided ctx must be non-nil, if it is nil an error is returned. If it
 // is canceled or times out, ctx.Err() will be returned.
-func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
 	if ctx == nil {
 		return nil, errors.New("context must be non-nil")
 	}
@@ -581,21 +577,34 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 			}
 
 			aerr.Raw = b
-			return response, aerr
+			err = aerr
 		}
-
-		return response, err
 	}
+	return response, err
+}
+
+// Do sends an API request and returns the API response. The API response is
+// JSON decoded and stored in the value pointed to by v, or returned as an
+// error if an API error has occurred. If v implements the io.Writer interface,
+// the raw response body will be written to v, without attempting to first
+// decode it. If v is nil, and no error hapens, the response is returned as is.
+// If rate limit is exceeded and reset time is in the future, Do returns
+// *RateLimitError immediately without making a network API call.
+//
+// The provided ctx must be non-nil, if it is nil an error is returned. If it
+// is canceled or times out, ctx.Err() will be returned.
+func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
+	resp, err := c.BareDo(ctx, req)
+	if err != nil {
+		return resp, err
+	}
+	defer resp.Body.Close()
 
 	switch v := v.(type) {
 	case nil:
-		return response, err
 	case io.Writer:
-		defer resp.Body.Close()
 		_, _ = io.Copy(v, resp.Body)
-		return response, err
 	default:
-		defer resp.Body.Close()
 		decErr := json.NewDecoder(resp.Body).Decode(v)
 		if decErr == io.EOF {
 			decErr = nil // ignore EOF errors caused by empty response body
@@ -603,8 +612,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		if decErr != nil {
 			err = decErr
 		}
-		return response, err
 	}
+	return resp, err
 }
 
 // checkRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
