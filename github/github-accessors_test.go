@@ -2421,7 +2421,7 @@ func TestContributor_GetContributions(tt *testing.T) {
 
 func TestContributor_GetEmail(tt *testing.T) {
 	var zeroValue string
-	c := &Contributor{NodeID: &zeroValue}
+	c := &Contributor{Email: &zeroValue}
 	c.GetEmail()
 	c = &Contributor{}
 	c.GetEmail()
@@ -2511,7 +2511,7 @@ func TestContributor_GetLogin(tt *testing.T) {
 
 func TestContributor_GetName(tt *testing.T) {
 	var zeroValue string
-	c := &Contributor{NodeID: &zeroValue}
+	c := &Contributor{Name: &zeroValue}
 	c.GetName()
 	c = &Contributor{}
 	c.GetName()
