@@ -2419,6 +2419,16 @@ func TestContributor_GetContributions(tt *testing.T) {
 	c.GetContributions()
 }
 
+func TestContributor_GetEmail(tt *testing.T) {
+	var zeroValue string
+	c := &Contributor{NodeID: &zeroValue}
+	c.GetEmail()
+	c = &Contributor{}
+	c.GetEmail()
+	c = nil
+	c.GetEmail()
+}
+
 func TestContributor_GetEventsURL(tt *testing.T) {
 	var zeroValue string
 	c := &Contributor{EventsURL: &zeroValue}
@@ -2497,6 +2507,16 @@ func TestContributor_GetLogin(tt *testing.T) {
 	c.GetLogin()
 	c = nil
 	c.GetLogin()
+}
+
+func TestContributor_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &Contributor{NodeID: &zeroValue}
+	c.GetName()
+	c = &Contributor{}
+	c.GetName()
+	c = nil
+	c.GetName()
 }
 
 func TestContributor_GetNodeID(tt *testing.T) {
