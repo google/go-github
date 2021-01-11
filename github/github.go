@@ -605,7 +605,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 	switch v := v.(type) {
 	case nil:
 	case io.Writer:
-		_, _ = io.Copy(v, resp.Body)
+		_, err = io.Copy(v, resp.Body)
 	default:
 		decErr := json.NewDecoder(resp.Body).Decode(v)
 		if decErr == io.EOF {
