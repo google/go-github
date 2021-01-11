@@ -1586,7 +1586,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 
 	got, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		t.Fatalf("cioutil.ReadAll returned error: %v", err)
+		t.Fatalf("ioutil.ReadAll returned error: %v", err)
 	}
 	if string(got) != expectedBody {
 		t.Fatalf("Expected %q, got %q", expectedBody, string(got))
