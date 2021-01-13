@@ -1560,3 +1560,38 @@ func TestAddOptions_QueryValues(t *testing.T) {
 		t.Error("addOptions err = nil, want error")
 	}
 }
+
+func TestBareDo_returnsOpenBody(t *testing.T) {
+
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	expectedBody := "Hello from the other side !"
+
+	mux.HandleFunc("/test-url", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, expectedBody)
+	})
+
+	ctx := context.Background()
+	req, err := client.NewRequest("GET", "test-url", nil)
+	if err != nil {
+		t.Fatalf("client.NewRequest returned error: %v", err)
+	}
+
+	resp, err := client.BareDo(ctx, req)
+	if err != nil {
+		t.Fatalf("client.BareDo returned error: %v", err)
+	}
+
+	got, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("ioutil.ReadAll returned error: %v", err)
+	}
+	if string(got) != expectedBody {
+		t.Fatalf("Expected %q, got %q", expectedBody, string(got))
+	}
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("resp.Body.Close() returned error: %v", err)
+	}
+}
