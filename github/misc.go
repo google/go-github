@@ -176,7 +176,7 @@ type APIMeta struct {
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/meta/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/meta#get-github-meta-information
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := c.NewRequest("GET", "meta", nil)
 	if err != nil {
