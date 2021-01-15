@@ -162,13 +162,21 @@ type APIMeta struct {
 	// An Array of IP addresses specifying the addresses that source imports
 	// will originate from on GitHub.com.
 	Importer []string `json:"importer,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the IP addresses
+	// GitHub Actions will originate from.
+	Actions []string `json:"actions,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the IP addresses
+	// Dependabot will originate from.
+	Dependabot []string `json:"dependabot,omitempty"`
 }
 
 // APIMeta returns information about GitHub.com, the service. Or, if you access
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/meta/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/meta#get-github-meta-information
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := c.NewRequest("GET", "meta", nil)
 	if err != nil {
