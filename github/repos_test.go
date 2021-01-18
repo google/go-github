@@ -1378,6 +1378,33 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeV3)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.RemoveRequiredStatusChecks returned error: %v", err)
+	}
+
+	const methodName = "RemoveRequiredStatusChecks"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.RemoveRequiredStatusChecks(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.RemoveRequiredStatusChecks(ctx, "o", "r", "b")
+	})
+}
+
 func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

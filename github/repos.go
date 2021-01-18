@@ -1137,6 +1137,19 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 	return sc, resp, nil
 }
 
+// RemoveRequiredStatusChecks removes the required status checks for a given protected branch.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#remove-status-check-protection
+func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // License gets the contents of a repository's license if one is detected.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-the-license-for-a-repository
