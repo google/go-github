@@ -5580,6 +5580,14 @@ func (k *Key) GetURL() string {
 	return *k.URL
 }
 
+// GetVerified returns the Verified field if it's non-nil, zero value otherwise.
+func (k *Key) GetVerified() bool {
+	if k == nil || k.Verified == nil {
+		return false
+	}
+	return *k.Verified
+}
+
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
 func (l *Label) GetColor() string {
 	if l == nil || l.Color == nil {
