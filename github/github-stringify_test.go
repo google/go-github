@@ -671,9 +671,10 @@ func TestKey_String(t *testing.T) {
 		URL:       String(""),
 		Title:     String(""),
 		ReadOnly:  Bool(false),
+		Verified:  Bool(false),
 		CreatedAt: &Timestamp{},
 	}
-	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Key.String = %v, want %v", got, want)
 	}
