@@ -6520,6 +6520,16 @@ func TestKey_GetURL(tt *testing.T) {
 	k.GetURL()
 }
 
+func TestKey_GetVerified(tt *testing.T) {
+	var zeroValue bool
+	k := &Key{Verified: &zeroValue}
+	k.GetVerified()
+	k = &Key{}
+	k.GetVerified()
+	k = nil
+	k.GetVerified()
+}
+
 func TestLabel_GetColor(tt *testing.T) {
 	var zeroValue string
 	l := &Label{Color: &zeroValue}
