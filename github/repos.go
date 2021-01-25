@@ -920,9 +920,6 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	var branches []*Branch
 	resp, err := s.client.Do(ctx, req, &branches)
 	if err != nil {
@@ -941,9 +938,6 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	b := new(Branch)
 	resp, err := s.client.Do(ctx, req, b)
@@ -986,9 +980,6 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	p := new(RequiredStatusChecks)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
@@ -1007,9 +998,6 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	resp, err = s.client.Do(ctx, req, &contexts)
 	if err != nil {
@@ -1050,9 +1038,6 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -1252,9 +1237,6 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -1267,9 +1249,6 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -1291,9 +1270,6 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	r := new(AdminEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -1312,9 +1288,6 @@ func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
