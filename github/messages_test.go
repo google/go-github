@@ -29,12 +29,13 @@ func TestValidatePayload(t *testing.T) {
 	const defaultSignature = "sha1=126f2c800419c60137ce748d7672e77b65cf16d6"
 	secretKey := []byte("0123456789abcdef")
 	tests := []struct {
-		signature   string
-		eventID     string
-		event       string
-		wantEventID string
-		wantEvent   string
-		wantPayload string
+		signature       string
+		signatureHeader string
+		eventID         string
+		event           string
+		wantEventID     string
+		wantEvent       string
+		wantPayload     string
 	}{
 		// The following tests generate expected errors:
 		{},                         // Missing signature
@@ -77,7 +78,11 @@ func TestValidatePayload(t *testing.T) {
 			t.Fatalf("NewRequest: %v", err)
 		}
 		if test.signature != "" {
-			req.Header.Set(sha1SignatureHeader, test.signature)
+			if test.signatureHeader != "" {
+				req.Header.Set(test.signatureHeader, test.signature)
+			} else {
+				req.Header.Set(sha1SignatureHeader, test.signature)
+			}
 		}
 		req.Header.Set("Content-Type", "application/json")
 
