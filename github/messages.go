@@ -32,6 +32,8 @@ const (
 	sha512Prefix = "sha512"
 	// sha1SignatureHeader is the GitHub header key used to pass the HMAC-SHA1 hexdigest.
 	sha1SignatureHeader = "X-Hub-Signature"
+	// sha256SignatureHeader is the GitHub header key used to pass the HMAC-SHA256 hexdigest.
+	sha256SignatureHeader = "X-Hub-Signature-256"
 	// eventTypeHeader is the GitHub header key used to pass the event type.
 	eventTypeHeader = "X-Github-Event"
 	// deliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
@@ -135,6 +137,19 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 	return buf, hashFunc, nil
 }
 
+// payloadSignature tries to return the HMAC signature of the payload
+// It will first try to find the HMAC-SHA256 signature in the "X-Hub-Signature-256" header and falls back to
+// the HMAC-SHA1 signature in the "X-Hub-Signature" header.
+// Returns an empty string when both headers are not set / empty.
+func payloadSignature(r *http.Request) string {
+	var sig string
+	sig = r.Header.Get(sha256SignatureHeader)
+	if sig == "" {
+		sig = r.Header.Get(sha1SignatureHeader)
+	}
+	return sig
+}
+
 // ValidatePayload validates an incoming GitHub Webhook event request
 // and returns the (JSON) payload.
 // The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
@@ -190,7 +205,7 @@ func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err e
 	// Only validate the signature if a secret token exists. This is intended for
 	// local development only and all webhooks should ideally set up a secret token.
 	if len(secretToken) > 0 {
-		sig := r.Header.Get(sha1SignatureHeader)
+		sig := payloadSignature(r)
 		if err := ValidateSignature(sig, body, secretToken); err != nil {
 			return nil, err
 		}
