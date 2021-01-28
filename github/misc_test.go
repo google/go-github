@@ -185,17 +185,12 @@ func TestAPIMeta_marshal(t *testing.T) {
 		VerifiablePasswordAuthentication: Bool(true),
 		Pages:                            []string{"p"},
 		Importer:                         []string{"i"},
-		Actions:                          []string{"a"},
-		Dependabot:                       []string{"d"},
 	}
 	want := `{
 		"hooks":["h"],
 		"git":["g"],
 		"verifiable_password_authentication":true,
-		"pages":["p"],
-		"importer":["i"],
-		"actions":["a"],
-		"dependabot":["d"]
+		"pages":["p"],"importer":["i"]
 	}`
 
 	testJSONMarshal(t, a, want)
@@ -207,7 +202,7 @@ func TestAPIMeta(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true}`)
+		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "verifiable_password_authentication": true}`)
 	})
 
 	ctx := context.Background()
@@ -217,12 +212,10 @@ func TestAPIMeta(t *testing.T) {
 	}
 
 	want := &APIMeta{
-		Hooks:      []string{"h"},
-		Git:        []string{"g"},
-		Pages:      []string{"p"},
-		Importer:   []string{"i"},
-		Actions:    []string{"a"},
-		Dependabot: []string{"d"},
+		Hooks:    []string{"h"},
+		Git:      []string{"g"},
+		Pages:    []string{"p"},
+		Importer: []string{"i"},
 
 		VerifiablePasswordAuthentication: Bool(true),
 	}
