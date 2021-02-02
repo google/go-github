@@ -93,3 +93,28 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestActionsService_RemoveEnterpriseRunner(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/enterprises/o/actions/runners/21", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.RemoveEnterpriseRunner(ctx, "o", 21)
+	if err != nil {
+		t.Errorf("Actions.RemoveEnterpriseRunner returned error: %v", err)
+	}
+
+	const methodName = "RemoveEnterpriseRunner"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveEnterpriseRunner(ctx, "\n", 21)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveEnterpriseRunner(ctx, "o", 21)
+	})
+}
