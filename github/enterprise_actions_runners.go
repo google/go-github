@@ -56,7 +56,7 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 
 // RemoveEnterpriseRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/enterprise-admin#delete-a-self-hosted-runner-from-an-enterprise
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/#delete-a-self-hosted-runner-from-an-enterprise
 func (s *ActionsService) RemoveEnterpriseRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
 
