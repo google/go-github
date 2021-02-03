@@ -94,7 +94,7 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 	})
 }
 
-func TestActionsService_RemoveEnterpriseRunner(t *testing.T) {
+func TestEnterpriseService_RemoveRunner(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -103,18 +103,18 @@ func TestActionsService_RemoveEnterpriseRunner(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.RemoveEnterpriseRunner(ctx, "o", 21)
+	_, err := client.Enterprise.RemoveRunner(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Actions.RemoveEnterpriseRunner returned error: %v", err)
+		t.Errorf("Actions.RemoveRunner returned error: %v", err)
 	}
 
-	const methodName = "RemoveEnterpriseRunner"
+	const methodName = "RemoveRunner"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveEnterpriseRunner(ctx, "\n", 21)
+		_, err = client.Enterprise.RemoveRunner(ctx, "\n", 21)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveEnterpriseRunner(ctx, "o", 21)
+		return client.Enterprise.RemoveRunner(ctx, "o", 21)
 	})
 }

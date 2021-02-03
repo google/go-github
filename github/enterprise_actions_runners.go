@@ -54,10 +54,10 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 	return runners, resp, nil
 }
 
-// RemoveEnterpriseRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
+// RemoveRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/#delete-a-self-hosted-runner-from-an-enterprise
-func (s *ActionsService) RemoveEnterpriseRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
+func (s *EnterpriseService) RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
