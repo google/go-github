@@ -10,6 +10,7 @@ import (
 	"fmt"
 )
 
+// ListRepositories represents the response from the list repos endpoints.
 type ListRepositories struct {
 	TotalCount   *int          `json:"total_count,omitempty"`
 	Repositories []*Repository `json:"repositories"`
