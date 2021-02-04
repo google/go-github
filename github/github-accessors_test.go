@@ -4616,6 +4616,46 @@ func TestHook_GetID(tt *testing.T) {
 	h.GetID()
 }
 
+func TestHook_GetName(tt *testing.T) {
+	var zeroValue string
+	h := &Hook{Name: &zeroValue}
+	h.GetName()
+	h = &Hook{}
+	h.GetName()
+	h = nil
+	h.GetName()
+}
+
+func TestHook_GetPingURL(tt *testing.T) {
+	var zeroValue string
+	h := &Hook{PingURL: &zeroValue}
+	h.GetPingURL()
+	h = &Hook{}
+	h.GetPingURL()
+	h = nil
+	h.GetPingURL()
+}
+
+func TestHook_GetTestURL(tt *testing.T) {
+	var zeroValue string
+	h := &Hook{TestURL: &zeroValue}
+	h.GetTestURL()
+	h = &Hook{}
+	h.GetTestURL()
+	h = nil
+	h.GetTestURL()
+}
+
+func TestHook_GetType(tt *testing.T) {
+	var zeroValue string
+	h := &Hook{Type: &zeroValue}
+	h.GetType()
+	h = &Hook{}
+	h.GetType()
+	h = nil
+	h.GetType()
+}
+
 func TestHook_GetUpdatedAt(tt *testing.T) {
 	var zeroValue time.Time
 	h := &Hook{UpdatedAt: &zeroValue}
