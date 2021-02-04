@@ -3956,6 +3956,38 @@ func (h *Hook) GetID() int64 {
 	return *h.ID
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (h *Hook) GetName() string {
+	if h == nil || h.Name == nil {
+		return ""
+	}
+	return *h.Name
+}
+
+// GetPingURL returns the PingURL field if it's non-nil, zero value otherwise.
+func (h *Hook) GetPingURL() string {
+	if h == nil || h.PingURL == nil {
+		return ""
+	}
+	return *h.PingURL
+}
+
+// GetTestURL returns the TestURL field if it's non-nil, zero value otherwise.
+func (h *Hook) GetTestURL() string {
+	if h == nil || h.TestURL == nil {
+		return ""
+	}
+	return *h.TestURL
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (h *Hook) GetType() string {
+	if h == nil || h.Type == nil {
+		return ""
+	}
+	return *h.Type
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (h *Hook) GetUpdatedAt() time.Time {
 	if h == nil || h.UpdatedAt == nil {

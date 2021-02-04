@@ -72,10 +72,15 @@ func (w WebHookAuthor) String() string {
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-	ID        *int64     `json:"id,omitempty"`
+	CreatedAt    *time.Time             `json:"created_at,omitempty"`
+	UpdatedAt    *time.Time             `json:"updated_at,omitempty"`
+	URL          *string                `json:"url,omitempty"`
+	ID           *int64                 `json:"id,omitempty"`
+	Type         *string                `json:"type,omitempty"`
+	Name         *string                `json:"name,omitempty"`
+	TestURL      *string                `json:"test_url,omitempty"`
+	PingURL      *string                `json:"ping_url,omitempty"`
+	LastResponse map[string]interface{} `json:"last_response,omitempty"`
 
 	// Only the following fields are used when creating a hook.
 	// Config is required.
