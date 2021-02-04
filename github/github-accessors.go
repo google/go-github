@@ -5988,6 +5988,14 @@ func (l *ListCollaboratorOptions) GetAffiliation() string {
 	return *l.Affiliation
 }
 
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (l *ListRepositories) GetTotalCount() int {
+	if l == nil || l.TotalCount == nil {
+		return 0
+	}
+	return *l.TotalCount
+}
+
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {

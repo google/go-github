@@ -7012,6 +7012,16 @@ func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
 	l.GetAffiliation()
 }
 
+func TestListRepositories_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListRepositories{TotalCount: &zeroValue}
+	l.GetTotalCount()
+	l = &ListRepositories{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
+}
+
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
 	var zeroValue Timestamp
 	m := &MarketplacePendingChange{EffectiveDate: &zeroValue}

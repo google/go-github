@@ -23,7 +23,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `{"repositories": [{"id":1}]}`)
+		fmt.Fprint(w, `{"total_count": 1,"repositories": [{"id": 1}]}`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -33,7 +33,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 		t.Errorf("Apps.ListRepos returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int64(1)}}
+	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
@@ -58,7 +58,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `{"repositories": [{"id":1}]}`)
+		fmt.Fprint(w, `{"total_count":1,"repositories": [{"id":1}]}`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -68,7 +68,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 		t.Errorf("Apps.ListUserRepos returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Int64(1)}}
+	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
 	if !reflect.DeepEqual(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
 	}
