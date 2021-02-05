@@ -248,7 +248,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *R
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeTopicsPreview}
+	acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*Repository

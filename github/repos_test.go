@@ -131,7 +131,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview}
+	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
