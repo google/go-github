@@ -72,7 +72,7 @@ func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) 
 	return packagesOrgBilling, resp, err
 }
 
-// GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions
+// GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-shared-storage-billing-for-an-organization
 func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (*StorageBilling, *Response, error) {
@@ -114,7 +114,7 @@ func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string
 	return packagesUserBilling, resp, err
 }
 
-// GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions
+// GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-shared-storage-billing-for-a-user
 func (s *BillingService) GetStorageBillingUser(ctx context.Context, user string) (*StorageBilling, *Response, error) {
