@@ -1,5 +1,6 @@
 # go-github #
 
+[![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
 [![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v33/github)
 [![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
@@ -17,6 +18,30 @@ don't always test older versions.
 
 If you're interested in using the [GraphQL API v4][], the recommended library is
 [shurcooL/githubv4][].
+
+## Installation ##
+
+go-github is compatible with modern Go releases in module mode, with Go installed:
+
+```bash
+go get -u github.com/google/go-github/v33
+```
+
+will resolve and add the package to the current development module, along with its dependencies.
+
+Alternatively the same can be achieved if you use import in a package:
+
+```go
+import "github.com/google/go-github/v33/github"
+```
+
+and run `go get` without paramters.
+
+Finally, to use the top-of-trunk version of this repo, use the following command:
+
+```bash
+go get -u github.com/google/go-github/v33@master
+```
 
 ## Usage ##
 
