@@ -7129,6 +7129,16 @@ func TestMarketplacePlan_GetName(tt *testing.T) {
 	m.GetName()
 }
 
+func TestMarketplacePlan_GetNumber(tt *testing.T) {
+	var zeroValue int
+	m := &MarketplacePlan{Number: &zeroValue}
+	m.GetNumber()
+	m = &MarketplacePlan{}
+	m.GetNumber()
+	m = nil
+	m.GetNumber()
+}
+
 func TestMarketplacePlan_GetPriceModel(tt *testing.T) {
 	var zeroValue string
 	m := &MarketplacePlan{PriceModel: &zeroValue}
@@ -7325,6 +7335,16 @@ func TestMarketplacePurchase_GetUnitCount(tt *testing.T) {
 	m.GetUnitCount()
 	m = nil
 	m.GetUnitCount()
+}
+
+func TestMarketplacePurchase_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	m := &MarketplacePurchase{UpdatedAt: &zeroValue}
+	m.GetUpdatedAt()
+	m = &MarketplacePurchase{}
+	m.GetUpdatedAt()
+	m = nil
+	m.GetUpdatedAt()
 }
 
 func TestMarketplacePurchaseEvent_GetAction(tt *testing.T) {

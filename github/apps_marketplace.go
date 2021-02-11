@@ -30,6 +30,7 @@ type MarketplacePlan struct {
 	URL                 *string `json:"url,omitempty"`
 	AccountsURL         *string `json:"accounts_url,omitempty"`
 	ID                  *int64  `json:"id,omitempty"`
+	Number              *int    `json:"number,omitempty"`
 	Name                *string `json:"name,omitempty"`
 	Description         *string `json:"description,omitempty"`
 	MonthlyPriceInCents *int    `json:"monthly_price_in_cents,omitempty"`
@@ -53,6 +54,7 @@ type MarketplacePurchase struct {
 	Account         *MarketplacePlanAccount `json:"account,omitempty"`
 	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
 	FreeTrialEndsOn *Timestamp              `json:"free_trial_ends_on,omitempty"`
+	UpdatedAt       *Timestamp              `json:"updated_at,omitempty"`
 }
 
 // MarketplacePendingChange represents a pending change to a GitHub Apps Marketplace Plan.
