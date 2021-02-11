@@ -6084,6 +6084,14 @@ func (m *MarketplacePlan) GetName() string {
 	return *m.Name
 }
 
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (m *MarketplacePlan) GetNumber() int {
+	if m == nil || m.Number == nil {
+		return 0
+	}
+	return *m.Number
+}
+
 // GetPriceModel returns the PriceModel field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlan) GetPriceModel() string {
 	if m == nil || m.PriceModel == nil {
@@ -6250,6 +6258,14 @@ func (m *MarketplacePurchase) GetUnitCount() int {
 		return 0
 	}
 	return *m.UnitCount
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchase) GetUpdatedAt() Timestamp {
+	if m == nil || m.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *m.UpdatedAt
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
