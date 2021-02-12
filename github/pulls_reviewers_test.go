@@ -13,7 +13,29 @@ import (
 	"testing"
 )
 
-func TestReviewers_marshall(t *testing.T) {
+func TestReviewersRequest_marshal(t *testing.T) {
+	testJSONMarshal(t, &ReviewersRequest{}, "{}")
+
+	u := &ReviewersRequest{
+		NodeID:        String("n"),
+		Reviewers:     []string{"r"},
+		TeamReviewers: []string{"t"},
+	}
+
+	want := `{
+		"node_id": "n",
+		"reviewers": [
+			"r"
+		],
+		"team_reviewers" : [
+			"t"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestReviewers_marshal(t *testing.T) {
 	testJSONMarshal(t, &Reviewers{}, "{}")
 
 	u := &Reviewers{
