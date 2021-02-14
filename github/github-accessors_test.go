@@ -14861,6 +14861,86 @@ func TestRunnerApplicationDownload_GetOS(tt *testing.T) {
 	r.GetOS()
 }
 
+func TestRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{AllowsPublicRepositories: &zeroValue}
+	r.GetAllowsPublicRepositories()
+	r = &RunnerGroup{}
+	r.GetAllowsPublicRepositories()
+	r = nil
+	r.GetAllowsPublicRepositories()
+}
+
+func TestRunnerGroup_GetDefault(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{Default: &zeroValue}
+	r.GetDefault()
+	r = &RunnerGroup{}
+	r.GetDefault()
+	r = nil
+	r.GetDefault()
+}
+
+func TestRunnerGroup_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RunnerGroup{ID: &zeroValue}
+	r.GetID()
+	r = &RunnerGroup{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRunnerGroup_GetInherited(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{Inherited: &zeroValue}
+	r.GetInherited()
+	r = &RunnerGroup{}
+	r.GetInherited()
+	r = nil
+	r.GetInherited()
+}
+
+func TestRunnerGroup_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{Name: &zeroValue}
+	r.GetName()
+	r = &RunnerGroup{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRunnerGroup_GetRunnersURL(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{RunnersURL: &zeroValue}
+	r.GetRunnersURL()
+	r = &RunnerGroup{}
+	r.GetRunnersURL()
+	r = nil
+	r.GetRunnersURL()
+}
+
+func TestRunnerGroup_GetSelectedRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{SelectedRepositoriesURL: &zeroValue}
+	r.GetSelectedRepositoriesURL()
+	r = &RunnerGroup{}
+	r.GetSelectedRepositoriesURL()
+	r = nil
+	r.GetSelectedRepositoriesURL()
+}
+
+func TestRunnerGroup_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{Visibility: &zeroValue}
+	r.GetVisibility()
+	r = &RunnerGroup{}
+	r.GetVisibility()
+	r = nil
+	r.GetVisibility()
+}
+
 func TestRunnerLabels_GetID(tt *testing.T) {
 	var zeroValue int64
 	r := &RunnerLabels{ID: &zeroValue}
