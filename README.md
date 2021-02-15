@@ -24,7 +24,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get -u github.com/google/go-github/v33
+go get github.com/google/go-github/v33
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -40,7 +40,7 @@ and run `go get` without paramters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get -u github.com/google/go-github/v33@master
+go get github.com/google/go-github/v33@master
 ```
 
 ## Usage ##
