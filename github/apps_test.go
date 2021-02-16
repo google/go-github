@@ -90,7 +90,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
                                    "target_id":1,
                                    "target_type": "Organization",
                                    "permissions": {
-									   "actions": "read",
+                                       "actions": "read",
                                        "administration": "read",
                                        "checks": "read",
                                        "contents": "read",
