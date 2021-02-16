@@ -4364,6 +4364,14 @@ func (i *InstallationEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetActions returns the Actions field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetActions() string {
+	if i == nil || i.Actions == nil {
+		return ""
+	}
+	return *i.Actions
+}
+
 // GetAdministration returns the Administration field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetAdministration() string {
 	if i == nil || i.Administration == nil {

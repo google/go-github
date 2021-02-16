@@ -90,6 +90,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
                                    "target_id":1,
                                    "target_type": "Organization",
                                    "permissions": {
+                                       "actions": "read",
                                        "administration": "read",
                                        "checks": "read",
                                        "contents": "read",
@@ -142,6 +143,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		SingleFileName:      String("config.yml"),
 		RepositorySelection: String("selected"),
 		Permissions: &InstallationPermissions{
+			Actions:                     String("read"),
 			Administration:              String("read"),
 			Checks:                      String("read"),
 			Contents:                    String("read"),

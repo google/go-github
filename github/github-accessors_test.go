@@ -5114,6 +5114,16 @@ func TestInstallationEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestInstallationPermissions_GetActions(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{Actions: &zeroValue}
+	i.GetActions()
+	i = &InstallationPermissions{}
+	i.GetActions()
+	i = nil
+	i.GetActions()
+}
+
 func TestInstallationPermissions_GetAdministration(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{Administration: &zeroValue}
