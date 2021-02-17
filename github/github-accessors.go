@@ -7228,6 +7228,30 @@ func (o *Organization) GetMembersCanCreatePrivateRepos() bool {
 	return *o.MembersCanCreatePrivateRepos
 }
 
+// GetMembersCanCreatePages returns the MembersCanCreatePages field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreatePages() bool {
+	if o == nil || o.MembersCanCreatePages == nil {
+		return false
+	}
+	return *o.MembersCanCreatePages
+}
+
+// GetMembersCanCreatePrivatePages returns the MembersCanCreatePrivatePages field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreatePrivatePages() bool {
+	if o == nil || o.MembersCanCreatePrivatePages == nil {
+		return false
+	}
+	return *o.MembersCanCreatePrivatePages
+}
+
+// GetMembersCanCreatePublicPages returns the MembersCanCreatePublicPages field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanCreatePublicPages() bool {
+	if o == nil || o.MembersCanCreatePublicPages == nil {
+		return false
+	}
+	return *o.MembersCanCreatePublicPages
+}
+
 // GetMembersCanCreatePublicRepos returns the MembersCanCreatePublicRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersCanCreatePublicRepos() bool {
 	if o == nil || o.MembersCanCreatePublicRepos == nil {
