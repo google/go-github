@@ -2804,6 +2804,26 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateRunnerGroupRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateRunnerGroupRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	c := &CreateRunnerGroupRequest{Visibility: &zeroValue}
+	c.GetVisibility()
+	c = &CreateRunnerGroupRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}
@@ -16654,6 +16674,26 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateRunnerGroupRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateRunnerGroupRequest{Visibility: &zeroValue}
+	u.GetVisibility()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
 }
 
 func TestUser_GetAvatarURL(tt *testing.T) {
