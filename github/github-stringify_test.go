@@ -13,6 +13,29 @@ import (
 
 func Float64(v float64) *float64 { return &v }
 
+func TestActionsAllowed_String(t *testing.T) {
+	v := ActionsAllowed{
+		GithubOwnedAllowed: Bool(false),
+		VerifiedAllowed:    Bool(false),
+	}
+	want := `github.ActionsAllowed{GithubOwnedAllowed:false, VerifiedAllowed:false}`
+	if got := v.String(); got != want {
+		t.Errorf("ActionsAllowed.String = %v, want %v", got, want)
+	}
+}
+
+func TestActionsPermissions_String(t *testing.T) {
+	v := ActionsPermissions{
+		EnabledRepositories: String(""),
+		AllowedActions:      String(""),
+		SelectedActionsURL:  String(""),
+	}
+	want := `github.ActionsPermissions{EnabledRepositories:"", AllowedActions:"", SelectedActionsURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ActionsPermissions.String = %v, want %v", got, want)
+	}
+}
+
 func TestAdminStats_String(t *testing.T) {
 	v := AdminStats{
 		Issues:     &IssueStats{},

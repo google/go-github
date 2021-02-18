@@ -20,6 +20,54 @@ func (a *AbuseRateLimitError) GetRetryAfter() time.Duration {
 	return *a.RetryAfter
 }
 
+// GetGithubOwnedAllowed returns the GithubOwnedAllowed field if it's non-nil, zero value otherwise.
+func (a *ActionsAllowed) GetGithubOwnedAllowed() bool {
+	if a == nil || a.GithubOwnedAllowed == nil {
+		return false
+	}
+	return *a.GithubOwnedAllowed
+}
+
+// GetPatternsAllowed returns the PatternsAllowed field if it's non-nil, zero value otherwise.
+func (a *ActionsAllowed) GetPatternsAllowed() []string {
+	if a == nil || a.PatternsAllowed == nil {
+		return nil
+	}
+	return *a.PatternsAllowed
+}
+
+// GetVerifiedAllowed returns the VerifiedAllowed field if it's non-nil, zero value otherwise.
+func (a *ActionsAllowed) GetVerifiedAllowed() bool {
+	if a == nil || a.VerifiedAllowed == nil {
+		return false
+	}
+	return *a.VerifiedAllowed
+}
+
+// GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissions) GetAllowedActions() string {
+	if a == nil || a.AllowedActions == nil {
+		return ""
+	}
+	return *a.AllowedActions
+}
+
+// GetEnabledRepositories returns the EnabledRepositories field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissions) GetEnabledRepositories() string {
+	if a == nil || a.EnabledRepositories == nil {
+		return ""
+	}
+	return *a.EnabledRepositories
+}
+
+// GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissions) GetSelectedActionsURL() string {
+	if a == nil || a.SelectedActionsURL == nil {
+		return ""
+	}
+	return *a.SelectedActionsURL
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcement) GetURL() string {
 	if a == nil || a.URL == nil {

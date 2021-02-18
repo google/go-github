@@ -23,6 +23,66 @@ func TestAbuseRateLimitError_GetRetryAfter(tt *testing.T) {
 	a.GetRetryAfter()
 }
 
+func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
+	var zeroValue bool
+	a := &ActionsAllowed{GithubOwnedAllowed: &zeroValue}
+	a.GetGithubOwnedAllowed()
+	a = &ActionsAllowed{}
+	a.GetGithubOwnedAllowed()
+	a = nil
+	a.GetGithubOwnedAllowed()
+}
+
+func TestActionsAllowed_GetPatternsAllowed(tt *testing.T) {
+	var zeroValue []string
+	a := &ActionsAllowed{PatternsAllowed: &zeroValue}
+	a.GetPatternsAllowed()
+	a = &ActionsAllowed{}
+	a.GetPatternsAllowed()
+	a = nil
+	a.GetPatternsAllowed()
+}
+
+func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
+	var zeroValue bool
+	a := &ActionsAllowed{VerifiedAllowed: &zeroValue}
+	a.GetVerifiedAllowed()
+	a = &ActionsAllowed{}
+	a.GetVerifiedAllowed()
+	a = nil
+	a.GetVerifiedAllowed()
+}
+
+func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissions{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissions{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissions_GetEnabledRepositories(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissions{EnabledRepositories: &zeroValue}
+	a.GetEnabledRepositories()
+	a = &ActionsPermissions{}
+	a.GetEnabledRepositories()
+	a = nil
+	a.GetEnabledRepositories()
+}
+
+func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissions{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissions{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestAdminEnforcement_GetURL(tt *testing.T) {
 	var zeroValue string
 	a := &AdminEnforcement{URL: &zeroValue}
