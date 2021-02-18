@@ -8462,6 +8462,26 @@ func TestOrganization_GetMembersCanCreateInternalRepos(tt *testing.T) {
 	o.GetMembersCanCreateInternalRepos()
 }
 
+func TestOrganization_GetMembersCanCreatePages(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{MembersCanCreatePages: &zeroValue}
+	o.GetMembersCanCreatePages()
+	o = &Organization{}
+	o.GetMembersCanCreatePages()
+	o = nil
+	o.GetMembersCanCreatePages()
+}
+
+func TestOrganization_GetMembersCanCreatePrivatePages(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{MembersCanCreatePrivatePages: &zeroValue}
+	o.GetMembersCanCreatePrivatePages()
+	o = &Organization{}
+	o.GetMembersCanCreatePrivatePages()
+	o = nil
+	o.GetMembersCanCreatePrivatePages()
+}
+
 func TestOrganization_GetMembersCanCreatePrivateRepos(tt *testing.T) {
 	var zeroValue bool
 	o := &Organization{MembersCanCreatePrivateRepos: &zeroValue}
@@ -8470,6 +8490,16 @@ func TestOrganization_GetMembersCanCreatePrivateRepos(tt *testing.T) {
 	o.GetMembersCanCreatePrivateRepos()
 	o = nil
 	o.GetMembersCanCreatePrivateRepos()
+}
+
+func TestOrganization_GetMembersCanCreatePublicPages(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{MembersCanCreatePublicPages: &zeroValue}
+	o.GetMembersCanCreatePublicPages()
+	o = &Organization{}
+	o.GetMembersCanCreatePublicPages()
+	o = nil
+	o.GetMembersCanCreatePublicPages()
 }
 
 func TestOrganization_GetMembersCanCreatePublicRepos(tt *testing.T) {
