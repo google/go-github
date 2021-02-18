@@ -35,6 +35,9 @@ func TestOrganization_marshal(t *testing.T) {
 		MembersCanCreatePrivateRepos:         Bool(true),
 		MembersCanCreatePublicRepos:          Bool(false),
 		MembersAllowedRepositoryCreationType: String("all"),
+		MembersCanCreatePages:                Bool(true),
+		MembersCanCreatePublicPages:          Bool(false),
+		MembersCanCreatePrivatePages:         Bool(true),
 	}
 	want := `
 		{
@@ -54,7 +57,10 @@ func TestOrganization_marshal(t *testing.T) {
 			"members_can_create_public_repositories": false,
 			"members_can_create_private_repositories": true,
 			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "all"
+			"members_allowed_repository_creation_type": "all",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
 		}
 	`
 	testJSONMarshal(t, o, want)
