@@ -1,4 +1,4 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -137,7 +137,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	req := &CreateRunnerGroupRequest{
+	req := CreateRunnerGroupRequest{
 		Name:       String("octo-runner-group"),
 		Visibility: String("selected"),
 	}
@@ -186,7 +186,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	req := &UpdateRunnerGroupRequest{
+	req := UpdateRunnerGroupRequest{
 		Name:       String("octo-runner-group"),
 		Visibility: String("selected"),
 	}
@@ -273,10 +273,10 @@ func TestActionsService_SetRepositoryAccessRunnerGroup(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	req := &SetRepoAccessRunnerGroupRequest{
-		SelectedRepositoryIDs: []*int64{
-			Int64(1),
-			Int64(2),
+	req := SetRepoAccessRunnerGroupRequest{
+		SelectedRepositoryIDs: []int64{
+			1,
+			2,
 		},
 	}
 
@@ -398,10 +398,10 @@ func TestActionsService_SetRunerGroupRunners(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	req := &SetRunnerGroupRunnersRequest{
-		Runners: []*int64{
-			Int64(1),
-			Int64(2),
+	req := SetRunnerGroupRunnersRequest{
+		Runners: []int64{
+			1,
+			2,
 		},
 	}
 
