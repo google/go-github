@@ -77,7 +77,7 @@ type Organization struct {
 	MembersCanCreatePages *bool `json:"members_can_create_pages,omitempty"`
 	// MembersCanCreatePublicPages toggles whether organization members can create public GitHub Pages sites.
 	MembersCanCreatePublicPages *bool `json:"members_can_create_public_pages,omitempty"`
-	// MembersCanCreatePrivatePages toggles whether organization members can create private GitHub Pages sites
+	// MembersCanCreatePrivatePages toggles whether organization members can create private GitHub Pages sites.
 	MembersCanCreatePrivatePages *bool `json:"members_can_create_private_pages,omitempty"`
 
 	// API URLs
