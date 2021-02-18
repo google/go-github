@@ -273,7 +273,7 @@ func (s *ActionsService) AddRunerGroupRunners(ctx context.Context, org string, g
 // RemoveRunerGroupRunners removes a self-hosted runner from a group configured in an organization.
 // The runner is then returned to the default group.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#add-a-self-hosted-runner-to-a-group-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#remove-a-self-hosted-runner-from-a-group-for-an-organization
 func (s *ActionsService) RemoveRunerGroupRunners(ctx context.Context, org string, groupID, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runner-groups/%v/runners/%v", org, groupID, runnerID)
 
