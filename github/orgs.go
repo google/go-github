@@ -73,7 +73,7 @@ type Organization struct {
 	// operation and does not consider 'internal' repositories during 'get' operation
 	MembersAllowedRepositoryCreationType *string `json:"members_allowed_repository_creation_type,omitempty"`
 
-	// MembersCanCreatePages toggles whether organization members can create GitHub Pages sites
+	// MembersCanCreatePages toggles whether organization members can create GitHub Pages sites.
 	MembersCanCreatePages *bool `json:"members_can_create_pages,omitempty"`
 	// MembersCanCreatePublicPages toggles whether organization members can create public GitHub Pages sites
 	MembersCanCreatePublicPages *bool `json:"members_can_create_public_pages,omitempty"`
