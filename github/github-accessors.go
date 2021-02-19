@@ -2420,6 +2420,22 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 	return *c.Role
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetVisibility() string {
+	if c == nil || c.Visibility == nil {
+		return ""
+	}
+	return *c.Visibility
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CreateUserProjectOptions) GetBody() string {
 	if c == nil || c.Body == nil {
@@ -12748,6 +12764,70 @@ func (r *RunnerApplicationDownload) GetOS() string {
 	return *r.OS
 }
 
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetAllowsPublicRepositories() bool {
+	if r == nil || r.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *r.AllowsPublicRepositories
+}
+
+// GetDefault returns the Default field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetDefault() bool {
+	if r == nil || r.Default == nil {
+		return false
+	}
+	return *r.Default
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetInherited returns the Inherited field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetInherited() bool {
+	if r == nil || r.Inherited == nil {
+		return false
+	}
+	return *r.Inherited
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetRunnersURL returns the RunnersURL field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetRunnersURL() string {
+	if r == nil || r.RunnersURL == nil {
+		return ""
+	}
+	return *r.RunnersURL
+}
+
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetSelectedRepositoriesURL() string {
+	if r == nil || r.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *r.SelectedRepositoriesURL
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetVisibility() string {
+	if r == nil || r.Visibility == nil {
+		return ""
+	}
+	return *r.Visibility
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *RunnerLabels) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -14194,6 +14274,22 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *u.Status
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetVisibility() string {
+	if u == nil || u.Visibility == nil {
+		return ""
+	}
+	return *u.Visibility
 }
 
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.

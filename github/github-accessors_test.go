@@ -2804,6 +2804,26 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateRunnerGroupRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateRunnerGroupRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	c := &CreateRunnerGroupRequest{Visibility: &zeroValue}
+	c.GetVisibility()
+	c = &CreateRunnerGroupRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}
@@ -14901,6 +14921,86 @@ func TestRunnerApplicationDownload_GetOS(tt *testing.T) {
 	r.GetOS()
 }
 
+func TestRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{AllowsPublicRepositories: &zeroValue}
+	r.GetAllowsPublicRepositories()
+	r = &RunnerGroup{}
+	r.GetAllowsPublicRepositories()
+	r = nil
+	r.GetAllowsPublicRepositories()
+}
+
+func TestRunnerGroup_GetDefault(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{Default: &zeroValue}
+	r.GetDefault()
+	r = &RunnerGroup{}
+	r.GetDefault()
+	r = nil
+	r.GetDefault()
+}
+
+func TestRunnerGroup_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RunnerGroup{ID: &zeroValue}
+	r.GetID()
+	r = &RunnerGroup{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRunnerGroup_GetInherited(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{Inherited: &zeroValue}
+	r.GetInherited()
+	r = &RunnerGroup{}
+	r.GetInherited()
+	r = nil
+	r.GetInherited()
+}
+
+func TestRunnerGroup_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{Name: &zeroValue}
+	r.GetName()
+	r = &RunnerGroup{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRunnerGroup_GetRunnersURL(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{RunnersURL: &zeroValue}
+	r.GetRunnersURL()
+	r = &RunnerGroup{}
+	r.GetRunnersURL()
+	r = nil
+	r.GetRunnersURL()
+}
+
+func TestRunnerGroup_GetSelectedRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{SelectedRepositoriesURL: &zeroValue}
+	r.GetSelectedRepositoriesURL()
+	r = &RunnerGroup{}
+	r.GetSelectedRepositoriesURL()
+	r = nil
+	r.GetSelectedRepositoriesURL()
+}
+
+func TestRunnerGroup_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerGroup{Visibility: &zeroValue}
+	r.GetVisibility()
+	r = &RunnerGroup{}
+	r.GetVisibility()
+	r = nil
+	r.GetVisibility()
+}
+
 func TestRunnerLabels_GetID(tt *testing.T) {
 	var zeroValue int64
 	r := &RunnerLabels{ID: &zeroValue}
@@ -16604,6 +16704,26 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateRunnerGroupRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateRunnerGroupRequest{Visibility: &zeroValue}
+	u.GetVisibility()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetVisibility()
+	u = nil
+	u.GetVisibility()
 }
 
 func TestUser_GetAvatarURL(tt *testing.T) {
