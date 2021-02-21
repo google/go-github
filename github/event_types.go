@@ -277,16 +277,18 @@ type TeamChange struct {
 	} `json:"repository,omitempty"`
 }
 
-// InstallationEvent is triggered when a GitHub App has been installed or uninstalled.
+// InstallationEvent is triggered when a GitHub App has been installed, uninstalled, suspend, unsuspended
+// or new permissions have been accepted.
 // The Webhook event name is "installation".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/types/#installationevent
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#installation
 type InstallationEvent struct {
-	// The action that was performed. Can be either "created" or "deleted".
+	// The action that was performed. Can be either "created", "deleted", "suspend", "unsuspend" or "new_permissions_accepted".
 	Action       *string       `json:"action,omitempty"`
 	Repositories []*Repository `json:"repositories,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+	// TODO key "requester" is not covered
 }
 
 // InstallationRepositoriesEvent is triggered when a repository is added or
