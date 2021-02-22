@@ -67,7 +67,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Organizations.EditActionsPermissions(ctx, "o", input)
+	org, _, err := client.Organizations.EditActionsPermissions(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("Organizations.EditActionsPermissions returned error: %v", err)
 	}
@@ -79,7 +79,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 
 	const methodName = "EditActionsPermissions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditActionsPermissions(ctx, "\n", input)
+		_, _, err = client.Organizations.EditActionsPermissions(ctx, "\n", *input)
 		return err
 	})
 }
