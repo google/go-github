@@ -23,7 +23,7 @@ func (a ActionsPermissions) String() string {
 	return Stringify(a)
 }
 
-// GetActionsPermissions gets  the GitHub Actions permissions policy for repositories and allowed actions in an organization.
+// GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
@@ -43,7 +43,7 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 	return permissions, resp, nil
 }
 
-// EditActionsPermissions sets permissions policy for repositories and allowed actions in an organization.
+// EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
