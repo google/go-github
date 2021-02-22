@@ -46,7 +46,7 @@ func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org st
 // EditActionsPermissions sets permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-github-actions-permissions-for-an-organization
-func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions *ActionsPermissions) (*ActionsPermissions, *Response, error) {
+func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
 	if err != nil {
