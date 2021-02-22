@@ -1,4 +1,4 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -11,6 +11,7 @@ import (
 )
 
 // ActionsPermissions represents a policy for repositories and allowed actions in an organization.
+//
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#permissions
 type ActionsPermissions struct {
 	EnabledRepositories *string `json:"enabled_repositories,omitempty"`
@@ -22,7 +23,7 @@ func (a ActionsPermissions) String() string {
 	return Stringify(a)
 }
 
-// GetActionsPermissions gets a specific artifact for a workflow run.
+// GetActionsPermissions gets  the GitHub Actions permissions policy for repositories and allowed actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-github-actions-permissions-for-an-organization
 func (s *OrganizationsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {

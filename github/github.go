@@ -1094,13 +1094,3 @@ func Int64(v int64) *int64 { return &v }
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
 func String(v string) *string { return &v }
-
-// StringSlice is a helper routine that allocates a new string slice value
-// to store v and returns a pointer to it.
-func StringSlice(v []string) *[]string {
-	var r []string
-	for _, s := range v {
-		r = append(r, s)
-	}
-	return &r
-}
