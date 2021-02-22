@@ -28,14 +28,6 @@ func (a *ActionsAllowed) GetGithubOwnedAllowed() bool {
 	return *a.GithubOwnedAllowed
 }
 
-// GetPatternsAllowed returns the PatternsAllowed field if it's non-nil, zero value otherwise.
-func (a *ActionsAllowed) GetPatternsAllowed() []string {
-	if a == nil || a.PatternsAllowed == nil {
-		return nil
-	}
-	return *a.PatternsAllowed
-}
-
 // GetVerifiedAllowed returns the VerifiedAllowed field if it's non-nil, zero value otherwise.
 func (a *ActionsAllowed) GetVerifiedAllowed() bool {
 	if a == nil || a.VerifiedAllowed == nil {

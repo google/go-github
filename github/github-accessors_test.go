@@ -33,16 +33,6 @@ func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	a.GetGithubOwnedAllowed()
 }
 
-func TestActionsAllowed_GetPatternsAllowed(tt *testing.T) {
-	var zeroValue []string
-	a := &ActionsAllowed{PatternsAllowed: &zeroValue}
-	a.GetPatternsAllowed()
-	a = &ActionsAllowed{}
-	a.GetPatternsAllowed()
-	a = nil
-	a.GetPatternsAllowed()
-}
-
 func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
 	var zeroValue bool
 	a := &ActionsAllowed{VerifiedAllowed: &zeroValue}
