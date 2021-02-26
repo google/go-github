@@ -15676,6 +15676,14 @@ func (w *WorkflowRun) GetLogsURL() string {
 	return *w.LogsURL
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetName() string {
+	if w == nil || w.Name == nil {
+		return ""
+	}
+	return *w.Name
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetNodeID() string {
 	if w == nil || w.NodeID == nil {
