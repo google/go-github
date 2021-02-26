@@ -18384,6 +18384,16 @@ func TestWorkflowRun_GetLogsURL(tt *testing.T) {
 	w.GetLogsURL()
 }
 
+func TestWorkflowRun_GetName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{Name: &zeroValue}
+	w.GetName()
+	w = &WorkflowRun{}
+	w.GetName()
+	w = nil
+	w.GetName()
+}
+
 func TestWorkflowRun_GetNodeID(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{NodeID: &zeroValue}

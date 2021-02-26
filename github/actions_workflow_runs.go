@@ -15,6 +15,7 @@ import (
 // WorkflowRun represents a repository action workflow run.
 type WorkflowRun struct {
 	ID             *int64         `json:"id,omitempty"`
+	Name           *string        `json:"name,omitempty"`
 	NodeID         *string        `json:"node_id,omitempty"`
 	HeadBranch     *string        `json:"head_branch,omitempty"`
 	HeadSHA        *string        `json:"head_sha,omitempty"`
