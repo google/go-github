@@ -789,6 +789,12 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 			},
 			wantBody: `{"commit_message":"merging pull request","commit_title":"Extra detail","merge_method":"squash","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
 		},
+		{
+			options: &PullRequestOptions{
+				DontDefaultIfBlank: true,
+			},
+			wantBody: `{"commit_message":"merging pull request"}`,
+		},
 	}
 
 	for i, test := range tests {
@@ -818,7 +824,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	expectedBody = `{"commit_message":""}`
+	expectedBody = `{}`
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", nil)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #1 did not make request")
@@ -828,7 +834,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	opts := PullRequestOptions{
 		DontDefaultIfBlank: true,
 	}
-	expectedBody = `{}`
+	expectedBody = `{"commit_message":""}`
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", &opts)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #2 did not make request")
