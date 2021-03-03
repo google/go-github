@@ -458,8 +458,7 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo stri
 		pullRequestBody.MergeMethod = options.MergeMethod
 		pullRequestBody.SHA = options.SHA
 		if options.DontDefaultIfBlank && commitMessage == "" {
-			emptyMessage := ""
-			pullRequestBody.CommitMessage = &emptyMessage
+			pullRequestBody.CommitMessage = &commitMessage
 		}
 	}
 	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
