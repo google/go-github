@@ -569,22 +569,26 @@ func TestImport_String(t *testing.T) {
 
 func TestInstallation_String(t *testing.T) {
 	v := Installation{
-		ID:                  Int64(0),
-		NodeID:              String(""),
-		AppID:               Int64(0),
-		TargetID:            Int64(0),
-		Account:             &User{},
-		AccessTokensURL:     String(""),
-		RepositoriesURL:     String(""),
-		HTMLURL:             String(""),
-		TargetType:          String(""),
-		SingleFileName:      String(""),
-		RepositorySelection: String(""),
-		Permissions:         &InstallationPermissions{},
-		CreatedAt:           &Timestamp{},
-		UpdatedAt:           &Timestamp{},
+		ID:                     Int64(0),
+		NodeID:                 String(""),
+		AppID:                  Int64(0),
+		AppSlug:                String(""),
+		TargetID:               Int64(0),
+		Account:                &User{},
+		AccessTokensURL:        String(""),
+		RepositoriesURL:        String(""),
+		HTMLURL:                String(""),
+		TargetType:             String(""),
+		SingleFileName:         String(""),
+		RepositorySelection:    String(""),
+		Permissions:            &InstallationPermissions{},
+		CreatedAt:              &Timestamp{},
+		UpdatedAt:              &Timestamp{},
+		HasMultipleSingleFiles: Bool(false),
+		SuspendedBy:            &User{},
+		SuspendedAt:            &Timestamp{},
 	}
-	want := `github.Installation{ID:0, NodeID:"", AppID:0, TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Installation{ID:0, NodeID:"", AppID:0, AppSlug:"", TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HasMultipleSingleFiles:false, SuspendedBy:github.User{}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Installation.String = %v, want %v", got, want)
 	}

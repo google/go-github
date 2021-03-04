@@ -90,21 +90,26 @@ type InstallationPermissions struct {
 
 // Installation represents a GitHub Apps installation.
 type Installation struct {
-	ID                  *int64                   `json:"id,omitempty"`
-	NodeID              *string                  `json:"node_id,omitempty"`
-	AppID               *int64                   `json:"app_id,omitempty"`
-	TargetID            *int64                   `json:"target_id,omitempty"`
-	Account             *User                    `json:"account,omitempty"`
-	AccessTokensURL     *string                  `json:"access_tokens_url,omitempty"`
-	RepositoriesURL     *string                  `json:"repositories_url,omitempty"`
-	HTMLURL             *string                  `json:"html_url,omitempty"`
-	TargetType          *string                  `json:"target_type,omitempty"`
-	SingleFileName      *string                  `json:"single_file_name,omitempty"`
-	RepositorySelection *string                  `json:"repository_selection,omitempty"`
-	Events              []string                 `json:"events,omitempty"`
-	Permissions         *InstallationPermissions `json:"permissions,omitempty"`
-	CreatedAt           *Timestamp               `json:"created_at,omitempty"`
-	UpdatedAt           *Timestamp               `json:"updated_at,omitempty"`
+	ID                     *int64                   `json:"id,omitempty"`
+	NodeID                 *string                  `json:"node_id,omitempty"`
+	AppID                  *int64                   `json:"app_id,omitempty"`
+	AppSlug                *string                  `json:"app_slug,omitempty"`
+	TargetID               *int64                   `json:"target_id,omitempty"`
+	Account                *User                    `json:"account,omitempty"`
+	AccessTokensURL        *string                  `json:"access_tokens_url,omitempty"`
+	RepositoriesURL        *string                  `json:"repositories_url,omitempty"`
+	HTMLURL                *string                  `json:"html_url,omitempty"`
+	TargetType             *string                  `json:"target_type,omitempty"`
+	SingleFileName         *string                  `json:"single_file_name,omitempty"`
+	RepositorySelection    *string                  `json:"repository_selection,omitempty"`
+	Events                 []string                 `json:"events,omitempty"`
+	SingleFilePaths        []string                 `json:"single_file_paths,omitempty"`
+	Permissions            *InstallationPermissions `json:"permissions,omitempty"`
+	CreatedAt              *Timestamp               `json:"created_at,omitempty"`
+	UpdatedAt              *Timestamp               `json:"updated_at,omitempty"`
+	HasMultipleSingleFiles *bool                    `json:"has_multiple_single_files,omitempty"`
+	SuspendedBy            *User                    `json:"suspended_by,omitempty"`
+	SuspendedAt            *Timestamp               `json:"suspended_at,omitempty"`
 }
 
 // Attachment represents a GitHub Apps attachment.
