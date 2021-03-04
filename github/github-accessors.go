@@ -4268,12 +4268,28 @@ func (i *Installation) GetAppID() int64 {
 	return *i.AppID
 }
 
+// GetAppSlug returns the AppSlug field if it's non-nil, zero value otherwise.
+func (i *Installation) GetAppSlug() string {
+	if i == nil || i.AppSlug == nil {
+		return ""
+	}
+	return *i.AppSlug
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (i *Installation) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
 		return Timestamp{}
 	}
 	return *i.CreatedAt
+}
+
+// GetHasMultipleSingleFiles returns the HasMultipleSingleFiles field if it's non-nil, zero value otherwise.
+func (i *Installation) GetHasMultipleSingleFiles() bool {
+	if i == nil || i.HasMultipleSingleFiles == nil {
+		return false
+	}
+	return *i.HasMultipleSingleFiles
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -4330,6 +4346,22 @@ func (i *Installation) GetSingleFileName() string {
 		return ""
 	}
 	return *i.SingleFileName
+}
+
+// GetSuspendedAt returns the SuspendedAt field if it's non-nil, zero value otherwise.
+func (i *Installation) GetSuspendedAt() Timestamp {
+	if i == nil || i.SuspendedAt == nil {
+		return Timestamp{}
+	}
+	return *i.SuspendedAt
+}
+
+// GetSuspendedBy returns the SuspendedBy field.
+func (i *Installation) GetSuspendedBy() *User {
+	if i == nil {
+		return nil
+	}
+	return i.SuspendedBy
 }
 
 // GetTargetID returns the TargetID field if it's non-nil, zero value otherwise.

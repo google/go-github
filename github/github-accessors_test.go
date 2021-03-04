@@ -5003,6 +5003,16 @@ func TestInstallation_GetAppID(tt *testing.T) {
 	i.GetAppID()
 }
 
+func TestInstallation_GetAppSlug(tt *testing.T) {
+	var zeroValue string
+	i := &Installation{AppSlug: &zeroValue}
+	i.GetAppSlug()
+	i = &Installation{}
+	i.GetAppSlug()
+	i = nil
+	i.GetAppSlug()
+}
+
 func TestInstallation_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	i := &Installation{CreatedAt: &zeroValue}
@@ -5011,6 +5021,16 @@ func TestInstallation_GetCreatedAt(tt *testing.T) {
 	i.GetCreatedAt()
 	i = nil
 	i.GetCreatedAt()
+}
+
+func TestInstallation_GetHasMultipleSingleFiles(tt *testing.T) {
+	var zeroValue bool
+	i := &Installation{HasMultipleSingleFiles: &zeroValue}
+	i.GetHasMultipleSingleFiles()
+	i = &Installation{}
+	i.GetHasMultipleSingleFiles()
+	i = nil
+	i.GetHasMultipleSingleFiles()
 }
 
 func TestInstallation_GetHTMLURL(tt *testing.T) {
@@ -5078,6 +5098,23 @@ func TestInstallation_GetSingleFileName(tt *testing.T) {
 	i.GetSingleFileName()
 	i = nil
 	i.GetSingleFileName()
+}
+
+func TestInstallation_GetSuspendedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &Installation{SuspendedAt: &zeroValue}
+	i.GetSuspendedAt()
+	i = &Installation{}
+	i.GetSuspendedAt()
+	i = nil
+	i.GetSuspendedAt()
+}
+
+func TestInstallation_GetSuspendedBy(tt *testing.T) {
+	i := &Installation{}
+	i.GetSuspendedBy()
+	i = nil
+	i.GetSuspendedBy()
 }
 
 func TestInstallation_GetTargetID(tt *testing.T) {
