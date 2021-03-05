@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // ListRepositories represents the response from the list repos endpoints.
@@ -29,6 +30,10 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRe
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var r *ListRepositories
 
@@ -55,6 +60,10 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// TODO: remove custom Accept headers when APIs fully launch.
+	acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var r *ListRepositories
 	resp, err := s.client.Do(ctx, req, &r)
