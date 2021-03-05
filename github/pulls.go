@@ -430,13 +430,16 @@ type PullRequestOptions struct {
 
 	// The merge method to use. Possible values include: "merge", "squash", and "rebase" with the default being merge. (Optional.)
 	MergeMethod string
+
+	// If false, an empty string commit message will use the default commit message. If true, an empty string commit message will be used.
+	DontDefaultIfBlank bool
 }
 
 type pullRequestMergeRequest struct {
-	CommitMessage string `json:"commit_message,omitempty"`
-	CommitTitle   string `json:"commit_title,omitempty"`
-	MergeMethod   string `json:"merge_method,omitempty"`
-	SHA           string `json:"sha,omitempty"`
+	CommitMessage *string `json:"commit_message,omitempty"`
+	CommitTitle   string  `json:"commit_title,omitempty"`
+	MergeMethod   string  `json:"merge_method,omitempty"`
+	SHA           string  `json:"sha,omitempty"`
 }
 
 // Merge a pull request.
@@ -446,11 +449,17 @@ type pullRequestMergeRequest struct {
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	pullRequestBody := &pullRequestMergeRequest{CommitMessage: commitMessage}
+	pullRequestBody := &pullRequestMergeRequest{}
+	if commitMessage != "" {
+		pullRequestBody.CommitMessage = &commitMessage
+	}
 	if options != nil {
 		pullRequestBody.CommitTitle = options.CommitTitle
 		pullRequestBody.MergeMethod = options.MergeMethod
 		pullRequestBody.SHA = options.SHA
+		if options.DontDefaultIfBlank && commitMessage == "" {
+			pullRequestBody.CommitMessage = &commitMessage
+		}
 	}
 	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
 	if err != nil {
