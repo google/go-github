@@ -247,6 +247,155 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DownloadContentsWithMeta_Success(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+		  "type": "file",
+		  "name": "f",
+		  "download_url": "`+serverURL+baseURLPath+`/download/f"
+		}]`)
+	})
+	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "foo")
+	})
+
+	ctx := context.Background()
+	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err != nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
+	}
+
+	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
+	}
+
+	bytes, err := ioutil.ReadAll(r)
+	if err != nil {
+		t.Errorf("Error reading response body: %v", err)
+	}
+	r.Close()
+
+	if got, want := string(bytes), "foo"; got != want {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned %v, want %v", got, want)
+	}
+
+	if c != nil && c.Name != nil {
+		if got, want := *c.Name, "f"; got != want {
+			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
+		}
+	} else {
+		t.Errorf("Returned RepositoryContent is null")
+	}
+
+	const methodName = "DownloadContentsWithMeta"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, _, err = client.Repositories.DownloadContentsWithMeta(ctx, "\n", "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, cot, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		if cot != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, cot)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+			"type": "file",
+			"name": "f",
+			"download_url": "`+serverURL+baseURLPath+`/download/f"
+		  }]`)
+	})
+	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "foo error")
+	})
+
+	ctx := context.Background()
+	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err != nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
+	}
+
+	if got, want := resp.Response.StatusCode, http.StatusInternalServerError; got != want {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
+	}
+
+	bytes, err := ioutil.ReadAll(r)
+	if err != nil {
+		t.Errorf("Error reading response body: %v", err)
+	}
+	r.Close()
+
+	if got, want := string(bytes), "foo error"; got != want {
+		t.Errorf("Repositories.DownloadContentsWithMeta returned %v, want %v", got, want)
+	}
+
+	if c != nil && c.Name != nil {
+		if got, want := *c.Name, "f"; got != want {
+			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
+		}
+	} else {
+		t.Errorf("Returned RepositoryContent is null")
+	}
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+		  "type": "file",
+		  "name": "f",
+		}]`)
+	})
+
+	ctx := context.Background()
+	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err == nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected response")
+	}
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[]`)
+	})
+
+	ctx := context.Background()
+	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err == nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected error")
+	}
+
+	if resp == nil {
+		t.Errorf("Repositories.DownloadContentsWithMeta did not return expected response")
+	}
+}
+
 func TestRepositoriesService_GetContents_File(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

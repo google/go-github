@@ -144,6 +144,36 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	return nil, resp, fmt.Errorf("No file named %s found in %s", filename, dir)
 }
 
+// DownloadContentsWithMeta is identical to DownloadContents but additionally
+// returns the RepositoryContent of the requested file. This additional data
+// is useful for future operations involving the requested file. For merely
+// reading the content of a file, DownloadContents is perfectly adequate.
+//
+// It is possible for the download to result in a failed response when the
+// returned error is nil. Callers should check the returned Response status
+// code to verify the content is from a successful response.
+func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
+	dir := path.Dir(filepath)
+	filename := path.Base(filepath)
+	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
+	if err != nil {
+		return nil, nil, resp, err
+	}
+	for _, contents := range dirContents {
+		if *contents.Name == filename {
+			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
+				return nil, contents, resp, fmt.Errorf("No download link found for %s", filepath)
+			}
+			dlResp, err := s.client.client.Get(*contents.DownloadURL)
+			if err != nil {
+				return nil, contents, &Response{Response: dlResp}, err
+			}
+			return dlResp.Body, contents, &Response{Response: dlResp}, nil
+		}
+	}
+	return nil, nil, resp, fmt.Errorf("No file named %s found in %s", filename, dir)
+}
+
 // GetContents can return either the metadata and content of a single file
 // (when path references a file) or the metadata of all the files and/or
 // subdirectories of a directory (when path references a directory). To make it
