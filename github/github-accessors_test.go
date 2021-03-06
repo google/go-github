@@ -611,6 +611,576 @@ func TestAttachment_GetTitle(tt *testing.T) {
 	a.GetTitle()
 }
 
+func TestAuditEntry_GetAction(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Action: &zeroValue}
+	a.GetAction()
+	a = &AuditEntry{}
+	a.GetAction()
+	a = nil
+	a.GetAction()
+}
+
+func TestAuditEntry_GetActive(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Active: &zeroValue}
+	a.GetActive()
+	a = &AuditEntry{}
+	a.GetActive()
+	a = nil
+	a.GetActive()
+}
+
+func TestAuditEntry_GetActiveWas(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ActiveWas: &zeroValue}
+	a.GetActiveWas()
+	a = &AuditEntry{}
+	a.GetActiveWas()
+	a = nil
+	a.GetActiveWas()
+}
+
+func TestAuditEntry_GetActor(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Actor: &zeroValue}
+	a.GetActor()
+	a = &AuditEntry{}
+	a.GetActor()
+	a = nil
+	a.GetActor()
+}
+
+func TestAuditEntry_GetBlockedUser(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{BlockedUser: &zeroValue}
+	a.GetBlockedUser()
+	a = &AuditEntry{}
+	a.GetBlockedUser()
+	a = nil
+	a.GetBlockedUser()
+}
+
+func TestAuditEntry_GetBusiness(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Business: &zeroValue}
+	a.GetBusiness()
+	a = &AuditEntry{}
+	a.GetBusiness()
+	a = nil
+	a.GetBusiness()
+}
+
+func TestAuditEntry_GetCancelledAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &AuditEntry{CancelledAt: &zeroValue}
+	a.GetCancelledAt()
+	a = &AuditEntry{}
+	a.GetCancelledAt()
+	a = nil
+	a.GetCancelledAt()
+}
+
+func TestAuditEntry_GetCompletedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &AuditEntry{CompletedAt: &zeroValue}
+	a.GetCompletedAt()
+	a = &AuditEntry{}
+	a.GetCompletedAt()
+	a = nil
+	a.GetCompletedAt()
+}
+
+func TestAuditEntry_GetConclusion(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Conclusion: &zeroValue}
+	a.GetConclusion()
+	a = &AuditEntry{}
+	a.GetConclusion()
+	a = nil
+	a.GetConclusion()
+}
+
+func TestAuditEntry_GetConfig(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Config: &zeroValue}
+	a.GetConfig()
+	a = &AuditEntry{}
+	a.GetConfig()
+	a = nil
+	a.GetConfig()
+}
+
+func TestAuditEntry_GetConfigWas(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ConfigWas: &zeroValue}
+	a.GetConfigWas()
+	a = &AuditEntry{}
+	a.GetConfigWas()
+	a = nil
+	a.GetConfigWas()
+}
+
+func TestAuditEntry_GetContentType(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ContentType: &zeroValue}
+	a.GetContentType()
+	a = &AuditEntry{}
+	a.GetContentType()
+	a = nil
+	a.GetContentType()
+}
+
+func TestAuditEntry_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &AuditEntry{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &AuditEntry{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAuditEntry_GetDeployKeyFingerprint(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{DeployKeyFingerprint: &zeroValue}
+	a.GetDeployKeyFingerprint()
+	a = &AuditEntry{}
+	a.GetDeployKeyFingerprint()
+	a = nil
+	a.GetDeployKeyFingerprint()
+}
+
+func TestAuditEntry_GetDocumentID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{DocumentID: &zeroValue}
+	a.GetDocumentID()
+	a = &AuditEntry{}
+	a.GetDocumentID()
+	a = nil
+	a.GetDocumentID()
+}
+
+func TestAuditEntry_GetEmoji(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Emoji: &zeroValue}
+	a.GetEmoji()
+	a = &AuditEntry{}
+	a.GetEmoji()
+	a = nil
+	a.GetEmoji()
+}
+
+func TestAuditEntry_GetEnvironmentName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{EnvironmentName: &zeroValue}
+	a.GetEnvironmentName()
+	a = &AuditEntry{}
+	a.GetEnvironmentName()
+	a = nil
+	a.GetEnvironmentName()
+}
+
+func TestAuditEntry_GetEvent(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Event: &zeroValue}
+	a.GetEvent()
+	a = &AuditEntry{}
+	a.GetEvent()
+	a = nil
+	a.GetEvent()
+}
+
+func TestAuditEntry_GetEvents(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Events: &zeroValue}
+	a.GetEvents()
+	a = &AuditEntry{}
+	a.GetEvents()
+	a = nil
+	a.GetEvents()
+}
+
+func TestAuditEntry_GetEventsWere(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{EventsWere: &zeroValue}
+	a.GetEventsWere()
+	a = &AuditEntry{}
+	a.GetEventsWere()
+	a = nil
+	a.GetEventsWere()
+}
+
+func TestAuditEntry_GetExplanation(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Explanation: &zeroValue}
+	a.GetExplanation()
+	a = &AuditEntry{}
+	a.GetExplanation()
+	a = nil
+	a.GetExplanation()
+}
+
+func TestAuditEntry_GetFingerprint(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Fingerprint: &zeroValue}
+	a.GetFingerprint()
+	a = &AuditEntry{}
+	a.GetFingerprint()
+	a = nil
+	a.GetFingerprint()
+}
+
+func TestAuditEntry_GetHeadBranch(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{HeadBranch: &zeroValue}
+	a.GetHeadBranch()
+	a = &AuditEntry{}
+	a.GetHeadBranch()
+	a = nil
+	a.GetHeadBranch()
+}
+
+func TestAuditEntry_GetHeadSHA(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{HeadSHA: &zeroValue}
+	a.GetHeadSHA()
+	a = &AuditEntry{}
+	a.GetHeadSHA()
+	a = nil
+	a.GetHeadSHA()
+}
+
+func TestAuditEntry_GetHookID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{HookID: &zeroValue}
+	a.GetHookID()
+	a = &AuditEntry{}
+	a.GetHookID()
+	a = nil
+	a.GetHookID()
+}
+
+func TestAuditEntry_GetIsHostedRunner(tt *testing.T) {
+	var zeroValue bool
+	a := &AuditEntry{IsHostedRunner: &zeroValue}
+	a.GetIsHostedRunner()
+	a = &AuditEntry{}
+	a.GetIsHostedRunner()
+	a = nil
+	a.GetIsHostedRunner()
+}
+
+func TestAuditEntry_GetJobName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{JobName: &zeroValue}
+	a.GetJobName()
+	a = &AuditEntry{}
+	a.GetJobName()
+	a = nil
+	a.GetJobName()
+}
+
+func TestAuditEntry_GetLimitedAvailability(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{LimitedAvailability: &zeroValue}
+	a.GetLimitedAvailability()
+	a = &AuditEntry{}
+	a.GetLimitedAvailability()
+	a = nil
+	a.GetLimitedAvailability()
+}
+
+func TestAuditEntry_GetMessage(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Message: &zeroValue}
+	a.GetMessage()
+	a = &AuditEntry{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
+}
+
+func TestAuditEntry_GetName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Name: &zeroValue}
+	a.GetName()
+	a = &AuditEntry{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAuditEntry_GetOldUser(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{OldUser: &zeroValue}
+	a.GetOldUser()
+	a = &AuditEntry{}
+	a.GetOldUser()
+	a = nil
+	a.GetOldUser()
+}
+
+func TestAuditEntry_GetOpenSSHPublicKey(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{OpenSSHPublicKey: &zeroValue}
+	a.GetOpenSSHPublicKey()
+	a = &AuditEntry{}
+	a.GetOpenSSHPublicKey()
+	a = nil
+	a.GetOpenSSHPublicKey()
+}
+
+func TestAuditEntry_GetOrg(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Org: &zeroValue}
+	a.GetOrg()
+	a = &AuditEntry{}
+	a.GetOrg()
+	a = nil
+	a.GetOrg()
+}
+
+func TestAuditEntry_GetPreviousVisibility(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{PreviousVisibility: &zeroValue}
+	a.GetPreviousVisibility()
+	a = &AuditEntry{}
+	a.GetPreviousVisibility()
+	a = nil
+	a.GetPreviousVisibility()
+}
+
+func TestAuditEntry_GetReadOnly(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{ReadOnly: &zeroValue}
+	a.GetReadOnly()
+	a = &AuditEntry{}
+	a.GetReadOnly()
+	a = nil
+	a.GetReadOnly()
+}
+
+func TestAuditEntry_GetRepo(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Repo: &zeroValue}
+	a.GetRepo()
+	a = &AuditEntry{}
+	a.GetRepo()
+	a = nil
+	a.GetRepo()
+}
+
+func TestAuditEntry_GetRepository(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Repository: &zeroValue}
+	a.GetRepository()
+	a = &AuditEntry{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAuditEntry_GetRepositoryPublic(tt *testing.T) {
+	var zeroValue bool
+	a := &AuditEntry{RepositoryPublic: &zeroValue}
+	a.GetRepositoryPublic()
+	a = &AuditEntry{}
+	a.GetRepositoryPublic()
+	a = nil
+	a.GetRepositoryPublic()
+}
+
+func TestAuditEntry_GetRunnerGroupID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{RunnerGroupID: &zeroValue}
+	a.GetRunnerGroupID()
+	a = &AuditEntry{}
+	a.GetRunnerGroupID()
+	a = nil
+	a.GetRunnerGroupID()
+}
+
+func TestAuditEntry_GetRunnerGroupName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{RunnerGroupName: &zeroValue}
+	a.GetRunnerGroupName()
+	a = &AuditEntry{}
+	a.GetRunnerGroupName()
+	a = nil
+	a.GetRunnerGroupName()
+}
+
+func TestAuditEntry_GetRunnerID(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{RunnerID: &zeroValue}
+	a.GetRunnerID()
+	a = &AuditEntry{}
+	a.GetRunnerID()
+	a = nil
+	a.GetRunnerID()
+}
+
+func TestAuditEntry_GetRunnerLabels(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{RunnerLabels: &zeroValue}
+	a.GetRunnerLabels()
+	a = &AuditEntry{}
+	a.GetRunnerLabels()
+	a = nil
+	a.GetRunnerLabels()
+}
+
+func TestAuditEntry_GetRunnerName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{RunnerName: &zeroValue}
+	a.GetRunnerName()
+	a = &AuditEntry{}
+	a.GetRunnerName()
+	a = nil
+	a.GetRunnerName()
+}
+
+func TestAuditEntry_GetSecertsPassed(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{SecertsPassed: &zeroValue}
+	a.GetSecertsPassed()
+	a = &AuditEntry{}
+	a.GetSecertsPassed()
+	a = nil
+	a.GetSecertsPassed()
+}
+
+func TestAuditEntry_GetSourceVersion(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{SourceVersion: &zeroValue}
+	a.GetSourceVersion()
+	a = &AuditEntry{}
+	a.GetSourceVersion()
+	a = nil
+	a.GetSourceVersion()
+}
+
+func TestAuditEntry_GetStartedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &AuditEntry{StartedAt: &zeroValue}
+	a.GetStartedAt()
+	a = &AuditEntry{}
+	a.GetStartedAt()
+	a = nil
+	a.GetStartedAt()
+}
+
+func TestAuditEntry_GetTargetLogin(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TargetLogin: &zeroValue}
+	a.GetTargetLogin()
+	a = &AuditEntry{}
+	a.GetTargetLogin()
+	a = nil
+	a.GetTargetLogin()
+}
+
+func TestAuditEntry_GetTargetVersion(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TargetVersion: &zeroValue}
+	a.GetTargetVersion()
+	a = &AuditEntry{}
+	a.GetTargetVersion()
+	a = nil
+	a.GetTargetVersion()
+}
+
+func TestAuditEntry_GetTeam(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Team: &zeroValue}
+	a.GetTeam()
+	a = &AuditEntry{}
+	a.GetTeam()
+	a = nil
+	a.GetTeam()
+}
+
+func TestAuditEntry_GetTimestamp(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &AuditEntry{Timestamp: &zeroValue}
+	a.GetTimestamp()
+	a = &AuditEntry{}
+	a.GetTimestamp()
+	a = nil
+	a.GetTimestamp()
+}
+
+func TestAuditEntry_GetTransportName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TransportName: &zeroValue}
+	a.GetTransportName()
+	a = &AuditEntry{}
+	a.GetTransportName()
+	a = nil
+	a.GetTransportName()
+}
+
+func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{TransportProtocol: &zeroValue}
+	a.GetTransportProtocol()
+	a = &AuditEntry{}
+	a.GetTransportProtocol()
+	a = nil
+	a.GetTransportProtocol()
+}
+
+func TestAuditEntry_GetTriggerId(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{TriggerId: &zeroValue}
+	a.GetTriggerId()
+	a = &AuditEntry{}
+	a.GetTriggerId()
+	a = nil
+	a.GetTriggerId()
+}
+
+func TestAuditEntry_GetUser(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{User: &zeroValue}
+	a.GetUser()
+	a = &AuditEntry{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
+func TestAuditEntry_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Visibility: &zeroValue}
+	a.GetVisibility()
+	a = &AuditEntry{}
+	a.GetVisibility()
+	a = nil
+	a.GetVisibility()
+}
+
+func TestAuditEntry_GetWorkflowID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{WorkflowID: &zeroValue}
+	a.GetWorkflowID()
+	a = &AuditEntry{}
+	a.GetWorkflowID()
+	a = nil
+	a.GetWorkflowID()
+}
+
+func TestAuditEntry_GetWorkflowRunID(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{WorkflowRunID: &zeroValue}
+	a.GetWorkflowRunID()
+	a = &AuditEntry{}
+	a.GetWorkflowRunID()
+	a = nil
+	a.GetWorkflowRunID()
+}
+
 func TestAuthorization_GetApp(tt *testing.T) {
 	a := &Authorization{}
 	a.GetApp()
@@ -3960,6 +4530,66 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 	f = nil
 	f.GetSender()
+}
+
+func TestGetAuditLogOptions_GetAfter(tt *testing.T) {
+	var zeroValue string
+	g := &GetAuditLogOptions{After: &zeroValue}
+	g.GetAfter()
+	g = &GetAuditLogOptions{}
+	g.GetAfter()
+	g = nil
+	g.GetAfter()
+}
+
+func TestGetAuditLogOptions_GetBefore(tt *testing.T) {
+	var zeroValue string
+	g := &GetAuditLogOptions{Before: &zeroValue}
+	g.GetBefore()
+	g = &GetAuditLogOptions{}
+	g.GetBefore()
+	g = nil
+	g.GetBefore()
+}
+
+func TestGetAuditLogOptions_GetInclude(tt *testing.T) {
+	var zeroValue string
+	g := &GetAuditLogOptions{Include: &zeroValue}
+	g.GetInclude()
+	g = &GetAuditLogOptions{}
+	g.GetInclude()
+	g = nil
+	g.GetInclude()
+}
+
+func TestGetAuditLogOptions_GetOrder(tt *testing.T) {
+	var zeroValue string
+	g := &GetAuditLogOptions{Order: &zeroValue}
+	g.GetOrder()
+	g = &GetAuditLogOptions{}
+	g.GetOrder()
+	g = nil
+	g.GetOrder()
+}
+
+func TestGetAuditLogOptions_GetPerPage(tt *testing.T) {
+	var zeroValue int64
+	g := &GetAuditLogOptions{PerPage: &zeroValue}
+	g.GetPerPage()
+	g = &GetAuditLogOptions{}
+	g.GetPerPage()
+	g = nil
+	g.GetPerPage()
+}
+
+func TestGetAuditLogOptions_GetPhrase(tt *testing.T) {
+	var zeroValue string
+	g := &GetAuditLogOptions{Phrase: &zeroValue}
+	g.GetPhrase()
+	g = &GetAuditLogOptions{}
+	g.GetPhrase()
+	g = nil
+	g.GetPhrase()
 }
 
 func TestGist_GetComments(tt *testing.T) {
