@@ -63,7 +63,7 @@ type AuditEntry struct {
 	RunnerID             *string    `json:"runner_id,omitempty"`
 	RunnerLabels         *string    `json:"runner_labels,omitempty"`
 	RunnerName           *string    `json:"runner_name,omitempty"`
-	SecertsPassed        *string    `json:"secrets_passed,omitempty"`
+	SecretsPassed        *string    `json:"secrets_passed,omitempty"`
 	SourceVersion        *string    `json:"source_version,omitempty"`
 	StartedAt            *Timestamp `json:"started_at,omitempty"`
 	TargetLogin          *string    `json:"target_login,omitempty"`

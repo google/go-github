@@ -868,12 +868,12 @@ func (a *AuditEntry) GetRunnerName() string {
 	return *a.RunnerName
 }
 
-// GetSecertsPassed returns the SecertsPassed field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetSecertsPassed() string {
-	if a == nil || a.SecertsPassed == nil {
+// GetSecretsPassed returns the SecretsPassed field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetSecretsPassed() string {
+	if a == nil || a.SecretsPassed == nil {
 		return ""
 	}
-	return *a.SecertsPassed
+	return *a.SecretsPassed
 }
 
 // GetSourceVersion returns the SourceVersion field if it's non-nil, zero value otherwise.

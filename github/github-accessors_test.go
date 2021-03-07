@@ -1041,14 +1041,14 @@ func TestAuditEntry_GetRunnerName(tt *testing.T) {
 	a.GetRunnerName()
 }
 
-func TestAuditEntry_GetSecertsPassed(tt *testing.T) {
+func TestAuditEntry_GetSecretsPassed(tt *testing.T) {
 	var zeroValue string
-	a := &AuditEntry{SecertsPassed: &zeroValue}
-	a.GetSecertsPassed()
+	a := &AuditEntry{SecretsPassed: &zeroValue}
+	a.GetSecretsPassed()
 	a = &AuditEntry{}
-	a.GetSecertsPassed()
+	a.GetSecretsPassed()
 	a = nil
-	a.GetSecertsPassed()
+	a.GetSecretsPassed()
 }
 
 func TestAuditEntry_GetSourceVersion(tt *testing.T) {
