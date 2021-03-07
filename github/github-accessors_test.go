@@ -1131,14 +1131,14 @@ func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
 	a.GetTransportProtocol()
 }
 
-func TestAuditEntry_GetTriggerId(tt *testing.T) {
+func TestAuditEntry_GetTriggerID(tt *testing.T) {
 	var zeroValue int64
-	a := &AuditEntry{TriggerId: &zeroValue}
-	a.GetTriggerId()
+	a := &AuditEntry{TriggerID: &zeroValue}
+	a.GetTriggerID()
 	a = &AuditEntry{}
-	a.GetTriggerId()
+	a.GetTriggerID()
 	a = nil
-	a.GetTriggerId()
+	a.GetTriggerID()
 }
 
 func TestAuditEntry_GetUser(tt *testing.T) {

@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// Get AuditLog Options sets up optional parameters to query audit-log endpoint.
+// GetAuditLogOptions sets up optional parameters to query audit-log endpoint.
 type GetAuditLogOptions struct {
 	Phrase  *string `json:"phrase,omitempty"`   // A search phrase. (Optional.)
 	Include *string `json:"include,omitempty"`  // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
@@ -69,7 +69,7 @@ type AuditEntry struct {
 	TargetLogin          *string    `json:"target_login,omitempty"`
 	TargetVersion        *string    `json:"target_version,omitempty"`
 	Team                 *string    `json:"team,omitempty"`
-	TriggerId            *int64     `json:"trigger_id,omitempty"`
+	TriggerID            *int64     `json:"trigger_id,omitempty"`
 	User                 *string    `json:"user,omitempty"`
 	Visibility           *string    `json:"visibility,omitempty"`
 	WorkflowID           *int64     `json:"workflow_id,omitempty"`

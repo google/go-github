@@ -940,12 +940,12 @@ func (a *AuditEntry) GetTransportProtocol() int64 {
 	return *a.TransportProtocol
 }
 
-// GetTriggerId returns the TriggerId field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetTriggerId() int64 {
-	if a == nil || a.TriggerId == nil {
+// GetTriggerID returns the TriggerID field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetTriggerID() int64 {
+	if a == nil || a.TriggerID == nil {
 		return 0
 	}
-	return *a.TriggerId
+	return *a.TriggerID
 }
 
 // GetUser returns the User field if it's non-nil, zero value otherwise.
