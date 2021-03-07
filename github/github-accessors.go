@@ -621,9 +621,9 @@ func (a *AuditEntry) GetContentType() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetCreatedAt() Timestamp {
+func (a *AuditEntry) GetCreatedAt() int64 {
 	if a == nil || a.CreatedAt == nil {
-		return Timestamp{}
+		return 0
 	}
 	return *a.CreatedAt
 }
@@ -853,9 +853,9 @@ func (a *AuditEntry) GetRunnerID() string {
 }
 
 // GetRunnerLabels returns the RunnerLabels field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetRunnerLabels() string {
+func (a *AuditEntry) GetRunnerLabels() []string {
 	if a == nil || a.RunnerLabels == nil {
-		return ""
+		return nil
 	}
 	return *a.RunnerLabels
 }
@@ -869,9 +869,9 @@ func (a *AuditEntry) GetRunnerName() string {
 }
 
 // GetSecretsPassed returns the SecretsPassed field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetSecretsPassed() string {
+func (a *AuditEntry) GetSecretsPassed() []string {
 	if a == nil || a.SecretsPassed == nil {
-		return ""
+		return nil
 	}
 	return *a.SecretsPassed
 }
@@ -917,9 +917,9 @@ func (a *AuditEntry) GetTeam() string {
 }
 
 // GetTimestamp returns the Timestamp field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetTimestamp() Timestamp {
+func (a *AuditEntry) GetTimestamp() int64 {
 	if a == nil || a.Timestamp == nil {
-		return Timestamp{}
+		return 0
 	}
 	return *a.Timestamp
 }

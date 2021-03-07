@@ -22,7 +22,7 @@ type GetAuditLogOptions struct {
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
 type AuditEntry struct {
-	Timestamp            *Timestamp `json:"@timestamp,omitempty"`
+	Timestamp            *int64     `json:"@timestamp,omitempty"`
 	DocumentID           *string    `json:"_document_id,omitempty"`
 	Action               *string    `json:"action,omitempty"`
 	Active               *string    `json:"active,omitempty"`
@@ -35,7 +35,7 @@ type AuditEntry struct {
 	Config               *string    `json:"config,omitempty"`
 	ConfigWas            *string    `json:"config_was,omitempty"`
 	ContentType          *string    `json:"content_type,omitempty"`
-	CreatedAt            *Timestamp `json:"created_at,omitempty"`
+	CreatedAt            *int64     `json:"created_at,omitempty"`
 	DeployKeyFingerprint *string    `json:"deploy_key_fingerprint,omitempty"`
 	Emoji                *string    `json:"emoji,omitempty"`
 	EnvironmentName      *string    `json:"environment_name,omitempty"`
@@ -61,9 +61,9 @@ type AuditEntry struct {
 	RunnerGroupID        *string    `json:"runner_group_id,omitempty"`
 	RunnerGroupName      *string    `json:"runner_group_name,omitempty"`
 	RunnerID             *string    `json:"runner_id,omitempty"`
-	RunnerLabels         *string    `json:"runner_labels,omitempty"`
+	RunnerLabels         *[]string  `json:"runner_labels,omitempty"`
 	RunnerName           *string    `json:"runner_name,omitempty"`
-	SecretsPassed        *string    `json:"secrets_passed,omitempty"`
+	SecretsPassed        *[]string  `json:"secrets_passed,omitempty"`
 	SourceVersion        *string    `json:"source_version,omitempty"`
 	StartedAt            *Timestamp `json:"started_at,omitempty"`
 	TargetLogin          *string    `json:"target_login,omitempty"`

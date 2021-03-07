@@ -732,7 +732,7 @@ func TestAuditEntry_GetContentType(tt *testing.T) {
 }
 
 func TestAuditEntry_GetCreatedAt(tt *testing.T) {
-	var zeroValue Timestamp
+	var zeroValue int64
 	a := &AuditEntry{CreatedAt: &zeroValue}
 	a.GetCreatedAt()
 	a = &AuditEntry{}
@@ -1022,7 +1022,7 @@ func TestAuditEntry_GetRunnerID(tt *testing.T) {
 }
 
 func TestAuditEntry_GetRunnerLabels(tt *testing.T) {
-	var zeroValue string
+	var zeroValue []string
 	a := &AuditEntry{RunnerLabels: &zeroValue}
 	a.GetRunnerLabels()
 	a = &AuditEntry{}
@@ -1042,7 +1042,7 @@ func TestAuditEntry_GetRunnerName(tt *testing.T) {
 }
 
 func TestAuditEntry_GetSecretsPassed(tt *testing.T) {
-	var zeroValue string
+	var zeroValue []string
 	a := &AuditEntry{SecretsPassed: &zeroValue}
 	a.GetSecretsPassed()
 	a = &AuditEntry{}
@@ -1102,7 +1102,7 @@ func TestAuditEntry_GetTeam(tt *testing.T) {
 }
 
 func TestAuditEntry_GetTimestamp(tt *testing.T) {
-	var zeroValue Timestamp
+	var zeroValue int64
 	a := &AuditEntry{Timestamp: &zeroValue}
 	a.GetTimestamp()
 	a = &AuditEntry{}
