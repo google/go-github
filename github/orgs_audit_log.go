@@ -92,11 +92,12 @@ func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
-
-	req.Header.Set("Accept", mediaTypeV3)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	var auditEntries []*AuditEntry
-	resp, err := s.client.Do(ctx, req, auditEntries)
+	resp, err := s.client.Do(ctx, req, &auditEntries)
 	if err != nil {
 		return nil, resp, err
 	}
