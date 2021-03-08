@@ -1,4 +1,4 @@
-// Copyright 2017 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -69,7 +69,7 @@ type AuditEntry struct {
 	TargetLogin          *string    `json:"target_login,omitempty"`
 	TargetVersion        *string    `json:"target_version,omitempty"`
 	Team                 *string    `json:"team,omitempty"`
-	TriggerID            *int64     `json:"trigger_id,omitempty"`
+	TriggerID            *string    `json:"trigger_id,omitempty"`
 	User                 *string    `json:"user,omitempty"`
 	Visibility           *string    `json:"visibility,omitempty"`
 	WorkflowID           *int64     `json:"workflow_id,omitempty"`
@@ -95,11 +95,11 @@ func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts
 
 	req.Header.Set("Accept", mediaTypeV3)
 
-	var auditEntry []*AuditEntry
-	resp, err := s.client.Do(ctx, req, &auditEntry)
+	var auditEntries []*AuditEntry
+	resp, err := s.client.Do(ctx, req, auditEntries)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return auditEntry, resp, nil
+	return auditEntries, resp, nil
 }
