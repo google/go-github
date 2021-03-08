@@ -941,9 +941,9 @@ func (a *AuditEntry) GetTransportProtocol() int64 {
 }
 
 // GetTriggerID returns the TriggerID field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetTriggerID() string {
+func (a *AuditEntry) GetTriggerID() int64 {
 	if a == nil || a.TriggerID == nil {
-		return ""
+		return 0
 	}
 	return *a.TriggerID
 }

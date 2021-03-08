@@ -69,7 +69,7 @@ type AuditEntry struct {
 	TargetLogin          *string    `json:"target_login,omitempty"`
 	TargetVersion        *string    `json:"target_version,omitempty"`
 	Team                 *string    `json:"team,omitempty"`
-	TriggerID            *string    `json:"trigger_id,omitempty"`
+	TriggerID            *int64     `json:"trigger_id,omitempty"`
 	User                 *string    `json:"user,omitempty"`
 	Visibility           *string    `json:"visibility,omitempty"`
 	WorkflowID           *int64     `json:"workflow_id,omitempty"`

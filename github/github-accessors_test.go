@@ -1132,7 +1132,7 @@ func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
 }
 
 func TestAuditEntry_GetTriggerID(tt *testing.T) {
-	var zeroValue string
+	var zeroValue int64
 	a := &AuditEntry{TriggerID: &zeroValue}
 	a.GetTriggerID()
 	a = &AuditEntry{}
