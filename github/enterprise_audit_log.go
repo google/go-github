@@ -13,8 +13,8 @@ import (
 // GetAuditLog gets the audit-log entries for an organization
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/orgs#get-the-audit-log-for-an-organization
-func (s *EnterpriseService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/audit-log", org)
+func (s *EnterpriseService) GetAuditLog(ctx context.Context, enterprise string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/audit-log", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
