@@ -91,4 +91,3 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 	})
 
 }
-
