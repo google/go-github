@@ -46,7 +46,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	ctx := context.Background()
 	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", nil)
 	if err != nil {
-		t.Errorf("Organizations.GetAuditLog return error:%v", err)
+		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:33:04.000Z")
 	completedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:35:08.000Z")
