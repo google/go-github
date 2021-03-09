@@ -4532,26 +4532,6 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
-func TestGetAuditLogOptions_GetAfter(tt *testing.T) {
-	var zeroValue string
-	g := &GetAuditLogOptions{After: &zeroValue}
-	g.GetAfter()
-	g = &GetAuditLogOptions{}
-	g.GetAfter()
-	g = nil
-	g.GetAfter()
-}
-
-func TestGetAuditLogOptions_GetBefore(tt *testing.T) {
-	var zeroValue string
-	g := &GetAuditLogOptions{Before: &zeroValue}
-	g.GetBefore()
-	g = &GetAuditLogOptions{}
-	g.GetBefore()
-	g = nil
-	g.GetBefore()
-}
-
 func TestGetAuditLogOptions_GetInclude(tt *testing.T) {
 	var zeroValue string
 	g := &GetAuditLogOptions{Include: &zeroValue}
@@ -4570,16 +4550,6 @@ func TestGetAuditLogOptions_GetOrder(tt *testing.T) {
 	g.GetOrder()
 	g = nil
 	g.GetOrder()
-}
-
-func TestGetAuditLogOptions_GetPerPage(tt *testing.T) {
-	var zeroValue int64
-	g := &GetAuditLogOptions{PerPage: &zeroValue}
-	g.GetPerPage()
-	g = &GetAuditLogOptions{}
-	g.GetPerPage()
-	g = nil
-	g.GetPerPage()
 }
 
 func TestGetAuditLogOptions_GetPhrase(tt *testing.T) {

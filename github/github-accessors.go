@@ -3860,22 +3860,6 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (g *GetAuditLogOptions) GetAfter() string {
-	if g == nil || g.After == nil {
-		return ""
-	}
-	return *g.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (g *GetAuditLogOptions) GetBefore() string {
-	if g == nil || g.Before == nil {
-		return ""
-	}
-	return *g.Before
-}
-
 // GetInclude returns the Include field if it's non-nil, zero value otherwise.
 func (g *GetAuditLogOptions) GetInclude() string {
 	if g == nil || g.Include == nil {
@@ -3890,14 +3874,6 @@ func (g *GetAuditLogOptions) GetOrder() string {
 		return ""
 	}
 	return *g.Order
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (g *GetAuditLogOptions) GetPerPage() int64 {
-	if g == nil || g.PerPage == nil {
-		return 0
-	}
-	return *g.PerPage
 }
 
 // GetPhrase returns the Phrase field if it's non-nil, zero value otherwise.

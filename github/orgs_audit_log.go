@@ -12,12 +12,10 @@ import (
 
 // GetAuditLogOptions sets up optional parameters to query audit-log endpoint.
 type GetAuditLogOptions struct {
-	Phrase  *string `json:"phrase,omitempty"`   // A search phrase. (Optional.)
-	Include *string `json:"include,omitempty"`  // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
-	After   *string `json:"after,omitempty"`    // A cursor, as given in the Link header. If specified, the query only searches for events after this cursor. (Optional.)
-	Before  *string `json:"before,omitempty"`   // A cursor, as given in the Link header. If specified, the query only searches for events before this cursor. (Optional.)
-	Order   *string `json:"order,omitempty"`    // The order of audit log events. Can be one of "asc" or "desc". Default: "desc". (Optional.)
-	PerPage *int64  `json:"per_page,omitempty"` // Results per page (max 100).
+	Phrase  *string `json:"phrase,omitempty"`  // A search phrase. (Optional.)
+	Include *string `json:"include,omitempty"` // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
+	Order   *string `json:"order,omitempty"`   // The order of audit log events. Can be one of "asc" or "desc". Default: "desc". (Optional.)
+	ListCursorOptions
 }
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
