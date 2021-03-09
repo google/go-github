@@ -81,7 +81,7 @@ type AuditEntry struct {
 	TransportName        *string    `json:"transport_protocol_name,omitempty"`
 }
 
-// GetAuditLog gets the audit-log entries for an organization
+// GetAuditLog gets the audit-log entries for an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/orgs#get-the-audit-log-for-an-organization
 func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {
