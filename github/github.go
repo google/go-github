@@ -209,7 +209,7 @@ type ListCursorOptions struct {
 	After string `url:"after,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
-	Before string `json:"before,omitempty"`
+	Before string `url:"before,omitempty"`
 }
 
 // UploadOptions specifies the parameters to methods that support uploads.
