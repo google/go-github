@@ -1,4 +1,11 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
 name: tests
 env:
   GO111MODULE: on
@@ -12,6 +19,11 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
+    - name: Cancel previous
+      uses: styfle/cancel-workflow-action@0.8.0
+      with:
+        access_token: ${{ github.token }}
+
     - uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go-version }}
