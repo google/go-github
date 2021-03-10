@@ -19,6 +19,7 @@ type GetAuditLogOptions struct {
 }
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
+// For a list of actions see - https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/reviewing-the-audit-log-for-your-organization#audit-log-actions
 type AuditEntry struct {
 	Action               *string    `json:"action,omitempty"`
 	Active               *string    `json:"active,omitempty"`
