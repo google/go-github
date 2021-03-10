@@ -20,13 +20,12 @@ type GetAuditLogOptions struct {
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
 type AuditEntry struct {
-	Timestamp            *int64     `json:"@timestamp,omitempty"`
-	DocumentID           *string    `json:"_document_id,omitempty"`
 	Action               *string    `json:"action,omitempty"`
 	Active               *string    `json:"active,omitempty"`
 	ActiveWas            *string    `json:"active_was,omitempty"`
 	Actor                *string    `json:"actor,omitempty"`
 	BlockedUser          *string    `json:"blocked_user,omitempty"`
+	Business             *string    `json:"business,omitempty"`
 	CancelledAt          *Timestamp `json:"cancelled_at,omitempty"`
 	CompletedAt          *Timestamp `json:"completed_at,omitempty"`
 	Conclusion           *string    `json:"conclusion,omitempty"`
@@ -35,6 +34,7 @@ type AuditEntry struct {
 	ContentType          *string    `json:"content_type,omitempty"`
 	CreatedAt            *int64     `json:"created_at,omitempty"`
 	DeployKeyFingerprint *string    `json:"deploy_key_fingerprint,omitempty"`
+	DocumentID           *string    `json:"_document_id,omitempty"`
 	Emoji                *string    `json:"emoji,omitempty"`
 	EnvironmentName      *string    `json:"environment_name,omitempty"`
 	Event                *string    `json:"event,omitempty"`
@@ -56,6 +56,8 @@ type AuditEntry struct {
 	PreviousVisibility   *string    `json:"previous_visibility,omitempty"`
 	ReadOnly             *string    `json:"read_only,omitempty"`
 	Repo                 *string    `json:"repo,omitempty"`
+	Repository           *string    `json:"repository,omitempty"`
+	RepositoryPublic     *bool      `json:"repository_public,omitempty"`
 	RunnerGroupID        *string    `json:"runner_group_id,omitempty"`
 	RunnerGroupName      *string    `json:"runner_group_name,omitempty"`
 	RunnerID             *string    `json:"runner_id,omitempty"`
@@ -67,16 +69,14 @@ type AuditEntry struct {
 	TargetLogin          *string    `json:"target_login,omitempty"`
 	TargetVersion        *string    `json:"target_version,omitempty"`
 	Team                 *string    `json:"team,omitempty"`
+	Timestamp            *int64     `json:"@timestamp,omitempty"`
+	TransportName        *string    `json:"transport_protocol_name,omitempty"`
+	TransportProtocol    *int64     `json:"transport_protocol,omitempty"`
 	TriggerID            *int64     `json:"trigger_id,omitempty"`
 	User                 *string    `json:"user,omitempty"`
 	Visibility           *string    `json:"visibility,omitempty"`
 	WorkflowID           *int64     `json:"workflow_id,omitempty"`
 	WorkflowRunID        *int64     `json:"workflow_run_id,omitempty"`
-	Business             *string    `json:"business,omitemtpy"`
-	Repository           *string    `json:"repository,omitempty"`
-	RepositoryPublic     *bool      `json:"repository_public,omitempty"`
-	TransportProtocol    *int64     `json:"transport_protocol,omitempty"`
-	TransportName        *string    `json:"transport_protocol_name,omitempty"`
 }
 
 // GetAuditLog gets the audit-log entries for an organization.
