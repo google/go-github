@@ -15,7 +15,17 @@ jobs:
     strategy:
       matrix:
         go-version: [1.x, 1.15.x]
-        platform: [ubuntu-latest, windows-latest]
+        platform: [ubuntu-latest]
+        include:
+          # include windows, but only with the latest Go version, since there
+          # is very little in the library that is platform specific
+          - go-version: 1.x
+            platform: windows-latest
+
+          # only update test coverage stats with the most recent go version on linux
+          - go-version: 1.x
+            platform: ubuntu-latest
+            update-coverage: true
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -30,10 +40,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache go modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
     - name: Run go fmt
@@ -60,6 +70,7 @@ jobs:
         go test ./...
 
     - name: Upload coverage to Codecov
+      if: ${{ matrix.update-coverage }}
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
