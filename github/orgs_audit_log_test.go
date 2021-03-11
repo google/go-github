@@ -44,7 +44,13 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		]`)
 	})
 	ctx := context.Background()
-	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", nil)
+	getOpts := GetAuditLogOptions{
+		Include: String("all"),
+		Phrase:  String("action:workflows"),
+		Order:   String("asc"),
+	}
+
+	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
 	if err != nil {
 		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
@@ -78,7 +84,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 	const methodName = "GetAuditLog"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetAuditLog(ctx, "\n", nil)
+		_, _, err = client.Organizations.GetAuditLog(ctx, "\n", &getOpts)
 		return err
 	})
 
