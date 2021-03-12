@@ -22,7 +22,7 @@ type GetAuditLogOptions struct {
 // HookConfig describes metadata about a webhook configuration.
 type HookConfig struct {
 	ContentType *string `json:"content_type,omitempty"`
-	InsecureSSL *string `json:"insecure_ssl, omitempty"`
+	InsecureSSL *string `json:"insecure_ssl,omitempty"`
 	URL         *string `json:"url,omitempty"`
 }
 
