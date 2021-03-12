@@ -41,7 +41,7 @@ type AuditEntry struct {
 	Config                *HookConfig `json:"config,omitempty"`
 	ConfigWas             *HookConfig `json:"config_was,omitempty"`
 	ContentType           *string     `json:"content_type,omitempty"`
-	CreatedAt             *int64      `json:"created_at,omitempty"`
+	CreatedAt             *Timestamp  `json:"created_at,omitempty"`
 	DeployKeyFingerprint  *string     `json:"deploy_key_fingerprint,omitempty"`
 	DocumentID            *string     `json:"_document_id,omitempty"`
 	Emoji                 *string     `json:"emoji,omitempty"`

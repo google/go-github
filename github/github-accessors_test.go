@@ -622,7 +622,7 @@ func TestAuditEntry_GetAction(tt *testing.T) {
 }
 
 func TestAuditEntry_GetActive(tt *testing.T) {
-	var zeroValue string
+	var zeroValue bool
 	a := &AuditEntry{Active: &zeroValue}
 	a.GetActive()
 	a = &AuditEntry{}
@@ -632,7 +632,7 @@ func TestAuditEntry_GetActive(tt *testing.T) {
 }
 
 func TestAuditEntry_GetActiveWas(tt *testing.T) {
-	var zeroValue string
+	var zeroValue bool
 	a := &AuditEntry{ActiveWas: &zeroValue}
 	a.GetActiveWas()
 	a = &AuditEntry{}
@@ -702,20 +702,14 @@ func TestAuditEntry_GetConclusion(tt *testing.T) {
 }
 
 func TestAuditEntry_GetConfig(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{Config: &zeroValue}
-	a.GetConfig()
-	a = &AuditEntry{}
+	a := &AuditEntry{}
 	a.GetConfig()
 	a = nil
 	a.GetConfig()
 }
 
 func TestAuditEntry_GetConfigWas(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{ConfigWas: &zeroValue}
-	a.GetConfigWas()
-	a = &AuditEntry{}
+	a := &AuditEntry{}
 	a.GetConfigWas()
 	a = nil
 	a.GetConfigWas()
@@ -732,7 +726,7 @@ func TestAuditEntry_GetContentType(tt *testing.T) {
 }
 
 func TestAuditEntry_GetCreatedAt(tt *testing.T) {
-	var zeroValue int64
+	var zeroValue Timestamp
 	a := &AuditEntry{CreatedAt: &zeroValue}
 	a.GetCreatedAt()
 	a = &AuditEntry{}
@@ -789,26 +783,6 @@ func TestAuditEntry_GetEvent(tt *testing.T) {
 	a.GetEvent()
 	a = nil
 	a.GetEvent()
-}
-
-func TestAuditEntry_GetEvents(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{Events: &zeroValue}
-	a.GetEvents()
-	a = &AuditEntry{}
-	a.GetEvents()
-	a = nil
-	a.GetEvents()
-}
-
-func TestAuditEntry_GetEventsWere(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{EventsWere: &zeroValue}
-	a.GetEventsWere()
-	a = &AuditEntry{}
-	a.GetEventsWere()
-	a = nil
-	a.GetEventsWere()
 }
 
 func TestAuditEntry_GetExplanation(tt *testing.T) {
@@ -882,7 +856,7 @@ func TestAuditEntry_GetJobName(tt *testing.T) {
 }
 
 func TestAuditEntry_GetLimitedAvailability(tt *testing.T) {
-	var zeroValue string
+	var zeroValue bool
 	a := &AuditEntry{LimitedAvailability: &zeroValue}
 	a.GetLimitedAvailability()
 	a = &AuditEntry{}
@@ -1021,16 +995,6 @@ func TestAuditEntry_GetRunnerID(tt *testing.T) {
 	a.GetRunnerID()
 }
 
-func TestAuditEntry_GetRunnerLabels(tt *testing.T) {
-	var zeroValue []string
-	a := &AuditEntry{RunnerLabels: &zeroValue}
-	a.GetRunnerLabels()
-	a = &AuditEntry{}
-	a.GetRunnerLabels()
-	a = nil
-	a.GetRunnerLabels()
-}
-
 func TestAuditEntry_GetRunnerName(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{RunnerName: &zeroValue}
@@ -1039,16 +1003,6 @@ func TestAuditEntry_GetRunnerName(tt *testing.T) {
 	a.GetRunnerName()
 	a = nil
 	a.GetRunnerName()
-}
-
-func TestAuditEntry_GetSecretsPassed(tt *testing.T) {
-	var zeroValue []string
-	a := &AuditEntry{SecretsPassed: &zeroValue}
-	a.GetSecretsPassed()
-	a = &AuditEntry{}
-	a.GetSecretsPassed()
-	a = nil
-	a.GetSecretsPassed()
 }
 
 func TestAuditEntry_GetSourceVersion(tt *testing.T) {
@@ -1102,7 +1056,7 @@ func TestAuditEntry_GetTeam(tt *testing.T) {
 }
 
 func TestAuditEntry_GetTimestamp(tt *testing.T) {
-	var zeroValue int64
+	var zeroValue Timestamp
 	a := &AuditEntry{Timestamp: &zeroValue}
 	a.GetTimestamp()
 	a = &AuditEntry{}
@@ -1111,24 +1065,24 @@ func TestAuditEntry_GetTimestamp(tt *testing.T) {
 	a.GetTimestamp()
 }
 
-func TestAuditEntry_GetTransportName(tt *testing.T) {
-	var zeroValue string
-	a := &AuditEntry{TransportName: &zeroValue}
-	a.GetTransportName()
-	a = &AuditEntry{}
-	a.GetTransportName()
-	a = nil
-	a.GetTransportName()
-}
-
 func TestAuditEntry_GetTransportProtocol(tt *testing.T) {
-	var zeroValue int64
+	var zeroValue int
 	a := &AuditEntry{TransportProtocol: &zeroValue}
 	a.GetTransportProtocol()
 	a = &AuditEntry{}
 	a.GetTransportProtocol()
 	a = nil
 	a.GetTransportProtocol()
+}
+
+func TestAuditEntry_GetTransportProtocolName(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{TransportProtocolName: &zeroValue}
+	a.GetTransportProtocolName()
+	a = &AuditEntry{}
+	a.GetTransportProtocolName()
+	a = nil
+	a.GetTransportProtocolName()
 }
 
 func TestAuditEntry_GetTriggerID(tt *testing.T) {
@@ -5341,6 +5295,36 @@ func TestHook_GetURL(tt *testing.T) {
 	h := &Hook{URL: &zeroValue}
 	h.GetURL()
 	h = &Hook{}
+	h.GetURL()
+	h = nil
+	h.GetURL()
+}
+
+func TestHookConfig_GetContentType(tt *testing.T) {
+	var zeroValue string
+	h := &HookConfig{ContentType: &zeroValue}
+	h.GetContentType()
+	h = &HookConfig{}
+	h.GetContentType()
+	h = nil
+	h.GetContentType()
+}
+
+func TestHookConfig_GetInsecureSSL(tt *testing.T) {
+	var zeroValue string
+	h := &HookConfig{InsecureSSL: &zeroValue}
+	h.GetInsecureSSL()
+	h = &HookConfig{}
+	h.GetInsecureSSL()
+	h = nil
+	h.GetInsecureSSL()
+}
+
+func TestHookConfig_GetURL(tt *testing.T) {
+	var zeroValue string
+	h := &HookConfig{URL: &zeroValue}
+	h.GetURL()
+	h = &HookConfig{}
 	h.GetURL()
 	h = nil
 	h.GetURL()

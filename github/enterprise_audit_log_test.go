@@ -55,16 +55,17 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:33:04.000Z")
 	completedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:35:08.000Z")
+	timestamp := time.Unix(1615077308538, 0)
 
 	want := []*AuditEntry{
 		{
-			Timestamp:     Int64(1615077308538),
+			Timestamp:     &Timestamp{timestamp},
 			DocumentID:    String("beeZYapIUe-wKg5-beadb33"),
 			Action:        String("workflows.completed_workflow_run"),
 			Actor:         String("testactor"),
 			CompletedAt:   &Timestamp{completedAt},
 			Conclusion:    String("success"),
-			CreatedAt:     Int64(1615077308538),
+			CreatedAt:     &Timestamp{timestamp},
 			Event:         String("schedule"),
 			HeadBranch:    String("master"),
 			HeadSHA:       String("5acdeadbeef64d1a62388e901e5cdc9358644b37"),

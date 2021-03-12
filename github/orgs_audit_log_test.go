@@ -23,6 +23,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 		fmt.Fprint(w, `[
 		{
+        "active": true,
         "workflow_id": 123456,
         "head_branch": "master",
         "org": "o",
@@ -39,9 +40,14 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
         "started_at": "2021-03-07T00:33:04.000Z",
         "event": "schedule",
         "workflow_run_id": 628312345,
-        "_document_id": "beeZYapIUe-wKg5-beadb33"
-		}
-		]`)
+        "_document_id": "beeZYapIUe-wKg5-beadb33",
+        "config": {
+            "content_type": "json",
+            "insecure_ssl": "0",
+            "url": "https://example.com/deadbeef-new-hook"
+         },
+        "events": ["code_scanning_alert"]
+		}]`)
 	})
 	ctx := context.Background()
 	getOpts := GetAuditLogOptions{
@@ -56,16 +62,17 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:33:04.000Z")
 	completedAt, _ := time.Parse(time.RFC3339, "2021-03-07T00:35:08.000Z")
-
+	timestamp := time.Unix(1615077308538, 0)
 	want := []*AuditEntry{
 		{
-			Timestamp:     Int64(1615077308538),
+			Timestamp:     &Timestamp{timestamp},
 			DocumentID:    String("beeZYapIUe-wKg5-beadb33"),
 			Action:        String("workflows.completed_workflow_run"),
 			Actor:         String("testactor"),
+			Active:        Bool(true),
 			CompletedAt:   &Timestamp{completedAt},
 			Conclusion:    String("success"),
-			CreatedAt:     Int64(1615077308538),
+			CreatedAt:     &Timestamp{timestamp},
 			Event:         String("schedule"),
 			HeadBranch:    String("master"),
 			HeadSHA:       String("5acdeadbeef64d1a62388e901e5cdc9358644b37"),
@@ -75,6 +82,12 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 			StartedAt:     &Timestamp{startedAt},
 			WorkflowID:    Int64(123456),
 			WorkflowRunID: Int64(628312345),
+			Events:        []string{"code_scanning_alert"},
+			Config: &HookConfig{
+				ContentType: String("json"),
+				InsecureSSL: String("0"),
+				URL:         String("https://example.com/deadbeef-new-hook"),
+			},
 		},
 	}
 
