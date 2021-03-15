@@ -101,10 +101,6 @@ func (r PullRequestReviewDismissalRequest) String() string {
 
 // ListReviews lists all reviews on the specified pull request.
 //
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
-//
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-reviews-for-a-pull-request
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
