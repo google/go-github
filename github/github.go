@@ -204,6 +204,12 @@ type ListCursorOptions struct {
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	After string `url:"after,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+	Before string `url:"before,omitempty"`
 }
 
 // UploadOptions specifies the parameters to methods that support uploads.
