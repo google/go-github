@@ -136,10 +136,9 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1, "marketplace_pending_change": {"id": 77}}]`)
 	})
 
-	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
 	ctx := context.Background()
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
 	}
@@ -151,7 +150,7 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 
 	const methodName = "ListPlanAccountsForAccount"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+		got, resp, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -168,10 +167,9 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
 	ctx := context.Background()
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1)
 	if err != nil {
 		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned error: %v", err)
 	}

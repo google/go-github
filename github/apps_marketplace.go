@@ -129,14 +129,10 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 // ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#check-if-a-github-account-is-associated-with-any-marketplace-listing
-func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64) ([]*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
-	u, err := addOptions(uri, opts)
-	if err != nil {
-		return nil, nil, err
-	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", uri, nil)
 	if err != nil {
 		return nil, nil, err
 	}
