@@ -51,7 +51,6 @@ type MarketplacePurchase struct {
 	NextBillingDate *Timestamp              `json:"next_billing_date,omitempty"`
 	UnitCount       *int                    `json:"unit_count,omitempty"`
 	Plan            *MarketplacePlan        `json:"plan,omitempty"`
-	Account         *MarketplacePlanAccount `json:"account,omitempty"`
 	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
 	FreeTrialEndsOn *Timestamp              `json:"free_trial_ends_on,omitempty"`
 	UpdatedAt       *Timestamp              `json:"updated_at,omitempty"`
@@ -70,9 +69,7 @@ type MarketplacePlanAccount struct {
 	URL                      *string                   `json:"url,omitempty"`
 	Type                     *string                   `json:"type,omitempty"`
 	ID                       *int64                    `json:"id,omitempty"`
-	NodeID                   *string                   `json:"node_id,omitempty"`
 	Login                    *string                   `json:"login,omitempty"`
-	Email                    *string                   `json:"email,omitempty"`
 	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
 	MarketplacePurchase      *MarketplacePurchase      `json:"marketplace_purchase,omitempty"`
 	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
