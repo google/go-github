@@ -47,13 +47,13 @@ type MarketplacePlan struct {
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
 	// BillingCycle can be one of the values "yearly", "monthly" or nil.
-	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
-	NextBillingDate *Timestamp              `json:"next_billing_date,omitempty"`
-	UnitCount       *int                    `json:"unit_count,omitempty"`
-	Plan            *MarketplacePlan        `json:"plan,omitempty"`
-	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
-	FreeTrialEndsOn *Timestamp              `json:"free_trial_ends_on,omitempty"`
-	UpdatedAt       *Timestamp              `json:"updated_at,omitempty"`
+	BillingCycle    *string          `json:"billing_cycle,omitempty"`
+	NextBillingDate *Timestamp       `json:"next_billing_date,omitempty"`
+	UnitCount       *int             `json:"unit_count,omitempty"`
+	Plan            *MarketplacePlan `json:"plan,omitempty"`
+	OnFreeTrial     *bool            `json:"on_free_trial,omitempty"`
+	FreeTrialEndsOn *Timestamp       `json:"free_trial_ends_on,omitempty"`
+	UpdatedAt       *Timestamp       `json:"updated_at,omitempty"`
 }
 
 // MarketplacePendingChange represents a pending change to a GitHub Apps Marketplace Plan.
