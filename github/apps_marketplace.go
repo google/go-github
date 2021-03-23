@@ -123,10 +123,10 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 	return accounts, resp, nil
 }
 
-// ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
+// GetPlanAccountForAccount get GitHub account (user or organization) associated with an account.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/apps#get-a-subscription-plan-for-an-account
-func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
+func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
 
 	req, err := s.client.NewRequest("GET", uri, nil)
@@ -134,13 +134,13 @@ func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, acc
 		return nil, nil, err
 	}
 
-	var accounts *MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &accounts)
+	var account *MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &account)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return accounts, resp, nil
+	return account, resp, nil
 }
 
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
