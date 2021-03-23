@@ -7890,16 +7890,6 @@ func TestMarketplacePlan_GetYearlyPriceInCents(tt *testing.T) {
 	m.GetYearlyPriceInCents()
 }
 
-func TestMarketplacePlanAccount_GetEmail(tt *testing.T) {
-	var zeroValue string
-	m := &MarketplacePlanAccount{Email: &zeroValue}
-	m.GetEmail()
-	m = &MarketplacePlanAccount{}
-	m.GetEmail()
-	m = nil
-	m.GetEmail()
-}
-
 func TestMarketplacePlanAccount_GetID(tt *testing.T) {
 	var zeroValue int64
 	m := &MarketplacePlanAccount{ID: &zeroValue}
@@ -7934,16 +7924,6 @@ func TestMarketplacePlanAccount_GetMarketplacePurchase(tt *testing.T) {
 	m.GetMarketplacePurchase()
 }
 
-func TestMarketplacePlanAccount_GetNodeID(tt *testing.T) {
-	var zeroValue string
-	m := &MarketplacePlanAccount{NodeID: &zeroValue}
-	m.GetNodeID()
-	m = &MarketplacePlanAccount{}
-	m.GetNodeID()
-	m = nil
-	m.GetNodeID()
-}
-
 func TestMarketplacePlanAccount_GetOrganizationBillingEmail(tt *testing.T) {
 	var zeroValue string
 	m := &MarketplacePlanAccount{OrganizationBillingEmail: &zeroValue}
@@ -7972,13 +7952,6 @@ func TestMarketplacePlanAccount_GetURL(tt *testing.T) {
 	m.GetURL()
 	m = nil
 	m.GetURL()
-}
-
-func TestMarketplacePurchase_GetAccount(tt *testing.T) {
-	m := &MarketplacePurchase{}
-	m.GetAccount()
-	m = nil
-	m.GetAccount()
 }
 
 func TestMarketplacePurchase_GetBillingCycle(tt *testing.T) {
