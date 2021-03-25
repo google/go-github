@@ -52,7 +52,9 @@ jobs:
 
     - name: Ensure go generate produces a zero diff
       shell: bash
-      run:  go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+      run: |
+        go get github.com/vburenin/ifacemaker
+        go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
 
     - name: Run go vet
       run: go vet ./...

@@ -177,9 +177,10 @@ type Client struct {
 	PullRequests   *PullRequestsService
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
-	Search         *SearchService
-	Teams          *TeamsService
-	Users          *UsersService
+	// Repositories RepositoriesServiceInterface
+	Search *SearchService
+	Teams  *TeamsService
+	Users  *UsersService
 }
 
 type service struct {

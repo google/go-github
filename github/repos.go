@@ -16,6 +16,7 @@ import (
 // methods of the GitHub API.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/
+//go:generate ifacemaker -f repos.go -i RepositoriesServiceInterface -s RepositoriesService -p github -y "RepositoriesServiceInterface AUTO GENERATED DO NOT EDIT" -c "AUTO GENERATED FILE DO NOT EDIT" -o repos_generated.go
 type RepositoriesService service
 
 // Repository represents a GitHub repository.
