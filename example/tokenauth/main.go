@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"syscall"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v34/github"
 	"golang.org/x/crypto/ssh/terminal"
 	"golang.org/x/oauth2"
 )

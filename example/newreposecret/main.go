@@ -34,7 +34,7 @@ import (
 	"os"
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v34/github"
 	"golang.org/x/oauth2"
 )
 

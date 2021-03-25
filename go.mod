@@ -1,4 +1,4 @@
-module github.com/google/go-github/v33
+module github.com/google/go-github/v34
 
 require (
 	github.com/golang/protobuf v1.3.2 // indirect
@@ -9,4 +9,4 @@ require (
 	google.golang.org/appengine v1.1.0
 )
 
-go 1.15
+go 1.16
