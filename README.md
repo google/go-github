@@ -254,15 +254,6 @@ For complete usage of go-github, see the full [package docs][].
 
 You can run integration tests from the `test` directory. See the integration tests [README](test/README.md).
 
-## Roadmap ##
-
-This library is being initially developed for an internal application at
-Google, so API methods will likely be implemented in the order that they are
-needed by that application. You can track the status of implementation in
-[this Google spreadsheet][roadmap].
-
-[roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
-
 ## Contributing ##
 I would like to cover the entire GitHub API and contributions are of course always welcome. The
 calling pattern is pretty well established, so adding new methods is relatively
