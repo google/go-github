@@ -291,6 +291,10 @@ Preview functionality may take the form of entire methods or simply additional
 data returned from an otherwise non-preview method. Refer to the GitHub API
 documentation for details on preview functionality.
 
+Please note that as of #1280, all releases (major, minor, or patch) are provided on an
+on-demand basis. Simply create a new issue with a new release request, and our current
+maintainer will work on cutting a new release as soon as they are able. Thank you.
+
 ## License ##
 
 This library is distributed under the BSD-style license found in the [LICENSE](./LICENSE)
