@@ -701,9 +701,9 @@ func (a *AuditEntry) GetHeadSHA() string {
 }
 
 // GetHookID returns the HookID field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetHookID() string {
+func (a *AuditEntry) GetHookID() int64 {
 	if a == nil || a.HookID == nil {
-		return ""
+		return 0
 	}
 	return *a.HookID
 }

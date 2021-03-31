@@ -826,7 +826,7 @@ func TestAuditEntry_GetHeadSHA(tt *testing.T) {
 }
 
 func TestAuditEntry_GetHookID(tt *testing.T) {
-	var zeroValue string
+	var zeroValue int64
 	a := &AuditEntry{HookID: &zeroValue}
 	a.GetHookID()
 	a = &AuditEntry{}
