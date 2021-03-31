@@ -53,7 +53,7 @@ type AuditEntry struct {
 	Fingerprint           *string     `json:"fingerprint,omitempty"`
 	HeadBranch            *string     `json:"head_branch,omitempty"`
 	HeadSHA               *string     `json:"head_sha,omitempty"`
-	HookID                *string     `json:"hook_id,omitempty"`
+	HookID                *int64      `json:"hook_id,omitempty"`
 	IsHostedRunner        *bool       `json:"is_hosted_runner,omitempty"`
 	JobName               *string     `json:"job_name,omitempty"`
 	LimitedAvailability   *bool       `json:"limited_availability,omitempty"`
