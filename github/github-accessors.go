@@ -16372,6 +16372,22 @@ func (w *WorkflowRunEvent) GetSender() *User {
 	return w.Sender
 }
 
+// GetWorkflow returns the Workflow field.
+func (w *WorkflowRunEvent) GetWorkflow() *Workflow {
+	if w == nil {
+		return nil
+	}
+	return w.Workflow
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (w *WorkflowRunEvent) GetWorkflowRun() *WorkflowRun {
+	if w == nil {
+		return nil
+	}
+	return w.WorkflowRun
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (w *WorkflowRuns) GetTotalCount() int {
 	if w == nil || w.TotalCount == nil {

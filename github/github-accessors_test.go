@@ -19224,6 +19224,20 @@ func TestWorkflowRunEvent_GetSender(tt *testing.T) {
 	w.GetSender()
 }
 
+func TestWorkflowRunEvent_GetWorkflow(tt *testing.T) {
+	w := &WorkflowRunEvent{}
+	w.GetWorkflow()
+	w = nil
+	w.GetWorkflow()
+}
+
+func TestWorkflowRunEvent_GetWorkflowRun(tt *testing.T) {
+	w := &WorkflowRunEvent{}
+	w.GetWorkflowRun()
+	w = nil
+	w.GetWorkflowRun()
+}
+
 func TestWorkflowRuns_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	w := &WorkflowRuns{TotalCount: &zeroValue}
