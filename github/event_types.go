@@ -989,7 +989,9 @@ type WorkflowDispatchEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run
 type WorkflowRunEvent struct {
-	Action *string `json:"action,omitempty"`
+	Action      *string      `json:"action,omitempty"`
+	Workflow    *Workflow    `json:"workflow,omitempty"`
+	WorkflowRun *WorkflowRun `json:"workflow_run,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Org    *Organization `json:"organization,omitempty"`
