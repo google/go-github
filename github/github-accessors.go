@@ -6700,14 +6700,6 @@ func (m *MarketplacePlan) GetYearlyPriceInCents() int {
 	return *m.YearlyPriceInCents
 }
 
-// GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (m *MarketplacePlanAccount) GetEmail() string {
-	if m == nil || m.Email == nil {
-		return ""
-	}
-	return *m.Email
-}
-
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlanAccount) GetID() int64 {
 	if m == nil || m.ID == nil {
@@ -6740,14 +6732,6 @@ func (m *MarketplacePlanAccount) GetMarketplacePurchase() *MarketplacePurchase {
 	return m.MarketplacePurchase
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (m *MarketplacePlanAccount) GetNodeID() string {
-	if m == nil || m.NodeID == nil {
-		return ""
-	}
-	return *m.NodeID
-}
-
 // GetOrganizationBillingEmail returns the OrganizationBillingEmail field if it's non-nil, zero value otherwise.
 func (m *MarketplacePlanAccount) GetOrganizationBillingEmail() string {
 	if m == nil || m.OrganizationBillingEmail == nil {
@@ -6770,14 +6754,6 @@ func (m *MarketplacePlanAccount) GetURL() string {
 		return ""
 	}
 	return *m.URL
-}
-
-// GetAccount returns the Account field.
-func (m *MarketplacePurchase) GetAccount() *MarketplacePlanAccount {
-	if m == nil {
-		return nil
-	}
-	return m.Account
 }
 
 // GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
