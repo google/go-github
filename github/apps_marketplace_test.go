@@ -127,31 +127,30 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 	}
 }
 
-func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
+func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/marketplace_listing/accounts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{"id":1, "marketplace_pending_change": {"id": 77}}]`)
+		fmt.Fprint(w, `{"id":1, "marketplace_pending_change": {"id": 77}}`)
 	})
 
-	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = false
 	ctx := context.Background()
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+	account, _, err := client.Marketplace.GetPlanAccountForAccount(ctx, 1)
 	if err != nil {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount returned error: %v", err)
+		t.Errorf("Marketplace.GetPlanAccountForAccount returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int64(1), MarketplacePendingChange: &MarketplacePendingChange{ID: Int64(77)}}}
-	if !reflect.DeepEqual(accounts, want) {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount returned %+v, want %+v", accounts, want)
+	want := &MarketplacePlanAccount{ID: Int64(1), MarketplacePendingChange: &MarketplacePendingChange{ID: Int64(77)}}
+	if !reflect.DeepEqual(account, want) {
+		t.Errorf("Marketplace.GetPlanAccountForAccount returned %+v, want %+v", account, want)
 	}
 
-	const methodName = "ListPlanAccountsForAccount"
+	const methodName = "GetPlanAccountForAccount"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+		got, resp, err := client.Marketplace.GetPlanAccountForAccount(ctx, 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -159,26 +158,25 @@ func TestMarketplaceService_ListPlanAccountsForAccount(t *testing.T) {
 	})
 }
 
-func TestMarketplaceService_Stubbed_ListPlanAccountsForAccount(t *testing.T) {
+func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/marketplace_listing/stubbed/accounts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{"id":1}]`)
+		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	opt := &ListOptions{Page: 1, PerPage: 2}
 	client.Marketplace.Stubbed = true
 	ctx := context.Background()
-	accounts, _, err := client.Marketplace.ListPlanAccountsForAccount(ctx, 1, opt)
+	account, _, err := client.Marketplace.GetPlanAccountForAccount(ctx, 1)
 	if err != nil {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned error: %v", err)
+		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
-	if !reflect.DeepEqual(accounts, want) {
-		t.Errorf("Marketplace.ListPlanAccountsForAccount (Stubbed) returned %+v, want %+v", accounts, want)
+	want := &MarketplacePlanAccount{ID: Int64(1)}
+	if !reflect.DeepEqual(account, want) {
+		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned %+v, want %+v", account, want)
 	}
 }
 

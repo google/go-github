@@ -47,14 +47,13 @@ type MarketplacePlan struct {
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
 	// BillingCycle can be one of the values "yearly", "monthly" or nil.
-	BillingCycle    *string                 `json:"billing_cycle,omitempty"`
-	NextBillingDate *Timestamp              `json:"next_billing_date,omitempty"`
-	UnitCount       *int                    `json:"unit_count,omitempty"`
-	Plan            *MarketplacePlan        `json:"plan,omitempty"`
-	Account         *MarketplacePlanAccount `json:"account,omitempty"`
-	OnFreeTrial     *bool                   `json:"on_free_trial,omitempty"`
-	FreeTrialEndsOn *Timestamp              `json:"free_trial_ends_on,omitempty"`
-	UpdatedAt       *Timestamp              `json:"updated_at,omitempty"`
+	BillingCycle    *string          `json:"billing_cycle,omitempty"`
+	NextBillingDate *Timestamp       `json:"next_billing_date,omitempty"`
+	UnitCount       *int             `json:"unit_count,omitempty"`
+	Plan            *MarketplacePlan `json:"plan,omitempty"`
+	OnFreeTrial     *bool            `json:"on_free_trial,omitempty"`
+	FreeTrialEndsOn *Timestamp       `json:"free_trial_ends_on,omitempty"`
+	UpdatedAt       *Timestamp       `json:"updated_at,omitempty"`
 }
 
 // MarketplacePendingChange represents a pending change to a GitHub Apps Marketplace Plan.
@@ -70,9 +69,7 @@ type MarketplacePlanAccount struct {
 	URL                      *string                   `json:"url,omitempty"`
 	Type                     *string                   `json:"type,omitempty"`
 	ID                       *int64                    `json:"id,omitempty"`
-	NodeID                   *string                   `json:"node_id,omitempty"`
 	Login                    *string                   `json:"login,omitempty"`
-	Email                    *string                   `json:"email,omitempty"`
 	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
 	MarketplacePurchase      *MarketplacePurchase      `json:"marketplace_purchase,omitempty"`
 	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
@@ -104,7 +101,7 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) (
 
 // ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-all-github-accounts-user-or-organization-on-a-specific-plan
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps#list-accounts-for-a-plan
 func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("plans/%v/accounts", planID))
 	u, err := addOptions(uri, opts)
@@ -126,28 +123,24 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 	return accounts, resp, nil
 }
 
-// ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
+// GetPlanAccountForAccount get GitHub account (user or organization) associated with an account.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#check-if-a-github-account-is-associated-with-any-marketplace-listing
-func (s *MarketplaceService) ListPlanAccountsForAccount(ctx context.Context, accountID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error) {
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps#get-a-subscription-plan-for-an-account
+func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
-	u, err := addOptions(uri, opts)
+
+	req, err := s.client.NewRequest("GET", uri, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var accounts []*MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &accounts)
+	var account *MarketplacePlanAccount
+	resp, err := s.client.Do(ctx, req, &account)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return accounts, resp, nil
+	return account, resp, nil
 }
 
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
