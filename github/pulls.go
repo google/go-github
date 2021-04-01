@@ -64,7 +64,7 @@ type PullRequest struct {
 	RequestedReviewers  []*User    `json:"requested_reviewers,omitempty"`
 
 	// RequestedTeams is populated as part of the PullRequestEvent.
-	// See, https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/types/#pullrequestevent for an example.
+	// See, https://docs.github.com/en/developers/webhooks-and-events/github-event-types#pullrequestevent for an example.
 	RequestedTeams []*Team `json:"requested_teams,omitempty"`
 
 	Links *PRLinks           `json:"_links,omitempty"`
