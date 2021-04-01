@@ -7,12 +7,89 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
 	"testing"
 	"time"
 )
+
+func TestPublicKey_UnmarshalJSON(t *testing.T) {
+	var testCases = map[string]struct {
+		data          []byte
+		wantPublicKey PublicKey
+		wantErr       bool
+	}{
+		"Empty": {
+			data:          []byte("{}"),
+			wantPublicKey: PublicKey{},
+			wantErr:       false,
+		},
+		"Invalid JSON": {
+			data:          []byte("{"),
+			wantPublicKey: PublicKey{},
+			wantErr:       true,
+		},
+		"Numeric KeyID": {
+			data:          []byte(`{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
+			wantPublicKey: PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantErr:       false,
+		},
+		"String KeyID": {
+			data:          []byte(`{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
+			wantPublicKey: PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantErr:       false,
+		},
+		"Invalid KeyID": {
+			data:          []byte(`{"key_id":["1234"],"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
+			wantPublicKey: PublicKey{KeyID: nil, Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantErr:       true,
+		},
+		"Invalid Key": {
+			data:          []byte(`{"key":123}`),
+			wantPublicKey: PublicKey{KeyID: nil, Key: nil},
+			wantErr:       true,
+		},
+		"Nil": {
+			data:          nil,
+			wantPublicKey: PublicKey{KeyID: nil, Key: nil},
+			wantErr:       true,
+		},
+		"Empty String": {
+			data:          []byte(""),
+			wantPublicKey: PublicKey{KeyID: nil, Key: nil},
+			wantErr:       true,
+		},
+		"Missing Key": {
+			data:          []byte(`{"key_id":"1234"}`),
+			wantPublicKey: PublicKey{KeyID: String("1234")},
+			wantErr:       false,
+		},
+		"Missing KeyID": {
+			data:          []byte(`{"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`),
+			wantPublicKey: PublicKey{Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
+			wantErr:       false,
+		},
+	}
+
+	for name, tt := range testCases {
+		tt := tt
+		t.Run(name, func(t *testing.T) {
+			pk := PublicKey{}
+			err := json.Unmarshal(tt.data, &pk)
+			if err == nil && tt.wantErr {
+				t.Errorf("PublicKey.UnmarshalJSON returned nil instead of an error")
+			}
+			if err != nil && !tt.wantErr {
+				t.Errorf("PublicKey.UnmarshalJSON returned an unexpected error: %+v", err)
+			}
+			if !reflect.DeepEqual(tt.wantPublicKey, pk) {
+				t.Errorf("PublicKey.UnmarshalJSON expected public key %+v, got %+v", tt.wantPublicKey, pk)
+			}
+		})
+	}
+}
 
 func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	client, mux, _, teardown := setup()
@@ -21,6 +98,41 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+	})
+
+	ctx := context.Background()
+	key, _, err := client.Actions.GetRepoPublicKey(ctx, "o", "r")
+	if err != nil {
+		t.Errorf("Actions.GetRepoPublicKey returned error: %v", err)
+	}
+
+	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	if !reflect.DeepEqual(key, want) {
+		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
+	}
+
+	const methodName = "GetRepoPublicKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetRepoPublicKey(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetRepoPublicKey(ctx, "o", "r")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
 	ctx := context.Background()
