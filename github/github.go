@@ -155,32 +155,32 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the GitHub API.
-	Actions        *ActionsService
-	Activity       *ActivityService
-	Admin          *AdminService
-	Apps           *AppsService
-	Authorizations *AuthorizationsService
-	Billing        *BillingService
-	Checks         *ChecksService
-	CodeScanning   *CodeScanningService
-	Enterprise     *EnterpriseService
-	Gists          *GistsService
-	Git            *GitService
-	Gitignores     *GitignoresService
-	Interactions   *InteractionsService
-	IssueImport    *IssueImportService
-	Issues         *IssuesService
-	Licenses       *LicensesService
+	Actions        ActionsServiceInterface
+	Activity       ActivityServiceInterface
+	Admin          AdminServiceInterface
+	Apps           AppsServiceInterface
+	Authorizations AuthorizationsServiceInterface
+	Billing        BillingServiceInterface
+	Checks         ChecksServiceInterface
+	CodeScanning   CodeScanningServiceInterface
+	Enterprise     EnterpriseServiceInterface
+	Gists          GistsServiceInterface
+	Git            GitServiceInterface
+	Gitignores     GitignoresServiceInterface
+	Interactions   InteractionsServiceInterface
+	IssueImport    IssueImportServiceInterface
+	Issues         IssuesServiceInterface
+	Licenses       LicensesServiceInterface
 	Marketplace    *MarketplaceService
-	Migrations     *MigrationService
-	Organizations  *OrganizationsService
-	Projects       *ProjectsService
-	PullRequests   *PullRequestsService
-	Reactions      *ReactionsService
-	Repositories   *RepositoriesService
-	Search         *SearchService
-	Teams          *TeamsService
-	Users          *UsersService
+	Migrations     MigrationServiceInterface
+	Organizations  OrganizationsServiceInterface
+	Projects       ProjectsServiceInterface
+	PullRequests   PullRequestsServiceInterface
+	Reactions      ReactionsServiceInterface
+	Repositories   RepositoriesServiceInterface
+	Search         SearchServiceInterface
+	Teams          TeamsServiceInterface
+	Users          UsersServiceInterface
 }
 
 type service struct {

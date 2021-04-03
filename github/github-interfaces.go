@@ -18,358 +18,141 @@ import (
 )
 
 // ActionsServiceInterface defines the interface for the ActionsService for easy mocking.
-//
-// ActionsService handles communication with the actions related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/
 type ActionsServiceInterface interface {
-
-	// AddRepositoryAccessRunnerGroup adds a repository to the list of selected repositories that can access a self-hosted runner group.
-	// The runner group must have visibility set to 'selected'.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#add-repository-access-to-a-self-hosted-runner-group-in-an-organization
 	AddRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID, repoID int64) (*Response, error)
 
-	// AddRunerGroupRunners adds a self-hosted runner to a runner group configured in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#add-a-self-hosted-runner-to-a-group-for-an-organization
 	AddRunerGroupRunners(ctx context.Context, org string, groupID, runnerID int64) (*Response, error)
 
-	// AddSelectedRepoToOrgSecret adds a repository to an organization secret.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#add-selected-repository-to-an-organization-secret
 	AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error)
 
-	// CancelWorkflowRunByID cancels a workflow run by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#cancel-a-workflow-run
 	CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error)
 
-	// CreateOrUpdateOrgSecret creates or updates an organization secret with an encrypted value.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-or-update-an-organization-secret
 	CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error)
 
-	// CreateOrUpdateRepoSecret creates or updates a repository secret with an encrypted value.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-or-update-a-repository-secret
 	CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error)
 
-	// CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-registration-token-for-an-organization
 	CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error)
 
-	// CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-remove-token-for-an-organization
 	CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error)
 
-	// CreateOrganizationRunnerGroup creates a new self-hosted runner group for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#create-a-self-hosted-runner-group-for-an-organization
 	CreateOrganizationRunnerGroup(ctx context.Context, org string, createReq CreateRunnerGroupRequest) (*RunnerGroup, *Response, error)
 
-	// CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-registration-token-for-a-repository
 	CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error)
 
-	// CreateRemoveToken creates a token that can be used to remove a self-hosted runner from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-remove-token-for-a-repository
 	CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error)
 
-	// CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-workflow-dispatch-event
 	CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*Response, error)
 
-	// CreateWorkflowDispatchEventByID manually triggers a GitHub Actions workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-workflow-dispatch-event
 	CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*Response, error)
 
-	// DeleteArtifact deletes a workflow run artifact.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-an-artifact
 	DeleteArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Response, error)
 
-	// DeleteOrgSecret deletes a secret in an organization using the secret name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-an-organization-secret
 	DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error)
 
-	// DeleteOrganizationRunnerGroup deletes a self-hosted runner group from an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#delete-a-self-hosted-runner-group-from-an-organization
 	DeleteOrganizationRunnerGroup(ctx context.Context, org string, groupID int64) (*Response, error)
 
-	// DeleteRepoSecret deletes a secret in a repository using the secret name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-a-repository-secret
 	DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error)
 
-	// DeleteWorkflowRunLogs deletes all logs for a workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-workflow-run-logs
 	DeleteWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64) (*Response, error)
 
-	// DisableWorkflowByFileName disables a workflow and sets the state of the workflow to "disabled_manually".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#disable-a-workflow
 	DisableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error)
 
-	// DisableWorkflowByID disables a workflow and sets the state of the workflow to "disabled_manually".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#disable-a-workflow
 	DisableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error)
 
-	// DownloadArtifact gets a redirect URL to download an archive for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/artifacts/#download-an-artifact
 	DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error)
 
-	// EnableWorkflowByFileName enables a workflow and sets the state of the workflow to "active".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#enable-a-workflow
 	EnableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error)
 
-	// EnableWorkflowByID enables a workflow and sets the state of the workflow to "active".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#enable-a-workflow
 	EnableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error)
 
-	// GetArtifact gets a specific artifact for a workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-an-artifact
 	GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error)
 
-	// GetOrgPublicKey gets a public key that should be used for secret encryption.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-an-organization-public-key
 	GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error)
 
-	// GetOrgSecret gets a single organization secret without revealing its encrypted value.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-an-organization-secret
 	GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error)
 
-	// GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-self-hosted-runner-for-an-organization
 	GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error)
 
-	// GetOrganizationRunnerGroup gets a specific self-hosted runner group for an organization using its RunnerGroup ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-a-self-hosted-runner-group-for-an-organization
 	GetOrganizationRunnerGroup(ctx context.Context, org string, groupID int64) (*RunnerGroup, *Response, error)
 
-	// GetRepoPublicKey gets a public key that should be used for secret encryption.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-repository-public-key
 	GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error)
 
-	// GetRepoSecret gets a single repository secret without revealing its encrypted value.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-repository-secret
 	GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error)
 
-	// GetRunner gets a specific self-hosted runner for a repository using its runner ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-self-hosted-runner-for-a-repository
 	GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error)
 
-	// GetWorkflowByFileName gets a specific workflow by file name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow
 	GetWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Workflow, *Response, error)
 
-	// GetWorkflowByID gets a specific workflow by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow
 	GetWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error)
 
-	// GetWorkflowJobByID gets a specific job in a workflow run by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-job-for-a-workflow-run
 	GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error)
 
-	// GetWorkflowJobLogs gets a redirect URL to download a plain text file of logs for a workflow job.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#download-job-logs-for-a-workflow-run
 	GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error)
 
-	// GetWorkflowRunByID gets a specific workflow run by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run
 	GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error)
 
-	// GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#download-workflow-run-logs
 	GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, followRedirects bool) (*url.URL, *Response, error)
 
-	// GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-workflow-run-usage
 	GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error)
 
-	// GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-workflow-usage
 	GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error)
 
-	// GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-workflow-usage
 	GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error)
 
-	// ListArtifacts lists all artifacts that belong to a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-artifacts-for-a-repository
 	ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error)
 
-	// ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-selected-repositories-enabled-for-github-actions-in-an-organization
 	ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error)
 
-	// ListOrgSecrets lists all secrets available in an organization
-	// without revealing their encrypted values.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-organization-secrets
 	ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error)
 
-	// ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-runner-applications-for-an-organization
 	ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*RunnerApplicationDownload, *Response, error)
 
-	// ListOrganizationRunnerGroups lists all self-hosted runner groups configured in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-self-hosted-runner-groups-for-an-organization
 	ListOrganizationRunnerGroups(ctx context.Context, org string, opts *ListOptions) (*RunnerGroups, *Response, error)
 
-	// ListOrganizationRunners lists all the self-hosted runners for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-self-hosted-runners-for-an-organization
 	ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error)
 
-	// ListRepoSecrets lists all secrets available in a repository
-	// without revealing their encrypted values.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-repository-secrets
 	ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error)
 
-	// ListRepositoryAccessRunnerGroup lists the repositories with access to a self-hosted runner group configured in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-repository-access-to-a-self-hosted-runner-group-in-an-organization
 	ListRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64) (*ListRepositories, *Response, error)
 
-	// ListRepositoryWorkflowRuns lists all workflow runs for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs-for-a-repository
 	ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error)
 
-	// ListRunerGroupRunners lists self-hosted runners that are in a specific organization group.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-self-hosted-runners-in-a-group-for-an-organization
 	ListRunerGroupRunners(ctx context.Context, org string, groupID int64, opts *ListOptions) (*Runners, *Response, error)
 
-	// ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-runner-applications-for-a-repository
 	ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error)
 
-	// ListRunners lists all the self-hosted runners for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-self-hosted-runners-for-a-repository
 	ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error)
 
-	// ListSelectedReposForOrgSecret lists all repositories that have access to a secret.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-selected-repositories-for-an-organization-secret
 	ListSelectedReposForOrgSecret(ctx context.Context, org, name string) (*SelectedReposList, *Response, error)
 
-	// ListWorkflowJobs lists all jobs for a workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-jobs-for-a-workflow-run
 	ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *ListWorkflowJobsOptions) (*Jobs, *Response, error)
 
-	// ListWorkflowRunArtifacts lists all artifacts that belong to a workflow run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-run-artifacts
 	ListWorkflowRunArtifacts(ctx context.Context, owner, repo string, runID int64, opts *ListOptions) (*ArtifactList, *Response, error)
 
-	// ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs
 	ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error)
 
-	// ListWorkflowRunsByID lists all workflow runs by workflow ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs
 	ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error)
 
-	// ListWorkflows lists all workflows in a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-repository-workflows
 	ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error)
 
-	// RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-a-self-hosted-runner-from-an-organization
 	RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error)
 
-	// RemoveRepositoryAccessRunnerGroup removes a repository from the list of selected repositories that can access a self-hosted runner group.
-	// The runner group must have visibility set to 'selected'.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#remove-repository-access-to-a-self-hosted-runner-group-in-an-organization
 	RemoveRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID, repoID int64) (*Response, error)
 
-	// RemoveRunerGroupRunners removes a self-hosted runner from a group configured in an organization.
-	// The runner is then returned to the default group.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#remove-a-self-hosted-runner-from-a-group-for-an-organization
 	RemoveRunerGroupRunners(ctx context.Context, org string, groupID, runnerID int64) (*Response, error)
 
-	// RemoveRunner forces the removal of a self-hosted runner in a repository using the runner id.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-a-self-hosted-runner-from-a-repository
 	RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error)
 
-	// RemoveSelectedRepoFromOrgSecret removes a repository from an organization secret.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#remove-selected-repository-from-an-organization-secret
 	RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error)
 
-	// RerunWorkflowByID re-runs a workflow by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#re-run-a-workflow
 	RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error)
 
-	// SetRepositoryAccessRunnerGroup replaces the list of repositories that have access to a self-hosted runner group configured in an organization
-	// with a new List of repositories.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-repository-access-for-a-self-hosted-runner-group-in-an-organization
 	SetRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, ids SetRepoAccessRunnerGroupRequest) (*Response, error)
 
-	// SetRunerGroupRunners replaces the list of self-hosted runners that are part of an organization runner group
-	// with a new list of runners.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-self-hosted-runners-in-a-group-for-an-organization
 	SetRunerGroupRunners(ctx context.Context, org string, groupID int64, ids SetRunnerGroupRunnersRequest) (*Response, error)
 
-	// SetSelectedReposForOrgSecret sets the repositories that have access to a secret.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#set-selected-repositories-for-an-organization-secret
 	SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error)
 
-	// UpdateOrganizationRunnerGroup updates a self-hosted runner group for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#update-a-self-hosted-runner-group-for-an-organization
 	UpdateOrganizationRunnerGroup(ctx context.Context, org string, groupID int64, updateReq UpdateRunnerGroupRequest) (*RunnerGroup, *Response, error)
 }
 
@@ -377,187 +160,61 @@ type ActionsServiceInterface interface {
 var _ ActionsServiceInterface = &ActionsService{}
 
 // ActivityServiceInterface defines the interface for the ActivityService for easy mocking.
-//
-// ActivityService handles communication with the activity related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/
 type ActivityServiceInterface interface {
-
-	// DeleteRepositorySubscription deletes the subscription for the specified
-	// repository for the authenticated user.
-	//
-	// This is used to stop watching a repository. To control whether or not to
-	// receive notifications from a repository, use SetRepositorySubscription.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#delete-a-repository-subscription
 	DeleteRepositorySubscription(ctx context.Context, owner, repo string) (*Response, error)
 
-	// DeleteThreadSubscription deletes the subscription for the specified thread
-	// for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#delete-a-thread-subscription
 	DeleteThreadSubscription(ctx context.Context, id string) (*Response, error)
 
-	// GetRepositorySubscription returns the subscription for the specified
-	// repository for the authenticated user. If the authenticated user is not
-	// watching the repository, a nil Subscription is returned.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#get-a-repository-subscription
 	GetRepositorySubscription(ctx context.Context, owner, repo string) (*Subscription, *Response, error)
 
-	// GetThread gets the specified notification thread.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#get-a-thread
 	GetThread(ctx context.Context, id string) (*Notification, *Response, error)
 
-	// GetThreadSubscription checks to see if the authenticated user is subscribed
-	// to a thread.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#get-a-thread-subscription-for-the-authenticated-user
 	GetThreadSubscription(ctx context.Context, id string) (*Subscription, *Response, error)
 
-	// IsStarred checks if a repository is starred by authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#check-if-a-repository-is-starred-by-the-authenticated-user
 	IsStarred(ctx context.Context, owner, repo string) (bool, *Response, error)
 
-	// ListEvents drinks from the firehose of all public events across GitHub.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-public-events
 	ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListEventsForOrganization lists public events for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-public-organization-events
 	ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListEventsForRepoNetwork lists public events for a network of repositories.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-public-events-for-a-network-of-repositories
 	ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
-	// true, only public events will be returned.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-events-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-public-events-for-a-user
 	ListEventsPerformedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListEventsReceivedByUser lists the events received by a user. If publicOnly is
-	// true, only public events will be returned.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-events-received-by-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-public-events-received-by-a-user
 	ListEventsReceivedByUser(ctx context.Context, user string, publicOnly bool, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListFeeds lists all the feeds available to the authenticated user.
-	//
-	// GitHub provides several timeline resources in Atom format:
-	//     Timeline: The GitHub global public timeline
-	//     User: The public timeline for any user, using URI template
-	//     Current user public: The public timeline for the authenticated user
-	//     Current user: The private timeline for the authenticated user
-	//     Current user actor: The private timeline for activity created by the
-	//         authenticated user
-	//     Current user organizations: The private timeline for the organizations
-	//         the authenticated user is a member of.
-	//
-	// Note: Private feeds are only returned when authenticating via Basic Auth
-	// since current feed URIs use the older, non revocable auth tokens.
 	ListFeeds(ctx context.Context) (*Feeds, *Response, error)
 
-	// ListIssueEventsForRepository lists issue events for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-events-for-a-repository
 	ListIssueEventsForRepository(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error)
 
-	// ListNotifications lists all notifications for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-notifications-for-the-authenticated-user
 	ListNotifications(ctx context.Context, opts *NotificationListOptions) ([]*Notification, *Response, error)
 
-	// ListRepositoryEvents lists events for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repository-events
 	ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListRepositoryNotifications lists all notifications in a given repository
-	// for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repository-notifications-for-the-authenticated-user
 	ListRepositoryNotifications(ctx context.Context, owner, repo string, opts *NotificationListOptions) ([]*Notification, *Response, error)
 
-	// ListStargazers lists people who have starred the specified repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-stargazers
 	ListStargazers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Stargazer, *Response, error)
 
-	// ListStarred lists all the repos starred by a user. Passing the empty string
-	// will list the starred repositories for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repositories-starred-by-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repositories-starred-by-a-user
 	ListStarred(ctx context.Context, user string, opts *ActivityListStarredOptions) ([]*StarredRepository, *Response, error)
 
-	// ListUserEventsForOrganization provides the user’s organization dashboard. You
-	// must be authenticated as the user to view this.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-organization-events-for-the-authenticated-user
 	ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error)
 
-	// ListWatched lists the repositories the specified user is watching. Passing
-	// the empty string will fetch watched repos for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repositories-watched-by-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-repositories-watched-by-a-user
 	ListWatched(ctx context.Context, user string, opts *ListOptions) ([]*Repository, *Response, error)
 
-	// ListWatchers lists watchers of a particular repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-watchers
 	ListWatchers(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error)
 
-	// MarkNotificationsRead marks all notifications up to lastRead as read.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity#mark-as-read
 	MarkNotificationsRead(ctx context.Context, lastRead time.Time) (*Response, error)
 
-	// MarkRepositoryNotificationsRead marks all notifications up to lastRead in
-	// the specified repository as read.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#mark-repository-notifications-as-read
 	MarkRepositoryNotificationsRead(ctx context.Context, owner, repo string, lastRead time.Time) (*Response, error)
 
-	// MarkThreadRead marks the specified thread as read.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#mark-a-thread-as-read
 	MarkThreadRead(ctx context.Context, id string) (*Response, error)
 
-	// SetRepositorySubscription sets the subscription for the specified repository
-	// for the authenticated user.
-	//
-	// To watch a repository, set subscription.Subscribed to true.
-	// To ignore notifications made within a repository, set subscription.Ignored to true.
-	// To stop watching a repository, use DeleteRepositorySubscription.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#set-a-repository-subscription
 	SetRepositorySubscription(ctx context.Context, owner, repo string, subscription *Subscription) (*Subscription, *Response, error)
 
-	// SetThreadSubscription sets the subscription for the specified thread for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#set-a-thread-subscription
 	SetThreadSubscription(ctx context.Context, id string, subscription *Subscription) (*Subscription, *Response, error)
 
-	// Star a repository as the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#star-a-repository-for-the-authenticated-user
 	Star(ctx context.Context, owner, repo string) (*Response, error)
 
-	// Unstar a repository as the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#unstar-a-repository-for-the-authenticated-user
 	Unstar(ctx context.Context, owner, repo string) (*Response, error)
 }
 
@@ -565,69 +222,25 @@ type ActivityServiceInterface interface {
 var _ ActivityServiceInterface = &ActivityService{}
 
 // AdminServiceInterface defines the interface for the AdminService for easy mocking.
-//
-// AdminService handles communication with the admin related methods of the
-// GitHub API. These API routes are normally only accessible for GitHub
-// Enterprise installations.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise/
 type AdminServiceInterface interface {
-
-	// CreateOrg creates a new organization in GitHub Enterprise.
-	//
-	// Note that only a subset of the org fields are used and org must
-	// not be nil.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#create-an-organization
 	CreateOrg(ctx context.Context, org *Organization, admin string) (*Organization, *Response, error)
 
-	// CreateUser creates a new user in GitHub Enterprise.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-a-new-user
 	CreateUser(ctx context.Context, login, email string) (*User, *Response, error)
 
-	// CreateUserImpersonation creates an impersonation OAuth token.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
 	CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error)
 
-	// DeleteUser deletes a user in GitHub Enterprise.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-a-user
 	DeleteUser(ctx context.Context, username string) (*Response, error)
 
-	// DeleteUserImpersonation deletes an impersonation OAuth token.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
 	DeleteUserImpersonation(ctx context.Context, username string) (*Response, error)
 
-	// GetAdminStats returns a variety of metrics about a GitHub Enterprise
-	// installation.
-	//
-	// Please note that this is only available to site administrators,
-	// otherwise it will error with a 404 not found (instead of 401 or 403).
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/admin_stats/
 	GetAdminStats(ctx context.Context) (*AdminStats, *Response, error)
 
-	// RenameOrg renames an organization in GitHub Enterprise.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
 	RenameOrg(ctx context.Context, org *Organization, newName string) (*RenameOrgResponse, *Response, error)
 
-	// RenameOrgByName renames an organization in GitHub Enterprise using its current name.
-	//
-	// GitHub Enterprise API docs: https://developer.github.com/enterprise/v3/enterprise-admin/orgs/#rename-an-organization
 	RenameOrgByName(ctx context.Context, org, newName string) (*RenameOrgResponse, *Response, error)
 
-	// UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise/ldap/#update-ldap-mapping-for-a-team
 	UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error)
 
-	// UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise/ldap/#update-ldap-mapping-for-a-user
 	UpdateUserLDAPMapping(ctx context.Context, user string, mapping *UserLDAPMapping) (*UserLDAPMapping, *Response, error)
 }
 
@@ -635,114 +248,43 @@ type AdminServiceInterface interface {
 var _ AdminServiceInterface = &AdminService{}
 
 // AppsServiceInterface defines the interface for the AppsService for easy mocking.
-//
-// AppsService provides access to the installation related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/
 type AppsServiceInterface interface {
-
-	// AddRepository adds a single repository to an installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#add-a-repository-to-an-app-installation
 	AddRepository(ctx context.Context, instID, repoID int64) (*Repository, *Response, error)
 
-	// CompleteAppManifest completes the App manifest handshake flow for the given
-	// code.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#create-a-github-app-from-a-manifest
 	CompleteAppManifest(ctx context.Context, code string) (*AppConfig, *Response, error)
 
-	// CreateAttachment creates a new attachment on user comment containing a url.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#create-a-content-attachment
 	CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error)
 
-	// CreateInstallationToken creates a new installation token.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#create-an-installation-access-token-for-an-app
 	CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error)
 
-	// DeleteInstallation deletes the specified installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#delete-an-installation-for-the-authenticated-app
 	DeleteInstallation(ctx context.Context, id int64) (*Response, error)
 
-	// FindOrganizationInstallation finds the organization's installation information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-an-organization-installation-for-the-authenticated-app
 	FindOrganizationInstallation(ctx context.Context, org string) (*Installation, *Response, error)
 
-	// FindRepositoryInstallation finds the repository's installation information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-a-repository-installation-for-the-authenticated-app
 	FindRepositoryInstallation(ctx context.Context, owner, repo string) (*Installation, *Response, error)
 
-	// FindRepositoryInstallationByID finds the repository's installation information.
-	//
-	// Note: FindRepositoryInstallationByID uses the undocumented GitHub API endpoint /repositories/:id/installation.
 	FindRepositoryInstallationByID(ctx context.Context, id int64) (*Installation, *Response, error)
 
-	// FindUserInstallation finds the user's installation information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-a-user-installation-for-the-authenticated-app
 	FindUserInstallation(ctx context.Context, user string) (*Installation, *Response, error)
 
-	// Get a single GitHub App. Passing the empty string will get
-	// the authenticated GitHub App.
-	//
-	// Note: appSlug is just the URL-friendly name of your GitHub App.
-	// You can find this on the settings page for your GitHub App
-	// (e.g., https://github.com/settings/apps/:app_slug).
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-the-authenticated-app
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-an-app
 	Get(ctx context.Context, appSlug string) (*App, *Response, error)
 
-	// GetInstallation returns the specified installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#get-an-installation-for-the-authenticated-app
 	GetInstallation(ctx context.Context, id int64) (*Installation, *Response, error)
 
-	// ListInstallations lists the installations that the current GitHub App has.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-installations-for-the-authenticated-app
 	ListInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error)
 
-	// ListRepos lists the repositories that are accessible to the authenticated installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-repositories-accessible-to-the-app-installation
 	ListRepos(ctx context.Context, opts *ListOptions) (*ListRepositories, *Response, error)
 
-	// ListUserInstallations lists installations that are accessible to the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-app-installations-accessible-to-the-user-access-token
 	ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error)
 
-	// ListUserRepos lists repositories that are accessible
-	// to the authenticated user for an installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-repositories-accessible-to-the-user-access-token
 	ListUserRepos(ctx context.Context, id int64, opts *ListOptions) (*ListRepositories, *Response, error)
 
-	// RemoveRepository removes a single repository from an installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#remove-a-repository-from-an-app-installation
 	RemoveRepository(ctx context.Context, instID, repoID int64) (*Response, error)
 
-	// RevokeInstallationToken revokes an installation token.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#revoke-an-installation-access-token
 	RevokeInstallationToken(ctx context.Context) (*Response, error)
 
-	// SuspendInstallation suspends the specified installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#suspend-an-app-installation
 	SuspendInstallation(ctx context.Context, id int64) (*Response, error)
 
-	// UnsuspendInstallation unsuspends the specified installation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#unsuspend-an-app-installation
 	UnsuspendInstallation(ctx context.Context, id int64) (*Response, error)
 }
 
@@ -750,70 +292,17 @@ type AppsServiceInterface interface {
 var _ AppsServiceInterface = &AppsService{}
 
 // AuthorizationsServiceInterface defines the interface for the AuthorizationsService for easy mocking.
-//
-// AuthorizationsService handles communication with the authorization related
-// methods of the GitHub API.
-//
-// This service requires HTTP Basic Authentication; it cannot be accessed using
-// an OAuth token.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth_authorizations/
 type AuthorizationsServiceInterface interface {
-
-	// Check if an OAuth token is valid for a specific app.
-	//
-	// Note that this operation requires the use of BasicAuth, but where the
-	// username is the OAuth application clientID, and the password is its
-	// clientSecret. Invalid tokens will return a 404 Not Found.
-	//
-	// The returned Authorization.User field will be populated.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#check-a-token
 	Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error)
 
-	// CreateImpersonation creates an impersonation OAuth token.
-	//
-	// This requires admin permissions. With the returned Authorization.Token
-	// you can e.g. create or delete a user's public SSH key. NOTE: creating a
-	// new token automatically revokes an existing one.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#create-an-impersonation-oauth-token
 	CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error)
 
-	// DeleteGrant deletes an OAuth application grant. Deleting an application's
-	// grant will also delete all OAuth tokens associated with the application for
-	// the user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#delete-an-app-authorization
 	DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error)
 
-	// DeleteImpersonation deletes an impersonation OAuth token.
-	//
-	// NOTE: there can be only one at a time.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#delete-an-impersonation-oauth-token
 	DeleteImpersonation(ctx context.Context, username string) (*Response, error)
 
-	// Reset is used to reset a valid OAuth token without end user involvement.
-	// Applications must save the "token" property in the response, because changes
-	// take effect immediately.
-	//
-	// Note that this operation requires the use of BasicAuth, but where the
-	// username is the OAuth application clientID, and the password is its
-	// clientSecret. Invalid tokens will return a 404 Not Found.
-	//
-	// The returned Authorization.User field will be populated.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#reset-a-token
 	Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error)
 
-	// Revoke an authorization for an application.
-	//
-	// Note that this operation requires the use of BasicAuth, but where the
-	// username is the OAuth application clientID, and the password is its
-	// clientSecret. Invalid tokens will return a 404 Not Found.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#delete-an-app-token
 	Revoke(ctx context.Context, clientID, accessToken string) (*Response, error)
 }
 
@@ -821,43 +310,17 @@ type AuthorizationsServiceInterface interface {
 var _ AuthorizationsServiceInterface = &AuthorizationsService{}
 
 // BillingServiceInterface defines the interface for the BillingService for easy mocking.
-//
-// BillingService provides access to the billing related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/billing
 type BillingServiceInterface interface {
-
-	// GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-actions-billing-for-an-organization
 	GetActionsBillingOrg(ctx context.Context, org string) (*ActionBilling, *Response, error)
 
-	// GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-actions-billing-for-a-user
 	GetActionsBillingUser(ctx context.Context, user string) (*ActionBilling, *Response, error)
 
-	// GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-packages-billing-for-an-organization
 	GetPackagesBillingOrg(ctx context.Context, org string) (*PackageBilling, *Response, error)
 
-	// GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-packages-billing-for-an-organization
 	GetPackagesBillingUser(ctx context.Context, user string) (*PackageBilling, *Response, error)
 
-	// GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions
-	// and GitHub Packages in gigabytes for an Org.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-shared-storage-billing-for-an-organization
 	GetStorageBillingOrg(ctx context.Context, org string) (*StorageBilling, *Response, error)
 
-	// GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions
-	// and GitHub Packages in gigabytes for a user.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-shared-storage-billing-for-a-user
 	GetStorageBillingUser(ctx context.Context, user string) (*StorageBilling, *Response, error)
 }
 
@@ -865,66 +328,27 @@ type BillingServiceInterface interface {
 var _ BillingServiceInterface = &BillingService{}
 
 // ChecksServiceInterface defines the interface for the ChecksService for easy mocking.
-//
-// ChecksService provides access to the Checks API in the
-// GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/
 type ChecksServiceInterface interface {
-
-	// CreateCheckRun creates a check run for repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#create-a-check-run
 	CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error)
 
-	// CreateCheckSuite manually creates a check suite for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#create-a-check-suite
 	CreateCheckSuite(ctx context.Context, owner, repo string, opts CreateCheckSuiteOptions) (*CheckSuite, *Response, error)
 
-	// GetCheckRun gets a check-run for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#get-a-check-run
 	GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error)
 
-	// GetCheckSuite gets a single check suite.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#get-a-check-suite
 	GetCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*CheckSuite, *Response, error)
 
-	// ListCheckRunAnnotations lists the annotations for a check run.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#list-check-run-annotations
 	ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opts *ListOptions) ([]*CheckRunAnnotation, *Response, error)
 
-	// ListCheckRunsCheckSuite lists check runs for a check suite.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#list-check-runs-in-a-check-suite
 	ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error)
 
-	// ListCheckRunsForRef lists check runs for a specific ref.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#list-check-runs-for-a-git-reference
 	ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error)
 
-	// ListCheckSuitesForRef lists check suite for a specific ref.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#list-check-suites-for-a-git-reference
 	ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error)
 
-	// ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#rerequest-a-check-suite
 	ReRequestCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*Response, error)
 
-	// SetCheckSuitePreferences changes the default automatic flow when creating check suites.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#update-repository-preferences-for-check-suites
 	SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error)
 
-	// UpdateCheckRun updates a check run for a specific commit in a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/checks/#update-a-check-run
 	UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error)
 }
 
@@ -932,30 +356,9 @@ type ChecksServiceInterface interface {
 var _ ChecksServiceInterface = &ChecksService{}
 
 // CodeScanningServiceInterface defines the interface for the CodeScanningService for easy mocking.
-//
-// CodeScanningService handles communication with the code scanning related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningServiceInterface interface {
-
-	// GetAlert gets a single code scanning alert for a repository.
-	//
-	// You must use an access token with the security_events scope to use this endpoint.
-	// GitHub Apps must have the security_events read permission to use this endpoint.
-	//
-	// The security alert_id is the number at the end of the security alert's URL.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#get-a-code-scanning-alert
 	GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error)
 
-	// ListAlertsForRepo lists code scanning alerts for a repository.
-	//
-	// Lists all open code scanning alerts for the default branch (usually master) and protected branches in a repository.
-	// You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
-	// read permission to use this endpoint.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#list-code-scanning-alerts-for-a-repository
 	ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error)
 }
 
@@ -963,31 +366,13 @@ type CodeScanningServiceInterface interface {
 var _ CodeScanningServiceInterface = &CodeScanningService{}
 
 // EnterpriseServiceInterface defines the interface for the EnterpriseService for easy mocking.
-//
-// EnterpriseService provides access to the enterprise related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/
 type EnterpriseServiceInterface interface {
-
-	// CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/#create-a-registration-token-for-an-enterprise
 	CreateRegistrationToken(ctx context.Context, enterprise string) (*RegistrationToken, *Response, error)
 
-	// GetAuditLog gets the audit-log entries for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise
 	GetAuditLog(ctx context.Context, enterprise string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error)
 
-	// ListRunners lists all the self-hosted runners for a enterprise.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/#list-self-hosted-runners-for-an-enterprise
 	ListRunners(ctx context.Context, enterprise string, opts *ListOptions) (*Runners, *Response, error)
 
-	// RemoveRunner forces the removal of a self-hosted runner from an enterprise using the runner id.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise-admin/#delete-a-self-hosted-runner-from-an-enterprise
 	RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error)
 }
 
@@ -995,110 +380,43 @@ type EnterpriseServiceInterface interface {
 var _ EnterpriseServiceInterface = &EnterpriseService{}
 
 // GistsServiceInterface defines the interface for the GistsService for easy mocking.
-//
-// GistsService handles communication with the Gist related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/
 type GistsServiceInterface interface {
-
-	// Create a gist for authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#create-a-gist
 	Create(ctx context.Context, gist *Gist) (*Gist, *Response, error)
 
-	// CreateComment creates a comment for a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#create-a-gist-comment
 	CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error)
 
-	// Delete a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#delete-a-gist
 	Delete(ctx context.Context, id string) (*Response, error)
 
-	// DeleteComment deletes a gist comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#delete-a-gist-comment
 	DeleteComment(ctx context.Context, gistID string, commentID int64) (*Response, error)
 
-	// Edit a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#update-a-gist
 	Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error)
 
-	// EditComment edits an existing gist comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#update-a-gist-comment
 	EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error)
 
-	// Fork a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#fork-a-gist
 	Fork(ctx context.Context, id string) (*Gist, *Response, error)
 
-	// Get a single gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#get-a-gist
 	Get(ctx context.Context, id string) (*Gist, *Response, error)
 
-	// GetComment retrieves a single comment from a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#get-a-gist-comment
 	GetComment(ctx context.Context, gistID string, commentID int64) (*GistComment, *Response, error)
 
-	// GetRevision gets a specific revision of a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#get-a-gist-revision
 	GetRevision(ctx context.Context, id, sha string) (*Gist, *Response, error)
 
-	// IsStarred checks if a gist is starred by authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#check-if-a-gist-is-starred
 	IsStarred(ctx context.Context, id string) (bool, *Response, error)
 
-	// List gists for a user. Passing the empty string will list
-	// all public gists if called anonymously. However, if the call
-	// is authenticated, it will returns all gists for the authenticated
-	// user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-gists-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-gists-for-a-user
 	List(ctx context.Context, user string, opts *GistListOptions) ([]*Gist, *Response, error)
 
-	// ListAll lists all public gists.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-public-gists
 	ListAll(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error)
 
-	// ListComments lists all comments for a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-gist-comments
 	ListComments(ctx context.Context, gistID string, opts *ListOptions) ([]*GistComment, *Response, error)
 
-	// ListCommits lists commits of a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-gist-commits
 	ListCommits(ctx context.Context, id string, opts *ListOptions) ([]*GistCommit, *Response, error)
 
-	// ListForks lists forks of a gist.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-gist-forks
 	ListForks(ctx context.Context, id string, opts *ListOptions) ([]*GistFork, *Response, error)
 
-	// ListStarred lists starred gists of authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#list-starred-gists
 	ListStarred(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error)
 
-	// Star a gist on behalf of authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#star-a-gist
 	Star(ctx context.Context, id string) (*Response, error)
 
-	// Unstar a gist on a behalf of authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gists/#unstar-a-gist
 	Unstar(ctx context.Context, id string) (*Response, error)
 }
 
@@ -1106,90 +424,33 @@ type GistsServiceInterface interface {
 var _ GistsServiceInterface = &GistsService{}
 
 // GitServiceInterface defines the interface for the GitService for easy mocking.
-//
-// GitService handles communication with the git data related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/
 type GitServiceInterface interface {
-
-	// CreateBlob creates a blob object.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#create-a-blob
 	CreateBlob(ctx context.Context, owner string, repo string, blob *Blob) (*Blob, *Response, error)
 
-	// CreateCommit creates a new commit in a repository.
-	// commit must not be nil.
-	//
-	// The commit.Committer is optional and will be filled with the commit.Author
-	// data if omitted. If the commit.Author is omitted, it will be filled in with
-	// the authenticated user’s information and the current date.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#create-a-commit
 	CreateCommit(ctx context.Context, owner string, repo string, commit *Commit) (*Commit, *Response, error)
 
-	// CreateRef creates a new ref in a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#create-a-reference
 	CreateRef(ctx context.Context, owner string, repo string, ref *Reference) (*Reference, *Response, error)
 
-	// CreateTag creates a tag object.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#create-a-tag-object
 	CreateTag(ctx context.Context, owner string, repo string, tag *Tag) (*Tag, *Response, error)
 
-	// CreateTree creates a new tree in a repository. If both a tree and a nested
-	// path modifying that tree are specified, it will overwrite the contents of
-	// that tree with the new path contents and write a new tree out.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#create-a-tree
 	CreateTree(ctx context.Context, owner string, repo string, baseTree string, entries []*TreeEntry) (*Tree, *Response, error)
 
-	// DeleteRef deletes a ref from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#delete-a-reference
 	DeleteRef(ctx context.Context, owner string, repo string, ref string) (*Response, error)
 
-	// GetBlob fetches a blob from a repo given a SHA.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-blob
 	GetBlob(ctx context.Context, owner string, repo string, sha string) (*Blob, *Response, error)
 
-	// GetBlobRaw fetches a blob's contents from a repo.
-	// Unlike GetBlob, it returns the raw bytes rather than the base64-encoded data.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-blob
 	GetBlobRaw(ctx context.Context, owner, repo, sha string) ([]byte, *Response, error)
 
-	// GetCommit fetches the Commit object for a given SHA.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-commit
 	GetCommit(ctx context.Context, owner string, repo string, sha string) (*Commit, *Response, error)
 
-	// GetRef fetches a single reference in a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-reference
 	GetRef(ctx context.Context, owner string, repo string, ref string) (*Reference, *Response, error)
 
-	// GetTag fetches a tag from a repo given a SHA.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-tag
 	GetTag(ctx context.Context, owner string, repo string, sha string) (*Tag, *Response, error)
 
-	// GetTree fetches the Tree object for a given sha hash from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#get-a-tree
 	GetTree(ctx context.Context, owner string, repo string, sha string, recursive bool) (*Tree, *Response, error)
 
-	// ListMatchingRefs lists references in a repository that match a supplied ref.
-	// Use an empty ref to list all references.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#list-matching-references
 	ListMatchingRefs(ctx context.Context, owner, repo string, opts *ReferenceListOptions) ([]*Reference, *Response, error)
 
-	// UpdateRef updates an existing ref in a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/git/#update-a-reference
 	UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error)
 }
 
@@ -1197,21 +458,9 @@ type GitServiceInterface interface {
 var _ GitServiceInterface = &GitService{}
 
 // GitignoresServiceInterface defines the interface for the GitignoresService for easy mocking.
-//
-// GitignoresService provides access to the gitignore related functions in the
-// GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gitignore/
 type GitignoresServiceInterface interface {
-
-	// Get a Gitignore by name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gitignore/#get-a-gitignore-template
 	Get(ctx context.Context, name string) (*Gitignore, *Response, error)
 
-	// List all available Gitignore templates.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/gitignore/#listing-available-templates
 	List(ctx context.Context) ([]string, *Response, error)
 }
 
@@ -1219,49 +468,17 @@ type GitignoresServiceInterface interface {
 var _ GitignoresServiceInterface = &GitignoresService{}
 
 // InteractionsServiceInterface defines the interface for the InteractionsService for easy mocking.
-//
-// InteractionsService handles communication with the repository and organization related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/
 type InteractionsServiceInterface interface {
-
-	// GetRestrictionsForOrg fetches the interaction restrictions for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#get-interaction-restrictions-for-an-organization
 	GetRestrictionsForOrg(ctx context.Context, organization string) (*InteractionRestriction, *Response, error)
 
-	// GetRestrictionsForRepo fetches the interaction restrictions for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#get-interaction-restrictions-for-a-repository
 	GetRestrictionsForRepo(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error)
 
-	// RemoveRestrictionsFromOrg removes the interaction restrictions for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#remove-interaction-restrictions-for-an-organization
 	RemoveRestrictionsFromOrg(ctx context.Context, organization string) (*Response, error)
 
-	// RemoveRestrictionsFromRepo removes the interaction restrictions for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#remove-interaction-restrictions-for-a-repository
 	RemoveRestrictionsFromRepo(ctx context.Context, owner, repo string) (*Response, error)
 
-	// UpdateRestrictionsForOrg adds or updates the interaction restrictions for an organization.
-	//
-	// limit specifies the group of GitHub users who can comment, open issues, or create pull requests
-	// in public repositories for the given organization.
-	// Possible values are: "existing_users", "contributors_only", "collaborators_only".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#set-interaction-restrictions-for-an-organization
 	UpdateRestrictionsForOrg(ctx context.Context, organization, limit string) (*InteractionRestriction, *Response, error)
 
-	// UpdateRestrictionsForRepo adds or updates the interaction restrictions for a repository.
-	//
-	// limit specifies the group of GitHub users who can comment, open issues, or create pull requests
-	// for the given repository.
-	// Possible values are: "existing_users", "contributors_only", "collaborators_only".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/interactions/#set-interaction-restrictions-for-a-repository
 	UpdateRestrictionsForRepo(ctx context.Context, owner, repo, limit string) (*InteractionRestriction, *Response, error)
 }
 
@@ -1269,24 +486,11 @@ type InteractionsServiceInterface interface {
 var _ InteractionsServiceInterface = &InteractionsService{}
 
 // IssueImportServiceInterface defines the interface for the IssueImportService for easy mocking.
-//
-// IssueImportService handles communication with the issue import related
-// methods of the Issue Import GitHub API.
 type IssueImportServiceInterface interface {
-
-	// CheckStatus checks the status of an imported issue.
-	//
-	// https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
 	CheckStatus(ctx context.Context, owner, repo string, issueID int64) (*IssueImportResponse, *Response, error)
 
-	// CheckStatusSince checks the status of multiple imported issues since a given date.
-	//
-	// https://gist.github.com/jonmagic/5282384165e0f86ef105#check-status-of-multiple-issues
 	CheckStatusSince(ctx context.Context, owner, repo string, since time.Time) ([]*IssueImportResponse, *Response, error)
 
-	// Create a new imported issue on the specified repository.
-	//
-	// https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
 	Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error)
 }
 
@@ -1294,205 +498,79 @@ type IssueImportServiceInterface interface {
 var _ IssueImportServiceInterface = &IssueImportService{}
 
 // IssuesServiceInterface defines the interface for the IssuesService for easy mocking.
-//
-// IssuesService handles communication with the issue related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/
 type IssuesServiceInterface interface {
-
-	// AddAssignees adds the provided GitHub users as assignees to the issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#add-assignees-to-an-issue
 	AddAssignees(ctx context.Context, owner, repo string, number int, assignees []string) (*Issue, *Response, error)
 
-	// AddLabelsToIssue adds labels to an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#add-labels-to-an-issue
 	AddLabelsToIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*Label, *Response, error)
 
-	// Create a new issue on the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#create-an-issue
 	Create(ctx context.Context, owner string, repo string, issue *IssueRequest) (*Issue, *Response, error)
 
-	// CreateComment creates a new comment on the specified issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#create-an-issue-comment
 	CreateComment(ctx context.Context, owner string, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error)
 
-	// CreateLabel creates a new label on the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#create-a-label
 	CreateLabel(ctx context.Context, owner string, repo string, label *Label) (*Label, *Response, error)
 
-	// CreateMilestone creates a new milestone on the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#create-a-milestone
 	CreateMilestone(ctx context.Context, owner string, repo string, milestone *Milestone) (*Milestone, *Response, error)
 
-	// DeleteComment deletes an issue comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#delete-an-issue-comment
 	DeleteComment(ctx context.Context, owner string, repo string, commentID int64) (*Response, error)
 
-	// DeleteLabel deletes a label.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#delete-a-label
 	DeleteLabel(ctx context.Context, owner string, repo string, name string) (*Response, error)
 
-	// DeleteMilestone deletes a milestone.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#delete-a-milestone
 	DeleteMilestone(ctx context.Context, owner string, repo string, number int) (*Response, error)
 
-	// Edit an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-an-issue
 	Edit(ctx context.Context, owner string, repo string, number int, issue *IssueRequest) (*Issue, *Response, error)
 
-	// EditComment updates an issue comment.
-	// A non-nil comment.Body must be provided. Other comment fields should be left nil.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-an-issue-comment
 	EditComment(ctx context.Context, owner string, repo string, commentID int64, comment *IssueComment) (*IssueComment, *Response, error)
 
-	// EditLabel edits a label.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-a-label
 	EditLabel(ctx context.Context, owner string, repo string, name string, label *Label) (*Label, *Response, error)
 
-	// EditMilestone edits a milestone.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-a-milestone
 	EditMilestone(ctx context.Context, owner string, repo string, number int, milestone *Milestone) (*Milestone, *Response, error)
 
-	// Get a single issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-an-issue
 	Get(ctx context.Context, owner string, repo string, number int) (*Issue, *Response, error)
 
-	// GetComment fetches the specified issue comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-an-issue-comment
 	GetComment(ctx context.Context, owner string, repo string, commentID int64) (*IssueComment, *Response, error)
 
-	// GetEvent returns the specified issue event.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-an-issue-event
 	GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error)
 
-	// GetLabel gets a single label.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-a-label
 	GetLabel(ctx context.Context, owner string, repo string, name string) (*Label, *Response, error)
 
-	// GetMilestone gets a single milestone.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-a-milestone
 	GetMilestone(ctx context.Context, owner string, repo string, number int) (*Milestone, *Response, error)
 
-	// IsAssignee checks if a user is an assignee for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#check-if-a-user-can-be-assigned
 	IsAssignee(ctx context.Context, owner, repo, user string) (bool, *Response, error)
 
-	// List the issues for the authenticated user. If all is true, list issues
-	// across all the user's visible repositories including owned, member, and
-	// organization repositories; if false, list only owned and member
-	// repositories.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-user-account-issues-assigned-to-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issues-assigned-to-the-authenticated-user
 	List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error)
 
-	// ListAssignees fetches all available assignees (owners and collaborators) to
-	// which issues may be assigned.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-assignees
 	ListAssignees(ctx context.Context, owner, repo string, opts *ListOptions) ([]*User, *Response, error)
 
-	// ListByOrg fetches the issues in the specified organization for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-organization-issues-assigned-to-the-authenticated-user
 	ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error)
 
-	// ListByRepo lists the issues for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-repository-issues
 	ListByRepo(ctx context.Context, owner string, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error)
 
-	// ListComments lists all comments on the specified issue. Specifying an issue
-	// number of 0 will return all comments on all issues for the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-comments
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-comments-for-a-repository
 	ListComments(ctx context.Context, owner string, repo string, number int, opts *IssueListCommentsOptions) ([]*IssueComment, *Response, error)
 
-	// ListIssueEvents lists events for the specified issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-events
 	ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error)
 
-	// ListIssueTimeline lists events for the specified issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-timeline-events-for-an-issue
 	ListIssueTimeline(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Timeline, *Response, error)
 
-	// ListLabels lists all labels for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-labels-for-a-repository
 	ListLabels(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Label, *Response, error)
 
-	// ListLabelsByIssue lists all labels for an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-labels-for-an-issue
 	ListLabelsByIssue(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error)
 
-	// ListLabelsForMilestone lists labels for every issue in a milestone.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-labels-for-issues-in-a-milestone
 	ListLabelsForMilestone(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*Label, *Response, error)
 
-	// ListMilestones lists all milestones for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-milestones
 	ListMilestones(ctx context.Context, owner string, repo string, opts *MilestoneListOptions) ([]*Milestone, *Response, error)
 
-	// ListRepositoryEvents lists events for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-issue-events-for-a-repository
 	ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error)
 
-	// Lock an issue's conversation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#lock-an-issue
 	Lock(ctx context.Context, owner string, repo string, number int, opts *LockIssueOptions) (*Response, error)
 
-	// RemoveAssignees removes the provided GitHub users as assignees from the issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#remove-assignees-from-an-issue
 	RemoveAssignees(ctx context.Context, owner, repo string, number int, assignees []string) (*Issue, *Response, error)
 
-	// RemoveLabelForIssue removes a label for an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#remove-a-label-from-an-issue
 	RemoveLabelForIssue(ctx context.Context, owner string, repo string, number int, label string) (*Response, error)
 
-	// RemoveLabelsForIssue removes all labels for an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#remove-all-labels-from-an-issue
 	RemoveLabelsForIssue(ctx context.Context, owner string, repo string, number int) (*Response, error)
 
-	// ReplaceLabelsForIssue replaces all labels for an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#set-labels-for-an-issue
 	ReplaceLabelsForIssue(ctx context.Context, owner string, repo string, number int, labels []string) ([]*Label, *Response, error)
 
-	// Unlock an issue's conversation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#unlock-an-issue
 	Unlock(ctx context.Context, owner string, repo string, number int) (*Response, error)
 }
 
@@ -1500,21 +578,9 @@ type IssuesServiceInterface interface {
 var _ IssuesServiceInterface = &IssuesService{}
 
 // LicensesServiceInterface defines the interface for the LicensesService for easy mocking.
-//
-// LicensesService handles communication with the license related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/
 type LicensesServiceInterface interface {
-
-	// Get extended metadata for one license.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-a-license
 	Get(ctx context.Context, licenseName string) (*License, *Response, error)
 
-	// List popular open source licenses.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#list-all-licenses
 	List(ctx context.Context) ([]*License, *Response, error)
 }
 
@@ -1522,32 +588,13 @@ type LicensesServiceInterface interface {
 var _ LicensesServiceInterface = &LicensesService{}
 
 // MarketplaceServiceInterface defines the interface for the MarketplaceService for easy mocking.
-//
-// MarketplaceService handles communication with the marketplace related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps#marketplace
 type MarketplaceServiceInterface interface {
-
-	// ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-subscriptions-for-the-authenticated-user-stubbed
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-subscriptions-for-the-authenticated-user
 	ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error)
 
-	// ListPlanAccountsForAccount lists all GitHub accounts (user or organization) associated with an account.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#check-if-a-github-account-is-associated-with-any-marketplace-listing
 	ListPlanAccountsForAccount(ctx context.Context, accountID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error)
 
-	// ListPlanAccountsForPlan lists all GitHub accounts (user or organization) on a specific plan.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-all-github-accounts-user-or-organization-on-a-specific-plan
 	ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error)
 
-	// ListPlans lists all plans for your Marketplace listing.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps#list-plans
 	ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error)
 }
 
@@ -1555,139 +602,45 @@ type MarketplaceServiceInterface interface {
 var _ MarketplaceServiceInterface = &MarketplaceService{}
 
 // MigrationServiceInterface defines the interface for the MigrationService for easy mocking.
-//
-// MigrationService provides access to the migration related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migration/
 type MigrationServiceInterface interface {
-
-	// CancelImport stops an import for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#cancel-an-import
 	CancelImport(ctx context.Context, owner, repo string) (*Response, error)
 
-	// CommitAuthors gets the authors mapped from the original repository.
-	//
-	// Each type of source control system represents authors in a different way.
-	// For example, a Git commit author has a display name and an email address,
-	// but a Subversion commit author just has a username. The GitHub Importer will
-	// make the author information valid, but the author might not be correct. For
-	// example, it will change the bare Subversion username "hubot" into something
-	// like "hubot <hubot@12341234-abab-fefe-8787-fedcba987654>".
-	//
-	// This method and MapCommitAuthor allow you to provide correct Git author
-	// information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#get-commit-authors
 	CommitAuthors(ctx context.Context, owner, repo string) ([]*SourceImportAuthor, *Response, error)
 
-	// DeleteMigration deletes a previous migration archive.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#delete-an-organization-migration-archive
 	DeleteMigration(ctx context.Context, org string, id int64) (*Response, error)
 
-	// DeleteUserMigration will delete a previous migration archive.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#delete-a-user-migration-archive
 	DeleteUserMigration(ctx context.Context, id int64) (*Response, error)
 
-	// ImportProgress queries for the status and progress of an ongoing repository import.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#get-an-import-status
 	ImportProgress(ctx context.Context, owner, repo string) (*Import, *Response, error)
 
-	// LargeFiles lists files larger than 100MB found during the import.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#get-large-files
 	LargeFiles(ctx context.Context, owner, repo string) ([]*LargeFile, *Response, error)
 
-	// ListMigrations lists the most recent migrations.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#list-organization-migrations
 	ListMigrations(ctx context.Context, org string, opts *ListOptions) ([]*Migration, *Response, error)
 
-	// ListUserMigrations lists the most recent migrations.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#list-user-migrations
 	ListUserMigrations(ctx context.Context) ([]*UserMigration, *Response, error)
 
-	// MapCommitAuthor updates an author's identity for the import. Your
-	// application can continue updating authors any time before you push new
-	// commits to the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#map-a-commit-author
 	MapCommitAuthor(ctx context.Context, owner, repo string, id int64, author *SourceImportAuthor) (*SourceImportAuthor, *Response, error)
 
-	// MigrationArchiveURL fetches a migration archive URL.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#download-an-organization-migration-archive
 	MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error)
 
-	// MigrationStatus gets the status of a specific migration archive.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#get-an-organization-migration-status
 	MigrationStatus(ctx context.Context, org string, id int64) (*Migration, *Response, error)
 
-	// SetLFSPreference sets whether imported repositories should use Git LFS for
-	// files larger than 100MB. Only the UseLFS field on the provided Import is
-	// used.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#update-git-lfs-preference
 	SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error)
 
-	// StartImport initiates a repository import.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#start-an-import
 	StartImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error)
 
-	// StartMigration starts the generation of a migration archive.
-	// repos is a slice of repository names to migrate.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#start-an-organization-migration
 	StartMigration(ctx context.Context, org string, repos []string, opts *MigrationOptions) (*Migration, *Response, error)
 
-	// StartUserMigration starts the generation of a migration archive.
-	// repos is a slice of repository names to migrate.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#start-a-user-migration
 	StartUserMigration(ctx context.Context, repos []string, opts *UserMigrationOptions) (*UserMigration, *Response, error)
 
-	// UnlockRepo unlocks a repository that was locked for migration.
-	// id is the migration ID.
-	// You should unlock each migrated repository and delete them when the migration
-	// is complete and you no longer need the source data.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#unlock-an-organization-repository
 	UnlockRepo(ctx context.Context, org string, id int64, repo string) (*Response, error)
 
-	// UnlockUserRepo will unlock a repo that was locked for migration.
-	// id is migration ID.
-	// You should unlock each migrated repository and delete them when the migration
-	// is complete and you no longer need the source data.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#unlock-a-user-repository
 	UnlockUserRepo(ctx context.Context, id int64, repo string) (*Response, error)
 
-	// UpdateImport initiates a repository import.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#update-an-import
 	UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error)
 
-	// UserMigrationArchiveURL gets the URL for a specific migration archive.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#download-a-user-migration-archive
 	UserMigrationArchiveURL(ctx context.Context, id int64) (string, error)
 
-	// UserMigrationStatus gets the status of a specific migration archive.
-	// id is the migration ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/migrations/#get-a-user-migration-status
 	UserMigrationStatus(ctx context.Context, id int64) (*UserMigration, *Response, error)
 }
 
@@ -1695,240 +648,83 @@ type MigrationServiceInterface interface {
 var _ MigrationServiceInterface = &MigrationService{}
 
 // OrganizationsServiceInterface defines the interface for the OrganizationsService for easy mocking.
-//
-// OrganizationsService provides access to the organization related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/
 type OrganizationsServiceInterface interface {
-
-	// BlockUser blocks specified user from an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#block-a-user-from-an-organization
 	BlockUser(ctx context.Context, org string, user string) (*Response, error)
 
-	// ConcealMembership conceals a user's membership in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#remove-public-organization-membership-for-the-authenticated-user
 	ConcealMembership(ctx context.Context, org, user string) (*Response, error)
 
-	// ConvertMemberToOutsideCollaborator reduces the permission level of a member of the
-	// organization to that of an outside collaborator. Therefore, they will only
-	// have access to the repositories that their current team membership allows.
-	// Responses for converting a non-member or the last owner to an outside collaborator
-	// are listed in GitHub API docs.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#convert-an-organization-member-to-outside-collaborator
 	ConvertMemberToOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error)
 
-	// CreateHook creates a Hook for the specified org.
-	// Config is a required field.
-	//
-	// Note that only a subset of the hook fields are used and hook must
-	// not be nil.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#create-an-organization-webhook
 	CreateHook(ctx context.Context, org string, hook *Hook) (*Hook, *Response, error)
 
-	// CreateOrgInvitation invites people to an organization by using their GitHub user ID or their email address.
-	// In order to create invitations in an organization,
-	// the authenticated user must be an organization owner.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#create-an-organization-invitation
 	CreateOrgInvitation(ctx context.Context, org string, opts *CreateOrgInvitationOptions) (*Invitation, *Response, error)
 
-	// CreateProject creates a GitHub Project for the specified organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#create-an-organization-project
 	CreateProject(ctx context.Context, org string, opts *ProjectOptions) (*Project, *Response, error)
 
-	// DeleteHook deletes a specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#delete-an-organization-webhook
 	DeleteHook(ctx context.Context, org string, id int64) (*Response, error)
 
-	// Edit an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#update-an-organization
 	Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error)
 
-	// EditActionsAllowed sets the actions that are allowed in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-allowed-actions-for-an-organization
 	EditActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error)
 
-	// EditActionsPermissions sets the permissions policy for repositories and allowed actions in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-github-actions-permissions-for-an-organization
 	EditActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error)
 
-	// EditHook updates a specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#update-an-organization-webhook
 	EditHook(ctx context.Context, org string, id int64, hook *Hook) (*Hook, *Response, error)
 
-	// EditOrgMembership edits the membership for user in specified organization.
-	// Passing an empty string for user will edit the membership for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#update-an-organization-membership-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#set-organization-membership-for-a-user
 	EditOrgMembership(ctx context.Context, user, org string, membership *Membership) (*Membership, *Response, error)
 
-	// Get fetches an organization by name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#get-an-organization
 	Get(ctx context.Context, org string) (*Organization, *Response, error)
 
-	// GetActionsAllowed gets the actions that are allowed in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-allowed-actions-for-an-organization
 	GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error)
 
-	// GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-github-actions-permissions-for-an-organization
 	GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error)
 
-	// GetAuditLog gets the audit-log entries for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/rest/reference/orgs#get-the-audit-log-for-an-organization
 	GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error)
 
-	// GetByID fetches an organization.
-	//
-	// Note: GetByID uses the undocumented GitHub API endpoint /organizations/:id.
 	GetByID(ctx context.Context, id int64) (*Organization, *Response, error)
 
-	// GetHook returns a single specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#get-an-organization-webhook
 	GetHook(ctx context.Context, org string, id int64) (*Hook, *Response, error)
 
-	// GetOrgMembership gets the membership for a user in a specified organization.
-	// Passing an empty string for user will get the membership for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#get-an-organization-membership-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#get-organization-membership-for-a-user
 	GetOrgMembership(ctx context.Context, user, org string) (*Membership, *Response, error)
 
-	// IsBlocked reports whether specified user is blocked from an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#check-if-a-user-is-blocked-by-an-organization
 	IsBlocked(ctx context.Context, org string, user string) (bool, *Response, error)
 
-	// IsMember checks if a user is a member of an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#check-organization-membership-for-a-user
 	IsMember(ctx context.Context, org, user string) (bool, *Response, error)
 
-	// IsPublicMember checks if a user is a public member of an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#check-public-organization-membership-for-a-user
 	IsPublicMember(ctx context.Context, org, user string) (bool, *Response, error)
 
-	// List the organizations for a user. Passing the empty string will list
-	// organizations for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organizations-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organizations-for-a-user
 	List(ctx context.Context, user string, opts *ListOptions) ([]*Organization, *Response, error)
 
-	// ListAll lists all organizations, in the order that they were created on GitHub.
-	//
-	// Note: Pagination is powered exclusively by the since parameter. To continue
-	// listing the next set of organizations, use the ID of the last-returned organization
-	// as the opts.Since parameter for the next call.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organizations
 	ListAll(ctx context.Context, opts *OrganizationsListOptions) ([]*Organization, *Response, error)
 
-	// ListBlockedUsers lists all the users blocked by an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-users-blocked-by-an-organization
 	ListBlockedUsers(ctx context.Context, org string, opts *ListOptions) ([]*User, *Response, error)
 
-	// ListHooks lists all Hooks for the specified organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organization-webhooks
 	ListHooks(ctx context.Context, org string, opts *ListOptions) ([]*Hook, *Response, error)
 
-	// ListInstallations lists installations for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-app-installations-for-an-organization
 	ListInstallations(ctx context.Context, org string, opts *ListOptions) (*OrganizationInstallations, *Response, error)
 
-	// ListMembers lists the members for an organization. If the authenticated
-	// user is an owner of the organization, this will return both concealed and
-	// public members, otherwise it will only return public members.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organization-members
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-public-organization-members
 	ListMembers(ctx context.Context, org string, opts *ListMembersOptions) ([]*User, *Response, error)
 
-	// ListOrgInvitationTeams lists all teams associated with an invitation. In order to see invitations in an organization,
-	// the authenticated user must be an organization owner.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organization-invitation-teams
 	ListOrgInvitationTeams(ctx context.Context, org, invitationID string, opts *ListOptions) ([]*Team, *Response, error)
 
-	// ListOrgMemberships lists the organization memberships for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-organization-memberships-for-the-authenticated-user
 	ListOrgMemberships(ctx context.Context, opts *ListOrgMembershipsOptions) ([]*Membership, *Response, error)
 
-	// ListOutsideCollaborators lists outside collaborators of organization's repositories.
-	// This will only work if the authenticated
-	// user is an owner of the organization.
-	//
-	// Warning: The API may change without advance notice during the preview period.
-	// Preview features are not supported for production use.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-outside-collaborators-for-an-organization
 	ListOutsideCollaborators(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) ([]*User, *Response, error)
 
-	// ListPendingOrgInvitations returns a list of pending invitations.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#list-pending-organization-invitations
 	ListPendingOrgInvitations(ctx context.Context, org string, opts *ListOptions) ([]*Invitation, *Response, error)
 
-	// ListProjects lists the projects for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-organization-projects
 	ListProjects(ctx context.Context, org string, opts *ProjectListOptions) ([]*Project, *Response, error)
 
-	// PingHook triggers a 'ping' event to be sent to the Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#ping-an-organization-webhook
 	PingHook(ctx context.Context, org string, id int64) (*Response, error)
 
-	// PublicizeMembership publicizes a user's membership in an organization. (A
-	// user cannot publicize the membership for another user.)
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#set-public-organization-membership-for-the-authenticated-user
 	PublicizeMembership(ctx context.Context, org, user string) (*Response, error)
 
-	// RemoveMember removes a user from all teams of an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#remove-an-organization-member
 	RemoveMember(ctx context.Context, org, user string) (*Response, error)
 
-	// RemoveOrgMembership removes user from the specified organization. If the
-	// user has been invited to the organization, this will cancel their invitation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#remove-organization-membership-for-a-user
 	RemoveOrgMembership(ctx context.Context, user, org string) (*Response, error)
 
-	// RemoveOutsideCollaborator removes a user from the list of outside collaborators;
-	// consequently, removing them from all the organization's repositories.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#remove-outside-collaborator-from-an-organization
 	RemoveOutsideCollaborator(ctx context.Context, org string, user string) (*Response, error)
 
-	// UnblockUser unblocks specified user from an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/orgs/#unblock-a-user-from-an-organization
 	UnblockUser(ctx context.Context, org string, user string) (*Response, error)
 }
 
@@ -1936,114 +732,43 @@ type OrganizationsServiceInterface interface {
 var _ OrganizationsServiceInterface = &OrganizationsService{}
 
 // ProjectsServiceInterface defines the interface for the ProjectsService for easy mocking.
-//
-// ProjectsService provides access to the projects functions in the
-// GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/
 type ProjectsServiceInterface interface {
-
-	// AddProjectCollaborator adds a collaborator to an organization project and sets
-	// their permission level. You must be an organization owner or a project admin to add a collaborator.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#add-project-collaborator
 	AddProjectCollaborator(ctx context.Context, id int64, username string, opts *ProjectCollaboratorOptions) (*Response, error)
 
-	// CreateProjectCard creates a card in the specified column of a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#create-a-project-card
 	CreateProjectCard(ctx context.Context, columnID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error)
 
-	// CreateProjectColumn creates a column for the specified (by number) project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#create-a-project-column
 	CreateProjectColumn(ctx context.Context, projectID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error)
 
-	// DeleteProject deletes a GitHub Project from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#delete-a-project
 	DeleteProject(ctx context.Context, id int64) (*Response, error)
 
-	// DeleteProjectCard deletes a card from a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#delete-a-project-card
 	DeleteProjectCard(ctx context.Context, cardID int64) (*Response, error)
 
-	// DeleteProjectColumn deletes a column from a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#delete-a-project-column
 	DeleteProjectColumn(ctx context.Context, columnID int64) (*Response, error)
 
-	// GetProject gets a GitHub Project for a repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#get-a-project
 	GetProject(ctx context.Context, id int64) (*Project, *Response, error)
 
-	// GetProjectCard gets a card in a column of a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#get-a-project-card
 	GetProjectCard(ctx context.Context, cardID int64) (*ProjectCard, *Response, error)
 
-	// GetProjectColumn gets a column of a GitHub Project for a repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#get-a-project-column
 	GetProjectColumn(ctx context.Context, id int64) (*ProjectColumn, *Response, error)
 
-	// ListProjectCards lists the cards in a column of a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-project-cards
 	ListProjectCards(ctx context.Context, columnID int64, opts *ProjectCardListOptions) ([]*ProjectCard, *Response, error)
 
-	// ListProjectCollaborators lists the collaborators for an organization project. For a project,
-	// the list of collaborators includes outside collaborators, organization members that are direct
-	// collaborators, organization members with access through team memberships, organization members
-	// with access through default organization permissions, and organization owners. You must be an
-	// organization owner or a project admin to list collaborators.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-project-collaborators
 	ListProjectCollaborators(ctx context.Context, id int64, opts *ListCollaboratorOptions) ([]*User, *Response, error)
 
-	// ListProjectColumns lists the columns of a GitHub Project for a repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-project-columns
 	ListProjectColumns(ctx context.Context, projectID int64, opts *ListOptions) ([]*ProjectColumn, *Response, error)
 
-	// MoveProjectCard moves a card within a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#move-a-project-card
 	MoveProjectCard(ctx context.Context, cardID int64, opts *ProjectCardMoveOptions) (*Response, error)
 
-	// MoveProjectColumn moves a column within a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#move-a-project-column
 	MoveProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnMoveOptions) (*Response, error)
 
-	// RemoveProjectCollaborator removes a collaborator from an organization project.
-	// You must be an organization owner or a project admin to remove a collaborator.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#remove-user-as-a-collaborator
 	RemoveProjectCollaborator(ctx context.Context, id int64, username string) (*Response, error)
 
-	// ReviewProjectCollaboratorPermission returns the collaborator's permission level for an organization
-	// project. Possible values for the permission key: "admin", "write", "read", "none".
-	// You must be an organization owner or a project admin to review a user's permission level.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#get-project-permission-for-a-user
 	ReviewProjectCollaboratorPermission(ctx context.Context, id int64, username string) (*ProjectPermissionLevel, *Response, error)
 
-	// UpdateProject updates a repository project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#update-a-project
 	UpdateProject(ctx context.Context, id int64, opts *ProjectOptions) (*Project, *Response, error)
 
-	// UpdateProjectCard updates a card of a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#update-an-existing-project-card
 	UpdateProjectCard(ctx context.Context, cardID int64, opts *ProjectCardOptions) (*ProjectCard, *Response, error)
 
-	// UpdateProjectColumn updates a column of a GitHub Project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#update-an-existing-project-column
 	UpdateProjectColumn(ctx context.Context, columnID int64, opts *ProjectColumnOptions) (*ProjectColumn, *Response, error)
 }
 
@@ -2051,224 +776,61 @@ type ProjectsServiceInterface interface {
 var _ ProjectsServiceInterface = &ProjectsService{}
 
 // PullRequestsServiceInterface defines the interface for the PullRequestsService for easy mocking.
-//
-// PullRequestsService handles communication with the pull request related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/
 type PullRequestsServiceInterface interface {
-
-	// Create a new pull request on the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-pull-request
 	Create(ctx context.Context, owner string, repo string, pull *NewPullRequest) (*PullRequest, *Response, error)
 
-	// CreateComment creates a new comment on the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-review-comment-for-a-pull-request
 	CreateComment(ctx context.Context, owner, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error)
 
-	// CreateCommentInReplyTo creates a new comment as a reply to an existing pull request comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-review-comment-for-a-pull-request
 	CreateCommentInReplyTo(ctx context.Context, owner, repo string, number int, body string, commentID int64) (*PullRequestComment, *Response, error)
 
-	// CreateReview creates a new review on the specified pull request.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-review-for-a-pull-request
-	//
-	// In order to use multi-line comments, you must use the "comfort fade" preview.
-	// This replaces the use of the "Position" field in comments with 4 new fields:
-	//   [Start]Side, and [Start]Line.
-	// These new fields must be used for ALL comments (including single-line),
-	// with the following restrictions (empirically observed, so subject to change).
-	//
-	// For single-line "comfort fade" comments, you must use:
-	//
-	//    Path:  &path,  // as before
-	//    Body:  &body,  // as before
-	//    Side:  &"RIGHT" (or "LEFT")
-	//    Line:  &123,  // NOT THE SAME AS POSITION, this is an actual line number.
-	//
-	// If StartSide or StartLine is used with single-line comments, a 422 is returned.
-	//
-	// For multi-line "comfort fade" comments, you must use:
-	//
-	//    Path:      &path,  // as before
-	//    Body:      &body,  // as before
-	//    StartSide: &"RIGHT" (or "LEFT")
-	//    Side:      &"RIGHT" (or "LEFT")
-	//    StartLine: &120,
-	//    Line:      &125,
-	//
-	// Suggested edits are made by commenting on the lines to replace, and including the
-	// suggested edit in a block like this (it may be surrounded in non-suggestion markdown):
-	//
-	//    ```suggestion
-	//    Use this instead.
-	//    It is waaaaaay better.
-	//    ```
 	CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error)
 
-	// DeleteComment deletes a pull request comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#delete-a-review-comment-for-a-pull-request
 	DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error)
 
-	// DeletePendingReview deletes the specified pull request pending review.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#delete-a-pending-review-for-a-pull-request
 	DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error)
 
-	// DismissReview dismisses a specified review on the specified pull request.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#dismiss-a-review-for-a-pull-request
 	DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error)
 
-	// Edit a pull request.
-	// pull must not be nil.
-	//
-	// The following fields are editable: Title, Body, State, Base.Ref and MaintainerCanModify.
-	// Base.Ref updates the base branch of the pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-pull-request
 	Edit(ctx context.Context, owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error)
 
-	// EditComment updates a pull request comment.
-	// A non-nil comment.Body must be provided. Other comment fields should be left nil.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-review-comment-for-a-pull-request
 	EditComment(ctx context.Context, owner, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error)
 
-	// Get a single pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-pull-request
 	Get(ctx context.Context, owner string, repo string, number int) (*PullRequest, *Response, error)
 
-	// GetComment fetches the specified pull request comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-review-comment-for-a-pull-request
 	GetComment(ctx context.Context, owner, repo string, commentID int64) (*PullRequestComment, *Response, error)
 
-	// GetRaw gets a single pull request in raw (diff or patch) format.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-pull-request
 	GetRaw(ctx context.Context, owner string, repo string, number int, opts RawOptions) (string, *Response, error)
 
-	// GetReview fetches the specified pull request review.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-review-for-a-pull-request
 	GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error)
 
-	// IsMerged checks if a pull request has been merged.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#check-if-a-pull-request-has-been-merged
 	IsMerged(ctx context.Context, owner string, repo string, number int) (bool, *Response, error)
 
-	// List the pull requests for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-pull-requests
 	List(ctx context.Context, owner string, repo string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error)
 
-	// ListComments lists all comments on the specified pull request. Specifying a
-	// pull request number of 0 will return all comments on all pull requests for
-	// the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-review-comments-on-a-pull-request
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-review-comments-in-a-repository
 	ListComments(ctx context.Context, owner, repo string, number int, opts *PullRequestListCommentsOptions) ([]*PullRequestComment, *Response, error)
 
-	// ListCommits lists the commits in a pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-commits-on-a-pull-request
 	ListCommits(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error)
 
-	// ListFiles lists the files in a pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-pull-requests-files
 	ListFiles(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error)
 
-	// ListPullRequestsWithCommit returns pull requests associated with a commit SHA.
-	//
-	// The results will include open and closed pull requests.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-pull-requests-associated-with-a-commit
 	ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error)
 
-	// ListReviewComments lists all the comments for the specified review.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-comments-for-a-pull-request-review
 	ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error)
 
-	// ListReviewers lists reviewers whose reviews have been requested on the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-requested-reviewers-for-a-pull-request
 	ListReviewers(ctx context.Context, owner, repo string, number int, opts *ListOptions) (*Reviewers, *Response, error)
 
-	// ListReviews lists all reviews on the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-reviews-for-a-pull-request
 	ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error)
 
-	// Merge a pull request.
-	// commitMessage is an extra detail to append to automatic commit message.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#merge-a-pull-request
 	Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error)
 
-	// RemoveReviewers removes the review request for the provided reviewers for the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#remove-requested-reviewers-from-a-pull-request
 	RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error)
 
-	// RequestReviewers creates a review request for the provided reviewers for the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#request-reviewers-for-a-pull-request
 	RequestReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*PullRequest, *Response, error)
 
-	// SubmitReview submits a specified review on the specified pull request.
-	//
-	// TODO: Follow up with GitHub support about an issue with this method's
-	// returned error format and remove this comment once it's fixed.
-	// Read more about it here - https://github.com/google/go-github/issues/540
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#submit-a-review-for-a-pull-request
 	SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error)
 
-	// UpdateBranch updates the pull request branch with latest upstream changes.
-	//
-	// This method might return an AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it has now scheduled the update of the pull request branch in a background task.
-	// A follow up request, after a delay of a second or so, should result
-	// in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-pull-request-branch
 	UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error)
 
-	// UpdateReview updates the review summary on the specified pull request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-review-for-a-pull-request
 	UpdateReview(ctx context.Context, owner, repo string, number int, reviewID int64, body string) (*PullRequestReview, *Response, error)
 }
 
@@ -2276,145 +838,53 @@ type PullRequestsServiceInterface interface {
 var _ PullRequestsServiceInterface = &PullRequestsService{}
 
 // ReactionsServiceInterface defines the interface for the ReactionsService for easy mocking.
-//
-// ReactionsService provides access to the reactions-related functions in the
-// GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/
 type ReactionsServiceInterface interface {
-
-	// CreateCommentReaction creates a reaction for a commit comment.
-	// Note that if you have already created a reaction of type content, the
-	// previously created reaction will be returned with Status: 200 OK.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-commit-comment
 	CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error)
 
-	// CreateIssueCommentReaction creates a reaction for an issue comment.
-	// Note that if you have already created a reaction of type content, the
-	// previously created reaction will be returned with Status: 200 OK.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue-comment
 	CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error)
 
-	// CreateIssueReaction creates a reaction for an issue.
-	// Note that if you have already created a reaction of type content, the
-	// previously created reaction will be returned with Status: 200 OK.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-an-issue
 	CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error)
 
-	// CreatePullRequestCommentReaction creates a reaction for a pull request review comment.
-	// Note that if you have already created a reaction of type content, the
-	// previously created reaction will be returned with Status: 200 OK.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-pull-request-review-comment
 	CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error)
 
-	// CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion-comment-legacy
 	CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error)
 
-	// CreateTeamDiscussionReaction creates a reaction for a team discussion.
-	// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-team-discussion-legacy
 	CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error)
 
-	// DeleteCommentReaction deletes the reaction for a commit comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 	DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error)
 
-	// DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-commit-comment-reaction
 	DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error)
 
-	// DeleteIssueCommentReaction deletes the reaction to an issue comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 	DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error)
 
-	// DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-comment-reaction
 	DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error)
 
-	// DeleteIssueReaction deletes the reaction to an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 	DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error)
 
-	// DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-an-issue-reaction
 	DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error)
 
-	// DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 	DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error)
 
-	// DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-a-pull-request-comment-reaction
 	DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error)
 
-	// DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 	DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error)
 
-	// DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-comment-reaction
 	DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error)
 
-	// DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 	DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error)
 
-	// DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#delete-team-discussion-reaction
 	DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error)
 
-	// ListCommentReactions lists the reactions for a commit comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-commit-comment
 	ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error)
 
-	// ListIssueCommentReactions lists the reactions for an issue comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue-comment
 	ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error)
 
-	// ListIssueReactions lists the reactions for an issue.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-an-issue
 	ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error)
 
-	// ListPullRequestCommentReactions lists the reactions for a pull request review comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-pull-request-review-comment
 	ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error)
 
-	// ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion-comment-legacy
 	ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error)
 
-	// ListTeamDiscussionReactions lists the reactions for a team discussion.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#list-reactions-for-a-team-discussion-legacy
 	ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error)
 }
 
@@ -2422,844 +892,279 @@ type ReactionsServiceInterface interface {
 var _ ReactionsServiceInterface = &ReactionsService{}
 
 // RepositoriesServiceInterface defines the interface for the RepositoriesService for easy mocking.
-//
-// RepositoriesService handles communication with the repository related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/
 type RepositoriesServiceInterface interface {
-
-	// AddAdminEnforcement adds admin enforcement to a protected branch.
-	// It requires admin access and branch protection to be enabled.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#set-admin-branch-protection
 	AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error)
 
-	// AddAppRestrictions grants the specified apps push access to a given protected branch.
-	// It requires the GitHub apps to have `write` access to the `content` permission.
-	//
-	// Note: The list of users, apps, and teams in total is limited to 100 items.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#add-app-access-restrictions
 	AddAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error)
 
-	// AddCollaborator sends an invitation to the specified GitHub user
-	// to become a collaborator to the given repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#add-a-repository-collaborator
 	AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error)
 
-	// CompareCommits compares a range of commits with each other.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#compare-two-commits
 	CompareCommits(ctx context.Context, owner, repo string, base, head string) (*CommitsComparison, *Response, error)
 
-	// CompareCommitsRaw compares a range of commits with each other in raw (diff or patch) format.
-	//
-	// Both "base" and "head" must be branch names in "repo".
-	// To compare branches across other repositories in the same network as "repo",
-	// use the format "<USERNAME>:branch".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#compare-two-commits
 	CompareCommitsRaw(ctx context.Context, owner, repo, base, head string, opts RawOptions) (string, *Response, error)
 
-	// Create a new repository. If an organization is specified, the new
-	// repository will be created under that org. If the empty string is
-	// specified, it will be created for the authenticated user.
-	//
-	// Note that only a subset of the repo fields are used and repo must
-	// not be nil.
-	//
-	// Also note that this method will return the response without actually
-	// waiting for GitHub to finish creating the repository and letting the
-	// changes propagate throughout its servers. You may set up a loop with
-	// exponential back-off to verify repository's creation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-repository-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-an-organization-repository
 	Create(ctx context.Context, org string, repo *Repository) (*Repository, *Response, error)
 
-	// CreateComment creates a comment for the given commit.
-	// Note: GitHub allows for comments to be created for non-existing files and positions.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-commit-comment
 	CreateComment(ctx context.Context, owner, repo, sha string, comment *RepositoryComment) (*RepositoryComment, *Response, error)
 
-	// CreateDeployment creates a new deployment for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-deployment
 	CreateDeployment(ctx context.Context, owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error)
 
-	// CreateDeploymentStatus creates a new status for a deployment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-deployment-status
 	CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error)
 
-	// CreateFile creates a new file in a repository at the given path and returns
-	// the commit and file metadata.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-or-update-file-contents
 	CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error)
 
-	// CreateFork creates a fork of the specified repository.
-	//
-	// This method might return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing creating the fork in a background task. In this event,
-	// the Repository value will be returned, which includes the details about the pending fork.
-	// A follow up request, after a delay of a second or so, should result
-	// in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-fork
 	CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error)
 
-	// CreateFromTemplate generates a repository from a template.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-repository-using-a-template
 	CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error)
 
-	// CreateHook creates a Hook for the specified repository.
-	// Config is a required field.
-	//
-	// Note that only a subset of the hook fields are used and hook must
-	// not be nil.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-repository-webhook
 	CreateHook(ctx context.Context, owner, repo string, hook *Hook) (*Hook, *Response, error)
 
-	// CreateKey adds a deploy key for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-deploy-key
 	CreateKey(ctx context.Context, owner string, repo string, key *Key) (*Key, *Response, error)
 
-	// CreateProject creates a GitHub Project for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#create-a-repository-project
 	CreateProject(ctx context.Context, owner, repo string, opts *ProjectOptions) (*Project, *Response, error)
 
-	// CreateRelease adds a new release for a repository.
-	//
-	// Note that only a subset of the release fields are used.
-	// See RepositoryRelease for more information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-release
 	CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error)
 
-	// CreateStatus creates a new status for a repository at the specified
-	// reference. Ref can be a SHA, a branch name, or a tag name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-commit-status
 	CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error)
 
-	// Delete a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-repository
 	Delete(ctx context.Context, owner, repo string) (*Response, error)
 
-	// DeleteComment deletes a single comment from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-commit-comment
 	DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// DeleteDeployment deletes an existing deployment for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-deployment
 	DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error)
 
-	// DeleteFile deletes a file from a repository and returns the commit.
-	// Requires the blob SHA of the file to be deleted.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-file
 	DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error)
 
-	// DeleteHook deletes a specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-repository-webhook
 	DeleteHook(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// DeleteInvitation deletes a repository invitation.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-repository-invitation
 	DeleteInvitation(ctx context.Context, owner, repo string, invitationID int64) (*Response, error)
 
-	// DeleteKey deletes a deploy key.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-deploy-key
 	DeleteKey(ctx context.Context, owner string, repo string, id int64) (*Response, error)
 
-	// DeletePreReceiveHook deletes a specified pre-receive hook.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#remove-enforcement-overrides-for-a-pre-receive-hook
 	DeletePreReceiveHook(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// DeleteRelease delete a single release from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-release
 	DeleteRelease(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// DeleteReleaseAsset delete a single release asset from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-release-asset
 	DeleteReleaseAsset(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#disable-automated-security-fixes
 	DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error)
 
-	// DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
-	// It requires admin access and branch protection to be enabled.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-pull-request-review-protection
 	DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error)
 
-	// DisablePages disables GitHub Pages for the named repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-github-pages-site
 	DisablePages(ctx context.Context, owner, repo string) (*Response, error)
 
-	// DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#disable-vulnerability-alerts
 	DisableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error)
 
-	// Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-repository-dispatch-event
 	Dispatch(ctx context.Context, owner, repo string, opts DispatchRequestOptions) (*Repository, *Response, error)
 
-	// DownloadContents returns an io.ReadCloser that reads the contents of the
-	// specified file. This function will work with files of any size, as opposed
-	// to GetContents which is limited to 1 Mb files. It is the caller's
-	// responsibility to close the ReadCloser.
-	//
-	// It is possible for the download to result in a failed response when the
-	// returned error is nil. Callers should check the returned Response status
-	// code to verify the content is from a successful response.
 	DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error)
 
-	// DownloadContentsWithMeta is identical to DownloadContents but additionally
-	// returns the RepositoryContent of the requested file. This additional data
-	// is useful for future operations involving the requested file. For merely
-	// reading the content of a file, DownloadContents is perfectly adequate.
-	//
-	// It is possible for the download to result in a failed response when the
-	// returned error is nil. Callers should check the returned Response status
-	// code to verify the content is from a successful response.
 	DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error)
 
-	// DownloadReleaseAsset downloads a release asset or returns a redirect URL.
-	//
-	// DownloadReleaseAsset returns an io.ReadCloser that reads the contents of the
-	// specified release asset. It is the caller's responsibility to close the ReadCloser.
-	// If a redirect is returned, the redirect URL will be returned as a string instead
-	// of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
-	//
-	// followRedirectsClient can be passed to download the asset from a redirected
-	// location. Passing http.DefaultClient is recommended unless special circumstances
-	// exist, but it's possible to pass any http.Client. If nil is passed the
-	// redirectURL will be returned instead.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-release-asset
 	DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error)
 
-	// Edit updates a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-repository
 	Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error)
 
-	// EditHook updates a specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-repository-webhook
 	EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error)
 
-	// EditRelease edits a repository release.
-	//
-	// Note that only a subset of the release fields are used.
-	// See RepositoryRelease for more information.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-release
 	EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error)
 
-	// EditReleaseAsset edits a repository release asset.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-release-asset
 	EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error)
 
-	// EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#enable-automated-security-fixes
 	EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error)
 
-	// EnablePages enables GitHub Pages for the named repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-github-pages-site
 	EnablePages(ctx context.Context, owner, repo string, pages *Pages) (*Pages, *Response, error)
 
-	// EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#enable-vulnerability-alerts
 	EnableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error)
 
-	// Get fetches a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-repository
 	Get(ctx context.Context, owner, repo string) (*Repository, *Response, error)
 
-	// GetAdminEnforcement gets admin enforcement information of a protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-admin-branch-protection
 	GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error)
 
-	// GetArchiveLink returns an URL to download a tarball or zipball archive for a
-	// repository. The archiveFormat can be specified by either the github.Tarball
-	// or github.Zipball constant.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/contents/#get-archive-link
 	GetArchiveLink(ctx context.Context, owner, repo string, archiveformat ArchiveFormat, opts *RepositoryContentGetOptions, followRedirects bool) (*url.URL, *Response, error)
 
-	// GetBranch gets the specified branch for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-branch
 	GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error)
 
-	// GetBranchProtection gets the protection of a given branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-branch-protection
 	GetBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error)
 
-	// GetByID fetches a repository.
-	//
-	// Note: GetByID uses the undocumented GitHub API endpoint /repositories/:id.
 	GetByID(ctx context.Context, id int64) (*Repository, *Response, error)
 
-	// GetCodeOfConduct gets the contents of a repository's code of conduct.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/codes-of-conduct/#get-the-code-of-conduct-for-a-repository
 	GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error)
 
-	// GetCombinedStatus returns the combined status of a repository at the specified
-	// reference. ref can be a SHA, a branch name, or a tag name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-combined-status-for-a-specific-reference
 	GetCombinedStatus(ctx context.Context, owner, repo, ref string, opts *ListOptions) (*CombinedStatus, *Response, error)
 
-	// GetComment gets a single comment from a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit-comment
 	GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error)
 
-	// GetCommit fetches the specified commit, including all details about it.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-single-commit
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit
 	GetCommit(ctx context.Context, owner, repo, sha string) (*RepositoryCommit, *Response, error)
 
-	// GetCommitRaw fetches the specified commit in raw (diff or patch) format.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit
 	GetCommitRaw(ctx context.Context, owner string, repo string, sha string, opts RawOptions) (string, *Response, error)
 
-	// GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
-	// supplied and no new commits have occurred, a 304 Unmodified response is returned.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit
 	GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error)
 
-	// GetCommunityHealthMetrics retrieves all the community health  metrics for a  repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-community-profile-metrics
 	GetCommunityHealthMetrics(ctx context.Context, owner, repo string) (*CommunityHealthMetrics, *Response, error)
 
-	// GetContents can return either the metadata and content of a single file
-	// (when path references a file) or the metadata of all the files and/or
-	// subdirectories of a directory (when path references a directory). To make it
-	// easy to distinguish between both result types and to mimic the API as much
-	// as possible, both result types will be returned but only one will contain a
-	// value and the other will be nil.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-repository-content
 	GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error)
 
-	// GetDeployment returns a single deployment of a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-deployment
 	GetDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Deployment, *Response, error)
 
-	// GetDeploymentStatus returns a single deployment status of a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-deployment-status
 	GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error)
 
-	// GetHook returns a single specified Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-repository-webhook
 	GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error)
 
-	// GetKey fetches a single deploy key.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-deploy-key
 	GetKey(ctx context.Context, owner string, repo string, id int64) (*Key, *Response, error)
 
-	// GetLatestPagesBuild fetches the latest build information for a GitHub pages site.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-latest-pages-build
 	GetLatestPagesBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error)
 
-	// GetLatestRelease fetches the latest published release for the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-latest-release
 	GetLatestRelease(ctx context.Context, owner, repo string) (*RepositoryRelease, *Response, error)
 
-	// GetPageBuild fetches the specific build information for a GitHub pages site.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-github-pages-build
 	GetPageBuild(ctx context.Context, owner, repo string, id int64) (*PagesBuild, *Response, error)
 
-	// GetPagesInfo fetches information about a GitHub Pages site.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-github-pages-site
 	GetPagesInfo(ctx context.Context, owner, repo string) (*Pages, *Response, error)
 
-	// GetPermissionLevel retrieves the specific permission level a collaborator has for a given repository.
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-repository-permissions-for-a-user
 	GetPermissionLevel(ctx context.Context, owner, repo, user string) (*RepositoryPermissionLevel, *Response, error)
 
-	// GetPreReceiveHook returns a single specified pre-receive hook.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#get-a-single-pre-receive-hook
 	GetPreReceiveHook(ctx context.Context, owner, repo string, id int64) (*PreReceiveHook, *Response, error)
 
-	// GetPullRequestReviewEnforcement gets pull request review enforcement of a protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-pull-request-review-protection
 	GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error)
 
-	// GetReadme gets the Readme file for the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-repository-readme
 	GetReadme(ctx context.Context, owner, repo string, opts *RepositoryContentGetOptions) (*RepositoryContent, *Response, error)
 
-	// GetRelease fetches a single release.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-release
 	GetRelease(ctx context.Context, owner, repo string, id int64) (*RepositoryRelease, *Response, error)
 
-	// GetReleaseAsset fetches a single release asset.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-release-asset
 	GetReleaseAsset(ctx context.Context, owner, repo string, id int64) (*ReleaseAsset, *Response, error)
 
-	// GetReleaseByTag fetches a release with the specified tag.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-release-by-tag-name
 	GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*RepositoryRelease, *Response, error)
 
-	// GetRequiredStatusChecks gets the required status checks for a given protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-status-checks-protection
 	GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error)
 
-	// GetSignaturesProtectedBranch gets required signatures of protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-commit-signature-protection
 	GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error)
 
-	// GetVulnerabilityAlerts checks if vulnerability alerts are enabled for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#check-if-vulnerability-alerts-are-enabled-for-a-repository
 	GetVulnerabilityAlerts(ctx context.Context, owner, repository string) (bool, *Response, error)
 
-	// IsCollaborator checks whether the specified GitHub user has collaborator
-	// access to the given repo.
-	// Note: This will return false if the user is not a collaborator OR the user
-	// is not a GitHub user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#check-if-a-user-is-a-repository-collaborator
 	IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error)
 
-	// License gets the contents of a repository's license if one is detected.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-the-license-for-a-repository
 	License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error)
 
-	// List the repositories for a user. Passing the empty string will list
-	// repositories for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repositories-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repositories-for-a-user
 	List(ctx context.Context, user string, opts *RepositoryListOptions) ([]*Repository, *Response, error)
 
-	// ListAll lists all GitHub repositories in the order that they were created.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-public-repositories
 	ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error)
 
-	// ListAllTopics lists topics for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-all-repository-topics
 	ListAllTopics(ctx context.Context, owner, repo string) ([]string, *Response, error)
 
-	// ListApps lists the GitHub apps that have push access to a given protected branch.
-	// It requires the GitHub apps to have `write` access to the `content` permission.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-apps-with-access-to-the-protected-branch
 	ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error)
 
-	// ListBranches lists branches for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-branches
 	ListBranches(ctx context.Context, owner string, repo string, opts *BranchListOptions) ([]*Branch, *Response, error)
 
-	// ListBranchesHeadCommit gets all branches where the given commit SHA is the HEAD,
-	// or latest commit for the branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-branches-for-head-commit
 	ListBranchesHeadCommit(ctx context.Context, owner, repo, sha string) ([]*BranchCommit, *Response, error)
 
-	// ListByOrg lists the repositories for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-organization-repositories
 	ListByOrg(ctx context.Context, org string, opts *RepositoryListByOrgOptions) ([]*Repository, *Response, error)
 
-	// ListCodeFrequency returns a weekly aggregate of the number of additions and
-	// deletions pushed to a repository. Returned WeeklyStats will contain
-	// additions and deletions, but not total commits.
-	//
-	// If this is the first time these statistics are requested for the given
-	// repository, this method will return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing the requested statistics. A follow up request, after a
-	// delay of a second or so, should result in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-weekly-commit-activity
 	ListCodeFrequency(ctx context.Context, owner, repo string) ([]*WeeklyStats, *Response, error)
 
-	// ListCollaborators lists the GitHub users that have access to the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-collaborators
 	ListCollaborators(ctx context.Context, owner, repo string, opts *ListCollaboratorsOptions) ([]*User, *Response, error)
 
-	// ListComments lists all the comments for the repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commit-comments-for-a-repository
 	ListComments(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryComment, *Response, error)
 
-	// ListCommitActivity returns the last year of commit activity
-	// grouped by week. The days array is a group of commits per day,
-	// starting on Sunday.
-	//
-	// If this is the first time these statistics are requested for the given
-	// repository, this method will return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing the requested statistics. A follow up request, after a
-	// delay of a second or so, should result in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-last-year-of-commit-activity
 	ListCommitActivity(ctx context.Context, owner, repo string) ([]*WeeklyCommitActivity, *Response, error)
 
-	// ListCommitComments lists all the comments for a given commit SHA.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commit-comments
 	ListCommitComments(ctx context.Context, owner, repo, sha string, opts *ListOptions) ([]*RepositoryComment, *Response, error)
 
-	// ListCommits lists the commits of a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commits
 	ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error)
 
-	// ListContributors lists contributors for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-contributors
 	ListContributors(ctx context.Context, owner string, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error)
 
-	// ListContributorsStats gets a repo's contributor list with additions,
-	// deletions and commit counts.
-	//
-	// If this is the first time these statistics are requested for the given
-	// repository, this method will return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing the requested statistics. A follow up request, after a
-	// delay of a second or so, should result in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-all-contributor-commit-activity
 	ListContributorsStats(ctx context.Context, owner, repo string) ([]*ContributorStats, *Response, error)
 
-	// ListDeploymentStatuses lists the statuses of a given deployment of a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-deployment-statuses
 	ListDeploymentStatuses(ctx context.Context, owner, repo string, deployment int64, opts *ListOptions) ([]*DeploymentStatus, *Response, error)
 
-	// ListDeployments lists the deployments of a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-deployments
 	ListDeployments(ctx context.Context, owner, repo string, opts *DeploymentsListOptions) ([]*Deployment, *Response, error)
 
-	// ListForks lists the forks of the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-forks
 	ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error)
 
-	// ListHooks lists all Hooks for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-webhooks
 	ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error)
 
-	// ListInvitations lists all currently-open repository invitations.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-invitations
 	ListInvitations(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryInvitation, *Response, error)
 
-	// ListKeys lists the deploy keys for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-deploy-keys
 	ListKeys(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Key, *Response, error)
 
-	// ListLanguages lists languages for the specified repository. The returned map
-	// specifies the languages and the number of bytes of code written in that
-	// language. For example:
-	//
-	//     {
-	//       "C": 78769,
-	//       "Python": 7769
-	//     }
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-languages
 	ListLanguages(ctx context.Context, owner string, repo string) (map[string]int, *Response, error)
 
-	// ListPagesBuilds lists the builds for a GitHub Pages site.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-github-pages-builds
 	ListPagesBuilds(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PagesBuild, *Response, error)
 
-	// ListParticipation returns the total commit counts for the 'owner'
-	// and total commit counts in 'all'. 'all' is everyone combined,
-	// including the 'owner' in the last 52 weeks. If you’d like to get
-	// the commit counts for non-owners, you can subtract 'all' from 'owner'.
-	//
-	// The array order is oldest week (index 0) to most recent week.
-	//
-	// If this is the first time these statistics are requested for the given
-	// repository, this method will return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing the requested statistics. A follow up request, after a
-	// delay of a second or so, should result in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-weekly-commit-count
 	ListParticipation(ctx context.Context, owner, repo string) (*RepositoryParticipation, *Response, error)
 
-	// ListPreReceiveHooks lists all pre-receive hooks for the specified repository.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#list-pre-receive-hooks
 	ListPreReceiveHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PreReceiveHook, *Response, error)
 
-	// ListProjects lists the projects for a repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-repository-projects
 	ListProjects(ctx context.Context, owner, repo string, opts *ProjectListOptions) ([]*Project, *Response, error)
 
-	// ListPunchCard returns the number of commits per hour in each day.
-	//
-	// If this is the first time these statistics are requested for the given
-	// repository, this method will return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it is now computing the requested statistics. A follow up request, after a
-	// delay of a second or so, should result in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-the-hourly-commit-count-for-each-day
 	ListPunchCard(ctx context.Context, owner, repo string) ([]*PunchCard, *Response, error)
 
-	// ListReleaseAssets lists the release's assets.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-release-assets
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*ReleaseAsset, *Response, error)
 
-	// ListReleases lists the releases for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-releases
 	ListReleases(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryRelease, *Response, error)
 
-	// ListRequiredStatusChecksContexts lists the required status checks contexts for a given protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-all-status-check-contexts
 	ListRequiredStatusChecksContexts(ctx context.Context, owner, repo, branch string) (contexts []string, resp *Response, err error)
 
-	// ListStatuses lists the statuses of a repository at the specified
-	// reference. ref can be a SHA, a branch name, or a tag name.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commit-statuses-for-a-reference
 	ListStatuses(ctx context.Context, owner, repo, ref string, opts *ListOptions) ([]*RepoStatus, *Response, error)
 
-	// ListTags lists tags for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-tags
 	ListTags(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error)
 
-	// ListTeams lists the teams for the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-teams
 	ListTeams(ctx context.Context, owner string, repo string, opts *ListOptions) ([]*Team, *Response, error)
 
-	// ListTrafficClones get total number of clones for the last 14 days and breaks it down either per day or week for the last 14 days.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-repository-clones
 	ListTrafficClones(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficClones, *Response, error)
 
-	// ListTrafficPaths list the top 10 popular content over the last 14 days.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-top-referral-paths
 	ListTrafficPaths(ctx context.Context, owner, repo string) ([]*TrafficPath, *Response, error)
 
-	// ListTrafficReferrers list the top 10 referrers over the last 14 days.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-top-referral-sources
 	ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*TrafficReferrer, *Response, error)
 
-	// ListTrafficViews get total number of views for the last 14 days and breaks it down either per day or week.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-page-views
 	ListTrafficViews(ctx context.Context, owner, repo string, opts *TrafficBreakdownOptions) (*TrafficViews, *Response, error)
 
-	// Merge a branch in the specified repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#merge-a-branch
 	Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error)
 
-	// OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-commit-signature-protection
 	OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error)
 
-	// PingHook triggers a 'ping' event to be sent to the Hook.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#ping-a-repository-webhook
 	PingHook(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// RemoveAdminEnforcement removes admin enforcement from a protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-admin-branch-protection
 	RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error)
 
-	// RemoveAppRestrictions removes the ability of an app to push to this branch.
-	// It requires the GitHub apps to have `write` access to the `content` permission.
-	//
-	// Note: The list of users, apps, and teams in total is limited to 100 items.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#remove-app-access-restrictions
 	RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error)
 
-	// RemoveBranchProtection removes the protection of a given branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-branch-protection
 	RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error)
 
-	// RemoveCollaborator removes the specified GitHub user as collaborator from the given repo.
-	// Note: Does not return error if a valid user that is not a collaborator is removed.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#remove-a-repository-collaborator
 	RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error)
 
-	// RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-pull-request-review-protection
 	RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error)
 
-	// RemoveRequiredStatusChecks removes the required status checks for a given protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#remove-status-check-protection
 	RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error)
 
-	// ReplaceAllTopics replaces topics for a repository.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#replace-all-repository-topics
 	ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error)
 
-	// ReplaceAppRestrictions replaces the apps that have push access to a given protected branch.
-	// It removes all apps that previously had push access and grants push access to the new list of apps.
-	// It requires the GitHub apps to have `write` access to the `content` permission.
-	//
-	// Note: The list of users, apps, and teams in total is limited to 100 items.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#set-app-access-restrictions
 	ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error)
 
-	// RequestPageBuild requests a build of a GitHub Pages site without needing to push new commit.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#request-a-github-pages-build
 	RequestPageBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error)
 
-	// RequireSignaturesOnProtectedBranch makes signed commits required on a protected branch.
-	// It requires admin access and branch protection to be enabled.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-commit-signature-protection
 	RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error)
 
-	// TestHook triggers a test Hook by github.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#test-the-push-repository-webhook
 	TestHook(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
-	// Transfer transfers a repository from one account or organization to another.
-	//
-	// This method might return an *AcceptedError and a status code of
-	// 202. This is because this is the status that GitHub returns to signify that
-	// it has now scheduled the transfer of the repository in a background task.
-	// A follow up request, after a delay of a second or so, should result
-	// in a successful request.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#transfer-a-repository
 	Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error)
 
-	// UpdateBranchProtection updates the protection of a given branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-branch-protection
 	UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error)
 
-	// UpdateComment updates the body of a single comment.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-commit-comment
 	UpdateComment(ctx context.Context, owner, repo string, id int64, comment *RepositoryComment) (*RepositoryComment, *Response, error)
 
-	// UpdateFile updates a file in a repository at the given path and returns the
-	// commit and file metadata. Requires the blob SHA of the file being updated.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-or-update-file-contents
 	UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error)
 
-	// UpdateInvitation updates the permissions associated with a repository
-	// invitation.
-	//
-	// permissions represents the permissions that the associated user will have
-	// on the repository. Possible values are: "read", "write", "admin".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-repository-invitation
 	UpdateInvitation(ctx context.Context, owner, repo string, invitationID int64, permissions string) (*RepositoryInvitation, *Response, error)
 
-	// UpdatePages updates GitHub Pages for the named repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-information-about-a-github-pages-site
 	UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error)
 
-	// UpdatePreReceiveHook updates a specified pre-receive hook.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/2.13/v3/repos/pre_receive_hooks/#update-pre-receive-hook-enforcement
 	UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, hook *PreReceiveHook) (*PreReceiveHook, *Response, error)
 
-	// UpdatePullRequestReviewEnforcement patches pull request review enforcement of a protected branch.
-	// It requires admin access and branch protection to be enabled.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-pull-request-review-protection
 	UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error)
 
-	// UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-status-check-protection
 	UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error)
 
-	// UploadReleaseAsset creates an asset by uploading a file into a release repository.
-	// To upload assets that cannot be represented by an os.File, call NewUploadRequest directly.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#upload-a-release-asset
 	UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error)
 }
 
@@ -3267,61 +1172,19 @@ type RepositoriesServiceInterface interface {
 var _ RepositoriesServiceInterface = &RepositoriesService{}
 
 // SearchServiceInterface defines the interface for the SearchService for easy mocking.
-//
-// SearchService provides access to the search related functions
-// in the GitHub API.
-//
-// Each method takes a query string defining the search keywords and any search qualifiers.
-// For example, when searching issues, the query "gopher is:issue language:go" will search
-// for issues containing the word "gopher" in Go repositories. The method call
-//   opts :=  &github.SearchOptions{Sort: "created", Order: "asc"}
-//   cl.Search.Issues(ctx, "gopher is:issue language:go", opts)
-// will search for such issues, sorting by creation date in ascending order
-// (i.e., oldest first).
-//
-// If query includes multiple conditions, it MUST NOT include "+" as the condition separator.
-// You have to use " " as the separator instead.
-// For example, querying with "language:c++" and "leveldb", then query should be
-// "language:c++ leveldb" but not "language:c+++leveldb".
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/
 type SearchServiceInterface interface {
-
-	// Code searches code via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-code
 	Code(ctx context.Context, query string, opts *SearchOptions) (*CodeSearchResult, *Response, error)
 
-	// Commits searches commits via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-commits
 	Commits(ctx context.Context, query string, opts *SearchOptions) (*CommitsSearchResult, *Response, error)
 
-	// Issues searches issues via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-issues-and-pull-requests
 	Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error)
 
-	// Labels searches labels in the repository with ID repoID via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-labels
 	Labels(ctx context.Context, repoID int64, query string, opts *SearchOptions) (*LabelsSearchResult, *Response, error)
 
-	// Repositories searches repositories via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-repositories
 	Repositories(ctx context.Context, query string, opts *SearchOptions) (*RepositoriesSearchResult, *Response, error)
 
-	// Topics finds topics via various criteria. Results are sorted by best match.
-	// Please see https://help.github.com/en/articles/searching-topics for more
-	// information about search qualifiers.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-topics
 	Topics(ctx context.Context, query string, opts *SearchOptions) (*TopicsSearchResult, *Response, error)
 
-	// Users searches users via various criteria.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#search-users
 	Users(ctx context.Context, query string, opts *SearchOptions) (*UsersSearchResult, *Response, error)
 }
 
@@ -3329,386 +1192,129 @@ type SearchServiceInterface interface {
 var _ SearchServiceInterface = &SearchService{}
 
 // TeamsServiceInterface defines the interface for the TeamsService for easy mocking.
-//
-// TeamsService provides access to the team-related functions
-// in the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/
 type TeamsServiceInterface interface {
-
-	// AddTeamMembershipByID adds or invites a user to a team, given a specified
-	// organization ID, by team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-membership-for-a-user
 	AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error)
 
-	// AddTeamMembershipBySlug adds or invites a user to a team, given a specified
-	// organization name, by team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-membership-for-a-user
 	AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error)
 
-	// AddTeamProjectByID adds an organization project to a team given the team ID.
-	// To add a project to a team or update the team's permission on a project, the
-	// authenticated user must have admin permissions for the project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-project-permissions
 	AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error)
 
-	// AddTeamProjectBySlug adds an organization project to a team given the team slug.
-	// To add a project to a team or update the team's permission on a project, the
-	// authenticated user must have admin permissions for the project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-project-permissions
 	AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error)
 
-	// AddTeamRepoByID adds a repository to be managed by the specified team given the team ID.
-	// The specified repository must be owned by the organization to which the team
-	// belongs, or a direct fork of a repository owned by the organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-repository-permissions
 	AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error)
 
-	// AddTeamRepoBySlug adds a repository to be managed by the specified team given the team slug.
-	// The specified repository must be owned by the organization to which the team
-	// belongs, or a direct fork of a repository owned by the organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#add-or-update-team-repository-permissions
 	AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error)
 
-	// CreateCommentByID creates a new comment on a team discussion by team ID.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-a-discussion-comment
 	CreateCommentByID(ctx context.Context, orgID, teamID int64, discsusionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error)
 
-	// CreateCommentBySlug creates a new comment on a team discussion by team slug.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-a-discussion-comment
 	CreateCommentBySlug(ctx context.Context, org, slug string, discsusionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error)
 
-	// CreateDiscussionByID creates a new discussion post on a team's page given Organization and Team ID.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-a-discussion
 	CreateDiscussionByID(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error)
 
-	// CreateDiscussionBySlug creates a new discussion post on a team's page given Organization name and Team's slug.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-a-discussion
 	CreateDiscussionBySlug(ctx context.Context, org, slug string, discussion TeamDiscussion) (*TeamDiscussion, *Response, error)
 
-	// CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
-	// between a team and an IDP group given organization and team IDs.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-or-update-idp-group-connections
 	CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error)
 
-	// CreateOrUpdateIDPGroupConnectionsBySlug creates, updates, or removes a connection
-	// between a team and an IDP group given organization name and team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-or-update-idp-group-connections
 	CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error)
 
-	// CreateTeam creates a new team within an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#create-a-team
 	CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error)
 
-	// DeleteCommentByID deletes a comment on a team discussion by team ID.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-discussion-comment
 	DeleteCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int) (*Response, error)
 
-	// DeleteCommentBySlug deletes a comment on a team discussion by team slug.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-discussion-comment
 	DeleteCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int) (*Response, error)
 
-	// DeleteDiscussionByID deletes a discussion from team's page given Organization and Team ID.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-discussion
 	DeleteDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error)
 
-	// DeleteDiscussionBySlug deletes a discussion from team's page given Organization name and Team's slug.
-	// Authenticated user must grant write:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-discussion
 	DeleteDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*Response, error)
 
-	// DeleteTeamByID deletes a team referenced by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-team
 	DeleteTeamByID(ctx context.Context, orgID, teamID int64) (*Response, error)
 
-	// DeleteTeamBySlug deletes a team reference by slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#delete-a-team
 	DeleteTeamBySlug(ctx context.Context, org, slug string) (*Response, error)
 
-	// EditCommentByID edits the body text of a discussion comment by team ID.
-	// Authenticated user must grant write:discussion scope.
-	// User is allowed to edit body of a comment only.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-discussion-comment
 	EditCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error)
 
-	// EditCommentBySlug edits the body text of a discussion comment by team slug.
-	// Authenticated user must grant write:discussion scope.
-	// User is allowed to edit body of a comment only.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-discussion-comment
 	EditCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error)
 
-	// EditDiscussionByID edits the title and body text of a discussion post given Organization and Team ID.
-	// Authenticated user must grant write:discussion scope.
-	// User is allowed to change Title and Body of a discussion only.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-discussion
 	EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error)
 
-	// EditDiscussionBySlug edits the title and body text of a discussion post given Organization name and Team's slug.
-	// Authenticated user must grant write:discussion scope.
-	// User is allowed to change Title and Body of a discussion only.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-discussion
 	EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error)
 
-	// EditTeamByID edits a team, given an organization ID, selected by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-team
 	EditTeamByID(ctx context.Context, orgID, teamID int64, team NewTeam, removeParent bool) (*Team, *Response, error)
 
-	// EditTeamBySlug edits a team, given an organization name, by slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#update-a-team
 	EditTeamBySlug(ctx context.Context, org, slug string, team NewTeam, removeParent bool) (*Team, *Response, error)
 
-	// GetCommentByID gets a specific comment on a team discussion by team ID.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-discussion-comment
 	GetCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int) (*DiscussionComment, *Response, error)
 
-	// GetCommentBySlug gets a specific comment on a team discussion by team slug.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-discussion-comment
 	GetCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int) (*DiscussionComment, *Response, error)
 
-	// GetDiscussionByID gets a specific discussion on a team's page given Organization and Team ID.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-discussion
 	GetDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error)
 
-	// GetDiscussionBySlug gets a specific discussion on a team's page given Organization name and Team's slug.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-discussion
 	GetDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*TeamDiscussion, *Response, error)
 
-	// GetTeamByID fetches a team, given a specified organization ID, by ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-team-by-name
 	GetTeamByID(ctx context.Context, orgID, teamID int64) (*Team, *Response, error)
 
-	// GetTeamBySlug fetches a team, given a specified organization name, by slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-a-team-by-name
 	GetTeamBySlug(ctx context.Context, org, slug string) (*Team, *Response, error)
 
-	// GetTeamMembershipByID returns the membership status for a user in a team, given a specified
-	// organization ID, by team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-team-membership-for-a-user
 	GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error)
 
-	// GetTeamMembershipBySlug returns the membership status for a user in a team, given a specified
-	// organization name, by team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#get-team-membership-for-a-user
 	GetTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Membership, *Response, error)
 
-	// IsTeamRepoByID checks if a team, given its ID, manages the specified repository. If the
-	// repository is managed by team, a Repository is returned which includes the
-	// permissions team has for that repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#check-team-permissions-for-a-repository
 	IsTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Repository, *Response, error)
 
-	// IsTeamRepoBySlug checks if a team, given its slug, manages the specified repository. If the
-	// repository is managed by team, a Repository is returned which includes the
-	// permissions team has for that repo.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#check-team-permissions-for-a-repository
 	IsTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Repository, *Response, error)
 
-	// ListChildTeamsByParentID lists child teams for a parent team given parent ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-child-teams
 	ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Team, *Response, error)
 
-	// ListChildTeamsByParentSlug lists child teams for a parent team given parent slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-child-teams
 	ListChildTeamsByParentSlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Team, *Response, error)
 
-	// ListCommentsByID lists all comments on a team discussion by team ID.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-discussion-comments
 	ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error)
 
-	// ListCommentsBySlug lists all comments on a team discussion by team slug.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-discussion-comments
 	ListCommentsBySlug(ctx context.Context, org, slug string, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error)
 
-	// ListDiscussionsByID lists all discussions on team's page given Organization and Team ID.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-discussions
 	ListDiscussionsByID(ctx context.Context, orgID, teamID int64, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error)
 
-	// ListDiscussionsBySlug lists all discussions on team's page given Organization name and Team's slug.
-	// Authenticated user must grant read:discussion scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-discussions
 	ListDiscussionsBySlug(ctx context.Context, org, slug string, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error)
 
-	// ListIDPGroupsForTeamByID lists IDP groups connected to a team on GitHub
-	// given organization and team IDs.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-idp-groups-for-a-team
 	ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error)
 
-	// ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
-	// given organization name and team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-idp-groups-for-a-team
 	ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error)
 
-	// ListIDPGroupsInOrganization lists IDP groups available in an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-idp-groups-for-an-organization
 	ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListCursorOptions) (*IDPGroupList, *Response, error)
 
-	// ListPendingTeamInvitationsByID gets pending invitation list of a team, given a specified
-	// organization ID, by team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-pending-team-invitations
 	ListPendingTeamInvitationsByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Invitation, *Response, error)
 
-	// ListPendingTeamInvitationsBySlug get pending invitation list of a team, given a specified
-	// organization name, by team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-pending-team-invitations
 	ListPendingTeamInvitationsBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Invitation, *Response, error)
 
-	// ListTeamMembersByID lists all of the users who are members of a team, given a specified
-	// organization ID, by team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-members
 	ListTeamMembersByID(ctx context.Context, orgID, teamID int64, opts *TeamListTeamMembersOptions) ([]*User, *Response, error)
 
-	// ListTeamMembersBySlug lists all of the users who are members of a team, given a specified
-	// organization name, by team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-members
 	ListTeamMembersBySlug(ctx context.Context, org, slug string, opts *TeamListTeamMembersOptions) ([]*User, *Response, error)
 
-	// ListTeamProjectsByID lists the organization projects for a team given the team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-projects
 	ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*Project, *Response, error)
 
-	// ListTeamProjectsBySlug lists the organization projects for a team given the team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-projects
 	ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*Project, *Response, error)
 
-	// ListTeamReposByID lists the repositories given a team ID that the specified team has access to.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-repositories
 	ListTeamReposByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Repository, *Response, error)
 
-	// ListTeamReposBySlug lists the repositories given a team slug that the specified team has access to.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-team-repositories
 	ListTeamReposBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Repository, *Response, error)
 
-	// ListTeams lists all of the teams for an organization.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-teams
 	ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error)
 
-	// ListUserTeams lists a user's teams
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#list-teams-for-the-authenticated-user
 	ListUserTeams(ctx context.Context, opts *ListOptions) ([]*Team, *Response, error)
 
-	// RemoveTeamMembershipByID removes a user from a team, given a specified
-	// organization ID, by team ID.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-team-membership-for-a-user
 	RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error)
 
-	// RemoveTeamMembershipBySlug removes a user from a team, given a specified
-	// organization name, by team slug.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-team-membership-for-a-user
 	RemoveTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Response, error)
 
-	// RemoveTeamProjectByID removes an organization project from a team given team ID.
-	// An organization owner or a team maintainer can remove any project from the team.
-	// To remove a project from a team as an organization member, the authenticated user
-	// must have "read" access to both the team and project, or "admin" access to the team
-	// or project.
-	// Note: This endpoint removes the project from the team, but does not delete it.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-a-project-from-a-team
 	RemoveTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64) (*Response, error)
 
-	// RemoveTeamProjectBySlug removes an organization project from a team given team slug.
-	// An organization owner or a team maintainer can remove any project from the team.
-	// To remove a project from a team as an organization member, the authenticated user
-	// must have "read" access to both the team and project, or "admin" access to the team
-	// or project.
-	// Note: This endpoint removes the project from the team, but does not delete it.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-a-project-from-a-team
 	RemoveTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64) (*Response, error)
 
-	// RemoveTeamRepoByID removes a repository from being managed by the specified
-	// team given the team ID. Note that this does not delete the repository, it
-	// just removes it from the team.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-a-repository-from-a-team
 	RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error)
 
-	// RemoveTeamRepoBySlug removes a repository from being managed by the specified
-	// team given the team slug. Note that this does not delete the repository, it
-	// just removes it from the team.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#remove-a-repository-from-a-team
 	RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error)
 
-	// ReviewTeamProjectsByID checks whether a team, given its ID, has read, write, or admin
-	// permissions for an organization project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#check-team-permissions-for-a-project
 	ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*Project, *Response, error)
 
-	// ReviewTeamProjectsBySlug checks whether a team, given its slug, has read, write, or admin
-	// permissions for an organization project.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/teams/#check-team-permissions-for-a-project
 	ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*Project, *Response, error)
 }
 
@@ -3716,203 +1322,73 @@ type TeamsServiceInterface interface {
 var _ TeamsServiceInterface = &TeamsService{}
 
 // UsersServiceInterface defines the interface for the UsersService for easy mocking.
-//
-// UsersService handles communication with the user related
-// methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/
 type UsersServiceInterface interface {
-
-	// AcceptInvitation accepts the currently-open repository invitation for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#accept-a-repository-invitation
 	AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error)
 
-	// AddEmails adds email addresses of the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#add-an-email-address-for-the-authenticated-user
 	AddEmails(ctx context.Context, emails []string) ([]*UserEmail, *Response, error)
 
-	// BlockUser blocks specified user for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#block-a-user
 	BlockUser(ctx context.Context, user string) (*Response, error)
 
-	// CreateGPGKey creates a GPG key. It requires authenticatation via Basic Auth
-	// or OAuth with at least write:gpg_key scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#create-a-gpg-key
 	CreateGPGKey(ctx context.Context, armoredPublicKey string) (*GPGKey, *Response, error)
 
-	// CreateKey adds a public key for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#create-a-public-ssh-key-for-the-authenticated-user
 	CreateKey(ctx context.Context, key *Key) (*Key, *Response, error)
 
-	// CreateProject creates a GitHub Project for the current user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#create-a-user-project
 	CreateProject(ctx context.Context, opts *CreateUserProjectOptions) (*Project, *Response, error)
 
-	// DeclineInvitation declines the currently-open repository invitation for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#decline-a-repository-invitation
 	DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error)
 
-	// DeleteEmails deletes email addresses from authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#delete-an-email-address-for-the-authenticated-user
 	DeleteEmails(ctx context.Context, emails []string) (*Response, error)
 
-	// DeleteGPGKey deletes a GPG key. It requires authentication via Basic Auth or
-	// via OAuth with at least admin:gpg_key scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#delete-a-gpg-key-for-the-authenticated-user
 	DeleteGPGKey(ctx context.Context, id int64) (*Response, error)
 
-	// DeleteKey deletes a public key.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#delete-a-public-ssh-key-for-the-authenticated-user
 	DeleteKey(ctx context.Context, id int64) (*Response, error)
 
-	// DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#demote-a-site-administrator-to-an-ordinary-user
 	DemoteSiteAdmin(ctx context.Context, user string) (*Response, error)
 
-	// Edit the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#update-the-authenticated-user
 	Edit(ctx context.Context, user *User) (*User, *Response, error)
 
-	// Follow will cause the authenticated user to follow the specified user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#follow-a-user
 	Follow(ctx context.Context, user string) (*Response, error)
 
-	// Get fetches a user. Passing the empty string will fetch the authenticated
-	// user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#get-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#get-a-user
 	Get(ctx context.Context, user string) (*User, *Response, error)
 
-	// GetByID fetches a user.
-	//
-	// Note: GetByID uses the undocumented GitHub API endpoint /user/:id.
 	GetByID(ctx context.Context, id int64) (*User, *Response, error)
 
-	// GetGPGKey gets extended details for a single GPG key. It requires authentication
-	// via Basic Auth or via OAuth with at least read:gpg_key scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#get-a-gpg-key-for-the-authenticated-user
 	GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Response, error)
 
-	// GetHovercard fetches contextual information about user. It requires authentication
-	// via Basic Auth or via OAuth with the repo scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#get-contextual-information-for-a-user
 	GetHovercard(ctx context.Context, user string, opts *HovercardOptions) (*Hovercard, *Response, error)
 
-	// GetKey fetches a single public key.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#get-a-public-ssh-key-for-the-authenticated-user
 	GetKey(ctx context.Context, id int64) (*Key, *Response, error)
 
-	// IsBlocked reports whether specified user is blocked by the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#check-if-a-user-is-blocked-by-the-authenticated-user
 	IsBlocked(ctx context.Context, user string) (bool, *Response, error)
 
-	// IsFollowing checks if "user" is following "target". Passing the empty
-	// string for "user" will check if the authenticated user is following "target".
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#check-if-a-person-is-followed-by-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#check-if-a-user-follows-another-user
 	IsFollowing(ctx context.Context, user, target string) (bool, *Response, error)
 
-	// ListAll lists all GitHub users.
-	//
-	// To paginate through all users, populate 'Since' with the ID of the last user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-users
 	ListAll(ctx context.Context, opts *UserListOptions) ([]*User, *Response, error)
 
-	// ListBlockedUsers lists all the blocked users by the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-users-blocked-by-the-authenticated-user
 	ListBlockedUsers(ctx context.Context, opts *ListOptions) ([]*User, *Response, error)
 
-	// ListEmails lists all email addresses for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-email-addresses-for-the-authenticated-user
 	ListEmails(ctx context.Context, opts *ListOptions) ([]*UserEmail, *Response, error)
 
-	// ListFollowers lists the followers for a user. Passing the empty string will
-	// fetch followers for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-followers-of-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-followers-of-a-user
 	ListFollowers(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error)
 
-	// ListFollowing lists the people that a user is following. Passing the empty
-	// string will list people the authenticated user is following.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-the-people-the-authenticated-user-follows
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-the-people-a-user-follows
 	ListFollowing(ctx context.Context, user string, opts *ListOptions) ([]*User, *Response, error)
 
-	// ListGPGKeys lists the public GPG keys for a user. Passing the empty
-	// string will fetch keys for the authenticated user. It requires authentication
-	// via Basic Auth or via OAuth with at least read:gpg_key scope.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-gpg-keys-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-gpg-keys-for-a-user
 	ListGPGKeys(ctx context.Context, user string, opts *ListOptions) ([]*GPGKey, *Response, error)
 
-	// ListInvitations lists all currently-open repository invitations for the
-	// authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-invitations-for-the-authenticated-user
 	ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error)
 
-	// ListKeys lists the verified public keys for a user. Passing the empty
-	// string will fetch keys for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-public-ssh-keys-for-the-authenticated-user
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#list-public-keys-for-a-user
 	ListKeys(ctx context.Context, user string, opts *ListOptions) ([]*Key, *Response, error)
 
-	// ListProjects lists the projects for the specified user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/projects/#list-user-projects
 	ListProjects(ctx context.Context, user string, opts *ProjectListOptions) ([]*Project, *Response, error)
 
-	// PromoteSiteAdmin promotes a user to a site administrator of a GitHub Enterprise instance.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#promote-an-ordinary-user-to-a-site-administrator
 	PromoteSiteAdmin(ctx context.Context, user string) (*Response, error)
 
-	// Suspend a user on a GitHub Enterprise instance.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#suspend-a-user
 	Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error)
 
-	// UnblockUser unblocks specified user for the authenticated user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#unblock-a-user
 	UnblockUser(ctx context.Context, user string) (*Response, error)
 
-	// Unfollow will cause the authenticated user to unfollow the specified user.
-	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/users/#unfollow-a-user
 	Unfollow(ctx context.Context, user string) (*Response, error)
 
-	// Unsuspend a user on a GitHub Enterprise instance.
-	//
-	// GitHub API docs: https://developer.github.com/enterprise/v3/enterprise-admin/users/#unsuspend-a-user
 	Unsuspend(ctx context.Context, user string) (*Response, error)
 }
 

@@ -49,7 +49,7 @@ var (
 			fn.Body = nil
 			var buf bytes.Buffer
 			printer.Fprint(&buf, fset, fn)
-			return strings.ReplaceAll(buf.String(), "\nfunc ", "\n")
+			return strings.ReplaceAll(buf.String(), "func ", "")
 		},
 	}
 
@@ -60,7 +60,7 @@ func main() {
 	flag.Parse()
 	fset = token.NewFileSet()
 
-	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, parser.ParseComments)
+	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, 0)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -300,16 +300,14 @@ import (
 {{ end }}
 {{ range $index, $svc := .SortedServices }}
 // {{ $svc.Name }}Interface defines the interface for the {{ $svc.Name }} for easy mocking.
-//
-{{ if $svc.GenDecl }}
+{{ if and $svc.GenDecl $svc.GenDecl.Doc }}
 {{- range $i2, $line := $svc.GenDecl.Doc.List  }}
 {{- $line.Text }}
 {{ end -}}
 {{ end -}}
 type {{ $svc.Name }}Interface interface {
 {{ range $i3, $mthd := $svc.Methods }}
-  {{ $mthd.FuncDecl | render }}
-
+{{ $mthd.FuncDecl | render }}
 {{ end }}
 }
 
