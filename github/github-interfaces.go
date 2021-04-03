@@ -589,9 +589,9 @@ var _ LicensesServiceInterface = &LicensesService{}
 
 // MarketplaceServiceInterface defines the interface for the MarketplaceService for easy mocking.
 type MarketplaceServiceInterface interface {
-	ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error)
+	GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error)
 
-	ListPlanAccountsForAccount(ctx context.Context, accountID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error)
+	ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error)
 
 	ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error)
 
