@@ -7,13 +7,44 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // PublicKey represents the public key that should be used to encrypt secrets.
 type PublicKey struct {
 	KeyID *string `json:"key_id"`
 	Key   *string `json:"key"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+// This ensures GitHub Enterprise versions which return a numeric key id
+// do not error out when unmarshaling.
+func (p *PublicKey) UnmarshalJSON(data []byte) error {
+	var pk struct {
+		KeyID interface{} `json:"key_id,string"`
+		Key   *string     `json:"key"`
+	}
+
+	if err := json.Unmarshal(data, &pk); err != nil {
+		return err
+	}
+
+	p.Key = pk.Key
+
+	switch v := pk.KeyID.(type) {
+	case nil:
+		return nil
+	case string:
+		p.KeyID = &v
+	case float64:
+		p.KeyID = String(strconv.FormatFloat(v, 'f', -1, 64))
+	default:
+		return fmt.Errorf("unable to unmarshal %T as a string", v)
+	}
+
+	return nil
 }
 
 // GetRepoPublicKey gets a public key that should be used for secret encryption.
