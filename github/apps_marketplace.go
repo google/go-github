@@ -75,6 +75,14 @@ type MarketplacePlanAccount struct {
 	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
 }
 
+func (s *MarketplaceService) SetStubbed(stubbed bool) {
+	s.Stubbed = stubbed
+}
+
+func (s *MarketplaceService) GetStubbed() bool {
+	return s.Stubbed
+}
+
 // ListPlans lists all plans for your Marketplace listing.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps#list-plans
@@ -149,7 +157,7 @@ func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accou
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#list-subscriptions-for-the-authenticated-user
 func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error) {
 	uri := "user/marketplace_purchases"
-	if s.Stubbed {
+	if s.GetStubbed() {
 		uri = "user/marketplace_purchases/stubbed"
 	}
 
@@ -173,7 +181,7 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 
 func (s *MarketplaceService) marketplaceURI(endpoint string) string {
 	url := "marketplace_listing"
-	if s.Stubbed {
+	if s.GetStubbed() {
 		url = "marketplace_listing/stubbed"
 	}
 	return url + "/" + endpoint
