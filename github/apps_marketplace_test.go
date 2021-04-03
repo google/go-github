@@ -27,7 +27,7 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = false
+	client.Marketplace.SetStubbed(false)
 	ctx := context.Background()
 	plans, _, err := client.Marketplace.ListPlans(ctx, opt)
 	if err != nil {
@@ -59,7 +59,7 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = true
+	client.Marketplace.SetStubbed(true)
 	ctx := context.Background()
 	plans, _, err := client.Marketplace.ListPlans(ctx, opt)
 	if err != nil {
@@ -82,7 +82,7 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = false
+	client.Marketplace.SetStubbed(false)
 	ctx := context.Background()
 	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(ctx, 1, opt)
 	if err != nil {
@@ -114,7 +114,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = true
+	client.Marketplace.SetStubbed(true)
 	ctx := context.Background()
 	accounts, _, err := client.Marketplace.ListPlanAccountsForPlan(ctx, 1, opt)
 	if err != nil {
@@ -136,7 +136,7 @@ func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 		fmt.Fprint(w, `{"id":1, "marketplace_pending_change": {"id": 77}}`)
 	})
 
-	client.Marketplace.Stubbed = false
+	client.Marketplace.SetStubbed(false)
 	ctx := context.Background()
 	account, _, err := client.Marketplace.GetPlanAccountForAccount(ctx, 1)
 	if err != nil {
@@ -167,7 +167,7 @@ func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	client.Marketplace.Stubbed = true
+	client.Marketplace.SetStubbed(true)
 	ctx := context.Background()
 	account, _, err := client.Marketplace.GetPlanAccountForAccount(ctx, 1)
 	if err != nil {
@@ -190,7 +190,7 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = false
+	client.Marketplace.SetStubbed(false)
 	ctx := context.Background()
 	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(ctx, opt)
 	if err != nil {
@@ -222,7 +222,7 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
-	client.Marketplace.Stubbed = true
+	client.Marketplace.SetStubbed(true)
 	ctx := context.Background()
 	purchases, _, err := client.Marketplace.ListMarketplacePurchasesForUser(ctx, opt)
 	if err != nil {
