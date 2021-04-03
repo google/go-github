@@ -15,10 +15,14 @@ import (
 	"github.com/google/go-github/v34/github"
 )
 
+type myClient struct {
+	client *github.Client
+}
+
 // Fetch all the public organizations' membership of a user.
 //
-func fetchOrganizations(orgService github.OrganizationsServiceInterface, username string) ([]*github.Organization, error) {
-	orgs, _, err := orgService.List(context.Background(), username, nil)
+func (m *myClient) fetchOrganizations(ctx context.Context, username string) ([]*github.Organization, error) {
+	orgs, _, err := m.client.Organizations.List(ctx, username, nil)
 	return orgs, err
 }
 
@@ -27,8 +31,12 @@ func main() {
 	fmt.Print("Enter GitHub username: ")
 	fmt.Scanf("%s", &username)
 
-	client := github.NewClient(nil)
-	organizations, err := fetchOrganizations(client.Organizations, username)
+	c := &myClient{
+		client: github.NewClient(nil),
+	}
+
+	ctx := context.Background()
+	organizations, err := c.fetchOrganizations(ctx, username)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return

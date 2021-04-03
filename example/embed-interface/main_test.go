@@ -33,8 +33,13 @@ func TestFetchOrganizations(t *testing.T) {
 		{Name: github.String("octocat")},
 	}
 
-	orgService := &fakeOrgSvc{orgs: want}
-	got, err := fetchOrganizations(orgService, "octocat")
+	c := &myClient{
+		client: github.NewClient(nil),
+	}
+	c.client.Organizations = &fakeOrgSvc{orgs: want}
+
+	ctx := context.Background()
+	got, err := c.fetchOrganizations(ctx, "octocat")
 	if err != nil {
 		t.Fatal(err)
 	}
