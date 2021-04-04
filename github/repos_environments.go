@@ -11,7 +11,7 @@ import (
 	"fmt"
 )
 
-// Environment represents a single environment in a repository.
+// Environment represents a single environment in a repository
 type Environment struct {
 	Owner           *string         `json:"owner,omitempty"`
 	Repo            *string         `json:"repo,omitempty"`
@@ -57,11 +57,14 @@ type ProtectionRule struct {
 	Reviewers []RequiredReviewer `json:"reviewers,omitempty"`
 }
 
+// RequiredReviewer represents a required reviewers object
 type RequiredReviewer struct {
 	Type     *string     `json:"type,omitempty"`
 	Reviewer interface{} `json:"reviewer,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
+// This helps us handle the fact that RequiredReviewer can have either a User or Team type reviewer field
 func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	type aliasReviewer RequiredReviewer
 	var reviewer aliasReviewer
@@ -90,7 +93,8 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 }
 
 // ListEnvironments lists all environments for a repository
-// https://docs.github.com/en/rest/reference/repos#get-all-environments
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-all-environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string) (*EnvResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
 
@@ -108,7 +112,8 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 }
 
 // GetEnvironment get a single environment for a repository
-// https://docs.github.com/en/rest/reference/repos#get-an-environment
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-an-environment
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
@@ -125,19 +130,39 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 	return env, resp, nil
 }
 
-type CreateUpdateEnvironment struct {
-	WaitTimer    *int                     `json:"wait_timer,omitempty"`
-	Reviewers    []*CreateUpdateReviewers `json:"reviewers,omitempty"`
-	BranchPolicy *BranchPolicy            `json:"deployment_branch_policy,omitempty"`
+// MarshalJSON implements the json.Marshaler interface.
+// As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null
+func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
+	type Alias CreateUpdateEnvironment
+	if c.WaitTimer == nil {
+		c.WaitTimer = Int(0)
+	}
+	return json.Marshal(&struct {
+		*Alias
+	}{
+		Alias: (*Alias)(c),
+	})
 }
 
+// CreateUpdateEnvironment represents the fields required for the create/update operation
+// Following the Create/Update release example
+// See https://github.com/google/go-github/issues/992 for more information.
+// Removed the omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them
+type CreateUpdateEnvironment struct {
+	WaitTimer    *int                     `json:"wait_timer"`
+	Reviewers    []*CreateUpdateReviewers `json:"reviewers"`
+	BranchPolicy *BranchPolicy            `json:"deployment_branch_policy"`
+}
+
+// CreateUpdateReviewers represents the fields required for a single required reviewer
 type CreateUpdateReviewers struct {
 	Type *string `json:"type,omitempty"`
 	ID   *int    `json:"id,omitempty"`
 }
 
 // CreateUpdateEnvironment create or update a new environment for a repository
-// https://docs.github.com/en/rest/reference/repos#create-or-update-an-environment
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#create-or-update-an-environment
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
@@ -155,7 +180,8 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 }
 
 // DeleteEnvironment delete an environment from a repository
-// https://docs.github.com/en/rest/reference/repos#delete-an-environment
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#delete-an-environment
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
