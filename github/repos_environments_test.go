@@ -59,6 +59,20 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
+	cu := &CreateUpdateEnvironment{}
+
+	got, err := cu.MarshalJSON()
+	if err != nil {
+		t.Errorf("MarshalJSON: %v", err)
+	}
+
+	want := `{"wait_timer":0,"reviewers":null,"deployment_branch_policy":null}`
+	if string(got) != want {
+		t.Errorf("MarshalJSON = %s, want %v", got, want)
+	}
+}
+
 func TestRepositoriesService_ListEnvironments(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
