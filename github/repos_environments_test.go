@@ -173,3 +173,28 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
+	if err != nil {
+		t.Errorf("Repositories.DeleteEnvironment returned error: %v", err)
+	}
+
+	const methodName = "DeleteEnvironment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DeleteEnvironment(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
+	})
+}
