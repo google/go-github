@@ -591,11 +591,15 @@ var _ LicensesServiceInterface = &LicensesService{}
 type MarketplaceServiceInterface interface {
 	GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error)
 
+	GetStubbed() bool
+
 	ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error)
 
 	ListPlanAccountsForPlan(ctx context.Context, planID int64, opts *ListOptions) ([]*MarketplacePlanAccount, *Response, error)
 
 	ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error)
+
+	SetStubbed(stubbed bool)
 }
 
 // MarketplaceService implements the MarketplaceServiceInterface.

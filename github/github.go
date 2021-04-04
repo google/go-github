@@ -171,7 +171,7 @@ type Client struct {
 	IssueImport    IssueImportServiceInterface
 	Issues         IssuesServiceInterface
 	Licenses       LicensesServiceInterface
-	Marketplace    *MarketplaceService
+	Marketplace    MarketplaceServiceInterface
 	Migrations     MigrationServiceInterface
 	Organizations  OrganizationsServiceInterface
 	Projects       ProjectsServiceInterface
