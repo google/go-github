@@ -75,10 +75,16 @@ type MarketplacePlanAccount struct {
 	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
 }
 
+// SetStubbed configures the MarketplaceService Stubbed property.
+//
+// GitHub API docs: https://docs.github.com/en/developers/github-marketplace/testing-your-app#testing-apis
 func (s *MarketplaceService) SetStubbed(stubbed bool) {
 	s.Stubbed = stubbed
 }
 
+// GetStubbed returns the MarketplaceService Stubbed property.
+//
+// GitHub API docs: https://docs.github.com/en/developers/github-marketplace/testing-your-app#testing-apis
 func (s *MarketplaceService) GetStubbed() bool {
 	return s.Stubbed
 }
