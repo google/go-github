@@ -348,7 +348,7 @@ func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) 
 	return s.client.Do(ctx, req, nil)
 }
 
-// ListEnvSecrets lists all secrets available in an environment
+// ListEnvSecrets lists all secrets available in an environment.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-environment-secrets
 func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error) {

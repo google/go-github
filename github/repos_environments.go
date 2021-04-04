@@ -1,4 +1,4 @@
-// Copyright 2014 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -11,7 +11,7 @@ import (
 	"fmt"
 )
 
-// Environment represents a single environment in a repository
+// Environment represents a single environment in a repository.
 type Environment struct {
 	Owner           *string         `json:"owner,omitempty"`
 	Repo            *string         `json:"repo,omitempty"`
@@ -30,25 +30,25 @@ type Environment struct {
 	ProtectionRules []*ProtectionRule `json:"protection_rules,omitempty"`
 }
 
-// EnvReviewers represents a single environment reviewer entry
+// EnvReviewers represents a single environment reviewer entry.
 type EnvReviewers struct {
 	Type *string `json:"type,omitempty"`
 	ID   *int    `json:"id,omitempty"`
 }
 
-// BranchPolicy represents the options for whether a branch deployment policy is applied to this environment
+// BranchPolicy represents the options for whether a branch deployment policy is applied to this environment.
 type BranchPolicy struct {
 	ProtectedBranches    *bool `json:"protected_branches,omitempty"`
 	CustomBranchPolicies *bool `json:"custom_branch_policies,omitempty"`
 }
 
-// EnvResponse represents the slightly different format of response that comes back when you list an environment
+// EnvResponse represents the slightly different format of response that comes back when you list an environment.
 type EnvResponse struct {
 	TotalCount   *int           `json:"total_count,omitempty"`
 	Environments []*Environment `json:"environments,omitempty"`
 }
 
-// ProtectionRule represents a single protection rule applied to the environment
+// ProtectionRule represents a single protection rule applied to the environment.
 type ProtectionRule struct {
 	ID        *int               `json:"id,omitempty"`
 	NodeID    *string            `json:"node_id,omitempty"`
@@ -57,7 +57,7 @@ type ProtectionRule struct {
 	Reviewers []RequiredReviewer `json:"reviewers,omitempty"`
 }
 
-// RequiredReviewer represents a required reviewers object
+// RequiredReviewer represents a required reviewer.
 type RequiredReviewer struct {
 	Type     *string     `json:"type,omitempty"`
 	Reviewer interface{} `json:"reviewer,omitempty"`
@@ -92,7 +92,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ListEnvironments lists all environments for a repository
+// ListEnvironments lists all environments for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-all-environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string) (*EnvResponse, *Response, error) {
@@ -111,7 +111,7 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 	return list, resp, nil
 }
 
-// GetEnvironment get a single environment for a repository
+// GetEnvironment get a single environment for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-an-environment
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
@@ -145,16 +145,16 @@ func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 }
 
 // CreateUpdateEnvironment represents the fields required for the create/update operation
-// following the Create/Update release example
+// following the Create/Update release example.
 // See https://github.com/google/go-github/issues/992 for more information.
-// Removed omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them
+// Removed omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them.
 type CreateUpdateEnvironment struct {
 	WaitTimer    *int            `json:"wait_timer"`
 	Reviewers    []*EnvReviewers `json:"reviewers"`
 	BranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
-// CreateUpdateEnvironment create or update a new environment for a repository
+// CreateUpdateEnvironment create or update a new environment for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#create-or-update-an-environment
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
@@ -173,7 +173,7 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 	return e, resp, nil
 }
 
-// DeleteEnvironment delete an environment from a repository
+// DeleteEnvironment delete an environment from a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#delete-an-environment
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
