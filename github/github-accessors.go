@@ -2932,22 +2932,6 @@ func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	return *c.WaitTimer
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *CreateUpdateReviewers) GetID() int {
-	if c == nil || c.ID == nil {
-		return 0
-	}
-	return *c.ID
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (c *CreateUpdateReviewers) GetType() string {
-	if c == nil || c.Type == nil {
-		return ""
-	}
-	return *c.Type
-}
-
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CreateUserProjectOptions) GetBody() string {
 	if c == nil || c.Body == nil {

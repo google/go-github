@@ -39,7 +39,7 @@ type EnvReviewers struct {
 // BranchPolicy represents the options for whether a branch deployment policy is applied to this environment
 type BranchPolicy struct {
 	ProtectedBranches    *bool `json:"protected_branches,omitempty"`
-	CustomBranchPolicies *bool `json:"custom_branch_policies,omitempty"` // Unable to set the actual custom policy at the moment so unsure how useful this is
+	CustomBranchPolicies *bool `json:"custom_branch_policies,omitempty"`
 }
 
 // EnvResponse represents the slightly different format of response that comes back when you list an environment
@@ -145,19 +145,13 @@ func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 }
 
 // CreateUpdateEnvironment represents the fields required for the create/update operation
-// Following the Create/Update release example
+// following the Create/Update release example
 // See https://github.com/google/go-github/issues/992 for more information.
-// Removed the omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them
+// Removed omitempty here as the API expects null values for reviewers and deployment_branch_policy to clear them
 type CreateUpdateEnvironment struct {
-	WaitTimer    *int                     `json:"wait_timer"`
-	Reviewers    []*CreateUpdateReviewers `json:"reviewers"`
-	BranchPolicy *BranchPolicy            `json:"deployment_branch_policy"`
-}
-
-// CreateUpdateReviewers represents the fields required for a single required reviewer
-type CreateUpdateReviewers struct {
-	Type *string `json:"type,omitempty"`
-	ID   *int    `json:"id,omitempty"`
+	WaitTimer    *int            `json:"wait_timer"`
+	Reviewers    []*EnvReviewers `json:"reviewers"`
+	BranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
 // CreateUpdateEnvironment create or update a new environment for a repository

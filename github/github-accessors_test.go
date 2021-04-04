@@ -3435,26 +3435,6 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 }
 
-func TestCreateUpdateReviewers_GetID(tt *testing.T) {
-	var zeroValue int
-	c := &CreateUpdateReviewers{ID: &zeroValue}
-	c.GetID()
-	c = &CreateUpdateReviewers{}
-	c.GetID()
-	c = nil
-	c.GetID()
-}
-
-func TestCreateUpdateReviewers_GetType(tt *testing.T) {
-	var zeroValue string
-	c := &CreateUpdateReviewers{Type: &zeroValue}
-	c.GetType()
-	c = &CreateUpdateReviewers{}
-	c.GetType()
-	c = nil
-	c.GetType()
-}
-
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}
