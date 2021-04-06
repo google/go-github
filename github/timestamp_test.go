@@ -13,10 +13,11 @@ import (
 )
 
 const (
-	emptyTimeStr               = `"0001-01-01T00:00:00Z"`
-	referenceTimeStr           = `"2006-01-02T15:04:05Z"`
-	referenceTimeStrFractional = `"2006-01-02T15:04:05.000Z"` // This format was returned by the Projects API before October 1, 2017.
-	referenceUnixTimeStr       = `1136214245`
+	emptyTimeStr                     = `"0001-01-01T00:00:00Z"`
+	referenceTimeStr                 = `"2006-01-02T15:04:05Z"`
+	referenceTimeStrFractional       = `"2006-01-02T15:04:05.000Z"` // This format was returned by the Projects API before October 1, 2017.
+	referenceUnixTimeStr             = `1136214245`
+	referenceUnixTimeStrMilliSeconds = `1136214245000` // Millisecond-granular timestamps were introduced in the Audit log API.
 )
 
 var (
@@ -59,12 +60,14 @@ func TestTimestamp_Unmarshal(t *testing.T) {
 	}{
 		{"Reference", referenceTimeStr, Timestamp{referenceTime}, false, true},
 		{"ReferenceUnix", referenceUnixTimeStr, Timestamp{referenceTime}, false, true},
+		{"ReferenceUnixMillisecond", referenceUnixTimeStrMilliSeconds, Timestamp{referenceTime}, false, true},
 		{"ReferenceFractional", referenceTimeStrFractional, Timestamp{referenceTime}, false, true},
 		{"Empty", emptyTimeStr, Timestamp{}, false, true},
 		{"UnixStart", `0`, Timestamp{unixOrigin}, false, true},
 		{"Mismatch", referenceTimeStr, Timestamp{}, false, false},
 		{"MismatchUnix", `0`, Timestamp{}, false, false},
 		{"Invalid", `"asdf"`, Timestamp{referenceTime}, true, false},
+		{"OffByMillisecond", `1136214245001`, Timestamp{referenceTime}, false, false},
 	}
 	for _, tc := range testCases {
 		var got Timestamp
@@ -144,11 +147,13 @@ func TestWrappedTimestamp_Unmarshal(t *testing.T) {
 	}{
 		{"Reference", referenceTimeStr, WrappedTimestamp{0, Timestamp{referenceTime}}, false, true},
 		{"ReferenceUnix", referenceUnixTimeStr, WrappedTimestamp{0, Timestamp{referenceTime}}, false, true},
+		{"ReferenceUnixMillisecond", referenceUnixTimeStrMilliSeconds, WrappedTimestamp{0, Timestamp{referenceTime}}, false, true},
 		{"Empty", emptyTimeStr, WrappedTimestamp{0, Timestamp{}}, false, true},
 		{"UnixStart", `0`, WrappedTimestamp{0, Timestamp{unixOrigin}}, false, true},
 		{"Mismatch", referenceTimeStr, WrappedTimestamp{0, Timestamp{}}, false, false},
 		{"MismatchUnix", `0`, WrappedTimestamp{0, Timestamp{}}, false, false},
 		{"Invalid", `"asdf"`, WrappedTimestamp{0, Timestamp{referenceTime}}, true, false},
+		{"OffByMillisecond", `1136214245001`, WrappedTimestamp{0, Timestamp{referenceTime}}, false, false},
 	}
 	for _, tc := range testCases {
 		var got Timestamp
