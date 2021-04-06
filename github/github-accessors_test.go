@@ -3418,11 +3418,11 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
-func TestCreateUpdateEnvironment_GetBranchPolicy(tt *testing.T) {
+func TestCreateUpdateEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
 	c := &CreateUpdateEnvironment{}
-	c.GetBranchPolicy()
+	c.GetDeploymentBranchPolicy()
 	c = nil
-	c.GetBranchPolicy()
+	c.GetDeploymentBranchPolicy()
 }
 
 func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
@@ -4344,13 +4344,6 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
-func TestEnvironment_GetBranchPolicy(tt *testing.T) {
-	e := &Environment{}
-	e.GetBranchPolicy()
-	e = nil
-	e.GetBranchPolicy()
-}
-
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	e := &Environment{CreatedAt: &zeroValue}
@@ -4359,6 +4352,13 @@ func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	e.GetCreatedAt()
 	e = nil
 	e.GetCreatedAt()
+}
+
+func TestEnvironment_GetDeploymentBranchPolicy(tt *testing.T) {
+	e := &Environment{}
+	e.GetDeploymentBranchPolicy()
+	e = nil
+	e.GetDeploymentBranchPolicy()
 }
 
 func TestEnvironment_GetEnvironmentName(tt *testing.T) {
@@ -4382,7 +4382,7 @@ func TestEnvironment_GetHTMLURL(tt *testing.T) {
 }
 
 func TestEnvironment_GetID(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	e := &Environment{ID: &zeroValue}
 	e.GetID()
 	e = &Environment{}
@@ -4472,7 +4472,7 @@ func TestEnvResponse_GetTotalCount(tt *testing.T) {
 }
 
 func TestEnvReviewers_GetID(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	e := &EnvReviewers{ID: &zeroValue}
 	e.GetID()
 	e = &EnvReviewers{}
@@ -11434,7 +11434,7 @@ func TestProtectionRequest_GetRestrictions(tt *testing.T) {
 }
 
 func TestProtectionRule_GetID(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	p := &ProtectionRule{ID: &zeroValue}
 	p.GetID()
 	p = &ProtectionRule{}

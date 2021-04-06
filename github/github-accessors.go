@@ -2916,12 +2916,12 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
-// GetBranchPolicy returns the BranchPolicy field.
-func (c *CreateUpdateEnvironment) GetBranchPolicy() *BranchPolicy {
+// GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
+func (c *CreateUpdateEnvironment) GetDeploymentBranchPolicy() *BranchPolicy {
 	if c == nil {
 		return nil
 	}
-	return c.BranchPolicy
+	return c.DeploymentBranchPolicy
 }
 
 // GetWaitTimer returns the WaitTimer field if it's non-nil, zero value otherwise.
@@ -3700,20 +3700,20 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
-// GetBranchPolicy returns the BranchPolicy field.
-func (e *Environment) GetBranchPolicy() *BranchPolicy {
-	if e == nil {
-		return nil
-	}
-	return e.BranchPolicy
-}
-
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
 		return Timestamp{}
 	}
 	return *e.CreatedAt
+}
+
+// GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
+func (e *Environment) GetDeploymentBranchPolicy() *BranchPolicy {
+	if e == nil {
+		return nil
+	}
+	return e.DeploymentBranchPolicy
 }
 
 // GetEnvironmentName returns the EnvironmentName field if it's non-nil, zero value otherwise.
@@ -3733,7 +3733,7 @@ func (e *Environment) GetHTMLURL() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (e *Environment) GetID() int {
+func (e *Environment) GetID() int64 {
 	if e == nil || e.ID == nil {
 		return 0
 	}
@@ -3805,7 +3805,7 @@ func (e *EnvResponse) GetTotalCount() int {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (e *EnvReviewers) GetID() int {
+func (e *EnvReviewers) GetID() int64 {
 	if e == nil || e.ID == nil {
 		return 0
 	}
@@ -9773,7 +9773,7 @@ func (p *ProtectionRequest) GetRestrictions() *BranchRestrictionsRequest {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProtectionRule) GetID() int {
+func (p *ProtectionRule) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}

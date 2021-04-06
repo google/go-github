@@ -17,39 +17,59 @@ import (
 func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	var testCases = map[string]struct {
 		data      []byte
-		wantRule  ProtectionRule
+		wantRule  []*RequiredReviewer
 		wantError bool
 	}{
-		"Wait Timer": {
-			data:      []byte(`{"id": 1, "node_id": "abcde", "type": "wait_timer", "wait_timer": 30}`),
-			wantRule:  ProtectionRule{ID: Int(1), NodeID: String("abcde"), Type: String("wait_timer"), WaitTimer: Int(30)},
-			wantError: false,
-		},
-		"Branch Policy": {
-			data:      []byte(`{"id": 1, "node_id": "abcde", "type": "branch_policy"}`),
-			wantRule:  ProtectionRule{ID: Int(1), NodeID: String("abcde"), Type: String("branch_policy")},
-			wantError: false,
-		},
 		"User Reviewer": {
-			data:      []byte(`{"id": 1, "node_id": "abcde", "type": "required_reviewers", "reviewers": [{"type": "User", "reviewer": {"id": 1,"login": "octocat"}}]}`),
-			wantRule:  ProtectionRule{ID: Int(1), NodeID: String("abcde"), Type: String("required_reviewers"), Reviewers: []RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}}},
+			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}},
 			wantError: false,
 		},
 		"Team Reviewer": {
-			data:      []byte(`{"id": 1, "node_id": "abcde", "type": "required_reviewers", "reviewers": [{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]}`),
-			wantRule:  ProtectionRule{ID: Int(1), NodeID: String("abcde"), Type: String("required_reviewers"), Reviewers: []RequiredReviewer{{Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}}},
+			data:      []byte(`[{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}},
 			wantError: false,
 		},
 		"Both Types Reviewer": {
-			data:      []byte(`{"id": 1, "node_id": "abcde", "type": "required_reviewers", "reviewers": [{"type": "User", "reviewer": {"id": 1,"login": "octocat"}},{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]}`),
-			wantRule:  ProtectionRule{ID: Int(1), NodeID: String("abcde"), Type: String("required_reviewers"), Reviewers: []RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}, {Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}}},
+			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}},{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: &User{ID: Int64(1), Login: String("octocat")}}, {Type: String("Team"), Reviewer: &Team{ID: Int64(1), Name: String("Justice League")}}},
 			wantError: false,
+		},
+		"Empty JSON Object": {
+			data:      []byte(`[]`),
+			wantRule:  []*RequiredReviewer{},
+			wantError: false,
+		},
+		"Bad JSON Object": {
+			data:      []byte(`[badjson: 1]`),
+			wantRule:  []*RequiredReviewer{},
+			wantError: true,
+		},
+		"Wrong Type Type in Reviewer Object": {
+			data:      []byte(`[{"type": 1, "reviewer": {"id": 1}}]`),
+			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
+			wantError: true,
+		},
+		"Wrong ID Type in User Object": {
+			data:      []byte(`[{"type": "User", "reviewer": {"id": "string"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: String("User"), Reviewer: nil}},
+			wantError: true,
+		},
+		"Wrong ID Type in Team Object": {
+			data:      []byte(`[{"type": "Team", "reviewer": {"id": "string"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: String("Team"), Reviewer: nil}},
+			wantError: true,
+		},
+		"Wrong Type of Reviewer": {
+			data:      []byte(`[{"type": "Cat", "reviewer": {"id": 1,"login": "octocat"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
+			wantError: true,
 		},
 	}
 
 	for name, test := range testCases {
 		t.Run(name, func(t *testing.T) {
-			rule := ProtectionRule{}
+			rule := []*RequiredReviewer{}
 			err := json.Unmarshal(test.data, &rule)
 			if err != nil && !test.wantError {
 				t.Errorf("RequiredReviewer.UnmarshalJSON returned an error when we expected nil")
@@ -92,7 +112,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
-	want := &EnvResponse{TotalCount: Int(1), Environments: []*Environment{{ID: Int(1)}, {ID: Int(2)}}}
+	want := &EnvResponse{TotalCount: Int(1), Environments: []*Environment{{ID: Int64(1)}, {ID: Int64(2)}}}
 	if !reflect.DeepEqual(environments, want) {
 		t.Errorf("Repositories.ListEnvironments returned %+v, want %+v", environments, want)
 	}
@@ -127,7 +147,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &Environment{ID: Int(1), Name: String("staging"), BranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}}
+	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}
@@ -173,7 +193,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
 	}
 
-	want := &Environment{ID: Int(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{{ID: Int(1), Type: String("wait_timer"), WaitTimer: Int(30)}}}
+	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{{ID: Int64(1), Type: String("wait_timer"), WaitTimer: Int(30)}}}
 	if !reflect.DeepEqual(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
