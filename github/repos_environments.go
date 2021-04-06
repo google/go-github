@@ -64,7 +64,7 @@ type RequiredReviewer struct {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-// This helps us handle the fact that RequiredReviewer can have either a User or Team type reviewer field
+// This helps us handle the fact that RequiredReviewer can have either a User or Team type reviewer field.
 func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	type aliasReviewer RequiredReviewer
 	var reviewer aliasReviewer
@@ -90,7 +90,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	default:
 		r.Type = nil
 		r.Reviewer = nil
-		return fmt.Errorf("reviewer.Type is not a string of 'User' or 'Team', unable to unmarshal")
+		return fmt.Errorf("reviewer.Type is %T, not a string of 'User' or 'Team', unable to unmarshal", reviewer.Type)
 	}
 
 	return nil
@@ -135,7 +135,7 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-// As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null
+// As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null.
 func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 	type Alias CreateUpdateEnvironment
 	if c.WaitTimer == nil {
