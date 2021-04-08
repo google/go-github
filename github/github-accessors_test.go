@@ -12479,6 +12479,116 @@ func TestPullRequestReviewsEnforcementUpdate_GetDismissStaleReviews(tt *testing.
 	p.GetDismissStaleReviews()
 }
 
+func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestTargetEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &PullRequestTargetEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestPullRequestTargetEvent_GetAfter(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestTargetEvent{After: &zeroValue}
+	p.GetAfter()
+	p = &PullRequestTargetEvent{}
+	p.GetAfter()
+	p = nil
+	p.GetAfter()
+}
+
+func TestPullRequestTargetEvent_GetAssignee(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetAssignee()
+	p = nil
+	p.GetAssignee()
+}
+
+func TestPullRequestTargetEvent_GetBefore(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestTargetEvent{Before: &zeroValue}
+	p.GetBefore()
+	p = &PullRequestTargetEvent{}
+	p.GetBefore()
+	p = nil
+	p.GetBefore()
+}
+
+func TestPullRequestTargetEvent_GetChanges(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
+func TestPullRequestTargetEvent_GetInstallation(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestPullRequestTargetEvent_GetLabel(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetLabel()
+	p = nil
+	p.GetLabel()
+}
+
+func TestPullRequestTargetEvent_GetNumber(tt *testing.T) {
+	var zeroValue int
+	p := &PullRequestTargetEvent{Number: &zeroValue}
+	p.GetNumber()
+	p = &PullRequestTargetEvent{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestTargetEvent_GetOrganization(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
+}
+
+func TestPullRequestTargetEvent_GetPullRequest(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
+func TestPullRequestTargetEvent_GetRepo(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPullRequestTargetEvent_GetRequestedReviewer(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetRequestedReviewer()
+	p = nil
+	p.GetRequestedReviewer()
+}
+
+func TestPullRequestTargetEvent_GetRequestedTeam(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetRequestedTeam()
+	p = nil
+	p.GetRequestedTeam()
+}
+
+func TestPullRequestTargetEvent_GetSender(tt *testing.T) {
+	p := &PullRequestTargetEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
 func TestPullStats_GetMergablePulls(tt *testing.T) {
 	var zeroValue int
 	p := &PullStats{MergablePulls: &zeroValue}
