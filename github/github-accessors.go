@@ -10700,6 +10700,118 @@ func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
 	return *p.DismissStaleReviews
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *PullRequestTargetEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (p *PullRequestTargetEvent) GetAfter() string {
+	if p == nil || p.After == nil {
+		return ""
+	}
+	return *p.After
+}
+
+// GetAssignee returns the Assignee field.
+func (p *PullRequestTargetEvent) GetAssignee() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Assignee
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (p *PullRequestTargetEvent) GetBefore() string {
+	if p == nil || p.Before == nil {
+		return ""
+	}
+	return *p.Before
+}
+
+// GetChanges returns the Changes field.
+func (p *PullRequestTargetEvent) GetChanges() *EditChange {
+	if p == nil {
+		return nil
+	}
+	return p.Changes
+}
+
+// GetInstallation returns the Installation field.
+func (p *PullRequestTargetEvent) GetInstallation() *Installation {
+	if p == nil {
+		return nil
+	}
+	return p.Installation
+}
+
+// GetLabel returns the Label field.
+func (p *PullRequestTargetEvent) GetLabel() *Label {
+	if p == nil {
+		return nil
+	}
+	return p.Label
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (p *PullRequestTargetEvent) GetNumber() int {
+	if p == nil || p.Number == nil {
+		return 0
+	}
+	return *p.Number
+}
+
+// GetOrganization returns the Organization field.
+func (p *PullRequestTargetEvent) GetOrganization() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Organization
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestTargetEvent) GetPullRequest() *PullRequest {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequest
+}
+
+// GetRepo returns the Repo field.
+func (p *PullRequestTargetEvent) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetRequestedReviewer returns the RequestedReviewer field.
+func (p *PullRequestTargetEvent) GetRequestedReviewer() *User {
+	if p == nil {
+		return nil
+	}
+	return p.RequestedReviewer
+}
+
+// GetRequestedTeam returns the RequestedTeam field.
+func (p *PullRequestTargetEvent) GetRequestedTeam() *Team {
+	if p == nil {
+		return nil
+	}
+	return p.RequestedTeam
+}
+
+// GetSender returns the Sender field.
+func (p *PullRequestTargetEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
+}
+
 // GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.
 func (p *PullStats) GetMergablePulls() int {
 	if p == nil || p.MergablePulls == nil {
