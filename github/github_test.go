@@ -705,7 +705,7 @@ func TestDo_nilContext(t *testing.T) {
 	req, _ := client.NewRequest("GET", ".", nil)
 	_, err := client.Do(nil, req, nil)
 
-	if !reflect.DeepEqual(err, errors.New("context must be non-nil")) {
+	if !errors.Is(err, errNonNilContext) {
 		t.Errorf("Expected context must be non-nil error")
 	}
 }
@@ -1097,7 +1097,7 @@ func TestCheckResponse(t *testing.T) {
 			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1125,7 +1125,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 		Response: res,
 		Message:  "m",
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1147,7 +1147,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 		Response: res,
 		Message:  "m",
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1168,7 +1168,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 	want := &ErrorResponse{
 		Response: res,
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1191,7 +1191,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 		Message:  "m",
 		Errors:   []Error{{Message: "error 1"}},
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 	data, err2 := ioutil.ReadAll(err.Response.Body)

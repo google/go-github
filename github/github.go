@@ -132,6 +132,8 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
+var errNonNilContext = errors.New("context must be non-nil")
+
 // A Client manages communication with the GitHub API.
 type Client struct {
 	clientMu sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
@@ -530,7 +532,7 @@ func parseRate(r *http.Response) Rate {
 // canceled or times out, ctx.Err() will be returned.
 func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
 	if ctx == nil {
-		return nil, errors.New("context must be non-nil")
+		return nil, errNonNilContext
 	}
 	req = withContext(ctx, req)
 
@@ -681,6 +683,36 @@ func (r *ErrorResponse) Error() string {
 		r.Response.StatusCode, r.Message, r.Errors)
 }
 
+func (r *ErrorResponse) Is(target error) bool {
+	v, ok := target.(*ErrorResponse)
+	if !ok {
+		return false
+	}
+	if (r.Message != v.Message) || (r.DocumentationURL != v.DocumentationURL) {
+		return false
+	}
+	if r.Response != nil {
+		if r.Response.StatusCode != v.Response.StatusCode {
+			return false
+		}
+	}
+	if len(r.Errors) != len(v.Errors) {
+		return false
+	}
+	for idx := range r.Errors {
+		if r.Errors[idx] != v.Errors[idx] {
+			return false
+		}
+	}
+	if r.Block != nil {
+		if r.Block.Reason != v.Block.Reason || *(r.Block).CreatedAt !=
+			*(v.Block).CreatedAt {
+			return false
+		}
+	}
+	return true
+}
+
 // TwoFactorAuthError occurs when using HTTP Basic Authentication for a user
 // that has two-factor authentication enabled. The request can be reattempted
 // by providing a one-time password in the request.
@@ -702,6 +734,22 @@ func (r *RateLimitError) Error() string {
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
+func (r *RateLimitError) Is(target error) bool {
+	v, ok := target.(*RateLimitError)
+	if !ok {
+		return false
+	}
+	if r.Rate != v.Rate || r.Message != v.Message {
+		return false
+	}
+	if r.Response != nil {
+		if r.Response.StatusCode != v.Response.StatusCode {
+			return false
+		}
+	}
+	return true
+}
+
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
 // empty body, which means a job was scheduled on the GitHub side to process
 // the information needed and cache it.
@@ -715,6 +763,14 @@ type AcceptedError struct {
 
 func (*AcceptedError) Error() string {
 	return "job scheduled on GitHub side; try again later"
+}
+
+func (ae *AcceptedError) Is(target error) bool {
+	v, ok := target.(*AcceptedError)
+	if !ok {
+		return false
+	}
+	return bytes.Compare(ae.Raw, v.Raw) == 0
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
@@ -733,6 +789,22 @@ func (r *AbuseRateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %d %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message)
+}
+
+func (r *AbuseRateLimitError) Is(target error) bool {
+	v, ok := target.(*AbuseRateLimitError)
+	if !ok {
+		return false
+	}
+	if r.Message != v.Message || r.RetryAfter != v.RetryAfter {
+		return false
+	}
+	if r.Response != nil {
+		if r.Response.StatusCode != v.Response.StatusCode {
+			return false
+		}
+	}
+	return true
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be
