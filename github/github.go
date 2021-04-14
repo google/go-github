@@ -132,6 +132,8 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
+var errNonNilContext = errors.New("context must be non-nil")
+
 // A Client manages communication with the GitHub API.
 type Client struct {
 	clientMu sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
@@ -530,7 +532,7 @@ func parseRate(r *http.Response) Rate {
 // canceled or times out, ctx.Err() will be returned.
 func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
 	if ctx == nil {
-		return nil, errors.New("context must be non-nil")
+		return nil, errNonNilContext
 	}
 	req = withContext(ctx, req)
 
@@ -653,6 +655,20 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 	return nil
 }
 
+// compareHttpResponse returns whether two http.Response objects are equal or not.
+// Currently, only StatusCode is checked. This function is used when implementing the
+// Is(error) bool interface for the custom error types in this package.
+func compareHttpResponse(r1, r2 *http.Response) bool {
+	if r1 == nil && r2 == nil {
+		return true
+	}
+
+	if r1 != nil && r2 != nil {
+		return r1.StatusCode == r2.StatusCode
+	}
+	return false
+}
+
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
@@ -681,6 +697,50 @@ func (r *ErrorResponse) Error() string {
 		r.Response.StatusCode, r.Message, r.Errors)
 }
 
+// Is returns whether the provided error equals this error.
+func (r *ErrorResponse) Is(target error) bool {
+	v, ok := target.(*ErrorResponse)
+	if !ok {
+		return false
+	}
+
+	if r.Message != v.Message || (r.DocumentationURL != v.DocumentationURL) ||
+		!compareHttpResponse(r.Response, v.Response) {
+		return false
+	}
+
+	// Compare Errors.
+	if len(r.Errors) != len(v.Errors) {
+		return false
+	}
+	for idx := range r.Errors {
+		if r.Errors[idx] != v.Errors[idx] {
+			return false
+		}
+	}
+
+	// Compare Block.
+	if (r.Block != nil && v.Block == nil) || (r.Block == nil && v.Block != nil) {
+		return false
+	}
+	if r.Block != nil && v.Block != nil {
+		if r.Block.Reason != v.Block.Reason {
+			return false
+		}
+		if (r.Block.CreatedAt != nil && v.Block.CreatedAt == nil) || (r.Block.CreatedAt ==
+			nil && v.Block.CreatedAt != nil) {
+			return false
+		}
+		if r.Block.CreatedAt != nil && v.Block.CreatedAt != nil {
+			if *(r.Block.CreatedAt) != *(v.Block.CreatedAt) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 // TwoFactorAuthError occurs when using HTTP Basic Authentication for a user
 // that has two-factor authentication enabled. The request can be reattempted
 // by providing a one-time password in the request.
@@ -702,6 +762,18 @@ func (r *RateLimitError) Error() string {
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
+// Is returns whether the provided error equals this error.
+func (r *RateLimitError) Is(target error) bool {
+	v, ok := target.(*RateLimitError)
+	if !ok {
+		return false
+	}
+
+	return r.Rate == v.Rate &&
+		r.Message == v.Message &&
+		compareHttpResponse(r.Response, v.Response)
+}
+
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
 // empty body, which means a job was scheduled on the GitHub side to process
 // the information needed and cache it.
@@ -715,6 +787,15 @@ type AcceptedError struct {
 
 func (*AcceptedError) Error() string {
 	return "job scheduled on GitHub side; try again later"
+}
+
+// Is returns whether the provided error equals this error.
+func (ae *AcceptedError) Is(target error) bool {
+	v, ok := target.(*AcceptedError)
+	if !ok {
+		return false
+	}
+	return bytes.Compare(ae.Raw, v.Raw) == 0
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
@@ -733,6 +814,18 @@ func (r *AbuseRateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %d %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message)
+}
+
+// Is returns whether the provided error equals this error.
+func (r *AbuseRateLimitError) Is(target error) bool {
+	v, ok := target.(*AbuseRateLimitError)
+	if !ok {
+		return false
+	}
+
+	return r.Message == v.Message &&
+		r.RetryAfter == v.RetryAfter &&
+		compareHttpResponse(r.Response, v.Response)
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be
