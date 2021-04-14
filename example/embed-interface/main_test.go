@@ -11,7 +11,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/go-github/v34/github"
+	"github.com/google/go-github/v35/github"
 )
 
 type fakeOrgSvc struct {

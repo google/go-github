@@ -27,6 +27,8 @@ type ActionsServiceInterface interface {
 
 	CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error)
 
+	CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error)
+
 	CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error)
 
 	CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error)
@@ -47,6 +49,8 @@ type ActionsServiceInterface interface {
 
 	DeleteArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Response, error)
 
+	DeleteEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Response, error)
+
 	DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error)
 
 	DeleteOrganizationRunnerGroup(ctx context.Context, org string, groupID int64) (*Response, error)
@@ -66,6 +70,10 @@ type ActionsServiceInterface interface {
 	EnableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error)
 
 	GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error)
+
+	GetEnvPublicKey(ctx context.Context, repoID int, env string) (*PublicKey, *Response, error)
+
+	GetEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Secret, *Response, error)
 
 	GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error)
 
@@ -102,6 +110,8 @@ type ActionsServiceInterface interface {
 	ListArtifacts(ctx context.Context, owner, repo string, opts *ListOptions) (*ArtifactList, *Response, error)
 
 	ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error)
+
+	ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error)
 
 	ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error)
 
@@ -931,11 +941,15 @@ type RepositoriesServiceInterface interface {
 
 	CreateStatus(ctx context.Context, owner, repo, ref string, status *RepoStatus) (*RepoStatus, *Response, error)
 
+	CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error)
+
 	Delete(ctx context.Context, owner, repo string) (*Response, error)
 
 	DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error)
 
 	DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error)
+
+	DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error)
 
 	DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error)
 
@@ -1013,6 +1027,8 @@ type RepositoriesServiceInterface interface {
 
 	GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error)
 
+	GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error)
+
 	GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error)
 
 	GetKey(ctx context.Context, owner string, repo string, id int64) (*Key, *Response, error)
@@ -1082,6 +1098,8 @@ type RepositoriesServiceInterface interface {
 	ListDeploymentStatuses(ctx context.Context, owner, repo string, deployment int64, opts *ListOptions) ([]*DeploymentStatus, *Response, error)
 
 	ListDeployments(ctx context.Context, owner, repo string, opts *DeploymentsListOptions) ([]*Deployment, *Response, error)
+
+	ListEnvironments(ctx context.Context, owner, repo string) (*EnvResponse, *Response, error)
 
 	ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error)
 
