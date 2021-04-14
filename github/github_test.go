@@ -1188,7 +1188,7 @@ func TestCompareHttpResponse(t *testing.T) {
 }
 
 func TestErrorResponse_Is(t *testing.T) {
-	err := ErrorResponse{
+	err := &ErrorResponse{
 		Response: &http.Response{},
 		Message:  "m",
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
@@ -1271,8 +1271,9 @@ func TestErrorResponse_Is(t *testing.T) {
 		"errors have different values - Errors": {
 			wantSame: false,
 			otherError: &ErrorResponse{
-				Errors:  []Error{{Resource: "r1", Field: "f1", Code: "c1"}},
-				Message: "m",
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r1", Field: "f1", Code: "c1"}},
+				Message:  "m",
 				Block: &struct {
 					Reason    string     `json:"reason,omitempty"`
 					CreatedAt *Timestamp `json:"created_at,omitempty"`
@@ -1283,11 +1284,76 @@ func TestErrorResponse_Is(t *testing.T) {
 				DocumentationURL: "https://github.com",
 			},
 		},
-		"errors have different values - Block": {
+		"errors have different values - Errors have different length": {
 			wantSame: false,
 			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - one is nil, other is not": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response:         &http.Response{},
 				Errors:           []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:          "m",
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different Reason": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r1",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different CreatedAt #1": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: nil,
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different CreatedAt #2": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2017, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
 				DocumentationURL: "https://github.com",
 			},
 		},
