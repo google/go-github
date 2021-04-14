@@ -1152,6 +1152,340 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	}
 }
 
+func TestCompareHttpResponse(t *testing.T) {
+	testcases := map[string]struct {
+		h1       *http.Response
+		h2       *http.Response
+		expected bool
+	}{
+		"both are nil": {
+			expected: true,
+		},
+		"both are non nil - same StatusCode": {
+			expected: true,
+			h1:       &http.Response{StatusCode: 200},
+			h2:       &http.Response{StatusCode: 200},
+		},
+		"both are non nil - different StatusCode": {
+			expected: false,
+			h1:       &http.Response{StatusCode: 200},
+			h2:       &http.Response{StatusCode: 404},
+		},
+		"one is nil, other is not": {
+			expected: false,
+			h2:       &http.Response{},
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			v := compareHttpResponse(tc.h1, tc.h2)
+			if tc.expected != v {
+				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
+			}
+		})
+	}
+}
+
+func TestErrorResponse_Is(t *testing.T) {
+	err := ErrorResponse{
+		Response: &http.Response{},
+		Message:  "m",
+		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+		Block: &struct {
+			Reason    string     `json:"reason,omitempty"`
+			CreatedAt *Timestamp `json:"created_at,omitempty"`
+		}{
+			Reason:    "r",
+			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+		},
+		DocumentationURL: "https://github.com",
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Message": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m1",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - DocumentationURL": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://google.com",
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Errors:  []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message: "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Errors": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Errors:  []Error{{Resource: "r1", Field: "f1", Code: "c1"}},
+				Message: "m",
+				Block: &struct {
+					Reason    string     `json:"reason,omitempty"`
+					CreatedAt *Timestamp `json:"created_at,omitempty"`
+				}{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Errors:           []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:          "m",
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestRateLimitError_Is(t *testing.T) {
+	err := &RateLimitError{
+		Response: &http.Response{},
+		Message:  "Github",
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		err        *RateLimitError
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			err:      err,
+			otherError: &RateLimitError{
+				Response: &http.Response{},
+				Message:  "Github",
+			},
+		},
+		"errors are same - Response is nil": {
+			wantSame: true,
+			err: &RateLimitError{
+				Message: "Github",
+			},
+			otherError: &RateLimitError{
+				Message: "Github",
+			},
+		},
+		"errors have different values - Rate": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Rate:     Rate{Limit: 10},
+				Response: &http.Response{},
+				Message:  "Gitlab",
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Message: "Github",
+			},
+		},
+		"errors have different values - StatusCode": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Response: &http.Response{StatusCode: 200},
+				Message:  "Github",
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			err:        err,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != tc.err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestAbuseRateLimitError_Is(t *testing.T) {
+	t1 := 1 * time.Second
+	t2 := 2 * time.Second
+	err := &AbuseRateLimitError{
+		Response:   &http.Response{},
+		Message:    "Github",
+		RetryAfter: &t1,
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		err        *AbuseRateLimitError
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors are same - Response is nil": {
+			wantSame: true,
+			err: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+			otherError: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different values - Message": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Gitlab",
+				RetryAfter: nil,
+			},
+		},
+		"errors have different values - RetryAfter": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t2,
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different values - StatusCode": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{StatusCode: 200},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			err:        err,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != tc.err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestAcceptedError_Is(t *testing.T) {
+	err := &AcceptedError{Raw: []byte("Github")}
+	testcases := map[string]struct {
+		wantSame   bool
+		otherError error
+	}{
+		"errors are same": {
+			wantSame:   true,
+			otherError: &AcceptedError{Raw: []byte("Github")},
+		},
+		"errors have different values": {
+			wantSame:   false,
+			otherError: &AcceptedError{Raw: []byte("Gitlab")},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
+			}
+		})
+	}
+}
+
 // ensure that we properly handle API errors that do not contain a response body
 func TestCheckResponse_noBody(t *testing.T) {
 	res := &http.Response{
