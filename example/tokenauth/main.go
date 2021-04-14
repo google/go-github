@@ -4,11 +4,14 @@
 // license that can be found in the LICENSE file.
 
 // The tokenauth command demonstrates using the oauth2.StaticTokenSource.
+// You can test out a GitHub Personal Access Token using this simple example.
+// You can generate them here: https://github.com/settings/tokens
 package main
 
 import (
 	"context"
 	"fmt"
+	"log"
 	"syscall"
 
 	"github.com/google/go-github/v35/github"
@@ -29,12 +32,14 @@ func main() {
 
 	client := github.NewClient(tc)
 
-	user, _, err := client.Users.Get(ctx, "")
-
+	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {
 		fmt.Printf("\nerror: %v\n", err)
 		return
 	}
+
+	// Rate.Limit should most likely be 5000 when authorized.
+	log.Printf("Rate: %#v", resp.Rate)
 
 	fmt.Printf("\n%v\n", github.Stringify(user))
 }
