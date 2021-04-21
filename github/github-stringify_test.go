@@ -1534,25 +1534,26 @@ func TestRepositoryLicense_String(t *testing.T) {
 
 func TestRepositoryRelease_String(t *testing.T) {
 	v := RepositoryRelease{
-		TagName:         String(""),
-		TargetCommitish: String(""),
-		Name:            String(""),
-		Body:            String(""),
-		Draft:           Bool(false),
-		Prerelease:      Bool(false),
-		ID:              Int64(0),
-		CreatedAt:       &Timestamp{},
-		PublishedAt:     &Timestamp{},
-		URL:             String(""),
-		HTMLURL:         String(""),
-		AssetsURL:       String(""),
-		UploadURL:       String(""),
-		ZipballURL:      String(""),
-		TarballURL:      String(""),
-		Author:          &User{},
-		NodeID:          String(""),
+		TagName:                String(""),
+		TargetCommitish:        String(""),
+		Name:                   String(""),
+		Body:                   String(""),
+		Draft:                  Bool(false),
+		Prerelease:             Bool(false),
+		DiscussionCategoryName: String(""),
+		ID:                     Int64(0),
+		CreatedAt:              &Timestamp{},
+		PublishedAt:            &Timestamp{},
+		URL:                    String(""),
+		HTMLURL:                String(""),
+		AssetsURL:              String(""),
+		UploadURL:              String(""),
+		ZipballURL:             String(""),
+		TarballURL:             String(""),
+		Author:                 &User{},
+		NodeID:                 String(""),
 	}
-	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
+	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, DiscussionCategoryName:"", ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryRelease.String = %v, want %v", got, want)
 	}
