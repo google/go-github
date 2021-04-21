@@ -164,7 +164,8 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 	defer teardown()
 
 	input := &RepositoryRelease{
-		Name: String("v1.0"),
+		Name:                   String("v1.0"),
+		DiscussionCategoryName: String("General"),
 		// Fields to be removed:
 		ID:          Int64(2),
 		CreatedAt:   &Timestamp{referenceTime},
@@ -185,7 +186,10 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		want := &repositoryReleaseRequest{Name: String("v1.0")}
+		want := &repositoryReleaseRequest{
+			Name:                   String("v1.0"),
+			DiscussionCategoryName: String("General"),
+		}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -223,7 +227,8 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	defer teardown()
 
 	input := &RepositoryRelease{
-		Name: String("n"),
+		Name:                   String("n"),
+		DiscussionCategoryName: String("General"),
 		// Fields to be removed:
 		ID:          Int64(2),
 		CreatedAt:   &Timestamp{referenceTime},
@@ -244,7 +249,10 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		want := &repositoryReleaseRequest{Name: String("n")}
+		want := &repositoryReleaseRequest{
+			Name:                   String("n"),
+			DiscussionCategoryName: String("General"),
+		}
 		if !reflect.DeepEqual(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
