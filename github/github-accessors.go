@@ -13212,6 +13212,14 @@ func (r *RepositoryRelease) GetCreatedAt() Timestamp {
 	return *r.CreatedAt
 }
 
+// GetDiscussionCategoryName returns the DiscussionCategoryName field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetDiscussionCategoryName() string {
+	if r == nil || r.DiscussionCategoryName == nil {
+		return ""
+	}
+	return *r.DiscussionCategoryName
+}
+
 // GetDraft returns the Draft field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetDraft() bool {
 	if r == nil || r.Draft == nil {

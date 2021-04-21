@@ -15448,6 +15448,16 @@ func TestRepositoryRelease_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 }
 
+func TestRepositoryRelease_GetDiscussionCategoryName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRelease{DiscussionCategoryName: &zeroValue}
+	r.GetDiscussionCategoryName()
+	r = &RepositoryRelease{}
+	r.GetDiscussionCategoryName()
+	r = nil
+	r.GetDiscussionCategoryName()
+}
+
 func TestRepositoryRelease_GetDraft(tt *testing.T) {
 	var zeroValue bool
 	r := &RepositoryRelease{Draft: &zeroValue}
