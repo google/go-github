@@ -6108,12 +6108,28 @@ func (i *IssueImportResponse) GetURL() string {
 	return *i.URL
 }
 
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (i *IssueListCommentsOptions) GetDirection() string {
+	if i == nil || i.Direction == nil {
+		return ""
+	}
+	return *i.Direction
+}
+
 // GetSince returns the Since field if it's non-nil, zero value otherwise.
 func (i *IssueListCommentsOptions) GetSince() time.Time {
 	if i == nil || i.Since == nil {
 		return time.Time{}
 	}
 	return *i.Since
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (i *IssueListCommentsOptions) GetSort() string {
+	if i == nil || i.Sort == nil {
+		return ""
+	}
+	return *i.Sort
 }
 
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.

@@ -35,6 +35,12 @@ func (i IssueComment) String() string {
 // IssueListCommentsOptions specifies the optional parameters to the
 // IssuesService.ListComments method.
 type IssueListCommentsOptions struct {
+	// Sort specifies how to sort comments. Possible values are: created, updated.
+	Sort *string `url:"sort,omitempty"`
+
+	// Direction in which to sort comments. Possible values are: asc, desc.
+	Direction *string `url:"direction,omitempty"`
+
 	// Since filters comments by time.
 	Since *time.Time `url:"since,omitempty"`
 
