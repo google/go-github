@@ -7186,6 +7186,16 @@ func TestIssueImportResponse_GetURL(tt *testing.T) {
 	i.GetURL()
 }
 
+func TestIssueListCommentsOptions_GetDirection(tt *testing.T) {
+	var zeroValue string
+	i := &IssueListCommentsOptions{Direction: &zeroValue}
+	i.GetDirection()
+	i = &IssueListCommentsOptions{}
+	i.GetDirection()
+	i = nil
+	i.GetDirection()
+}
+
 func TestIssueListCommentsOptions_GetSince(tt *testing.T) {
 	var zeroValue time.Time
 	i := &IssueListCommentsOptions{Since: &zeroValue}
@@ -7194,6 +7204,16 @@ func TestIssueListCommentsOptions_GetSince(tt *testing.T) {
 	i.GetSince()
 	i = nil
 	i.GetSince()
+}
+
+func TestIssueListCommentsOptions_GetSort(tt *testing.T) {
+	var zeroValue string
+	i := &IssueListCommentsOptions{Sort: &zeroValue}
+	i.GetSort()
+	i = &IssueListCommentsOptions{}
+	i.GetSort()
+	i = nil
+	i.GetSort()
 }
 
 func TestIssueRequest_GetAssignee(tt *testing.T) {
