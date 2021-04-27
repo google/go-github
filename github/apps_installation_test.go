@@ -18,7 +18,11 @@ func TestAppsService_ListRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{
+		mediaTypeTopicsPreview,
+		mediaTypeRepositoryVisibilityPreview,
+		mediaTypeRepositoryTemplatePreview,
+	}
 	mux.HandleFunc("/installation/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -55,7 +59,11 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{
+		mediaTypeTopicsPreview,
+		mediaTypeRepositoryVisibilityPreview,
+		mediaTypeRepositoryTemplatePreview,
+	}
 	mux.HandleFunc("/user/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
