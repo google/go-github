@@ -30,7 +30,6 @@ func TestGetConfig(t *testing.T) {
 
 	mux.HandleFunc("/app-manifests/code/conversions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeAppManifestPreview)
 		fmt.Fprint(w, manifestJSON)
 	})
 
