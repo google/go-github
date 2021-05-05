@@ -17,7 +17,7 @@ type RunnerApplicationDownload struct {
 	DownloadURL       *string `json:"download_url,omitempty"`
 	Filename          *string `json:"filename,omitempty"`
 	TempDownloadToken *string `json:"temp_download_token,omitempty"`
-	Sha256Checksum    *string `json:"sha256_checksum,omitempty"`
+	SHA256Checksum    *string `json:"sha256_checksum,omitempty"`
 }
 
 // ActionsEnabledOnOrgRepos represents all the repositories in an organization for which Actions is enabled.
