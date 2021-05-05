@@ -12,10 +12,12 @@ import (
 
 // RunnerApplicationDownload represents a binary for the self-hosted runner application that can be downloaded.
 type RunnerApplicationDownload struct {
-	OS           *string `json:"os,omitempty"`
-	Architecture *string `json:"architecture,omitempty"`
-	DownloadURL  *string `json:"download_url,omitempty"`
-	Filename     *string `json:"filename,omitempty"`
+	OS                *string `json:"os,omitempty"`
+	Architecture      *string `json:"architecture,omitempty"`
+	DownloadURL       *string `json:"download_url,omitempty"`
+	Filename          *string `json:"filename,omitempty"`
+	TempDownloadToken *string `json:"temp_download_token,omitempty"`
+	SHA256Checksum    *string `json:"sha256_checksum,omitempty"`
 }
 
 // ActionsEnabledOnOrgRepos represents all the repositories in an organization for which Actions is enabled.
