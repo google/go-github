@@ -15939,6 +15939,26 @@ func TestRunnerApplicationDownload_GetOS(tt *testing.T) {
 	r.GetOS()
 }
 
+func TestRunnerApplicationDownload_GetSHA256Checksum(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerApplicationDownload{SHA256Checksum: &zeroValue}
+	r.GetSHA256Checksum()
+	r = &RunnerApplicationDownload{}
+	r.GetSHA256Checksum()
+	r = nil
+	r.GetSHA256Checksum()
+}
+
+func TestRunnerApplicationDownload_GetTempDownloadToken(tt *testing.T) {
+	var zeroValue string
+	r := &RunnerApplicationDownload{TempDownloadToken: &zeroValue}
+	r.GetTempDownloadToken()
+	r = &RunnerApplicationDownload{}
+	r.GetTempDownloadToken()
+	r = nil
+	r.GetTempDownloadToken()
+}
+
 func TestRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
 	var zeroValue bool
 	r := &RunnerGroup{AllowsPublicRepositories: &zeroValue}
