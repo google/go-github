@@ -34,7 +34,7 @@ type Team struct {
 
 	// Permissions identifies the permissions that a team has on a given
 	// repository. This is only populated when calling Repositories.ListTeams.
-	Permissions map[string]bool `json:"permissions,omitempty"`
+	Permissions *map[string]bool `json:"permissions,omitempty"`
 
 	// Privacy identifies the level of privacy this team should have.
 	// Possible values are:
