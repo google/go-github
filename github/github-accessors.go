@@ -14276,14 +14276,6 @@ func (t *Team) GetPermission() string {
 	return *t.Permission
 }
 
-// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
-func (t *Team) GetPermissions() map[string]bool {
-	if t == nil || t.Permissions == nil {
-		return map[string]bool{}
-	}
-	return *t.Permissions
-}
-
 // GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
 func (t *Team) GetPrivacy() string {
 	if t == nil || t.Privacy == nil {

@@ -1584,6 +1584,7 @@ func TestTeam_String(t *testing.T) {
 		URL:             String(""),
 		Slug:            String(""),
 		Permission:      String(""),
+		Permissions:     nil,
 		Privacy:         String(""),
 		MembersCount:    Int(0),
 		ReposCount:      Int(0),
@@ -1593,7 +1594,7 @@ func TestTeam_String(t *testing.T) {
 		Parent:          &Team{},
 		LDAPDN:          String(""),
 	}
-	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:""}`
+	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Permissions:map[], Privacy:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Team.String = %v, want %v", got, want)
 	}
