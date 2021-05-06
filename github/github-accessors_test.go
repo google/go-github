@@ -16730,6 +16730,16 @@ func TestTeam_GetPermission(tt *testing.T) {
 	t.GetPermission()
 }
 
+func TestTeam_GetPermissions(tt *testing.T) {
+	var zeroValue map[string]bool
+	t := &Team{Permissions: &zeroValue}
+	t.GetPermissions()
+	t = &Team{}
+	t.GetPermissions()
+	t = nil
+	t.GetPermissions()
+}
+
 func TestTeam_GetPrivacy(tt *testing.T) {
 	var zeroValue string
 	t := &Team{Privacy: &zeroValue}
