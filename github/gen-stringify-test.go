@@ -187,11 +187,6 @@ func (t *templateData) processAST(f *ast.File) error {
 					continue
 				}
 
-				if _, ok := field.Type.(*ast.MapType); ok {
-					t.addMapType(ts.Name.String(), fieldName.String())
-					continue
-				}
-
 				se, ok := field.Type.(*ast.StarExpr)
 				if !ok {
 					logf("Ignoring type %T for Name=%q, FieldName=%q", field.Type, ts.Name.String(), fieldName.String())
