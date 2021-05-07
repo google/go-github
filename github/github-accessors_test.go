@@ -14534,8 +14534,8 @@ func TestRepository_GetParent(tt *testing.T) {
 }
 
 func TestRepository_GetPermissions(tt *testing.T) {
-	var zeroValue map[string]bool
-	r := &Repository{Permissions: &zeroValue}
+	zeroValue := map[string]bool{}
+	r := &Repository{Permissions: zeroValue}
 	r.GetPermissions()
 	r = &Repository{}
 	r.GetPermissions()
@@ -16762,8 +16762,8 @@ func TestTeam_GetPermission(tt *testing.T) {
 }
 
 func TestTeam_GetPermissions(tt *testing.T) {
-	var zeroValue map[string]bool
-	t := &Team{Permissions: &zeroValue}
+	zeroValue := map[string]bool{}
+	t := &Team{Permissions: zeroValue}
 	t.GetPermissions()
 	t = &Team{}
 	t.GetPermissions()
@@ -18056,8 +18056,8 @@ func TestUser_GetOwnedPrivateRepos(tt *testing.T) {
 }
 
 func TestUser_GetPermissions(tt *testing.T) {
-	var zeroValue map[string]bool
-	u := &User{Permissions: &zeroValue}
+	zeroValue := map[string]bool{}
+	u := &User{Permissions: zeroValue}
 	u.GetPermissions()
 	u = &User{}
 	u.GetPermissions()

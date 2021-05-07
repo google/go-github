@@ -53,7 +53,7 @@ type Repository struct {
 	Source              *Repository      `json:"source,omitempty"`
 	TemplateRepository  *Repository      `json:"template_repository,omitempty"`
 	Organization        *Organization    `json:"organization,omitempty"`
-	Permissions         *map[string]bool `json:"permissions,omitempty"`
+	Permissions         map[string]bool `json:"permissions,omitempty"`
 	AllowRebaseMerge    *bool            `json:"allow_rebase_merge,omitempty"`
 	AllowSquashMerge    *bool            `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool            `json:"allow_merge_commit,omitempty"`

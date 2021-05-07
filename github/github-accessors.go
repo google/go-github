@@ -12420,12 +12420,12 @@ func (r *Repository) GetParent() *Repository {
 	return r.Parent
 }
 
-// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+// GetPermissions returns the Permissions map if it's non-nil, an empty map otherwise.
 func (r *Repository) GetPermissions() map[string]bool {
 	if r == nil || r.Permissions == nil {
 		return map[string]bool{}
 	}
-	return *r.Permissions
+	return r.Permissions
 }
 
 // GetPrivate returns the Private field if it's non-nil, zero value otherwise.
@@ -14308,12 +14308,12 @@ func (t *Team) GetPermission() string {
 	return *t.Permission
 }
 
-// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+// GetPermissions returns the Permissions map if it's non-nil, an empty map otherwise.
 func (t *Team) GetPermissions() map[string]bool {
 	if t == nil || t.Permissions == nil {
 		return map[string]bool{}
 	}
-	return *t.Permissions
+	return t.Permissions
 }
 
 // GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
@@ -15396,12 +15396,12 @@ func (u *User) GetOwnedPrivateRepos() int {
 	return *u.OwnedPrivateRepos
 }
 
-// GetPermissions returns the Permissions field if it's non-nil, zero value otherwise.
+// GetPermissions returns the Permissions map if it's non-nil, an empty map otherwise.
 func (u *User) GetPermissions() map[string]bool {
 	if u == nil || u.Permissions == nil {
 		return map[string]bool{}
 	}
-	return *u.Permissions
+	return u.Permissions
 }
 
 // GetPlan returns the Plan field.
