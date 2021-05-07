@@ -4730,6 +4730,16 @@ func TestGist_GetDescription(tt *testing.T) {
 	g.GetDescription()
 }
 
+func TestGist_GetFiles(tt *testing.T) {
+	zeroValue := map[GistFilename]GistFile{}
+	g := &Gist{Files: zeroValue}
+	g.GetFiles()
+	g = &Gist{}
+	g.GetFiles()
+	g = nil
+	g.GetFiles()
+}
+
 func TestGist_GetGitPullURL(tt *testing.T) {
 	var zeroValue string
 	g := &Gist{GitPullURL: &zeroValue}

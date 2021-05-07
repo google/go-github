@@ -4028,6 +4028,14 @@ func (g *Gist) GetDescription() string {
 	return *g.Description
 }
 
+// GetFiles returns the Files map if it's non-nil, an empty map otherwise.
+func (g *Gist) GetFiles() map[GistFilename]GistFile {
+	if g == nil || g.Files == nil {
+		return map[GistFilename]GistFile{}
+	}
+	return g.Files
+}
+
 // GetGitPullURL returns the GitPullURL field if it's non-nil, zero value otherwise.
 func (g *Gist) GetGitPullURL() string {
 	if g == nil || g.GitPullURL == nil {
