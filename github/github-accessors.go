@@ -13892,6 +13892,30 @@ func (s *StarEvent) GetAction() string {
 	return *s.Action
 }
 
+// GetOrg returns the Org field.
+func (s *StarEvent) GetOrg() *Organization {
+	if s == nil {
+		return nil
+	}
+	return s.Org
+}
+
+// GetRepo returns the Repo field.
+func (s *StarEvent) GetRepo() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repo
+}
+
+// GetSender returns the Sender field.
+func (s *StarEvent) GetSender() *User {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
+}
+
 // GetStarredAt returns the StarredAt field if it's non-nil, zero value otherwise.
 func (s *StarEvent) GetStarredAt() Timestamp {
 	if s == nil || s.StarredAt == nil {
