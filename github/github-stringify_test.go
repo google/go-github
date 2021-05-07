@@ -391,14 +391,13 @@ func TestGist_String(t *testing.T) {
 		Description: String(""),
 		Public:      Bool(false),
 		Owner:       &User{},
-		Files:       nil,
 		Comments:    Int(0),
 		HTMLURL:     String(""),
 		GitPullURL:  String(""),
 		GitPushURL:  String(""),
 		NodeID:      String(""),
 	}
-	want := `github.Gist{ID:"", Description:"", Public:false, Owner:github.User{}, Files:map[], Comments:0, HTMLURL:"", GitPullURL:"", GitPushURL:"", NodeID:""}`
+	want := `github.Gist{ID:"", Description:"", Public:false, Owner:github.User{}, Comments:0, HTMLURL:"", GitPullURL:"", GitPushURL:"", NodeID:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Gist.String = %v, want %v", got, want)
 	}
@@ -531,17 +530,15 @@ func TestHeadCommit_String(t *testing.T) {
 
 func TestHook_String(t *testing.T) {
 	v := Hook{
-		URL:          String(""),
-		ID:           Int64(0),
-		Type:         String(""),
-		Name:         String(""),
-		TestURL:      String(""),
-		PingURL:      String(""),
-		LastResponse: nil,
-		Config:       nil,
-		Active:       Bool(false),
+		URL:     String(""),
+		ID:      Int64(0),
+		Type:    String(""),
+		Name:    String(""),
+		TestURL: String(""),
+		PingURL: String(""),
+		Active:  Bool(false),
 	}
-	want := `github.Hook{URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", LastResponse:map[], Config:map[], Active:false}`
+	want := `github.Hook{URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Active:false}`
 	if got := v.String(); got != want {
 		t.Errorf("Hook.String = %v, want %v", got, want)
 	}
