@@ -916,6 +916,11 @@ type StarEvent struct {
 
 	// StarredAt is the time the star was created. It will be null for the "deleted" action.
 	StarredAt *Timestamp `json:"starred_at,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org    *Organization `json:"organization,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
 }
 
 // StatusEvent is triggered when the status of a Git commit changes.
