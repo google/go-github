@@ -16273,6 +16273,27 @@ func TestStarEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 }
 
+func TestStarEvent_GetOrg(tt *testing.T) {
+	s := &StarEvent{}
+	s.GetOrg()
+	s = nil
+	s.GetOrg()
+}
+
+func TestStarEvent_GetRepo(tt *testing.T) {
+	s := &StarEvent{}
+	s.GetRepo()
+	s = nil
+	s.GetRepo()
+}
+
+func TestStarEvent_GetSender(tt *testing.T) {
+	s := &StarEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
 func TestStarEvent_GetStarredAt(tt *testing.T) {
 	var zeroValue Timestamp
 	s := &StarEvent{StarredAt: &zeroValue}
