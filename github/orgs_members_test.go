@@ -745,7 +745,7 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_ListFailedOrgInvitation(t *testing.T) {
+func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
