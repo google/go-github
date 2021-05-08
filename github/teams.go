@@ -71,6 +71,8 @@ type Invitation struct {
 	Inviter           *User      `json:"inviter,omitempty"`
 	TeamCount         *int       `json:"team_count,omitempty"`
 	InvitationTeamURL *string    `json:"invitation_team_url,omitempty"`
+	FailedAt          *time.Time `json:"failed_at,omitempty"`
+	FailedReason      *string    `json:"failed_reason,omitempty"`
 }
 
 func (i Invitation) String() string {

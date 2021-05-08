@@ -744,3 +744,110 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_ListFailedOrgInvitation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/failed_invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2", "per_page": "1"})
+		fmt.Fprint(w, `[
+			{
+			   "id":1,
+			   "login":"monalisa",
+			   "node_id":"MDQ6VXNlcjE=",
+			   "email":"octocat@github.com",
+			   "role":"direct_member",
+			   "created_at":"2016-11-30T06:46:10Z",
+			   "failed_at":"2017-01-02T01:10:00Z",
+			   "failed_reason":"the reason",
+			   "inviter":{
+				  "login":"other_user",
+				  "id":1,
+				  "node_id":"MDQ6VXNlcjE=",
+				  "avatar_url":"https://github.com/images/error/other_user_happy.gif",
+				  "gravatar_id":"",
+				  "url":"https://api.github.com/users/other_user",
+				  "html_url":"https://github.com/other_user",
+				  "followers_url":"https://api.github.com/users/other_user/followers",
+				  "following_url":"https://api.github.com/users/other_user/following{/other_user}",
+				  "gists_url":"https://api.github.com/users/other_user/gists{/gist_id}",
+				  "starred_url":"https://api.github.com/users/other_user/starred{/owner}{/repo}",
+				  "subscriptions_url":"https://api.github.com/users/other_user/subscriptions",
+				  "organizations_url":"https://api.github.com/users/other_user/orgs",
+				  "repos_url":"https://api.github.com/users/other_user/repos",
+				  "events_url":"https://api.github.com/users/other_user/events{/privacy}",
+				  "received_events_url":"https://api.github.com/users/other_user/received_events",
+				  "type":"User",
+				  "site_admin":false
+			   },
+			   "team_count":2,
+			   "invitation_team_url":"https://api.github.com/organizations/2/invitations/1/teams"
+			}
+		]`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 1}
+	ctx := context.Background()
+	failedInvitations, _, err := client.Organizations.ListFailedOrgInvitation(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFailedOrgInvitation returned error: %v", err)
+	}
+
+	// "2017-01-02T01:10:00Z"
+	createdAt := time.Date(2016, time.November, 30, 6, 46, 10, 0, time.UTC)
+	failedAt := time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)
+	want := []*Invitation{
+		{
+			ID:           Int64(1),
+			Login:        String("monalisa"),
+			NodeID:       String("MDQ6VXNlcjE="),
+			Email:        String("octocat@github.com"),
+			Role:         String("direct_member"),
+			FailedAt:     &failedAt,
+			FailedReason: String("the reason"),
+			CreatedAt:    &createdAt,
+			Inviter: &User{
+				Login:             String("other_user"),
+				ID:                Int64(1),
+				NodeID:            String("MDQ6VXNlcjE="),
+				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
+				GravatarID:        String(""),
+				URL:               String("https://api.github.com/users/other_user"),
+				HTMLURL:           String("https://github.com/other_user"),
+				FollowersURL:      String("https://api.github.com/users/other_user/followers"),
+				FollowingURL:      String("https://api.github.com/users/other_user/following{/other_user}"),
+				GistsURL:          String("https://api.github.com/users/other_user/gists{/gist_id}"),
+				StarredURL:        String("https://api.github.com/users/other_user/starred{/owner}{/repo}"),
+				SubscriptionsURL:  String("https://api.github.com/users/other_user/subscriptions"),
+				OrganizationsURL:  String("https://api.github.com/users/other_user/orgs"),
+				ReposURL:          String("https://api.github.com/users/other_user/repos"),
+				EventsURL:         String("https://api.github.com/users/other_user/events{/privacy}"),
+				ReceivedEventsURL: String("https://api.github.com/users/other_user/received_events"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+			},
+			TeamCount:         Int(2),
+			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
+		},
+	}
+
+	if !reflect.DeepEqual(failedInvitations, want) {
+		t.Errorf("Organizations.ListFailedOrgInvitation returned %+v, want %+v", failedInvitations, want)
+	}
+
+	const methodName = "ListFailedOrgInvitation"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Organizations.ListFailedOrgInvitation(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListFailedOrgInvitation(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
