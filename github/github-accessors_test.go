@@ -6397,6 +6397,26 @@ func TestInvitation_GetEmail(tt *testing.T) {
 	i.GetEmail()
 }
 
+func TestInvitation_GetFailedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	i := &Invitation{FailedAt: &zeroValue}
+	i.GetFailedAt()
+	i = &Invitation{}
+	i.GetFailedAt()
+	i = nil
+	i.GetFailedAt()
+}
+
+func TestInvitation_GetFailedReason(tt *testing.T) {
+	var zeroValue string
+	i := &Invitation{FailedReason: &zeroValue}
+	i.GetFailedReason()
+	i = &Invitation{}
+	i.GetFailedReason()
+	i = nil
+	i.GetFailedReason()
+}
+
 func TestInvitation_GetID(tt *testing.T) {
 	var zeroValue int64
 	i := &Invitation{ID: &zeroValue}

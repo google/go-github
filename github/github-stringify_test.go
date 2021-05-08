@@ -624,8 +624,10 @@ func TestInvitation_String(t *testing.T) {
 		Inviter:           &User{},
 		TeamCount:         Int(0),
 		InvitationTeamURL: String(""),
+		FailedAt:          &Timestamp{},
+		FailedReason:      String(""),
 	}
-	want := `github.Invitation{ID:0, NodeID:"", Login:"", Email:"", Role:"", Inviter:github.User{}, TeamCount:0, InvitationTeamURL:""}`
+	want := `github.Invitation{ID:0, NodeID:"", Login:"", Email:"", Role:"", Inviter:github.User{}, TeamCount:0, InvitationTeamURL:"", FailedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, FailedReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Invitation.String = %v, want %v", got, want)
 	}

@@ -790,14 +790,12 @@ func TestOrganizationsService_ListFailedOrgInvitation(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 1}
 	ctx := context.Background()
-	failedInvitations, _, err := client.Organizations.ListFailedOrgInvitation(ctx, "o", opts)
+	failedInvitations, _, err := client.Organizations.ListFailedOrgInvitations(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Organizations.ListFailedOrgInvitation returned error: %v", err)
+		t.Errorf("Organizations.ListFailedOrgInvitations returned error: %v", err)
 	}
 
-	// "2017-01-02T01:10:00Z"
 	createdAt := time.Date(2016, time.November, 30, 6, 46, 10, 0, time.UTC)
-	failedAt := time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:           Int64(1),
@@ -805,7 +803,7 @@ func TestOrganizationsService_ListFailedOrgInvitation(t *testing.T) {
 			NodeID:       String("MDQ6VXNlcjE="),
 			Email:        String("octocat@github.com"),
 			Role:         String("direct_member"),
-			FailedAt:     &failedAt,
+			FailedAt:     &Timestamp{time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)},
 			FailedReason: String("the reason"),
 			CreatedAt:    &createdAt,
 			Inviter: &User{
@@ -834,17 +832,17 @@ func TestOrganizationsService_ListFailedOrgInvitation(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(failedInvitations, want) {
-		t.Errorf("Organizations.ListFailedOrgInvitation returned %+v, want %+v", failedInvitations, want)
+		t.Errorf("Organizations.ListFailedOrgInvitations returned %+v, want %+v", failedInvitations, want)
 	}
 
-	const methodName = "ListFailedOrgInvitation"
+	const methodName = "ListFailedOrgInvitations"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Organizations.ListFailedOrgInvitation(ctx, "\n", opts)
+		_, _, err := client.Organizations.ListFailedOrgInvitations(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListFailedOrgInvitation(ctx, "o", opts)
+		got, resp, err := client.Organizations.ListFailedOrgInvitations(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
