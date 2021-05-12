@@ -362,3 +362,27 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 	}
 	return orgInvitationTeams, resp, nil
 }
+
+// ListFailedOrgInvitations returns a list of failed inviatations.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/orgs#list-failed-organization-invitations
+func (s *OrganizationsService) ListFailedOrgInvitations(ctx context.Context, org string, opts *ListOptions) ([]*Invitation, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/failed_invitations", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var failedInvitations []*Invitation
+	resp, err := s.client.Do(ctx, req, &failedInvitations)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return failedInvitations, resp, nil
+}

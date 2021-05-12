@@ -5412,6 +5412,22 @@ func (i *Invitation) GetEmail() string {
 	return *i.Email
 }
 
+// GetFailedAt returns the FailedAt field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetFailedAt() Timestamp {
+	if i == nil || i.FailedAt == nil {
+		return Timestamp{}
+	}
+	return *i.FailedAt
+}
+
+// GetFailedReason returns the FailedReason field if it's non-nil, zero value otherwise.
+func (i *Invitation) GetFailedReason() string {
+	if i == nil || i.FailedReason == nil {
+		return ""
+	}
+	return *i.FailedReason
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (i *Invitation) GetID() int64 {
 	if i == nil || i.ID == nil {
