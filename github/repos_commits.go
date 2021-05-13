@@ -302,3 +302,29 @@ func (s *RepositoriesService) ListBranchesHeadCommit(ctx context.Context, owner,
 
 	return branchCommits, resp, nil
 }
+
+// ListPullsForCommit fetches the merged pull request that introduced the commit to the repository
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#list-pull-requests-associated-with-a-commit
+func (s *RepositoriesService) ListPullsForCommit(ctx context.Context, owner string, repo string, sha string, opts *ListOptions) ([]*PullRequest, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/commits/%v/pulls", owner, repo, sha)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
+	req.Header.Set("Accept", mediaTypeListPullsOrBranchesForCommitPreview)
+	var pulls []*PullRequest
+	resp, err := s.client.Do(ctx, req, &pulls)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pulls, resp, nil
+}

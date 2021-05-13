@@ -657,3 +657,46 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoriesService_ListPullsForCommit(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/commits/s/pulls", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `[{"id": 6075993,"number": 2,"state": "closed","url":"https://api.github.com/repos/google/go-github/pulls/2"}]`)
+	})
+
+	ctx := context.Background()
+	opt := &ListOptions{}
+	branches, _, err := client.Repositories.ListPullsForCommit(ctx, "o", "r", "s", opt)
+	if err != nil {
+		t.Errorf("Repositories.ListPullsForCommit returned error: %v", err)
+	}
+
+	want := []*PullRequest{
+		{
+			ID:     Int64(6075993),
+			Number: Int(2),
+			State:  String("closed"),
+			URL:    String("https://api.github.com/repos/google/go-github/pulls/2"),
+		},
+	}
+	if !reflect.DeepEqual(branches, want) {
+		t.Errorf("Repositories.ListPullsForCommit returned %+v, want %+v", branches, want)
+	}
+
+	const methodName = "ListPullsForCommit"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListPullsForCommit(ctx, "\n", "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListPullsForCommit(ctx, "o", "r", "s", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
