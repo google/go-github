@@ -833,7 +833,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
-// RequireLinearHistory represents the configuration to enfore branches with no merge commit.
+// RequireLinearHistory represents the configuration to enforce branches with no merge commit.
 type RequireLinearHistory struct {
 	Enabled bool `json:"enabled"`
 }
