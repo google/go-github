@@ -10,9 +10,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
@@ -39,7 +40,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByID returned %+v, want %+v", runs, want)
 	}
 
@@ -82,7 +83,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByFileName returned %+v, want %+v", runs, want)
 	}
 
@@ -123,7 +124,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.GetWorkflowRunByID returned %+v, want %+v", runs, want)
 	}
 
@@ -313,7 +314,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(runs, expected) {
+	if !cmp.Equal(runs, expected) {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned %+v, want %+v", runs, expected)
 	}
 
@@ -393,7 +394,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 		RunDurationMS: Int64(500000),
 	}
 
-	if !reflect.DeepEqual(workflowRunUsage, want) {
+	if !cmp.Equal(workflowRunUsage, want) {
 		t.Errorf("Actions.GetWorkflowRunUsageByID returned %+v, want %+v", workflowRunUsage, want)
 	}
 

@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMarketplaceService_ListPlans(t *testing.T) {
@@ -35,7 +36,7 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 	}
 
 	want := []*MarketplacePlan{{ID: Int64(1)}}
-	if !reflect.DeepEqual(plans, want) {
+	if !cmp.Equal(plans, want) {
 		t.Errorf("Marketplace.ListPlans returned %+v, want %+v", plans, want)
 	}
 
@@ -67,7 +68,7 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 	}
 
 	want := []*MarketplacePlan{{ID: Int64(1)}}
-	if !reflect.DeepEqual(plans, want) {
+	if !cmp.Equal(plans, want) {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned %+v, want %+v", plans, want)
 	}
 }
@@ -90,7 +91,7 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 	}
 
 	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
-	if !reflect.DeepEqual(accounts, want) {
+	if !cmp.Equal(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned %+v, want %+v", accounts, want)
 	}
 
@@ -122,7 +123,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 	}
 
 	want := []*MarketplacePlanAccount{{ID: Int64(1)}}
-	if !reflect.DeepEqual(accounts, want) {
+	if !cmp.Equal(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned %+v, want %+v", accounts, want)
 	}
 }
@@ -144,7 +145,7 @@ func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 	}
 
 	want := &MarketplacePlanAccount{ID: Int64(1), MarketplacePendingChange: &MarketplacePendingChange{ID: Int64(77)}}
-	if !reflect.DeepEqual(account, want) {
+	if !cmp.Equal(account, want) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount returned %+v, want %+v", account, want)
 	}
 
@@ -175,7 +176,7 @@ func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 	}
 
 	want := &MarketplacePlanAccount{ID: Int64(1)}
-	if !reflect.DeepEqual(account, want) {
+	if !cmp.Equal(account, want) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned %+v, want %+v", account, want)
 	}
 }
@@ -198,7 +199,7 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 	}
 
 	want := []*MarketplacePurchase{{BillingCycle: String("monthly")}}
-	if !reflect.DeepEqual(purchases, want) {
+	if !cmp.Equal(purchases, want) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
 
@@ -230,7 +231,7 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 	}
 
 	want := []*MarketplacePurchase{{BillingCycle: String("monthly")}}
-	if !reflect.DeepEqual(purchases, want) {
+	if !cmp.Equal(purchases, want) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
 }

@@ -12,9 +12,9 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-github/v35/github"
 )
 
@@ -145,7 +145,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		},
 		Restrictions: nil,
 	}
-	if !reflect.DeepEqual(protection, want) {
+	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
 	}
 

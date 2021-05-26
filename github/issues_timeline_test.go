@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListIssueTimeline(t *testing.T) {
@@ -37,7 +38,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 	}
 
 	want := []*Timeline{{ID: Int64(1)}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueTimeline = %+v, want %+v", events, want)
 	}
 

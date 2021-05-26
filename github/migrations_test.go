@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMigrationService_StartMigration(t *testing.T) {
@@ -35,7 +36,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 	if err != nil {
 		t.Errorf("StartMigration returned error: %v", err)
 	}
-	if want := wantMigration; !reflect.DeepEqual(got, want) {
+	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("StartMigration = %+v, want %+v", got, want)
 	}
 
@@ -71,7 +72,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListMigrations returned error: %v", err)
 	}
-	if want := []*Migration{wantMigration}; !reflect.DeepEqual(got, want) {
+	if want := []*Migration{wantMigration}; !cmp.Equal(got, want) {
 		t.Errorf("ListMigrations = %+v, want %+v", got, want)
 	}
 
@@ -107,7 +108,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
 	}
-	if want := wantMigration; !reflect.DeepEqual(got, want) {
+	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("MigrationStatus = %+v, want %+v", got, want)
 	}
 

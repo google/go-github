@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
@@ -27,7 +28,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"id":1,"ldap_dn":"uid=asdf,ou=users,dc=github,dc=com"}`)
@@ -43,7 +44,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 		ID:     Int64(1),
 		LDAPDN: String("uid=asdf,ou=users,dc=github,dc=com"),
 	}
-	if !reflect.DeepEqual(mapping, want) {
+	if !cmp.Equal(mapping, want) {
 		t.Errorf("Admin.UpdateUserLDAPMapping returned %+v, want %+v", mapping, want)
 	}
 
@@ -75,7 +76,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"id":1,"ldap_dn":"cn=Enterprise Ops,ou=teams,dc=github,dc=com"}`)
@@ -91,7 +92,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 		ID:     Int64(1),
 		LDAPDN: String("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
 	}
-	if !reflect.DeepEqual(mapping, want) {
+	if !cmp.Equal(mapping, want) {
 		t.Errorf("Admin.UpdateTeamLDAPMapping returned %+v, want %+v", mapping, want)
 	}
 

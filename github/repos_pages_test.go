@@ -12,8 +12,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_EnablePages(t *testing.T) {
@@ -35,7 +36,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{Source: &PagesSource{Branch: String("master"), Path: String("/")}}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -50,7 +51,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 
 	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PagesSource{Branch: String("master"), Path: String("/")}}
 
-	if !reflect.DeepEqual(page, want) {
+	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
 	}
 
@@ -84,7 +85,7 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -179,7 +180,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 	}
 
 	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h")}
-	if !reflect.DeepEqual(page, want) {
+	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
 
@@ -214,7 +215,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 	}
 
 	want := []*PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
-	if !reflect.DeepEqual(pages, want) {
+	if !cmp.Equal(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
 	}
 
@@ -268,7 +269,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned %+v, want %+v", build, want)
 	}
 
@@ -303,7 +304,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetPageBuild returned %+v, want %+v", build, want)
 	}
 
@@ -338,7 +339,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.RequestPageBuild returned %+v, want %+v", build, want)
 	}
 

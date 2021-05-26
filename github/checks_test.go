@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestChecksService_GetCheckRun(t *testing.T) {
@@ -45,7 +46,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 		CompletedAt: &Timestamp{completeAt},
 		Name:        String("testCheckRun"),
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -94,7 +95,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 		Status:     String("completed"),
 		Conclusion: String("neutral"),
 	}
-	if !reflect.DeepEqual(checkSuite, want) {
+	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 
@@ -161,7 +162,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 			Text:    String(""),
 		},
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -221,7 +222,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
 	}}
 
-	if !reflect.DeepEqual(checkRunAnnotations, want) {
+	if !cmp.Equal(checkRunAnnotations, want) {
 		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
 	}
 
@@ -287,7 +288,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 			Text:    String("You may have misspelled some words."),
 		},
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.UpdateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -354,7 +355,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkRuns, want) {
+	if !cmp.Equal(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsForRef returned %+v, want %+v", checkRuns, want)
 	}
 
@@ -421,7 +422,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkRuns, want) {
+	if !cmp.Equal(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
 	}
 
@@ -487,7 +488,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkSuites, want) {
+	if !cmp.Equal(checkSuites, want) {
 		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
 	}
 
@@ -534,7 +535,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		Preferences: p,
 	}
 
-	if !reflect.DeepEqual(prefResults, want) {
+	if !cmp.Equal(prefResults, want) {
 		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
 	}
 
@@ -590,7 +591,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		BeforeSHA:  String("deadbeefb"),
 		AfterSHA:   String("deadbeefa"),
 	}
-	if !reflect.DeepEqual(checkSuite, want) {
+	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 

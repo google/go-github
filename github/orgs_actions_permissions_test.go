@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
@@ -29,7 +30,7 @@ func TestOrganizationsService_GetActionsPermissions(t *testing.T) {
 		t.Errorf("Organizations.GetActionsPermissions returned error: %v", err)
 	}
 	want := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("all")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
 
@@ -59,7 +60,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -73,7 +74,7 @@ func TestOrganizationsService_EditActionsPermissions(t *testing.T) {
 	}
 
 	want := &ActionsPermissions{EnabledRepositories: String("all"), AllowedActions: String("selected")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.EditActionsPermissions returned %+v, want %+v", org, want)
 	}
 

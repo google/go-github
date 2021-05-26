@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestProject_marshall(t *testing.T) {
@@ -102,7 +103,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -116,7 +117,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 	}
 
 	want := &Project{ID: Int64(1)}
-	if !reflect.DeepEqual(project, want) {
+	if !cmp.Equal(project, want) {
 		t.Errorf("Projects.UpdateProject returned %+v, want %+v", project, want)
 	}
 
@@ -152,7 +153,7 @@ func TestProjectsService_GetProject(t *testing.T) {
 	}
 
 	want := &Project{ID: Int64(1)}
-	if !reflect.DeepEqual(project, want) {
+	if !cmp.Equal(project, want) {
 		t.Errorf("Projects.GetProject returned %+v, want %+v", project, want)
 	}
 
@@ -217,7 +218,7 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 	}
 
 	want := []*ProjectColumn{{ID: Int64(1)}}
-	if !reflect.DeepEqual(columns, want) {
+	if !cmp.Equal(columns, want) {
 		t.Errorf("Projects.ListProjectColumns returned %+v, want %+v", columns, want)
 	}
 
@@ -253,7 +254,7 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 	}
 
 	want := &ProjectColumn{ID: Int64(1)}
-	if !reflect.DeepEqual(column, want) {
+	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.GetProjectColumn returned %+v, want %+v", column, want)
 	}
 
@@ -284,7 +285,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -298,7 +299,7 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 	}
 
 	want := &ProjectColumn{ID: Int64(1)}
-	if !reflect.DeepEqual(column, want) {
+	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.CreateProjectColumn returned %+v, want %+v", column, want)
 	}
 
@@ -329,7 +330,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -343,7 +344,7 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 	}
 
 	want := &ProjectColumn{ID: Int64(1)}
-	if !reflect.DeepEqual(column, want) {
+	if !cmp.Equal(column, want) {
 		t.Errorf("Projects.UpdateProjectColumn returned %+v, want %+v", column, want)
 	}
 
@@ -400,7 +401,7 @@ func TestProjectsService_MoveProjectColumn(t *testing.T) {
 
 		v := &ProjectColumnMoveOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 	})
@@ -445,7 +446,7 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 	}
 
 	want := []*ProjectCard{{ID: Int64(1)}}
-	if !reflect.DeepEqual(cards, want) {
+	if !cmp.Equal(cards, want) {
 		t.Errorf("Projects.ListProjectCards returned %+v, want %+v", cards, want)
 	}
 
@@ -481,7 +482,7 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 	}
 
 	want := &ProjectCard{ID: Int64(1)}
-	if !reflect.DeepEqual(card, want) {
+	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.GetProjectCard returned %+v, want %+v", card, want)
 	}
 
@@ -515,7 +516,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -529,7 +530,7 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 	}
 
 	want := &ProjectCard{ID: Int64(1)}
-	if !reflect.DeepEqual(card, want) {
+	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.CreateProjectCard returned %+v, want %+v", card, want)
 	}
 
@@ -563,7 +564,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -577,7 +578,7 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 	}
 
 	want := &ProjectCard{ID: Int64(1), Archived: Bool(false)}
-	if !reflect.DeepEqual(card, want) {
+	if !cmp.Equal(card, want) {
 		t.Errorf("Projects.UpdateProjectCard returned %+v, want %+v", card, want)
 	}
 
@@ -634,7 +635,7 @@ func TestProjectsService_MoveProjectCard(t *testing.T) {
 
 		v := &ProjectCardMoveOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 	})
@@ -670,7 +671,7 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 
 		v := &ProjectCollaboratorOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -760,7 +761,7 @@ func TestProjectsService_ListCollaborators(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
 	}
 
@@ -801,7 +802,7 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Projects.ListProjectCollaborators returned %+v, want %+v", users, want)
 	}
 }
@@ -829,7 +830,7 @@ func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(ppl, want) {
+	if !cmp.Equal(ppl, want) {
 		t.Errorf("Projects.ReviewProjectCollaboratorPermission returned %+v, want %+v", ppl, want)
 	}
 

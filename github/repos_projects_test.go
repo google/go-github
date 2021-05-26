@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListProjects(t *testing.T) {
@@ -33,7 +34,7 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 	}
 
 	want := []*Project{{ID: Int64(1)}}
-	if !reflect.DeepEqual(projects, want) {
+	if !cmp.Equal(projects, want) {
 		t.Errorf("Repositories.ListProjects returned %+v, want %+v", projects, want)
 	}
 
@@ -64,7 +65,7 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -78,7 +79,7 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 	}
 
 	want := &Project{ID: Int64(1)}
-	if !reflect.DeepEqual(project, want) {
+	if !cmp.Equal(project, want) {
 		t.Errorf("Repositories.CreateProject returned %+v, want %+v", project, want)
 	}
 

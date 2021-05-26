@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMigrationService_StartImport(t *testing.T) {
@@ -30,7 +31,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -44,7 +45,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 		t.Errorf("StartImport returned error: %v", err)
 	}
 	want := &Import{Status: String("importing")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("StartImport = %+v, want %+v", got, want)
 	}
 
@@ -78,7 +79,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 		t.Errorf("ImportProgress returned error: %v", err)
 	}
 	want := &Import{Status: String("complete")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("ImportProgress = %+v, want %+v", got, want)
 	}
 
@@ -113,7 +114,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -127,7 +128,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 		t.Errorf("UpdateImport returned error: %v", err)
 	}
 	want := &Import{Status: String("importing")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("UpdateImport = %+v, want %+v", got, want)
 	}
 
@@ -164,7 +165,7 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		{ID: Int64(1), Name: String("a")},
 		{ID: Int64(2), Name: String("b")},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("CommitAuthors = %+v, want %+v", got, want)
 	}
 
@@ -194,7 +195,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -207,7 +208,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
 	}
 	want := &SourceImportAuthor{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("MapCommitAuthor = %+v, want %+v", got, want)
 	}
 
@@ -237,7 +238,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -251,7 +252,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 		t.Errorf("SetLFSPreference returned error: %v", err)
 	}
 	want := &Import{Status: String("importing")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("SetLFSPreference = %+v, want %+v", got, want)
 	}
 
@@ -288,7 +289,7 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 		{OID: String("a")},
 		{OID: String("b")},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("LargeFiles = %+v, want %+v", got, want)
 	}
 

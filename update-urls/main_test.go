@@ -10,11 +10,11 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
-	"reflect"
 	"regexp"
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -445,7 +445,7 @@ func TestSortAndMergeFileEdits(t *testing.T) {
 				if i < len(tt.want) {
 					wantFileEdit = tt.want[i]
 				}
-				if !reflect.DeepEqual(got[i], wantFileEdit) {
+				if !cmp.Equal(got[i], wantFileEdit) {
 					t.Errorf("got[%v] =\n%#v\nwant[%v]:\n%#v", i, got[i], i, wantFileEdit)
 				}
 			}
@@ -551,7 +551,7 @@ func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 			if ok && i < len(w) {
 				wantEndpoint = w[i]
 			}
-			if !reflect.DeepEqual(got[k][i], wantEndpoint) {
+			if !cmp.Equal(got[k][i], wantEndpoint) {
 				t.Errorf("got[%q][%v] =\n%#v\nwant[%q][%v]:\n%#v", k, i, got[k][i], k, i, wantEndpoint)
 			}
 		}
@@ -590,7 +590,7 @@ func TestParseEndpoint(t *testing.T) {
 		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
 			got := parseEndpoint(tt.s, tt.method)
 
-			if !reflect.DeepEqual(got, tt.want) {
+			if !cmp.Equal(got, tt.want) {
 				t.Errorf("parseEndpoint = %#v, want %#v", got, tt.want)
 			}
 		})

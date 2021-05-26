@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestTeamsService__ListTeamMembersByID(t *testing.T) {
@@ -32,7 +33,7 @@ func TestTeamsService__ListTeamMembersByID(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamMembersByID returned %+v, want %+v", members, want)
 	}
 
@@ -107,7 +108,7 @@ func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamMembersBySlug returned %+v, want %+v", members, want)
 	}
 
@@ -189,7 +190,7 @@ func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u"), State: String("active")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.GetTeamMembershipByID returned %+v, want %+v", membership, want)
 	}
 
@@ -260,7 +261,7 @@ func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u"), State: String("active")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.GetTeamMembershipBySlug returned %+v, want %+v", membership, want)
 	}
 
@@ -335,7 +336,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -349,7 +350,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u"), State: String("pending")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.AddTeamMembershipByID returned %+v, want %+v", membership, want)
 	}
 
@@ -379,7 +380,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -424,7 +425,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -438,7 +439,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u"), State: String("pending")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Teams.AddTeamMembershipBySlug returned %+v, want %+v", membership, want)
 	}
 
@@ -468,7 +469,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -648,7 +649,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
 	}
 
 	want := []*Invitation{{ID: Int64(1)}}
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want %+v", invitations, want)
 	}
 
@@ -723,7 +724,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 	}
 
 	want := []*Invitation{{ID: Int64(1)}}
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want %+v", invitations, want)
 	}
 

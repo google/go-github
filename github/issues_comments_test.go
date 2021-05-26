@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListComments_allIssues(t *testing.T) {
@@ -45,7 +46,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 	}
 
 	want := []*IssueComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -81,7 +82,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 	}
 
 	want := []*IssueComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -126,7 +127,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.GetComment returned %+v, want %+v", comment, want)
 	}
 
@@ -165,7 +166,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -179,7 +180,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.CreateComment returned %+v, want %+v", comment, want)
 	}
 
@@ -218,7 +219,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -232,7 +233,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.EditComment returned %+v, want %+v", comment, want)
 	}
 

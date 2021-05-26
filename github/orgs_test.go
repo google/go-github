@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganization_marshal(t *testing.T) {
@@ -85,7 +86,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	}
 
 	want := []*Organization{{ID: Int64(4314092)}}
-	if !reflect.DeepEqual(orgs, want) {
+	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.ListAll returned %+v, want %+v", orgs, want)
 	}
 
@@ -115,7 +116,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(orgs, want) {
+	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
 
@@ -152,7 +153,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Organization{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(orgs, want) {
+	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
 
@@ -197,7 +198,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 	}
 
 	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
 
@@ -241,7 +242,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 	}
 
 	want := &Organization{ID: Int64(1), Login: String("l"), URL: String("u"), AvatarURL: String("a"), Location: String("l")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
 	}
 
@@ -272,7 +273,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 
 		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -286,7 +287,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	}
 
 	want := &Organization{ID: Int64(1)}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}
 
@@ -330,7 +331,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 	}
 
 	want := &OrganizationInstallations{TotalCount: Int(1), Installations: []*Installation{{ID: Int64(1), AppID: Int64(5)}}}
-	if !reflect.DeepEqual(apps, want) {
+	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
 
@@ -376,7 +377,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 	}
 
 	want := &OrganizationInstallations{TotalCount: Int(2), Installations: []*Installation{{ID: Int64(2), AppID: Int64(10)}}}
-	if !reflect.DeepEqual(apps, want) {
+	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
 

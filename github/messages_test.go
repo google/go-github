@@ -12,9 +12,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMessageMAC_BadHashTypePrefix(t *testing.T) {
@@ -437,7 +438,7 @@ func TestParseWebHook(t *testing.T) {
 		if err != nil {
 			t.Fatalf("ParseWebHook: %v", err)
 		}
-		if want := test.payload; !reflect.DeepEqual(got, want) {
+		if want := test.payload; !cmp.Equal(got, want) {
 			t.Errorf("ParseWebHook(%#v, %#v) = %#v, want %#v", test.messageType, p, got, want)
 		}
 	}

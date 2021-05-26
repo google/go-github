@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMigrationService_StartUserMigration(t *testing.T) {
@@ -38,7 +39,7 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 	}
 
 	want := wantUserMigration
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("StartUserMigration = %v, want = %v", got, want)
 	}
 
@@ -71,7 +72,7 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 	}
 
 	want := []*UserMigration{wantUserMigration}
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("ListUserMigrations = %v, want = %v", got, want)
 	}
 
@@ -104,7 +105,7 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 	}
 
 	want := wantUserMigration
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("UserMigrationStatus = %v, want = %v", got, want)
 	}
 

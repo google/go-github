@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAuthorizationsService_Check(t *testing.T) {
@@ -31,7 +32,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 	}
 
 	want := &Authorization{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Check returned auth %+v, want %+v", got, want)
 	}
 
@@ -68,7 +69,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 	}
 
 	want := &Authorization{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Reset returned auth %+v, want %+v", got, want)
 	}
 
@@ -159,7 +160,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 	}
 
 	want := &Authorization{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
 	}
 

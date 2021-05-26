@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestSearchService_Repositories(t *testing.T) {
@@ -42,7 +43,7 @@ func TestSearchService_Repositories(t *testing.T) {
 		IncompleteResults: Bool(false),
 		Repositories:      []*Repository{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
 	}
 }
@@ -87,7 +88,7 @@ func TestSearchService_Topics(t *testing.T) {
 		IncompleteResults: Bool(false),
 		Topics:            []*TopicResult{{Name: String("blah")}, {Name: String("blahblah")}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
 	}
 }
@@ -132,7 +133,7 @@ func TestSearchService_Commits(t *testing.T) {
 		IncompleteResults: Bool(false),
 		Commits:           []*CommitResult{{SHA: String("random_hash1")}, {SHA: String("random_hash2")}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
 	}
 }
@@ -179,7 +180,7 @@ func TestSearchService_Issues(t *testing.T) {
 		IncompleteResults: Bool(true),
 		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
 	}
 }
@@ -230,7 +231,7 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 		IncompleteResults: Bool(true),
 		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
 	}
 }
@@ -269,7 +270,7 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 		IncompleteResults: Bool(true),
 		Issues:            []*Issue{{Number: Int(1)}, {Number: Int(2)}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
 	}
 }
@@ -303,7 +304,7 @@ func TestSearchService_Users(t *testing.T) {
 		IncompleteResults: Bool(false),
 		Users:             []*User{{ID: Int64(1)}, {ID: Int64(2)}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
 	}
 }
@@ -350,7 +351,7 @@ func TestSearchService_Code(t *testing.T) {
 		IncompleteResults: Bool(false),
 		CodeResults:       []*CodeResult{{Name: String("1")}, {Name: String("2")}},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
 }
@@ -425,7 +426,7 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 		IncompleteResults: Bool(false),
 		CodeResults:       []*CodeResult{wantedCodeResult},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
 }
@@ -463,7 +464,7 @@ func TestSearchService_Labels(t *testing.T) {
 			{ID: Int64(4567), Name: String("feature")},
 		},
 	}
-	if !reflect.DeepEqual(result, want) {
+	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Labels returned %+v, want %+v", result, want)
 	}
 }

@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListComments(t *testing.T) {
@@ -33,7 +34,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 	}
 
 	want := []*RepositoryComment{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -80,7 +81,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 	}
 
 	want := []*RepositoryComment{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
 
@@ -119,7 +120,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -133,7 +134,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	}
 
 	want := &RepositoryComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.CreateComment returned %+v, want %+v", comment, want)
 	}
 
@@ -178,7 +179,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 	}
 
 	want := &RepositoryComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
 
@@ -217,7 +218,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -231,7 +232,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	}
 
 	want := &RepositoryComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.UpdateComment returned %+v, want %+v", comment, want)
 	}
 

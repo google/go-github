@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestTeamsService_ListDiscussionsByID(t *testing.T) {
@@ -111,7 +112,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 			URL:           String("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
-	if !reflect.DeepEqual(discussions, want) {
+	if !cmp.Equal(discussions, want) {
 		t.Errorf("Teams.ListDiscussionsByID returned %+v, want %+v", discussions, want)
 	}
 
@@ -226,7 +227,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 			URL:           String("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
-	if !reflect.DeepEqual(discussions, want) {
+	if !cmp.Equal(discussions, want) {
 		t.Errorf("Teams.ListDiscussionsBySlug returned %+v, want %+v", discussions, want)
 	}
 
@@ -261,7 +262,7 @@ func TestTeamsService_GetDiscussionByID(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(discussion, want) {
+	if !cmp.Equal(discussion, want) {
 		t.Errorf("Teams.GetDiscussionByID returned %+v, want %+v", discussion, want)
 	}
 
@@ -296,7 +297,7 @@ func TestTeamsService_GetDiscussionBySlug(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(discussion, want) {
+	if !cmp.Equal(discussion, want) {
 		t.Errorf("Teams.GetDiscussionBySlug returned %+v, want %+v", discussion, want)
 	}
 
@@ -326,7 +327,7 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -340,7 +341,7 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Teams.CreateDiscussionByID returned %+v, want %+v", comment, want)
 	}
 
@@ -370,7 +371,7 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -384,7 +385,7 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Teams.CreateDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
 
@@ -414,7 +415,7 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -428,7 +429,7 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Teams.EditDiscussionByID returned %+v, want %+v", comment, want)
 	}
 
@@ -458,7 +459,7 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -472,7 +473,7 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 	}
 
 	want := &TeamDiscussion{Number: Int(3)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Teams.EditDiscussionBySlug returned %+v, want %+v", comment, want)
 	}
 

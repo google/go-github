@@ -11,9 +11,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPullRequestsService_List(t *testing.T) {
@@ -41,7 +42,7 @@ func TestPullRequestsService_List(t *testing.T) {
 	}
 
 	want := []*PullRequest{{Number: Int(1)}}
-	if !reflect.DeepEqual(pulls, want) {
+	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.List returned %+v, want %+v", pulls, want)
 	}
 
@@ -86,7 +87,7 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 	}
 
 	want := []*PullRequest{{Number: Int(1)}}
-	if !reflect.DeepEqual(pulls, want) {
+	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned %+v, want %+v", pulls, want)
 	}
 
@@ -130,7 +131,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 	}
 
 	want := &PullRequest{Number: Int(1)}
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
 
@@ -272,7 +273,7 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
 }
@@ -303,7 +304,7 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 			Repo: &Repository{ID: Int64(1)},
 		},
 	}
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
 }
@@ -343,7 +344,7 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 		ReviewCommentURL:  String("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 	}
 
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
 }
@@ -368,7 +369,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -382,7 +383,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 	}
 
 	want := &PullRequest{Number: Int(1)}
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Create returned %+v, want %+v", pull, want)
 	}
 
@@ -439,7 +440,7 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 		URL:     String("https://github.com/repos/o/r/pulls/1"),
 	}
 
-	if !reflect.DeepEqual(pull, want) {
+	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.UpdateBranch returned %+v, want %+v", pull, want)
 	}
 
@@ -502,7 +503,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 			t.Errorf("%d: PullRequests.Edit returned error: %v", i, err)
 		}
 
-		if !reflect.DeepEqual(pull, tt.want) {
+		if !cmp.Equal(pull, tt.want) {
 			t.Errorf("%d: PullRequests.Edit returned %+v, want %+v", i, pull, tt.want)
 		}
 
@@ -580,7 +581,7 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(commits, want) {
+	if !cmp.Equal(commits, want) {
 		t.Errorf("PullRequests.ListCommits returned %+v, want %+v", commits, want)
 	}
 
@@ -657,7 +658,7 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(commitFiles, want) {
+	if !cmp.Equal(commitFiles, want) {
 		t.Errorf("PullRequests.ListFiles returned %+v, want %+v", commitFiles, want)
 	}
 
@@ -692,7 +693,7 @@ func TestPullRequestsService_IsMerged(t *testing.T) {
 	}
 
 	want := true
-	if !reflect.DeepEqual(isMerged, want) {
+	if !cmp.Equal(isMerged, want) {
 		t.Errorf("PullRequests.IsMerged returned %+v, want %+v", isMerged, want)
 	}
 
@@ -737,7 +738,7 @@ func TestPullRequestsService_Merge(t *testing.T) {
 		Merged:  Bool(true),
 		Message: String("Pull Request successfully merged"),
 	}
-	if !reflect.DeepEqual(merge, want) {
+	if !cmp.Equal(merge, want) {
 		t.Errorf("PullRequests.Merge returned %+v, want %+v", merge, want)
 	}
 

@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUser_marshall(t *testing.T) {
@@ -76,7 +77,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
 
@@ -111,7 +112,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
 }
@@ -141,7 +142,7 @@ func TestUsersService_GetByID(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.GetByID returned %+v, want %+v", user, want)
 	}
 
@@ -171,7 +172,7 @@ func TestUsersService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -185,7 +186,7 @@ func TestUsersService_Edit(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
 	}
 
@@ -217,7 +218,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 	}
 
 	want := &Hovercard{Contexts: []*UserContext{{Message: String("Owns this repository"), Octicon: String("repo")}}}
-	if !reflect.DeepEqual(hovercard, want) {
+	if !cmp.Equal(hovercard, want) {
 		t.Errorf("Users.GetHovercard returned %+v, want %+v", hovercard, want)
 	}
 
@@ -254,7 +255,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
 
@@ -284,7 +285,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 	}
 
 	want := []*RepositoryInvitation{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
 	}
 

@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
@@ -32,7 +33,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Key{{ID: Int64(1)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 
@@ -67,7 +68,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Key{{ID: Int64(1)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 }
@@ -97,7 +98,7 @@ func TestUsersService_GetKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 
@@ -127,7 +128,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -141,7 +142,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 

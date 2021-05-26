@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
@@ -33,7 +34,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", got, want)
 	}
 
@@ -84,7 +85,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
 	}
 }
@@ -113,7 +114,7 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.List returned %+v, want %+v", repos, want)
 	}
 }
@@ -153,7 +154,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", got, want)
 	}
 
@@ -201,7 +202,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListAll returned %+v, want %+v", got, want)
 	}
 
@@ -232,7 +233,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: String("n")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -246,7 +247,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", got, want)
 	}
 
@@ -282,7 +283,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: String("n")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -296,7 +297,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
 }
@@ -316,7 +317,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
 		want := &TemplateRepoRequest{Name: String("n")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -330,7 +331,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateFromTemplate returned %+v, want %+v", got, want)
 	}
 
@@ -367,7 +368,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
 	}
 
@@ -414,7 +415,7 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 		Body: String("body"),
 	}
 
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetCodeOfConduct returned %+v, want %+v", got, want)
 	}
 
@@ -449,7 +450,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetByID returned %+v, want %+v", got, want)
 	}
 
@@ -477,7 +478,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"id":1}`)
@@ -490,7 +491,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Edit returned %+v, want %+v", got, want)
 	}
 
@@ -697,7 +698,7 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 	}
 
 	want := []*Contributor{{Contributions: Int(42)}}
-	if !reflect.DeepEqual(contributors, want) {
+	if !cmp.Equal(contributors, want) {
 		t.Errorf("Repositories.ListContributors returned %+v, want %+v", contributors, want)
 	}
 
@@ -732,7 +733,7 @@ func TestRepositoriesService_ListLanguages(t *testing.T) {
 	}
 
 	want := map[string]int{"go": 1}
-	if !reflect.DeepEqual(languages, want) {
+	if !cmp.Equal(languages, want) {
 		t.Errorf("Repositories.ListLanguages returned %+v, want %+v", languages, want)
 	}
 
@@ -769,7 +770,7 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 	}
 
 	want := []*Team{{ID: Int64(1)}}
-	if !reflect.DeepEqual(teams, want) {
+	if !cmp.Equal(teams, want) {
 		t.Errorf("Repositories.ListTeams returned %+v, want %+v", teams, want)
 	}
 
@@ -816,7 +817,7 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 			TarballURL: String("t"),
 		},
 	}
-	if !reflect.DeepEqual(tags, want) {
+	if !cmp.Equal(tags, want) {
 		t.Errorf("Repositories.ListTags returned %+v, want %+v", tags, want)
 	}
 
@@ -856,7 +857,7 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 	}
 
 	want := []*Branch{{Name: String("master"), Commit: &RepositoryCommit{SHA: String("a57781"), URL: String("https://api.github.com/repos/o/r/commits/a57781")}}}
-	if !reflect.DeepEqual(branches, want) {
+	if !cmp.Equal(branches, want) {
 		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
 	}
 
@@ -901,7 +902,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		Protected: Bool(true),
 	}
 
-	if !reflect.DeepEqual(branch, want) {
+	if !cmp.Equal(branch, want) {
 		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
 	}
 
@@ -999,7 +1000,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(protection, want) {
+	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
 	}
 
@@ -1078,7 +1079,7 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 			},
 		},
 	}
-	if !reflect.DeepEqual(protection, want) {
+	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.GetBranchProtection returned %+v, want %+v", protection, want)
 	}
 }
@@ -1111,7 +1112,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -1179,7 +1180,7 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(protection, want) {
+	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
 	}
 
@@ -1260,7 +1261,7 @@ func TestRepositoriesService_License(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.License returned %+v, want %+v", got, want)
 	}
 
@@ -1301,7 +1302,7 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		Strict:   true,
 		Contexts: []string{"x", "y", "z"},
 	}
-	if !reflect.DeepEqual(checks, want) {
+	if !cmp.Equal(checks, want) {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
 	}
 
@@ -1334,7 +1335,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		testHeader(t, r, "Accept", mediaTypeV3)
@@ -1351,7 +1352,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 		Strict:   true,
 		Contexts: []string{"continuous-integration"},
 	}
-	if !reflect.DeepEqual(statusChecks, want) {
+	if !cmp.Equal(statusChecks, want) {
 		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
 	}
 
@@ -1416,7 +1417,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 	}
 
 	want := []string{"x", "y", "z"}
-	if !reflect.DeepEqual(contexts, want) {
+	if !cmp.Equal(contexts, want) {
 		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned %+v, want %+v", contexts, want)
 	}
 
@@ -1474,7 +1475,7 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		RequiredApprovingReviewCount: 1,
 	}
 
-	if !reflect.DeepEqual(enforcement, want) {
+	if !cmp.Equal(enforcement, want) {
 		t.Errorf("Repositories.GetPullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
 	}
 
@@ -1509,7 +1510,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		// TODO: remove custom Accept header when this API fully launches
@@ -1544,7 +1545,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		RequireCodeOwnerReviews:      true,
 		RequiredApprovingReviewCount: 3,
 	}
-	if !reflect.DeepEqual(enforcement, want) {
+	if !cmp.Equal(enforcement, want) {
 		t.Errorf("Repositories.UpdatePullRequestReviewEnforcement returned %+v, want %+v", enforcement, want)
 	}
 
@@ -1587,7 +1588,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 		RequireCodeOwnerReviews:      true,
 		RequiredApprovingReviewCount: 1,
 	}
-	if !reflect.DeepEqual(enforcement, want) {
+	if !cmp.Equal(enforcement, want) {
 		t.Errorf("Repositories.DisableDismissalRestrictions returned %+v, want %+v", enforcement, want)
 	}
 
@@ -1652,7 +1653,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 		Enabled: true,
 	}
 
-	if !reflect.DeepEqual(enforcement, want) {
+	if !cmp.Equal(enforcement, want) {
 		t.Errorf("Repositories.GetAdminEnforcement returned %+v, want %+v", enforcement, want)
 	}
 
@@ -1690,7 +1691,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 		URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
 		Enabled: true,
 	}
-	if !reflect.DeepEqual(enforcement, want) {
+	if !cmp.Equal(enforcement, want) {
 		t.Errorf("Repositories.AddAdminEnforcement returned %+v, want %+v", enforcement, want)
 	}
 
@@ -1756,7 +1757,7 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 		Enabled: Bool(false),
 	}
 
-	if !reflect.DeepEqual(signature, want) {
+	if !cmp.Equal(signature, want) {
 		t.Errorf("Repositories.GetSignaturesProtectedBranch returned %+v, want %+v", signature, want)
 	}
 
@@ -1796,7 +1797,7 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 		Enabled: Bool(true),
 	}
 
-	if !reflect.DeepEqual(signature, want) {
+	if !cmp.Equal(signature, want) {
 		t.Errorf("Repositories.RequireSignaturesOnProtectedBranch returned %+v, want %+v", signature, want)
 	}
 
@@ -1904,7 +1905,7 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 	}
 
 	want := []string{"go", "go-github", "github"}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListAllTopics returned %+v, want %+v", got, want)
 	}
 
@@ -1940,7 +1941,7 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 	}
 
 	want := []string{}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListAllTopics returned %+v, want %+v", got, want)
 	}
 }
@@ -1962,7 +1963,7 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 	}
 
 	want := []string{"go", "go-github", "github"}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 
@@ -1999,7 +2000,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 	}
 
 	want := []string{}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }
@@ -2022,7 +2023,7 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	}
 
 	want := []string{}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ReplaceAllTopics returned %+v, want %+v", got, want)
 	}
 }
@@ -2075,7 +2076,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 	want := []*App{
 		{Name: String("octocat")},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
 	}
 
@@ -2113,7 +2114,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 	want := []*App{
 		{Name: String("octocat")},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
 	}
 
@@ -2147,7 +2148,7 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 		t.Errorf("Repositories.RemoveAppRestrictions returned error: %v", err)
 	}
 	want := []*App{}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.RemoveAppRestrictions returned %+v, want %+v", got, want)
 	}
 
@@ -2177,7 +2178,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -2191,7 +2192,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	}
 
 	want := &Repository{Owner: &User{Login: String("a")}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
 	}
 
@@ -2221,7 +2222,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -2268,7 +2269,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		}
 
 		want := &Repository{Owner: &User{Login: String("a")}}
-		if !reflect.DeepEqual(got, want) {
+		if !cmp.Equal(got, want) {
 			t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
 		}
 	}
