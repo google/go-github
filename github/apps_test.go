@@ -6,12 +6,9 @@
 package github
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
@@ -382,23 +379,12 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		},
 	}
 
-	// Convert InstallationTokenOptions into an io.ReadCloser object for comparison.
-	wantBody, err := GetReadCloser(installationTokenOptions)
-	if err != nil {
-		t.Errorf("GetReadCloser returned error: %v", err)
-	}
-
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		// Read request body contents.
-		var gotBodyBytes []byte
-		gotBodyBytes, err = ioutil.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("ReadAll returned error: %v", err)
-		}
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(gotBodyBytes))
+		v := new(InstallationTokenOptions)
+		json.NewDecoder(r.Body).Decode(v)
 
-		if !cmp.Equal(r.Body, wantBody, cmp.AllowUnexported(bytes.Buffer{})) {
-			t.Errorf("request sent %+v, want %+v", r.Body, wantBody)
+		if !cmp.Equal(v, installationTokenOptions) {
+			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
 		}
 
 		testMethod(t, r, "POST")
@@ -593,32 +579,4 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-// GetReadWriter converts a body interface into an io.ReadWriter object.
-func GetReadWriter(body interface{}) (io.ReadWriter, error) {
-	var buf io.ReadWriter
-	if body != nil {
-		buf = new(bytes.Buffer)
-		enc := json.NewEncoder(buf)
-		err := enc.Encode(body)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return buf, nil
-}
-
-// GetReadCloser converts a body interface into an io.ReadCloser object.
-func GetReadCloser(body interface{}) (io.ReadCloser, error) {
-	buf, err := GetReadWriter(body)
-	if err != nil {
-		return nil, err
-	}
-
-	all, err := ioutil.ReadAll(buf)
-	if err != nil {
-		return nil, err
-	}
-	return ioutil.NopCloser(bytes.NewBuffer(all)), nil
 }
