@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListStatuses(t *testing.T) {
@@ -32,7 +33,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 	}
 
 	want := []*RepoStatus{{ID: Int64(1)}}
-	if !reflect.DeepEqual(statuses, want) {
+	if !cmp.Equal(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
 
@@ -71,7 +72,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"id":1}`)
@@ -84,7 +85,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 	}
 
 	want := &RepoStatus{ID: Int64(1)}
-	if !reflect.DeepEqual(status, want) {
+	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}
 
@@ -130,7 +131,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 	}
 
 	want := &CombinedStatus{State: String("success"), Statuses: []*RepoStatus{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(status, want) {
+	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}
 

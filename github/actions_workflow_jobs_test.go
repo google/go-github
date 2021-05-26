@@ -10,9 +10,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListWorkflowJobs(t *testing.T) {
@@ -39,7 +40,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(jobs, want) {
+	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
 
@@ -82,7 +83,7 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(jobs, want) {
+	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
 }
@@ -107,7 +108,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 		StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(job, want) {
+	if !cmp.Equal(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
 	}
 

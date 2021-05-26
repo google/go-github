@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestReviewersRequest_marshal(t *testing.T) {
@@ -134,7 +135,7 @@ func TestRequestReviewers(t *testing.T) {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
 	want := &PullRequest{Number: Int(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", got, want)
 	}
 
@@ -198,7 +199,7 @@ func TestListReviewers(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.ListReviewers returned %+v, want %+v", got, want)
 	}
 

@@ -10,8 +10,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListArtifacts(t *testing.T) {
@@ -37,7 +38,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	}
 
 	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(artifacts, want) {
+	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
 	}
 
@@ -119,7 +120,7 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 	}
 
 	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(artifacts, want) {
+	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned %+v, want %+v", artifacts, want)
 	}
 
@@ -206,7 +207,7 @@ func TestActionsService_GetArtifact(t *testing.T) {
 		SizeInBytes:        Int64(5),
 		ArchiveDownloadURL: String("u"),
 	}
-	if !reflect.DeepEqual(artifact, want) {
+	if !cmp.Equal(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)
 	}
 

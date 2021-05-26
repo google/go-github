@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_ListMembers(t *testing.T) {
@@ -42,7 +43,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
 
@@ -87,7 +88,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
 }
@@ -366,7 +367,7 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 	}
 
 	want := []*Membership{{URL: String("u")}}
-	if !reflect.DeepEqual(memberships, want) {
+	if !cmp.Equal(memberships, want) {
 		t.Errorf("Organizations.ListOrgMemberships returned %+v, want %+v", memberships, want)
 	}
 
@@ -396,7 +397,7 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
 
@@ -431,7 +432,7 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
 }
@@ -447,7 +448,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -461,7 +462,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
 
@@ -491,7 +492,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -505,7 +506,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
 }
@@ -613,7 +614,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
 		}}
 
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 
@@ -649,7 +650,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -664,7 +665,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	}
 
 	want := &Invitation{Email: String("octocat@github.com")}
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 
@@ -726,7 +727,7 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListOrgInvitationTeams returned %+v, want %+v", invitations, want)
 	}
 
@@ -831,7 +832,7 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(failedInvitations, want) {
+	if !cmp.Equal(failedInvitations, want) {
 		t.Errorf("Organizations.ListFailedOrgInvitations returned %+v, want %+v", failedInvitations, want)
 	}
 

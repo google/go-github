@@ -12,9 +12,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
@@ -35,7 +36,7 @@ func TestTeamsService_ListTeams(t *testing.T) {
 	}
 
 	want := []*Team{{ID: Int64(1)}}
-	if !reflect.DeepEqual(teams, want) {
+	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListTeams returned %+v, want %+v", teams, want)
 	}
 
@@ -79,7 +80,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamByID returned %+v, want %+v", team, want)
 	}
 
@@ -136,7 +137,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1), Name: String("n"), Description: String("d"), URL: String("u"), Slug: String("s"), Permission: String("p"), LDAPDN: String("cn=n,ou=groups,dc=example,dc=com")}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamBySlug returned %+v, want %+v", team, want)
 	}
 
@@ -197,7 +198,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -211,7 +212,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1)}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.CreateTeam returned %+v, want %+v", team, want)
 	}
 
@@ -250,7 +251,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -264,7 +265,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1)}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
 	}
 
@@ -300,7 +301,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -314,7 +315,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1)}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
 	}
 
@@ -334,7 +335,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -348,7 +349,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1)}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
 	}
 
@@ -384,7 +385,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 		json.NewDecoder(bytes.NewBuffer(buf)).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -398,7 +399,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	}
 
 	want := &Team{ID: Int64(1)}
-	if !reflect.DeepEqual(team, want) {
+	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
 	}
 
@@ -475,7 +476,7 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 	}
 
 	want := []*Team{{ID: Int64(2)}}
-	if !reflect.DeepEqual(teams, want) {
+	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentID returned %+v, want %+v", teams, want)
 	}
 
@@ -512,7 +513,7 @@ func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 	}
 
 	want := []*Team{{ID: Int64(2)}}
-	if !reflect.DeepEqual(teams, want) {
+	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentSlug returned %+v, want %+v", teams, want)
 	}
 
@@ -551,7 +552,7 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamReposByID returned %+v, want %+v", members, want)
 	}
 
@@ -590,7 +591,7 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamReposBySlug returned %+v, want %+v", members, want)
 	}
 
@@ -627,7 +628,7 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want %+v", repo, want)
 	}
 
@@ -664,7 +665,7 @@ func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want %+v", repo, want)
 	}
 
@@ -800,7 +801,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -835,7 +836,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -997,7 +998,7 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 	}
 
 	want := []*Team{{ID: Int64(1)}}
-	if !reflect.DeepEqual(teams, want) {
+	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListUserTeams returned %+v, want %+v", teams, want)
 	}
 
@@ -1029,7 +1030,7 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 	}
 
 	want := []*Project{{ID: Int64(1)}}
-	if !reflect.DeepEqual(projects, want) {
+	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsByID returned %+v, want %+v", projects, want)
 	}
 
@@ -1066,7 +1067,7 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 	}
 
 	want := []*Project{{ID: Int64(1)}}
-	if !reflect.DeepEqual(projects, want) {
+	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned %+v, want %+v", projects, want)
 	}
 
@@ -1103,7 +1104,7 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 	}
 
 	want := &Project{ID: Int64(1)}
-	if !reflect.DeepEqual(project, want) {
+	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned %+v, want %+v", project, want)
 	}
 
@@ -1140,7 +1141,7 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 	}
 
 	want := &Project{ID: Int64(1)}
-	if !reflect.DeepEqual(project, want) {
+	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned %+v, want %+v", project, want)
 	}
 
@@ -1174,7 +1175,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 
 		v := &TeamProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -1213,7 +1214,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 
 		v := &TeamProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 
@@ -1321,7 +1322,7 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsInOrganization returned %+v. want %+v", groups, want)
 	}
 
@@ -1364,7 +1365,7 @@ func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsForTeamByID returned %+v. want %+v", groups, want)
 	}
 
@@ -1407,7 +1408,7 @@ func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.ListIDPGroupsForTeamBySlug returned %+v. want %+v", groups, want)
 	}
 
@@ -1460,7 +1461,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned %+v. want %+v", groups, want)
 	}
 
@@ -1513,7 +1514,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
 	}
 
@@ -1553,7 +1554,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID_empty(t *testing.T) 
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsByID returned %+v. want %+v", groups, want)
 	}
 }
@@ -1580,7 +1581,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
 	}
 }

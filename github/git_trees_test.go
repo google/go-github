@@ -11,8 +11,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
@@ -63,7 +64,7 @@ func TestGitService_GetTree(t *testing.T) {
 		},
 		Truncated: Bool(true),
 	}
-	if !reflect.DeepEqual(*tree, want) {
+	if !cmp.Equal(*tree, want) {
 		t.Errorf("Tree.Get returned %+v, want %+v", *tree, want)
 	}
 
@@ -151,7 +152,7 @@ func TestGitService_CreateTree(t *testing.T) {
 		nil,
 	}
 
-	if !reflect.DeepEqual(*tree, want) {
+	if !cmp.Equal(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
 
@@ -232,7 +233,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 		nil,
 	}
 
-	if !reflect.DeepEqual(*tree, want) {
+	if !cmp.Equal(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
 
@@ -312,7 +313,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 		nil,
 	}
 
-	if !reflect.DeepEqual(*tree, want) {
+	if !cmp.Equal(*tree, want) {
 		t.Errorf("Git.CreateTree returned %+v, want %+v", *tree, want)
 	}
 

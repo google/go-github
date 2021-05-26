@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestBillingService_GetActionsBillingOrg(t *testing.T) {
@@ -47,7 +48,7 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 			Windows: 90,
 		},
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetActionsBillingOrg returned %+v, want %+v", hook, want)
 	}
 
@@ -91,7 +92,7 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 		TotalPaidGigabytesBandwidthUsed: 40,
 		IncludedGigabytesBandwidth:      10,
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetPackagesBillingOrg returned %+v, want %+v", hook, want)
 	}
 
@@ -135,7 +136,7 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 		EstimatedPaidStorageForMonth: 15,
 		EstimatedStorageForMonth:     40,
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetStorageBillingOrg returned %+v, want %+v", hook, want)
 	}
 
@@ -189,7 +190,7 @@ func TestBillingService_GetActionsBillingUser(t *testing.T) {
 			Windows: 90,
 		},
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetActionsBillingUser returned %+v, want %+v", hook, want)
 	}
 
@@ -233,7 +234,7 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 		TotalPaidGigabytesBandwidthUsed: 40,
 		IncludedGigabytesBandwidth:      10,
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetPackagesBillingUser returned %+v, want %+v", hook, want)
 	}
 
@@ -277,7 +278,7 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 		EstimatedPaidStorageForMonth: 15,
 		EstimatedStorageForMonth:     40,
 	}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Billing.GetStorageBillingUser returned %+v, want %+v", hook, want)
 	}
 

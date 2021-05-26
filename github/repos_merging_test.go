@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_Merge(t *testing.T) {
@@ -29,7 +30,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -43,7 +44,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	}
 
 	want := &RepositoryCommit{SHA: String("s")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Repositories.Merge returned %+v, want %+v", commit, want)
 	}
 

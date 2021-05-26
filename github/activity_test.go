@@ -8,8 +8,9 @@ package github
 import (
 	"context"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_List(t *testing.T) {
@@ -28,7 +29,7 @@ func TestActivityService_List(t *testing.T) {
 	if err != nil {
 		t.Errorf("Activity.ListFeeds returned error: %v", err)
 	}
-	if want := wantFeeds; !reflect.DeepEqual(got, want) {
+	if want := wantFeeds; !cmp.Equal(got, want) {
 		t.Errorf("Activity.ListFeeds = %+v, want %+v", got, want)
 	}
 

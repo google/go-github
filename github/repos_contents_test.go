@@ -11,8 +11,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoryContent_GetContent(t *testing.T) {
@@ -98,7 +99,7 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 		t.Errorf("Repositories.GetReadme returned error: %v", err)
 	}
 	want := &RepositoryContent{Type: String("file"), Name: String("README.md"), Size: Int(5362), Encoding: String("base64"), Path: String("README.md")}
-	if !reflect.DeepEqual(readme, want) {
+	if !cmp.Equal(readme, want) {
 		t.Errorf("Repositories.GetReadme returned %+v, want %+v", readme, want)
 	}
 
@@ -415,7 +416,7 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
 	want := &RepositoryContent{Type: String("file"), Name: String("LICENSE"), Size: Int(20678), Encoding: String("base64"), Path: String("LICENSE")}
-	if !reflect.DeepEqual(fileContents, want) {
+	if !cmp.Equal(fileContents, want) {
 		t.Errorf("Repositories.GetContents returned %+v, want %+v", fileContents, want)
 	}
 
@@ -500,7 +501,7 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	}
 	want := []*RepositoryContent{{Type: String("dir"), Name: String("lib"), Path: String("lib")},
 		{Type: String("file"), Name: String("LICENSE"), Size: Int(20678), Path: String("LICENSE")}}
-	if !reflect.DeepEqual(directoryContents, want) {
+	if !cmp.Equal(directoryContents, want) {
 		t.Errorf("Repositories.GetContents_Directory returned %+v, want %+v", directoryContents, want)
 	}
 }
@@ -539,7 +540,7 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
-	if !reflect.DeepEqual(createResponse, want) {
+	if !cmp.Equal(createResponse, want) {
 		t.Errorf("Repositories.CreateFile returned %+v, want %+v", createResponse, want)
 	}
 
@@ -594,7 +595,7 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
-	if !reflect.DeepEqual(updateResponse, want) {
+	if !cmp.Equal(updateResponse, want) {
 		t.Errorf("Repositories.UpdateFile returned %+v, want %+v", updateResponse, want)
 	}
 
@@ -645,7 +646,7 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 			SHA:     String("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
-	if !reflect.DeepEqual(deleteResponse, want) {
+	if !cmp.Equal(deleteResponse, want) {
 		t.Errorf("Repositories.DeleteFile returned %+v, want %+v", deleteResponse, want)
 	}
 

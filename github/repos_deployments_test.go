@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListDeployments(t *testing.T) {
@@ -33,7 +34,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 	}
 
 	want := []*Deployment{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(deployments, want) {
+	if !cmp.Equal(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
 
@@ -69,7 +70,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 
 	want := &Deployment{ID: Int64(3)}
 
-	if !reflect.DeepEqual(deployment, want) {
+	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
 	}
 
@@ -101,7 +102,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -115,7 +116,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	}
 
 	want := &Deployment{Ref: String("1111"), Task: String("deploy")}
-	if !reflect.DeepEqual(deployment, want) {
+	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
 
@@ -191,7 +192,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	}
 
 	want := []*DeploymentStatus{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(statutses, want) {
+	if !cmp.Equal(statutses, want) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
 	}
 
@@ -228,7 +229,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	}
 
 	want := &DeploymentStatus{ID: Int64(4)}
-	if !reflect.DeepEqual(deploymentStatus, want) {
+	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
 
@@ -260,7 +261,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -274,7 +275,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	}
 
 	want := &DeploymentStatus{State: String("inactive"), Description: String("deploy")}
-	if !reflect.DeepEqual(deploymentStatus, want) {
+	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
 

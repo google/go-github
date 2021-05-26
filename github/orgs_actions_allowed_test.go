@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
@@ -29,7 +30,7 @@ func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
 		t.Errorf("Organizations.GetActionsAllowed returned error: %v", err)
 	}
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
 
@@ -58,7 +59,7 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -72,7 +73,7 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.EditActionsAllowed returned %+v, want %+v", org, want)
 	}
 

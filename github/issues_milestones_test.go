@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListMilestones(t *testing.T) {
@@ -37,7 +38,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 	}
 
 	want := []*Milestone{{Number: Int(1)}}
-	if !reflect.DeepEqual(milestones, want) {
+	if !cmp.Equal(milestones, want) {
 		t.Errorf("IssuesService.ListMilestones returned %+v, want %+v", milestones, want)
 	}
 
@@ -81,7 +82,7 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 	}
 
 	want := &Milestone{Number: Int(1)}
-	if !reflect.DeepEqual(milestone, want) {
+	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.GetMilestone returned %+v, want %+v", milestone, want)
 	}
 
@@ -120,7 +121,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -134,7 +135,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 	}
 
 	want := &Milestone{Number: Int(1)}
-	if !reflect.DeepEqual(milestone, want) {
+	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.CreateMilestone returned %+v, want %+v", milestone, want)
 	}
 
@@ -173,7 +174,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -187,7 +188,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 	}
 
 	want := &Milestone{Number: Int(1)}
-	if !reflect.DeepEqual(milestone, want) {
+	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.EditMilestone returned %+v, want %+v", milestone, want)
 	}
 

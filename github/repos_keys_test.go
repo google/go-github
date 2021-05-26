@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListKeys(t *testing.T) {
@@ -32,7 +33,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 	}
 
 	want := []*Key{{ID: Int64(1)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
 
@@ -76,7 +77,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
 
@@ -115,7 +116,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -129,7 +130,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
 

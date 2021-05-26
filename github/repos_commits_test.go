@@ -10,10 +10,11 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
@@ -48,7 +49,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 	}
 
 	want := []*RepositoryCommit{{SHA: String("s")}}
-	if !reflect.DeepEqual(commits, want) {
+	if !cmp.Equal(commits, want) {
 		t.Errorf("Repositories.ListCommits returned %+v, want %+v", commits, want)
 	}
 
@@ -137,7 +138,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Repositories.GetCommit returned \n%+v, want \n%+v", commit, want)
 	}
 
@@ -477,7 +478,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 			URL:          String(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", escapedBase, escapedHead)),
 		}
 
-		if !reflect.DeepEqual(got, want) {
+		if !cmp.Equal(got, want) {
 			t.Errorf("Repositories.CompareCommits returned \n%+v, want \n%+v", got, want)
 		}
 
@@ -639,7 +640,7 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 			Protected: Bool(true),
 		},
 	}
-	if !reflect.DeepEqual(branches, want) {
+	if !cmp.Equal(branches, want) {
 		t.Errorf("Repositories.ListBranchesHeadCommit returned %+v, want %+v", branches, want)
 	}
 

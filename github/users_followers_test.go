@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
@@ -31,7 +32,7 @@ func TestUsersService_ListFollowers_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
 
@@ -66,7 +67,7 @@ func TestUsersService_ListFollowers_specifiedUser(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowers returned %+v, want %+v", users, want)
 	}
 
@@ -112,7 +113,7 @@ func TestUsersService_ListFollowing_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}
 
@@ -147,7 +148,7 @@ func TestUsersService_ListFollowing_specifiedUser(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListFollowing returned %+v, want %+v", users, want)
 	}
 

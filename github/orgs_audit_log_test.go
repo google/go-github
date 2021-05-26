@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationService_GetAuditLog(t *testing.T) {
@@ -92,7 +93,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(auditEntries, want) {
+	if !cmp.Equal(auditEntries, want) {
 		t.Errorf("Organizations.GetAuditLog return \ngot: %+v,\nwant:%+v", auditEntries, want)
 	}
 

@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestGitService_GetTag(t *testing.T) {
@@ -30,7 +31,7 @@ func TestGitService_GetTag(t *testing.T) {
 	}
 
 	want := &Tag{Tag: String("t")}
-	if !reflect.DeepEqual(tag, want) {
+	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
 
@@ -52,7 +53,7 @@ func TestGitService_CreateTag(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -69,7 +70,7 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	want := &Tag{Tag: String("t")}
-	if !reflect.DeepEqual(tag, want) {
+	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
 

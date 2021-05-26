@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
@@ -36,7 +37,7 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
 		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
-	if !reflect.DeepEqual(downloads, want) {
+	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
 
@@ -73,7 +74,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
 
@@ -116,7 +117,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
 
@@ -156,7 +157,7 @@ func TestActionsService_GetRunner(t *testing.T) {
 		OS:     String("macos"),
 		Status: String("online"),
 	}
-	if !reflect.DeepEqual(runner, want) {
+	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
 
@@ -191,7 +192,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 	}
 
 	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
 
@@ -257,7 +258,7 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
 		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
-	if !reflect.DeepEqual(downloads, want) {
+	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
 
@@ -294,7 +295,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
 
@@ -337,7 +338,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
 
@@ -381,7 +382,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		{ID: Int64(2)},
 		{ID: Int64(3)},
 	}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
 	}
 
@@ -421,7 +422,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 		OS:     String("macos"),
 		Status: String("online"),
 	}
-	if !reflect.DeepEqual(runner, want) {
+	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
 
@@ -456,7 +457,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 	}
 
 	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
 

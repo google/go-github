@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAdminService_GetAdminStats(t *testing.T) {
@@ -81,7 +82,7 @@ func TestAdminService_GetAdminStats(t *testing.T) {
 		t.Errorf("AdminService.GetAdminStats returned error: %v", err)
 	}
 
-	if want := testAdminStats; !reflect.DeepEqual(stats, want) {
+	if want := testAdminStats; !cmp.Equal(stats, want) {
 		t.Errorf("AdminService.GetAdminStats returned %+v, want %+v", stats, want)
 	}
 

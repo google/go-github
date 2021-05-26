@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_ListEvents(t *testing.T) {
@@ -34,7 +35,7 @@ func TestActivityService_ListEvents(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEvents returned %+v, want %+v", events, want)
 	}
 
@@ -68,7 +69,7 @@ func TestActivityService_ListRepositoryEvents(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
 
@@ -116,7 +117,7 @@ func TestActivityService_ListIssueEventsForRepository(t *testing.T) {
 	}
 
 	want := []*IssueEvent{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListIssueEventsForRepository returned %+v, want %+v", events, want)
 	}
 
@@ -164,7 +165,7 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
 	}
 
@@ -212,7 +213,7 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
 
@@ -260,7 +261,7 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
 
@@ -295,7 +296,7 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
 	}
 }
@@ -329,7 +330,7 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListReceivedUser returned %+v, want %+v", events, want)
 	}
 
@@ -364,7 +365,7 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Events.ListReceivedByUser returned %+v, want %+v", events, want)
 	}
 }
@@ -398,7 +399,7 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	}
 
 	want := []*Event{{ID: String("1")}, {ID: String("2")}}
-	if !reflect.DeepEqual(events, want) {
+	if !cmp.Equal(events, want) {
 		t.Errorf("Activities.ListUserEventsForOrganization returned %+v, want %+v", events, want)
 	}
 
@@ -429,7 +430,7 @@ func TestActivityService_EventParsePayload_typed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Event.ParsePayload returned %+v, want %+v", got, want)
 	}
 }
@@ -449,7 +450,7 @@ func TestActivityService_EventParsePayload_untyped(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Event.ParsePayload returned %+v, want %+v", got, want)
 	}
 }
@@ -466,7 +467,7 @@ func TestActivityService_EventParsePayload_installation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ParsePayload returned unexpected error: %v", err)
 	}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Event.ParsePayload returned %+v, want %+v", got, want)
 	}
 }

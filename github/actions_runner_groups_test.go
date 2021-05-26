@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
@@ -38,7 +39,7 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 			{ID: Int64(3), Name: String("expensive-hardware"), Visibility: String("private"), Default: Bool(false), RunnersURL: String("https://api.github.com/orgs/octo-org/actions/runner_groups/3/runners"), Inherited: Bool(false), AllowsPublicRepositories: Bool(true)},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Actions.ListOrganizationRunnerGroups returned %+v, want %+v", groups, want)
 	}
 
@@ -83,7 +84,7 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 		AllowsPublicRepositories: Bool(true),
 	}
 
-	if !reflect.DeepEqual(group, want) {
+	if !cmp.Equal(group, want) {
 		t.Errorf("Actions.GetOrganizationRunnerGroup returned %+v, want %+v", group, want)
 	}
 
@@ -157,7 +158,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 		AllowsPublicRepositories: Bool(true),
 	}
 
-	if !reflect.DeepEqual(group, want) {
+	if !cmp.Equal(group, want) {
 		t.Errorf("Actions.CreateOrganizationRunnerGroup returned %+v, want %+v", group, want)
 	}
 
@@ -206,7 +207,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 		AllowsPublicRepositories: Bool(true),
 	}
 
-	if !reflect.DeepEqual(group, want) {
+	if !cmp.Equal(group, want) {
 		t.Errorf("Actions.UpdateOrganizationRunnerGroup returned %+v, want %+v", group, want)
 	}
 
@@ -246,7 +247,7 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 			{ID: Int64(43), NodeID: String("MDEwOlJlcG9zaXRvcnkxMjk2MjY5"), Name: String("Hello-World"), FullName: String("octocat/Hello-World")},
 		},
 	}
-	if !reflect.DeepEqual(groups, want) {
+	if !cmp.Equal(groups, want) {
 		t.Errorf("Actions.ListRepositoryAccessRunnerGroup returned %+v, want %+v", groups, want)
 	}
 
@@ -371,7 +372,7 @@ func TestActionsService_ListRunerGroupRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunerGroupRunners returned %+v, want %+v", runners, want)
 	}
 

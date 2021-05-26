@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListCollaborators(t *testing.T) {
@@ -34,7 +35,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}
 
@@ -74,7 +75,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}
 
@@ -201,7 +202,7 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(rpl, want) {
+	if !cmp.Equal(rpl, want) {
 		t.Errorf("Repositories.GetPermissionLevel returned %+v, want %+v", rpl, want)
 	}
 
@@ -229,7 +230,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		v := new(RepositoryAddCollaboratorOptions)
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, opt) {
+		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 		w.WriteHeader(http.StatusOK)
@@ -258,7 +259,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		HTMLURL:     String("https://github.com/octocat/Hello-World/invitations"),
 	}
 
-	if !reflect.DeepEqual(collaboratorInvitation, want) {
+	if !cmp.Equal(collaboratorInvitation, want) {
 		t.Errorf("AddCollaborator returned %+v, want %+v", collaboratorInvitation, want)
 	}
 

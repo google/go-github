@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListInvitations(t *testing.T) {
@@ -31,7 +32,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 	}
 
 	want := []*RepositoryInvitation{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListInvitations = %+v, want %+v", got, want)
 	}
 
@@ -92,7 +93,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 	}
 
 	want := &RepositoryInvitation{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.UpdateInvitation = %+v, want %+v", got, want)
 	}
 

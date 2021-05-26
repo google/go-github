@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_ListHooks(t *testing.T) {
@@ -33,7 +34,7 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 	}
 
 	want := []*Hook{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(hooks, want) {
+	if !cmp.Equal(hooks, want) {
 		t.Errorf("Organizations.ListHooks returned %+v, want %+v", hooks, want)
 	}
 
@@ -73,7 +74,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		want := &createHookRequest{Name: "web"}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -87,7 +88,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 	}
 
 	want := &Hook{ID: Int64(1)}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.CreateHook returned %+v, want %+v", hook, want)
 	}
 
@@ -122,7 +123,7 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 	}
 
 	want := &Hook{ID: Int64(1)}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.GetHook returned %+v, want %+v", hook, want)
 	}
 
@@ -153,7 +154,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -167,7 +168,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 	}
 
 	want := &Hook{ID: Int64(1)}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.EditHook returned %+v, want %+v", hook, want)
 	}
 

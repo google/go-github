@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPullRequestsService_ListReviews(t *testing.T) {
@@ -37,7 +38,7 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 		{ID: Int64(1)},
 		{ID: Int64(2)},
 	}
-	if !reflect.DeepEqual(reviews, want) {
+	if !cmp.Equal(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
 	}
 
@@ -81,7 +82,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(review, want) {
+	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
 
@@ -125,7 +126,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(review, want) {
+	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
 
@@ -172,7 +173,7 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 		{ID: Int64(1)},
 		{ID: Int64(2)},
 	}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
 	}
 
@@ -367,7 +368,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -381,7 +382,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(review, want) {
+	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
 
@@ -470,7 +471,7 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -501,7 +502,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
 	}
 
@@ -534,7 +535,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -548,7 +549,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(review, want) {
+	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
 
@@ -587,7 +588,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -601,7 +602,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	}
 
 	want := &PullRequestReview{ID: Int64(1)}
-	if !reflect.DeepEqual(review, want) {
+	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}
 

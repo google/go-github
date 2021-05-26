@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_List_all(t *testing.T) {
@@ -47,7 +48,7 @@ func TestIssuesService_List_all(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -78,7 +79,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 }
@@ -100,7 +101,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -161,7 +162,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -214,7 +215,7 @@ func TestIssuesService_Get(t *testing.T) {
 			Color: String("c"),
 		}},
 	}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Get returned %+v, want %+v", issue, want)
 	}
 
@@ -258,7 +259,7 @@ func TestIssuesService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -272,7 +273,7 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1)}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Create returned %+v, want %+v", issue, want)
 	}
 
@@ -311,7 +312,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -325,7 +326,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1)}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
 	}
 

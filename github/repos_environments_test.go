@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
@@ -77,7 +78,7 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			if err == nil && test.wantError {
 				t.Errorf("RequiredReviewer.UnmarshalJSON returned no error when we expected one")
 			}
-			if !reflect.DeepEqual(test.wantRule, rule) {
+			if !cmp.Equal(test.wantRule, rule) {
 				t.Errorf("RequiredReviewer.UnmarshalJSON expected rule %+v, got %+v", test.wantRule, rule)
 			}
 		})
@@ -113,7 +114,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
 	want := &EnvResponse{TotalCount: Int(1), Environments: []*Environment{{ID: Int64(1)}, {ID: Int64(2)}}}
-	if !reflect.DeepEqual(environments, want) {
+	if !cmp.Equal(environments, want) {
 		t.Errorf("Repositories.ListEnvironments returned %+v, want %+v", environments, want)
 	}
 
@@ -148,7 +149,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 	}
 
 	want := &Environment{ID: Int64(1), Name: String("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Bool(true), CustomBranchPolicies: Bool(false)}}
-	if !reflect.DeepEqual(release, want) {
+	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}
 
@@ -181,7 +182,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 
 		testMethod(t, r, "PUT")
 		want := &CreateUpdateEnvironment{WaitTimer: Int(30)}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
@@ -194,7 +195,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	}
 
 	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{{ID: Int64(1), Type: String("wait_timer"), WaitTimer: Int(30)}}}
-	if !reflect.DeepEqual(release, want) {
+	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
 
