@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListAssignees(t *testing.T) {
@@ -32,7 +33,7 @@ func TestIssuesService_ListAssignees(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(assignees, want) {
+	if !cmp.Equal(assignees, want) {
 		t.Errorf("Issues.ListAssignees returned %+v, want %+v", assignees, want)
 	}
 
@@ -179,7 +180,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		want := []string{"user1", "user2"}
-		if !reflect.DeepEqual(assignees.Assignees, want) {
+		if !cmp.Equal(assignees.Assignees, want) {
 			t.Errorf("assignees = %+v, want %+v", assignees, want)
 		}
 		fmt.Fprint(w, `{"number":1,"assignees":[{"login":"user1"},{"login":"user2"}]}`)
@@ -192,7 +193,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1), Assignees: []*User{{Login: String("user1")}, {Login: String("user2")}}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.AddAssignees = %+v, want %+v", got, want)
 	}
 
@@ -215,7 +216,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 
 		testMethod(t, r, "DELETE")
 		want := []string{"user1", "user2"}
-		if !reflect.DeepEqual(assignees.Assignees, want) {
+		if !cmp.Equal(assignees.Assignees, want) {
 			t.Errorf("assignees = %+v, want %+v", assignees, want)
 		}
 		fmt.Fprint(w, `{"number":1,"assignees":[]}`)
@@ -228,7 +229,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1), Assignees: []*User{}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Issues.RemoveAssignees = %+v, want %+v", got, want)
 	}
 

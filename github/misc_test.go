@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMarkdown(t *testing.T) {
@@ -28,7 +29,7 @@ func TestMarkdown(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `<h1>text</h1>`)
@@ -76,7 +77,7 @@ func TestListEmojis(t *testing.T) {
 	}
 
 	want := map[string]string{"+1": "+1.png"}
-	if !reflect.DeepEqual(want, emoji) {
+	if !cmp.Equal(want, emoji) {
 		t.Errorf("ListEmojis returned %+v, want %+v", emoji, want)
 	}
 
@@ -116,7 +117,7 @@ func TestListCodesOfConduct(t *testing.T) {
 			Name: String("name"),
 			URL:  String("url"),
 		}}
-	if !reflect.DeepEqual(want, cs) {
+	if !cmp.Equal(want, cs) {
 		t.Errorf("ListCodesOfConduct returned %+v, want %+v", cs, want)
 	}
 
@@ -157,7 +158,7 @@ func TestGetCodeOfConduct(t *testing.T) {
 		URL:  String("url"),
 		Body: String("body"),
 	}
-	if !reflect.DeepEqual(want, coc) {
+	if !cmp.Equal(want, coc) {
 		t.Errorf("GetCodeOfConductByKey returned %+v, want %+v", coc, want)
 	}
 
@@ -226,7 +227,7 @@ func TestAPIMeta(t *testing.T) {
 
 		VerifiablePasswordAuthentication: Bool(true),
 	}
-	if !reflect.DeepEqual(want, meta) {
+	if !cmp.Equal(want, meta) {
 		t.Errorf("APIMeta returned %+v, want %+v", meta, want)
 	}
 
@@ -334,7 +335,7 @@ func TestListServiceHooks(t *testing.T) {
 		SupportedEvents: []string{"s"},
 		Schema:          [][]string{{"a", "b"}},
 	}}
-	if !reflect.DeepEqual(hooks, want) {
+	if !cmp.Equal(hooks, want) {
 		t.Errorf("ListServiceHooks returned %+v, want %+v", hooks, want)
 	}
 

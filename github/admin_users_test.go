@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAdminUsers_Create(t *testing.T) {
@@ -25,7 +26,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		want := &createUserRequest{Login: String("github"), Email: String("email@domain.com")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -39,7 +40,7 @@ func TestAdminUsers_Create(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1), Login: String("github")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateUser returned %+v, want %+v", org, want)
 	}
 
@@ -131,7 +132,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		Scopes:         []string{"repo"},
 		Fingerprint:    nil,
 	}
-	if !reflect.DeepEqual(auth, want) {
+	if !cmp.Equal(auth, want) {
 		t.Errorf("Admin.CreateUserImpersonation returned %+v, want %+v", auth, want)
 	}
 

@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 const (
@@ -47,7 +48,7 @@ func TestGetConfig(t *testing.T) {
 		PEM:           String("key"),
 	}
 
-	if !reflect.DeepEqual(cfg, want) {
+	if !cmp.Equal(cfg, want) {
 		t.Errorf("GetConfig returned %+v, want %+v", cfg, want)
 	}
 

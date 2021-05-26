@@ -20,6 +20,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 const (
@@ -107,7 +109,7 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 	}
 
 	r.ParseForm()
-	if got := r.Form; !reflect.DeepEqual(got, want) {
+	if got := r.Form; !cmp.Equal(got, want) {
 		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
 }
@@ -693,7 +695,7 @@ func TestDo(t *testing.T) {
 	client.Do(ctx, req, body)
 
 	want := &foo{"a"}
-	if !reflect.DeepEqual(body, want) {
+	if !cmp.Equal(body, want) {
 		t.Errorf("Response body = %v, want %v", body, want)
 	}
 }
@@ -1065,7 +1067,7 @@ func TestSanitizeURL(t *testing.T) {
 		inURL, _ := url.Parse(tt.in)
 		want, _ := url.Parse(tt.want)
 
-		if got := sanitizeURL(inURL); !reflect.DeepEqual(got, want) {
+		if got := sanitizeURL(inURL); !cmp.Equal(got, want) {
 			t.Errorf("sanitizeURL(%v) returned %v, want %v", tt.in, got, want)
 		}
 	}
@@ -1684,7 +1686,7 @@ func TestRateLimits(t *testing.T) {
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
 	}
-	if !reflect.DeepEqual(rate, want) {
+	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 

@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestGitignoresService_List(t *testing.T) {
@@ -29,7 +30,7 @@ func TestGitignoresService_List(t *testing.T) {
 	}
 
 	want := []string{"C", "Go"}
-	if !reflect.DeepEqual(available, want) {
+	if !cmp.Equal(available, want) {
 		t.Errorf("Gitignores.List returned %+v, want %+v", available, want)
 	}
 
@@ -59,7 +60,7 @@ func TestGitignoresService_Get(t *testing.T) {
 	}
 
 	want := &Gitignore{Name: String("Name"), Source: String("template source")}
-	if !reflect.DeepEqual(gitignore, want) {
+	if !cmp.Equal(gitignore, want) {
 		t.Errorf("Gitignores.Get returned %+v, want %+v", gitignore, want)
 	}
 

@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPublicKey_UnmarshalJSON(t *testing.T) {
@@ -84,7 +85,7 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 			if err != nil && !tt.wantErr {
 				t.Errorf("PublicKey.UnmarshalJSON returned an unexpected error: %+v", err)
 			}
-			if !reflect.DeepEqual(tt.wantPublicKey, pk) {
+			if !cmp.Equal(tt.wantPublicKey, pk) {
 				t.Errorf("PublicKey.UnmarshalJSON expected public key %+v, got %+v", tt.wantPublicKey, pk)
 			}
 		})
@@ -107,7 +108,7 @@ func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
 
@@ -142,7 +143,7 @@ func TestActionsService_GetRepoPublicKeyNumeric(t *testing.T) {
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
 
@@ -185,7 +186,7 @@ func TestActionsService_ListRepoSecrets(t *testing.T) {
 			{Name: "B", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(secrets, want) {
+	if !cmp.Equal(secrets, want) {
 		t.Errorf("Actions.ListRepoSecrets returned %+v, want %+v", secrets, want)
 	}
 
@@ -224,7 +225,7 @@ func TestActionsService_GetRepoSecret(t *testing.T) {
 		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(secret, want) {
+	if !cmp.Equal(secret, want) {
 		t.Errorf("Actions.GetRepoSecret returned %+v, want %+v", secret, want)
 	}
 
@@ -317,7 +318,7 @@ func TestActionsService_GetOrgPublicKey(t *testing.T) {
 	}
 
 	want := &PublicKey{KeyID: String("012345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
 
@@ -361,7 +362,7 @@ func TestActionsService_ListOrgSecrets(t *testing.T) {
 			{Name: "GH_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories"},
 		},
 	}
-	if !reflect.DeepEqual(secrets, want) {
+	if !cmp.Equal(secrets, want) {
 		t.Errorf("Actions.ListOrgSecrets returned %+v, want %+v", secrets, want)
 	}
 
@@ -402,7 +403,7 @@ func TestActionsService_GetOrgSecret(t *testing.T) {
 		Visibility:              "selected",
 		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/secrets/SUPER_SECRET/repositories",
 	}
-	if !reflect.DeepEqual(secret, want) {
+	if !cmp.Equal(secret, want) {
 		t.Errorf("Actions.GetOrgSecret returned %+v, want %+v", secret, want)
 	}
 
@@ -477,7 +478,7 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 			{ID: Int64(1)},
 		},
 	}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned %+v, want %+v", repos, want)
 	}
 
@@ -615,7 +616,7 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetEnvPublicKey returned %+v, want %+v", key, want)
 	}
 
@@ -650,7 +651,7 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Actions.GetEnvPublicKey returned %+v, want %+v", key, want)
 	}
 
@@ -693,7 +694,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 			{Name: "B", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(secrets, want) {
+	if !cmp.Equal(secrets, want) {
 		t.Errorf("Actions.ListEnvSecrets returned %+v, want %+v", secrets, want)
 	}
 
@@ -732,7 +733,7 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(secret, want) {
+	if !cmp.Equal(secret, want) {
 		t.Errorf("Actions.GetEnvSecret returned %+v, want %+v", secret, want)
 	}
 

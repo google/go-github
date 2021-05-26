@@ -10,11 +10,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/google/go-cmp/cmp"
 	"golang.org/x/crypto/openpgp"
 )
 
@@ -134,7 +134,7 @@ func TestGitService_GetCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("s"), Message: String("Commit Message."), Author: &CommitAuthor{Name: String("n")}}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -183,7 +183,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 			Tree:    String("t"),
 			Parents: []string{"p"},
 		}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"s"}`)
@@ -196,7 +196,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("s")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -242,7 +242,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 			Parents:   []string{"p"},
 			Signature: String(signature),
 		}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
@@ -255,7 +255,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("commitSha")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -342,7 +342,7 @@ Commit Message.`)
 		}
 		// Nullify Signature since we checked it above
 		v.Signature = nil
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
@@ -355,7 +355,7 @@ Commit Message.`)
 	}
 
 	want := &Commit{SHA: String("commitSha")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 }

@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssueImportService_Create(t *testing.T) {
@@ -40,7 +41,7 @@ func TestIssueImportService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -55,7 +56,7 @@ func TestIssueImportService_Create(t *testing.T) {
 	}
 
 	want := wantIssueImportResponse
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Create = %+v, want %+v", got, want)
 	}
 
@@ -101,7 +102,7 @@ func TestIssueImportService_CheckStatus(t *testing.T) {
 	}
 
 	want := wantIssueImportResponse
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("CheckStatus = %+v, want %+v", got, want)
 	}
 
@@ -147,7 +148,7 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	}
 
 	want := []*IssueImportResponse{wantIssueImportResponse}
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("CheckStatusSince = %v, want = %v", got, want)
 	}
 

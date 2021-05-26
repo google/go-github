@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_Alert_ID(t *testing.T) {
@@ -29,7 +30,7 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	}
 	id = a.ID()
 	want = 88
-	if !reflect.DeepEqual(id, want) {
+	if !cmp.Equal(id, want) {
 		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
 	}
 
@@ -37,7 +38,7 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	a = &Alert{}
 	id = a.ID()
 	want = 0
-	if !reflect.DeepEqual(id, want) {
+	if !cmp.Equal(id, want) {
 		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
 	}
 
@@ -47,7 +48,7 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	}
 	id = a.ID()
 	want = 0
-	if !reflect.DeepEqual(id, want) {
+	if !cmp.Equal(id, want) {
 		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
 	}
 }
@@ -119,7 +120,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			HTMLURL:         String("https://github.com/o/r/security/code-scanning/88"),
 		},
 	}
-	if !reflect.DeepEqual(alerts, want) {
+	if !cmp.Equal(alerts, want) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned %+v, want %+v", alerts, want)
 	}
 
@@ -175,7 +176,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 		URL:             String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
 		HTMLURL:         String("https://github.com/o/r/security/code-scanning/88"),
 	}
-	if !reflect.DeepEqual(alert, want) {
+	if !cmp.Equal(alert, want) {
 		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)
 	}
 

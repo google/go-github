@@ -13,9 +13,10 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAppsService_Get_authenticatedApp(t *testing.T) {
@@ -34,7 +35,7 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 	}
 
 	want := &App{ID: Int64(1)}
-	if !reflect.DeepEqual(app, want) {
+	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", app, want)
 	}
 
@@ -69,7 +70,7 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 	}
 
 	want := &App{HTMLURL: String("https://github.com/apps/a")}
-	if !reflect.DeepEqual(app, want) {
+	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", *app.HTMLURL, *want.HTMLURL)
 	}
 }
@@ -172,7 +173,7 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		CreatedAt: &date,
 		UpdatedAt: &date,
 	}}
-	if !reflect.DeepEqual(installations, want) {
+	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
 	}
 
@@ -202,7 +203,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 	}
 
 	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
-	if !reflect.DeepEqual(installation, want) {
+	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetInstallation returned %+v, want %+v", installation, want)
 	}
 
@@ -242,7 +243,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 	}
 
 	want := []*Installation{{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}}
-	if !reflect.DeepEqual(installations, want) {
+	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListUserInstallations returned %+v, want %+v", installations, want)
 	}
 
@@ -350,7 +351,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 	}
 
 	want := &InstallationToken{Token: String("t")}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
 
@@ -396,7 +397,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		}
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(gotBodyBytes))
 
-		if !reflect.DeepEqual(r.Body, wantBody) {
+		if !cmp.Equal(r.Body, wantBody, cmp.AllowUnexported(bytes.Buffer{})) {
 			t.Errorf("request sent %+v, want %+v", r.Body, wantBody)
 		}
 
@@ -411,7 +412,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	}
 
 	want := &InstallationToken{Token: String("t")}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
 }
@@ -435,7 +436,7 @@ func TestAppsService_CreateAttachement(t *testing.T) {
 	}
 
 	want := &Attachment{ID: Int64(1), Title: String("title1"), Body: String("body1")}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
 	}
 
@@ -470,7 +471,7 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	}
 
 	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
-	if !reflect.DeepEqual(installation, want) {
+	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
 	}
 
@@ -505,7 +506,7 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	}
 
 	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
-	if !reflect.DeepEqual(installation, want) {
+	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
 	}
 
@@ -540,7 +541,7 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 	}
 
 	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("Organization")}
-	if !reflect.DeepEqual(installation, want) {
+	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindRepositoryInstallationByID returned %+v, want %+v", installation, want)
 	}
 
@@ -575,7 +576,7 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 	}
 
 	want := &Installation{ID: Int64(1), AppID: Int64(1), TargetID: Int64(1), TargetType: String("User")}
-	if !reflect.DeepEqual(installation, want) {
+	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
 	}
 

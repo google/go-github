@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 // "Team Discussion Comments" endpoint, when using a teamID.
@@ -124,7 +125,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 		t.Errorf("Teams.ListCommentsByID returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentsByID, want) {
+	if !cmp.Equal(commentsByID, want) {
 		t.Errorf("Teams.ListCommentsByID returned %+v, want %+v", commentsByID, want)
 	}
 
@@ -137,7 +138,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 		t.Errorf("Teams.ListCommentsBySlug returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentsBySlug, want) {
+	if !cmp.Equal(commentsBySlug, want) {
 		t.Errorf("Teams.ListCommentsBySlug returned %+v, want %+v", commentsBySlug, want)
 	}
 
@@ -193,7 +194,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 		t.Errorf("Teams.GetCommentByID returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentByID, want) {
+	if !cmp.Equal(commentByID, want) {
 		t.Errorf("Teams.GetCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
@@ -205,7 +206,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 		t.Errorf("Teams.GetCommentBySlug returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentBySlug, want) {
+	if !cmp.Equal(commentBySlug, want) {
 		t.Errorf("Teams.GetCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
 
@@ -249,7 +250,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -266,7 +267,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		t.Errorf("Teams.CreateCommentByID returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentByID, want) {
+	if !cmp.Equal(commentByID, want) {
 		t.Errorf("Teams.CreateCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
@@ -278,7 +279,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		t.Errorf("Teams.CreateCommentBySlug returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentBySlug, want) {
+	if !cmp.Equal(commentBySlug, want) {
 		t.Errorf("Teams.CreateCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
 
@@ -321,7 +322,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, &input) {
+		if !cmp.Equal(v, &input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -338,7 +339,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 		t.Errorf("Teams.EditCommentByID returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentByID, want) {
+	if !cmp.Equal(commentByID, want) {
 		t.Errorf("Teams.EditCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
@@ -350,7 +351,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 		t.Errorf("Teams.EditCommentBySlug returned error: %v", err)
 	}
 
-	if !reflect.DeepEqual(commentBySlug, want) {
+	if !cmp.Equal(commentBySlug, want) {
 		t.Errorf("Teams.EditCommentBySlug returned %+v, want %+v", commentBySlug, want)
 	}
 

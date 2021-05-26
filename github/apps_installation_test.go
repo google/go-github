@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
@@ -41,7 +42,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 	}
 
 	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repositories, want) {
+	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
 
@@ -82,7 +83,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	}
 
 	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repositories, want) {
+	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
 	}
 
@@ -117,7 +118,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
 	}
 

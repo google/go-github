@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_ListBlockedUsers(t *testing.T) {
@@ -34,7 +35,7 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 	}
 
 	want := []*User{{Login: String("octocat")}}
-	if !reflect.DeepEqual(blockedUsers, want) {
+	if !cmp.Equal(blockedUsers, want) {
 		t.Errorf("Users.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}
 

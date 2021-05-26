@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoryLicense_marshal(t *testing.T) {
@@ -129,7 +130,7 @@ func TestLicensesService_List(t *testing.T) {
 		URL:      String("https://api.github.com/licenses/mit"),
 		Featured: Bool(true),
 	}}
-	if !reflect.DeepEqual(licenses, want) {
+	if !cmp.Equal(licenses, want) {
 		t.Errorf("Licenses.List returned %+v, want %+v", licenses, want)
 	}
 
@@ -159,7 +160,7 @@ func TestLicensesService_Get(t *testing.T) {
 	}
 
 	want := &License{Key: String("mit"), Name: String("MIT")}
-	if !reflect.DeepEqual(license, want) {
+	if !cmp.Equal(license, want) {
 		t.Errorf("Licenses.Get returned %+v, want %+v", license, want)
 	}
 

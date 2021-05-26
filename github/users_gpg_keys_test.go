@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
@@ -32,7 +33,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
 
@@ -67,7 +68,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 	}
 
 	want := []*GPGKey{{ID: Int64(1), PrimaryKeyID: Int64(2)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
 }
@@ -97,7 +98,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 	}
 
 	want := &GPGKey{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", key, want)
 	}
 
@@ -150,7 +151,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 	}
 
 	want := &GPGKey{ID: Int64(1)}
-	if !reflect.DeepEqual(gpgKey, want) {
+	if !cmp.Equal(gpgKey, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", gpgKey, want)
 	}
 

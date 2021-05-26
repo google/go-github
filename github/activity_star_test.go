@@ -9,10 +9,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_ListStargazers(t *testing.T) {
@@ -36,7 +37,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 	}
 
 	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int64(1)}}}
-	if !reflect.DeepEqual(stargazers, want) {
+	if !cmp.Equal(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
 
@@ -72,7 +73,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
 
@@ -114,7 +115,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 	}
 
 	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(2)}}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
 
