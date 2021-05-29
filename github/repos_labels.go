@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 )
 
 func stringpointertostring(s *string) string {
@@ -22,91 +21,59 @@ func stringpointertostring(s *string) string {
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#list-labels-for-a-repository
 func (s *RepositoriesService) ListLabels(ctx context.Context, repo *Repository, opts *ListOptions) ([]*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels", stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name))
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
+	convertedService := &IssuesService{
+		client: s.client,
 	}
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var labels []*Label
-	resp, err := s.client.Do(ctx, req, &labels)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return labels, resp, nil
+	return convertedService.ListLabels(
+		ctx, stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), opts,
+	)
 }
 
 // GetLabel gets a single label.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#get-a-label
 func (s *RepositoriesService) GetLabel(ctx context.Context, repo *Repository, name string) (*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name)
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
+	convertedService := &IssuesService{
+		client: s.client,
 	}
-
-	label := new(Label)
-	resp, err := s.client.Do(ctx, req, label)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return label, resp, nil
+	return convertedService.GetLabel(
+		ctx, stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name,
+	)
 }
 
 // CreateLabel creates a new label on the specified repository.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#create-a-label
 func (s *RepositoriesService) CreateLabel(ctx context.Context, repo *Repository, label *Label) (*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels", stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name))
-	req, err := s.client.NewRequest("POST", u, label)
-	if err != nil {
-		return nil, nil, err
+	convertedService := &IssuesService{
+		client: s.client,
 	}
+	return convertedService.CreateLabel(
+		ctx, stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), label,
+	)
 
-	l := new(Label)
-	resp, err := s.client.Do(ctx, req, l)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return l, resp, nil
 }
 
 // EditLabel edits a label.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-a-label
 func (s *RepositoriesService) EditLabel(ctx context.Context, repo *Repository, name string, label *Label) (*Label, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name)
-	req, err := s.client.NewRequest("PATCH", u, label)
-	if err != nil {
-		return nil, nil, err
+	convertedService := &IssuesService{
+		client: s.client,
 	}
-
-	l := new(Label)
-	resp, err := s.client.Do(ctx, req, l)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return l, resp, nil
+	return convertedService.EditLabel(
+		ctx, stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name, label,
+	)
 }
 
 // DeleteLabel deletes a label.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#delete-a-label
 func (s *RepositoriesService) DeleteLabel(ctx context.Context, repo *Repository, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/labels/%v", stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name)
-	req, err := s.client.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return nil, err
+	convertedService := &IssuesService{
+		client: s.client,
 	}
-	return s.client.Do(ctx, req, nil)
+	return convertedService.DeleteLabel(
+		ctx, stringpointertostring(repo.Owner.Login), stringpointertostring(repo.Name), name,
+	)
 }
