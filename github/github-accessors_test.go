@@ -6079,6 +6079,16 @@ func TestInstallationPermissions_GetEmails(tt *testing.T) {
 	i.GetEmails()
 }
 
+func TestInstallationPermissions_GetEnvironments(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{Environments: &zeroValue}
+	i.GetEnvironments()
+	i = &InstallationPermissions{}
+	i.GetEnvironments()
+	i = nil
+	i.GetEnvironments()
+}
+
 func TestInstallationPermissions_GetFollowers(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{Followers: &zeroValue}
@@ -6169,6 +6179,26 @@ func TestInstallationPermissions_GetOrganizationProjects(tt *testing.T) {
 	i.GetOrganizationProjects()
 }
 
+func TestInstallationPermissions_GetOrganizationSecrets(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationSecrets: &zeroValue}
+	i.GetOrganizationSecrets()
+	i = &InstallationPermissions{}
+	i.GetOrganizationSecrets()
+	i = nil
+	i.GetOrganizationSecrets()
+}
+
+func TestInstallationPermissions_GetOrganizationSelfHostedRunners(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationSelfHostedRunners: &zeroValue}
+	i.GetOrganizationSelfHostedRunners()
+	i = &InstallationPermissions{}
+	i.GetOrganizationSelfHostedRunners()
+	i = nil
+	i.GetOrganizationSelfHostedRunners()
+}
+
 func TestInstallationPermissions_GetOrganizationUserBlocking(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{OrganizationUserBlocking: &zeroValue}
@@ -6239,6 +6269,36 @@ func TestInstallationPermissions_GetRepositoryProjects(tt *testing.T) {
 	i.GetRepositoryProjects()
 }
 
+func TestInstallationPermissions_GetSecrets(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{Secrets: &zeroValue}
+	i.GetSecrets()
+	i = &InstallationPermissions{}
+	i.GetSecrets()
+	i = nil
+	i.GetSecrets()
+}
+
+func TestInstallationPermissions_GetSecretScanningAlerts(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{SecretScanningAlerts: &zeroValue}
+	i.GetSecretScanningAlerts()
+	i = &InstallationPermissions{}
+	i.GetSecretScanningAlerts()
+	i = nil
+	i.GetSecretScanningAlerts()
+}
+
+func TestInstallationPermissions_GetSecurityEvents(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{SecurityEvents: &zeroValue}
+	i.GetSecurityEvents()
+	i = &InstallationPermissions{}
+	i.GetSecurityEvents()
+	i = nil
+	i.GetSecurityEvents()
+}
+
 func TestInstallationPermissions_GetSingleFile(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{SingleFile: &zeroValue}
@@ -6277,6 +6337,16 @@ func TestInstallationPermissions_GetVulnerabilityAlerts(tt *testing.T) {
 	i.GetVulnerabilityAlerts()
 	i = nil
 	i.GetVulnerabilityAlerts()
+}
+
+func TestInstallationPermissions_GetWorkflows(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{Workflows: &zeroValue}
+	i.GetWorkflows()
+	i = &InstallationPermissions{}
+	i.GetWorkflows()
+	i = nil
+	i.GetWorkflows()
 }
 
 func TestInstallationRepositoriesEvent_GetAction(tt *testing.T) {

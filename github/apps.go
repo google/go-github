@@ -55,37 +55,44 @@ type InstallationTokenOptions struct {
 // InstallationPermissions lists the repository and organization permissions for an installation.
 //
 // Permission names taken from:
-//   https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/permissions/
-//   https://developer.github.com/enterprise/v3/apps/permissions/
+//   https://docs.github.com/en/enterprise-server@3.0/rest/reference/apps#create-an-installation-access-token-for-an-app
+//   https://docs.github.com/en/rest/reference/apps#create-an-installation-access-token-for-an-app
 type InstallationPermissions struct {
-	Actions                     *string `json:"actions,omitempty"`
-	Administration              *string `json:"administration,omitempty"`
-	Blocking                    *string `json:"blocking,omitempty"`
-	Checks                      *string `json:"checks,omitempty"`
-	Contents                    *string `json:"contents,omitempty"`
-	ContentReferences           *string `json:"content_references,omitempty"`
-	Deployments                 *string `json:"deployments,omitempty"`
-	Emails                      *string `json:"emails,omitempty"`
-	Followers                   *string `json:"followers,omitempty"`
-	Issues                      *string `json:"issues,omitempty"`
-	Metadata                    *string `json:"metadata,omitempty"`
-	Members                     *string `json:"members,omitempty"`
-	OrganizationAdministration  *string `json:"organization_administration,omitempty"`
-	OrganizationHooks           *string `json:"organization_hooks,omitempty"`
-	OrganizationPlan            *string `json:"organization_plan,omitempty"`
-	OrganizationPreReceiveHooks *string `json:"organization_pre_receive_hooks,omitempty"`
-	OrganizationProjects        *string `json:"organization_projects,omitempty"`
-	OrganizationUserBlocking    *string `json:"organization_user_blocking,omitempty"`
-	Packages                    *string `json:"packages,omitempty"`
-	Pages                       *string `json:"pages,omitempty"`
-	PullRequests                *string `json:"pull_requests,omitempty"`
-	RepositoryHooks             *string `json:"repository_hooks,omitempty"`
-	RepositoryProjects          *string `json:"repository_projects,omitempty"`
-	RepositoryPreReceiveHooks   *string `json:"repository_pre_receive_hooks,omitempty"`
-	SingleFile                  *string `json:"single_file,omitempty"`
-	Statuses                    *string `json:"statuses,omitempty"`
-	TeamDiscussions             *string `json:"team_discussions,omitempty"`
-	VulnerabilityAlerts         *string `json:"vulnerability_alerts,omitempty"`
+	Actions                       *string `json:"actions,omitempty"`
+	Administration                *string `json:"administration,omitempty"`
+	Blocking                      *string `json:"blocking,omitempty"`
+	Checks                        *string `json:"checks,omitempty"`
+	Contents                      *string `json:"contents,omitempty"`
+	ContentReferences             *string `json:"content_references,omitempty"`
+	Deployments                   *string `json:"deployments,omitempty"`
+	Emails                        *string `json:"emails,omitempty"`
+	Environments                  *string `json:"environments,omitempty"`
+	Followers                     *string `json:"followers,omitempty"`
+	Issues                        *string `json:"issues,omitempty"`
+	Metadata                      *string `json:"metadata,omitempty"`
+	Members                       *string `json:"members,omitempty"`
+	OrganizationAdministration    *string `json:"organization_administration,omitempty"`
+	OrganizationHooks             *string `json:"organization_hooks,omitempty"`
+	OrganizationPlan              *string `json:"organization_plan,omitempty"`
+	OrganizationPreReceiveHooks   *string `json:"organization_pre_receive_hooks,omitempty"`
+	OrganizationProjects          *string `json:"organization_projects,omitempty"`
+	OrganizationSecrets           *string `json:"organization_secrets,omitempty"`
+	OrganizationSelfHostedRunners *string `json:"organization_self_hosted_runners,omitempty"`
+	OrganizationUserBlocking      *string `json:"organization_user_blocking,omitempty"`
+	Packages                      *string `json:"packages,omitempty"`
+	Pages                         *string `json:"pages,omitempty"`
+	PullRequests                  *string `json:"pull_requests,omitempty"`
+	RepositoryHooks               *string `json:"repository_hooks,omitempty"`
+	RepositoryProjects            *string `json:"repository_projects,omitempty"`
+	RepositoryPreReceiveHooks     *string `json:"repository_pre_receive_hooks,omitempty"`
+	Secrets                       *string `json:"secrets,omitempty"`
+	SecretScanningAlerts          *string `json:"secret_scanning_alerts,omitempty"`
+	SecurityEvents                *string `json:"security_events,omitempty"`
+	SingleFile                    *string `json:"single_file,omitempty"`
+	Statuses                      *string `json:"statuses,omitempty"`
+	TeamDiscussions               *string `json:"team_discussions,omitempty"`
+	VulnerabilityAlerts           *string `json:"vulnerability_alerts,omitempty"`
+	Workflows                     *string `json:"workflows,omitempty"`
 }
 
 // Installation represents a GitHub Apps installation.
