@@ -466,8 +466,9 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 		fmt.Fprintf(w, `{"total_count":1,"repositories":[{"id":1}]}`)
 	})
 
+	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	repos, _, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME")
+	repos, _, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 	if err != nil {
 		t.Errorf("Actions.ListSelectedReposForOrgSecret returned error: %v", err)
 	}
@@ -484,12 +485,12 @@ func TestActionsService_ListSelectedReposForOrgSecret(t *testing.T) {
 
 	const methodName = "ListSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListSelectedReposForOrgSecret(ctx, "\n", "\n")
+		_, _, err = client.Actions.ListSelectedReposForOrgSecret(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME")
+		got, resp, err := client.Actions.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
