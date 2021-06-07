@@ -14764,6 +14764,14 @@ func (t *TemplateRepoRequest) GetDescription() string {
 	return *t.Description
 }
 
+// GetIncludeAllBranches returns the IncludeAllBranches field if it's non-nil, zero value otherwise.
+func (t *TemplateRepoRequest) GetIncludeAllBranches() bool {
+	if t == nil || t.IncludeAllBranches == nil {
+		return false
+	}
+	return *t.IncludeAllBranches
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (t *TemplateRepoRequest) GetName() string {
 	if t == nil || t.Name == nil {

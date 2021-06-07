@@ -17292,6 +17292,16 @@ func TestTemplateRepoRequest_GetDescription(tt *testing.T) {
 	t.GetDescription()
 }
 
+func TestTemplateRepoRequest_GetIncludeAllBranches(tt *testing.T) {
+	var zeroValue bool
+	t := &TemplateRepoRequest{IncludeAllBranches: &zeroValue}
+	t.GetIncludeAllBranches()
+	t = &TemplateRepoRequest{}
+	t.GetIncludeAllBranches()
+	t = nil
+	t.GetIncludeAllBranches()
+}
+
 func TestTemplateRepoRequest_GetName(tt *testing.T) {
 	var zeroValue string
 	t := &TemplateRepoRequest{Name: &zeroValue}
