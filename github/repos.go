@@ -385,7 +385,8 @@ type TemplateRepoRequest struct {
 	Owner       *string `json:"owner,omitempty"`
 	Description *string `json:"description,omitempty"`
 
-	Private *bool `json:"private,omitempty"`
+	IncludeAllBranches *bool `json:"include_all_branches,omitempty"`
+	Private            *bool `json:"private,omitempty"`
 }
 
 // CreateFromTemplate generates a repository from a template.
