@@ -17471,6 +17471,16 @@ func TestTimeline_GetSource(tt *testing.T) {
 	t.GetSource()
 }
 
+func TestTimeline_GetState(tt *testing.T) {
+	var zeroValue string
+	t := &Timeline{State: &zeroValue}
+	t.GetState()
+	t = &Timeline{}
+	t.GetState()
+	t = nil
+	t.GetState()
+}
+
 func TestTimeline_GetURL(tt *testing.T) {
 	var zeroValue string
 	t := &Timeline{URL: &zeroValue}
