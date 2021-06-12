@@ -35,7 +35,7 @@ Alternatively the same can be achieved if you use import in a package:
 import "github.com/google/go-github/v35/github"
 ```
 
-and run `go get` without paramters.
+and run `go get` without parameters.
 
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
