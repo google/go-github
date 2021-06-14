@@ -80,6 +80,13 @@ func (p PullRequest) String() string {
 	return Stringify(p)
 }
 
+type PullRequestAutoMerge struct {
+	EnabledBy     *User   `json:"enabled_by,omitempty"`
+	MergeMethod   *string `json:"merge_method,omitempty"`
+	CommitTitle   *string `json:"commit_title,omitempty"`
+	CommitMessage *string `json:"commit_message,omitempty"`
+}
+
 // PRLink represents a single link object from GitHub pull request _links.
 type PRLink struct {
 	HRef *string `json:"href,omitempty"`
