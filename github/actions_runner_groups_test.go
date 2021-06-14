@@ -348,7 +348,7 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 	})
 }
 
-func TestActionsService_ListRunerGroupRunners(t *testing.T) {
+func TestActionsService_ListRunnerGroupRunners(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -360,9 +360,9 @@ func TestActionsService_ListRunerGroupRunners(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	runners, _, err := client.Actions.ListRunerGroupRunners(ctx, "o", 2, opts)
+	runners, _, err := client.Actions.ListRunnerGroupRunners(ctx, "o", 2, opts)
 	if err != nil {
-		t.Errorf("Actions.ListRunerGroupRunners returned error: %v", err)
+		t.Errorf("Actions.ListRunnerGroupRunners returned error: %v", err)
 	}
 
 	want := &Runners{
@@ -373,17 +373,17 @@ func TestActionsService_ListRunerGroupRunners(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(runners, want) {
-		t.Errorf("Actions.ListRunerGroupRunners returned %+v, want %+v", runners, want)
+		t.Errorf("Actions.ListRunnerGroupRunners returned %+v, want %+v", runners, want)
 	}
 
-	const methodName = "ListRunerGroupRunners"
+	const methodName = "ListRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListRunerGroupRunners(ctx, "\n", 2, opts)
+		_, _, err = client.Actions.ListRunnerGroupRunners(ctx, "\n", 2, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListRunerGroupRunners(ctx, "o", 2, opts)
+		got, resp, err := client.Actions.ListRunnerGroupRunners(ctx, "o", 2, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -391,7 +391,7 @@ func TestActionsService_ListRunerGroupRunners(t *testing.T) {
 	})
 }
 
-func TestActionsService_SetRunerGroupRunners(t *testing.T) {
+func TestActionsService_SetRunnerGroupRunners(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -407,23 +407,23 @@ func TestActionsService_SetRunerGroupRunners(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	_, err := client.Actions.SetRunerGroupRunners(ctx, "o", 2, req)
+	_, err := client.Actions.SetRunnerGroupRunners(ctx, "o", 2, req)
 	if err != nil {
-		t.Errorf("Actions.SetRunerGroupRunners returned error: %v", err)
+		t.Errorf("Actions.SetRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "SetRunerGroupRunners"
+	const methodName = "SetRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetRunerGroupRunners(ctx, "\n", 2, req)
+		_, err = client.Actions.SetRunnerGroupRunners(ctx, "\n", 2, req)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetRunerGroupRunners(ctx, "o", 2, req)
+		return client.Actions.SetRunnerGroupRunners(ctx, "o", 2, req)
 	})
 }
 
-func TestActionsService_AddRunerGroupRunners(t *testing.T) {
+func TestActionsService_AddRunnerGroupRunners(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -432,23 +432,23 @@ func TestActionsService_AddRunerGroupRunners(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.AddRunerGroupRunners(ctx, "o", 2, 42)
+	_, err := client.Actions.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
-		t.Errorf("Actions.AddRunerGroupRunners returned error: %v", err)
+		t.Errorf("Actions.AddRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "AddRunerGroupRunners"
+	const methodName = "AddRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddRunerGroupRunners(ctx, "\n", 2, 42)
+		_, err = client.Actions.AddRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddRunerGroupRunners(ctx, "o", 2, 42)
+		return client.Actions.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
 
-func TestActionsService_RemoveRunerGroupRunners(t *testing.T) {
+func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -457,18 +457,18 @@ func TestActionsService_RemoveRunerGroupRunners(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.RemoveRunerGroupRunners(ctx, "o", 2, 42)
+	_, err := client.Actions.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
-		t.Errorf("Actions.RemoveRunerGroupRunners returned error: %v", err)
+		t.Errorf("Actions.RemoveRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "RemoveRunerGroupRunners"
+	const methodName = "RemoveRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveRunerGroupRunners(ctx, "\n", 2, 42)
+		_, err = client.Actions.RemoveRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveRunerGroupRunners(ctx, "o", 2, 42)
+		return client.Actions.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
