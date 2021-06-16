@@ -14602,6 +14602,16 @@ func TestRepository_GetOpenIssuesCount(tt *testing.T) {
 	r.GetOpenIssuesCount()
 }
 
+func TestRepository_GetOpenIssues(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{OpenIssues: &zeroValue}
+	r.GetOpenIssues()
+	r = &Repository{}
+	r.GetOpenIssues()
+	r = nil
+	r.GetOpenIssues()
+}
+
 func TestRepository_GetOrganization(tt *testing.T) {
 	r := &Repository{}
 	r.GetOrganization()
@@ -14855,6 +14865,16 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 	r = nil
 	r.GetWatchersCount()
+}
+
+func TestRepository_GetWatchers(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{Watchers: &zeroValue}
+	r.GetWatchers()
+	r = &Repository{}
+	r.GetWatchers()
+	r = nil
+	r.GetWatchers()
 }
 
 func TestRepositoryComment_GetBody(tt *testing.T) {
