@@ -12460,20 +12460,20 @@ func (r *Repository) GetNotificationsURL() string {
 	return *r.NotificationsURL
 }
 
-// GetOpenIssuesCount returns the OpenIssuesCount field if it's non-nil, zero value otherwise.
-func (r *Repository) GetOpenIssuesCount() int {
-	if r == nil || r.OpenIssuesCount == nil {
-		return 0
-	}
-	return *r.OpenIssuesCount
-}
-
 // GetOpenIssues returns the OpenIssues field if it's non-nil, zero value otherwise.
 func (r *Repository) GetOpenIssues() int {
 	if r == nil || r.OpenIssues == nil {
 		return 0
 	}
 	return *r.OpenIssues
+}
+
+// GetOpenIssuesCount returns the OpenIssuesCount field if it's non-nil, zero value otherwise.
+func (r *Repository) GetOpenIssuesCount() int {
+	if r == nil || r.OpenIssuesCount == nil {
+		return 0
+	}
+	return *r.OpenIssuesCount
 }
 
 // GetOrganization returns the Organization field.
@@ -12684,20 +12684,20 @@ func (r *Repository) GetVisibility() string {
 	return *r.Visibility
 }
 
-// GetWatchersCount returns the WatchersCount field if it's non-nil, zero value otherwise.
-func (r *Repository) GetWatchersCount() int {
-	if r == nil || r.WatchersCount == nil {
-		return 0
-	}
-	return *r.WatchersCount
-}
-
 // GetWatchers returns the Watchers field if it's non-nil, zero value otherwise.
 func (r *Repository) GetWatchers() int {
 	if r == nil || r.Watchers == nil {
 		return 0
 	}
 	return *r.Watchers
+}
+
+// GetWatchersCount returns the WatchersCount field if it's non-nil, zero value otherwise.
+func (r *Repository) GetWatchersCount() int {
+	if r == nil || r.WatchersCount == nil {
+		return 0
+	}
+	return *r.WatchersCount
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

@@ -14592,16 +14592,6 @@ func TestRepository_GetNotificationsURL(tt *testing.T) {
 	r.GetNotificationsURL()
 }
 
-func TestRepository_GetOpenIssuesCount(tt *testing.T) {
-	var zeroValue int
-	r := &Repository{OpenIssuesCount: &zeroValue}
-	r.GetOpenIssuesCount()
-	r = &Repository{}
-	r.GetOpenIssuesCount()
-	r = nil
-	r.GetOpenIssuesCount()
-}
-
 func TestRepository_GetOpenIssues(tt *testing.T) {
 	var zeroValue int
 	r := &Repository{OpenIssues: &zeroValue}
@@ -14610,6 +14600,16 @@ func TestRepository_GetOpenIssues(tt *testing.T) {
 	r.GetOpenIssues()
 	r = nil
 	r.GetOpenIssues()
+}
+
+func TestRepository_GetOpenIssuesCount(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{OpenIssuesCount: &zeroValue}
+	r.GetOpenIssuesCount()
+	r = &Repository{}
+	r.GetOpenIssuesCount()
+	r = nil
+	r.GetOpenIssuesCount()
 }
 
 func TestRepository_GetOrganization(tt *testing.T) {
@@ -14857,16 +14857,6 @@ func TestRepository_GetVisibility(tt *testing.T) {
 	r.GetVisibility()
 }
 
-func TestRepository_GetWatchersCount(tt *testing.T) {
-	var zeroValue int
-	r := &Repository{WatchersCount: &zeroValue}
-	r.GetWatchersCount()
-	r = &Repository{}
-	r.GetWatchersCount()
-	r = nil
-	r.GetWatchersCount()
-}
-
 func TestRepository_GetWatchers(tt *testing.T) {
 	var zeroValue int
 	r := &Repository{Watchers: &zeroValue}
@@ -14875,6 +14865,16 @@ func TestRepository_GetWatchers(tt *testing.T) {
 	r.GetWatchers()
 	r = nil
 	r.GetWatchers()
+}
+
+func TestRepository_GetWatchersCount(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{WatchersCount: &zeroValue}
+	r.GetWatchersCount()
+	r = &Repository{}
+	r.GetWatchersCount()
+	r = nil
+	r.GetWatchersCount()
 }
 
 func TestRepositoryComment_GetBody(tt *testing.T) {
