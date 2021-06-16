@@ -896,7 +896,7 @@ type RepositoryVulnerabilityAlertEvent struct {
 		AffectedPackageName      *string    `json:"affected_package_name,omitempty"`
 		ExternalReference        *string    `json:"external_reference,omitempty"`
 		ExternalIdentifier       *string    `json:"external_identifier,omitempty"`
-		GithubSecurityAdvisoryID *string    `json:"ghsa_id,omitempty"`
+		GitHubSecurityAdvisoryID *string    `json:"ghsa_id,omitempty"`
 		Severity                 *string    `json:"severity,omitempty"`
 		CreatedAt                *Timestamp `json:"created_at,omitempty"`
 		FixedIn                  *string    `json:"fixed_in,omitempty"`
