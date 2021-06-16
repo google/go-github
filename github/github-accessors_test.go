@@ -11671,6 +11671,13 @@ func TestPullRequest_GetAuthorAssociation(tt *testing.T) {
 	p.GetAuthorAssociation()
 }
 
+func TestPullRequest_GetAutoMerge(tt *testing.T) {
+	p := &PullRequest{}
+	p.GetAutoMerge()
+	p = nil
+	p.GetAutoMerge()
+}
+
 func TestPullRequest_GetBase(tt *testing.T) {
 	p := &PullRequest{}
 	p.GetBase()
@@ -12041,6 +12048,43 @@ func TestPullRequest_GetUser(tt *testing.T) {
 	p.GetUser()
 	p = nil
 	p.GetUser()
+}
+
+func TestPullRequestAutoMerge_GetCommitMessage(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestAutoMerge{CommitMessage: &zeroValue}
+	p.GetCommitMessage()
+	p = &PullRequestAutoMerge{}
+	p.GetCommitMessage()
+	p = nil
+	p.GetCommitMessage()
+}
+
+func TestPullRequestAutoMerge_GetCommitTitle(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestAutoMerge{CommitTitle: &zeroValue}
+	p.GetCommitTitle()
+	p = &PullRequestAutoMerge{}
+	p.GetCommitTitle()
+	p = nil
+	p.GetCommitTitle()
+}
+
+func TestPullRequestAutoMerge_GetEnabledBy(tt *testing.T) {
+	p := &PullRequestAutoMerge{}
+	p.GetEnabledBy()
+	p = nil
+	p.GetEnabledBy()
+}
+
+func TestPullRequestAutoMerge_GetMergeMethod(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestAutoMerge{MergeMethod: &zeroValue}
+	p.GetMergeMethod()
+	p = &PullRequestAutoMerge{}
+	p.GetMergeMethod()
+	p = nil
+	p.GetMergeMethod()
 }
 
 func TestPullRequestBranch_GetLabel(tt *testing.T) {
