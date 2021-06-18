@@ -886,7 +886,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
+	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false)
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -908,16 +908,8 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 
 	const methodName = "GetBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n")
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", false)
 		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
 	})
 }
 
