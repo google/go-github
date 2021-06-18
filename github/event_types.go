@@ -248,12 +248,18 @@ type EditSHA struct {
 
 // ProjectChange represents the changes when a project has been edited.
 type ProjectChange struct {
-	Name *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"name,omitempty"`
-	Body *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"body,omitempty"`
+	Name *ProjectName `json:"name,omitempty"`
+	Body *ProjectBody `json:"body,omitempty"`
+}
+
+// ProjectName represents a project name change.
+type ProjectName struct {
+	From *string `json:"from,omitempty"`
+}
+
+// ProjectBody represents a project body change.
+type ProjectBody struct {
+	From *string `json:"from,omitempty"`
 }
 
 // ProjectCardChange represents the changes when a project card has been edited.
