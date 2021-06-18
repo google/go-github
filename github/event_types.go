@@ -236,12 +236,12 @@ type EditBase struct {
 	SHA *EditSHA `json:"sha,omitempty"`
 }
 
-// EditBase represents a ref change of a pull-request.
+// EditRef represents a ref change of a pull-request.
 type EditRef struct {
 	From *string `json:"from,omitempty"`
 }
 
-// EditBase represents a sha change of a pull-request.
+// EditSHA represents a sha change of a pull-request.
 type EditSHA struct {
 	From *string `json:"from,omitempty"`
 }
