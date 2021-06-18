@@ -284,24 +284,42 @@ type ProjectColumnName struct {
 
 // TeamChange represents the changes when a team has been edited.
 type TeamChange struct {
-	Description *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"description,omitempty"`
-	Name *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"name,omitempty"`
-	Privacy *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"privacy,omitempty"`
-	Repository *struct {
-		Permissions *struct {
-			From *struct {
-				Admin *bool `json:"admin,omitempty"`
-				Pull  *bool `json:"pull,omitempty"`
-				Push  *bool `json:"push,omitempty"`
-			} `json:"from,omitempty"`
-		} `json:"permissions,omitempty"`
-	} `json:"repository,omitempty"`
+	Description *TeamDescription `json:"description,omitempty"`
+	Name        *TeamName        `json:"name,omitempty"`
+	Privacy     *TeamPrivacy     `json:"privacy,omitempty"`
+	Repository  *TeamRepository  `json:"repository,omitempty"`
+}
+
+// TeamDescription represents a team description change.
+type TeamDescription struct {
+	From *string `json:"from,omitempty"`
+}
+
+// TeamName represents a team name change.
+type TeamName struct {
+	From *string `json:"from,omitempty"`
+}
+
+// TeamPrivacy represents a team privacy change.
+type TeamPrivacy struct {
+	From *string `json:"from,omitempty"`
+}
+
+// TeamPrivacy represents a team repository permission change.
+type TeamRepository struct {
+	Permissions *TeamPermissions `json:"permissions,omitempty"`
+}
+
+// TeamPermissions represents a team permission change.
+type TeamPermissions struct {
+	From *TeamPermissionsFrom `json:"from,omitempty"`
+}
+
+// TeamPermissionsFrom represents a team permission change.
+type TeamPermissionsFrom struct {
+	Admin *bool `json:"admin,omitempty"`
+	Pull  *bool `json:"pull,omitempty"`
+	Push  *bool `json:"push,omitempty"`
 }
 
 // InstallationEvent is triggered when a GitHub App has been installed, uninstalled, suspend, unsuspended
