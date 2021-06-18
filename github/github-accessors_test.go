@@ -17089,6 +17089,44 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
+func TestTeamChange_GetDescription(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetDescription()
+	t = nil
+	t.GetDescription()
+}
+
+func TestTeamChange_GetName(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetName()
+	t = nil
+	t.GetName()
+}
+
+func TestTeamChange_GetPrivacy(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetPrivacy()
+	t = nil
+	t.GetPrivacy()
+}
+
+func TestTeamChange_GetRepository(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetRepository()
+	t = nil
+	t.GetRepository()
+}
+
+func TestTeamDescription_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamDescription{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamDescription{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
 func TestTeamDiscussion_GetAuthor(tt *testing.T) {
 	t := &TeamDiscussion{}
 	t.GetAuthor()
@@ -17415,6 +17453,63 @@ func TestTeamLDAPMapping_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestTeamName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamName{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamName{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
+func TestTeamPermissions_GetFrom(tt *testing.T) {
+	t := &TeamPermissions{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
+func TestTeamPermissionsFrom_GetAdmin(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Admin: &zeroValue}
+	t.GetAdmin()
+	t = &TeamPermissionsFrom{}
+	t.GetAdmin()
+	t = nil
+	t.GetAdmin()
+}
+
+func TestTeamPermissionsFrom_GetPull(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Pull: &zeroValue}
+	t.GetPull()
+	t = &TeamPermissionsFrom{}
+	t.GetPull()
+	t = nil
+	t.GetPull()
+}
+
+func TestTeamPermissionsFrom_GetPush(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Push: &zeroValue}
+	t.GetPush()
+	t = &TeamPermissionsFrom{}
+	t.GetPush()
+	t = nil
+	t.GetPush()
+}
+
+func TestTeamPrivacy_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamPrivacy{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamPrivacy{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
 func TestTeamProjectOptions_GetPermission(tt *testing.T) {
 	var zeroValue string
 	t := &TeamProjectOptions{Permission: &zeroValue}
@@ -17423,6 +17518,13 @@ func TestTeamProjectOptions_GetPermission(tt *testing.T) {
 	t.GetPermission()
 	t = nil
 	t.GetPermission()
+}
+
+func TestTeamRepository_GetPermissions(tt *testing.T) {
+	t := &TeamRepository{}
+	t.GetPermissions()
+	t = nil
+	t.GetPermissions()
 }
 
 func TestTemplateRepoRequest_GetDescription(tt *testing.T) {
