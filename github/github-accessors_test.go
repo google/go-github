@@ -11388,6 +11388,13 @@ func TestProjectColumn_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectColumnChange_GetName(tt *testing.T) {
+	p := &ProjectColumnChange{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
 func TestProjectColumnEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectColumnEvent{Action: &zeroValue}
@@ -11448,6 +11455,16 @@ func TestProjectColumnEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestProjectColumnName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectColumnName{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectColumnName{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
 }
 
 func TestProjectEvent_GetAction(tt *testing.T) {
