@@ -15888,6 +15888,93 @@ func TestRepositoryTag_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{AffectedPackageName: &zeroValue}
+	r.GetAffectedPackageName()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetAffectedPackageName()
+	r = nil
+	r.GetAffectedPackageName()
+}
+
+func TestRepositoryVulnerabilityAlert_GetAffectedRange(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{AffectedRange: &zeroValue}
+	r.GetAffectedRange()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetAffectedRange()
+	r = nil
+	r.GetAffectedRange()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepositoryVulnerabilityAlert{DismissedAt: &zeroValue}
+	r.GetDismissedAt()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetDismissedAt()
+	r = nil
+	r.GetDismissedAt()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismisser(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlert{}
+	r.GetDismisser()
+	r = nil
+	r.GetDismisser()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismissReason(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{DismissReason: &zeroValue}
+	r.GetDismissReason()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetDismissReason()
+	r = nil
+	r.GetDismissReason()
+}
+
+func TestRepositoryVulnerabilityAlert_GetExternalIdentifier(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{ExternalIdentifier: &zeroValue}
+	r.GetExternalIdentifier()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetExternalIdentifier()
+	r = nil
+	r.GetExternalIdentifier()
+}
+
+func TestRepositoryVulnerabilityAlert_GetExternalReference(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{ExternalReference: &zeroValue}
+	r.GetExternalReference()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetExternalReference()
+	r = nil
+	r.GetExternalReference()
+}
+
+func TestRepositoryVulnerabilityAlert_GetFixedIn(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{FixedIn: &zeroValue}
+	r.GetFixedIn()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetFixedIn()
+	r = nil
+	r.GetFixedIn()
+}
+
+func TestRepositoryVulnerabilityAlert_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RepositoryVulnerabilityAlert{ID: &zeroValue}
+	r.GetID()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryVulnerabilityAlertEvent{Action: &zeroValue}
@@ -15896,6 +15983,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestRepositoryVulnerabilityAlertEvent_GetAlert(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetAlert()
+	r = nil
+	r.GetAlert()
 }
 
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
