@@ -3620,6 +3620,78 @@ func (d *DraftReviewComment) GetStartSide() string {
 	return *d.StartSide
 }
 
+// GetRef returns the Ref field.
+func (e *EditBase) GetRef() *EditRef {
+	if e == nil {
+		return nil
+	}
+	return e.Ref
+}
+
+// GetSHA returns the SHA field.
+func (e *EditBase) GetSHA() *EditSHA {
+	if e == nil {
+		return nil
+	}
+	return e.SHA
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditBody) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
+}
+
+// GetBase returns the Base field.
+func (e *EditChange) GetBase() *EditBase {
+	if e == nil {
+		return nil
+	}
+	return e.Base
+}
+
+// GetBody returns the Body field.
+func (e *EditChange) GetBody() *EditBody {
+	if e == nil {
+		return nil
+	}
+	return e.Body
+}
+
+// GetTitle returns the Title field.
+func (e *EditChange) GetTitle() *EditTitle {
+	if e == nil {
+		return nil
+	}
+	return e.Title
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditRef) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditSHA) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditTitle) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (e *Enterprise) GetAvatarURL() string {
 	if e == nil || e.AvatarURL == nil {

@@ -215,20 +215,35 @@ type GollumEvent struct {
 // EditChange represents the changes when an issue, pull request, or comment has
 // been edited.
 type EditChange struct {
-	Title *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"title,omitempty"`
-	Body *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"body,omitempty"`
-	Base *struct {
-		Ref *struct {
-			From *string `json:"from,omitempty"`
-		} `json:"ref,omitempty"`
-		SHA *struct {
-			From *string `json:"from,omitempty"`
-		} `json:"sha,omitempty"`
-	} `json:"base,omitempty"`
+	Title *EditTitle `json:"title,omitempty"`
+	Body  *EditBody  `json:"body,omitempty"`
+	Base  *EditBase  `json:"base,omitempty"`
+}
+
+// EditTitle represents a pull-request title change.
+type EditTitle struct {
+	From *string `json:"from,omitempty"`
+}
+
+// EditBody represents a change of pull-request body.
+type EditBody struct {
+	From *string `json:"from,omitempty"`
+}
+
+// EditBase represents the change of a pull-request base branch.
+type EditBase struct {
+	Ref *EditRef `json:"ref,omitempty"`
+	SHA *EditSHA `json:"sha,omitempty"`
+}
+
+// EditBase represents a ref change of a pull-request.
+type EditRef struct {
+	From *string `json:"from,omitempty"`
+}
+
+// EditBase represents a sha change of a pull-request.
+type EditSHA struct {
+	From *string `json:"from,omitempty"`
 }
 
 // ProjectChange represents the changes when a project has been edited.

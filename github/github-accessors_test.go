@@ -4244,6 +4244,81 @@ func TestDraftReviewComment_GetStartSide(tt *testing.T) {
 	d.GetStartSide()
 }
 
+func TestEditBase_GetRef(tt *testing.T) {
+	e := &EditBase{}
+	e.GetRef()
+	e = nil
+	e.GetRef()
+}
+
+func TestEditBase_GetSHA(tt *testing.T) {
+	e := &EditBase{}
+	e.GetSHA()
+	e = nil
+	e.GetSHA()
+}
+
+func TestEditBody_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditBody{From: &zeroValue}
+	e.GetFrom()
+	e = &EditBody{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditChange_GetBase(tt *testing.T) {
+	e := &EditChange{}
+	e.GetBase()
+	e = nil
+	e.GetBase()
+}
+
+func TestEditChange_GetBody(tt *testing.T) {
+	e := &EditChange{}
+	e.GetBody()
+	e = nil
+	e.GetBody()
+}
+
+func TestEditChange_GetTitle(tt *testing.T) {
+	e := &EditChange{}
+	e.GetTitle()
+	e = nil
+	e.GetTitle()
+}
+
+func TestEditRef_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditRef{From: &zeroValue}
+	e.GetFrom()
+	e = &EditRef{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditSHA_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditSHA{From: &zeroValue}
+	e.GetFrom()
+	e = &EditSHA{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditTitle_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditTitle{From: &zeroValue}
+	e.GetFrom()
+	e = &EditTitle{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
 func TestEnterprise_GetAvatarURL(tt *testing.T) {
 	var zeroValue string
 	e := &Enterprise{AvatarURL: &zeroValue}
