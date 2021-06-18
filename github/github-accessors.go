@@ -13588,12 +13588,92 @@ func (r *RepositoryTag) GetZipballURL() string {
 	return *r.ZipballURL
 }
 
+// GetAffectedPackageName returns the AffectedPackageName field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetAffectedPackageName() string {
+	if r == nil || r.AffectedPackageName == nil {
+		return ""
+	}
+	return *r.AffectedPackageName
+}
+
+// GetAffectedRange returns the AffectedRange field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetAffectedRange() string {
+	if r == nil || r.AffectedRange == nil {
+		return ""
+	}
+	return *r.AffectedRange
+}
+
+// GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetDismissedAt() Timestamp {
+	if r == nil || r.DismissedAt == nil {
+		return Timestamp{}
+	}
+	return *r.DismissedAt
+}
+
+// GetDismisser returns the Dismisser field.
+func (r *RepositoryVulnerabilityAlert) GetDismisser() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Dismisser
+}
+
+// GetDismissReason returns the DismissReason field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetDismissReason() string {
+	if r == nil || r.DismissReason == nil {
+		return ""
+	}
+	return *r.DismissReason
+}
+
+// GetExternalIdentifier returns the ExternalIdentifier field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetExternalIdentifier() string {
+	if r == nil || r.ExternalIdentifier == nil {
+		return ""
+	}
+	return *r.ExternalIdentifier
+}
+
+// GetExternalReference returns the ExternalReference field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetExternalReference() string {
+	if r == nil || r.ExternalReference == nil {
+		return ""
+	}
+	return *r.ExternalReference
+}
+
+// GetFixedIn returns the FixedIn field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetFixedIn() string {
+	if r == nil || r.FixedIn == nil {
+		return ""
+	}
+	return *r.FixedIn
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RepositoryVulnerabilityAlert) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (r *RepositoryVulnerabilityAlertEvent) GetAction() string {
 	if r == nil || r.Action == nil {
 		return ""
 	}
 	return *r.Action
+}
+
+// GetAlert returns the Alert field.
+func (r *RepositoryVulnerabilityAlertEvent) GetAlert() *RepositoryVulnerabilityAlert {
+	if r == nil {
+		return nil
+	}
+	return r.Alert
 }
 
 // GetRepository returns the Repository field.
