@@ -9388,6 +9388,14 @@ func (p *Project) GetURL() string {
 	return *p.URL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (p *ProjectBody) GetFrom() string {
+	if p == nil || p.From == nil {
+		return ""
+	}
+	return *p.From
+}
+
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
 func (p *ProjectCard) GetArchived() bool {
 	if p == nil || p.Archived == nil {
@@ -9588,6 +9596,22 @@ func (p *ProjectCardOptions) GetArchived() bool {
 	return *p.Archived
 }
 
+// GetBody returns the Body field.
+func (p *ProjectChange) GetBody() *ProjectBody {
+	if p == nil {
+		return nil
+	}
+	return p.Body
+}
+
+// GetName returns the Name field.
+func (p *ProjectChange) GetName() *ProjectName {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
 // GetPermission returns the Permission field if it's non-nil, zero value otherwise.
 func (p *ProjectCollaboratorOptions) GetPermission() string {
 	if p == nil || p.Permission == nil {
@@ -9778,6 +9802,14 @@ func (p *ProjectEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (p *ProjectName) GetFrom() string {
+	if p == nil || p.From == nil {
+		return ""
+	}
+	return *p.From
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

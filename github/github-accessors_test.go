@@ -11028,6 +11028,16 @@ func TestProject_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectBody_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectBody{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectBody{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
+}
+
 func TestProjectCard_GetArchived(tt *testing.T) {
 	var zeroValue bool
 	p := &ProjectCard{Archived: &zeroValue}
@@ -11257,6 +11267,20 @@ func TestProjectCardOptions_GetArchived(tt *testing.T) {
 	p.GetArchived()
 }
 
+func TestProjectChange_GetBody(tt *testing.T) {
+	p := &ProjectChange{}
+	p.GetBody()
+	p = nil
+	p.GetBody()
+}
+
+func TestProjectChange_GetName(tt *testing.T) {
+	p := &ProjectChange{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
 func TestProjectCollaboratorOptions_GetPermission(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectCollaboratorOptions{Permission: &zeroValue}
@@ -11459,6 +11483,16 @@ func TestProjectEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestProjectName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectName{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectName{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
 }
 
 func TestProjectOptions_GetBody(tt *testing.T) {
