@@ -274,9 +274,12 @@ type ProjectCardNote struct {
 
 // ProjectColumnChange represents the changes when a project column has been edited.
 type ProjectColumnChange struct {
-	Name *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"name,omitempty"`
+	Name *ProjectColumnName `json:"name,omitempty"`
+}
+
+// ProjectColumnName represents a project column name change.
+type ProjectColumnName struct {
+	From *string `json:"from,omitempty"`
 }
 
 // TeamChange represents the changes when a team has been edited.

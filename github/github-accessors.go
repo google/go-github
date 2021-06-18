@@ -9700,6 +9700,14 @@ func (p *ProjectColumn) GetURL() string {
 	return *p.URL
 }
 
+// GetName returns the Name field.
+func (p *ProjectColumnChange) GetName() *ProjectColumnName {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *ProjectColumnEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -9762,6 +9770,14 @@ func (p *ProjectColumnEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (p *ProjectColumnName) GetFrom() string {
+	if p == nil || p.From == nil {
+		return ""
+	}
+	return *p.From
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
