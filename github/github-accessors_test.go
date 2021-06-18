@@ -11185,6 +11185,13 @@ func TestProjectCard_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectCardChange_GetNote(tt *testing.T) {
+	p := &ProjectCardChange{}
+	p.GetNote()
+	p = nil
+	p.GetNote()
+}
+
 func TestProjectCardEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectCardEvent{Action: &zeroValue}
@@ -11255,6 +11262,16 @@ func TestProjectCardListOptions_GetArchivedState(tt *testing.T) {
 	p.GetArchivedState()
 	p = nil
 	p.GetArchivedState()
+}
+
+func TestProjectCardNote_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectCardNote{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectCardNote{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
 }
 
 func TestProjectCardOptions_GetArchived(tt *testing.T) {

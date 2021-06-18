@@ -264,9 +264,12 @@ type ProjectBody struct {
 
 // ProjectCardChange represents the changes when a project card has been edited.
 type ProjectCardChange struct {
-	Note *struct {
-		From *string `json:"from,omitempty"`
-	} `json:"note,omitempty"`
+	Note *ProjectCardNote `json:"note,omitempty"`
+}
+
+// ProjectCardNote represents a change of a note of a project card.
+type ProjectCardNote struct {
+	From *string `json:"from,omitempty"`
 }
 
 // ProjectColumnChange represents the changes when a project column has been edited.

@@ -9516,6 +9516,14 @@ func (p *ProjectCard) GetURL() string {
 	return *p.URL
 }
 
+// GetNote returns the Note field.
+func (p *ProjectCardChange) GetNote() *ProjectCardNote {
+	if p == nil {
+		return nil
+	}
+	return p.Note
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *ProjectCardEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -9586,6 +9594,14 @@ func (p *ProjectCardListOptions) GetArchivedState() string {
 		return ""
 	}
 	return *p.ArchivedState
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (p *ProjectCardNote) GetFrom() string {
+	if p == nil || p.From == nil {
+		return ""
+	}
+	return *p.From
 }
 
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
