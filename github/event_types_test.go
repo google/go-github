@@ -192,5 +192,4 @@ func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
-
 }
