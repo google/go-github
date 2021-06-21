@@ -212,12 +212,12 @@ func (a *Alert) GetRuleSeverity() string {
 	return *a.RuleSeverity
 }
 
-// GetTool returns the Tool field if it's non-nil, zero value otherwise.
-func (a *Alert) GetTool() string {
-	if a == nil || a.Tool == nil {
-		return ""
+// GetTool returns the Tool field.
+func (a *Alert) GetTool() *Tool {
+	if a == nil {
+		return nil
 	}
-	return *a.Tool
+	return a.Tool
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -14930,6 +14930,30 @@ func (t *Timeline) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetGUID returns the GUID field if it's non-nil, zero value otherwise.
+func (t *Tool) GetGUID() string {
+	if t == nil || t.GUID == nil {
+		return ""
+	}
+	return *t.GUID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (t *Tool) GetName() string {
+	if t == nil || t.Name == nil {
+		return ""
+	}
+	return *t.Name
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (t *Tool) GetVersion() string {
+	if t == nil || t.Version == nil {
+		return ""
+	}
+	return *t.Version
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.

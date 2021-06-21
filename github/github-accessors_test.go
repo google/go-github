@@ -231,10 +231,7 @@ func TestAlert_GetRuleSeverity(tt *testing.T) {
 }
 
 func TestAlert_GetTool(tt *testing.T) {
-	var zeroValue string
-	a := &Alert{Tool: &zeroValue}
-	a.GetTool()
-	a = &Alert{}
+	a := &Alert{}
 	a.GetTool()
 	a = nil
 	a.GetTool()
@@ -17479,6 +17476,36 @@ func TestTimeline_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
+}
+
+func TestTool_GetGUID(tt *testing.T) {
+	var zeroValue string
+	t := &Tool{GUID: &zeroValue}
+	t.GetGUID()
+	t = &Tool{}
+	t.GetGUID()
+	t = nil
+	t.GetGUID()
+}
+
+func TestTool_GetName(tt *testing.T) {
+	var zeroValue string
+	t := &Tool{Name: &zeroValue}
+	t.GetName()
+	t = &Tool{}
+	t.GetName()
+	t = nil
+	t.GetName()
+}
+
+func TestTool_GetVersion(tt *testing.T) {
+	var zeroValue string
+	t := &Tool{Version: &zeroValue}
+	t.GetVersion()
+	t = &Tool{}
+	t.GetVersion()
+	t = nil
+	t.GetVersion()
 }
 
 func TestTopicResult_GetCreatedAt(tt *testing.T) {
