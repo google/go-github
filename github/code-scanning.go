@@ -24,6 +24,9 @@ type Tool struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// Alert represents an individual GitHub Code Scanning Alert on a single repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Alert struct {
 	RuleID          *string    `json:"rule_id,omitempty"`
 	RuleSeverity    *string    `json:"rule_severity,omitempty"`
