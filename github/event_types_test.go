@@ -103,3 +103,94 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestProjectChange_Marshal_NameChange(t *testing.T) {
+	testJSONMarshal(t, &ProjectChange{}, "{}")
+
+	NameFrom := struct {
+		From *string `json:"from,omitempty"`
+	}{
+		From: String("NameFrom"),
+	}
+
+	u := &ProjectChange{
+		Name: &NameFrom,
+		Body: nil,
+	}
+
+	want := `{
+		"name": {
+			"from": "NameFrom"
+		  }
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectChange_Marshal_BodyChange(t *testing.T) {
+	testJSONMarshal(t, &ProjectChange{}, "{}")
+
+	BodyFrom := struct {
+		From *string `json:"from,omitempty"`
+	}{
+		From: String("BodyFrom"),
+	}
+
+	u := &ProjectChange{
+		Name: nil,
+		Body: &BodyFrom,
+	}
+
+	want := `{
+		"body": {
+			"from": "BodyFrom"
+		  }
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectCardChange_Marshal_NoteChange(t *testing.T) {
+	testJSONMarshal(t, &ProjectCardChange{}, "{}")
+
+	NoteFrom := struct {
+		From *string `json:"from,omitempty"`
+	}{
+		From: String("NoteFrom"),
+	}
+
+	u := &ProjectCardChange{
+		Note: &NoteFrom,
+	}
+
+	want := `{
+		"note": {
+			"from": "NoteFrom"
+		  }
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
+	testJSONMarshal(t, &ProjectColumnChange{}, "{}")
+
+	NameFrom := struct {
+		From *string `json:"from,omitempty"`
+	}{
+		From: String("NameFrom"),
+	}
+
+	u := &ProjectColumnChange{
+		Name: &NameFrom,
+	}
+
+	want := `{
+		"name": {
+			"from": "NameFrom"
+		  }
+	}`
+
+	testJSONMarshal(t, u, want)
+
+}
