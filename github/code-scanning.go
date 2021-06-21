@@ -18,6 +18,9 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
+// Tool represents the tool used to generate a GitHub Code Scanning Alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Tool struct {
 	Name    *string `json:"name,omitempty"`
 	GUID    *string `json:"guid,omitempty"`
