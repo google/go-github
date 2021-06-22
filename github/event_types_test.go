@@ -281,3 +281,19 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPushEventRepoOwner_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PushEventRepoOwner{}, "{}")
+
+	u := &PushEventRepoOwner{
+		Name:  String("n"),
+		Email: String("e"),
+	}
+
+	want := `{
+		"name": "n",
+		"email": "e"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
