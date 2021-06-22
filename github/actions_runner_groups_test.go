@@ -558,9 +558,9 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 }
 
 func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
+	testJSONMarshal(t, &UpdateRunnerGroupRequest{}, "{}")
 
-	u := &CreateRunnerGroupRequest{
+	u := &UpdateRunnerGroupRequest{
 		Name:       String("n"),
 		Visibility: String("v"),
 	}
@@ -582,6 +582,20 @@ func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
 
 	want := `{
 		"selected_repository_ids": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSetRunnerGroupRunnersRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, "{}")
+
+	u := &SetRunnerGroupRunnersRequest{
+		Runners: []int64{1},
+	}
+
+	want := `{
+		"runners": [1]
 	}`
 
 	testJSONMarshal(t, u, want)
