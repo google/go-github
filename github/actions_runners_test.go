@@ -586,3 +586,39 @@ func TestRunnerLabels_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRunner_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerLabels{}, "{}")
+
+	u := &Runner{
+		ID:     Int64(1),
+		Name:   String("n"),
+		OS:     String("o"),
+		Status: String("s"),
+		Busy:   Bool(false),
+		Labels: []*RunnerLabels{
+			{
+				ID:   Int64(1),
+				Name: String("n"),
+				Type: String("t"),
+			},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
