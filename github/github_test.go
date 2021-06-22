@@ -201,6 +201,9 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
+	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
+		return
+	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
 		if resp != nil {
 			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", methodName, resp.Response, want)
