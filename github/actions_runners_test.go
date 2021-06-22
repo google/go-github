@@ -568,3 +568,21 @@ func TestRegistrationToken_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRunnerLabels_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerLabels{}, "{}")
+
+	u := &RunnerLabels{
+		ID:   Int64(1),
+		Name: String("n"),
+		Type: String("t"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
