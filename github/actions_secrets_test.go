@@ -900,3 +900,31 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSelectedReposList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SelectedReposList{}, "{}")
+
+	u := &SelectedReposList{
+		TotalCount: Int(1),
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
