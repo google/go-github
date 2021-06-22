@@ -419,3 +419,67 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 		t.Errorf("Actions.DeleteArtifact return status %d, want %d", got, want)
 	}
 }
+
+func TestArtifact_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Artifact{}, "{}")
+
+	u := &Artifact{
+		ID:                 Int64(1),
+		NodeID:             String("nid"),
+		Name:               String("n"),
+		SizeInBytes:        Int64(1),
+		ArchiveDownloadURL: String("a"),
+		Expired:            Bool(false),
+		CreatedAt:          &Timestamp{referenceTime},
+		ExpiresAt:          &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"name": "n",
+		"size_in_bytes": 1,
+		"archive_download_url": "a",
+		"expired": false,
+		"created_at": ` + referenceTimeStr + `,
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestArtifactList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ArtifactList{}, "{}")
+
+	u := &ArtifactList{
+		TotalCount: Int64(1),
+		Artifacts: []*Artifact{
+			{
+				ID:                 Int64(1),
+				NodeID:             String("nid"),
+				Name:               String("n"),
+				SizeInBytes:        Int64(1),
+				ArchiveDownloadURL: String("a"),
+				Expired:            Bool(false),
+				CreatedAt:          &Timestamp{referenceTime},
+				ExpiresAt:          &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"artifacts": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"size_in_bytes": 1,
+			"archive_download_url": "a",
+			"expired": false,
+			"created_at": ` + referenceTimeStr + `,
+			"expires_at": ` + referenceTimeStr + `
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
