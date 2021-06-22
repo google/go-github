@@ -826,3 +826,25 @@ func TestPublicKey_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSecret_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Secret{}, "{}")
+
+	u := &Secret{
+		Name:                    "n",
+		CreatedAt:               Timestamp{referenceTime},
+		UpdatedAt:               Timestamp{referenceTime},
+		Visibility:              "v",
+		SelectedRepositoriesURL: "s",
+	}
+
+	want := `{
+		"name": "n",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"visibility": "v",
+		"selected_repositories_url": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
