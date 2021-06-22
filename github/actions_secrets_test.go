@@ -879,3 +879,24 @@ func TestSecrets_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestEncryptedSecret_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EncryptedSecret{}, "{}")
+
+	u := &EncryptedSecret{
+		Name:                  "n",
+		KeyID:                 "kid",
+		EncryptedValue:        "e",
+		Visibility:            "v",
+		SelectedRepositoryIDs: []int64{1},
+	}
+
+	want := `{
+		"key_id": "kid",
+		"encrypted_value": "e",
+		"visibility": "v",
+		"selected_repository_ids": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
