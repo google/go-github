@@ -500,3 +500,39 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRunnerGroups_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerGroups{}, "{}")
+
+	u := &RunnerGroups{
+		TotalCount: int(1),
+		RunnerGroups: []*RunnerGroup{
+			{
+				ID:                       Int64(1),
+				Name:                     String("n"),
+				Visibility:               String("v"),
+				Default:                  Bool(true),
+				SelectedRepositoriesURL:  String("s"),
+				RunnersURL:               String("r"),
+				Inherited:                Bool(true),
+				AllowsPublicRepositories: Bool(true),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"runner_groups": [{
+			"id": 1,
+			"name": "n",
+			"visibility": "v",
+			"default": true,
+			"selected_repositories_url": "s",
+			"runners_url": "r",
+			"inherited": true,
+			"allows_public_repositories": true
+		}]		
+	}`
+
+	testJSONMarshal(t, u, want)
+}
