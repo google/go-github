@@ -500,3 +500,27 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	})
 }
+
+func TestRunnerApplicationDownload_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
+
+	u := &RunnerApplicationDownload{
+		OS:                String("o"),
+		Architecture:      String("a"),
+		DownloadURL:       String("d"),
+		Filename:          String("f"),
+		TempDownloadToken: String("t"),
+		SHA256Checksum:    String("s"),
+	}
+
+	want := `{
+		"os": "o",
+		"architecture": "a",
+		"download_url": "d",
+		"filename": "f",
+		"temp_download_token": "t",
+		"sha256_checksum": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
