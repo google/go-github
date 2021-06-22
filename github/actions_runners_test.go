@@ -552,3 +552,19 @@ func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRegistrationToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RegistrationToken{}, "{}")
+
+	u := &RegistrationToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
