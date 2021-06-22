@@ -522,6 +522,12 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
+type requestContext uint8
+
+const (
+	bypassRateLimitCheck requestContext = iota
+)
+
 // BareDo sends an API request and lets you handle the api response. If an error
 // or API Error occurs, the error will contain more information. Otherwise you
 // are supposed to read and close the response's Body. If rate limit is exceeded
@@ -538,12 +544,14 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 	rateLimitCategory := category(req.URL.Path)
 
-	// If we've hit rate limit, don't make further requests before Reset time.
-	if err := c.checkRateLimitBeforeDo(req, rateLimitCategory); err != nil {
-		return &Response{
-			Response: err.Response,
-			Rate:     err.Rate,
-		}, err
+	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
+		// If we've hit rate limit, don't make further requests before Reset time.
+		if err := c.checkRateLimitBeforeDo(req, rateLimitCategory); err != nil {
+			return &Response{
+				Response: err.Response,
+				Rate:     err.Rate,
+			}, err
+		}
 	}
 
 	resp, err := c.client.Do(req)
@@ -1022,6 +1030,9 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 	response := new(struct {
 		Resources *RateLimits `json:"resources"`
 	})
+
+	// This resource is not subject to rate limits.
+	ctx = context.WithValue(ctx, bypassRateLimitCheck, true)
 	resp, err := c.Do(ctx, req, response)
 	if err != nil {
 		return nil, resp, err
