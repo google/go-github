@@ -810,3 +810,19 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 		return client.Actions.DeleteEnvSecret(ctx, 1, "r", "secret")
 	})
 }
+
+func TestPublicKey_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PublicKey{}, "{}")
+
+	u := &PublicKey{
+		KeyID: String("kid"),
+		Key:   String("k"),
+	}
+
+	want := `{
+		"key_id": "kid",
+		"key": "k"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
