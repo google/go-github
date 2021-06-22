@@ -536,3 +536,23 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
+
+	u := &CreateRunnerGroupRequest{
+		Name:                  String("n"),
+		Visibility:            String("v"),
+		SelectedRepositoryIDs: []int64{1},
+		Runners:               []int64{1},
+	}
+
+	want := `{
+		"name": "n",
+		"visibility": "v",
+		"selected_repository_ids": [1],
+		"runners": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
