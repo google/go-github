@@ -472,3 +472,31 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 		return client.Actions.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
+
+func TestRunnerGroup_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerGroup{}, "{}")
+
+	u := &RunnerGroup{
+		ID:                       Int64(1),
+		Name:                     String("n"),
+		Visibility:               String("v"),
+		Default:                  Bool(true),
+		SelectedRepositoriesURL:  String("s"),
+		RunnersURL:               String("r"),
+		Inherited:                Bool(true),
+		AllowsPublicRepositories: Bool(true),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"visibility": "v",
+		"default": true,
+		"selected_repositories_url": "s",
+		"runners_url": "r",
+		"inherited": true,
+		"allows_public_repositories": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
