@@ -572,3 +572,17 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, "{}")
+
+	u := &SetRepoAccessRunnerGroupRequest{
+		SelectedRepositoryIDs: []int64{1},
+	}
+
+	want := `{
+		"selected_repository_ids": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
