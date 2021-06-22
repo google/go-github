@@ -668,3 +668,19 @@ func TestRunners_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRemoveToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RemoveToken{}, "{}")
+
+	u := &RemoveToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
