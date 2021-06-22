@@ -848,3 +848,34 @@ func TestSecret_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSecrets_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Secrets{}, "{}")
+
+	u := &Secrets{
+		TotalCount: 1,
+		Secrets: []*Secret{
+			{
+				Name:                    "n",
+				CreatedAt:               Timestamp{referenceTime},
+				UpdatedAt:               Timestamp{referenceTime},
+				Visibility:              "v",
+				SelectedRepositoriesURL: "s"},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"secrets": [
+			{
+				"name": "n",
+				"created_at": ` + referenceTimeStr + `,
+				"updated_at": ` + referenceTimeStr + `,
+				"visibility": "v",
+				"selected_repositories_url": "s"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
