@@ -103,3 +103,65 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestHeadCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HeadCommit{}, "{}")
+
+	u := &HeadCommit{
+		Message: String("m"),
+		Author: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("n"),
+			Email: String("e"),
+			Login: String("u"),
+		},
+		URL:       String("u"),
+		Distinct:  Bool(true),
+		SHA:       String("s"),
+		ID:        String("id"),
+		TreeID:    String("tid"),
+		Timestamp: &Timestamp{referenceTime},
+		Committer: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("n"),
+			Email: String("e"),
+			Login: String("u"),
+		},
+		Added:    []string{"a"},
+		Removed:  []string{"r"},
+		Modified: []string{"m"},
+	}
+
+	want := `{
+		"message": "m",
+		"author": {
+			"date": ` + referenceTimeStr + `,
+			"name": "n",
+			"email": "e",
+			"username": "u"
+		},
+		"url": "u",
+		"distinct": true,
+		"sha": "s",
+		"id": "id",
+		"tree_id": "tid",
+		"timestamp": ` + referenceTimeStr + `,
+		"committer": {
+			"date": ` + referenceTimeStr + `,
+			"name": "n",
+			"email": "e",
+			"username": "u"
+		},
+		"added": [
+			"a"
+		],
+		"removed":  [
+			"r"
+		],
+		"modified":  [
+			"m"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
