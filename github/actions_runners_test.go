@@ -524,3 +524,31 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+
+	u := &ActionsEnabledOnOrgRepos{
+		TotalCount: 1,
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
