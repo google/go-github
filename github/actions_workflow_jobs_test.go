@@ -203,3 +203,27 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
 }
+
+func TestTaskStep_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TaskStep{}, "{}")
+
+	u := &TaskStep{
+		Name:        String("n"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		Number:      Int64(1),
+		StartedAt:   &Timestamp{referenceTime},
+		CompletedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"name": "n",
+		"status": "s",
+		"conclusion": "c",
+		"number": 1,
+		"started_at": ` + referenceTimeStr + `,
+		"completed_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
