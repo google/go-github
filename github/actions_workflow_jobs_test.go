@@ -227,3 +227,59 @@ func TestTaskStep_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflowJob_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowJob{}, "{}")
+
+	u := &WorkflowJob{
+		ID:          Int64(1),
+		RunID:       Int64(1),
+		RunURL:      String("r"),
+		NodeID:      String("n"),
+		HeadSHA:     String("h"),
+		URL:         String("u"),
+		HTMLURL:     String("h"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		StartedAt:   &Timestamp{referenceTime},
+		CompletedAt: &Timestamp{referenceTime},
+		Name:        String("n"),
+		Steps: []*TaskStep{
+			{
+				Name:        String("n"),
+				Status:      String("s"),
+				Conclusion:  String("c"),
+				Number:      Int64(1),
+				StartedAt:   &Timestamp{referenceTime},
+				CompletedAt: &Timestamp{referenceTime},
+			},
+		},
+		CheckRunURL: String("c"),
+	}
+
+	want := `{
+		"id": 1,
+		"run_id": 1,
+		"run_url": "r",
+		"node_id": "n",
+		"head_sha": "h",
+		"url": "u",
+		"html_url": "h",
+		"status": "s",
+		"conclusion": "c",
+		"started_at": ` + referenceTimeStr + `,
+		"completed_at": ` + referenceTimeStr + `,
+		"name": "n",
+		"steps": [{
+			"name": "n",
+			"status": "s",
+			"conclusion": "c",
+			"number": 1,
+			"started_at": ` + referenceTimeStr + `,
+			"completed_at": ` + referenceTimeStr + `
+		}],
+		"check_run_url": "c"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
