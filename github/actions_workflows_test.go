@@ -490,3 +490,43 @@ func TestWorkflow_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflows_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Workflows{}, "{}")
+
+	u := &Workflows{
+		TotalCount: Int(1),
+		Workflows: []*Workflow{
+			{
+				ID:        Int64(1),
+				NodeID:    String("nid"),
+				Name:      String("n"),
+				Path:      String("p"),
+				State:     String("s"),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+				URL:       String("u"),
+				HTMLURL:   String("h"),
+				BadgeURL:  String("b"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"workflows": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"path": "p",
+			"state": "s",
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"url": "u",
+			"html_url": "h",
+			"badge_url": "b"
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
