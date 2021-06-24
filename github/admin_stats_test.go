@@ -353,3 +353,23 @@ func TestGistStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPullStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullStats{}, "{}")
+
+	u := &PullStats{
+		TotalPulls:      Int(1),
+		MergedPulls:     Int(1),
+		MergablePulls:   Int(1),
+		UnmergablePulls: Int(1),
+	}
+
+	want := `{
+		"total_pulls": 1,
+		"merged_pulls": 1,
+		"mergeable_pulls": 1,
+		"unmergeable_pulls": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
