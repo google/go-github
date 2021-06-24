@@ -285,3 +285,27 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 	_, err := client.Activity.Unstar(ctx, "%", "%")
 	testURLParseError(t, err)
 }
+
+func TestStarredRepository_Marshal(t *testing.T) {
+	testJSONMarshal(t, &StarredRepository{}, "{}")
+
+	u := &StarredRepository{
+		StarredAt: &Timestamp{referenceTime},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+	}
+
+	want := `{
+		"starred_at": ` + referenceTimeStr + `,
+		"repo": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
