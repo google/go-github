@@ -227,3 +227,21 @@ func TestIssueStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestHookStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HookStats{}, "{}")
+
+	u := &HookStats{
+		TotalHooks:    Int(1),
+		ActiveHooks:   Int(1),
+		InactiveHooks: Int(1),
+	}
+
+	want := `{
+		"total_hooks": 1,
+		"active_hooks": 1,
+		"inactive_hooks": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
