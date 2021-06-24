@@ -317,3 +317,21 @@ func TestPageStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestUserStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserStats{}, "{}")
+
+	u := &UserStats{
+		TotalUsers:     Int(1),
+		AdminUsers:     Int(1),
+		SuspendedUsers: Int(1),
+	}
+
+	want := `{
+		"total_users": 1,
+		"admin_users": 1,
+		"suspended_users": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
