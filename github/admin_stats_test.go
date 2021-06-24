@@ -209,3 +209,21 @@ var testAdminStats = &AdminStats{
 		TotalPullRequestComments: Int(30),
 	},
 }
+
+func TestIssueStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueStats{}, "{}")
+
+	u := &IssueStats{
+		TotalIssues:  Int(1),
+		OpenIssues:   Int(1),
+		ClosedIssues: Int(1),
+	}
+
+	want := `{
+		"total_issues": 1,
+		"open_issues": 1,
+		"closed_issues": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
