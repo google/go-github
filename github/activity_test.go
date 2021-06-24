@@ -138,3 +138,19 @@ var wantFeeds = &Feeds{
 		},
 	},
 }
+
+func TestFeedLink_Marshal(t *testing.T) {
+	testJSONMarshal(t, &FeedLink{}, "{}")
+
+	u := &FeedLink{
+		HRef: String("h"),
+		Type: String("t"),
+	}
+
+	want := `{
+		"href": "h",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
