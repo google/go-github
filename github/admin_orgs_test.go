@@ -171,3 +171,19 @@ func TestRenameOrgRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRenameOrgResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &renameOrgRequest{}, "{}")
+
+	u := &RenameOrgResponse{
+		Message: String("m"),
+		URL:     String("u"),
+	}
+
+	want := `{
+		"message": "m",
+		"url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
