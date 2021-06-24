@@ -358,3 +358,23 @@ func TestNotification_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestNotificationSubject_Marshal(t *testing.T) {
+	testJSONMarshal(t, &NotificationSubject{}, "{}")
+
+	u := &NotificationSubject{
+		Title:            String("t"),
+		URL:              String("u"),
+		LatestCommentURL: String("l"),
+		Type:             String("t"),
+	}
+
+	want := `{
+		"title": "t",
+		"url": "u",
+		"latest_comment_url": "l",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
