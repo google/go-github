@@ -544,3 +544,33 @@ func TestWorkflowBill_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflowEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowEnvironment{}, "{}")
+
+	u := &WorkflowEnvironment{
+		Ubuntu: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		MacOS: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		Windows: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+	}
+
+	want := `{
+		"UBUNTU": {
+			"total_ms": 1
+		},
+		"MACOS": {
+			"total_ms": 1
+		},
+		"WINDOWS": {
+			"total_ms": 1
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
