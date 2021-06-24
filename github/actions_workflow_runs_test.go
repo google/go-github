@@ -798,3 +798,45 @@ func TestWorkflowRunEnvironment_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflowRunUsage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunUsage{}, "{}")
+
+	u := &WorkflowRunUsage{
+		Billable: &WorkflowRunEnvironment{
+			Ubuntu: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+			MacOS: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+			Windows: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+		},
+		RunDurationMS: Int64(1),
+	}
+
+	want := `{
+		"billable": {
+			"UBUNTU": {
+				"total_ms": 1,
+				"jobs": 1
+			},
+			"MACOS": {
+				"total_ms": 1,
+				"jobs": 1
+			},
+			"WINDOWS": {
+				"total_ms": 1,
+				"jobs": 1
+			}
+		},
+		"run_duration_ms": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
