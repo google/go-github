@@ -373,3 +373,27 @@ func TestPullStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRepoStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepoStats{}, "{}")
+
+	u := &RepoStats{
+		TotalRepos:  Int(1),
+		RootRepos:   Int(1),
+		ForkRepos:   Int(1),
+		OrgRepos:    Int(1),
+		TotalPushes: Int(1),
+		TotalWikis:  Int(1),
+	}
+
+	want := `{
+		"total_repos": 1,
+		"root_repos": 1,
+		"fork_repos": 1,
+		"org_repos": 1,
+		"total_pushes": 1,
+		"total_wikis": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
