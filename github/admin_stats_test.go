@@ -303,3 +303,17 @@ func TestCommentStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPageStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PageStats{}, "{}")
+
+	u := &PageStats{
+		TotalPages: Int(1),
+	}
+
+	want := `{
+		"total_pages": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
