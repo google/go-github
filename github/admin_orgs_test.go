@@ -141,3 +141,19 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCreateOrgRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Page{}, "{}")
+
+	u := &createOrgRequest{
+		Login: String("l"),
+		Admin: String("a"),
+	}
+
+	want := `{
+		"login": "l",
+		"admin": "a"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
