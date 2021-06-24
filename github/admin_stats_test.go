@@ -263,3 +263,23 @@ func TestMilestoneStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestOrgStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &OrgStats{}, "{}")
+
+	u := &OrgStats{
+		TotalOrgs:        Int(1),
+		DisabledOrgs:     Int(1),
+		TotalTeams:       Int(1),
+		TotalTeamMembers: Int(1),
+	}
+
+	want := `{
+		"total_orgs": 1,
+		"disabled_orgs": 1,
+		"total_teams": 1,
+		"total_team_members": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
