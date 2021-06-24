@@ -335,3 +335,21 @@ func TestUserStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestGistStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GistStats{}, "{}")
+
+	u := &GistStats{
+		TotalGists:   Int(1),
+		PrivateGists: Int(1),
+		PublicGists:  Int(1),
+	}
+
+	want := `{
+		"total_gists": 1,
+		"private_gists": 1,
+		"public_gists": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
