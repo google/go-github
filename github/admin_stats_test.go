@@ -245,3 +245,21 @@ func TestHookStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestMilestoneStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MilestoneStats{}, "{}")
+
+	u := &MilestoneStats{
+		TotalMilestones:  Int(1),
+		OpenMilestones:   Int(1),
+		ClosedMilestones: Int(1),
+	}
+
+	want := `{
+		"total_milestones": 1,
+		"open_milestones": 1,
+		"closed_milestones": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
