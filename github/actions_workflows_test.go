@@ -608,3 +608,24 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
+
+	inputs := make(map[string]interface{}, 0)
+	inputs["key"] = "value"
+
+	u := &CreateWorkflowDispatchEventRequest{
+		Ref:    "r",
+		Inputs: inputs,
+	}
+
+	want := `{
+		"ref": "r",
+		"inputs": {
+			"key": "value"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
