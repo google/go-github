@@ -283,3 +283,23 @@ func TestOrgStats_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCommentStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommentStats{}, "{}")
+
+	u := &CommentStats{
+		TotalCommitComments:      Int(1),
+		TotalGistComments:        Int(1),
+		TotalIssueComments:       Int(1),
+		TotalPullRequestComments: Int(1),
+	}
+
+	want := `{
+		"total_commit_comments": 1,
+		"total_gist_comments": 1,
+		"total_issue_comments": 1,
+		"total_pull_request_comments": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
