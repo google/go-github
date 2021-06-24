@@ -746,3 +746,19 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflowRunBill_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunBill{}, "{}")
+
+	u := &WorkflowRunBill{
+		TotalMS: Int64(1),
+		Jobs:    Int(1),
+	}
+
+	want := `{
+		"total_ms": 1,
+		"jobs": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
