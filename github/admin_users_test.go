@@ -191,3 +191,19 @@ func TestCreateUserRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestImpersonateUserOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ImpersonateUserOptions{}, "{}")
+
+	u := &ImpersonateUserOptions{
+		Scopes: []string{
+			"s",
+		},
+	}
+
+	want := `{
+		"scopes": ["s"]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
