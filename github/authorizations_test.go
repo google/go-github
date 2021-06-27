@@ -269,3 +269,35 @@ func TestAuthorizationApp_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestGrant_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Grant{}, "{}")
+
+	u := &Grant{
+		ID:  Int64(1),
+		URL: String("u"),
+		App: &AuthorizationApp{
+			URL:      String("u"),
+			Name:     String("n"),
+			ClientID: String("cid"),
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		Scopes:    []string{"s"},
+	}
+
+	want := `{
+		"id": 1,
+		"url": "u",
+		"app": {
+			"url": "u",
+			"name": "n",
+			"client_id": "cid"
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"scopes": ["s"]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
