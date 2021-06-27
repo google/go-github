@@ -301,3 +301,87 @@ func TestGrant_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAuthorization_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Authorization{}, "{}")
+
+	u := &Authorization{
+		ID:             Int64(1),
+		URL:            String("u"),
+		Scopes:         []Scope{"s"},
+		Token:          String("t"),
+		TokenLastEight: String("tle"),
+		HashedToken:    String("ht"),
+		App: &AuthorizationApp{
+			URL:      String("u"),
+			Name:     String("n"),
+			ClientID: String("cid"),
+		},
+		Note:        String("n"),
+		NoteURL:     String("nu"),
+		UpdatedAt:   &Timestamp{referenceTime},
+		CreatedAt:   &Timestamp{referenceTime},
+		Fingerprint: String("f"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"url": "u",
+		"scopes": ["s"],
+		"token": "t",
+		"token_last_eight": "tle",
+		"hashed_token": "ht",
+		"app": {
+			"url": "u",
+			"name": "n",
+			"client_id": "cid"
+		},
+		"note": "n",
+		"note_url": "nu",
+		"updated_at": ` + referenceTimeStr + `,
+		"created_at": ` + referenceTimeStr + `,
+		"fingerprint": "f",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
