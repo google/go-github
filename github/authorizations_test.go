@@ -203,3 +203,27 @@ func TestAuthorizationsService_DeleteImpersonation(t *testing.T) {
 		return client.Authorizations.DeleteImpersonation(ctx, "u")
 	})
 }
+
+func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AuthorizationUpdateRequest{}, "{}")
+
+	u := &AuthorizationUpdateRequest{
+		Scopes:       []string{"s"},
+		AddScopes:    []string{"a"},
+		RemoveScopes: []string{"r"},
+		Note:         String("n"),
+		NoteURL:      String("nu"),
+		Fingerprint:  String("f"),
+	}
+
+	want := `{
+		"scopes": ["s"],
+		"add_scopes": ["a"],
+		"remove_scopes": ["r"],
+		"note": "n",
+		"note_url": "nu",
+		"fingerprint": "f"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
