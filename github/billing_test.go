@@ -361,3 +361,21 @@ func TestPackageBilling_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestStorageBilling_Marshal(t *testing.T) {
+	testJSONMarshal(t, &StorageBilling{}, "{}")
+
+	u := &StorageBilling{
+		DaysLeftInBillingCycle:       1,
+		EstimatedPaidStorageForMonth: 1,
+		EstimatedStorageForMonth:     1,
+	}
+
+	want := `{
+		"days_left_in_billing_cycle": 1,
+		"estimated_paid_storage_for_month": 1,
+		"estimated_storage_for_month": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
