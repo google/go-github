@@ -225,3 +225,49 @@ func TestOAuthAPP_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestUserAuthorization_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserAuthorization{}, "{}")
+
+	u := &UserAuthorization{
+		ID:  Int64(1),
+		URL: String("u"),
+		Scopes: []string{
+			"s",
+		},
+		Token:          String("t"),
+		TokenLastEight: String("tle"),
+		HashedToken:    String("ht"),
+		App: &OAuthAPP{
+			URL:      String("u"),
+			Name:     String("n"),
+			ClientID: String("cid"),
+		},
+		Note:        String("n"),
+		NoteURL:     String("nu"),
+		UpdatedAt:   &Timestamp{referenceTime},
+		CreatedAt:   &Timestamp{referenceTime},
+		Fingerprint: String("f"),
+	}
+
+	want := `{
+		"id": 1,
+		"url": "u",
+		"scopes": ["s"],
+		"token": "t",
+		"token_last_eight": "tle",
+		"hashed_token": "ht",
+		"app": {
+			"url": "u",
+			"name": "n",
+			"client_id": "cid"
+		},
+		"note": "n",
+		"note_url": "nu",
+		"updated_at": ` + referenceTimeStr + `,
+		"created_at": ` + referenceTimeStr + `,
+		"fingerprint": "f"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
