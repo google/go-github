@@ -227,3 +227,27 @@ func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAuthorizationRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AuthorizationRequest{}, "{}")
+
+	u := &AuthorizationRequest{
+		Scopes:       []Scope{"s"},
+		ClientID:     String("cid"),
+		ClientSecret: String("cs"),
+		Note:         String("n"),
+		NoteURL:      String("nu"),
+		Fingerprint:  String("f"),
+	}
+
+	want := `{
+		"scopes": ["s"],
+		"client_id": "cid",
+		"client_secret": "cs",
+		"note": "n",
+		"note_url": "nu",
+		"fingerprint": "f"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
