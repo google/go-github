@@ -157,3 +157,35 @@ func TestAdminService_UserLDAPMapping_String(t *testing.T) {
 		t.Errorf("UserLDAPMapping.String = `%v`, want `%v`", got, want)
 	}
 }
+
+func TestTeamLDAPMapping_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TeamLDAPMapping{}, "{}")
+
+	u := &TeamLDAPMapping{
+		ID:              Int64(1),
+		LDAPDN:          String("ldapdn"),
+		URL:             String("u"),
+		Name:            String("n"),
+		Slug:            String("s"),
+		Description:     String("d"),
+		Privacy:         String("p"),
+		Permission:      String("per"),
+		MembersURL:      String("mu"),
+		RepositoriesURL: String("ru"),
+	}
+
+	want := `{
+		"id": 1,
+		"ldap_dn": "ldapdn",
+		"url": "u",
+		"name": "n",
+		"slug": "s",
+		"description": "d",
+		"privacy": "p",
+		"permission": "per",
+		"members_url": "mu",
+		"repositories_url": "ru"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
