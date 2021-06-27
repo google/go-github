@@ -612,3 +612,21 @@ func TestContentReference_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAttachment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Attachment{}, "{}")
+
+	u := &Attachment{
+		ID:    Int64(1),
+		Title: String("t"),
+		Body:  String("b"),
+	}
+
+	want := `{
+		"id": 1,
+		"title": "t",
+		"body": "b"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
