@@ -235,3 +235,41 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
 }
+
+func TestMarketplacePlan_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MarketplacePlan{}, "{}")
+
+	u := &MarketplacePlan{
+		URL:                 String("u"),
+		AccountsURL:         String("au"),
+		ID:                  Int64(1),
+		Number:              Int(1),
+		Name:                String("n"),
+		Description:         String("d"),
+		MonthlyPriceInCents: Int(1),
+		YearlyPriceInCents:  Int(1),
+		PriceModel:          String("pm"),
+		UnitName:            String("un"),
+		Bullets:             &[]string{"b"},
+		State:               String("s"),
+		HasFreeTrial:        Bool(false),
+	}
+
+	want := `{
+		"url": "u",
+		"accounts_url": "au",
+		"id": 1,
+		"number": 1,
+		"name": "n",
+		"description": "d",
+		"monthly_price_in_cents": 1,
+		"yearly_price_in_cents": 1,
+		"price_model": "pm",
+		"unit_name": "un",
+		"bullets": ["b"],
+		"state": "s",
+		"has_free_trial": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
