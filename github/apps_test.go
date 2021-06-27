@@ -904,3 +904,85 @@ func TestInstallation_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestInstallationTokenOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &InstallationTokenOptions{}, "{}")
+
+	u := &InstallationTokenOptions{
+		RepositoryIDs: []int64{1},
+		Permissions: &InstallationPermissions{
+			Actions:                       String("a"),
+			Administration:                String("ad"),
+			Checks:                        String("c"),
+			Contents:                      String("co"),
+			ContentReferences:             String("cr"),
+			Deployments:                   String("d"),
+			Environments:                  String("e"),
+			Issues:                        String("i"),
+			Metadata:                      String("md"),
+			Members:                       String("m"),
+			OrganizationAdministration:    String("oa"),
+			OrganizationHooks:             String("oh"),
+			OrganizationPlan:              String("op"),
+			OrganizationPreReceiveHooks:   String("opr"),
+			OrganizationProjects:          String("op"),
+			OrganizationSecrets:           String("os"),
+			OrganizationSelfHostedRunners: String("osh"),
+			OrganizationUserBlocking:      String("oub"),
+			Packages:                      String("pkg"),
+			Pages:                         String("pg"),
+			PullRequests:                  String("pr"),
+			RepositoryHooks:               String("rh"),
+			RepositoryProjects:            String("rp"),
+			RepositoryPreReceiveHooks:     String("rprh"),
+			Secrets:                       String("s"),
+			SecretScanningAlerts:          String("ssa"),
+			SecurityEvents:                String("se"),
+			SingleFile:                    String("sf"),
+			Statuses:                      String("s"),
+			TeamDiscussions:               String("td"),
+			VulnerabilityAlerts:           String("va"),
+			Workflows:                     String("w"),
+		},
+	}
+
+	want := `{
+		"repository_ids": [1],
+		"permissions": {
+			"actions": "a",
+			"administration": "ad",
+			"checks": "c",
+			"contents": "co",
+			"content_references": "cr",
+			"deployments": "d",
+			"environments": "e",
+			"issues": "i",
+			"metadata": "md",
+			"members": "m",
+			"organization_administration": "oa",
+			"organization_hooks": "oh",
+			"organization_plan": "op",
+			"organization_pre_receive_hooks": "opr",
+			"organization_projects": "op",
+			"organization_secrets": "os",
+			"organization_self_hosted_runners": "osh",
+			"organization_user_blocking": "oub",
+			"packages": "pkg",
+			"pages": "pg",
+			"pull_requests": "pr",
+			"repository_hooks": "rh",
+			"repository_projects": "rp",
+			"repository_pre_receive_hooks": "rprh",
+			"secrets": "s",
+			"secret_scanning_alerts": "ssa",
+			"security_events": "se",
+			"single_file": "sf",
+			"statuses": "s",
+			"team_discussions": "td",
+			"vulnerability_alerts": "va",
+			"workflows": "w"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
