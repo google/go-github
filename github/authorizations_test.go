@@ -251,3 +251,21 @@ func TestAuthorizationRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAuthorizationApp_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AuthorizationApp{}, "{}")
+
+	u := &AuthorizationApp{
+		URL:      String("u"),
+		Name:     String("n"),
+		ClientID: String("cid"),
+	}
+
+	want := `{
+		"url": "u",
+		"name": "n",
+		"client_id": "cid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
