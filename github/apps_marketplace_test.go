@@ -273,3 +273,57 @@ func TestMarketplacePlan_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestMarketplacePurchase_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MarketplacePurchase{}, "{}")
+
+	u := &MarketplacePurchase{
+		BillingCycle:    String("bc"),
+		NextBillingDate: &Timestamp{referenceTime},
+		UnitCount:       Int(1),
+		Plan: &MarketplacePlan{
+			URL:                 String("u"),
+			AccountsURL:         String("au"),
+			ID:                  Int64(1),
+			Number:              Int(1),
+			Name:                String("n"),
+			Description:         String("d"),
+			MonthlyPriceInCents: Int(1),
+			YearlyPriceInCents:  Int(1),
+			PriceModel:          String("pm"),
+			UnitName:            String("un"),
+			Bullets:             &[]string{"b"},
+			State:               String("s"),
+			HasFreeTrial:        Bool(false),
+		},
+		OnFreeTrial:     Bool(false),
+		FreeTrialEndsOn: &Timestamp{referenceTime},
+		UpdatedAt:       &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"billing_cycle": "bc",
+		"next_billing_date": "2006-01-02T15:04:05Z",
+		"unit_count": 1,
+		"plan": {
+			"url": "u",
+			"accounts_url": "au",
+			"id": 1,
+			"number": 1,
+			"name": "n",
+			"description": "d",
+			"monthly_price_in_cents": 1,
+			"yearly_price_in_cents": 1,
+			"price_model": "pm",
+			"unit_name": "un",
+			"bullets": ["b"],
+			"state": "s",
+			"has_free_trial": false
+			},
+		"on_free_trial": false,
+		"free_trial_ends_on": "2006-01-02T15:04:05Z",
+		"updated_at": "2006-01-02T15:04:05Z"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
