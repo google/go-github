@@ -594,3 +594,21 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestContentReference_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ContentReference{}, "{}")
+
+	u := &ContentReference{
+		ID:        Int64(1),
+		NodeID:    String("nid"),
+		Reference: String("r"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"reference": "r"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
