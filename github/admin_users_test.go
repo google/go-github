@@ -175,3 +175,19 @@ func TestUserImpersonation_Delete(t *testing.T) {
 		return client.Admin.DeleteUserImpersonation(ctx, "github")
 	})
 }
+
+func TestCreateUserRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createUserRequest{}, "{}")
+
+	u := &createUserRequest{
+		Login: String("l"),
+		Email: String("e"),
+	}
+
+	want := `{
+		"login": "l",
+		"email": "e"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
