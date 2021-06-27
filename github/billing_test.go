@@ -343,3 +343,21 @@ func TestActionBilling_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPackageBilling_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PackageBilling{}, "{}")
+
+	u := &PackageBilling{
+		TotalGigabytesBandwidthUsed:     1,
+		TotalPaidGigabytesBandwidthUsed: 1,
+		IncludedGigabytesBandwidth:      1,
+	}
+
+	want := `{
+		"total_gigabytes_bandwidth_used": 1,
+		"total_paid_gigabytes_bandwidth_used": 1,
+		"included_gigabytes_bandwidth": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
