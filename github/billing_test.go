@@ -297,3 +297,21 @@ func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
 	_, _, err := client.Billing.GetStorageBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
+
+func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
+
+	u := &MinutesUsedBreakdown{
+		Ubuntu:  1,
+		MacOS:   1,
+		Windows: 1,
+	}
+
+	want := `{
+		"UBUNTU": 1,
+		"MACOS": 1,
+		"WINDOWS": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
