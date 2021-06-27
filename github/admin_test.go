@@ -189,3 +189,49 @@ func TestTeamLDAPMapping_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestUserLDAPMapping_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserLDAPMapping{}, "{}")
+
+	u := &UserLDAPMapping{
+		ID:                Int64(1),
+		LDAPDN:            String("ldapdn"),
+		Login:             String("l"),
+		AvatarURL:         String("au"),
+		GravatarID:        String("gi"),
+		Type:              String("t"),
+		SiteAdmin:         Bool(true),
+		URL:               String("u"),
+		EventsURL:         String("eu"),
+		FollowingURL:      String("fu"),
+		FollowersURL:      String("fu"),
+		GistsURL:          String("gu"),
+		OrganizationsURL:  String("ou"),
+		ReceivedEventsURL: String("reu"),
+		ReposURL:          String("ru"),
+		StarredURL:        String("su"),
+		SubscriptionsURL:  String("subu"),
+	}
+
+	want := `{
+		"id": 1,
+		"ldap_dn": "ldapdn",
+		"login": "l",
+		"avatar_url": "au",
+		"gravatar_id": "gi",
+		"type": "t",
+		"site_admin": true,
+		"url": "u",
+		"events_url": "eu",
+		"following_url": "fu",
+		"followers_url": "fu",
+		"gists_url": "gu",
+		"organizations_url": "ou",
+		"received_events_url": "reu",
+		"repos_url": "ru",
+		"starred_url": "su",
+		"subscriptions_url": "subu"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
