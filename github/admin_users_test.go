@@ -207,3 +207,21 @@ func TestImpersonateUserOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestOAuthAPP_Marshal(t *testing.T) {
+	testJSONMarshal(t, &OAuthAPP{}, "{}")
+
+	u := &OAuthAPP{
+		URL:      String("u"),
+		Name:     String("n"),
+		ClientID: String("cid"),
+	}
+
+	want := `{
+		"url": "u",
+		"name": "n",
+		"client_id": "cid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
