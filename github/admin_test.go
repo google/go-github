@@ -235,3 +235,35 @@ func TestUserLDAPMapping_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestEnterprise_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Enterprise{}, "{}")
+
+	u := &Enterprise{
+		ID:          Int(1),
+		Slug:        String("s"),
+		Name:        String("n"),
+		NodeID:      String("nid"),
+		AvatarURL:   String("au"),
+		Description: String("d"),
+		WebsiteURL:  String("wu"),
+		HTMLURL:     String("hu"),
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"slug": "s",
+		"name": "n",
+		"node_id": "nid",
+		"avatar_url": "au",
+		"description": "d",
+		"website_url": "wu",
+		"html_url": "hu",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
