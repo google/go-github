@@ -544,6 +544,27 @@ func TestHook_String(t *testing.T) {
 	}
 }
 
+func TestHookDelivery_String(t *testing.T) {
+	v := HookDelivery{
+		ID:             Int64(0),
+		GUID:           String(""),
+		Redelivery:     Bool(false),
+		Duration:       Float64(0.0),
+		Status:         String(""),
+		StatusCode:     Int(0),
+		Event:          String(""),
+		Action:         String(""),
+		InstallationID: String(""),
+		RepositoryID:   Int64(0),
+		Request:        &HookRequest{},
+		Response:       &HookResponse{},
+	}
+	want := `github.HookDelivery{ID:0, GUID:"", Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:"", RepositoryID:0, Request:github.HookRequest{}, Response:github.HookResponse{}}`
+	if got := v.String(); got != want {
+		t.Errorf("HookDelivery.String = %v, want %v", got, want)
+	}
+}
+
 func TestHookStats_String(t *testing.T) {
 	v := HookStats{
 		TotalHooks:    Int(0),

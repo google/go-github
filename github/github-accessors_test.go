@@ -5524,6 +5524,167 @@ func TestHookConfig_GetURL(tt *testing.T) {
 	h.GetURL()
 }
 
+func TestHookDelivery_GetAction(tt *testing.T) {
+	var zeroValue string
+	h := &HookDelivery{Action: &zeroValue}
+	h.GetAction()
+	h = &HookDelivery{}
+	h.GetAction()
+	h = nil
+	h.GetAction()
+}
+
+func TestHookDelivery_GetDeliveredAt(tt *testing.T) {
+	var zeroValue time.Time
+	h := &HookDelivery{DeliveredAt: &zeroValue}
+	h.GetDeliveredAt()
+	h = &HookDelivery{}
+	h.GetDeliveredAt()
+	h = nil
+	h.GetDeliveredAt()
+}
+
+func TestHookDelivery_GetDuration(tt *testing.T) {
+	h := &HookDelivery{}
+	h.GetDuration()
+	h = nil
+	h.GetDuration()
+}
+
+func TestHookDelivery_GetEvent(tt *testing.T) {
+	var zeroValue string
+	h := &HookDelivery{Event: &zeroValue}
+	h.GetEvent()
+	h = &HookDelivery{}
+	h.GetEvent()
+	h = nil
+	h.GetEvent()
+}
+
+func TestHookDelivery_GetGUID(tt *testing.T) {
+	var zeroValue string
+	h := &HookDelivery{GUID: &zeroValue}
+	h.GetGUID()
+	h = &HookDelivery{}
+	h.GetGUID()
+	h = nil
+	h.GetGUID()
+}
+
+func TestHookDelivery_GetID(tt *testing.T) {
+	var zeroValue int64
+	h := &HookDelivery{ID: &zeroValue}
+	h.GetID()
+	h = &HookDelivery{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHookDelivery_GetInstallationID(tt *testing.T) {
+	var zeroValue string
+	h := &HookDelivery{InstallationID: &zeroValue}
+	h.GetInstallationID()
+	h = &HookDelivery{}
+	h.GetInstallationID()
+	h = nil
+	h.GetInstallationID()
+}
+
+func TestHookDelivery_GetRedelivery(tt *testing.T) {
+	var zeroValue bool
+	h := &HookDelivery{Redelivery: &zeroValue}
+	h.GetRedelivery()
+	h = &HookDelivery{}
+	h.GetRedelivery()
+	h = nil
+	h.GetRedelivery()
+}
+
+func TestHookDelivery_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	h := &HookDelivery{RepositoryID: &zeroValue}
+	h.GetRepositoryID()
+	h = &HookDelivery{}
+	h.GetRepositoryID()
+	h = nil
+	h.GetRepositoryID()
+}
+
+func TestHookDelivery_GetRequest(tt *testing.T) {
+	h := &HookDelivery{}
+	h.GetRequest()
+	h = nil
+	h.GetRequest()
+}
+
+func TestHookDelivery_GetResponse(tt *testing.T) {
+	h := &HookDelivery{}
+	h.GetResponse()
+	h = nil
+	h.GetResponse()
+}
+
+func TestHookDelivery_GetStatus(tt *testing.T) {
+	var zeroValue string
+	h := &HookDelivery{Status: &zeroValue}
+	h.GetStatus()
+	h = &HookDelivery{}
+	h.GetStatus()
+	h = nil
+	h.GetStatus()
+}
+
+func TestHookDelivery_GetStatusCode(tt *testing.T) {
+	var zeroValue int
+	h := &HookDelivery{StatusCode: &zeroValue}
+	h.GetStatusCode()
+	h = &HookDelivery{}
+	h.GetStatusCode()
+	h = nil
+	h.GetStatusCode()
+}
+
+func TestHookRequest_GetHeader(tt *testing.T) {
+	zeroValue := map[string]string{}
+	h := &HookRequest{Header: zeroValue}
+	h.GetHeader()
+	h = &HookRequest{}
+	h.GetHeader()
+	h = nil
+	h.GetHeader()
+}
+
+func TestHookRequest_GetRawPayload(tt *testing.T) {
+	var zeroValue json.RawMessage
+	h := &HookRequest{RawPayload: &zeroValue}
+	h.GetRawPayload()
+	h = &HookRequest{}
+	h.GetRawPayload()
+	h = nil
+	h.GetRawPayload()
+}
+
+func TestHookResponse_GetHeader(tt *testing.T) {
+	zeroValue := map[string]string{}
+	h := &HookResponse{Header: zeroValue}
+	h.GetHeader()
+	h = &HookResponse{}
+	h.GetHeader()
+	h = nil
+	h.GetHeader()
+}
+
+func TestHookResponse_GetRawPayload(tt *testing.T) {
+	var zeroValue json.RawMessage
+	h := &HookResponse{RawPayload: &zeroValue}
+	h.GetRawPayload()
+	h = &HookResponse{}
+	h.GetRawPayload()
+	h = nil
+	h.GetRawPayload()
+}
+
 func TestHookStats_GetActiveHooks(tt *testing.T) {
 	var zeroValue int
 	h := &HookStats{ActiveHooks: &zeroValue}

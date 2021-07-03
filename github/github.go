@@ -212,6 +212,9 @@ type ListCursorOptions struct {
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
 	Before string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query continues the search using this cursor.
+	Cursor string `url:"cursor,omitempty"`
 }
 
 // UploadOptions specifies the parameters to methods that support uploads.
@@ -445,6 +448,11 @@ type Response struct {
 	// calling the endpoint again.
 	NextPageToken string
 
+	// For APIs that support cursor pagination, such as RepositoryService.ListRepositoryHookDeliveries,
+	// the following field will be populated to point to the next page.
+	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
+	Cursor string
+
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
@@ -481,25 +489,33 @@ func (r *Response) populatePageValues() {
 			if err != nil {
 				continue
 			}
-			page := url.Query().Get("page")
-			if page == "" {
+
+			if page := url.Query().Get("page"); page != "" {
+				for _, segment := range segments[1:] {
+					switch strings.TrimSpace(segment) {
+					case `rel="next"`:
+						if r.NextPage, err = strconv.Atoi(page); err != nil {
+							r.NextPageToken = page
+						}
+					case `rel="prev"`:
+						r.PrevPage, _ = strconv.Atoi(page)
+					case `rel="first"`:
+						r.FirstPage, _ = strconv.Atoi(page)
+					case `rel="last"`:
+						r.LastPage, _ = strconv.Atoi(page)
+					}
+				}
+
 				continue
 			}
 
-			for _, segment := range segments[1:] {
-				switch strings.TrimSpace(segment) {
-				case `rel="next"`:
-					if r.NextPage, err = strconv.Atoi(page); err != nil {
-						r.NextPageToken = page
+			if cursor := url.Query().Get("cursor"); cursor != "" {
+				for _, segment := range segments[1:] {
+					switch strings.TrimSpace(segment) {
+					case `rel="next"`:
+						r.Cursor = cursor
 					}
-				case `rel="prev"`:
-					r.PrevPage, _ = strconv.Atoi(page)
-				case `rel="first"`:
-					r.FirstPage, _ = strconv.Atoi(page)
-				case `rel="last"`:
-					r.LastPage, _ = strconv.Atoi(page)
 				}
-
 			}
 		}
 	}
