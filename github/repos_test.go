@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -911,6 +912,43 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", false)
 		return err
 	})
+}
+
+func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/repos/o/r/branches/br")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/repos/o/r/branches/br", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
+	})
+	ctx := context.Background()
+	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	if err != nil {
+		t.Errorf("Repositories.GetBranch returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusOK)
+	}
+
+	want := &Branch{
+		Name: String("n"),
+		Commit: &RepositoryCommit{
+			SHA: String("s"),
+			Commit: &Commit{
+				Message: String("m"),
+			},
+		},
+		Protected: Bool(true),
+	}
+	if !cmp.Equal(branch, want) {
+		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
+	}
 }
 
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {

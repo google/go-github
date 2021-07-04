@@ -972,6 +972,7 @@ func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, fo
 
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
 		u = resp.Header.Get("Location")
 		resp, err = s.getBranchFromURL(ctx, u, false)
 	}
