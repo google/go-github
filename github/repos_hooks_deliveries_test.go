@@ -186,3 +186,35 @@ func TestHookDelivery_ParsePayload(t *testing.T) {
 		})
 	}
 }
+
+func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
+	p := json.RawMessage(nil)
+
+	d := &HookDelivery{
+		Event: String("some_invalid_event"),
+		Request: &HookRequest{
+			RawPayload: &p,
+		},
+	}
+
+	_, err := d.ParseRequestPayload()
+	if err == nil || err.Error() != "unexpected end of JSON input" {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
+	p := json.RawMessage([]byte(`{"check_run":{"id":"invalid"}}`))
+
+	d := &HookDelivery{
+		Event: String("check_run"),
+		Request: &HookRequest{
+			RawPayload: &p,
+		},
+	}
+
+	_, err := d.ParseRequestPayload()
+	if err == nil || err.Error() != "json: cannot unmarshal string into Go struct field CheckRun.check_run.id of type int64" {
+		t.Errorf("unexpected error: %v", err)
+	}
+}
