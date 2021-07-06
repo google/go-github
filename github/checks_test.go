@@ -1047,3 +1047,65 @@ func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCheckRunOutput_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunOutput{}, "{}")
+
+	u := &CheckRunOutput{
+		Title:            String("ti"),
+		Summary:          String("s"),
+		Text:             String("t"),
+		AnnotationsCount: Int(1),
+		AnnotationsURL:   String("au"),
+		Annotations: []*CheckRunAnnotation{
+			{
+				Path:            String("p"),
+				StartLine:       Int(1),
+				EndLine:         Int(1),
+				StartColumn:     Int(1),
+				EndColumn:       Int(1),
+				AnnotationLevel: String("al"),
+				Message:         String("m"),
+				Title:           String("t"),
+				RawDetails:      String("rd"),
+			},
+		},
+		Images: []*CheckRunImage{
+			{
+				Alt:      String("a"),
+				ImageURL: String("i"),
+				Caption:  String("c"),
+			},
+		},
+	}
+
+	want := `{
+		"title": "ti",
+		"summary": "s",
+		"text": "t",
+		"annotations_count": 1,
+		"annotations_url": "au",
+		"annotations": [
+			{
+				"path": "p",
+				"start_line": 1,
+				"end_line": 1,
+				"start_column": 1,
+				"end_column": 1,
+				"annotation_level": "al",
+				"message": "m",
+				"title": "t",
+				"raw_details": "rd"
+			}
+		],
+		"images": [
+			{
+				"alt": "a",
+				"image_url": "i",
+				"caption": "c"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
