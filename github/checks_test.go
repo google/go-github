@@ -1015,3 +1015,19 @@ func TestCheckRunAction_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAutoTriggerCheck_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AutoTriggerCheck{}, "{}")
+
+	u := &AutoTriggerCheck{
+		AppID:   Int64(1),
+		Setting: Bool(false),
+	}
+
+	want := `{
+		"app_id": 1,
+		"setting": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
