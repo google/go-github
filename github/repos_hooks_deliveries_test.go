@@ -7,8 +7,10 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -103,4 +105,84 @@ func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Repositories.GetHookDelivery(ctx, "%", "%", 1, 1)
 	testURLParseError(t, err)
+}
+
+var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
+	"check_run":                      &CheckRunEvent{},
+	"check_suite":                    &CheckSuiteEvent{},
+	"commit_comment":                 &CommitCommentEvent{},
+	"content_reference":              &ContentReferenceEvent{},
+	"create":                         &CreateEvent{},
+	"delete":                         &DeleteEvent{},
+	"deploy_ket":                     &DeployKeyEvent{},
+	"deployment":                     &DeploymentEvent{},
+	"deployment_status":              &DeploymentStatusEvent{},
+	"fork":                           &ForkEvent{},
+	"github_app_authorization":       &GitHubAppAuthorizationEvent{},
+	"gollum":                         &GollumEvent{},
+	"installation":                   &InstallationEvent{},
+	"installation_repositories":      &InstallationRepositoriesEvent{},
+	"issue_comment":                  &IssueCommentEvent{},
+	"issues":                         &IssuesEvent{},
+	"label":                          &LabelEvent{},
+	"marketplace_purchase":           &MarketplacePurchaseEvent{},
+	"member_event":                   &MemberEvent{},
+	"membership_event":               &MembershipEvent{},
+	"meta":                           &MetaEvent{},
+	"milestone":                      &MilestoneEvent{},
+	"organization":                   &OrganizationEvent{},
+	"org_block":                      &OrgBlockEvent{},
+	"package":                        &PackageEvent{},
+	"page_build":                     &PageBuildEvent{},
+	"ping":                           &PingEvent{},
+	"project":                        &ProjectEvent{},
+	"project_card":                   &ProjectCardEvent{},
+	"project_column":                 &ProjectColumnEvent{},
+	"public":                         &PublicEvent{},
+	"pull_request":                   &PullRequestEvent{},
+	"pull_request_review":            &PullRequestReviewEvent{},
+	"pull_request_review_comment":    &PullRequestReviewCommentEvent{},
+	"pull_request_target":            &PullRequestTargetEvent{},
+	"push":                           &PushEvent{},
+	"release":                        &ReleaseEvent{},
+	"repository":                     &RepositoryEvent{},
+	"repository_dispatch":            &RepositoryDispatchEvent{},
+	"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
+	"star":                           &StarEvent{},
+	"status":                         &StatusEvent{},
+	"team":                           &TeamEvent{},
+	"team_add":                       &TeamAddEvent{},
+	"user":                           &UserEvent{},
+	"watch":                          &WatchEvent{},
+	"workflow_dispatch":              &WorkflowDispatchEvent{},
+	"workflow_run":                   &WorkflowRunEvent{},
+}
+
+func TestHookDelivery_ParsePayload(t *testing.T) {
+	for evt, obj := range hookDeliveryPayloadTypeToStruct {
+		t.Run(evt, func(t *testing.T) {
+			bs, err := json.Marshal(obj)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			p := json.RawMessage(bs)
+
+			d := &HookDelivery{
+				Event: String(evt),
+				Request: &HookRequest{
+					RawPayload: &p,
+				},
+			}
+
+			got, err := d.ParseRequestPayload()
+			if err != nil {
+				t.Error(err)
+			}
+
+			if !reflect.DeepEqual(obj, got) {
+				t.Errorf("want %T %v, got %T %v", obj, obj, got, got)
+			}
+		})
+	}
 }
