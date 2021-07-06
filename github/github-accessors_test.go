@@ -5645,14 +5645,14 @@ func TestHookDelivery_GetStatusCode(tt *testing.T) {
 	h.GetStatusCode()
 }
 
-func TestHookRequest_GetHeader(tt *testing.T) {
+func TestHookRequest_GetHeaders(tt *testing.T) {
 	zeroValue := map[string]string{}
-	h := &HookRequest{Header: zeroValue}
-	h.GetHeader()
+	h := &HookRequest{Headers: zeroValue}
+	h.GetHeaders()
 	h = &HookRequest{}
-	h.GetHeader()
+	h.GetHeaders()
 	h = nil
-	h.GetHeader()
+	h.GetHeaders()
 }
 
 func TestHookRequest_GetRawPayload(tt *testing.T) {
@@ -5665,14 +5665,14 @@ func TestHookRequest_GetRawPayload(tt *testing.T) {
 	h.GetRawPayload()
 }
 
-func TestHookResponse_GetHeader(tt *testing.T) {
+func TestHookResponse_GetHeaders(tt *testing.T) {
 	zeroValue := map[string]string{}
-	h := &HookResponse{Header: zeroValue}
-	h.GetHeader()
+	h := &HookResponse{Headers: zeroValue}
+	h.GetHeaders()
 	h = &HookResponse{}
-	h.GetHeader()
+	h.GetHeaders()
 	h = nil
-	h.GetHeader()
+	h.GetHeaders()
 }
 
 func TestHookResponse_GetRawPayload(tt *testing.T) {

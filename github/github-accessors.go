@@ -4796,12 +4796,12 @@ func (h *HookDelivery) GetStatusCode() int {
 	return *h.StatusCode
 }
 
-// GetHeader returns the Header map if it's non-nil, an empty map otherwise.
-func (h *HookRequest) GetHeader() map[string]string {
-	if h == nil || h.Header == nil {
+// GetHeaders returns the Headers map if it's non-nil, an empty map otherwise.
+func (h *HookRequest) GetHeaders() map[string]string {
+	if h == nil || h.Headers == nil {
 		return map[string]string{}
 	}
-	return h.Header
+	return h.Headers
 }
 
 // GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
@@ -4812,12 +4812,12 @@ func (h *HookRequest) GetRawPayload() json.RawMessage {
 	return *h.RawPayload
 }
 
-// GetHeader returns the Header map if it's non-nil, an empty map otherwise.
-func (h *HookResponse) GetHeader() map[string]string {
-	if h == nil || h.Header == nil {
+// GetHeaders returns the Headers map if it's non-nil, an empty map otherwise.
+func (h *HookResponse) GetHeaders() map[string]string {
+	if h == nil || h.Headers == nil {
 		return map[string]string{}
 	}
-	return h.Header
+	return h.Headers
 }
 
 // GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.

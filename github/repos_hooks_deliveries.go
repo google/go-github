@@ -40,7 +40,7 @@ func (d HookDelivery) String() string {
 }
 
 type HookRequest struct {
-	Header     map[string]string `json:"headers,omitempty"`
+	Headers    map[string]string `json:"headers,omitempty"`
 	RawPayload *json.RawMessage  `json:"payload,omitempty"`
 }
 
@@ -49,7 +49,7 @@ func (r HookRequest) String() string {
 }
 
 type HookResponse struct {
-	Header     map[string]string `json:"headers,omitempty"`
+	Headers    map[string]string `json:"headers,omitempty"`
 	RawPayload *json.RawMessage  `json:"payload,omitempty"`
 }
 
