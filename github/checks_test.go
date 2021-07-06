@@ -1487,3 +1487,143 @@ func TestListCheckRunsResults_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, &l, w)
 }
+
+func TestListCheckSuiteResults_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListCheckSuiteResults{}, "{}")
+
+	l := &ListCheckSuiteResults{
+		Total: Int(1),
+		CheckSuites: []*CheckSuite{
+			{
+				ID:         Int64(1),
+				NodeID:     String("n"),
+				HeadBranch: String("h"),
+				HeadSHA:    String("h"),
+				URL:        String("u"),
+				BeforeSHA:  String("b"),
+				AfterSHA:   String("a"),
+				Status:     String("s"),
+				Conclusion: String("c"),
+				App: &App{
+					ID:     Int64(1),
+					NodeID: String("n"),
+					Owner: &User{
+						Login:     String("l"),
+						ID:        Int64(1),
+						NodeID:    String("n"),
+						URL:       String("u"),
+						ReposURL:  String("r"),
+						EventsURL: String("e"),
+						AvatarURL: String("a"),
+					},
+					Name:        String("n"),
+					Description: String("d"),
+					HTMLURL:     String("h"),
+					ExternalURL: String("u"),
+					CreatedAt:   &Timestamp{referenceTime},
+					UpdatedAt:   &Timestamp{referenceTime},
+				},
+				Repository: &Repository{
+					ID: Int64(1),
+				},
+				PullRequests: []*PullRequest{
+					{
+						URL:    String("u"),
+						ID:     Int64(1),
+						Number: Int(1),
+						Head: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("s"),
+								Name: String("n"),
+							},
+						},
+						Base: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("u"),
+								Name: String("n"),
+							},
+						},
+					},
+				},
+				HeadCommit: &Commit{
+					SHA: String("s"),
+				},
+			},
+		},
+	}
+
+	w := `{
+		"total_count": 1,
+		"check_suites": [
+			{
+				"id": 1,
+				"node_id": "n",
+				"head_branch": "h",
+				"head_sha": "h",
+				"url": "u",
+				"before": "b",
+				"after": "a",
+				"status": "s",
+				"conclusion": "c",
+				"app": {
+					"id": 1,
+					"node_id": "n",
+					"owner": {
+						"login": "l",
+						"id": 1,
+						"node_id": "n",
+						"avatar_url": "a",
+						"url": "u",
+						"events_url": "e",
+						"repos_url": "r"
+					},
+					"name": "n",
+					"description": "d",
+					"external_url": "u",
+					"html_url": "h",
+					"created_at": ` + referenceTimeStr + `,
+					"updated_at": ` + referenceTimeStr + `
+				},
+				"repository": {
+					"id": 1
+				},
+				"pull_requests": [
+				{
+					"id": 1,
+					"number": 1,
+					"url": "u",
+					"head": {
+						"ref": "r",
+						"sha": "s",
+						"repo": {
+							"id": 1,
+							"name": "n",
+							"url": "s"
+						}
+					},
+					"base": {
+						"ref": "r",
+						"sha": "s",
+						"repo": {
+							"id": 1,
+							"name": "n",
+							"url": "u"
+						}
+					}
+				}
+			],
+			"head_commit": {
+				"sha": "s"
+			}
+			}
+		]
+	}`
+
+	testJSONMarshal(t, &l, w)
+}
