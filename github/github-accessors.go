@@ -4701,9 +4701,9 @@ func (h *HookDelivery) GetAction() string {
 }
 
 // GetDeliveredAt returns the DeliveredAt field if it's non-nil, zero value otherwise.
-func (h *HookDelivery) GetDeliveredAt() time.Time {
+func (h *HookDelivery) GetDeliveredAt() Timestamp {
 	if h == nil || h.DeliveredAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *h.DeliveredAt
 }

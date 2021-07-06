@@ -9,7 +9,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 // HookDelivery represents the data that is received from GitHub's Webhook Delivery API
@@ -20,7 +19,7 @@ import (
 type HookDelivery struct {
 	ID             *int64     `json:"id"`
 	GUID           *string    `json:"guid"`
-	DeliveredAt    *time.Time `json:"delivered_at"`
+	DeliveredAt    *Timestamp `json:"delivered_at"`
 	Redelivery     *bool      `json:"redelivery"`
 	Duration       *float64   `json:"duration"`
 	Status         *string    `json:"status"`

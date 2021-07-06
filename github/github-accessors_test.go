@@ -5535,7 +5535,7 @@ func TestHookDelivery_GetAction(tt *testing.T) {
 }
 
 func TestHookDelivery_GetDeliveredAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	h := &HookDelivery{DeliveredAt: &zeroValue}
 	h.GetDeliveredAt()
 	h = &HookDelivery{}
