@@ -490,31 +490,34 @@ func (r *Response) populatePageValues() {
 				continue
 			}
 
-			if page := url.Query().Get("page"); page != "" {
-				for _, segment := range segments[1:] {
-					switch strings.TrimSpace(segment) {
-					case `rel="next"`:
-						if r.NextPage, err = strconv.Atoi(page); err != nil {
-							r.NextPageToken = page
-						}
-					case `rel="prev"`:
-						r.PrevPage, _ = strconv.Atoi(page)
-					case `rel="first"`:
-						r.FirstPage, _ = strconv.Atoi(page)
-					case `rel="last"`:
-						r.LastPage, _ = strconv.Atoi(page)
-					}
-				}
+			q := url.Query()
 
-				continue
-			}
-
-			if cursor := url.Query().Get("cursor"); cursor != "" {
+			if cursor := q.Get("cursor"); cursor != "" {
 				for _, segment := range segments[1:] {
 					switch strings.TrimSpace(segment) {
 					case `rel="next"`:
 						r.Cursor = cursor
 					}
+				}
+			}
+
+			page := q.Get("page")
+			if page == "" {
+				continue
+			}
+
+			for _, segment := range segments[1:] {
+				switch strings.TrimSpace(segment) {
+				case `rel="next"`:
+					if r.NextPage, err = strconv.Atoi(page); err != nil {
+						r.NextPageToken = page
+					}
+				case `rel="prev"`:
+					r.PrevPage, _ = strconv.Atoi(page)
+				case `rel="first"`:
+					r.FirstPage, _ = strconv.Atoi(page)
+				case `rel="last"`:
+					r.LastPage, _ = strconv.Atoi(page)
 				}
 			}
 		}
