@@ -979,3 +979,21 @@ func TestCheckRunAnnotation_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCheckRunImage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunImage{}, "{}")
+
+	u := &CheckRunImage{
+		Alt:      String("a"),
+		ImageURL: String("i"),
+		Caption:  String("c"),
+	}
+
+	want := `{
+		"alt": "a",
+		"image_url": "i",
+		"caption": "c"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
