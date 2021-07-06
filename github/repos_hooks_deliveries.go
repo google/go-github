@@ -61,7 +61,7 @@ func (r HookResponse) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#list-deliveries-for-a-repository-webhook
 func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/deliveries", owner, repo, id)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries", owner, repo, id)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -85,7 +85,7 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-a-delivery-for-a-repository-webhook
 func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/hooks/%d/deliveries/%d", owner, repo, hookID, deliveryID)
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v", owner, repo, hookID, deliveryID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
