@@ -997,3 +997,21 @@ func TestCheckRunImage_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCheckRunAction_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunAction{}, "{}")
+
+	u := &CheckRunAction{
+		Label:       "l",
+		Description: "d",
+		Identifier:  "i",
+	}
+
+	want := `{
+		"label": "l",
+		"description": "d",
+		"identifier": "i"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
