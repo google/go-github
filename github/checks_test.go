@@ -949,3 +949,33 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 
 	testJSONMarshal(t, &c, w)
 }
+
+func TestCheckRunAnnotation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunAnnotation{}, "{}")
+
+	u := &CheckRunAnnotation{
+		Path:            String("p"),
+		StartLine:       Int(1),
+		EndLine:         Int(1),
+		StartColumn:     Int(1),
+		EndColumn:       Int(1),
+		AnnotationLevel: String("al"),
+		Message:         String("m"),
+		Title:           String("t"),
+		RawDetails:      String("rd"),
+	}
+
+	want := `{
+		"path": "p",
+		"start_line": 1,
+		"end_line": 1,
+		"start_column": 1,
+		"end_column": 1,
+		"annotation_level": "al",
+		"message": "m",
+		"title": "t",
+		"raw_details": "rd"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
