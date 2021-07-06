@@ -1031,3 +1031,19 @@ func TestAutoTriggerCheck_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateCheckSuiteOptions{}, "{}")
+
+	u := &CreateCheckSuiteOptions{
+		HeadSHA:    "hsha",
+		HeadBranch: String("hb"),
+	}
+
+	want := `{
+		"head_sha": "hsha",
+		"head_branch": "hb"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
