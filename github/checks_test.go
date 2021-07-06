@@ -1651,3 +1651,27 @@ func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPreferenceList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PreferenceList{}, "{}")
+
+	u := &PreferenceList{
+		AutoTriggerChecks: []*AutoTriggerCheck{
+			{
+				AppID:   Int64(1),
+				Setting: Bool(false),
+			},
+		},
+	}
+
+	want := `{
+		"auto_trigger_checks": [
+			{
+				"app_id": 1,
+				"setting": false
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
