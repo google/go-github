@@ -696,3 +696,78 @@ func TestWatchEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestUserEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserEvent{}, "{}")
+
+	u := &UserEvent{
+		User: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		// The action performed. Possible values are: "created" or "deleted".
+		Action: String("a"),
+		Enterprise: &Enterprise{
+			ID:          Int(1),
+			Slug:        String("s"),
+			Name:        String("n"),
+			NodeID:      String("nid"),
+			AvatarURL:   String("au"),
+			Description: String("d"),
+			WebsiteURL:  String("wu"),
+			HTMLURL:     String("hu"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+	}
+
+	want := `{
+		"user": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		},
+		"action": "a",
+		"enterprise": {
+			"id": 1,
+			"slug": "s",
+			"name": "n",
+			"node_id": "nid",
+			"avatar_url": "au",
+			"description": "d",
+			"website_url": "wu",
+			"html_url": "hu",
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `
+		},
+		"sender": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
