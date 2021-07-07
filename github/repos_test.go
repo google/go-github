@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -949,6 +950,35 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 	if !cmp.Equal(branch, want) {
 		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
 	}
+}
+
+func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Error(w, "branch not found", http.StatusNotFound)
+	})
+	ctx := context.Background()
+	_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	if err == nil {
+		t.Error("Repositories.GetBranch returned error: nil")
+	}
+	if resp.StatusCode != http.StatusNotFound {
+		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusNotFound)
+	}
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get branch")
+	})
+
+	const methodName = "GetBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+		return err
+	})
 }
 
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {

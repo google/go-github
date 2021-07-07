@@ -1997,3 +1997,10 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 		t.Fatalf("resp.Body.Close() returned error: %v", err)
 	}
 }
+
+// roundTripperFunc creates a mock RoundTripper (transport)
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
