@@ -955,3 +955,35 @@ func TestCheckSuiteEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, r, want)
 }
+
+func TestDeployKeyEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DeployKeyEvent{}, "{}")
+
+	u := &DeployKeyEvent{
+		Action: String("a"),
+		Key: &Key{
+			ID:        Int64(1),
+			Key:       String("k"),
+			URL:       String("k"),
+			Title:     String("k"),
+			ReadOnly:  Bool(false),
+			Verified:  Bool(false),
+			CreatedAt: &Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"action": "a",
+		"key": {
+			"id": 1,
+			"key": "k",
+			"url": "k",
+			"title": "k",
+			"read_only": false,
+			"verified": false,
+			"created_at": ` + referenceTimeStr + `
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
