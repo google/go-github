@@ -11474,6 +11474,13 @@ func TestProtection_GetEnforceAdmins(tt *testing.T) {
 	p.GetEnforceAdmins()
 }
 
+func TestProtection_GetRequiredConversationResolution(tt *testing.T) {
+	p := &Protection{}
+	p.GetRequiredConversationResolution()
+	p = nil
+	p.GetRequiredConversationResolution()
+}
+
 func TestProtection_GetRequiredPullRequestReviews(tt *testing.T) {
 	p := &Protection{}
 	p.GetRequiredPullRequestReviews()

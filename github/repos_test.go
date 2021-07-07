@@ -959,6 +959,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					"restrictions":{
 						"users":[{"id":1,"login":"u"}],
 						"teams":[{"id":2,"slug":"t"}]
+					},
+					"required_conversation_resolution": {
+						"enabled": true
 					}
 				}`)
 	})
@@ -998,6 +1001,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
 			},
+		},
+		RequiredConversationResolution: &RequiredConversationResolution{
+			Enabled: true,
 		},
 	}
 	if !cmp.Equal(protection, want) {
