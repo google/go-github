@@ -103,3 +103,17 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRequestedAction_Marshal_BodyChange(t *testing.T) {
+	testJSONMarshal(t, &RequestedAction{}, "{}")
+
+	r := &RequestedAction{
+		Identifier: "i",
+	}
+
+	want := `{
+		"identifier": "i"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
