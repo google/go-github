@@ -987,3 +987,56 @@ func TestDeployKeyEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestMetaEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MetaEvent{}, "{}")
+
+	v := make(map[string]interface{})
+	v["a"] = "b"
+
+	u := &MetaEvent{
+		Action: String("a"),
+		HookID: Int64(1),
+		Hook: &Hook{
+			CreatedAt:    &referenceTime,
+			UpdatedAt:    &referenceTime,
+			URL:          String("u"),
+			ID:           Int64(1),
+			Type:         String("t"),
+			Name:         String("n"),
+			TestURL:      String("tu"),
+			PingURL:      String("pu"),
+			LastResponse: v,
+			Config:       v,
+			Events:       []string{"a"},
+			Active:       Bool(true),
+		},
+	}
+
+	want := `{
+		"action": "a",
+		"hook_id": 1,
+		"hook": {
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"url": "u",
+			"id": 1,
+			"type": "t",
+			"name": "n",
+			"test_url": "tu",
+			"ping_url": "pu",
+			"last_response": {
+				"a": "b"
+			},
+			"config": {
+				"a": "b"
+			},
+			"events": [
+				"a"
+			],
+			"active": true
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
