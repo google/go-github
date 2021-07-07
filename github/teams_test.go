@@ -1590,31 +1590,31 @@ func TestTeams_marshall(t *testing.T) {
 	testJSONMarshal(t, &Team{}, "{}")
 
 	u := &Team{
-		ID:               Int64(1),
-		NodeID:           String("n"),
-		Name:             String("n"),
-		Description:      String("d"),
-		URL:              String("u"),
-		Slug:             String("s"),
-		Permission:       String("p"),
-		Privacy:          String("p"),
-		MembersCount:     Int(1),
-		ReposCount:       Int(1),
-		MembersURL:       String("m"),
-		RepositoriesURL:  String("r"),
-		Organization:     &Organization{
-			Login:        String("l"),
-			ID:           Int64(1),
-			NodeID:       String("n"),
-			AvatarURL:    String("a"),
-			HTMLURL:      String("h"),
-			Name:         String("n"),
-			Company:      String("c"),
-			Blog:         String("b"),
-			Location:     String("l"),
-			Email:        String("e"),
+		ID:              Int64(1),
+		NodeID:          String("n"),
+		Name:            String("n"),
+		Description:     String("d"),
+		URL:             String("u"),
+		Slug:            String("s"),
+		Permission:      String("p"),
+		Privacy:         String("p"),
+		MembersCount:    Int(1),
+		ReposCount:      Int(1),
+		MembersURL:      String("m"),
+		RepositoriesURL: String("r"),
+		Organization: &Organization{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			AvatarURL: String("a"),
+			HTMLURL:   String("h"),
+			Name:      String("n"),
+			Company:   String("c"),
+			Blog:      String("b"),
+			Location:  String("l"),
+			Email:     String("e"),
 		},
-		Parent:           &Team{
+		Parent: &Team{
 			ID:           Int64(1),
 			NodeID:       String("n"),
 			Name:         String("n"),
@@ -1626,7 +1626,7 @@ func TestTeams_marshall(t *testing.T) {
 			MembersCount: Int(1),
 			ReposCount:   Int(1),
 		},
-		LDAPDN:           String("l"),
+		LDAPDN: String("l"),
 	}
 
 	want := `{
@@ -1668,6 +1668,6 @@ func TestTeams_marshall(t *testing.T) {
 		},
 		"ldap_dn": "l"	
 	}`
-	
+
 	testJSONMarshal(t, u, want)
 }
