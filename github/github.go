@@ -499,6 +499,8 @@ func (r *Response) populatePageValues() {
 						r.Cursor = cursor
 					}
 				}
+
+				continue
 			}
 
 			page := q.Get("page")
