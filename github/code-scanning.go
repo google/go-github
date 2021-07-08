@@ -18,11 +18,23 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
+// Tool represents the tool used to generate a GitHub Code Scanning Alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
+type Tool struct {
+	Name    *string `json:"name,omitempty"`
+	GUID    *string `json:"guid,omitempty"`
+	Version *string `json:"version,omitempty"`
+}
+
+// Alert represents an individual GitHub Code Scanning Alert on a single repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Alert struct {
 	RuleID          *string    `json:"rule_id,omitempty"`
 	RuleSeverity    *string    `json:"rule_severity,omitempty"`
 	RuleDescription *string    `json:"rule_description,omitempty"`
-	Tool            *string    `json:"tool,omitempty"`
+	Tool            *Tool      `json:"tool,omitempty"`
 	CreatedAt       *Timestamp `json:"created_at,omitempty"`
 	Open            *bool      `json:"open,omitempty"`
 	ClosedBy        *User      `json:"closed_by,omitempty"`

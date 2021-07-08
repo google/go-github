@@ -20,6 +20,7 @@ import (
 	"hash"
 	"io"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -224,8 +225,13 @@ func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err e
 	if signature == "" {
 		signature = r.Header.Get(SHA1SignatureHeader)
 	}
+  
+	contentType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+	if err != nil {
+    return nil, err
+	}
 
-	return ValidatePayloadFromBody(r.Header.Get("Content-Type"), r.Body, signature, secretToken)
+	return ValidatePayloadFromBody(contentType, r.Body, signature, secretToken)
 }
 
 // ValidateSignature validates the signature for the given payload.

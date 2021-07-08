@@ -64,7 +64,11 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 				"rule_id":"js/trivial-conditional",
 				"rule_severity":"warning",
 				"rule_description":"Useless conditional",
-				"tool":"CodeQL",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
 				"created_at":"2020-05-06T12:00:00Z",
 				"open":true,
 				"closed_by":null,
@@ -76,7 +80,11 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 				"rule_id":"js/useless-expression",
 				"rule_severity":"warning",
 				"rule_description":"Expression has no effect",
-				"tool":"CodeQL",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
 				"created_at":"2020-05-06T12:00:00Z",
 				"open":true,
 				"closed_by":null,
@@ -99,7 +107,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			RuleID:          String("js/trivial-conditional"),
 			RuleSeverity:    String("warning"),
 			RuleDescription: String("Useless conditional"),
-			Tool:            String("CodeQL"),
+			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 			CreatedAt:       &date,
 			Open:            Bool(true),
 			ClosedBy:        nil,
@@ -111,7 +119,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			RuleID:          String("js/useless-expression"),
 			RuleSeverity:    String("warning"),
 			RuleDescription: String("Expression has no effect"),
-			Tool:            String("CodeQL"),
+			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 			CreatedAt:       &date,
 			Open:            Bool(true),
 			ClosedBy:        nil,
@@ -148,7 +156,11 @@ func TestActionsService_GetAlert(t *testing.T) {
 		fmt.Fprint(w, `{"rule_id":"js/useless-expression",
 				"rule_severity":"warning",
 				"rule_description":"Expression has no effect",
-				"tool":"CodeQL",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
 				"created_at":"2019-01-02T15:04:05Z",
 				"open":true,
 				"closed_by":null,
@@ -168,7 +180,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 		RuleID:          String("js/useless-expression"),
 		RuleSeverity:    String("warning"),
 		RuleDescription: String("Expression has no effect"),
-		Tool:            String("CodeQL"),
+		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 		CreatedAt:       &date,
 		Open:            Bool(true),
 		ClosedBy:        nil,
@@ -193,4 +205,60 @@ func TestActionsService_GetAlert(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestAlert_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Alert{}, "{}")
+
+	u := &Alert{
+		RuleID:          String("rid"),
+		RuleSeverity:    String("rs"),
+		RuleDescription: String("rd"),
+		Tool: &Tool{
+			Name:    String("n"),
+			GUID:    String("g"),
+			Version: String("v"),
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		Open:      Bool(false),
+		ClosedBy: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		ClosedAt: &Timestamp{referenceTime},
+		URL:      String("url"),
+		HTMLURL:  String("hurl"),
+	}
+
+	want := `{
+		"rule_id": "rid",
+		"rule_severity": "rs",
+		"rule_description": "rd",
+		"tool": {
+			"name": "n",
+			"guid": "g",
+			"version": "v"
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"open": false,
+		"closed_by": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		},
+		"closed_at": ` + referenceTimeStr + `,
+		"url": "url",
+		"html_url": "hurl"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

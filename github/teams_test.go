@@ -1585,3 +1585,89 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 		t.Errorf("Teams.CreateOrUpdateIDPGroupConnectionsBySlug returned %+v. want %+v", groups, want)
 	}
 }
+
+func TestTeams_marshall(t *testing.T) {
+	testJSONMarshal(t, &Team{}, "{}")
+
+	u := &Team{
+		ID:              Int64(1),
+		NodeID:          String("n"),
+		Name:            String("n"),
+		Description:     String("d"),
+		URL:             String("u"),
+		Slug:            String("s"),
+		Permission:      String("p"),
+		Privacy:         String("p"),
+		MembersCount:    Int(1),
+		ReposCount:      Int(1),
+		MembersURL:      String("m"),
+		RepositoriesURL: String("r"),
+		Organization: &Organization{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			AvatarURL: String("a"),
+			HTMLURL:   String("h"),
+			Name:      String("n"),
+			Company:   String("c"),
+			Blog:      String("b"),
+			Location:  String("l"),
+			Email:     String("e"),
+		},
+		Parent: &Team{
+			ID:           Int64(1),
+			NodeID:       String("n"),
+			Name:         String("n"),
+			Description:  String("d"),
+			URL:          String("u"),
+			Slug:         String("s"),
+			Permission:   String("p"),
+			Privacy:      String("p"),
+			MembersCount: Int(1),
+			ReposCount:   Int(1),
+		},
+		LDAPDN: String("l"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "n",
+		"name": "n",
+		"description": "d",
+		"url": "u",
+		"slug": "s",
+		"permission": "p",
+		"privacy": "p",
+		"members_count": 1,
+		"repos_count": 1,
+		"members_url": "m",
+		"repositories_url": "r",
+		"organization": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"html_url": "h",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e"
+		},
+		"parent": {
+			"id": 1,
+			"node_id": "n",
+			"name": "n",
+			"description": "d",
+			"url": "u",
+			"slug": "s",
+			"permission": "p",
+			"privacy": "p",
+			"members_count": 1,
+			"repos_count": 1
+		},
+		"ldap_dn": "l"	
+	}`
+
+	testJSONMarshal(t, u, want)
+}
