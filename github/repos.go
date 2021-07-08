@@ -754,13 +754,14 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks       *RequiredStatusChecks          `json:"required_status_checks"`
-	RequiredPullRequestReviews *PullRequestReviewsEnforcement `json:"required_pull_request_reviews"`
-	EnforceAdmins              *AdminEnforcement              `json:"enforce_admins"`
-	Restrictions               *BranchRestrictions            `json:"restrictions"`
-	RequireLinearHistory       *RequireLinearHistory          `json:"required_linear_history"`
-	AllowForcePushes           *AllowForcePushes              `json:"allow_force_pushes"`
-	AllowDeletions             *AllowDeletions                `json:"allow_deletions"`
+	RequiredStatusChecks           *RequiredStatusChecks           `json:"required_status_checks"`
+	RequiredPullRequestReviews     *PullRequestReviewsEnforcement  `json:"required_pull_request_reviews"`
+	EnforceAdmins                  *AdminEnforcement               `json:"enforce_admins"`
+	Restrictions                   *BranchRestrictions             `json:"restrictions"`
+	RequireLinearHistory           *RequireLinearHistory           `json:"required_linear_history"`
+	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
+	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
+	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
@@ -849,6 +850,11 @@ type AllowDeletions struct {
 
 // AllowForcePushes represents the configuration to accept forced pushes on protected branches.
 type AllowForcePushes struct {
+	Enabled bool `json:"enabled"`
+}
+
+// RequiredConversationResolution, if enabled, requires all comments on the pull request to be resolved before it can be merged to a protected branch.
+type RequiredConversationResolution struct {
 	Enabled bool `json:"enabled"`
 }
 
