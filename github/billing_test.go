@@ -297,3 +297,85 @@ func TestBillingService_GetStorageBillingUser_invalidUser(t *testing.T) {
 	_, _, err := client.Billing.GetStorageBillingUser(ctx, "%")
 	testURLParseError(t, err)
 }
+
+func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
+
+	u := &MinutesUsedBreakdown{
+		Ubuntu:  1,
+		MacOS:   1,
+		Windows: 1,
+	}
+
+	want := `{
+		"UBUNTU": 1,
+		"MACOS": 1,
+		"WINDOWS": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionBilling_Marshal(t *testing.T) {
+	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
+
+	u := &ActionBilling{
+		TotalMinutesUsed:     1,
+		TotalPaidMinutesUsed: 1,
+		IncludedMinutes:      1,
+		MinutesUsedBreakdown: MinutesUsedBreakdown{
+			Ubuntu:  1,
+			MacOS:   1,
+			Windows: 1,
+		},
+	}
+
+	want := `{
+		"total_minutes_used": 1,
+		"total_paid_minutes_used": 1,
+		"included_minutes": 1,
+		"minutes_used_breakdown": {
+			"UBUNTU": 1,
+			"MACOS": 1,
+			"WINDOWS": 1
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPackageBilling_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PackageBilling{}, "{}")
+
+	u := &PackageBilling{
+		TotalGigabytesBandwidthUsed:     1,
+		TotalPaidGigabytesBandwidthUsed: 1,
+		IncludedGigabytesBandwidth:      1,
+	}
+
+	want := `{
+		"total_gigabytes_bandwidth_used": 1,
+		"total_paid_gigabytes_bandwidth_used": 1,
+		"included_gigabytes_bandwidth": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStorageBilling_Marshal(t *testing.T) {
+	testJSONMarshal(t, &StorageBilling{}, "{}")
+
+	u := &StorageBilling{
+		DaysLeftInBillingCycle:       1,
+		EstimatedPaidStorageForMonth: 1,
+		EstimatedStorageForMonth:     1,
+	}
+
+	want := `{
+		"days_left_in_billing_cycle": 1,
+		"estimated_paid_storage_for_month": 1,
+		"estimated_storage_for_month": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
