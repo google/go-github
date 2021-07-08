@@ -458,3 +458,174 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 		return client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	})
 }
+
+func TestWorkflow_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Workflow{}, "{}")
+
+	u := &Workflow{
+		ID:        Int64(1),
+		NodeID:    String("nid"),
+		Name:      String("n"),
+		Path:      String("p"),
+		State:     String("s"),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		URL:       String("u"),
+		HTMLURL:   String("h"),
+		BadgeURL:  String("b"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"name": "n",
+		"path": "p",
+		"state": "s",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"url": "u",
+		"html_url": "h",
+		"badge_url": "b"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflows_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Workflows{}, "{}")
+
+	u := &Workflows{
+		TotalCount: Int(1),
+		Workflows: []*Workflow{
+			{
+				ID:        Int64(1),
+				NodeID:    String("nid"),
+				Name:      String("n"),
+				Path:      String("p"),
+				State:     String("s"),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+				URL:       String("u"),
+				HTMLURL:   String("h"),
+				BadgeURL:  String("b"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"workflows": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"path": "p",
+			"state": "s",
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"url": "u",
+			"html_url": "h",
+			"badge_url": "b"
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowBill_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowBill{}, "{}")
+
+	u := &WorkflowBill{
+		TotalMS: Int64(1),
+	}
+
+	want := `{
+		"total_ms": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowEnvironment{}, "{}")
+
+	u := &WorkflowEnvironment{
+		Ubuntu: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		MacOS: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		Windows: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+	}
+
+	want := `{
+		"UBUNTU": {
+			"total_ms": 1
+		},
+		"MACOS": {
+			"total_ms": 1
+		},
+		"WINDOWS": {
+			"total_ms": 1
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowUsage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowUsage{}, "{}")
+
+	u := &WorkflowUsage{
+		Billable: &WorkflowEnvironment{
+			Ubuntu: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+			MacOS: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+			Windows: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+		},
+	}
+
+	want := `{
+		"billable": {
+			"UBUNTU": {
+				"total_ms": 1
+			},
+			"MACOS": {
+				"total_ms": 1
+			},
+			"WINDOWS": {
+				"total_ms": 1
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
+
+	inputs := make(map[string]interface{}, 0)
+	inputs["key"] = "value"
+
+	u := &CreateWorkflowDispatchEventRequest{
+		Ref:    "r",
+		Inputs: inputs,
+	}
+
+	want := `{
+		"ref": "r",
+		"inputs": {
+			"key": "value"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
