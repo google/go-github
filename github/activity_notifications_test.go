@@ -312,3 +312,83 @@ func TestActivityService_DeleteThreadSubscription(t *testing.T) {
 		return client.Activity.DeleteThreadSubscription(ctx, "1")
 	})
 }
+
+func TestNotification_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Notification{}, "{}")
+
+	u := &Notification{
+		ID: String("id"),
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+		Subject: &NotificationSubject{
+			Title:            String("t"),
+			URL:              String("u"),
+			LatestCommentURL: String("l"),
+			Type:             String("t"),
+		},
+		Reason:     String("r"),
+		Unread:     Bool(true),
+		UpdatedAt:  &referenceTime,
+		LastReadAt: &referenceTime,
+		URL:        String("u"),
+	}
+
+	want := `{
+		"id": "id",
+		"repository": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		},
+		"subject": {
+			"title": "t",
+			"url": "u",
+			"latest_comment_url": "l",
+			"type": "t"
+		},
+		"reason": "r",
+		"unread": true,
+		"updated_at": ` + referenceTimeStr + `,
+		"last_read_at": ` + referenceTimeStr + `,
+		"url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestNotificationSubject_Marshal(t *testing.T) {
+	testJSONMarshal(t, &NotificationSubject{}, "{}")
+
+	u := &NotificationSubject{
+		Title:            String("t"),
+		URL:              String("u"),
+		LatestCommentURL: String("l"),
+		Type:             String("t"),
+	}
+
+	want := `{
+		"title": "t",
+		"url": "u",
+		"latest_comment_url": "l",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestMarkReadOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &markReadOptions{}, "{}")
+
+	u := &markReadOptions{
+		LastReadAt: referenceTime,
+	}
+
+	want := `{
+		"last_read_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
