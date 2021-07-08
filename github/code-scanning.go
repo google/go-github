@@ -26,7 +26,7 @@ type Rule struct {
 	FullDescription *string   `json:"full_description"`
 	Tags            *[]string `json:"tags"`
 	Help            *string   `json:"help"`
-} `json:"rule"`
+}
 
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
 //
