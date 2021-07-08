@@ -229,6 +229,33 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 	}
 }
 
+func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
+	req, err := http.NewRequest("POST", "http://localhost/event", nil)
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json; charset=")
+	if _, err = ValidatePayload(req, nil); err == nil {
+		t.Error("ValidatePayload = nil, want err")
+	}
+}
+
+func TestValidatePayload_ValidContentTypeParams(t *testing.T) {
+	var requestBody = `{"yo":true}`
+	buf := bytes.NewBufferString(requestBody)
+
+	req, err := http.NewRequest("POST", "http://localhost/event", buf)
+	if err != nil {
+		t.Fatalf("NewRequest: %v", err)
+	}
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+	_, err = ValidatePayload(req, nil)
+	if err != nil {
+		t.Error("ValidatePayload = nil, want err")
+	}
+}
+
 func TestParseWebHook(t *testing.T) {
 	tests := []struct {
 		payload     interface{}
