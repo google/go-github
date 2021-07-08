@@ -9996,6 +9996,14 @@ func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	return p.EnforceAdmins
 }
 
+// GetRequiredConversationResolution returns the RequiredConversationResolution field.
+func (p *Protection) GetRequiredConversationResolution() *RequiredConversationResolution {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredConversationResolution
+}
+
 // GetRequiredPullRequestReviews returns the RequiredPullRequestReviews field.
 func (p *Protection) GetRequiredPullRequestReviews() *PullRequestReviewsEnforcement {
 	if p == nil {
