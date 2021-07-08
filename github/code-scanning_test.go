@@ -214,9 +214,13 @@ func TestAlert_Marshal(t *testing.T) {
 		RuleID:          String("rid"),
 		RuleSeverity:    String("rs"),
 		RuleDescription: String("rd"),
-		Tool:            String("t"),
-		CreatedAt:       &Timestamp{referenceTime},
-		Open:            Bool(false),
+		Tool: &Tool{
+			Name:    String("n"),
+			GUID:    String("g"),
+			Version: String("v"),
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		Open:      Bool(false),
 		ClosedBy: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -235,7 +239,11 @@ func TestAlert_Marshal(t *testing.T) {
 		"rule_id": "rid",
 		"rule_severity": "rs",
 		"rule_description": "rd",
-		"tool": "t",
+		"tool": {
+			"name": "n",
+			"guid": "g",
+			"version": "v"
+		},
 		"created_at": ` + referenceTimeStr + `,
 		"open": false,
 		"closed_by": {
