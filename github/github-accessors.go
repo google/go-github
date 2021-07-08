@@ -9972,6 +9972,14 @@ func (p *PullRequest) GetAuthorAssociation() string {
 	return *p.AuthorAssociation
 }
 
+// GetAutoMerge returns the AutoMerge field.
+func (p *PullRequest) GetAutoMerge() *PullRequestAutoMerge {
+	if p == nil {
+		return nil
+	}
+	return p.AutoMerge
+}
+
 // GetBase returns the Base field.
 func (p *PullRequest) GetBase() *PullRequestBranch {
 	if p == nil {
@@ -10282,6 +10290,38 @@ func (p *PullRequest) GetUser() *User {
 		return nil
 	}
 	return p.User
+}
+
+// GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
+func (p *PullRequestAutoMerge) GetCommitMessage() string {
+	if p == nil || p.CommitMessage == nil {
+		return ""
+	}
+	return *p.CommitMessage
+}
+
+// GetCommitTitle returns the CommitTitle field if it's non-nil, zero value otherwise.
+func (p *PullRequestAutoMerge) GetCommitTitle() string {
+	if p == nil || p.CommitTitle == nil {
+		return ""
+	}
+	return *p.CommitTitle
+}
+
+// GetEnabledBy returns the EnabledBy field.
+func (p *PullRequestAutoMerge) GetEnabledBy() *User {
+	if p == nil {
+		return nil
+	}
+	return p.EnabledBy
+}
+
+// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
+func (p *PullRequestAutoMerge) GetMergeMethod() string {
+	if p == nil || p.MergeMethod == nil {
+		return ""
+	}
+	return *p.MergeMethod
 }
 
 // GetLabel returns the Label field if it's non-nil, zero value otherwise.
@@ -14938,6 +14978,14 @@ func (t *Timeline) GetSource() *Source {
 		return nil
 	}
 	return t.Source
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetState() string {
+	if t == nil || t.State == nil {
+		return ""
+	}
+	return *t.State
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.

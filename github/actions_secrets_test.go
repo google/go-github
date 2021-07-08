@@ -810,3 +810,121 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 		return client.Actions.DeleteEnvSecret(ctx, 1, "r", "secret")
 	})
 }
+
+func TestPublicKey_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PublicKey{}, "{}")
+
+	u := &PublicKey{
+		KeyID: String("kid"),
+		Key:   String("k"),
+	}
+
+	want := `{
+		"key_id": "kid",
+		"key": "k"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecret_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Secret{}, "{}")
+
+	u := &Secret{
+		Name:                    "n",
+		CreatedAt:               Timestamp{referenceTime},
+		UpdatedAt:               Timestamp{referenceTime},
+		Visibility:              "v",
+		SelectedRepositoriesURL: "s",
+	}
+
+	want := `{
+		"name": "n",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"visibility": "v",
+		"selected_repositories_url": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecrets_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Secrets{}, "{}")
+
+	u := &Secrets{
+		TotalCount: 1,
+		Secrets: []*Secret{
+			{
+				Name:                    "n",
+				CreatedAt:               Timestamp{referenceTime},
+				UpdatedAt:               Timestamp{referenceTime},
+				Visibility:              "v",
+				SelectedRepositoriesURL: "s"},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"secrets": [
+			{
+				"name": "n",
+				"created_at": ` + referenceTimeStr + `,
+				"updated_at": ` + referenceTimeStr + `,
+				"visibility": "v",
+				"selected_repositories_url": "s"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestEncryptedSecret_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EncryptedSecret{}, "{}")
+
+	u := &EncryptedSecret{
+		Name:                  "n",
+		KeyID:                 "kid",
+		EncryptedValue:        "e",
+		Visibility:            "v",
+		SelectedRepositoryIDs: []int64{1},
+	}
+
+	want := `{
+		"key_id": "kid",
+		"encrypted_value": "e",
+		"visibility": "v",
+		"selected_repository_ids": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSelectedReposList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SelectedReposList{}, "{}")
+
+	u := &SelectedReposList{
+		TotalCount: Int(1),
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
