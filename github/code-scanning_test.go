@@ -206,3 +206,51 @@ func TestActionsService_GetAlert(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestAlert_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Alert{}, "{}")
+
+	u := &Alert{
+		RuleID:          String("rid"),
+		RuleSeverity:    String("rs"),
+		RuleDescription: String("rd"),
+		Tool:            String("t"),
+		CreatedAt:       &Timestamp{referenceTime},
+		Open:            Bool(false),
+		ClosedBy: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+		ClosedAt: &Timestamp{referenceTime},
+		URL:      String("url"),
+		HTMLURL:  String("hurl"),
+	}
+
+	want := `{
+		"rule_id": "rid",
+		"rule_severity": "rs",
+		"rule_description": "rd",
+		"tool": "t",
+		"created_at": ` + referenceTimeStr + `,
+		"open": false,
+		"closed_by": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		},
+		"closed_at": ` + referenceTimeStr + `,
+		"url": "url",
+		"html_url": "hurl"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
