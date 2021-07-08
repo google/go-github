@@ -4566,6 +4566,23 @@ func TestEnvReviewers_GetType(tt *testing.T) {
 	e.GetType()
 }
 
+func TestErrorBlock_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	e := &ErrorBlock{CreatedAt: &zeroValue}
+	e.GetCreatedAt()
+	e = &ErrorBlock{}
+	e.GetCreatedAt()
+	e = nil
+	e.GetCreatedAt()
+}
+
+func TestErrorResponse_GetBlock(tt *testing.T) {
+	e := &ErrorResponse{}
+	e.GetBlock()
+	e = nil
+	e.GetBlock()
+}
+
 func TestEvent_GetActor(tt *testing.T) {
 	e := &Event{}
 	e.GetActor()

@@ -679,16 +679,19 @@ type ErrorResponse struct {
 	Message  string         `json:"message"` // error message
 	Errors   []Error        `json:"errors"`  // more detail on individual errors
 	// Block is only populated on certain types of errors such as code 451.
-	// See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
-	// for more information.
-	Block *struct {
-		Reason    string     `json:"reason,omitempty"`
-		CreatedAt *Timestamp `json:"created_at,omitempty"`
-	} `json:"block,omitempty"`
+	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
 	// https://docs.github.com/en/free-pro-team@latest/rest/reference/#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
+}
+
+// ErrorBlock contains a further explanation for the reason of an error.
+// See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
+// for more information.
+type ErrorBlock struct {
+	Reason    string     `json:"reason,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 func (r *ErrorResponse) Error() string {
