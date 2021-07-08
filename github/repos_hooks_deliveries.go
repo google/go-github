@@ -29,9 +29,9 @@ type HookDelivery struct {
 	InstallationID *string    `json:"installation_id"`
 	RepositoryID   *int64     `json:"repository_id"`
 
-	// Request is populated by GetHookDelivery
+	// Request is populated by GetHookDelivery.
 	Request *HookRequest `json:"request,omitempty"`
-	// Response is populated by GetHookDelivery
+	// Response is populated by GetHookDelivery.
 	Response *HookResponse `json:"response,omitempty"`
 }
 
