@@ -479,7 +479,7 @@ func TestParseWebHook_BadMessageType(t *testing.T) {
 
 func TestValidatePayloadFromBody_UnsupportedContentType(t *testing.T) {
 	if _, err := ValidatePayloadFromBody("invalid", bytes.NewReader([]byte(`{}`)), "sha1=", []byte{}); err == nil {
-		t.Errorf("ValidatePayloadFromBody returned nil;wanted error")
+		t.Errorf("ValidatePayloadFromBody returned nil; wanted error")
 	}
 }
 
