@@ -157,3 +157,113 @@ func TestAdminService_UserLDAPMapping_String(t *testing.T) {
 		t.Errorf("UserLDAPMapping.String = `%v`, want `%v`", got, want)
 	}
 }
+
+func TestTeamLDAPMapping_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TeamLDAPMapping{}, "{}")
+
+	u := &TeamLDAPMapping{
+		ID:              Int64(1),
+		LDAPDN:          String("ldapdn"),
+		URL:             String("u"),
+		Name:            String("n"),
+		Slug:            String("s"),
+		Description:     String("d"),
+		Privacy:         String("p"),
+		Permission:      String("per"),
+		MembersURL:      String("mu"),
+		RepositoriesURL: String("ru"),
+	}
+
+	want := `{
+		"id": 1,
+		"ldap_dn": "ldapdn",
+		"url": "u",
+		"name": "n",
+		"slug": "s",
+		"description": "d",
+		"privacy": "p",
+		"permission": "per",
+		"members_url": "mu",
+		"repositories_url": "ru"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUserLDAPMapping_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserLDAPMapping{}, "{}")
+
+	u := &UserLDAPMapping{
+		ID:                Int64(1),
+		LDAPDN:            String("ldapdn"),
+		Login:             String("l"),
+		AvatarURL:         String("au"),
+		GravatarID:        String("gi"),
+		Type:              String("t"),
+		SiteAdmin:         Bool(true),
+		URL:               String("u"),
+		EventsURL:         String("eu"),
+		FollowingURL:      String("fu"),
+		FollowersURL:      String("fu"),
+		GistsURL:          String("gu"),
+		OrganizationsURL:  String("ou"),
+		ReceivedEventsURL: String("reu"),
+		ReposURL:          String("ru"),
+		StarredURL:        String("su"),
+		SubscriptionsURL:  String("subu"),
+	}
+
+	want := `{
+		"id": 1,
+		"ldap_dn": "ldapdn",
+		"login": "l",
+		"avatar_url": "au",
+		"gravatar_id": "gi",
+		"type": "t",
+		"site_admin": true,
+		"url": "u",
+		"events_url": "eu",
+		"following_url": "fu",
+		"followers_url": "fu",
+		"gists_url": "gu",
+		"organizations_url": "ou",
+		"received_events_url": "reu",
+		"repos_url": "ru",
+		"starred_url": "su",
+		"subscriptions_url": "subu"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestEnterprise_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Enterprise{}, "{}")
+
+	u := &Enterprise{
+		ID:          Int(1),
+		Slug:        String("s"),
+		Name:        String("n"),
+		NodeID:      String("nid"),
+		AvatarURL:   String("au"),
+		Description: String("d"),
+		WebsiteURL:  String("wu"),
+		HTMLURL:     String("hu"),
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"slug": "s",
+		"name": "n",
+		"node_id": "nid",
+		"avatar_url": "au",
+		"description": "d",
+		"website_url": "wu",
+		"html_url": "hu",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
