@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"hash"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -157,7 +158,14 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err error) {
 	var body []byte // Raw body that GitHub uses to calculate the signature.
 
-	switch ct := r.Header.Get("Content-Type"); ct {
+	ct := r.Header.Get("Content-Type")
+
+	mediatype, _, err := mime.ParseMediaType(ct)
+	if err != nil {
+		mediatype = ""
+	}
+
+	switch mediatype {
 	case "application/json":
 		var err error
 		if body, err = ioutil.ReadAll(r.Body); err != nil {
