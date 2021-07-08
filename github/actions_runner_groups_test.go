@@ -472,3 +472,131 @@ func TestActionsService_RemoveRunnerGroupRunners(t *testing.T) {
 		return client.Actions.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	})
 }
+
+func TestRunnerGroup_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerGroup{}, "{}")
+
+	u := &RunnerGroup{
+		ID:                       Int64(1),
+		Name:                     String("n"),
+		Visibility:               String("v"),
+		Default:                  Bool(true),
+		SelectedRepositoriesURL:  String("s"),
+		RunnersURL:               String("r"),
+		Inherited:                Bool(true),
+		AllowsPublicRepositories: Bool(true),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"visibility": "v",
+		"default": true,
+		"selected_repositories_url": "s",
+		"runners_url": "r",
+		"inherited": true,
+		"allows_public_repositories": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunnerGroups_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerGroups{}, "{}")
+
+	u := &RunnerGroups{
+		TotalCount: int(1),
+		RunnerGroups: []*RunnerGroup{
+			{
+				ID:                       Int64(1),
+				Name:                     String("n"),
+				Visibility:               String("v"),
+				Default:                  Bool(true),
+				SelectedRepositoriesURL:  String("s"),
+				RunnersURL:               String("r"),
+				Inherited:                Bool(true),
+				AllowsPublicRepositories: Bool(true),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"runner_groups": [{
+			"id": 1,
+			"name": "n",
+			"visibility": "v",
+			"default": true,
+			"selected_repositories_url": "s",
+			"runners_url": "r",
+			"inherited": true,
+			"allows_public_repositories": true
+		}]		
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
+
+	u := &CreateRunnerGroupRequest{
+		Name:                  String("n"),
+		Visibility:            String("v"),
+		SelectedRepositoryIDs: []int64{1},
+		Runners:               []int64{1},
+	}
+
+	want := `{
+		"name": "n",
+		"visibility": "v",
+		"selected_repository_ids": [1],
+		"runners": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UpdateRunnerGroupRequest{}, "{}")
+
+	u := &UpdateRunnerGroupRequest{
+		Name:       String("n"),
+		Visibility: String("v"),
+	}
+
+	want := `{
+		"name": "n",
+		"visibility": "v"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSetRepoAccessRunnerGroupRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SetRepoAccessRunnerGroupRequest{}, "{}")
+
+	u := &SetRepoAccessRunnerGroupRequest{
+		SelectedRepositoryIDs: []int64{1},
+	}
+
+	want := `{
+		"selected_repository_ids": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSetRunnerGroupRunnersRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SetRunnerGroupRunnersRequest{}, "{}")
+
+	u := &SetRunnerGroupRunnersRequest{
+		Runners: []int64{1},
+	}
+
+	want := `{
+		"runners": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
