@@ -201,6 +201,9 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
+	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
+		return
+	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
 		if resp != nil {
 			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", methodName, resp.Response, want)
@@ -1676,6 +1679,52 @@ func TestRateLimits_coverage(t *testing.T) {
 		_, resp, err := client.RateLimits(ctx)
 		return resp, err
 	})
+}
+
+func TestRateLimits_overQuota(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	client.rateLimits[coreCategory] = Rate{
+		Limit:     1,
+		Remaining: 0,
+		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
+	}
+	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `{"resources":{
+			"core": {"limit":2,"remaining":1,"reset":1372700873},
+			"search": {"limit":3,"remaining":2,"reset":1372700874}
+		}}`)
+	})
+
+	ctx := context.Background()
+	rate, _, err := client.RateLimits(ctx)
+	if err != nil {
+		t.Errorf("RateLimits returned error: %v", err)
+	}
+
+	want := &RateLimits{
+		Core: &Rate{
+			Limit:     2,
+			Remaining: 1,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC).Local()},
+		},
+		Search: &Rate{
+			Limit:     3,
+			Remaining: 2,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
+		},
+	}
+	if !cmp.Equal(rate, want) {
+		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
+	}
+
+	if got, want := client.rateLimits[coreCategory], *want.Core; got != want {
+		t.Errorf("client.rateLimits[coreCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
+		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
+	}
 }
 
 func TestSetCredentialsAsHeaders(t *testing.T) {
