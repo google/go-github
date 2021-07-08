@@ -150,47 +150,6 @@ func TestFeedLink_Marshal(t *testing.T) {
 func TestFeeds_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Feeds{}, "{}")
 
-	links := struct {
-		Timeline                 *FeedLink   `json:"timeline,omitempty"`
-		User                     *FeedLink   `json:"user,omitempty"`
-		CurrentUserPublic        *FeedLink   `json:"current_user_public,omitempty"`
-		CurrentUser              *FeedLink   `json:"current_user,omitempty"`
-		CurrentUserActor         *FeedLink   `json:"current_user_actor,omitempty"`
-		CurrentUserOrganization  *FeedLink   `json:"current_user_organization,omitempty"`
-		CurrentUserOrganizations []*FeedLink `json:"current_user_organizations,omitempty"`
-	}{
-		Timeline: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		User: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		CurrentUserPublic: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		CurrentUser: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		CurrentUserActor: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		CurrentUserOrganization: &FeedLink{
-			HRef: String("h"),
-			Type: String("t"),
-		},
-		CurrentUserOrganizations: []*FeedLink{
-			{
-				HRef: String("h"),
-				Type: String("t"),
-			},
-		},
-	}
-
 	u := &Feeds{
 		TimelineURL:                 String("t"),
 		UserURL:                     String("u"),
@@ -199,7 +158,38 @@ func TestFeeds_Marshal(t *testing.T) {
 		CurrentUserActorURL:         String("cuau"),
 		CurrentUserOrganizationURL:  String("cuou"),
 		CurrentUserOrganizationURLs: []string{"a"},
-		Links:                       &links,
+		Links: &FeedLinks{
+			Timeline: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			User: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserPublic: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUser: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserActor: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserOrganization: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserOrganizations: []*FeedLink{
+				{
+					HRef: String("h"),
+					Type: String("t"),
+				},
+			},
+		},
 	}
 
 	want := `{
