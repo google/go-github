@@ -500,3 +500,187 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	})
 }
+
+func TestRunnerApplicationDownload_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
+
+	u := &RunnerApplicationDownload{
+		OS:                String("o"),
+		Architecture:      String("a"),
+		DownloadURL:       String("d"),
+		Filename:          String("f"),
+		TempDownloadToken: String("t"),
+		SHA256Checksum:    String("s"),
+	}
+
+	want := `{
+		"os": "o",
+		"architecture": "a",
+		"download_url": "d",
+		"filename": "f",
+		"temp_download_token": "t",
+		"sha256_checksum": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+
+	u := &ActionsEnabledOnOrgRepos{
+		TotalCount: 1,
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRegistrationToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RegistrationToken{}, "{}")
+
+	u := &RegistrationToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunnerLabels_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerLabels{}, "{}")
+
+	u := &RunnerLabels{
+		ID:   Int64(1),
+		Name: String("n"),
+		Type: String("t"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunner_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runner{}, "{}")
+
+	u := &Runner{
+		ID:     Int64(1),
+		Name:   String("n"),
+		OS:     String("o"),
+		Status: String("s"),
+		Busy:   Bool(false),
+		Labels: []*RunnerLabels{
+			{
+				ID:   Int64(1),
+				Name: String("n"),
+				Type: String("t"),
+			},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunners_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runners{}, "{}")
+
+	u := &Runners{
+		TotalCount: 1,
+		Runners: []*Runner{
+			{
+				ID:     Int64(1),
+				Name:   String("n"),
+				OS:     String("o"),
+				Status: String("s"),
+				Busy:   Bool(false),
+				Labels: []*RunnerLabels{
+					{
+						ID:   Int64(1),
+						Name: String("n"),
+						Type: String("t"),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"runners": [
+			{
+				"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRemoveToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RemoveToken{}, "{}")
+
+	u := &RemoveToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
