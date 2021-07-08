@@ -18,6 +18,16 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
+type Rule struct {
+	ID              *string   `json:"id"`
+	Severity        *string   `json:"severity"`
+	Description     *string   `json:"description"`
+	Name            *string   `json:"name"`
+	FullDescription *string   `json:"full_description"`
+	Tags            *[]string `json:"tags"`
+	Help            *string   `json:"help"`
+} `json:"rule"`
+
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
@@ -34,6 +44,7 @@ type Alert struct {
 	RuleID          *string    `json:"rule_id,omitempty"`
 	RuleSeverity    *string    `json:"rule_severity,omitempty"`
 	RuleDescription *string    `json:"rule_description,omitempty"`
+	Rule		*Rule	   `json:"rule,omitempty"`
 	Tool            *Tool      `json:"tool,omitempty"`
 	CreatedAt       *Timestamp `json:"created_at,omitempty"`
 	Open            *bool      `json:"open,omitempty"`
