@@ -225,10 +225,10 @@ func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err e
 	if signature == "" {
 		signature = r.Header.Get(SHA1SignatureHeader)
 	}
-  
+
 	contentType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
-    return nil, err
+		return nil, err
 	}
 
 	return ValidatePayloadFromBody(contentType, r.Body, signature, secretToken)
