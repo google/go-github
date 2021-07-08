@@ -4244,6 +4244,81 @@ func TestDraftReviewComment_GetStartSide(tt *testing.T) {
 	d.GetStartSide()
 }
 
+func TestEditBase_GetRef(tt *testing.T) {
+	e := &EditBase{}
+	e.GetRef()
+	e = nil
+	e.GetRef()
+}
+
+func TestEditBase_GetSHA(tt *testing.T) {
+	e := &EditBase{}
+	e.GetSHA()
+	e = nil
+	e.GetSHA()
+}
+
+func TestEditBody_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditBody{From: &zeroValue}
+	e.GetFrom()
+	e = &EditBody{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditChange_GetBase(tt *testing.T) {
+	e := &EditChange{}
+	e.GetBase()
+	e = nil
+	e.GetBase()
+}
+
+func TestEditChange_GetBody(tt *testing.T) {
+	e := &EditChange{}
+	e.GetBody()
+	e = nil
+	e.GetBody()
+}
+
+func TestEditChange_GetTitle(tt *testing.T) {
+	e := &EditChange{}
+	e.GetTitle()
+	e = nil
+	e.GetTitle()
+}
+
+func TestEditRef_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditRef{From: &zeroValue}
+	e.GetFrom()
+	e = &EditRef{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditSHA_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditSHA{From: &zeroValue}
+	e.GetFrom()
+	e = &EditSHA{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditTitle_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditTitle{From: &zeroValue}
+	e.GetFrom()
+	e = &EditTitle{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
 func TestEnterprise_GetAvatarURL(tt *testing.T) {
 	var zeroValue string
 	e := &Enterprise{AvatarURL: &zeroValue}
@@ -4491,6 +4566,23 @@ func TestEnvReviewers_GetType(tt *testing.T) {
 	e.GetType()
 }
 
+func TestErrorBlock_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	e := &ErrorBlock{CreatedAt: &zeroValue}
+	e.GetCreatedAt()
+	e = &ErrorBlock{}
+	e.GetCreatedAt()
+	e = nil
+	e.GetCreatedAt()
+}
+
+func TestErrorResponse_GetBlock(tt *testing.T) {
+	e := &ErrorResponse{}
+	e.GetBlock()
+	e = nil
+	e.GetBlock()
+}
+
 func TestEvent_GetActor(tt *testing.T) {
 	e := &Event{}
 	e.GetActor()
@@ -4582,6 +4674,48 @@ func TestFeedLink_GetType(tt *testing.T) {
 	f.GetType()
 }
 
+func TestFeedLinks_GetCurrentUser(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUser()
+	f = nil
+	f.GetCurrentUser()
+}
+
+func TestFeedLinks_GetCurrentUserActor(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserActor()
+	f = nil
+	f.GetCurrentUserActor()
+}
+
+func TestFeedLinks_GetCurrentUserOrganization(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserOrganization()
+	f = nil
+	f.GetCurrentUserOrganization()
+}
+
+func TestFeedLinks_GetCurrentUserPublic(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserPublic()
+	f = nil
+	f.GetCurrentUserPublic()
+}
+
+func TestFeedLinks_GetTimeline(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetTimeline()
+	f = nil
+	f.GetTimeline()
+}
+
+func TestFeedLinks_GetUser(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetUser()
+	f = nil
+	f.GetUser()
+}
+
 func TestFeeds_GetCurrentUserActorURL(tt *testing.T) {
 	var zeroValue string
 	f := &Feeds{CurrentUserActorURL: &zeroValue}
@@ -4620,6 +4754,13 @@ func TestFeeds_GetCurrentUserURL(tt *testing.T) {
 	f.GetCurrentUserURL()
 	f = nil
 	f.GetCurrentUserURL()
+}
+
+func TestFeeds_GetLinks(tt *testing.T) {
+	f := &Feeds{}
+	f.GetLinks()
+	f = nil
+	f.GetLinks()
 }
 
 func TestFeeds_GetTimelineURL(tt *testing.T) {
@@ -10953,6 +11094,16 @@ func TestProject_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectBody_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectBody{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectBody{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
+}
+
 func TestProjectCard_GetArchived(tt *testing.T) {
 	var zeroValue bool
 	p := &ProjectCard{Archived: &zeroValue}
@@ -11100,6 +11251,13 @@ func TestProjectCard_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectCardChange_GetNote(tt *testing.T) {
+	p := &ProjectCardChange{}
+	p.GetNote()
+	p = nil
+	p.GetNote()
+}
+
 func TestProjectCardEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectCardEvent{Action: &zeroValue}
@@ -11172,6 +11330,16 @@ func TestProjectCardListOptions_GetArchivedState(tt *testing.T) {
 	p.GetArchivedState()
 }
 
+func TestProjectCardNote_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectCardNote{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectCardNote{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
+}
+
 func TestProjectCardOptions_GetArchived(tt *testing.T) {
 	var zeroValue bool
 	p := &ProjectCardOptions{Archived: &zeroValue}
@@ -11180,6 +11348,20 @@ func TestProjectCardOptions_GetArchived(tt *testing.T) {
 	p.GetArchived()
 	p = nil
 	p.GetArchived()
+}
+
+func TestProjectChange_GetBody(tt *testing.T) {
+	p := &ProjectChange{}
+	p.GetBody()
+	p = nil
+	p.GetBody()
+}
+
+func TestProjectChange_GetName(tt *testing.T) {
+	p := &ProjectChange{}
+	p.GetName()
+	p = nil
+	p.GetName()
 }
 
 func TestProjectCollaboratorOptions_GetPermission(tt *testing.T) {
@@ -11272,6 +11454,13 @@ func TestProjectColumn_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestProjectColumnChange_GetName(tt *testing.T) {
+	p := &ProjectColumnChange{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
 func TestProjectColumnEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectColumnEvent{Action: &zeroValue}
@@ -11334,6 +11523,16 @@ func TestProjectColumnEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestProjectColumnName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectColumnName{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectColumnName{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
+}
+
 func TestProjectEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &ProjectEvent{Action: &zeroValue}
@@ -11384,6 +11583,16 @@ func TestProjectEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestProjectName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &ProjectName{From: &zeroValue}
+	p.GetFrom()
+	p = &ProjectName{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
 }
 
 func TestProjectOptions_GetBody(tt *testing.T) {
@@ -15809,6 +16018,123 @@ func TestRepositoryTag_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{AffectedPackageName: &zeroValue}
+	r.GetAffectedPackageName()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetAffectedPackageName()
+	r = nil
+	r.GetAffectedPackageName()
+}
+
+func TestRepositoryVulnerabilityAlert_GetAffectedRange(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{AffectedRange: &zeroValue}
+	r.GetAffectedRange()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetAffectedRange()
+	r = nil
+	r.GetAffectedRange()
+}
+
+func TestRepositoryVulnerabilityAlert_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepositoryVulnerabilityAlert{CreatedAt: &zeroValue}
+	r.GetCreatedAt()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetCreatedAt()
+	r = nil
+	r.GetCreatedAt()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	r := &RepositoryVulnerabilityAlert{DismissedAt: &zeroValue}
+	r.GetDismissedAt()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetDismissedAt()
+	r = nil
+	r.GetDismissedAt()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismisser(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlert{}
+	r.GetDismisser()
+	r = nil
+	r.GetDismisser()
+}
+
+func TestRepositoryVulnerabilityAlert_GetDismissReason(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{DismissReason: &zeroValue}
+	r.GetDismissReason()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetDismissReason()
+	r = nil
+	r.GetDismissReason()
+}
+
+func TestRepositoryVulnerabilityAlert_GetExternalIdentifier(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{ExternalIdentifier: &zeroValue}
+	r.GetExternalIdentifier()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetExternalIdentifier()
+	r = nil
+	r.GetExternalIdentifier()
+}
+
+func TestRepositoryVulnerabilityAlert_GetExternalReference(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{ExternalReference: &zeroValue}
+	r.GetExternalReference()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetExternalReference()
+	r = nil
+	r.GetExternalReference()
+}
+
+func TestRepositoryVulnerabilityAlert_GetFixedIn(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{FixedIn: &zeroValue}
+	r.GetFixedIn()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetFixedIn()
+	r = nil
+	r.GetFixedIn()
+}
+
+func TestRepositoryVulnerabilityAlert_GetGitHubSecurityAdvisoryID(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{GitHubSecurityAdvisoryID: &zeroValue}
+	r.GetGitHubSecurityAdvisoryID()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetGitHubSecurityAdvisoryID()
+	r = nil
+	r.GetGitHubSecurityAdvisoryID()
+}
+
+func TestRepositoryVulnerabilityAlert_GetID(tt *testing.T) {
+	var zeroValue int64
+	r := &RepositoryVulnerabilityAlert{ID: &zeroValue}
+	r.GetID()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRepositoryVulnerabilityAlert_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryVulnerabilityAlert{Severity: &zeroValue}
+	r.GetSeverity()
+	r = &RepositoryVulnerabilityAlert{}
+	r.GetSeverity()
+	r = nil
+	r.GetSeverity()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryVulnerabilityAlertEvent{Action: &zeroValue}
@@ -15817,6 +16143,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestRepositoryVulnerabilityAlertEvent_GetAlert(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetAlert()
+	r = nil
+	r.GetAlert()
 }
 
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
@@ -17010,6 +17343,44 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
+func TestTeamChange_GetDescription(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetDescription()
+	t = nil
+	t.GetDescription()
+}
+
+func TestTeamChange_GetName(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetName()
+	t = nil
+	t.GetName()
+}
+
+func TestTeamChange_GetPrivacy(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetPrivacy()
+	t = nil
+	t.GetPrivacy()
+}
+
+func TestTeamChange_GetRepository(tt *testing.T) {
+	t := &TeamChange{}
+	t.GetRepository()
+	t = nil
+	t.GetRepository()
+}
+
+func TestTeamDescription_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamDescription{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamDescription{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
 func TestTeamDiscussion_GetAuthor(tt *testing.T) {
 	t := &TeamDiscussion{}
 	t.GetAuthor()
@@ -17336,6 +17707,63 @@ func TestTeamLDAPMapping_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestTeamName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamName{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamName{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
+func TestTeamPermissions_GetFrom(tt *testing.T) {
+	t := &TeamPermissions{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
+func TestTeamPermissionsFrom_GetAdmin(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Admin: &zeroValue}
+	t.GetAdmin()
+	t = &TeamPermissionsFrom{}
+	t.GetAdmin()
+	t = nil
+	t.GetAdmin()
+}
+
+func TestTeamPermissionsFrom_GetPull(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Pull: &zeroValue}
+	t.GetPull()
+	t = &TeamPermissionsFrom{}
+	t.GetPull()
+	t = nil
+	t.GetPull()
+}
+
+func TestTeamPermissionsFrom_GetPush(tt *testing.T) {
+	var zeroValue bool
+	t := &TeamPermissionsFrom{Push: &zeroValue}
+	t.GetPush()
+	t = &TeamPermissionsFrom{}
+	t.GetPush()
+	t = nil
+	t.GetPush()
+}
+
+func TestTeamPrivacy_GetFrom(tt *testing.T) {
+	var zeroValue string
+	t := &TeamPrivacy{From: &zeroValue}
+	t.GetFrom()
+	t = &TeamPrivacy{}
+	t.GetFrom()
+	t = nil
+	t.GetFrom()
+}
+
 func TestTeamProjectOptions_GetPermission(tt *testing.T) {
 	var zeroValue string
 	t := &TeamProjectOptions{Permission: &zeroValue}
@@ -17344,6 +17772,13 @@ func TestTeamProjectOptions_GetPermission(tt *testing.T) {
 	t.GetPermission()
 	t = nil
 	t.GetPermission()
+}
+
+func TestTeamRepository_GetPermissions(tt *testing.T) {
+	t := &TeamRepository{}
+	t.GetPermissions()
+	t = nil
+	t.GetPermissions()
 }
 
 func TestTemplateRepoRequest_GetDescription(tt *testing.T) {
