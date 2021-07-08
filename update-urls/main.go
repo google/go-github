@@ -655,12 +655,12 @@ func (e *Endpoint) String() string {
 	return b.String()
 }
 
-func (ep *Endpoint) checkHttpMethodOverride(path string) {
-	lookupOverride := fmt.Sprintf("%v.%v: %v %v", ep.serviceName, ep.endpointName, ep.httpMethod, path)
+func (e *Endpoint) checkHttpMethodOverride(path string) {
+	lookupOverride := fmt.Sprintf("%v.%v: %v %v", e.serviceName, e.endpointName, e.httpMethod, path)
 	logf("Looking up override for %q", lookupOverride)
 	if v, ok := methodOverrides[lookupOverride]; ok {
 		logf("overriding method for %v to %q", lookupOverride, v)
-		ep.httpMethod = v
+		e.httpMethod = v
 		return
 	}
 }
