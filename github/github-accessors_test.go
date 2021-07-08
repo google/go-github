@@ -14845,6 +14845,16 @@ func TestRepository_GetNotificationsURL(tt *testing.T) {
 	r.GetNotificationsURL()
 }
 
+func TestRepository_GetOpenIssues(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{OpenIssues: &zeroValue}
+	r.GetOpenIssues()
+	r = &Repository{}
+	r.GetOpenIssues()
+	r = nil
+	r.GetOpenIssues()
+}
+
 func TestRepository_GetOpenIssuesCount(tt *testing.T) {
 	var zeroValue int
 	r := &Repository{OpenIssuesCount: &zeroValue}
@@ -15098,6 +15108,16 @@ func TestRepository_GetVisibility(tt *testing.T) {
 	r.GetVisibility()
 	r = nil
 	r.GetVisibility()
+}
+
+func TestRepository_GetWatchers(tt *testing.T) {
+	var zeroValue int
+	r := &Repository{Watchers: &zeroValue}
+	r.GetWatchers()
+	r = &Repository{}
+	r.GetWatchers()
+	r = nil
+	r.GetWatchers()
 }
 
 func TestRepository_GetWatchersCount(tt *testing.T) {
