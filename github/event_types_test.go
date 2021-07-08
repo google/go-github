@@ -590,56 +590,6 @@ func TestStarEvent_Marshal(t *testing.T) {
 func TestTeamEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TeamEvent{}, "{}")
 
-	description := struct {
-		From *string `json:"from,omitempty"`
-	}{
-		From: String("from"),
-	}
-
-	name := struct {
-		From *string `json:"from,omitempty"`
-	}{
-		From: String("from"),
-	}
-
-	privacy := struct {
-		From *string `json:"from,omitempty"`
-	}{
-		From: String("from"),
-	}
-
-	from := struct {
-		Admin *bool `json:"admin,omitempty"`
-		Pull  *bool `json:"pull,omitempty"`
-		Push  *bool `json:"push,omitempty"`
-	}{
-		Admin: Bool(true),
-		Pull:  Bool(true),
-		Push:  Bool(true),
-	}
-
-	permissions := struct {
-		From *struct {
-			Admin *bool `json:"admin,omitempty"`
-			Pull  *bool `json:"pull,omitempty"`
-			Push  *bool `json:"push,omitempty"`
-		} `json:"from,omitempty"`
-	}{
-		From: &from,
-	}
-
-	repository := struct {
-		Permissions *struct {
-			From *struct {
-				Admin *bool `json:"admin,omitempty"`
-				Pull  *bool `json:"pull,omitempty"`
-				Push  *bool `json:"push,omitempty"`
-			} `json:"from,omitempty"`
-		} `json:"permissions,omitempty"`
-	}{
-		Permissions: &permissions,
-	}
-
 	u := &TeamEvent{
 		Action: String("a"),
 		Team: &Team{
@@ -682,10 +632,24 @@ func TestTeamEvent_Marshal(t *testing.T) {
 			LDAPDN: String("l"),
 		},
 		Changes: &TeamChange{
-			Description: &description,
-			Name:        &name,
-			Privacy:     &privacy,
-			Repository:  &repository,
+			Description: &TeamDescription{
+				From: String("from"),
+			},
+			Name: &TeamName{
+				From: String("from"),
+			},
+			Privacy: &TeamPrivacy{
+				From: String("from"),
+			},
+			Repository: &TeamRepository{
+				Permissions: &TeamPermissions{
+					From: &TeamPermissionsFrom{
+						Admin: Bool(true),
+						Pull:  Bool(true),
+						Push:  Bool(true),
+					},
+				},
+			},
 		},
 		Repo: &Repository{
 			ID:   Int64(1),
