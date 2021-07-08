@@ -3892,6 +3892,22 @@ func (e *EnvReviewers) GetType() string {
 	return *e.Type
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (e *ErrorBlock) GetCreatedAt() Timestamp {
+	if e == nil || e.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *e.CreatedAt
+}
+
+// GetBlock returns the Block field.
+func (e *ErrorResponse) GetBlock() *ErrorBlock {
+	if e == nil {
+		return nil
+	}
+	return e.Block
+}
+
 // GetActor returns the Actor field.
 func (e *Event) GetActor() *User {
 	if e == nil {

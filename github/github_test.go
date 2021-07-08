@@ -1091,10 +1091,7 @@ func TestCheckResponse(t *testing.T) {
 		Response: res,
 		Message:  "m",
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
-		Block: &struct {
-			Reason    string     `json:"reason,omitempty"`
-			CreatedAt *Timestamp `json:"created_at,omitempty"`
-		}{
+		Block: &ErrorBlock{
 			Reason:    "dmca",
 			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
@@ -1194,10 +1191,7 @@ func TestErrorResponse_Is(t *testing.T) {
 		Response: &http.Response{},
 		Message:  "m",
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
-		Block: &struct {
-			Reason    string     `json:"reason,omitempty"`
-			CreatedAt *Timestamp `json:"created_at,omitempty"`
-		}{
+		Block: &ErrorBlock{
 			Reason:    "r",
 			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
@@ -1213,10 +1207,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1229,10 +1220,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m1",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1245,10 +1233,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1260,10 +1245,7 @@ func TestErrorResponse_Is(t *testing.T) {
 			otherError: &ErrorResponse{
 				Errors:  []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message: "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1276,10 +1258,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r1", Field: "f1", Code: "c1"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1292,10 +1271,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1317,10 +1293,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r1",
 					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
@@ -1333,10 +1306,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: nil,
 				},
@@ -1349,10 +1319,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Response: &http.Response{},
 				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 				Message:  "m",
-				Block: &struct {
-					Reason    string     `json:"reason,omitempty"`
-					CreatedAt *Timestamp `json:"created_at,omitempty"`
-				}{
+				Block: &ErrorBlock{
 					Reason:    "r",
 					CreatedAt: &Timestamp{time.Date(2017, time.March, 17, 15, 39, 46, 0, time.UTC)},
 				},
