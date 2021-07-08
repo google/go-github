@@ -12500,6 +12500,14 @@ func (r *Repository) GetNotificationsURL() string {
 	return *r.NotificationsURL
 }
 
+// GetOpenIssues returns the OpenIssues field if it's non-nil, zero value otherwise.
+func (r *Repository) GetOpenIssues() int {
+	if r == nil || r.OpenIssues == nil {
+		return 0
+	}
+	return *r.OpenIssues
+}
+
 // GetOpenIssuesCount returns the OpenIssuesCount field if it's non-nil, zero value otherwise.
 func (r *Repository) GetOpenIssuesCount() int {
 	if r == nil || r.OpenIssuesCount == nil {
@@ -12714,6 +12722,14 @@ func (r *Repository) GetVisibility() string {
 		return ""
 	}
 	return *r.Visibility
+}
+
+// GetWatchers returns the Watchers field if it's non-nil, zero value otherwise.
+func (r *Repository) GetWatchers() int {
+	if r == nil || r.Watchers == nil {
+		return 0
+	}
+	return *r.Watchers
 }
 
 // GetWatchersCount returns the WatchersCount field if it's non-nil, zero value otherwise.
