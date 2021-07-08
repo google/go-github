@@ -1382,9 +1382,11 @@ func TestRepository_String(t *testing.T) {
 		ForksCount:          Int(0),
 		NetworkCount:        Int(0),
 		OpenIssuesCount:     Int(0),
+		OpenIssues:          Int(0),
 		StargazersCount:     Int(0),
 		SubscribersCount:    Int(0),
 		WatchersCount:       Int(0),
+		Watchers:            Int(0),
 		Size:                Int(0),
 		AutoInit:            Bool(false),
 		Parent:              &Repository{},
@@ -1447,7 +1449,7 @@ func TestRepository_String(t *testing.T) {
 		TeamsURL:            String(""),
 		Visibility:          String(""),
 	}
-	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowSquashMerge:false, AllowMergeCommit:false, DeleteBranchOnMerge:false, Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:""}`
+	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowSquashMerge:false, AllowMergeCommit:false, DeleteBranchOnMerge:false, Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Repository.String = %v, want %v", got, want)
 	}
