@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -688,6 +689,15 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	const methodName = "GetArchiveLink"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
+		return err
+	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get archive link")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
 		return err
 	})
 }

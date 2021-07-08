@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -292,6 +293,15 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 	const methodName = "DownloadArtifact"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, true)
+		return err
+	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to download artifact")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
 		return err
 	})
 }

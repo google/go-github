@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -152,6 +153,15 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	const methodName = "GetWorkflowJobLogs"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get workflow logs")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
 		return err
 	})
 }
