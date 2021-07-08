@@ -305,7 +305,7 @@ type TeamPrivacy struct {
 	From *string `json:"from,omitempty"`
 }
 
-// TeamPrivacy represents a team repository permission change.
+// TeamRepository represents a team repository permission change.
 type TeamRepository struct {
 	Permissions *TeamPermissions `json:"permissions,omitempty"`
 }
