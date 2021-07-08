@@ -1020,3 +1020,131 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPackageEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectChange{}, "{}")
+
+	u := &PackageEvent{
+		Action: String("a"),
+		Package: &Package{
+			ID:          Int64(1),
+			Name:        String("n"),
+			PackageType: String("pt"),
+			HTMLURL:     String("hurl"),
+			CreatedAt:   &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+			Owner: &User{
+				Login:     String("l"),
+				ID:        Int64(1),
+				NodeID:    String("n"),
+				URL:       String("u"),
+				ReposURL:  String("r"),
+				EventsURL: String("e"),
+				AvatarURL: String("a"),
+			},
+			PackageVersion: &PackageVersion{ID: Int64(1)},
+			Registry:       &PackageRegistry{Name: String("n")},
+		},
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+	}
+
+	want := `{
+		"action": "a",
+		"package": {
+			"id": 1,
+			"name": "n",
+			"package_type": "pt",
+			"html_url": "hurl",
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"owner": {
+				"login": "l",
+				"id": 1,
+				"node_id": "n",
+				"avatar_url": "a",
+				"url": "u",
+				"events_url": "e",
+				"repos_url": "r"
+			},
+			"package_version": {
+				"id": 1
+			},
+			"registry": {
+				"name": "n"
+			}
+		},
+		"repository": {
+			"id": 1,
+			"name": "n",
+			"url": "s"
+		},
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
+		},
+		"sender": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
