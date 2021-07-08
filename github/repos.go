@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -935,20 +936,49 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 // GetBranch gets the specified branch for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-branch
-func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error) {
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
-	req, err := s.client.NewRequest("GET", u, nil)
+
+	resp, err := s.getBranchFromURL(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
-	b := new(Branch)
-	resp, err := s.client.Do(ctx, req, b)
-	if err != nil {
-		return nil, resp, err
+	if resp.StatusCode != http.StatusOK {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 
-	return b, resp, nil
+	b := new(Branch)
+	err = json.NewDecoder(resp.Body).Decode(b)
+	return b, newResponse(resp), err
+}
+
+func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	req = withContext(ctx, req)
+	if s.client.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = s.client.client.Transport.RoundTrip(req)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	// If redirect response is returned, follow it
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
+		u = resp.Header.Get("Location")
+		resp, err = s.getBranchFromURL(ctx, u, false)
+	}
+	return resp, err
 }
 
 // GetBranchProtection gets the protection of a given branch.
