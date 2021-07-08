@@ -39,6 +39,8 @@ func (d HookDelivery) String() string {
 	return Stringify(d)
 }
 
+// HookRequest is a part of HookDelivery that contains
+// the HTTP headers and the JSON payload of the webhook request.
 type HookRequest struct {
 	Headers    map[string]string `json:"headers,omitempty"`
 	RawPayload *json.RawMessage  `json:"payload,omitempty"`
@@ -48,6 +50,8 @@ func (r HookRequest) String() string {
 	return Stringify(r)
 }
 
+// HookResponse is a part of HookDelivery that contains
+// the HTTP headers and the response body served by the webhook endpoint.
 type HookResponse struct {
 	Headers    map[string]string `json:"headers,omitempty"`
 	RawPayload *json.RawMessage  `json:"payload,omitempty"`
