@@ -15308,6 +15308,14 @@ func (t *Timeline) GetSource() *Source {
 	return t.Source
 }
 
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetState() string {
+	if t == nil || t.State == nil {
+		return ""
+	}
+	return *t.State
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (t *Timeline) GetURL() string {
 	if t == nil || t.URL == nil {
