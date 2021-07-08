@@ -19,14 +19,37 @@ import (
 type CodeScanningService service
 
 type Rule struct {
-	ID              *string   `json:"id"`
-	Severity        *string   `json:"severity"`
-	Description     *string   `json:"description"`
-	Name            *string   `json:"name"`
-	FullDescription *string   `json:"full_description"`
-	Tags            *[]string `json:"tags"`
-	Help            *string   `json:"help"`
+	ID              *string   `json:"id,omitempty"`
+	Severity        *string   `json:"severity,omitempty"`
+	Description     *string   `json:"description,omitempty"`
+	Name            *string   `json:"name,omitempty"`
+	FullDescription *string   `json:"full_description,omitempty"`
+	Tags            *[]string `json:"tags,omitempty"`
+	Help            *string   `json:"help,omitempty"`
 }
+
+type Location struct {
+	Path        *string `json:"path,omitempty"`
+	StartLine   *int    `json:"start_line,omitempty"`
+	EndLine     *int    `json:"end_line,omitempty"`
+	StartColumn *int    `json:"start_column,omitempty"`
+	EndColumn   *int    `json:"end_column,omitempty"`
+}
+
+type Message struct {
+	Text *string `json:"text,omitempty"`
+}
+
+type MostRecentInstance struct {
+	Ref         *string	`json:"ref,omitempty"`
+	AnalysisKey *string	`json:"analysis_key,omitempty"`
+	Environment *string 	`json:"environment,omitempty"`
+	State       *string 	`json:"state,omitempty"`
+	CommitSha   *string 	`json:"commit_sha,omitempty"`
+	Message     *Message 	`json:"message,omitempty"`
+	Location    *Location 	`json:"location,omitempty"`
+	Classifications *[]string `json:"classifications,omitempty"`
+} 
 
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
 //
@@ -52,6 +75,7 @@ type Alert struct {
 	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
 	URL             *string    `json:"url,omitempty"`
 	HTMLURL         *string    `json:"html_url,omitempty"`
+	MostRecentInstance *MostRecentInstance `json:"most_recent_instance,omitempty"`
 }
 
 // ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.
