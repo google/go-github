@@ -44,11 +44,11 @@ type Repository struct {
 	ForksCount          *int            `json:"forks_count,omitempty"`
 	NetworkCount        *int            `json:"network_count,omitempty"`
 	OpenIssuesCount     *int            `json:"open_issues_count,omitempty"`
-	OpenIssues          *int            `json:"open_issues,omitempty"`
+	OpenIssues          *int            `json:"open_issues,omitempty"` // Deprecated: Replaced by OpenIssuesCount. For backward compatibility OpenIssues is still populated.
 	StargazersCount     *int            `json:"stargazers_count,omitempty"`
 	SubscribersCount    *int            `json:"subscribers_count,omitempty"`
-	WatchersCount       *int            `json:"watchers_count,omitempty"`
-	Watchers            *int            `json:"watchers,omitempty"`
+	WatchersCount       *int            `json:"watchers_count,omitempty"` // Deprecated: Replaced by StargazersCount. For backward compatibility WatchersCount is still populated.
+	Watchers            *int            `json:"watchers,omitempty"`       // Deprecated: Replaced by StargazersCount. For backward compatibility Watchers is still populated.
 	Size                *int            `json:"size,omitempty"`
 	AutoInit            *bool           `json:"auto_init,omitempty"`
 	Parent              *Repository     `json:"parent,omitempty"`
