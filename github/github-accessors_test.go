@@ -4657,6 +4657,48 @@ func TestFeedLink_GetType(tt *testing.T) {
 	f.GetType()
 }
 
+func TestFeedLinks_GetCurrentUser(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUser()
+	f = nil
+	f.GetCurrentUser()
+}
+
+func TestFeedLinks_GetCurrentUserActor(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserActor()
+	f = nil
+	f.GetCurrentUserActor()
+}
+
+func TestFeedLinks_GetCurrentUserOrganization(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserOrganization()
+	f = nil
+	f.GetCurrentUserOrganization()
+}
+
+func TestFeedLinks_GetCurrentUserPublic(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetCurrentUserPublic()
+	f = nil
+	f.GetCurrentUserPublic()
+}
+
+func TestFeedLinks_GetTimeline(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetTimeline()
+	f = nil
+	f.GetTimeline()
+}
+
+func TestFeedLinks_GetUser(tt *testing.T) {
+	f := &FeedLinks{}
+	f.GetUser()
+	f = nil
+	f.GetUser()
+}
+
 func TestFeeds_GetCurrentUserActorURL(tt *testing.T) {
 	var zeroValue string
 	f := &Feeds{CurrentUserActorURL: &zeroValue}
@@ -4695,6 +4737,13 @@ func TestFeeds_GetCurrentUserURL(tt *testing.T) {
 	f.GetCurrentUserURL()
 	f = nil
 	f.GetCurrentUserURL()
+}
+
+func TestFeeds_GetLinks(tt *testing.T) {
+	f := &Feeds{}
+	f.GetLinks()
+	f = nil
+	f.GetLinks()
 }
 
 func TestFeeds_GetTimelineURL(tt *testing.T) {
