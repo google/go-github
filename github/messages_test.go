@@ -477,6 +477,12 @@ func TestParseWebHook_BadMessageType(t *testing.T) {
 	}
 }
 
+func TestValidatePayloadFromBody_UnsupportedContentType(t *testing.T) {
+	if _, err := ValidatePayloadFromBody("invalid", bytes.NewReader([]byte(`{}`)), "sha1=", []byte{}); err == nil {
+		t.Errorf("ValidatePayloadFromBody returned nil;wanted error")
+	}
+}
+
 func TestDeliveryID(t *testing.T) {
 	id := "8970a780-244e-11e7-91ca-da3aabcb9793"
 	req, err := http.NewRequest("POST", "http://localhost", nil)
