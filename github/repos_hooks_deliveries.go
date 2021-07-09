@@ -103,106 +103,14 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 	return h, resp, nil
 }
 
+// ParseRequestPayload parses the request payload. For recognized event types,
+// a value of the corresponding struct type will be returned.
 func (d *HookDelivery) ParseRequestPayload() (interface{}, error) {
-	var payload interface{}
-	switch *d.Event {
-	case "check_run":
-		payload = &CheckRunEvent{}
-	case "check_suite":
-		payload = &CheckSuiteEvent{}
-	case "commit_comment":
-		payload = &CommitCommentEvent{}
-	case "content_reference":
-		payload = &ContentReferenceEvent{}
-	case "create":
-		payload = &CreateEvent{}
-	case "delete":
-		payload = &DeleteEvent{}
-	case "deploy_ket":
-		payload = &DeployKeyEvent{}
-	case "deployment":
-		payload = &DeploymentEvent{}
-	case "deployment_status":
-		payload = &DeploymentStatusEvent{}
-	case "fork":
-		payload = &ForkEvent{}
-	case "github_app_authorization":
-		payload = &GitHubAppAuthorizationEvent{}
-	case "gollum":
-		payload = &GollumEvent{}
-	case "installation":
-		payload = &InstallationEvent{}
-	case "installation_repositories":
-		payload = &InstallationRepositoriesEvent{}
-	case "issue_comment":
-		payload = &IssueCommentEvent{}
-	case "issues":
-		payload = &IssuesEvent{}
-	case "label":
-		payload = &LabelEvent{}
-	case "marketplace_purchase":
-		payload = &MarketplacePurchaseEvent{}
-	case "member_event":
-		payload = &MemberEvent{}
-	case "membership_event":
-		payload = &MembershipEvent{}
-	case "meta":
-		payload = &MetaEvent{}
-	case "milestone":
-		payload = &MilestoneEvent{}
-	case "organization":
-		payload = &OrganizationEvent{}
-	case "org_block":
-		payload = &OrgBlockEvent{}
-	case "package":
-		payload = &PackageEvent{}
-	case "page_build":
-		payload = &PageBuildEvent{}
-	case "ping":
-		payload = &PingEvent{}
-	case "project":
-		payload = &ProjectEvent{}
-	case "project_card":
-		payload = &ProjectCardEvent{}
-	case "project_column":
-		payload = &ProjectColumnEvent{}
-	case "public":
-		payload = &PublicEvent{}
-	case "pull_request":
-		payload = &PullRequestEvent{}
-	case "pull_request_review":
-		payload = &PullRequestReviewEvent{}
-	case "pull_request_review_comment":
-		payload = &PullRequestReviewCommentEvent{}
-	case "pull_request_target":
-		payload = &PullRequestTargetEvent{}
-	case "push":
-		payload = &PushEvent{}
-	case "release":
-		payload = &ReleaseEvent{}
-	case "repository":
-		payload = &RepositoryEvent{}
-	case "repository_dispatch":
-		payload = &RepositoryDispatchEvent{}
-	case "repository_vulnerability_alert":
-		payload = &RepositoryVulnerabilityAlertEvent{}
-	case "star":
-		payload = &StarEvent{}
-	case "status":
-		payload = &StatusEvent{}
-	case "team":
-		payload = &TeamEvent{}
-	case "team_add":
-		payload = &TeamAddEvent{}
-	case "user":
-		payload = &UserEvent{}
-	case "watch":
-		payload = &WatchEvent{}
-	case "workflow_dispatch":
-		payload = &WorkflowDispatchEvent{}
-	case "workflow_run":
-		payload = &WorkflowRunEvent{}
+	eType, ok := eventTypeMapping[*d.Event]
+	if !ok {
+		return nil, fmt.Errorf("unsupported event type %q", *d.Event)
 	}
-	err := json.Unmarshal(*d.Request.RawPayload, &payload)
-	return payload, err
+
+	e := &Event{Type: &eType, RawPayload: d.Request.RawPayload}
+	return e.ParsePayload()
 }

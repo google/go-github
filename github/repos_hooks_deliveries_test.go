@@ -114,7 +114,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"content_reference":              &ContentReferenceEvent{},
 	"create":                         &CreateEvent{},
 	"delete":                         &DeleteEvent{},
-	"deploy_ket":                     &DeployKeyEvent{},
+	"deploy_key":                     &DeployKeyEvent{},
 	"deployment":                     &DeploymentEvent{},
 	"deployment_status":              &DeploymentStatusEvent{},
 	"fork":                           &ForkEvent{},
@@ -126,8 +126,8 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"issues":                         &IssuesEvent{},
 	"label":                          &LabelEvent{},
 	"marketplace_purchase":           &MarketplacePurchaseEvent{},
-	"member_event":                   &MemberEvent{},
-	"membership_event":               &MembershipEvent{},
+	"member":                         &MemberEvent{},
+	"membership":                     &MembershipEvent{},
 	"meta":                           &MetaEvent{},
 	"milestone":                      &MilestoneEvent{},
 	"organization":                   &OrganizationEvent{},
@@ -198,7 +198,7 @@ func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
 	}
 
 	_, err := d.ParseRequestPayload()
-	if err == nil || err.Error() != "unexpected end of JSON input" {
+	if err == nil || err.Error() != `unsupported event type "some_invalid_event"` {
 		t.Errorf("unexpected error: %v", err)
 	}
 }
