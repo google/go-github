@@ -11735,6 +11735,16 @@ func TestProtectionRequest_GetAllowForcePushes(tt *testing.T) {
 	p.GetAllowForcePushes()
 }
 
+func TestProtectionRequest_GetRequiredConversationResolution(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{RequiredConversationResolution: &zeroValue}
+	p.GetRequiredConversationResolution()
+	p = &ProtectionRequest{}
+	p.GetRequiredConversationResolution()
+	p = nil
+	p.GetRequiredConversationResolution()
+}
+
 func TestProtectionRequest_GetRequiredPullRequestReviews(tt *testing.T) {
 	p := &ProtectionRequest{}
 	p.GetRequiredPullRequestReviews()
