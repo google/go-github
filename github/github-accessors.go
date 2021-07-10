@@ -10052,6 +10052,14 @@ func (p *ProtectionRequest) GetAllowForcePushes() bool {
 	return *p.AllowForcePushes
 }
 
+// GetRequiredConversationResolution returns the RequiredConversationResolution field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetRequiredConversationResolution() bool {
+	if p == nil || p.RequiredConversationResolution == nil {
+		return false
+	}
+	return *p.RequiredConversationResolution
+}
+
 // GetRequiredPullRequestReviews returns the RequiredPullRequestReviews field.
 func (p *ProtectionRequest) GetRequiredPullRequestReviews() *PullRequestReviewsEnforcementRequest {
 	if p == nil {
