@@ -146,3 +146,93 @@ func TestFeedLink_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestFeeds_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Feeds{}, "{}")
+
+	u := &Feeds{
+		TimelineURL:                 String("t"),
+		UserURL:                     String("u"),
+		CurrentUserPublicURL:        String("cupu"),
+		CurrentUserURL:              String("cuu"),
+		CurrentUserActorURL:         String("cuau"),
+		CurrentUserOrganizationURL:  String("cuou"),
+		CurrentUserOrganizationURLs: []string{"a"},
+		Links: &FeedLinks{
+			Timeline: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			User: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserPublic: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUser: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserActor: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserOrganization: &FeedLink{
+				HRef: String("h"),
+				Type: String("t"),
+			},
+			CurrentUserOrganizations: []*FeedLink{
+				{
+					HRef: String("h"),
+					Type: String("t"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"timeline_url": "t",
+		"user_url": "u",
+		"current_user_public_url": "cupu",
+		"current_user_url": "cuu",
+		"current_user_actor_url": "cuau",
+		"current_user_organization_url": "cuou",
+		"current_user_organization_urls": ["a"],
+		"_links": {
+			"timeline": {
+				"href": "h",
+				"type": "t"
+				},
+			"user": {
+				"href": "h",
+				"type": "t"
+			},
+			"current_user_public": {
+				"href": "h",
+				"type": "t"
+			},
+			"current_user": {
+				"href": "h",
+				"type": "t"
+			},
+			"current_user_actor": {
+				"href": "h",
+				"type": "t"
+			},
+			"current_user_organization": {
+				"href": "h",
+				"type": "t"
+			},
+			"current_user_organizations": [
+				{
+					"href": "h",
+					"type": "t"
+				}
+			]
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
