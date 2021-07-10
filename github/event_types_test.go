@@ -146,3 +146,27 @@ func TestProjectColumnChange_Marshal_NameChange(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestPage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Page{}, "{}")
+
+	u := &Page{
+		PageName: String("p"),
+		Title:    String("t"),
+		Summary:  String("s"),
+		Action:   String("a"),
+		SHA:      String("s"),
+		HTMLURL:  String("h"),
+	}
+
+	want := `{
+		"page_name": "p",
+		"title": "t",
+		"summary": "s",
+		"action": "a",
+		"sha": "s",
+		"html_url": "h"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
