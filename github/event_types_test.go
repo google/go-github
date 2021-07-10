@@ -170,3 +170,51 @@ func TestPage_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTeamChange_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TeamChange{}, "{}")
+
+	u := &TeamChange{
+		Description: &TeamDescription{
+			From: String("DescriptionFrom"),
+		},
+		Name: &TeamName{
+			From: String("NameFrom"),
+		},
+		Privacy: &TeamPrivacy{
+			From: String("PrivacyFrom"),
+		},
+		Repository: &TeamRepository{
+			Permissions: &TeamPermissions{
+				From: &TeamPermissionsFrom{
+					Admin: Bool(false),
+					Pull:  Bool(false),
+					Push:  Bool(false),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"description": {
+			"from": "DescriptionFrom"
+		},
+		"name": {
+			"from": "NameFrom"
+		},
+		"privacy": {
+			"from": "PrivacyFrom"
+		},
+		"repository": {
+			"permissions": {
+				"from": {
+					"admin": false,
+					"pull": false,
+					"push": false
+				}
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
