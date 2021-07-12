@@ -127,7 +127,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	// Get the parent commit to attach the commit to.
 	opt := &github.ListOptions{
 		PerPage: 10,
-		Page: 1,
+		Page:    1,
 	}
 	parent, _, err := client.Repositories.GetCommit(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA, opt)
 	if err != nil {
