@@ -78,6 +78,8 @@ type CheckSuite struct {
 	AfterSHA     *string        `json:"after,omitempty"`
 	Status       *string        `json:"status,omitempty"`
 	Conclusion   *string        `json:"conclusion,omitempty"`
+	CreatedAt    *Timestamp     `json:"created_at,omitempty"`
+	UpdatedAt    *Timestamp     `json:"updated_at,omitempty"`
 	App          *App           `json:"app,omitempty"`
 	Repository   *Repository    `json:"repository,omitempty"`
 	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
