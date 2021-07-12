@@ -94,6 +94,7 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 	if err != nil {
 		return nil, nil, err
 	}
+
 	h := new(HookDelivery)
 	resp, err := s.client.Do(ctx, req, h)
 	if err != nil {
