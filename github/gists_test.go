@@ -1018,7 +1018,7 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 	})
 }
 
-func TestGistFile_marshall(t *testing.T) {
+func TestGistFile_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistFile{}, "{}")
 
 	u := &GistFile{
