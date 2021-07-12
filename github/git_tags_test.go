@@ -83,3 +83,91 @@ func TestGitService_CreateTag(t *testing.T) {
 		return err
 	})
 }
+
+func TestTag_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tag{}, "{}")
+
+	u := &Tag{
+		Tag:     String("tag"),
+		SHA:     String("sha"),
+		URL:     String("url"),
+		Message: String("msg"),
+		Tagger: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Object: &GitObject{
+			Type: String("type"),
+			SHA:  String("sha"),
+			URL:  String("url"),
+		},
+		Verification: &SignatureVerification{
+			Verified:  Bool(true),
+			Reason:    String("reason"),
+			Signature: String("sign"),
+			Payload:   String("payload"),
+		},
+		NodeID: String("nid"),
+	}
+
+	want := `{
+		"tag": "tag",
+		"sha": "sha",
+		"url": "url",
+		"message": "msg",
+		"tagger": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"object": {
+			"type": "type",
+			"sha": "sha",
+			"url": "url"
+		},
+		"verification": {
+			"verified": true,
+			"reason": "reason",
+			"signature": "sign",
+			"payload": "payload"
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateTagRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createTagRequest{}, "{}")
+
+	u := &createTagRequest{
+		Tag:     String("tag"),
+		Message: String("msg"),
+		Object:  String("obj"),
+		Type:    String("type"),
+		Tagger: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+	}
+
+	want := `{
+		"tag": "tag",
+		"message": "msg",
+		"object": "obj",
+		"type": "type",
+		"tagger": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
