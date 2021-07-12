@@ -1612,6 +1612,14 @@ func (c *CheckSuite) GetConclusion() string {
 	return *c.Conclusion
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetHeadBranch() string {
 	if c == nil || c.HeadBranch == nil {
@@ -1666,6 +1674,14 @@ func (c *CheckSuite) GetStatus() string {
 		return ""
 	}
 	return *c.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.

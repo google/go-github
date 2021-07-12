@@ -1920,6 +1920,16 @@ func TestCheckSuite_GetConclusion(tt *testing.T) {
 	c.GetConclusion()
 }
 
+func TestCheckSuite_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CheckSuite{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CheckSuite{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCheckSuite_GetHeadBranch(tt *testing.T) {
 	var zeroValue string
 	c := &CheckSuite{HeadBranch: &zeroValue}
@@ -1982,6 +1992,16 @@ func TestCheckSuite_GetStatus(tt *testing.T) {
 	c.GetStatus()
 	c = nil
 	c.GetStatus()
+}
+
+func TestCheckSuite_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CheckSuite{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CheckSuite{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestCheckSuite_GetURL(tt *testing.T) {
