@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"regexp"
 )
@@ -59,7 +59,7 @@ func (mrt *MockRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) 
 
 			return &http.Response{
 				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(re),
+				Body:       ioutil.NopCloser(re),
 			}, nil
 		}
 	}
