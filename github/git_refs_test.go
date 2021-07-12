@@ -623,3 +623,81 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestReference_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Reference{}, "{}")
+
+	u := &Reference{
+		Ref: String("ref"),
+		URL: String("url"),
+		Object: &GitObject{
+			Type: String("type"),
+			SHA:  String("sha"),
+			URL:  String("url"),
+		},
+		NodeID: String("nid"),
+	}
+
+	want := `{
+		"ref": "ref",
+		"url": "url",
+		"object": {
+			"type": "type",
+			"sha": "sha",
+			"url": "url"
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestGitObject_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GitObject{}, "{}")
+
+	u := &GitObject{
+		Type: String("type"),
+		SHA:  String("sha"),
+		URL:  String("url"),
+	}
+
+	want := `{
+		"type": "type",
+		"sha": "sha",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateRefRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createRefRequest{}, "{}")
+
+	u := &createRefRequest{
+		Ref: String("ref"),
+		SHA: String("sha"),
+	}
+
+	want := `{
+		"ref": "ref",
+		"sha": "sha"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateRefRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &updateRefRequest{}, "{}")
+
+	u := &updateRefRequest{
+		SHA:   String("sha"),
+		Force: Bool(true),
+	}
+
+	want := `{
+		"sha": "sha",
+		"force": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
