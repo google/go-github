@@ -177,7 +177,7 @@ func TestGetCodeOfConduct(t *testing.T) {
 	})
 }
 
-func TestAPIMeta_marshal(t *testing.T) {
+func TestAPIMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, &APIMeta{}, "{}")
 
 	a := &APIMeta{
@@ -349,7 +349,7 @@ func TestListServiceHooks(t *testing.T) {
 	})
 }
 
-func TestMarkdownRequest_marshal(t *testing.T) {
+func TestMarkdownRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &markdownRequest{}, "{}")
 
 	a := &markdownRequest{
@@ -367,7 +367,7 @@ func TestMarkdownRequest_marshal(t *testing.T) {
 	testJSONMarshal(t, a, want)
 }
 
-func TestCodeOfConduct_marshal(t *testing.T) {
+func TestCodeOfConduct_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CodeOfConduct{}, "{}")
 
 	a := &CodeOfConduct{
@@ -387,7 +387,7 @@ func TestCodeOfConduct_marshal(t *testing.T) {
 	testJSONMarshal(t, a, want)
 }
 
-func TestServiceHook_marshal(t *testing.T) {
+func TestServiceHook_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ServiceHook{}, "{}")
 
 	a := &ServiceHook{
