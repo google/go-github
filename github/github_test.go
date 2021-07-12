@@ -2020,3 +2020,167 @@ type roundTripperFunc func(*http.Request) (*http.Response, error)
 func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
 	return fn(r)
 }
+
+func TestErrorResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ErrorResponse{}, "{}")
+
+	u := &ErrorResponse{
+		Message: "msg",
+		Errors: []Error{
+			{
+				Resource: "res",
+				Field:    "f",
+				Code:     "c",
+				Message:  "msg",
+			},
+		},
+		Block: &ErrorBlock{
+			Reason:    "reason",
+			CreatedAt: &Timestamp{referenceTime},
+		},
+		DocumentationURL: "doc",
+	}
+
+	want := `{
+		"message": "msg",
+		"errors": [
+			{
+				"resource": "res",
+				"field": "f",
+				"code": "c",
+				"message": "msg"
+			}
+		],
+		"block": {
+			"reason": "reason",
+			"created_at": ` + referenceTimeStr + `
+		},
+		"documentation_url": "doc"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestErrorBlock_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ErrorBlock{}, "{}")
+
+	u := &ErrorBlock{
+		Reason:    "reason",
+		CreatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"reason": "reason",
+		"created_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRateLimitError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RateLimitError{}, "{}")
+
+	u := &RateLimitError{
+		Rate: Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		Message: "msg",
+	}
+
+	want := `{
+		"Rate": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestAbuseRateLimitError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
+
+	u := &AbuseRateLimitError{
+		Message: "msg",
+	}
+
+	want := `{
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Error{}, "{}")
+
+	u := &Error{
+		Resource: "res",
+		Field:    "field",
+		Code:     "code",
+		Message:  "msg",
+	}
+
+	want := `{
+		"resource": "res",
+		"field": "field",
+		"code": "code",
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Rate{}, "{}")
+
+	u := &Rate{
+		Limit:     1,
+		Remaining: 1,
+		Reset:     Timestamp{referenceTime},
+	}
+
+	want := `{
+		"limit": 1,
+		"remaining": 1,
+		"reset": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRateLimits_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RateLimits{}, "{}")
+
+	u := &RateLimits{
+		Core: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		Search: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"core": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"search": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
