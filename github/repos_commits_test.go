@@ -74,6 +74,7 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprintf(w, `{
 		  "sha": "s",
 		  "commit": { "message": "m" },
@@ -97,8 +98,9 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 		}`)
 	})
 
+	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	commit, _, err := client.Repositories.GetCommit(ctx, "o", "r", "s")
+	commit, _, err := client.Repositories.GetCommit(ctx, "o", "r", "s", opts)
 	if err != nil {
 		t.Errorf("Repositories.GetCommit returned error: %v", err)
 	}
@@ -144,12 +146,12 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 
 	const methodName = "GetCommit"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetCommit(ctx, "\n", "\n", "\n")
+		_, _, err = client.Repositories.GetCommit(ctx, "\n", "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetCommit(ctx, "o", "r", "s")
+		got, resp, err := client.Repositories.GetCommit(ctx, "o", "r", "s", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -389,6 +391,7 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 		mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "GET")
+			testFormValues(t, r, values{"per_page": "2", "page": "2"})
 			fmt.Fprintf(w, `{
 		  "base_commit": {
 		    "sha": "s",
@@ -424,8 +427,9 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 		}`, escapedBase, escapedHead)
 		})
 
+		opts := &ListOptions{Page: 2, PerPage: 2}
 		ctx := context.Background()
-		got, _, err := client.Repositories.CompareCommits(ctx, "o", "r", base, head)
+		got, _, err := client.Repositories.CompareCommits(ctx, "o", "r", base, head, opts)
 		if err != nil {
 			t.Errorf("Repositories.CompareCommits returned error: %v", err)
 		}
@@ -484,12 +488,12 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 		const methodName = "CompareCommits"
 		testBadOptions(t, methodName, func() (err error) {
-			_, _, err = client.Repositories.CompareCommits(ctx, "\n", "\n", "\n", "\n")
+			_, _, err = client.Repositories.CompareCommits(ctx, "\n", "\n", "\n", "\n", opts)
 			return err
 		})
 
 		testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-			got, resp, err := client.Repositories.CompareCommits(ctx, "o", "r", base, head)
+			got, resp, err := client.Repositories.CompareCommits(ctx, "o", "r", base, head, opts)
 			if got != nil {
 				t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 			}

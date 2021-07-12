@@ -237,6 +237,7 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
