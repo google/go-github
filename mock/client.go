@@ -6,40 +6,61 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"regexp"
+	"runtime"
+	"strings"
 )
 
-type EndpointPattern = *regexp.Regexp
+type MethodCall = string
 
 // Users
-var UsersGetEndpoint EndpointPattern = regexp.MustCompile(`^\/users\/[a-zA-Z]+`)
+var UsersGetEndpoint MethodCall = "github.(*UsersService).Get"
 
 // Orgs
-var OrgsListEndpoint = regexp.MustCompile(`^\/users\/([a-z]+\/orgs|orgs)$`)
-var OrgsGetEndpoint = regexp.MustCompile(`^\/orgs\/[a-z]+`)
+var OrgsListEndpoint MethodCall = "github.(*OrganizationsService).List"
 
 type RequestMatch struct {
-	EndpointPattern EndpointPattern
-	Method          string // GET or POST
+	MethodCall MethodCall
+	Method     string // GET or POST
 }
 
 func (rm *RequestMatch) Match(r *http.Request) bool {
-	if (r.Method == rm.Method) &&
-		r.URL.Path == rm.EndpointPattern.FindString(r.URL.Path) {
-		return true
+	pc := make([]uintptr, 100)
+	n := runtime.Callers(0, pc)
+	if n == 0 {
+		return false
 	}
 
-	return false
+	pc = pc[:n]
+	frames := runtime.CallersFrames(pc)
+
+	for {
+		frame, more := frames.Next()
+
+		if strings.Contains(frame.File, "go-github") &&
+			strings.Contains(frame.Function, "github.") &&
+			strings.Contains(frame.Function, "Service") {
+			splitFuncName := strings.Split(frame.Function, "/")
+			methodCall := splitFuncName[len(splitFuncName)-1]
+
+			if r.Method == rm.Method && rm.MethodCall == methodCall {
+				return true
+			}
+		}
+
+		if !more {
+			return false
+		}
+	}
 }
 
 var RequestMatchUsersGet = RequestMatch{
-	EndpointPattern: UsersGetEndpoint,
-	Method:          http.MethodGet,
+	MethodCall: UsersGetEndpoint,
+	Method:     http.MethodGet,
 }
 
 var RequestMatchOrganizationsList = RequestMatch{
-	EndpointPattern: OrgsListEndpoint,
-	Method:          http.MethodGet,
+	MethodCall: OrgsListEndpoint,
+	Method:     http.MethodGet,
 }
 
 type MockRoundTripper struct {
