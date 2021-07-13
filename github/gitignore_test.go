@@ -87,3 +87,19 @@ func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
 	_, _, err := client.Gitignores.Get(ctx, "%")
 	testURLParseError(t, err)
 }
+
+func TestGitignore_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Gitignore{}, "{}")
+
+	u := &Gitignore{
+		Name:   String("name"),
+		Source: String("source"),
+	}
+
+	want := `{
+		"name": "name",
+		"source": "source"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
