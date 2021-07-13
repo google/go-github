@@ -638,6 +638,20 @@ func TestResponse_cursorPagination(t *testing.T) {
 	if got, want := response.NextPageToken, "url-encoded-next-page-token"; want != got {
 		t.Errorf("response.NextPageToken: %v, want %v", got, want)
 	}
+
+	// cursor-based pagination with "cursor" param
+	r = http.Response{
+		Header: http.Header{
+			"Link": {
+				`<https://api.github.com/?cursor=v1_12345678>; rel="next"`,
+			},
+		},
+	}
+
+	response = newResponse(&r)
+	if got, want := response.Cursor, "v1_12345678"; got != want {
+		t.Errorf("response.Cursor: %v, want %v", got, want)
+	}
 }
 
 func TestResponse_populatePageValues_invalid(t *testing.T) {

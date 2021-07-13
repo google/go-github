@@ -212,6 +212,9 @@ type ListCursorOptions struct {
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
 	Before string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query continues the search using this cursor.
+	Cursor string `url:"cursor,omitempty"`
 }
 
 // UploadOptions specifies the parameters to methods that support uploads.
@@ -445,6 +448,11 @@ type Response struct {
 	// calling the endpoint again.
 	NextPageToken string
 
+	// For APIs that support cursor pagination, such as RepositoryService.ListRepositoryHookDeliveries,
+	// the following field will be populated to point to the next page.
+	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
+	Cursor string
+
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
@@ -481,7 +489,21 @@ func (r *Response) populatePageValues() {
 			if err != nil {
 				continue
 			}
-			page := url.Query().Get("page")
+
+			q := url.Query()
+
+			if cursor := q.Get("cursor"); cursor != "" {
+				for _, segment := range segments[1:] {
+					switch strings.TrimSpace(segment) {
+					case `rel="next"`:
+						r.Cursor = cursor
+					}
+				}
+
+				continue
+			}
+
+			page := q.Get("page")
 			if page == "" {
 				continue
 			}
@@ -499,7 +521,6 @@ func (r *Response) populatePageValues() {
 				case `rel="last"`:
 					r.LastPage, _ = strconv.Atoi(page)
 				}
-
 			}
 		}
 	}
