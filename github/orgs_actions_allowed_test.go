@@ -103,3 +103,21 @@ func TestActionsAllowed_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestActionsPermissions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsPermissions{}, "{}")
+
+	u := &ActionsPermissions{
+		EnabledRepositories: String("e"),
+		AllowedActions:      String("a"),
+		SelectedActionsURL:  String("sau"),
+	}
+
+	want := `{
+		"enabled_repositories": "e",
+		"allowed_actions": "a",
+		"selected_actions_url": "sau"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
