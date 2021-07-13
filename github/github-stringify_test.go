@@ -149,11 +149,13 @@ func TestCheckSuite_String(t *testing.T) {
 		AfterSHA:   String(""),
 		Status:     String(""),
 		Conclusion: String(""),
+		CreatedAt:  &Timestamp{},
+		UpdatedAt:  &Timestamp{},
 		App:        &App{},
 		Repository: &Repository{},
 		HeadCommit: &Commit{},
 	}
-	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}}`
+	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
 	}
@@ -541,6 +543,28 @@ func TestHook_String(t *testing.T) {
 	want := `github.Hook{URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Active:false}`
 	if got := v.String(); got != want {
 		t.Errorf("Hook.String = %v, want %v", got, want)
+	}
+}
+
+func TestHookDelivery_String(t *testing.T) {
+	v := HookDelivery{
+		ID:             Int64(0),
+		GUID:           String(""),
+		DeliveredAt:    &Timestamp{},
+		Redelivery:     Bool(false),
+		Duration:       Float64(0.0),
+		Status:         String(""),
+		StatusCode:     Int(0),
+		Event:          String(""),
+		Action:         String(""),
+		InstallationID: String(""),
+		RepositoryID:   Int64(0),
+		Request:        &HookRequest{},
+		Response:       &HookResponse{},
+	}
+	want := `github.HookDelivery{ID:0, GUID:"", DeliveredAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:"", RepositoryID:0, Request:github.HookRequest{}, Response:github.HookResponse{}}`
+	if got := v.String(); got != want {
+		t.Errorf("HookDelivery.String = %v, want %v", got, want)
 	}
 }
 

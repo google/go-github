@@ -84,6 +84,26 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 	})
 }
 
+func TestActionsAllowed_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsAllowed{}, "{}")
+
+	u := &ActionsAllowed{
+		GithubOwnedAllowed: Bool(false),
+		VerifiedAllowed:    Bool(false),
+		PatternsAllowed:    []string{"s"},
+	}
+
+	want := `{
+		"github_owned_allowed": false,
+		"verified_allowed": false,
+		"patterns_allowed": [
+			"s"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestActionsPermissions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ActionsPermissions{}, "{}")
 

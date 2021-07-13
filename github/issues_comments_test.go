@@ -294,3 +294,77 @@ func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
 	_, err := client.Issues.DeleteComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
+
+func TestIssueComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueComment{}, "{}")
+
+	u := &IssueComment{
+		ID:     Int64(1),
+		NodeID: String("nid"),
+		Body:   String("body"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		Reactions:         &Reactions{TotalCount: Int(1)},
+		CreatedAt:         &referenceTime,
+		UpdatedAt:         &referenceTime,
+		AuthorAssociation: String("aa"),
+		URL:               String("url"),
+		HTMLURL:           String("hurl"),
+		IssueURL:          String("iurl"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"body": "body",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"reactions": {
+			"total_count": 1
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"author_association": "aa",
+		"url": "url",
+		"html_url": "hurl",
+		"issue_url": "iurl"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

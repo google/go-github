@@ -1612,6 +1612,14 @@ func (c *CheckSuite) GetConclusion() string {
 	return *c.Conclusion
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
 func (c *CheckSuite) GetHeadBranch() string {
 	if c == nil || c.HeadBranch == nil {
@@ -1666,6 +1674,14 @@ func (c *CheckSuite) GetStatus() string {
 		return ""
 	}
 	return *c.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CheckSuite) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -4834,6 +4850,142 @@ func (h *HookConfig) GetURL() string {
 		return ""
 	}
 	return *h.URL
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetAction() string {
+	if h == nil || h.Action == nil {
+		return ""
+	}
+	return *h.Action
+}
+
+// GetDeliveredAt returns the DeliveredAt field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetDeliveredAt() Timestamp {
+	if h == nil || h.DeliveredAt == nil {
+		return Timestamp{}
+	}
+	return *h.DeliveredAt
+}
+
+// GetDuration returns the Duration field.
+func (h *HookDelivery) GetDuration() *float64 {
+	if h == nil {
+		return nil
+	}
+	return h.Duration
+}
+
+// GetEvent returns the Event field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetEvent() string {
+	if h == nil || h.Event == nil {
+		return ""
+	}
+	return *h.Event
+}
+
+// GetGUID returns the GUID field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetGUID() string {
+	if h == nil || h.GUID == nil {
+		return ""
+	}
+	return *h.GUID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetID() int64 {
+	if h == nil || h.ID == nil {
+		return 0
+	}
+	return *h.ID
+}
+
+// GetInstallationID returns the InstallationID field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetInstallationID() string {
+	if h == nil || h.InstallationID == nil {
+		return ""
+	}
+	return *h.InstallationID
+}
+
+// GetRedelivery returns the Redelivery field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetRedelivery() bool {
+	if h == nil || h.Redelivery == nil {
+		return false
+	}
+	return *h.Redelivery
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetRepositoryID() int64 {
+	if h == nil || h.RepositoryID == nil {
+		return 0
+	}
+	return *h.RepositoryID
+}
+
+// GetRequest returns the Request field.
+func (h *HookDelivery) GetRequest() *HookRequest {
+	if h == nil {
+		return nil
+	}
+	return h.Request
+}
+
+// GetResponse returns the Response field.
+func (h *HookDelivery) GetResponse() *HookResponse {
+	if h == nil {
+		return nil
+	}
+	return h.Response
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetStatus() string {
+	if h == nil || h.Status == nil {
+		return ""
+	}
+	return *h.Status
+}
+
+// GetStatusCode returns the StatusCode field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetStatusCode() int {
+	if h == nil || h.StatusCode == nil {
+		return 0
+	}
+	return *h.StatusCode
+}
+
+// GetHeaders returns the Headers map if it's non-nil, an empty map otherwise.
+func (h *HookRequest) GetHeaders() map[string]string {
+	if h == nil || h.Headers == nil {
+		return map[string]string{}
+	}
+	return h.Headers
+}
+
+// GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
+func (h *HookRequest) GetRawPayload() json.RawMessage {
+	if h == nil || h.RawPayload == nil {
+		return json.RawMessage{}
+	}
+	return *h.RawPayload
+}
+
+// GetHeaders returns the Headers map if it's non-nil, an empty map otherwise.
+func (h *HookResponse) GetHeaders() map[string]string {
+	if h == nil || h.Headers == nil {
+		return map[string]string{}
+	}
+	return h.Headers
+}
+
+// GetRawPayload returns the RawPayload field if it's non-nil, zero value otherwise.
+func (h *HookResponse) GetRawPayload() json.RawMessage {
+	if h == nil || h.RawPayload == nil {
+		return json.RawMessage{}
+	}
+	return *h.RawPayload
 }
 
 // GetActiveHooks returns the ActiveHooks field if it's non-nil, zero value otherwise.
