@@ -513,3 +513,29 @@ func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.ListLabelsForMilestone(ctx, "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
+
+func TestLabel_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Label{}, "{}")
+
+	u := &Label{
+		ID:          Int64(1),
+		URL:         String("url"),
+		Name:        String("name"),
+		Color:       String("color"),
+		Description: String("desc"),
+		Default:     Bool(false),
+		NodeID:      String("nid"),
+	}
+
+	want := `{
+		"id": 1,
+		"url": "url",
+		"name": "name",
+		"color": "color",
+		"description": "desc",
+		"default": false,
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
