@@ -1017,3 +1017,27 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestGistFile_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GistFile{}, "{}")
+
+	u := &GistFile{
+		Size:     Int(1),
+		Filename: String("fn"),
+		Language: String("lan"),
+		Type:     String("type"),
+		RawURL:   String("rurl"),
+		Content:  String("con"),
+	}
+
+	want := `{
+		"size": 1,
+		"filename": "fn",
+		"language": "lan",
+		"type": "type",
+		"raw_url": "rurl",
+		"content": "con"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
