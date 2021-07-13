@@ -262,3 +262,21 @@ func TestAlert_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTool_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tool{}, "{}")
+
+	u := &Tool{
+		Name:    String("name"),
+		GUID:    String("guid"),
+		Version: String("ver"),
+	}
+
+	want := `{
+		"name": "name",
+		"guid": "guid",
+		"version": "ver"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
