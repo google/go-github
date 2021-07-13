@@ -12,11 +12,11 @@ import (
 type EndpointPattern = *regexp.Regexp
 
 // Users
-var UsersGetEndpoint EndpointPattern = regexp.MustCompile(`^/users/[a-z]+`)
+var UsersGetEndpoint EndpointPattern = regexp.MustCompile(`^\/users\/[a-zA-Z]+`)
 
 // Orgs
 var OrgsListEndpoint = regexp.MustCompile(`^\/users\/([a-z]+\/orgs|orgs)$`)
-var OrgsGetEndpoint = regexp.MustCompile(`^/orgs/[a-z]+`)
+var OrgsGetEndpoint = regexp.MustCompile(`^\/orgs\/[a-z]+`)
 
 type RequestMatch struct {
 	EndpointPattern EndpointPattern
@@ -24,7 +24,8 @@ type RequestMatch struct {
 }
 
 func (rm *RequestMatch) Match(r *http.Request) bool {
-	if r.Method == rm.Method && rm.EndpointPattern.MatchString(r.URL.Path) {
+	if (r.Method == rm.Method) &&
+		r.URL.Path == rm.EndpointPattern.FindString(r.URL.Path) {
 		return true
 	}
 
@@ -49,6 +50,35 @@ type MockRoundTripper struct {
 func (mrt *MockRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 	for requestMatch, respBodies := range mrt.RequestMocks {
 		if requestMatch.Match(r) {
+			if len(respBodies) == 0 {
+				fmt.Printf(
+					"no more available mocked responses for endpoit %s\n",
+					r.URL.Path,
+				)
+
+				fmt.Println("please add the required RequestMatch to the MockHttpClient. Eg.")
+				fmt.Println(`
+				mockedHttpClient := NewMockHttpClient(
+					WithRequestMatch(
+						RequestMatchUsersGet,
+						MustMarshall(github.User{
+							Name: github.String("foobar"),
+						}),
+					),
+					WithRequestMatch(
+						RequestMatchOrganizationsList,
+						MustMarshall([]github.Organization{
+							{
+								Name: github.String("foobar123"),
+							},
+						}),
+					),
+				)
+				`)
+
+				panic(nil)
+			}
+
 			resp := respBodies[0]
 
 			defer func(mrt *MockRoundTripper, rm RequestMatch) {

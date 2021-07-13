@@ -41,7 +41,7 @@ func TestMockClient(t *testing.T) {
 
 	orgs, _, err := c.Organizations.List(
 		ctx,
-		*user.Name,
+		*(user.Name),
 		nil,
 	)
 
