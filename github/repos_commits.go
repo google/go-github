@@ -150,8 +150,12 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-single-commit
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit
-func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string) (*RepositoryCommit, *Response, error) {
+func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -224,11 +228,15 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 // CompareCommits compares a range of commits with each other.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#compare-two-commits
-func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string) (*CommitsComparison, *Response, error) {
+func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string, opts *ListOptions) (*CommitsComparison, *Response, error) {
 	escapedBase := url.QueryEscape(base)
 	escapedHead := url.QueryEscape(head)
 
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
