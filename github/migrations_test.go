@@ -251,3 +251,57 @@ var wantMigration = &Migration{
 		},
 	},
 }
+
+func TestMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Migration{}, "{}")
+
+	u := &Migration{
+		ID:                 Int64(1),
+		GUID:               String("guid"),
+		State:              String("state"),
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+		URL:                String("url"),
+		CreatedAt:          String("ca"),
+		UpdatedAt:          String("ua"),
+		Repositories:       []*Repository{{ID: Int64(1)}},
+	}
+
+	want := `{
+		"id": 1,
+		"guid": "guid",
+		"state": "state",
+		"lock_repositories": false,
+		"exclude_attachments": false,
+		"url": "url",
+		"created_at": "ca",
+		"updated_at": "ua",
+		"repositories": [
+			{
+				"id": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStartMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &startMigration{}, "{}")
+
+	u := &startMigration{
+		Repositories:       []string{"r"},
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+	}
+
+	want := `{
+		"repositories": [
+			"r"
+		],
+		"lock_repositories": false,
+		"exclude_attachments": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
