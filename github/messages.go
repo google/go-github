@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"hash"
+	"io"
 	"io/ioutil"
 	"mime"
 	"net/http"
@@ -31,14 +32,14 @@ const (
 	// sha256Prefix and sha512Prefix are provided for future compatibility.
 	sha256Prefix = "sha256"
 	sha512Prefix = "sha512"
-	// sha1SignatureHeader is the GitHub header key used to pass the HMAC-SHA1 hexdigest.
-	sha1SignatureHeader = "X-Hub-Signature"
-	// sha256SignatureHeader is the GitHub header key used to pass the HMAC-SHA256 hexdigest.
-	sha256SignatureHeader = "X-Hub-Signature-256"
-	// eventTypeHeader is the GitHub header key used to pass the event type.
-	eventTypeHeader = "X-Github-Event"
-	// deliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
-	deliveryIDHeader = "X-Github-Delivery"
+	// SHA1SignatureHeader is the GitHub header key used to pass the HMAC-SHA1 hexdigest.
+	SHA1SignatureHeader = "X-Hub-Signature"
+	// SHA256SignatureHeader is the GitHub header key used to pass the HMAC-SHA256 hexdigest.
+	SHA256SignatureHeader = "X-Hub-Signature-256"
+	// EventTypeHeader is the GitHub header key used to pass the event type.
+	EventTypeHeader = "X-Github-Event"
+	// DeliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
+	DeliveryIDHeader = "X-Github-Delivery"
 )
 
 var (
@@ -139,6 +140,70 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 	return buf, hashFunc, nil
 }
 
+// ValidatePayload validates an incoming GitHub Webhook event request body
+// and returns the (JSON) payload.
+// The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
+// If the Content-Type is neither then an error is returned.
+// secretToken is the GitHub Webhook secret token.
+// If your webhook does not contain a secret token, you can pass nil or an empty slice.
+// This is intended for local development purposes only and all webhooks should ideally set up a secret token.
+//
+// Example usage:
+//
+//     func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+//       // read signature from request
+//       signature := ""
+//       payload, err := github.ValidatePayloadFromBody(r.Header.Get("Content-Type"), r.Body, signature, s.webhookSecretKey)
+//       if err != nil { ... }
+//       // Process payload...
+//     }
+func ValidatePayloadFromBody(contentType string, readable io.Reader, signature string, secretToken []byte) (payload []byte, err error) {
+	var body []byte // Raw body that GitHub uses to calculate the signature.
+
+	switch contentType {
+	case "application/json":
+		var err error
+		if body, err = ioutil.ReadAll(readable); err != nil {
+			return nil, err
+		}
+
+		// If the content type is application/json,
+		// the JSON payload is just the original body.
+		payload = body
+
+	case "application/x-www-form-urlencoded":
+		// payloadFormParam is the name of the form parameter that the JSON payload
+		// will be in if a webhook has its content type set to application/x-www-form-urlencoded.
+		const payloadFormParam = "payload"
+
+		var err error
+		if body, err = ioutil.ReadAll(readable); err != nil {
+			return nil, err
+		}
+
+		// If the content type is application/x-www-form-urlencoded,
+		// the JSON payload will be under the "payload" form param.
+		form, err := url.ParseQuery(string(body))
+		if err != nil {
+			return nil, err
+		}
+		payload = []byte(form.Get(payloadFormParam))
+
+	default:
+		return nil, fmt.Errorf("Webhook request has unsupported Content-Type %q", contentType)
+	}
+
+	// Only validate the signature if a secret token exists. This is intended for
+	// local development only and all webhooks should ideally set up a secret token.
+	if len(secretToken) > 0 {
+		if err := ValidateSignature(signature, body, secretToken); err != nil {
+			return nil, err
+		}
+	}
+
+	return payload, nil
+}
+
 // ValidatePayload validates an incoming GitHub Webhook event request
 // and returns the (JSON) payload.
 // The Content-Type header of the payload can be "application/json" or "application/x-www-form-urlencoded".
@@ -156,61 +221,17 @@ func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 //     }
 //
 func ValidatePayload(r *http.Request, secretToken []byte) (payload []byte, err error) {
-	var body []byte // Raw body that GitHub uses to calculate the signature.
+	signature := r.Header.Get(SHA256SignatureHeader)
+	if signature == "" {
+		signature = r.Header.Get(SHA1SignatureHeader)
+	}
 
-	ct := r.Header.Get("Content-Type")
-
-	mediatype, _, err := mime.ParseMediaType(ct)
+	contentType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
-		mediatype = ""
+		return nil, err
 	}
 
-	switch mediatype {
-	case "application/json":
-		var err error
-		if body, err = ioutil.ReadAll(r.Body); err != nil {
-			return nil, err
-		}
-
-		// If the content type is application/json,
-		// the JSON payload is just the original body.
-		payload = body
-
-	case "application/x-www-form-urlencoded":
-		// payloadFormParam is the name of the form parameter that the JSON payload
-		// will be in if a webhook has its content type set to application/x-www-form-urlencoded.
-		const payloadFormParam = "payload"
-
-		var err error
-		if body, err = ioutil.ReadAll(r.Body); err != nil {
-			return nil, err
-		}
-
-		// If the content type is application/x-www-form-urlencoded,
-		// the JSON payload will be under the "payload" form param.
-		form, err := url.ParseQuery(string(body))
-		if err != nil {
-			return nil, err
-		}
-		payload = []byte(form.Get(payloadFormParam))
-
-	default:
-		return nil, fmt.Errorf("Webhook request has unsupported Content-Type %q", ct)
-	}
-
-	// Only validate the signature if a secret token exists. This is intended for
-	// local development only and all webhooks should ideally set up a secret token.
-	if len(secretToken) > 0 {
-		sig := r.Header.Get(sha256SignatureHeader)
-		if sig == "" {
-			sig = r.Header.Get(sha1SignatureHeader)
-		}
-		if err := ValidateSignature(sig, body, secretToken); err != nil {
-			return nil, err
-		}
-	}
-
-	return payload, nil
+	return ValidatePayloadFromBody(contentType, r.Body, signature, secretToken)
 }
 
 // ValidateSignature validates the signature for the given payload.
@@ -234,14 +255,14 @@ func ValidateSignature(signature string, payload, secretToken []byte) error {
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/hooks/#webhook-headers
 func WebHookType(r *http.Request) string {
-	return r.Header.Get(eventTypeHeader)
+	return r.Header.Get(EventTypeHeader)
 }
 
 // DeliveryID returns the unique delivery ID of webhook request r.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/hooks/#webhook-headers
 func DeliveryID(r *http.Request) string {
-	return r.Header.Get(deliveryIDHeader)
+	return r.Header.Get(DeliveryIDHeader)
 }
 
 // ParseWebHook parses the event payload. For recognized event types, a
