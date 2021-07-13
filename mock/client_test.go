@@ -13,13 +13,13 @@ func TestMockClient(t *testing.T) {
 	mockedHttpClient := NewMockHttpClient(
 		WithRequestMatch(
 			RequestMatchUsersGet,
-			MustMarshall(github.User{
+			MustMarshal(github.User{
 				Name: github.String("foobar"),
 			}),
 		),
 		WithRequestMatch(
 			RequestMatchOrganizationsList,
-			MustMarshall([]github.Organization{
+			MustMarshal([]github.Organization{
 				{
 					Name: github.String("foobar123thisorgwasmocked"),
 				},

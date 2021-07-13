@@ -135,7 +135,7 @@ func NewMockHttpClient(options ...MockHttpClientOption) *http.Client {
 	}
 }
 
-func MustMarshall(v interface{}) []byte {
+func MustMarshal(v interface{}) []byte {
 	b, err := json.Marshal(v)
 
 	if err == nil {
