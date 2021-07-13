@@ -177,7 +177,7 @@ func TestGetCodeOfConduct(t *testing.T) {
 	})
 }
 
-func TestAPIMeta_marshal(t *testing.T) {
+func TestAPIMeta_Marshal(t *testing.T) {
 	testJSONMarshal(t, &APIMeta{}, "{}")
 
 	a := &APIMeta{
@@ -347,4 +347,69 @@ func TestListServiceHooks(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestMarkdownRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &markdownRequest{}, "{}")
+
+	a := &markdownRequest{
+		Text:    String("txt"),
+		Mode:    String("mode"),
+		Context: String("ctx"),
+	}
+
+	want := `{
+		"text": "txt",
+		"mode": "mode",
+		"context": "ctx"
+	}`
+
+	testJSONMarshal(t, a, want)
+}
+
+func TestCodeOfConduct_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CodeOfConduct{}, "{}")
+
+	a := &CodeOfConduct{
+		Name: String("name"),
+		Key:  String("key"),
+		URL:  String("url"),
+		Body: String("body"),
+	}
+
+	want := `{
+		"name": "name",
+		"key": "key",
+		"url": "url",
+		"body": "body"
+	}`
+
+	testJSONMarshal(t, a, want)
+}
+
+func TestServiceHook_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ServiceHook{}, "{}")
+
+	a := &ServiceHook{
+		Name:            String("name"),
+		Events:          []string{"e"},
+		SupportedEvents: []string{"se"},
+		Schema:          [][]string{{"g"}},
+	}
+	want := `{
+		"name": "name",
+		"events": [
+			"e"
+		],
+		"supported_events": [
+			"se"
+		],
+		"schema": [
+			[
+				"g"
+			]
+		]
+	}`
+
+	testJSONMarshal(t, a, want)
 }
