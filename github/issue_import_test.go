@@ -191,3 +191,169 @@ var wantIssueImportResponse = &IssueImportResponse{
 	ImportIssuesURL: String("https://api.github.com/repos/o/r/import/issues"),
 	RepositoryURL:   String("https://api.github.com/repos/o/r"),
 }
+
+func TestIssueImportError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueImportError{}, "{}")
+
+	u := &IssueImportError{
+		Location: String("loc"),
+		Resource: String("res"),
+		Field:    String("field"),
+		Value:    String("value"),
+		Code:     String("code"),
+	}
+
+	want := `{
+		"location": "loc",
+		"resource": "res",
+		"field": "field",
+		"value": "value",
+		"code": "code"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssueImportResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueImportResponse{}, "{}")
+
+	u := &IssueImportResponse{
+		ID:               Int(1),
+		Status:           String("status"),
+		URL:              String("url"),
+		ImportIssuesURL:  String("iiu"),
+		RepositoryURL:    String("ru"),
+		CreatedAt:        &referenceTime,
+		UpdatedAt:        &referenceTime,
+		Message:          String("msg"),
+		DocumentationURL: String("durl"),
+		Errors: []*IssueImportError{
+			{
+				Location: String("loc"),
+				Resource: String("res"),
+				Field:    String("field"),
+				Value:    String("value"),
+				Code:     String("code"),
+			},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"status": "status",
+		"url": "url",
+		"import_issues_url": "iiu",
+		"repository_url": "ru",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"message": "msg",
+		"documentation_url": "durl",
+		"errors": [
+			{
+				"location": "loc",
+				"resource": "res",
+				"field": "field",
+				"value": "value",
+				"code": "code"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Comment{}, "{}")
+
+	u := &Comment{
+		CreatedAt: &referenceTime,
+		Body:      "body",
+	}
+
+	want := `{
+		"created_at": ` + referenceTimeStr + `,
+		"body": "body"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssueImport_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueImport{}, "{}")
+
+	u := &IssueImport{
+		Title:     "title",
+		Body:      "body",
+		CreatedAt: &referenceTime,
+		ClosedAt:  &referenceTime,
+		UpdatedAt: &referenceTime,
+		Assignee:  String("a"),
+		Milestone: Int(1),
+		Closed:    Bool(false),
+		Labels:    []string{"l"},
+	}
+
+	want := `{
+		"title": "title",
+		"body": "body",
+		"created_at": ` + referenceTimeStr + `,
+		"closed_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"assignee": "a",
+		"milestone": 1,
+		"closed": false,
+		"labels": [
+			"l"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssueImportRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueImportRequest{}, "{}")
+
+	u := &IssueImportRequest{
+		IssueImport: IssueImport{
+			Title:     "title",
+			Body:      "body",
+			CreatedAt: &referenceTime,
+			ClosedAt:  &referenceTime,
+			UpdatedAt: &referenceTime,
+			Assignee:  String("a"),
+			Milestone: Int(1),
+			Closed:    Bool(false),
+			Labels:    []string{"l"},
+		},
+		Comments: []*Comment{
+			{
+				CreatedAt: &referenceTime,
+				Body:      "body",
+			},
+		},
+	}
+
+	want := `{
+		"issue": {
+			"title": "title",
+			"body": "body",
+			"created_at": ` + referenceTimeStr + `,
+			"closed_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"assignee": "a",
+			"milestone": 1,
+			"closed": false,
+			"labels": [
+				"l"
+			]
+		},
+		"comments": [
+			{
+				"created_at": ` + referenceTimeStr + `,
+				"body": "body"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
