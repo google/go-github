@@ -340,3 +340,109 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	_, _, err := client.Git.CreateTree(ctx, "%", "%", "", nil)
 	testURLParseError(t, err)
 }
+
+func TestTree_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tree{}, "{}")
+
+	u := &Tree{
+		SHA: String("sha"),
+		Entries: []*TreeEntry{
+			{
+				SHA:     String("sha"),
+				Path:    String("path"),
+				Mode:    String("mode"),
+				Type:    String("type"),
+				Size:    Int(1),
+				Content: String("content"),
+				URL:     String("url"),
+			},
+		},
+		Truncated: Bool(false),
+	}
+
+	want := `{
+		"sha": "sha",
+		"tree": [
+			{
+				"sha": "sha",
+				"path": "path",
+				"mode": "mode",
+				"type": "type",
+				"size": 1,
+				"content": "content",
+				"url": "url"
+			}
+		],
+		"truncated": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTreeEntry_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TreeEntry{}, "{}")
+
+	u := &TreeEntry{
+		SHA:     String("sha"),
+		Path:    String("path"),
+		Mode:    String("mode"),
+		Type:    String("type"),
+		Size:    Int(1),
+		Content: String("content"),
+		URL:     String("url"),
+	}
+
+	want := `{
+		"sha": "sha",
+		"path": "path",
+		"mode": "mode",
+		"type": "type",
+		"size": 1,
+		"content": "content",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
+	testJSONMarshal(t, &treeEntryWithFileDelete{}, "{}")
+
+	u := &treeEntryWithFileDelete{
+		SHA:     String("sha"),
+		Path:    String("path"),
+		Mode:    String("mode"),
+		Type:    String("type"),
+		Size:    Int(1),
+		Content: String("content"),
+		URL:     String("url"),
+	}
+
+	want := `{
+		"sha": "sha",
+		"path": "path",
+		"mode": "mode",
+		"type": "type",
+		"size": 1,
+		"content": "content",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateTree_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createTree{}, "{}")
+
+	u := &createTree{
+		BaseTree: "bt",
+		Entries:  []interface{}{"e"},
+	}
+
+	want := `{
+		"base_tree": "bt",
+		"tree": ["e"]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
