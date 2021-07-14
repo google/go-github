@@ -401,6 +401,64 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	})
 }
 
+func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"repository_id":[123,1234]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	if err != nil {
+		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
+	}
+
+	const methodName = "AddEnabledReposInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.AddEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	})
+
+}
+
+func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.RemoveEnabledRepoInOrg returned error: %v", err)
+	}
+
+	const methodName = "RemoveEnabledRepoInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveEnabledRepoInOrg(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	})
+
+}
+
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
