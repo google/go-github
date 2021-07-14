@@ -428,7 +428,6 @@ func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.AddEnabledReposInOrg(ctx, "o", []int64{123, 1234})
 	})
-
 }
 
 func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
@@ -456,7 +455,6 @@ func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
 	})
-
 }
 
 func TestActionsService_GetOrganizationRunner(t *testing.T) {

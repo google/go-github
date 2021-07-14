@@ -266,13 +266,13 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 
 // AddEnabledReposInOrg adds a list of repositories to the list of enabled repos for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#enable-a-selected-repository-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-selected-repositories-enabled-for-github-actions-in-an-organization
 func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 
 	req, err := s.client.NewRequest("PUT", u, struct {
-		Repository_id []int64 `json:"repository_id"`
-	}{Repository_id: repositoryIDs})
+		IDs []int64 `json:"selected_repository_ids"`
+	}{IDs: repositoryIDs})
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +285,7 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 	return resp, nil
 }
 
-// RemoveEnabledReposInOrg removes a single repositorie from the list of enabled repos for GitHub Actions in an organization.
+// RemoveEnabledRepoInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#disable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
