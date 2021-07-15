@@ -36,12 +36,15 @@ type CreateRunnerGroupRequest struct {
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 	// Runners represent a list of runner IDs to add to the runner group.
 	Runners []int64 `json:"runners,omitempty"`
+	// If set to True, public repos can use this runner group
+	AllowsPublicRepositories *bool `json:"allows_public_repositories,omitempty"`
 }
 
 // UpdateRunnerGroupRequest represents a request to update a Runner group for an organization.
 type UpdateRunnerGroupRequest struct {
-	Name       *string `json:"name,omitempty"`
-	Visibility *string `json:"visibility,omitempty"`
+	Name                     *string `json:"name,omitempty"`
+	Visibility               *string `json:"visibility,omitempty"`
+	AllowsPublicRepositories *bool   `json:"allows_public_repositories,omitempty"`
 }
 
 // SetRepoAccessRunnerGroupRequest represents a request to replace the list of repositories
