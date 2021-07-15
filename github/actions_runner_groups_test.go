@@ -139,8 +139,9 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := context.Background()
 	req := CreateRunnerGroupRequest{
-		Name:       String("octo-runner-group"),
-		Visibility: String("selected"),
+		Name:                     String("octo-runner-group"),
+		Visibility:               String("selected"),
+		AllowsPublicRepositories: Bool(true),
 	}
 	group, _, err := client.Actions.CreateOrganizationRunnerGroup(ctx, "o", req)
 	if err != nil {
@@ -188,8 +189,9 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 
 	ctx := context.Background()
 	req := UpdateRunnerGroupRequest{
-		Name:       String("octo-runner-group"),
-		Visibility: String("selected"),
+		Name:                     String("octo-runner-group"),
+		Visibility:               String("selected"),
+		AllowsPublicRepositories: Bool(true),
 	}
 	group, _, err := client.Actions.UpdateOrganizationRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
@@ -541,17 +543,19 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CreateRunnerGroupRequest{}, "{}")
 
 	u := &CreateRunnerGroupRequest{
-		Name:                  String("n"),
-		Visibility:            String("v"),
-		SelectedRepositoryIDs: []int64{1},
-		Runners:               []int64{1},
+		Name:                     String("n"),
+		Visibility:               String("v"),
+		SelectedRepositoryIDs:    []int64{1},
+		Runners:                  []int64{1},
+		AllowsPublicRepositories: Bool(true),
 	}
 
 	want := `{
 		"name": "n",
 		"visibility": "v",
 		"selected_repository_ids": [1],
-		"runners": [1]
+		"runners": [1],
+		"allows_public_repositories": true
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -561,13 +565,15 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UpdateRunnerGroupRequest{}, "{}")
 
 	u := &UpdateRunnerGroupRequest{
-		Name:       String("n"),
-		Visibility: String("v"),
+		Name:                     String("n"),
+		Visibility:               String("v"),
+		AllowsPublicRepositories: Bool(true),
 	}
 
 	want := `{
 		"name": "n",
-		"visibility": "v"
+		"visibility": "v",
+		"allows_public_repositories": true
 	}`
 
 	testJSONMarshal(t, u, want)

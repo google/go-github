@@ -2916,6 +2916,14 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 	return *c.Role
 }
 
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
+	if c == nil || c.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *c.AllowsPublicRepositories
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetName() string {
 	if c == nil || c.Name == nil {
@@ -15922,6 +15930,14 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *u.Status
+}
+
+// GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
+	if u == nil || u.AllowsPublicRepositories == nil {
+		return false
+	}
+	return *u.AllowsPublicRepositories
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
