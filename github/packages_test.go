@@ -137,6 +137,7 @@ func TestPackageRelease_Marshal(t *testing.T) {
 		CreatedAt:   &Timestamp{referenceTime},
 		PublishedAt: &Timestamp{referenceTime},
 	}
+
 	want := `{
 		"url": "url",
 		"html_url": "hurl",
