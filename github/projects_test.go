@@ -848,3 +848,265 @@ func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestProjectOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectOptions{}, "{}")
+
+	u := &ProjectOptions{
+		Name:                   String("name"),
+		Body:                   String("body"),
+		State:                  String("state"),
+		OrganizationPermission: String("op"),
+		Public:                 Bool(true),
+	}
+
+	want := `{
+		"name": "name",
+		"body": "body",
+		"state": "state",
+		"organization_permission": "op",
+		"public": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectColumn_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectColumn{}, "{}")
+
+	u := &ProjectColumn{
+		ID:         Int64(1),
+		Name:       String("name"),
+		URL:        String("url"),
+		ProjectURL: String("purl"),
+		CardsURL:   String("curl"),
+		CreatedAt:  &Timestamp{referenceTime},
+		UpdatedAt:  &Timestamp{referenceTime},
+		NodeID:     String("onidp"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "name",
+		"url": "url",
+		"project_url": "purl",
+		"cards_url": "curl",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"node_id": "onidp"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectColumnOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectColumnOptions{}, "{}")
+
+	u := &ProjectColumnOptions{
+		Name: "name",
+	}
+
+	want := `{
+		"name": "name"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectColumnMoveOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectColumnMoveOptions{}, "{}")
+
+	u := &ProjectColumnMoveOptions{
+		Position: "pos",
+	}
+
+	want := `{
+		"position": "pos"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectCard_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectCard{}, "{}")
+
+	u := &ProjectCard{
+		URL:        String("url"),
+		ColumnURL:  String("curl"),
+		ContentURL: String("conurl"),
+		ID:         Int64(1),
+		Note:       String("note"),
+		Creator: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		CreatedAt:          &Timestamp{referenceTime},
+		UpdatedAt:          &Timestamp{referenceTime},
+		NodeID:             String("nid"),
+		Archived:           Bool(true),
+		ColumnID:           Int64(1),
+		ProjectID:          Int64(1),
+		ProjectURL:         String("purl"),
+		ColumnName:         String("cn"),
+		PreviousColumnName: String("pcn"),
+	}
+
+	want := `{
+		"url": "url",
+		"column_url": "curl",
+		"content_url": "conurl",
+		"id": 1,
+		"note": "note",
+		"creator": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"node_id": "nid",
+		"archived": true,
+		"column_id": 1,
+		"project_id": 1,
+		"project_url": "purl",
+		"column_name": "cn",
+		"previous_column_name": "pcn"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectCardOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectCardOptions{}, "{}")
+
+	u := &ProjectCardOptions{
+		Note:        "note",
+		ContentID:   1,
+		ContentType: "ct",
+		Archived:    Bool(false),
+	}
+
+	want := `{
+		"note": "note",
+		"content_id": 1,
+		"content_type": "ct",
+		"archived": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectCardMoveOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectCardMoveOptions{}, "{}")
+
+	u := &ProjectCardMoveOptions{
+		Position: "pos",
+		ColumnID: 1,
+	}
+
+	want := `{
+		"position": "pos",
+		"column_id": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectCollaboratorOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectCollaboratorOptions{}, "{}")
+
+	u := &ProjectCollaboratorOptions{
+		Permission: String("per"),
+	}
+
+	want := `{
+		"permission": "per"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestProjectPermissionLevel_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ProjectPermissionLevel{}, "{}")
+
+	u := &ProjectPermissionLevel{
+		Permission: String("per"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"permission": "per",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
