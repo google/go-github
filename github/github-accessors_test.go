@@ -3415,6 +3415,16 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	c.GetAllowsPublicRepositories()
+	c = &CreateRunnerGroupRequest{}
+	c.GetAllowsPublicRepositories()
+	c = nil
+	c.GetAllowsPublicRepositories()
+}
+
 func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	var zeroValue string
 	c := &CreateRunnerGroupRequest{Name: &zeroValue}
@@ -18617,6 +18627,16 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
+}
+
+func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
+	u.GetAllowsPublicRepositories()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetAllowsPublicRepositories()
+	u = nil
+	u.GetAllowsPublicRepositories()
 }
 
 func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
