@@ -1586,7 +1586,7 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 	}
 }
 
-func TestTeams_marshall(t *testing.T) {
+func TestTeams_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Team{}, "{}")
 
 	u := &Team{
