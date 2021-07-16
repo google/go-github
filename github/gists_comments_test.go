@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestGistComments_marshall(t *testing.T) {
+func TestGistComments_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistComment{}, "{}")
 
 	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)

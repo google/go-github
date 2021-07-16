@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestProject_marshall(t *testing.T) {
+func TestProject_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Project{}, "{}")
 
 	u := &Project{
