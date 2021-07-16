@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestRepositoryLicense_marshal(t *testing.T) {
+func TestRepositoryLicense_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryLicense{}, "{}")
 
 	rl := &RepositoryLicense{
@@ -74,7 +74,7 @@ func TestRepositoryLicense_marshal(t *testing.T) {
 	testJSONMarshal(t, rl, want)
 }
 
-func TestLicense_marshal(t *testing.T) {
+func TestLicense_Marshal(t *testing.T) {
 	testJSONMarshal(t, &License{}, "{}")
 
 	l := &License{

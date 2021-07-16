@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganization_marshal(t *testing.T) {
+func TestOrganization_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Organization{}, "{}")
 
 	o := &Organization{

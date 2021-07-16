@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestReviewersRequest_marshal(t *testing.T) {
+func TestReviewersRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ReviewersRequest{}, "{}")
 
 	u := &ReviewersRequest{
@@ -36,7 +36,7 @@ func TestReviewersRequest_marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestReviewers_marshal(t *testing.T) {
+func TestReviewers_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Reviewers{}, "{}")
 
 	u := &Reviewers{
