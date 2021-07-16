@@ -10,20 +10,15 @@ import (
 	"strings"
 )
 
-type MethodCall = string
+type RequestMatch = string
 
 // Users
-var UsersGetEndpoint MethodCall = "github.(*UsersService).Get"
+var RequestMatchUsersGet RequestMatch = "github.(*UsersService).Get"
 
 // Orgs
-var OrgsListEndpoint MethodCall = "github.(*OrganizationsService).List"
+var RequestMatchOrganizationsList RequestMatch = "github.(*OrganizationsService).List"
 
-type RequestMatch struct {
-	MethodCall MethodCall
-	Method     string // GET or POST
-}
-
-func (rm *RequestMatch) Match(r *http.Request) bool {
+func MatchIncomingRequest(r *http.Request, rm RequestMatch) bool {
 	pc := make([]uintptr, 100)
 	n := runtime.Callers(0, pc)
 	if n == 0 {
@@ -42,7 +37,7 @@ func (rm *RequestMatch) Match(r *http.Request) bool {
 			splitFuncName := strings.Split(frame.Function, "/")
 			methodCall := splitFuncName[len(splitFuncName)-1]
 
-			if r.Method == rm.Method && rm.MethodCall == methodCall {
+			if methodCall == rm {
 				return true
 			}
 		}
@@ -53,16 +48,6 @@ func (rm *RequestMatch) Match(r *http.Request) bool {
 	}
 }
 
-var RequestMatchUsersGet = RequestMatch{
-	MethodCall: UsersGetEndpoint,
-	Method:     http.MethodGet,
-}
-
-var RequestMatchOrganizationsList = RequestMatch{
-	MethodCall: OrgsListEndpoint,
-	Method:     http.MethodGet,
-}
-
 type MockRoundTripper struct {
 	RequestMocks map[RequestMatch][][]byte
 }
@@ -70,7 +55,7 @@ type MockRoundTripper struct {
 // RoundTrip implements http.RoundTripper interface
 func (mrt *MockRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 	for requestMatch, respBodies := range mrt.RequestMocks {
-		if requestMatch.Match(r) {
+		if MatchIncomingRequest(r, requestMatch) {
 			if len(respBodies) == 0 {
 				fmt.Printf(
 					"no more available mocked responses for endpoit %s\n",
