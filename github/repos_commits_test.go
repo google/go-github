@@ -662,3 +662,99 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoryComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryComment{}, "{}")
+
+	r := &RepositoryComment{
+		HTMLURL:  String("hurl"),
+		URL:      String("url"),
+		ID:       Int64(1),
+		NodeID:   String("nid"),
+		CommitID: String("cid"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		Reactions: &Reactions{
+			TotalCount: Int(1),
+			PlusOne:    Int(1),
+			MinusOne:   Int(1),
+			Laugh:      Int(1),
+			Confused:   Int(1),
+			Heart:      Int(1),
+			Hooray:     Int(1),
+			Rocket:     Int(1),
+			Eyes:       Int(1),
+			URL:        String("u"),
+		},
+		CreatedAt: &referenceTime,
+		UpdatedAt: &referenceTime,
+		Body:      String("body"),
+		Path:      String("path"),
+		Position:  Int(1),
+	}
+
+	want := `{
+		"html_url": "hurl",
+		"url": "url",
+		"id": 1,
+		"node_id": "nid",
+		"commit_id": "cid",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"reactions": {
+			"total_count": 1,
+			"+1": 1,
+			"-1": 1,
+			"laugh": 1,
+			"confused": 1,
+			"heart": 1,
+			"hooray": 1,
+			"rocket": 1,
+			"eyes": 1,
+			"url": "u"
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"body": "body",
+		"path": "path",
+		"position": 1
+	}`
+
+	testJSONMarshal(t, r, want)
+}
