@@ -629,3 +629,155 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
 	testURLParseError(t, err)
 }
+
+func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullRequestReviewDismissalRequest{}, "{}")
+
+	u := &PullRequestReviewDismissalRequest{
+		Message: String("msg"),
+	}
+
+	want := `{
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestDraftReviewComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DraftReviewComment{}, "{}")
+
+	u := &DraftReviewComment{
+		Path:      String("path"),
+		Position:  Int(1),
+		Body:      String("body"),
+		StartSide: String("ss"),
+		Side:      String("side"),
+		StartLine: Int(1),
+		Line:      Int(1),
+	}
+
+	want := `{
+		"path": "path",
+		"position": 1,
+		"body": "body",
+		"start_side": "ss",
+		"side": "side",
+		"start_line": 1,
+		"line": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPullRequestReviewRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullRequestReviewRequest{}, "{}")
+
+	u := &PullRequestReviewRequest{
+		NodeID:   String("nodeid"),
+		CommitID: String("cid"),
+		Body:     String("body"),
+		Event:    String("event"),
+		Comments: []*DraftReviewComment{
+			{
+				Path:      String("path"),
+				Position:  Int(1),
+				Body:      String("body"),
+				StartSide: String("ss"),
+				Side:      String("side"),
+				StartLine: Int(1),
+				Line:      Int(1),
+			},
+		},
+	}
+
+	want := `{
+		"node_id": "nodeid",
+		"commit_id": "cid",
+		"body": "body",
+		"event": "event",
+		"comments": [
+			{
+				"path": "path",
+				"position": 1,
+				"body": "body",
+				"start_side": "ss",
+				"side": "side",
+				"start_line": 1,
+				"line": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPullRequestReview_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullRequestReview{}, "{}")
+
+	u := &PullRequestReview{
+		ID:     Int64(1),
+		NodeID: String("nid"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		Body:              String("body"),
+		SubmittedAt:       &referenceTime,
+		CommitID:          String("cid"),
+		HTMLURL:           String("hurl"),
+		PullRequestURL:    String("prurl"),
+		State:             String("state"),
+		AuthorAssociation: String("aa"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"body": "body",
+		"submitted_at": ` + referenceTimeStr + `,
+		"commit_id": "cid",
+		"html_url": "hurl",
+		"pull_request_url": "prurl",
+		"state": "state",
+		"author_association": "aa"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
