@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/crypto/openpgp"
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {
@@ -663,97 +664,305 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 	})
 }
 
-func TestRepositoryComment_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RepositoryComment{}, "{}")
+func TestBranchCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &BranchCommit{}, "{}")
 
-	r := &RepositoryComment{
-		HTMLURL:  String("hurl"),
-		URL:      String("url"),
-		ID:       Int64(1),
-		NodeID:   String("nid"),
-		CommitID: String("cid"),
-		User: &User{
-			Login:           String("l"),
-			ID:              Int64(1),
-			URL:             String("u"),
-			AvatarURL:       String("a"),
-			GravatarID:      String("g"),
-			Name:            String("n"),
-			Company:         String("c"),
-			Blog:            String("b"),
-			Location:        String("l"),
-			Email:           String("e"),
-			Hireable:        Bool(true),
-			Bio:             String("b"),
-			TwitterUsername: String("t"),
-			PublicRepos:     Int(1),
-			Followers:       Int(1),
-			Following:       Int(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
+	r := &BranchCommit{
+		Name: String("n"),
+		Commit: &Commit{
+			SHA: String("s"),
+			Author: &CommitAuthor{
+				Date:  &referenceTime,
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("u"),
+			},
+			Committer: &CommitAuthor{
+				Date:  &referenceTime,
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("u"),
+			},
+			Message: String("m"),
+			Tree: &Tree{
+				SHA: String("s"),
+				Entries: []*TreeEntry{{
+					SHA:     String("s"),
+					Path:    String("p"),
+					Mode:    String("m"),
+					Type:    String("t"),
+					Size:    Int(1),
+					Content: String("c"),
+					URL:     String("u"),
+				}},
+				Truncated: Bool(false),
+			},
+			Parents: nil,
+			Stats: &CommitStats{
+				Additions: Int(1),
+				Deletions: Int(1),
+				Total:     Int(1),
+			},
+			HTMLURL: String("h"),
+			URL:     String("u"),
+			Verification: &SignatureVerification{
+				Verified:  Bool(false),
+				Reason:    String("r"),
+				Signature: String("s"),
+				Payload:   String("p"),
+			},
+			NodeID:       String("n"),
+			CommentCount: Int(1),
+			SigningKey:   &openpgp.Entity{},
 		},
-		Reactions: &Reactions{
-			TotalCount: Int(1),
-			PlusOne:    Int(1),
-			MinusOne:   Int(1),
-			Laugh:      Int(1),
-			Confused:   Int(1),
-			Heart:      Int(1),
-			Hooray:     Int(1),
-			Rocket:     Int(1),
-			Eyes:       Int(1),
-			URL:        String("u"),
-		},
-		CreatedAt: &referenceTime,
-		UpdatedAt: &referenceTime,
-		Body:      String("body"),
-		Path:      String("path"),
-		Position:  Int(1),
+		Protected: Bool(false),
 	}
 
 	want := `{
+		"name": "n",
+		"commit": {
+			"sha": "s",
+			"author": {
+				"date": ` + referenceTimeStr + `,
+				"name": "n",
+				"email": "e",
+				"username": "u"
+			},
+			"committer": {
+				"date": ` + referenceTimeStr + `,
+				"name": "n",
+				"email": "e",
+				"username": "u"
+			},
+			"message": "m",
+			"tree": {
+				"sha": "s",
+				"tree": [
+					{
+						"sha": "s",
+						"path": "p",
+						"mode": "m",
+						"type": "t",
+						"size": 1,
+						"content": "c",
+						"url": "u"
+					}
+				],
+				"truncated": false
+			},
+			"stats": {
+				"additions": 1,
+				"deletions": 1,
+				"total": 1
+			},
+			"html_url": "h",
+			"url": "u",
+			"verification": {
+				"verified": false,
+				"reason": "r",
+				"signature": "s",
+				"payload": "p"
+			},
+			"node_id": "n",
+			"comment_count": 1
+		},
+		"protected": false
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestCommitsComparison_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitsComparison{}, "{}")
+
+	r := &CommitsComparison{
+		BaseCommit:      &RepositoryCommit{NodeID: String("nid")},
+		MergeBaseCommit: &RepositoryCommit{NodeID: String("nid")},
+		Status:          String("status"),
+		AheadBy:         Int(1),
+		BehindBy:        Int(1),
+		TotalCommits:    Int(1),
+		Commits: []*RepositoryCommit{
+			{
+				NodeID: String("nid"),
+			},
+		},
+		Files: []*CommitFile{
+			{
+				SHA: String("sha"),
+			},
+		},
+		HTMLURL:      String("hurl"),
+		PermalinkURL: String("purl"),
+		DiffURL:      String("durl"),
+		PatchURL:     String("purl"),
+		URL:          String("url"),
+	}
+
+	want := `{
+		"base_commit": {
+			"node_id": "nid"
+		},
+		"merge_base_commit": {
+			"node_id": "nid"
+		},
+		"status": "status",
+		"ahead_by": 1,
+		"behind_by": 1,
+		"total_commits": 1,
+		"commits": [
+			{
+				"node_id": "nid"
+			}
+		],
+		"files": [
+			{
+				"sha": "sha"
+			}
+		],
+		"html_url": "hurl",
+		"permalink_url": "purl",
+		"diff_url": "durl",
+		"patch_url": "purl",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestCommitFile_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitFile{}, "{}")
+
+	r := &CommitFile{
+		SHA:              String("sha"),
+		Filename:         String("fn"),
+		Additions:        Int(1),
+		Deletions:        Int(1),
+		Changes:          Int(1),
+		Status:           String("status"),
+		Patch:            String("patch"),
+		BlobURL:          String("burl"),
+		RawURL:           String("rurl"),
+		ContentsURL:      String("curl"),
+		PreviousFilename: String("pf"),
+	}
+
+	want := `{
+		"sha": "sha",
+		"filename": "fn",
+		"additions": 1,
+		"deletions": 1,
+		"changes": 1,
+		"status": "status",
+		"patch": "patch",
+		"blob_url": "burl",
+		"raw_url": "rurl",
+		"contents_url": "curl",
+		"previous_filename": "pf"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestCommitStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitStats{}, "{}")
+
+	r := &CommitStats{
+		Additions: Int(1),
+		Deletions: Int(1),
+		Total:     Int(1),
+	}
+
+	want := `{
+		"additions": 1,
+		"deletions": 1,
+		"total": 1
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestRepositoryCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryCommit{}, "{}")
+
+	r := &RepositoryCommit{
+		NodeID: String("nid"),
+		SHA:    String("sha"),
+		Commit: &Commit{
+			Message: String("m"),
+		},
+		Author: &User{
+			Login: String("l"),
+		},
+		Committer: &User{
+			Login: String("l"),
+		},
+		Parents: []*Commit{
+			{
+				SHA: String("s"),
+			},
+		},
+		HTMLURL:     String("hurl"),
+		URL:         String("url"),
+		CommentsURL: String("curl"),
+		Stats: &CommitStats{
+			Additions: Int(104),
+			Deletions: Int(4),
+			Total:     Int(108),
+		},
+		Files: []*CommitFile{
+			{
+				Filename:    String("f"),
+				Additions:   Int(10),
+				Deletions:   Int(2),
+				Changes:     Int(12),
+				Status:      String("s"),
+				Patch:       String("p"),
+				BlobURL:     String("b"),
+				RawURL:      String("r"),
+				ContentsURL: String("c"),
+			},
+		},
+	}
+
+	want := `{
+		"node_id": "nid",
+		"sha": "sha",
+		"commit": {
+			"message": "m"
+		},
+		"author": {
+			"login": "l"
+		},
+		"committer": {
+			"login": "l"
+		},
+		"parents": [
+			{
+				"sha": "s"
+			}
+		],
 		"html_url": "hurl",
 		"url": "url",
-		"id": 1,
-		"node_id": "nid",
-		"commit_id": "cid",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
+		"comments_url": "curl",
+		"stats": {
+			"additions": 104,
+			"deletions": 4,
+			"total": 108
 		},
-		"reactions": {
-			"total_count": 1,
-			"+1": 1,
-			"-1": 1,
-			"laugh": 1,
-			"confused": 1,
-			"heart": 1,
-			"hooray": 1,
-			"rocket": 1,
-			"eyes": 1,
-			"url": "u"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"body": "body",
-		"path": "path",
-		"position": 1
+		"files": [
+			{
+				"filename": "f",
+				"additions": 10,
+				"deletions": 2,
+				"changes": 12,
+				"status": "s",
+				"patch": "p",
+				"blob_url": "b",
+				"raw_url": "r",
+				"contents_url": "c"
+			}
+		]
 	}`
 
 	testJSONMarshal(t, r, want)
