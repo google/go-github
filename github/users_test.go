@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestUser_marshall(t *testing.T) {
+func TestUser_Marshal(t *testing.T) {
 	testJSONMarshal(t, &User{}, "{}")
 
 	u := &User{
