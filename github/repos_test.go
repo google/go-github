@@ -8,8 +8,10 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -886,7 +888,7 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
+	branch, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false)
 	if err != nil {
 		t.Errorf("Repositories.GetBranch returned error: %v", err)
 	}
@@ -908,16 +910,74 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 
 	const methodName = "GetBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n")
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", false)
 		return err
 	})
+}
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b")
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
+func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t *testing.T) {
+	client, mux, serverURL, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		redirectURL, _ := url.Parse(serverURL + baseURLPath + "/repos/o/r/branches/br")
+		http.Redirect(w, r, redirectURL.String(), http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/repos/o/r/branches/br", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":"s","commit":{"message":"m"}}, "protected":true}`)
+	})
+	ctx := context.Background()
+	branch, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	if err != nil {
+		t.Errorf("Repositories.GetBranch returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusOK)
+	}
+
+	want := &Branch{
+		Name: String("n"),
+		Commit: &RepositoryCommit{
+			SHA: String("s"),
+			Commit: &Commit{
+				Message: String("m"),
+			},
+		},
+		Protected: Bool(true),
+	}
+	if !cmp.Equal(branch, want) {
+		t.Errorf("Repositories.GetBranch returned %+v, want %+v", branch, want)
+	}
+}
+
+func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Error(w, "branch not found", http.StatusNotFound)
+	})
+	ctx := context.Background()
+	_, resp, err := client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+	if err == nil {
+		t.Error("Repositories.GetBranch returned error: nil")
+	}
+	if resp.StatusCode != http.StatusNotFound {
+		t.Errorf("Repositories.GetBranch returned status: %d, want %d", resp.StatusCode, http.StatusNotFound)
+	}
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get branch")
+	})
+
+	const methodName = "GetBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+		return err
 	})
 }
 
@@ -959,6 +1019,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					"restrictions":{
 						"users":[{"id":1,"login":"u"}],
 						"teams":[{"id":2,"slug":"t"}]
+					},
+					"required_conversation_resolution": {
+						"enabled": true
 					}
 				}`)
 	})
@@ -998,6 +1061,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
 			},
+		},
+		RequiredConversationResolution: &RequiredConversationResolution{
+			Enabled: true,
 		},
 	}
 	if !cmp.Equal(protection, want) {

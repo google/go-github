@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -294,6 +295,15 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, true)
 		return err
 	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to download artifact")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
+		return err
+	})
 }
 
 func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
@@ -418,4 +428,68 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.DeleteArtifact return status %d, want %d", got, want)
 	}
+}
+
+func TestArtifact_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Artifact{}, "{}")
+
+	u := &Artifact{
+		ID:                 Int64(1),
+		NodeID:             String("nid"),
+		Name:               String("n"),
+		SizeInBytes:        Int64(1),
+		ArchiveDownloadURL: String("a"),
+		Expired:            Bool(false),
+		CreatedAt:          &Timestamp{referenceTime},
+		ExpiresAt:          &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"name": "n",
+		"size_in_bytes": 1,
+		"archive_download_url": "a",
+		"expired": false,
+		"created_at": ` + referenceTimeStr + `,
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestArtifactList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ArtifactList{}, "{}")
+
+	u := &ArtifactList{
+		TotalCount: Int64(1),
+		Artifacts: []*Artifact{
+			{
+				ID:                 Int64(1),
+				NodeID:             String("nid"),
+				Name:               String("n"),
+				SizeInBytes:        Int64(1),
+				ArchiveDownloadURL: String("a"),
+				Expired:            Bool(false),
+				CreatedAt:          &Timestamp{referenceTime},
+				ExpiresAt:          &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"artifacts": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"size_in_bytes": 1,
+			"archive_download_url": "a",
+			"expired": false,
+			"created_at": ` + referenceTimeStr + `,
+			"expires_at": ` + referenceTimeStr + `
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
 }

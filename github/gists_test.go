@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestGist_marshall(t *testing.T) {
+func TestGist_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Gist{}, "{}")
 
 	createdAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
@@ -105,7 +105,7 @@ func TestGist_marshall(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestGistCommit_marshall(t *testing.T) {
+func TestGistCommit_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistCommit{}, "{}")
 
 	u := &GistCommit{
@@ -169,7 +169,7 @@ func TestGistCommit_marshall(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestGistFork_marshall(t *testing.T) {
+func TestGistFork_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistFork{}, "{}")
 
 	u := &GistFork{
@@ -1016,4 +1016,28 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestGistFile_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GistFile{}, "{}")
+
+	u := &GistFile{
+		Size:     Int(1),
+		Filename: String("fn"),
+		Language: String("lan"),
+		Type:     String("type"),
+		RawURL:   String("rurl"),
+		Content:  String("con"),
+	}
+
+	want := `{
+		"size": 1,
+		"filename": "fn",
+		"language": "lan",
+		"type": "type",
+		"raw_url": "rurl",
+		"content": "con"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

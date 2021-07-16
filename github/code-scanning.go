@@ -67,7 +67,7 @@ type Alert struct {
 	RuleID          *string    `json:"rule_id,omitempty"`
 	RuleSeverity    *string    `json:"rule_severity,omitempty"`
 	RuleDescription *string    `json:"rule_description,omitempty"`
-	Rule		*Rule	   `json:"rule,omitempty"`
+	Rule		        *Rule	     `json:"rule,omitempty"`
 	Tool            *Tool      `json:"tool,omitempty"`
 	CreatedAt       *Timestamp `json:"created_at,omitempty"`
 	Open            *bool      `json:"open,omitempty"`

@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/crypto/openpgp"
 )
 
 func TestRepositoryContent_GetContent(t *testing.T) {
@@ -690,6 +692,15 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		_, _, err = client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, true)
 		return err
 	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get archive link")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+		return err
+	})
 }
 
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRedirects(t *testing.T) {
@@ -751,4 +762,216 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
+}
+
+func TestRepositoryContent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryContent{}, "{}")
+
+	r := &RepositoryContent{
+		Type:        String("type"),
+		Target:      String("target"),
+		Encoding:    String("encoding"),
+		Size:        Int(1),
+		Name:        String("name"),
+		Path:        String("path"),
+		Content:     String("content"),
+		SHA:         String("sha"),
+		URL:         String("url"),
+		GitURL:      String("gurl"),
+		HTMLURL:     String("hurl"),
+		DownloadURL: String("durl"),
+	}
+
+	want := `{
+		"type": "type",
+		"target": "target",
+		"encoding": "encoding",
+		"size": 1,
+		"name": "name",
+		"path": "path",
+		"content": "content",
+		"sha": "sha",
+		"url": "url",
+		"git_url": "gurl",
+		"html_url": "hurl",
+		"download_url": "durl"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestRepositoryContentResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryContentResponse{}, "{}")
+
+	r := &RepositoryContentResponse{
+		Content: &RepositoryContent{
+			Type:        String("type"),
+			Target:      String("target"),
+			Encoding:    String("encoding"),
+			Size:        Int(1),
+			Name:        String("name"),
+			Path:        String("path"),
+			Content:     String("content"),
+			SHA:         String("sha"),
+			URL:         String("url"),
+			GitURL:      String("gurl"),
+			HTMLURL:     String("hurl"),
+			DownloadURL: String("durl"),
+		},
+		Commit: Commit{
+			SHA: String("s"),
+			Author: &CommitAuthor{
+				Date:  &referenceTime,
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("u"),
+			},
+			Committer: &CommitAuthor{
+				Date:  &referenceTime,
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("u"),
+			},
+			Message: String("m"),
+			Tree: &Tree{
+				SHA: String("s"),
+				Entries: []*TreeEntry{{
+					SHA:     String("s"),
+					Path:    String("p"),
+					Mode:    String("m"),
+					Type:    String("t"),
+					Size:    Int(1),
+					Content: String("c"),
+					URL:     String("u"),
+				}},
+				Truncated: Bool(false),
+			},
+			Parents: nil,
+			Stats: &CommitStats{
+				Additions: Int(1),
+				Deletions: Int(1),
+				Total:     Int(1),
+			},
+			HTMLURL: String("h"),
+			URL:     String("u"),
+			Verification: &SignatureVerification{
+				Verified:  Bool(false),
+				Reason:    String("r"),
+				Signature: String("s"),
+				Payload:   String("p"),
+			},
+			NodeID:       String("n"),
+			CommentCount: Int(1),
+			SigningKey:   &openpgp.Entity{},
+		},
+	}
+
+	want := `{
+		"content": {
+			"type": "type",
+			"target": "target",
+			"encoding": "encoding",
+			"size": 1,
+			"name": "name",
+			"path": "path",
+			"content": "content",
+			"sha": "sha",
+			"url": "url",
+			"git_url": "gurl",
+			"html_url": "hurl",
+			"download_url": "durl"
+		},
+		"commit": {
+			"sha": "s",
+			"author": {
+				"date": ` + referenceTimeStr + `,
+				"name": "n",
+				"email": "e",
+				"username": "u"
+			},
+			"committer": {
+				"date": ` + referenceTimeStr + `,
+				"name": "n",
+				"email": "e",
+				"username": "u"
+			},
+			"message": "m",
+			"tree": {
+				"sha": "s",
+				"tree": [
+					{
+						"sha": "s",
+						"path": "p",
+						"mode": "m",
+						"type": "t",
+						"size": 1,
+						"content": "c",
+						"url": "u"
+					}
+				],
+				"truncated": false
+			},
+			"stats": {
+				"additions": 1,
+				"deletions": 1,
+				"total": 1
+			},
+			"html_url": "h",
+			"url": "u",
+			"verification": {
+				"verified": false,
+				"reason": "r",
+				"signature": "s",
+				"payload": "p"
+			},
+			"node_id": "n",
+			"comment_count": 1
+		}
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryContentFileOptions{}, "{}")
+
+	r := &RepositoryContentFileOptions{
+		Message: String("type"),
+		Content: []byte{1},
+		SHA:     String("type"),
+		Branch:  String("type"),
+		Author: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Committer: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+	}
+
+	want := `{
+		"message": "type",
+		"content": "AQ==",
+		"sha": "type",
+		"branch": "type",
+		"author": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"committer": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		}
+	}`
+
+	testJSONMarshal(t, r, want)
 }

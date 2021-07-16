@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganization_marshal(t *testing.T) {
+func TestOrganization_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Organization{}, "{}")
 
 	o := &Organization{
@@ -400,4 +400,46 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestOrganizationInstallations_Marshal(t *testing.T) {
+	testJSONMarshal(t, &OrganizationInstallations{}, "{}")
+
+	o := &OrganizationInstallations{
+		TotalCount:    Int(1),
+		Installations: []*Installation{{ID: Int64(1)}},
+	}
+	want := `{
+		"total_count": 1,
+		"installations": [
+			{
+				"id": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, o, want)
+}
+
+func TestPlan_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Plan{}, "{}")
+
+	o := &Plan{
+		Name:          String("name"),
+		Space:         Int(1),
+		Collaborators: Int(1),
+		PrivateRepos:  Int(1),
+		FilledSeats:   Int(1),
+		Seats:         Int(1),
+	}
+	want := `{
+		"name": "name",
+		"space": 1,
+		"collaborators": 1,
+		"private_repos": 1,
+		"filled_seats": 1,
+		"seats": 1
+	}`
+
+	testJSONMarshal(t, o, want)
 }

@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -44,9 +45,11 @@ type Repository struct {
 	ForksCount          *int            `json:"forks_count,omitempty"`
 	NetworkCount        *int            `json:"network_count,omitempty"`
 	OpenIssuesCount     *int            `json:"open_issues_count,omitempty"`
+	OpenIssues          *int            `json:"open_issues,omitempty"` // Deprecated: Replaced by OpenIssuesCount. For backward compatibility OpenIssues is still populated.
 	StargazersCount     *int            `json:"stargazers_count,omitempty"`
 	SubscribersCount    *int            `json:"subscribers_count,omitempty"`
-	WatchersCount       *int            `json:"watchers_count,omitempty"`
+	WatchersCount       *int            `json:"watchers_count,omitempty"` // Deprecated: Replaced by StargazersCount. For backward compatibility WatchersCount is still populated.
+	Watchers            *int            `json:"watchers,omitempty"`       // Deprecated: Replaced by StargazersCount. For backward compatibility Watchers is still populated.
 	Size                *int            `json:"size,omitempty"`
 	AutoInit            *bool           `json:"auto_init,omitempty"`
 	Parent              *Repository     `json:"parent,omitempty"`
@@ -751,13 +754,14 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks       *RequiredStatusChecks          `json:"required_status_checks"`
-	RequiredPullRequestReviews *PullRequestReviewsEnforcement `json:"required_pull_request_reviews"`
-	EnforceAdmins              *AdminEnforcement              `json:"enforce_admins"`
-	Restrictions               *BranchRestrictions            `json:"restrictions"`
-	RequireLinearHistory       *RequireLinearHistory          `json:"required_linear_history"`
-	AllowForcePushes           *AllowForcePushes              `json:"allow_force_pushes"`
-	AllowDeletions             *AllowDeletions                `json:"allow_deletions"`
+	RequiredStatusChecks           *RequiredStatusChecks           `json:"required_status_checks"`
+	RequiredPullRequestReviews     *PullRequestReviewsEnforcement  `json:"required_pull_request_reviews"`
+	EnforceAdmins                  *AdminEnforcement               `json:"enforce_admins"`
+	Restrictions                   *BranchRestrictions             `json:"restrictions"`
+	RequireLinearHistory           *RequireLinearHistory           `json:"required_linear_history"`
+	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
+	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
+	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
@@ -772,6 +776,9 @@ type ProtectionRequest struct {
 	AllowForcePushes *bool `json:"allow_force_pushes,omitempty"`
 	// Allows deletion of the protected branch by anyone with write access to the repository.
 	AllowDeletions *bool `json:"allow_deletions,omitempty"`
+	// RequiredConversationResolution, if set to true, requires all comments
+	// on the pull request to be resolved before it can be merged to a protected branch.
+	RequiredConversationResolution *bool `json:"required_conversation_resolution,omitempty"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
@@ -846,6 +853,11 @@ type AllowDeletions struct {
 
 // AllowForcePushes represents the configuration to accept forced pushes on protected branches.
 type AllowForcePushes struct {
+	Enabled bool `json:"enabled"`
+}
+
+// RequiredConversationResolution, if enabled, requires all comments on the pull request to be resolved before it can be merged to a protected branch.
+type RequiredConversationResolution struct {
 	Enabled bool `json:"enabled"`
 }
 
@@ -933,20 +945,49 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 // GetBranch gets the specified branch for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-branch
-func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error) {
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
-	req, err := s.client.NewRequest("GET", u, nil)
+
+	resp, err := s.getBranchFromURL(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
-	b := new(Branch)
-	resp, err := s.client.Do(ctx, req, b)
-	if err != nil {
-		return nil, resp, err
+	if resp.StatusCode != http.StatusOK {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 
-	return b, resp, nil
+	b := new(Branch)
+	err = json.NewDecoder(resp.Body).Decode(b)
+	return b, newResponse(resp), err
+}
+
+func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	req = withContext(ctx, req)
+	if s.client.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = s.client.client.Transport.RoundTrip(req)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	// If redirect response is returned, follow it
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
+		u = resp.Header.Get("Location")
+		resp, err = s.getBranchFromURL(ctx, u, false)
+	}
+	return resp, err
 }
 
 // GetBranchProtection gets the protection of a given branch.

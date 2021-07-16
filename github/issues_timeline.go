@@ -81,6 +81,9 @@ type Timeline struct {
 	//     reopened
 	//       The issue was reopened by the actor.
 	//
+	//     reviewed
+	//       The pull request was reviewed.
+	//
 	//     subscribed
 	//       The actor subscribed to receive notifications for an issue.
 	//
@@ -118,6 +121,10 @@ type Timeline struct {
 	// Only provided for 'renamed' events.
 	Rename      *Rename      `json:"rename,omitempty"`
 	ProjectCard *ProjectCard `json:"project_card,omitempty"`
+	// The state of a submitted review. Can be one of: 'commented',
+	// 'changes_requested' or 'approved'.
+	// Only provided for 'reviewed' events.
+	State *string `json:"state,omitempty"`
 }
 
 // Source represents a reference's source.

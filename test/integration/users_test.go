@@ -14,7 +14,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v37/github"
 )
 
 func TestUsers_Get(t *testing.T) {

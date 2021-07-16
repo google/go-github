@@ -401,6 +401,89 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	})
 }
 
+func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"selected_repository_ids":[123,1234]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	if err != nil {
+		t.Errorf("Actions.SetEnabledReposInOrg returned error: %v", err)
+	}
+
+	const methodName = "SetEnabledReposInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	})
+}
+
+func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
+	}
+
+	const methodName = "AddEnabledReposInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+	})
+}
+
+func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.RemoveEnabledRepoInOrg returned error: %v", err)
+	}
+
+	const methodName = "RemoveEnabledRepoInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveEnabledRepoInOrg(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	})
+}
+
 func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -499,4 +582,188 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	})
+}
+
+func TestRunnerApplicationDownload_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
+
+	u := &RunnerApplicationDownload{
+		OS:                String("o"),
+		Architecture:      String("a"),
+		DownloadURL:       String("d"),
+		Filename:          String("f"),
+		TempDownloadToken: String("t"),
+		SHA256Checksum:    String("s"),
+	}
+
+	want := `{
+		"os": "o",
+		"architecture": "a",
+		"download_url": "d",
+		"filename": "f",
+		"temp_download_token": "t",
+		"sha256_checksum": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+
+	u := &ActionsEnabledOnOrgRepos{
+		TotalCount: 1,
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRegistrationToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RegistrationToken{}, "{}")
+
+	u := &RegistrationToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunnerLabels_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerLabels{}, "{}")
+
+	u := &RunnerLabels{
+		ID:   Int64(1),
+		Name: String("n"),
+		Type: String("t"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunner_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runner{}, "{}")
+
+	u := &Runner{
+		ID:     Int64(1),
+		Name:   String("n"),
+		OS:     String("o"),
+		Status: String("s"),
+		Busy:   Bool(false),
+		Labels: []*RunnerLabels{
+			{
+				ID:   Int64(1),
+				Name: String("n"),
+				Type: String("t"),
+			},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunners_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runners{}, "{}")
+
+	u := &Runners{
+		TotalCount: 1,
+		Runners: []*Runner{
+			{
+				ID:     Int64(1),
+				Name:   String("n"),
+				OS:     String("o"),
+				Status: String("s"),
+				Busy:   Bool(false),
+				Labels: []*RunnerLabels{
+					{
+						ID:   Int64(1),
+						Name: String("n"),
+						Type: String("t"),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"runners": [
+			{
+				"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRemoveToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RemoveToken{}, "{}")
+
+	u := &RemoveToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
 }

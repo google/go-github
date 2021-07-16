@@ -264,6 +264,65 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 	return repos, resp, nil
 }
 
+// SetEnabledReposInOrg replaces the list of selected repositories that are enabled for GitHub Actions in an organization..
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-selected-repositories-enabled-for-github-actions-in-an-organization
+func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
+
+	req, err := s.client.NewRequest("PUT", u, struct {
+		IDs []int64 `json:"selected_repository_ids"`
+	}{IDs: repositoryIDs})
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// AddEnabledReposInOrg adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#enable-a-selected-repository-for-github-actions-in-an-organization
+func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// RemoveEnabledRepoInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#disable-a-selected-repository-for-github-actions-in-an-organization
+func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
 // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-self-hosted-runner-for-an-organization

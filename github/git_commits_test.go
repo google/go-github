@@ -583,3 +583,89 @@ BqTKXNkzAvV+CKOyaUILSBBWdef+cxVrDCJuuC3894x3G1FjJycOy0m9PArvGtSG
 g7/0Bp9oLXwiHzFoUMDvx+WlPnPHQNcufmQXUNdZvg+Ad4/unEU81EGDBDz3Eg==
 =VFSn
 -----END PGP PRIVATE KEY BLOCK-----`
+
+func TestSignatureVerification_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SignatureVerification{}, "{}")
+
+	u := &SignatureVerification{
+		Verified:  Bool(true),
+		Reason:    String("reason"),
+		Signature: String("sign"),
+		Payload:   String("payload"),
+	}
+
+	want := `{
+		"verified": true,
+		"reason": "reason",
+		"signature": "sign",
+		"payload": "payload"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCommitAuthor_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitAuthor{}, "{}")
+
+	u := &CommitAuthor{
+		Date:  &referenceTime,
+		Name:  String("name"),
+		Email: String("email"),
+		Login: String("login"),
+	}
+
+	want := `{
+		"date": ` + referenceTimeStr + `,
+		"name": "name",
+		"email": "email",
+		"username": "login"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createCommit{}, "{}")
+
+	u := &createCommit{
+		Author: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Committer: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Message:   String("message"),
+		Tree:      String("tree"),
+		Parents:   []string{"p"},
+		Signature: String("sign"),
+	}
+
+	want := `{
+		"author": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"committer": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"message": "message",
+		"tree": "tree",
+		"parents": [
+			"p"
+		],
+		"signature": "sign"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

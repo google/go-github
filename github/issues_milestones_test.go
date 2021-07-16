@@ -249,3 +249,85 @@ func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
 	_, err := client.Issues.DeleteMilestone(ctx, "%", "r", 1)
 	testURLParseError(t, err)
 }
+
+func TestMilestone_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Milestone{}, "{}")
+
+	u := &Milestone{
+		URL:         String("url"),
+		HTMLURL:     String("hurl"),
+		LabelsURL:   String("lurl"),
+		ID:          Int64(1),
+		Number:      Int(1),
+		State:       String("state"),
+		Title:       String("title"),
+		Description: String("desc"),
+		Creator: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("tu"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		OpenIssues:   Int(1),
+		ClosedIssues: Int(1),
+		CreatedAt:    &referenceTime,
+		UpdatedAt:    &referenceTime,
+		ClosedAt:     &referenceTime,
+		DueOn:        &referenceTime,
+		NodeID:       String("nid"),
+	}
+
+	want := `{
+		"url": "url",
+		"html_url": "hurl",
+		"labels_url": "lurl",
+		"id": 1,
+		"number": 1,
+		"state": "state",
+		"title": "title",
+		"description": "desc",
+		"creator": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "tu",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"open_issues": 1,
+		"closed_issues": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"closed_at": ` + referenceTimeStr + `,
+		"due_on": ` + referenceTimeStr + `,
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
