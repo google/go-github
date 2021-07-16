@@ -1,3 +1,8 @@
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package mock
 
 import (
@@ -11,12 +16,6 @@ import (
 )
 
 type RequestMatch = string
-
-// Users
-var RequestMatchUsersGet RequestMatch = "github.(*UsersService).Get"
-
-// Orgs
-var RequestMatchOrganizationsList RequestMatch = "github.(*OrganizationsService).List"
 
 func MatchIncomingRequest(r *http.Request, rm RequestMatch) bool {
 	pc := make([]uintptr, 100)
