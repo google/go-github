@@ -291,7 +291,7 @@ func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 				"html_url": "hurl"
 			}
 		},
-		"updated_at": "2006-01-02T15:04:05Z"
+		"updated_at": ` + referenceTimeStr + `
 	}`
 
 	testJSONMarshal(t, r, want)
