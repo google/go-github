@@ -7964,12 +7964,12 @@ func (m *MostRecentInstance) GetAnalysisKey() string {
 	return *m.AnalysisKey
 }
 
-// GetCommitSha returns the CommitSha field if it's non-nil, zero value otherwise.
-func (m *MostRecentInstance) GetCommitSha() string {
-	if m == nil || m.CommitSha == nil {
+// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+func (m *MostRecentInstance) GetCommitSHA() string {
+	if m == nil || m.CommitSHA == nil {
 		return ""
 	}
-	return *m.CommitSha
+	return *m.CommitSHA
 }
 
 // GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.

@@ -45,7 +45,7 @@ type MostRecentInstance struct {
 	AnalysisKey     *string   `json:"analysis_key,omitempty"`
 	Environment     *string   `json:"environment,omitempty"`
 	State           *string   `json:"state,omitempty"`
-	CommitSha       *string   `json:"commit_sha,omitempty"`
+	CommitSHA       *string   `json:"commit_sha,omitempty"`
 	Message         *Message  `json:"message,omitempty"`
 	Location        *Location `json:"location,omitempty"`
 	Classifications []string  `json:"classifications,omitempty"`

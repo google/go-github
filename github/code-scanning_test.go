@@ -161,6 +161,32 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"guid": null,
 					"version": "1.4.0"
 				},
+				"rule": {
+					"id": "js/useless-expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "js/useless-expression"
+				  },
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
+					"environment": "{}",
+					"state": "open",
+					"commit_sha": "39406e42cb832f683daa691dd652a8dc36ee8930",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				}  
 				"created_at":"2019-01-02T15:04:05Z",
 				"open":true,
 				"closed_by":null,
@@ -181,12 +207,39 @@ func TestActionsService_GetAlert(t *testing.T) {
 		RuleSeverity:    String("warning"),
 		RuleDescription: String("Expression has no effect"),
 		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
-		CreatedAt:       &date,
-		Open:            Bool(true),
-		ClosedBy:        nil,
-		ClosedAt:        nil,
-		URL:             String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-		HTMLURL:         String("https://github.com/o/r/security/code-scanning/88"),
+		Rule: &Rule{
+			ID:              String("js/useless-expression"),
+			Severity:        String("warning"),
+			Description:     String("Expression has no effect"),
+			Name:            String("js/useless-expression"),
+			FullDescription: String("Expression has no effect"),
+			Tags:            []string{"dummy"},
+			Help:            String("Expression has no effect"),
+		},
+		CreatedAt: &date,
+		Open:      Bool(true),
+		ClosedBy:  nil,
+		ClosedAt:  nil,
+		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+		MostRecentInstance: &MostRecentInstance{
+			Ref:         String("refs/heads/main"),
+			AnalysisKey: String(".github/workflows/codeql-analysis.yml:CodeQL-Build"),
+			Environment: String("{}"),
+			State:       String("open"),
+			CommitSHA:   String("3f8a64020bf6aeff2f5cc8be7776fee7996947fd"),
+			Message: &Message{
+				Text: String("This path depends on a user-provided value."),
+			},
+			Location: &Location{
+				Path:        String("spec-main/api-session-spec.ts"),
+				StartLine:   Int(917),
+				EndLine:     Int(917),
+				StartColumn: Int(7),
+				EndColumn:   Int(18),
+			},
+			Classifications: []string{"test"},
+		},
 	}
 	if !cmp.Equal(alert, want) {
 		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)

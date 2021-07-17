@@ -9329,14 +9329,14 @@ func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	m.GetAnalysisKey()
 }
 
-func TestMostRecentInstance_GetCommitSha(tt *testing.T) {
+func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
 	var zeroValue string
-	m := &MostRecentInstance{CommitSha: &zeroValue}
-	m.GetCommitSha()
+	m := &MostRecentInstance{CommitSHA: &zeroValue}
+	m.GetCommitSHA()
 	m = &MostRecentInstance{}
-	m.GetCommitSha()
+	m.GetCommitSHA()
 	m = nil
-	m.GetCommitSha()
+	m.GetCommitSHA()
 }
 
 func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
