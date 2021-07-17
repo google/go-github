@@ -7964,14 +7964,6 @@ func (m *MostRecentInstance) GetAnalysisKey() string {
 	return *m.AnalysisKey
 }
 
-// GetClassifications returns the Classifications field if it's non-nil, zero value otherwise.
-func (m *MostRecentInstance) GetClassifications() []string {
-	if m == nil || m.Classifications == nil {
-		return nil
-	}
-	return *m.Classifications
-}
-
 // GetCommitSha returns the CommitSha field if it's non-nil, zero value otherwise.
 func (m *MostRecentInstance) GetCommitSha() string {
 	if m == nil || m.CommitSha == nil {
@@ -14338,14 +14330,6 @@ func (r *Rule) GetSeverity() string {
 		return ""
 	}
 	return *r.Severity
-}
-
-// GetTags returns the Tags field if it's non-nil, zero value otherwise.
-func (r *Rule) GetTags() []string {
-	if r == nil || r.Tags == nil {
-		return nil
-	}
-	return *r.Tags
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.

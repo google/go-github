@@ -9329,16 +9329,6 @@ func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	m.GetAnalysisKey()
 }
 
-func TestMostRecentInstance_GetClassifications(tt *testing.T) {
-	var zeroValue []string
-	m := &MostRecentInstance{Classifications: &zeroValue}
-	m.GetClassifications()
-	m = &MostRecentInstance{}
-	m.GetClassifications()
-	m = nil
-	m.GetClassifications()
-}
-
 func TestMostRecentInstance_GetCommitSha(tt *testing.T) {
 	var zeroValue string
 	m := &MostRecentInstance{CommitSha: &zeroValue}
@@ -16757,16 +16747,6 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
-}
-
-func TestRule_GetTags(tt *testing.T) {
-	var zeroValue []string
-	r := &Rule{Tags: &zeroValue}
-	r.GetTags()
-	r = &Rule{}
-	r.GetTags()
-	r = nil
-	r.GetTags()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {
