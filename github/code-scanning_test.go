@@ -162,9 +162,9 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"version": "1.4.0"
 				},
 				"rule": {
-					"id": "js/useless-expression",
-					"severity": "warning",
-				  },
+					"id": "useless expression",
+					"severity": "warning"
+				},
 				"most_recent_instance": {
 					"ref": "refs/heads/main",
 					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
