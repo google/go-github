@@ -161,6 +161,37 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"guid": null,
 					"version": "1.4.0"
 				},
+				"rule": {
+					"id": "js/useless-expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "js/useless-expression",
+					"full_description": "Expression has no effect",
+					"tags": [
+						"test"
+					],
+					"help": "Expression has no effect",
+				  },
+				  "most_recent_instance": {
+					"ref": "refs/heads/main",
+					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
+					"environment": "{}",
+					"state": "open",
+					"commit_sha": "39406e42cb832f683daa691dd652a8dc36ee8930",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},    
 				"created_at":"2019-01-02T15:04:05Z",
 				"open":true,
 				"closed_by":null,
