@@ -171,10 +171,8 @@ func TestActionsService_GetAlert(t *testing.T) {
 				},
 				"most_recent_instance": {
 					"ref": "refs/heads/main",
-					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
-					"environment": "{}",
 					"state": "open",
-					"commit_sha": "39406e42cb832f683daa691dd652a8dc36ee8930",
+					"commit_sha": "abcdefg12345",
 					"message": {
 						"text": "This path depends on a user-provided value."
 					},
@@ -224,11 +222,9 @@ func TestActionsService_GetAlert(t *testing.T) {
 		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
 		HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
 		MostRecentInstance: &MostRecentInstance{
-			Ref:         String("refs/heads/main"),
-			AnalysisKey: String(".github/workflows/codeql-analysis.yml:CodeQL-Build"),
-			Environment: String("{}"),
-			State:       String("open"),
-			CommitSHA:   String("3f8a64020bf6aeff2f5cc8be7776fee7996947fd"),
+			Ref:       String("refs/heads/main"),
+			State:     String("open"),
+			CommitSHA: String("abcdefg12345"),
 			Message: &Message{
 				Text: String("This path depends on a user-provided value."),
 			},
