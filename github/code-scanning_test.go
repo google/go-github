@@ -163,7 +163,14 @@ func TestActionsService_GetAlert(t *testing.T) {
 				},
 				"rule": {
 					"id": "useless expression",
-					"severity": "warning"
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name: "useless expression",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect",
+					"tags": [
+						"test"
+					]
 				},
 				"most_recent_instance": {
 					"ref": "refs/heads/main",
@@ -206,10 +213,10 @@ func TestActionsService_GetAlert(t *testing.T) {
 		RuleDescription: String("Expression has no effect"),
 		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 		Rule: &Rule{
-			ID:              String("js/useless-expression"),
+			ID:              String("useless expression"),
 			Severity:        String("warning"),
 			Description:     String("Expression has no effect"),
-			Name:            String("js/useless-expression"),
+			Name:            String("useless expression"),
 			FullDescription: String("Expression has no effect"),
 			Tags:            []string{"test"},
 			Help:            String("Expression has no effect"),
