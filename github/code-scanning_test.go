@@ -164,14 +164,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 				"rule": {
 					"id": "js/useless-expression",
 					"severity": "warning",
-					"description": "Arbitrary file write during zip extraction (\"Zip Slip\")",
-					"name": "js/useless-expression",
-					"full_description": "Extracting files from a malicious zip archive without validating that the destination file path is within the destination directory can cause files outside the destination directory to be overwritten.",
-					"tags": [
-					  "test",
-					],
-					"help": "# Arbitrary file write during zip extraction (\"Zip Slip\")\\nExtracting files from a malicious zip archive without validating that the destination file path is within the destination directory can cause files outside the destination directory to be overwritten ..."
-				  }
+				  },
 				"most_recent_instance": {
 					"ref": "refs/heads/main",
 					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
