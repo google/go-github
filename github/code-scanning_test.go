@@ -172,7 +172,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 					],
 					"help": "Expression has no effect",
 				  },
-				"most_recent_instance": {
+				  "most_recent_instance": {
 					"ref": "refs/heads/main",
 					"analysis_key": ".github/workflows/codeql-analysis.yml:CodeQL-Build",
 					"environment": "{}",
