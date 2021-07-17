@@ -165,7 +165,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"id": "useless expression",
 					"severity": "warning",
 					"description": "Expression has no effect",
-					"name: "useless expression",
+					"name": "useless expression",
 					"full_description": "Expression has no effect",
 					"help": "Expression has no effect",
 					"tags": [
