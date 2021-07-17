@@ -19,13 +19,13 @@ import (
 type CodeScanningService service
 
 type Rule struct {
-	ID              *string   `json:"id,omitempty"`
-	Severity        *string   `json:"severity,omitempty"`
-	Description     *string   `json:"description,omitempty"`
-	Name            *string   `json:"name,omitempty"`
-	FullDescription *string   `json:"full_description,omitempty"`
-	Tags            *[]string `json:"tags,omitempty"`
-	Help            *string   `json:"help,omitempty"`
+	ID              *string  `json:"id,omitempty"`
+	Severity        *string  `json:"severity,omitempty"`
+	Description     *string  `json:"description,omitempty"`
+	Name            *string  `json:"name,omitempty"`
+	FullDescription *string  `json:"full_description,omitempty"`
+	Tags            []string `json:"tags,omitempty"`
+	Help            *string  `json:"help,omitempty"`
 }
 
 type Location struct {
@@ -41,15 +41,15 @@ type Message struct {
 }
 
 type MostRecentInstance struct {
-	Ref         *string	`json:"ref,omitempty"`
-	AnalysisKey *string	`json:"analysis_key,omitempty"`
-	Environment *string 	`json:"environment,omitempty"`
-	State       *string 	`json:"state,omitempty"`
-	CommitSha   *string 	`json:"commit_sha,omitempty"`
-	Message     *Message 	`json:"message,omitempty"`
-	Location    *Location 	`json:"location,omitempty"`
-	Classifications *[]string `json:"classifications,omitempty"`
-} 
+	Ref             *string   `json:"ref,omitempty"`
+	AnalysisKey     *string   `json:"analysis_key,omitempty"`
+	Environment     *string   `json:"environment,omitempty"`
+	State           *string   `json:"state,omitempty"`
+	CommitSha       *string   `json:"commit_sha,omitempty"`
+	Message         *Message  `json:"message,omitempty"`
+	Location        *Location `json:"location,omitempty"`
+	Classifications []string  `json:"classifications,omitempty"`
+}
 
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
 //
@@ -64,17 +64,17 @@ type Tool struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Alert struct {
-	RuleID          *string    `json:"rule_id,omitempty"`
-	RuleSeverity    *string    `json:"rule_severity,omitempty"`
-	RuleDescription *string    `json:"rule_description,omitempty"`
-	Rule		        *Rule	     `json:"rule,omitempty"`
-	Tool            *Tool      `json:"tool,omitempty"`
-	CreatedAt       *Timestamp `json:"created_at,omitempty"`
-	Open            *bool      `json:"open,omitempty"`
-	ClosedBy        *User      `json:"closed_by,omitempty"`
-	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
-	URL             *string    `json:"url,omitempty"`
-	HTMLURL         *string    `json:"html_url,omitempty"`
+	RuleID             *string             `json:"rule_id,omitempty"`
+	RuleSeverity       *string             `json:"rule_severity,omitempty"`
+	RuleDescription    *string             `json:"rule_description,omitempty"`
+	Rule               *Rule               `json:"rule,omitempty"`
+	Tool               *Tool               `json:"tool,omitempty"`
+	CreatedAt          *Timestamp          `json:"created_at,omitempty"`
+	Open               *bool               `json:"open,omitempty"`
+	ClosedBy           *User               `json:"closed_by,omitempty"`
+	ClosedAt           *Timestamp          `json:"closed_at,omitempty"`
+	URL                *string             `json:"url,omitempty"`
+	HTMLURL            *string             `json:"html_url,omitempty"`
 	MostRecentInstance *MostRecentInstance `json:"most_recent_instance,omitempty"`
 }
 
