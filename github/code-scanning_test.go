@@ -166,6 +166,11 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"severity": "warning",
 					"description": "Expression has no effect",
 					"name": "js/useless-expression"
+					"full_description": "Expression has no effect",
+					"tags": [
+						"test"
+					],
+					"help": "Expression has no effect",
 				  },
 				"most_recent_instance": {
 					"ref": "refs/heads/main",
@@ -213,7 +218,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 			Description:     String("Expression has no effect"),
 			Name:            String("js/useless-expression"),
 			FullDescription: String("Expression has no effect"),
-			Tags:            []string{"dummy"},
+			Tags:            []string{"test"},
 			Help:            String("Expression has no effect"),
 		},
 		CreatedAt: &date,
