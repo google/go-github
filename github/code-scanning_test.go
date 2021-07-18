@@ -70,10 +70,10 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					"version": "1.4.0"
 				},
 				"rule": {
-					"id": "useless expression",
+					"id": "js/trivial-conditional",
 					"severity": "warning",
-					"description": "Expression has no effect",
-					"name": "useless expression",
+					"description": "Useless conditional",
+					"name": "js/trivial-conditional",
 					"full_description": "Expression has no effect",
 					"help": "Expression has no effect"
 				},
@@ -112,10 +112,10 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					"version": "1.4.0"
 				},
 				"rule": {
-					"id": "useless expression",
+					"id": "js/useless-expression",
 					"severity": "warning",
 					"description": "Expression has no effect",
-					"name": "useless expression",
+					"name": "js/useless-expression",
 					"full_description": "Expression has no effect",
 					"help": "Expression has no effect"
 				},
@@ -161,10 +161,10 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			RuleDescription: String("Useless conditional"),
 			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 			Rule: &Rule{
-				ID:              String("useless expression"),
+				ID:              String("js/trivial-conditional"),
 				Severity:        String("warning"),
-				Description:     String("Expression has no effect"),
-				Name:            String("useless expression"),
+				Description:     String("Useless conditional"),
+				Name:            String("js/trivial-conditional"),
 				FullDescription: String("Expression has no effect"),
 				Help:            String("Expression has no effect"),
 			},
@@ -197,10 +197,10 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			RuleDescription: String("Expression has no effect"),
 			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
 			Rule: &Rule{
-				ID:              String("useless expression"),
+				ID:              String("js/useless-expression"),
 				Severity:        String("warning"),
 				Description:     String("Expression has no effect"),
-				Name:            String("useless expression"),
+				Name:            String("js/useless-expression"),
 				FullDescription: String("Expression has no effect"),
 				Help:            String("Expression has no effect"),
 			},
