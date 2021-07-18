@@ -172,12 +172,44 @@ func (a *Alert) GetCreatedAt() Timestamp {
 	return *a.CreatedAt
 }
 
+// GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
+func (a *Alert) GetDismissedAt() Timestamp {
+	if a == nil || a.DismissedAt == nil {
+		return Timestamp{}
+	}
+	return *a.DismissedAt
+}
+
+// GetDismissedBy returns the DismissedBy field.
+func (a *Alert) GetDismissedBy() *DismissedBy {
+	if a == nil {
+		return nil
+	}
+	return a.DismissedBy
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (a *Alert) GetDismissedReason() string {
+	if a == nil || a.DismissedReason == nil {
+		return ""
+	}
+	return *a.DismissedReason
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (a *Alert) GetHTMLURL() string {
 	if a == nil || a.HTMLURL == nil {
 		return ""
 	}
 	return *a.HTMLURL
+}
+
+// GetInstancesURL returns the InstancesURL field if it's non-nil, zero value otherwise.
+func (a *Alert) GetInstancesURL() string {
+	if a == nil || a.InstancesURL == nil {
+		return ""
+	}
+	return *a.InstancesURL
 }
 
 // GetMostRecentInstance returns the MostRecentInstance field.
@@ -3562,6 +3594,150 @@ func (d *DismissalRestrictionsRequest) GetUsers() []string {
 		return nil
 	}
 	return *d.Users
+}
+
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetAvatarURL() string {
+	if d == nil || d.AvatarURL == nil {
+		return ""
+	}
+	return *d.AvatarURL
+}
+
+// GetEventsURL returns the EventsURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetEventsURL() string {
+	if d == nil || d.EventsURL == nil {
+		return ""
+	}
+	return *d.EventsURL
+}
+
+// GetFollowersURL returns the FollowersURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetFollowersURL() string {
+	if d == nil || d.FollowersURL == nil {
+		return ""
+	}
+	return *d.FollowersURL
+}
+
+// GetFollowingURL returns the FollowingURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetFollowingURL() string {
+	if d == nil || d.FollowingURL == nil {
+		return ""
+	}
+	return *d.FollowingURL
+}
+
+// GetGistsURL returns the GistsURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetGistsURL() string {
+	if d == nil || d.GistsURL == nil {
+		return ""
+	}
+	return *d.GistsURL
+}
+
+// GetGravatarID returns the GravatarID field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetGravatarID() string {
+	if d == nil || d.GravatarID == nil {
+		return ""
+	}
+	return *d.GravatarID
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
+		return ""
+	}
+	return *d.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetID() int {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetLogin() string {
+	if d == nil || d.Login == nil {
+		return ""
+	}
+	return *d.Login
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
+// GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetOrganizationsURL() string {
+	if d == nil || d.OrganizationsURL == nil {
+		return ""
+	}
+	return *d.OrganizationsURL
+}
+
+// GetReceivedEventsURL returns the ReceivedEventsURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetReceivedEventsURL() string {
+	if d == nil || d.ReceivedEventsURL == nil {
+		return ""
+	}
+	return *d.ReceivedEventsURL
+}
+
+// GetReposURL returns the ReposURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetReposURL() string {
+	if d == nil || d.ReposURL == nil {
+		return ""
+	}
+	return *d.ReposURL
+}
+
+// GetSiteAdmin returns the SiteAdmin field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetSiteAdmin() bool {
+	if d == nil || d.SiteAdmin == nil {
+		return false
+	}
+	return *d.SiteAdmin
+}
+
+// GetStarredURL returns the StarredURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetStarredURL() string {
+	if d == nil || d.StarredURL == nil {
+		return ""
+	}
+	return *d.StarredURL
+}
+
+// GetSubscriptionsURL returns the SubscriptionsURL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetSubscriptionsURL() string {
+	if d == nil || d.SubscriptionsURL == nil {
+		return ""
+	}
+	return *d.SubscriptionsURL
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetType() string {
+	if d == nil || d.Type == nil {
+		return ""
+	}
+	return *d.Type
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DismissedBy) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
 }
 
 // GetDismissalCommitID returns the DismissalCommitID field if it's non-nil, zero value otherwise.

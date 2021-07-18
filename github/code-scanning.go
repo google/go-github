@@ -72,6 +72,30 @@ type Tool struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// DismissedBy provides details about the person who dismissed the Alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
+type DismissedBy struct {
+	Login             *string `json:"login,omitempty"`
+	ID                *int    `json:"id,omitempty"`
+	NodeID            *string `json:"node_id,omitempty"`
+	AvatarURL         *string `json:"avatar_url,omitempty"`
+	GravatarID        *string `json:"gravatar_id,omitempty"`
+	URL               *string `json:"url,omitempty"`
+	HTMLURL           *string `json:"html_url,omitempty"`
+	FollowersURL      *string `json:"followers_url,omitempty"`
+	FollowingURL      *string `json:"following_url,omitempty"`
+	GistsURL          *string `json:"gists_url,omitempty"`
+	StarredURL        *string `json:"starred_url,omitempty"`
+	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
+	OrganizationsURL  *string `json:"organizations_url,omitempty"`
+	ReposURL          *string `json:"repos_url,omitempty"`
+	EventsURL         *string `json:"events_url,omitempty"`
+	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	SiteAdmin         *bool   `json:"site_admin,omitempty"`
+}
+
 // Alert represents an individual GitHub Code Scanning Alert on a single repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
@@ -88,6 +112,10 @@ type Alert struct {
 	URL                *string             `json:"url,omitempty"`
 	HTMLURL            *string             `json:"html_url,omitempty"`
 	MostRecentInstance *MostRecentInstance `json:"most_recent_instance,omitempty"`
+	DismissedBy        *DismissedBy        `json:"dismissed_by,omitempty"`
+	DismissedAt        *Timestamp          `json:"dismissed_at,omitempty"`
+	DismissedReason    *string             `json:"dismissed_reason,omitempty"`
+	InstancesURL       *string             `json:"instances_url,omitempty"`
 }
 
 // ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.

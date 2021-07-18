@@ -180,6 +180,33 @@ func TestAlert_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAlert_GetDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Alert{DismissedAt: &zeroValue}
+	a.GetDismissedAt()
+	a = &Alert{}
+	a.GetDismissedAt()
+	a = nil
+	a.GetDismissedAt()
+}
+
+func TestAlert_GetDismissedBy(tt *testing.T) {
+	a := &Alert{}
+	a.GetDismissedBy()
+	a = nil
+	a.GetDismissedBy()
+}
+
+func TestAlert_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{DismissedReason: &zeroValue}
+	a.GetDismissedReason()
+	a = &Alert{}
+	a.GetDismissedReason()
+	a = nil
+	a.GetDismissedReason()
+}
+
 func TestAlert_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	a := &Alert{HTMLURL: &zeroValue}
@@ -188,6 +215,16 @@ func TestAlert_GetHTMLURL(tt *testing.T) {
 	a.GetHTMLURL()
 	a = nil
 	a.GetHTMLURL()
+}
+
+func TestAlert_GetInstancesURL(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{InstancesURL: &zeroValue}
+	a.GetInstancesURL()
+	a = &Alert{}
+	a.GetInstancesURL()
+	a = nil
+	a.GetInstancesURL()
 }
 
 func TestAlert_GetMostRecentInstance(tt *testing.T) {
@@ -4163,6 +4200,186 @@ func TestDismissalRestrictionsRequest_GetUsers(tt *testing.T) {
 	d.GetUsers()
 	d = nil
 	d.GetUsers()
+}
+
+func TestDismissedBy_GetAvatarURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{AvatarURL: &zeroValue}
+	d.GetAvatarURL()
+	d = &DismissedBy{}
+	d.GetAvatarURL()
+	d = nil
+	d.GetAvatarURL()
+}
+
+func TestDismissedBy_GetEventsURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{EventsURL: &zeroValue}
+	d.GetEventsURL()
+	d = &DismissedBy{}
+	d.GetEventsURL()
+	d = nil
+	d.GetEventsURL()
+}
+
+func TestDismissedBy_GetFollowersURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{FollowersURL: &zeroValue}
+	d.GetFollowersURL()
+	d = &DismissedBy{}
+	d.GetFollowersURL()
+	d = nil
+	d.GetFollowersURL()
+}
+
+func TestDismissedBy_GetFollowingURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{FollowingURL: &zeroValue}
+	d.GetFollowingURL()
+	d = &DismissedBy{}
+	d.GetFollowingURL()
+	d = nil
+	d.GetFollowingURL()
+}
+
+func TestDismissedBy_GetGistsURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{GistsURL: &zeroValue}
+	d.GetGistsURL()
+	d = &DismissedBy{}
+	d.GetGistsURL()
+	d = nil
+	d.GetGistsURL()
+}
+
+func TestDismissedBy_GetGravatarID(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{GravatarID: &zeroValue}
+	d.GetGravatarID()
+	d = &DismissedBy{}
+	d.GetGravatarID()
+	d = nil
+	d.GetGravatarID()
+}
+
+func TestDismissedBy_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{HTMLURL: &zeroValue}
+	d.GetHTMLURL()
+	d = &DismissedBy{}
+	d.GetHTMLURL()
+	d = nil
+	d.GetHTMLURL()
+}
+
+func TestDismissedBy_GetID(tt *testing.T) {
+	var zeroValue int
+	d := &DismissedBy{ID: &zeroValue}
+	d.GetID()
+	d = &DismissedBy{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDismissedBy_GetLogin(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{Login: &zeroValue}
+	d.GetLogin()
+	d = &DismissedBy{}
+	d.GetLogin()
+	d = nil
+	d.GetLogin()
+}
+
+func TestDismissedBy_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{NodeID: &zeroValue}
+	d.GetNodeID()
+	d = &DismissedBy{}
+	d.GetNodeID()
+	d = nil
+	d.GetNodeID()
+}
+
+func TestDismissedBy_GetOrganizationsURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{OrganizationsURL: &zeroValue}
+	d.GetOrganizationsURL()
+	d = &DismissedBy{}
+	d.GetOrganizationsURL()
+	d = nil
+	d.GetOrganizationsURL()
+}
+
+func TestDismissedBy_GetReceivedEventsURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{ReceivedEventsURL: &zeroValue}
+	d.GetReceivedEventsURL()
+	d = &DismissedBy{}
+	d.GetReceivedEventsURL()
+	d = nil
+	d.GetReceivedEventsURL()
+}
+
+func TestDismissedBy_GetReposURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{ReposURL: &zeroValue}
+	d.GetReposURL()
+	d = &DismissedBy{}
+	d.GetReposURL()
+	d = nil
+	d.GetReposURL()
+}
+
+func TestDismissedBy_GetSiteAdmin(tt *testing.T) {
+	var zeroValue bool
+	d := &DismissedBy{SiteAdmin: &zeroValue}
+	d.GetSiteAdmin()
+	d = &DismissedBy{}
+	d.GetSiteAdmin()
+	d = nil
+	d.GetSiteAdmin()
+}
+
+func TestDismissedBy_GetStarredURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{StarredURL: &zeroValue}
+	d.GetStarredURL()
+	d = &DismissedBy{}
+	d.GetStarredURL()
+	d = nil
+	d.GetStarredURL()
+}
+
+func TestDismissedBy_GetSubscriptionsURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{SubscriptionsURL: &zeroValue}
+	d.GetSubscriptionsURL()
+	d = &DismissedBy{}
+	d.GetSubscriptionsURL()
+	d = nil
+	d.GetSubscriptionsURL()
+}
+
+func TestDismissedBy_GetType(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{Type: &zeroValue}
+	d.GetType()
+	d = &DismissedBy{}
+	d.GetType()
+	d = nil
+	d.GetType()
+}
+
+func TestDismissedBy_GetURL(tt *testing.T) {
+	var zeroValue string
+	d := &DismissedBy{URL: &zeroValue}
+	d.GetURL()
+	d = &DismissedBy{}
+	d.GetURL()
+	d = nil
+	d.GetURL()
 }
 
 func TestDismissedReview_GetDismissalCommitID(tt *testing.T) {
