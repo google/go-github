@@ -18,6 +18,9 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
+// Rule represents the complete details of GitHub Code Scanning alert type.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Rule struct {
 	ID              *string  `json:"id,omitempty"`
 	Severity        *string  `json:"severity,omitempty"`
@@ -28,6 +31,9 @@ type Rule struct {
 	Help            *string  `json:"help,omitempty"`
 }
 
+// Location represents the exact location of the GitHub Code Scanning Alert in the scanned project.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Location struct {
 	Path        *string `json:"path,omitempty"`
 	StartLine   *int    `json:"start_line,omitempty"`
@@ -36,10 +42,16 @@ type Location struct {
 	EndColumn   *int    `json:"end_column,omitempty"`
 }
 
+// Message is a part of MostRecentInstance struct which provides the appropriate message when any action is performed on the analysis object
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Message struct {
 	Text *string `json:"text,omitempty"`
 }
 
+// MostRecentInstance provides details of the most recent instance of this alert for the default branch or for the specified Git reference
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type MostRecentInstance struct {
 	Ref             *string   `json:"ref,omitempty"`
 	AnalysisKey     *string   `json:"analysis_key,omitempty"`
