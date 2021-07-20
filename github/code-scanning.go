@@ -19,8 +19,6 @@ import (
 type CodeScanningService service
 
 // Rule represents the complete details of GitHub Code Scanning alert type.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Rule struct {
 	ID              *string  `json:"id,omitempty"`
 	Severity        *string  `json:"severity,omitempty"`
@@ -32,8 +30,6 @@ type Rule struct {
 }
 
 // Location represents the exact location of the GitHub Code Scanning Alert in the scanned project.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Location struct {
 	Path        *string `json:"path,omitempty"`
 	StartLine   *int    `json:"start_line,omitempty"`
@@ -42,16 +38,12 @@ type Location struct {
 	EndColumn   *int    `json:"end_column,omitempty"`
 }
 
-// Message is a part of MostRecentInstance struct which provides the appropriate message when any action is performed on the analysis object
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
+// Message is a part of MostRecentInstance struct which provides the appropriate message when any action is performed on the analysis object.
 type Message struct {
 	Text *string `json:"text,omitempty"`
 }
 
-// MostRecentInstance provides details of the most recent instance of this alert for the default branch or for the specified Git reference
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
+// MostRecentInstance provides details of the most recent instance of this alert for the default branch or for the specified Git reference.
 type MostRecentInstance struct {
 	Ref             *string   `json:"ref,omitempty"`
 	AnalysisKey     *string   `json:"analysis_key,omitempty"`
@@ -64,36 +56,10 @@ type MostRecentInstance struct {
 }
 
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Tool struct {
 	Name    *string `json:"name,omitempty"`
 	GUID    *string `json:"guid,omitempty"`
 	Version *string `json:"version,omitempty"`
-}
-
-// DismissedBy provides details about the person who dismissed the Alert.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
-type DismissedBy struct {
-	Login             *string `json:"login,omitempty"`
-	ID                *int    `json:"id,omitempty"`
-	NodeID            *string `json:"node_id,omitempty"`
-	AvatarURL         *string `json:"avatar_url,omitempty"`
-	GravatarID        *string `json:"gravatar_id,omitempty"`
-	URL               *string `json:"url,omitempty"`
-	HTMLURL           *string `json:"html_url,omitempty"`
-	FollowersURL      *string `json:"followers_url,omitempty"`
-	FollowingURL      *string `json:"following_url,omitempty"`
-	GistsURL          *string `json:"gists_url,omitempty"`
-	StarredURL        *string `json:"starred_url,omitempty"`
-	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
-	OrganizationsURL  *string `json:"organizations_url,omitempty"`
-	ReposURL          *string `json:"repos_url,omitempty"`
-	EventsURL         *string `json:"events_url,omitempty"`
-	ReceivedEventsURL *string `json:"received_events_url,omitempty"`
-	Type              *string `json:"type,omitempty"`
-	SiteAdmin         *bool   `json:"site_admin,omitempty"`
 }
 
 // Alert represents an individual GitHub Code Scanning Alert on a single repository.
@@ -112,7 +78,7 @@ type Alert struct {
 	URL                *string             `json:"url,omitempty"`
 	HTMLURL            *string             `json:"html_url,omitempty"`
 	MostRecentInstance *MostRecentInstance `json:"most_recent_instance,omitempty"`
-	DismissedBy        *DismissedBy        `json:"dismissed_by,omitempty"`
+	DismissedBy        *User               `json:"dismissed_by,omitempty"`
 	DismissedAt        *Timestamp          `json:"dismissed_at,omitempty"`
 	DismissedReason    *string             `json:"dismissed_reason,omitempty"`
 	InstancesURL       *string             `json:"instances_url,omitempty"`
