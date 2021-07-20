@@ -970,7 +970,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 	}
 
 	// Add custom round tripper
-	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+	client.Client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
 		return nil, errors.New("failed to get branch")
 	})
 

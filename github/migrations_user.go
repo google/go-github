@@ -159,13 +159,13 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 	m := &UserMigration{}
 
 	var loc string
-	originalRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	originalRedirect := s.client.Client.CheckRedirect
+	s.client.Client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		loc = req.URL.String()
 		return http.ErrUseLastResponse
 	}
 	defer func() {
-		s.client.client.CheckRedirect = originalRedirect
+		s.client.Client.CheckRedirect = originalRedirect
 	}()
 	resp, err := s.client.Do(ctx, req, m)
 	if err == nil {

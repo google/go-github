@@ -289,15 +289,15 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 	defer s.client.clientMu.Unlock()
 
 	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	saveRedirect := s.client.Client.CheckRedirect
+	s.client.Client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		loc = req.URL.String()
 		return errors.New("disable redirect")
 	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
+	defer func() { s.client.Client.CheckRedirect = saveRedirect }()
 
 	req = withContext(ctx, req)
-	resp, err := s.client.client.Do(req)
+	resp, err := s.client.Client.Do(req)
 	if err != nil {
 		if !strings.Contains(err.Error(), "disable redirect") {
 			return nil, "", err

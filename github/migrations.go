@@ -172,12 +172,12 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 
 	// Disable the redirect mechanism because AWS fails if the GitHub auth token is provided.
 	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+	saveRedirect := s.client.Client.CheckRedirect
+	s.client.Client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		loc = req.URL.String()
 		return errors.New("disable redirect")
 	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
+	defer func() { s.client.Client.CheckRedirect = saveRedirect }()
 
 	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
 	if err == nil {

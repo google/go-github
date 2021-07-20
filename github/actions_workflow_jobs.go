@@ -129,10 +129,10 @@ func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, f
 	var resp *http.Response
 	// Use http.DefaultTransport if no custom Transport is configured
 	req = withContext(ctx, req)
-	if s.client.client.Transport == nil {
+	if s.client.Client.Transport == nil {
 		resp, err = http.DefaultTransport.RoundTrip(req)
 	} else {
-		resp, err = s.client.client.Transport.RoundTrip(req)
+		resp, err = s.client.Client.Transport.RoundTrip(req)
 	}
 	if err != nil {
 		return nil, err

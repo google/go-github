@@ -134,7 +134,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, resp, fmt.Errorf("No download link found for %s", filepath)
 			}
-			dlResp, err := s.client.client.Get(*contents.DownloadURL)
+			dlResp, err := s.client.Client.Get(*contents.DownloadURL)
 			if err != nil {
 				return nil, &Response{Response: dlResp}, err
 			}
@@ -164,7 +164,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, contents, resp, fmt.Errorf("No download link found for %s", filepath)
 			}
-			dlResp, err := s.client.client.Get(*contents.DownloadURL)
+			dlResp, err := s.client.Client.Get(*contents.DownloadURL)
 			if err != nil {
 				return nil, contents, &Response{Response: dlResp}, err
 			}
@@ -304,10 +304,10 @@ func (s *RepositoriesService) getArchiveLinkFromURL(ctx context.Context, u strin
 	var resp *http.Response
 	// Use http.DefaultTransport if no custom Transport is configured
 	req = withContext(ctx, req)
-	if s.client.client.Transport == nil {
+	if s.client.Client.Transport == nil {
 		resp, err = http.DefaultTransport.RoundTrip(req)
 	} else {
-		resp, err = s.client.client.Transport.RoundTrip(req)
+		resp, err = s.client.Client.Transport.RoundTrip(req)
 	}
 	if err != nil {
 		return nil, err
