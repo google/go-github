@@ -69,6 +69,32 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					"guid": null,
 					"version": "1.4.0"
 				},
+				"rule": {
+					"id": "js/trivial-conditional",
+					"severity": "warning",
+					"description": "Useless conditional",
+					"name": "js/trivial-conditional",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "open",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},
 				"created_at":"2020-05-06T12:00:00Z",
 				"open":true,
 				"closed_by":null,
@@ -84,6 +110,32 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					"name": "CodeQL",
 					"guid": null,
 					"version": "1.4.0"
+				},
+				"rule": {
+					"id": "js/useless-expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "js/useless-expression",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "open",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
 				},
 				"created_at":"2020-05-06T12:00:00Z",
 				"open":true,
@@ -108,24 +160,72 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 			RuleSeverity:    String("warning"),
 			RuleDescription: String("Useless conditional"),
 			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
-			CreatedAt:       &date,
-			Open:            Bool(true),
-			ClosedBy:        nil,
-			ClosedAt:        nil,
-			URL:             String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
-			HTMLURL:         String("https://github.com/o/r/security/code-scanning/25"),
+			Rule: &Rule{
+				ID:              String("js/trivial-conditional"),
+				Severity:        String("warning"),
+				Description:     String("Useless conditional"),
+				Name:            String("js/trivial-conditional"),
+				FullDescription: String("Expression has no effect"),
+				Help:            String("Expression has no effect"),
+			},
+			CreatedAt: &date,
+			Open:      Bool(true),
+			ClosedBy:  nil,
+			ClosedAt:  nil,
+			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
+			HTMLURL:   String("https://github.com/o/r/security/code-scanning/25"),
+			MostRecentInstance: &MostRecentInstance{
+				Ref:       String("refs/heads/main"),
+				State:     String("open"),
+				CommitSHA: String("abcdefg12345"),
+				Message: &Message{
+					Text: String("This path depends on a user-provided value."),
+				},
+				Location: &Location{
+					Path:        String("spec-main/api-session-spec.ts"),
+					StartLine:   Int(917),
+					EndLine:     Int(917),
+					StartColumn: Int(7),
+					EndColumn:   Int(18),
+				},
+				Classifications: []string{"test"},
+			},
 		},
 		{
 			RuleID:          String("js/useless-expression"),
 			RuleSeverity:    String("warning"),
 			RuleDescription: String("Expression has no effect"),
 			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
-			CreatedAt:       &date,
-			Open:            Bool(true),
-			ClosedBy:        nil,
-			ClosedAt:        nil,
-			URL:             String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-			HTMLURL:         String("https://github.com/o/r/security/code-scanning/88"),
+			Rule: &Rule{
+				ID:              String("js/useless-expression"),
+				Severity:        String("warning"),
+				Description:     String("Expression has no effect"),
+				Name:            String("js/useless-expression"),
+				FullDescription: String("Expression has no effect"),
+				Help:            String("Expression has no effect"),
+			},
+			CreatedAt: &date,
+			Open:      Bool(true),
+			ClosedBy:  nil,
+			ClosedAt:  nil,
+			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+			HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+			MostRecentInstance: &MostRecentInstance{
+				Ref:       String("refs/heads/main"),
+				State:     String("open"),
+				CommitSHA: String("abcdefg12345"),
+				Message: &Message{
+					Text: String("This path depends on a user-provided value."),
+				},
+				Location: &Location{
+					Path:        String("spec-main/api-session-spec.ts"),
+					StartLine:   Int(917),
+					EndLine:     Int(917),
+					StartColumn: Int(7),
+					EndColumn:   Int(18),
+				},
+				Classifications: []string{"test"},
+			},
 		},
 	}
 	if !cmp.Equal(alerts, want) {
@@ -161,6 +261,32 @@ func TestActionsService_GetAlert(t *testing.T) {
 					"guid": null,
 					"version": "1.4.0"
 				},
+				"rule": {
+					"id": "useless expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "useless expression",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "open",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},      
 				"created_at":"2019-01-02T15:04:05Z",
 				"open":true,
 				"closed_by":null,
@@ -181,12 +307,36 @@ func TestActionsService_GetAlert(t *testing.T) {
 		RuleSeverity:    String("warning"),
 		RuleDescription: String("Expression has no effect"),
 		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
-		CreatedAt:       &date,
-		Open:            Bool(true),
-		ClosedBy:        nil,
-		ClosedAt:        nil,
-		URL:             String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-		HTMLURL:         String("https://github.com/o/r/security/code-scanning/88"),
+		Rule: &Rule{
+			ID:              String("useless expression"),
+			Severity:        String("warning"),
+			Description:     String("Expression has no effect"),
+			Name:            String("useless expression"),
+			FullDescription: String("Expression has no effect"),
+			Help:            String("Expression has no effect"),
+		},
+		CreatedAt: &date,
+		Open:      Bool(true),
+		ClosedBy:  nil,
+		ClosedAt:  nil,
+		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+		MostRecentInstance: &MostRecentInstance{
+			Ref:       String("refs/heads/main"),
+			State:     String("open"),
+			CommitSHA: String("abcdefg12345"),
+			Message: &Message{
+				Text: String("This path depends on a user-provided value."),
+			},
+			Location: &Location{
+				Path:        String("spec-main/api-session-spec.ts"),
+				StartLine:   Int(917),
+				EndLine:     Int(917),
+				StartColumn: Int(7),
+				EndColumn:   Int(18),
+			},
+			Classifications: []string{"test"},
+		},
 	}
 	if !cmp.Equal(alert, want) {
 		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)

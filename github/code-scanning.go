@@ -18,9 +18,44 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
 type CodeScanningService service
 
+// Rule represents the complete details of GitHub Code Scanning alert type.
+type Rule struct {
+	ID              *string  `json:"id,omitempty"`
+	Severity        *string  `json:"severity,omitempty"`
+	Description     *string  `json:"description,omitempty"`
+	Name            *string  `json:"name,omitempty"`
+	FullDescription *string  `json:"full_description,omitempty"`
+	Tags            []string `json:"tags,omitempty"`
+	Help            *string  `json:"help,omitempty"`
+}
+
+// Location represents the exact location of the GitHub Code Scanning Alert in the scanned project.
+type Location struct {
+	Path        *string `json:"path,omitempty"`
+	StartLine   *int    `json:"start_line,omitempty"`
+	EndLine     *int    `json:"end_line,omitempty"`
+	StartColumn *int    `json:"start_column,omitempty"`
+	EndColumn   *int    `json:"end_column,omitempty"`
+}
+
+// Message is a part of MostRecentInstance struct which provides the appropriate message when any action is performed on the analysis object.
+type Message struct {
+	Text *string `json:"text,omitempty"`
+}
+
+// MostRecentInstance provides details of the most recent instance of this alert for the default branch or for the specified Git reference.
+type MostRecentInstance struct {
+	Ref             *string   `json:"ref,omitempty"`
+	AnalysisKey     *string   `json:"analysis_key,omitempty"`
+	Environment     *string   `json:"environment,omitempty"`
+	State           *string   `json:"state,omitempty"`
+	CommitSHA       *string   `json:"commit_sha,omitempty"`
+	Message         *Message  `json:"message,omitempty"`
+	Location        *Location `json:"location,omitempty"`
+	Classifications []string  `json:"classifications,omitempty"`
+}
+
 // Tool represents the tool used to generate a GitHub Code Scanning Alert.
-//
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Tool struct {
 	Name    *string `json:"name,omitempty"`
 	GUID    *string `json:"guid,omitempty"`
@@ -31,16 +66,22 @@ type Tool struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Alert struct {
-	RuleID          *string    `json:"rule_id,omitempty"`
-	RuleSeverity    *string    `json:"rule_severity,omitempty"`
-	RuleDescription *string    `json:"rule_description,omitempty"`
-	Tool            *Tool      `json:"tool,omitempty"`
-	CreatedAt       *Timestamp `json:"created_at,omitempty"`
-	Open            *bool      `json:"open,omitempty"`
-	ClosedBy        *User      `json:"closed_by,omitempty"`
-	ClosedAt        *Timestamp `json:"closed_at,omitempty"`
-	URL             *string    `json:"url,omitempty"`
-	HTMLURL         *string    `json:"html_url,omitempty"`
+	RuleID             *string             `json:"rule_id,omitempty"`
+	RuleSeverity       *string             `json:"rule_severity,omitempty"`
+	RuleDescription    *string             `json:"rule_description,omitempty"`
+	Rule               *Rule               `json:"rule,omitempty"`
+	Tool               *Tool               `json:"tool,omitempty"`
+	CreatedAt          *Timestamp          `json:"created_at,omitempty"`
+	Open               *bool               `json:"open,omitempty"`
+	ClosedBy           *User               `json:"closed_by,omitempty"`
+	ClosedAt           *Timestamp          `json:"closed_at,omitempty"`
+	URL                *string             `json:"url,omitempty"`
+	HTMLURL            *string             `json:"html_url,omitempty"`
+	MostRecentInstance *MostRecentInstance `json:"most_recent_instance,omitempty"`
+	DismissedBy        *User               `json:"dismissed_by,omitempty"`
+	DismissedAt        *Timestamp          `json:"dismissed_at,omitempty"`
+	DismissedReason    *string             `json:"dismissed_reason,omitempty"`
+	InstancesURL       *string             `json:"instances_url,omitempty"`
 }
 
 // ID returns the ID associated with an alert. It is the number at the end of the security alert's URL.
