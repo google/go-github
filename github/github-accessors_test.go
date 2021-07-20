@@ -180,6 +180,33 @@ func TestAlert_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAlert_GetDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Alert{DismissedAt: &zeroValue}
+	a.GetDismissedAt()
+	a = &Alert{}
+	a.GetDismissedAt()
+	a = nil
+	a.GetDismissedAt()
+}
+
+func TestAlert_GetDismissedBy(tt *testing.T) {
+	a := &Alert{}
+	a.GetDismissedBy()
+	a = nil
+	a.GetDismissedBy()
+}
+
+func TestAlert_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{DismissedReason: &zeroValue}
+	a.GetDismissedReason()
+	a = &Alert{}
+	a.GetDismissedReason()
+	a = nil
+	a.GetDismissedReason()
+}
+
 func TestAlert_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	a := &Alert{HTMLURL: &zeroValue}
@@ -190,6 +217,23 @@ func TestAlert_GetHTMLURL(tt *testing.T) {
 	a.GetHTMLURL()
 }
 
+func TestAlert_GetInstancesURL(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{InstancesURL: &zeroValue}
+	a.GetInstancesURL()
+	a = &Alert{}
+	a.GetInstancesURL()
+	a = nil
+	a.GetInstancesURL()
+}
+
+func TestAlert_GetMostRecentInstance(tt *testing.T) {
+	a := &Alert{}
+	a.GetMostRecentInstance()
+	a = nil
+	a.GetMostRecentInstance()
+}
+
 func TestAlert_GetOpen(tt *testing.T) {
 	var zeroValue bool
 	a := &Alert{Open: &zeroValue}
@@ -198,6 +242,13 @@ func TestAlert_GetOpen(tt *testing.T) {
 	a.GetOpen()
 	a = nil
 	a.GetOpen()
+}
+
+func TestAlert_GetRule(tt *testing.T) {
+	a := &Alert{}
+	a.GetRule()
+	a = nil
+	a.GetRule()
 }
 
 func TestAlert_GetRuleDescription(tt *testing.T) {
@@ -8356,6 +8407,56 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestLocation_GetEndColumn(tt *testing.T) {
+	var zeroValue int
+	l := &Location{EndColumn: &zeroValue}
+	l.GetEndColumn()
+	l = &Location{}
+	l.GetEndColumn()
+	l = nil
+	l.GetEndColumn()
+}
+
+func TestLocation_GetEndLine(tt *testing.T) {
+	var zeroValue int
+	l := &Location{EndLine: &zeroValue}
+	l.GetEndLine()
+	l = &Location{}
+	l.GetEndLine()
+	l = nil
+	l.GetEndLine()
+}
+
+func TestLocation_GetPath(tt *testing.T) {
+	var zeroValue string
+	l := &Location{Path: &zeroValue}
+	l.GetPath()
+	l = &Location{}
+	l.GetPath()
+	l = nil
+	l.GetPath()
+}
+
+func TestLocation_GetStartColumn(tt *testing.T) {
+	var zeroValue int
+	l := &Location{StartColumn: &zeroValue}
+	l.GetStartColumn()
+	l = &Location{}
+	l.GetStartColumn()
+	l = nil
+	l.GetStartColumn()
+}
+
+func TestLocation_GetStartLine(tt *testing.T) {
+	var zeroValue int
+	l := &Location{StartLine: &zeroValue}
+	l.GetStartLine()
+	l = &Location{}
+	l.GetStartLine()
+	l = nil
+	l.GetStartLine()
+}
+
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
 	var zeroValue Timestamp
 	m := &MarketplacePendingChange{EffectiveDate: &zeroValue}
@@ -8859,6 +8960,16 @@ func TestMembershipEvent_GetTeam(tt *testing.T) {
 	m.GetTeam()
 }
 
+func TestMessage_GetText(tt *testing.T) {
+	var zeroValue string
+	m := &Message{Text: &zeroValue}
+	m.GetText()
+	m = &Message{}
+	m.GetText()
+	m = nil
+	m.GetText()
+}
+
 func TestMetaEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	m := &MetaEvent{Action: &zeroValue}
@@ -9243,6 +9354,70 @@ func TestMilestoneStats_GetTotalMilestones(tt *testing.T) {
 	m.GetTotalMilestones()
 	m = nil
 	m.GetTotalMilestones()
+}
+
+func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{AnalysisKey: &zeroValue}
+	m.GetAnalysisKey()
+	m = &MostRecentInstance{}
+	m.GetAnalysisKey()
+	m = nil
+	m.GetAnalysisKey()
+}
+
+func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{CommitSHA: &zeroValue}
+	m.GetCommitSHA()
+	m = &MostRecentInstance{}
+	m.GetCommitSHA()
+	m = nil
+	m.GetCommitSHA()
+}
+
+func TestMostRecentInstance_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{Environment: &zeroValue}
+	m.GetEnvironment()
+	m = &MostRecentInstance{}
+	m.GetEnvironment()
+	m = nil
+	m.GetEnvironment()
+}
+
+func TestMostRecentInstance_GetLocation(tt *testing.T) {
+	m := &MostRecentInstance{}
+	m.GetLocation()
+	m = nil
+	m.GetLocation()
+}
+
+func TestMostRecentInstance_GetMessage(tt *testing.T) {
+	m := &MostRecentInstance{}
+	m.GetMessage()
+	m = nil
+	m.GetMessage()
+}
+
+func TestMostRecentInstance_GetRef(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{Ref: &zeroValue}
+	m.GetRef()
+	m = &MostRecentInstance{}
+	m.GetRef()
+	m = nil
+	m.GetRef()
+}
+
+func TestMostRecentInstance_GetState(tt *testing.T) {
+	var zeroValue string
+	m := &MostRecentInstance{State: &zeroValue}
+	m.GetState()
+	m = &MostRecentInstance{}
+	m.GetState()
+	m = nil
+	m.GetState()
 }
 
 func TestNewPullRequest_GetBase(tt *testing.T) {
@@ -16549,6 +16724,66 @@ func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestRule_GetDescription(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{Description: &zeroValue}
+	r.GetDescription()
+	r = &Rule{}
+	r.GetDescription()
+	r = nil
+	r.GetDescription()
+}
+
+func TestRule_GetFullDescription(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{FullDescription: &zeroValue}
+	r.GetFullDescription()
+	r = &Rule{}
+	r.GetFullDescription()
+	r = nil
+	r.GetFullDescription()
+}
+
+func TestRule_GetHelp(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{Help: &zeroValue}
+	r.GetHelp()
+	r = &Rule{}
+	r.GetHelp()
+	r = nil
+	r.GetHelp()
+}
+
+func TestRule_GetID(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{ID: &zeroValue}
+	r.GetID()
+	r = &Rule{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRule_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{Name: &zeroValue}
+	r.GetName()
+	r = &Rule{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRule_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{Severity: &zeroValue}
+	r.GetSeverity()
+	r = &Rule{}
+	r.GetSeverity()
+	r = nil
+	r.GetSeverity()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {
