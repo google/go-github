@@ -232,6 +232,14 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
+func TestClient(t *testing.T) {
+	c := NewClient(nil)
+	c2 := c.Client()
+	if c.client != c2 {
+		t.Error("Client returned different http.Client, but should be the same.")
+	}
+}
+
 func TestNewEnterpriseClient(t *testing.T) {
 	baseURL := "https://custom-url/api/v3/"
 	uploadURL := "https://custom-upload-url/api/uploads/"
