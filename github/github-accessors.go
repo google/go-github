@@ -9508,6 +9508,22 @@ func (p *PingEvent) GetZen() string {
 	return *p.Zen
 }
 
+// GetRepo returns the Repo field.
+func (p *PingEvent) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSender returns the Sender field.
+func (p *PingEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
+}
+
 // GetCollaborators returns the Collaborators field if it's non-nil, zero value otherwise.
 func (p *Plan) GetCollaborators() int {
 	if p == nil || p.Collaborators == nil {
