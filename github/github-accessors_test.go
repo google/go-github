@@ -11147,11 +11147,18 @@ func TestPingEvent_GetHookID(tt *testing.T) {
 	p.GetHookID()
 }
 
-func TestPingEvent_GetInstallation(tt *testing.T) {
+func TestPingEvent_GetRepo(tt *testing.T) {
 	p := &PingEvent{}
-	p.GetInstallation()
+	p.GetRepo()
 	p = nil
-	p.GetInstallation()
+	p.GetRepo()
+}
+
+func TestPingEvent_GetSender(tt *testing.T) {
+	p := &PingEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
 }
 
 func TestPingEvent_GetZen(tt *testing.T) {

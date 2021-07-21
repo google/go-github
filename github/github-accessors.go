@@ -9500,12 +9500,20 @@ func (p *PingEvent) GetHookID() int64 {
 	return *p.HookID
 }
 
-// GetInstallation returns the Installation field.
-func (p *PingEvent) GetInstallation() *Installation {
+// GetRepo returns the Repo field.
+func (p *PingEvent) GetRepo() *Repository {
 	if p == nil {
 		return nil
 	}
-	return p.Installation
+	return p.Repo
+}
+
+// GetSender returns the Sender field.
+func (p *PingEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
 }
 
 // GetZen returns the Zen field if it's non-nil, zero value otherwise.
