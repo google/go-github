@@ -234,16 +234,6 @@ func TestAlert_GetMostRecentInstance(tt *testing.T) {
 	a.GetMostRecentInstance()
 }
 
-func TestAlert_GetOpen(tt *testing.T) {
-	var zeroValue bool
-	a := &Alert{Open: &zeroValue}
-	a.GetOpen()
-	a = &Alert{}
-	a.GetOpen()
-	a = nil
-	a.GetOpen()
-}
-
 func TestAlert_GetRule(tt *testing.T) {
 	a := &Alert{}
 	a.GetRule()
@@ -279,6 +269,16 @@ func TestAlert_GetRuleSeverity(tt *testing.T) {
 	a.GetRuleSeverity()
 	a = nil
 	a.GetRuleSeverity()
+}
+
+func TestAlert_GetState(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{State: &zeroValue}
+	a.GetState()
+	a = &Alert{}
+	a.GetState()
+	a = nil
+	a.GetState()
 }
 
 func TestAlert_GetTool(tt *testing.T) {
