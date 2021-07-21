@@ -235,8 +235,8 @@ func TestNewClient(t *testing.T) {
 func TestClient(t *testing.T) {
 	c := NewClient(nil)
 	c2 := c.Client()
-	if c.client != c2 {
-		t.Error("Client returned different http.Client, but should be the same.")
+	if c.client == c2 {
+		t.Error("Client returned same http.Client, but should be different")
 	}
 }
 

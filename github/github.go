@@ -192,7 +192,8 @@ type service struct {
 func (c *Client) Client() *http.Client {
 	c.clientMu.Lock()
 	defer c.clientMu.Unlock()
-	return c.client
+	clientCopy := *c.client
+	return &clientCopy
 }
 
 // ListOptions specifies the optional parameters to various List methods that
