@@ -188,6 +188,14 @@ type service struct {
 	client *Client
 }
 
+// Client returns the http.Client used by this GitHub client.
+func (c *Client) Client() *http.Client {
+	c.clientMu.Lock()
+	defer c.clientMu.Unlock()
+	clientCopy := *c.client
+	return &clientCopy
+}
+
 // ListOptions specifies the optional parameters to various List methods that
 // support offset pagination.
 type ListOptions struct {
