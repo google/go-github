@@ -96,7 +96,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					]
 				},
 				"created_at":"2020-05-06T12:00:00Z",
-				"open":true,
+				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
 				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/25",
@@ -138,7 +138,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 					]
 				},
 				"created_at":"2020-05-06T12:00:00Z",
-				"open":true,
+				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
 				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
@@ -169,7 +169,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 				Help:            String("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			Open:      Bool(true),
+			State:     String("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
 			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
@@ -205,7 +205,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 				Help:            String("Expression has no effect"),
 			},
 			CreatedAt: &date,
-			Open:      Bool(true),
+			State:     String("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
 			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
@@ -288,7 +288,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 					]
 				},      
 				"created_at":"2019-01-02T15:04:05Z",
-				"open":true,
+				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
 				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
@@ -316,7 +316,7 @@ func TestActionsService_GetAlert(t *testing.T) {
 			Help:            String("Expression has no effect"),
 		},
 		CreatedAt: &date,
-		Open:      Bool(true),
+		State:     String("open"),
 		ClosedBy:  nil,
 		ClosedAt:  nil,
 		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
@@ -370,7 +370,7 @@ func TestAlert_Marshal(t *testing.T) {
 			Version: String("v"),
 		},
 		CreatedAt: &Timestamp{referenceTime},
-		Open:      Bool(false),
+		State:     String("fixed"),
 		ClosedBy: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
@@ -395,7 +395,7 @@ func TestAlert_Marshal(t *testing.T) {
 			"version": "v"
 		},
 		"created_at": ` + referenceTimeStr + `,
-		"open": false,
+		"state": "fixed",
 		"closed_by": {
 			"login": "l",
 			"id": 1,
