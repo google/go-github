@@ -11147,6 +11147,20 @@ func TestPingEvent_GetHookID(tt *testing.T) {
 	p.GetHookID()
 }
 
+func TestPingEvent_GetRepo(tt *testing.T) {
+	p := &PingEvent{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPingEvent_GetSender(tt *testing.T) {
+	p := &PingEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
 func TestPingEvent_GetZen(tt *testing.T) {
 	var zeroValue string
 	p := &PingEvent{Zen: &zeroValue}
@@ -11155,26 +11169,6 @@ func TestPingEvent_GetZen(tt *testing.T) {
 	p.GetZen()
 	p = nil
 	p.GetZen()
-}
-
-func TestPingEvent_GetRepo(tt *testing.T) {
-	var zeroValue string
-	p := &PingEvent{Zen: &zeroValue}
-	p.GetRepo()
-	p = &PingEvent{}
-	p.GetRepo()
-	p = nil
-	p.GetRepo()
-}
-
-func TestPingEvent_GetSender(tt *testing.T) {
-	var zeroValue string
-	p := &PingEvent{Zen: &zeroValue}
-	p.GetSender()
-	p = &PingEvent{}
-	p.GetSender()
-	p = nil
-	p.GetSender()
 }
 
 func TestPlan_GetCollaborators(tt *testing.T) {

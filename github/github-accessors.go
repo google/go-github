@@ -9500,14 +9500,6 @@ func (p *PingEvent) GetHookID() int64 {
 	return *p.HookID
 }
 
-// GetZen returns the Zen field if it's non-nil, zero value otherwise.
-func (p *PingEvent) GetZen() string {
-	if p == nil || p.Zen == nil {
-		return ""
-	}
-	return *p.Zen
-}
-
 // GetRepo returns the Repo field.
 func (p *PingEvent) GetRepo() *Repository {
 	if p == nil {
@@ -9522,6 +9514,14 @@ func (p *PingEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetZen returns the Zen field if it's non-nil, zero value otherwise.
+func (p *PingEvent) GetZen() string {
+	if p == nil || p.Zen == nil {
+		return ""
+	}
+	return *p.Zen
 }
 
 // GetCollaborators returns the Collaborators field if it's non-nil, zero value otherwise.
