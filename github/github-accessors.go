@@ -9500,14 +9500,6 @@ func (p *PingEvent) GetHookID() int64 {
 	return *p.HookID
 }
 
-// GetInstallation returns the Installation field.
-func (p *PingEvent) GetInstallation() *Installation {
-	if p == nil {
-		return nil
-	}
-	return p.Installation
-}
-
 // GetZen returns the Zen field if it's non-nil, zero value otherwise.
 func (p *PingEvent) GetZen() string {
 	if p == nil || p.Zen == nil {

@@ -582,8 +582,9 @@ type PingEvent struct {
 	// The ID of the webhook that triggered the ping.
 	HookID *int64 `json:"hook_id,omitempty"`
 	// The webhook configuration.
-	Hook         *Hook         `json:"hook,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
+	Hook   *Hook       `json:"hook,omitempty"`
+	Repo   *Repository `json:"repository,omitempty"`
+	Sender *User       `json:"sender,omitempty"`
 }
 
 // ProjectEvent is triggered when project is created, modified or deleted.

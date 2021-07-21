@@ -11147,13 +11147,6 @@ func TestPingEvent_GetHookID(tt *testing.T) {
 	p.GetHookID()
 }
 
-func TestPingEvent_GetInstallation(tt *testing.T) {
-	p := &PingEvent{}
-	p.GetInstallation()
-	p = nil
-	p.GetInstallation()
-}
-
 func TestPingEvent_GetZen(tt *testing.T) {
 	var zeroValue string
 	p := &PingEvent{Zen: &zeroValue}
