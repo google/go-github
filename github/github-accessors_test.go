@@ -16599,6 +16599,16 @@ func TestRepoStats_GetTotalWikis(tt *testing.T) {
 	r.GetTotalWikis()
 }
 
+func TestRepoStatus_GetAvatarURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoStatus{AvatarURL: &zeroValue}
+	r.GetAvatarURL()
+	r = &RepoStatus{}
+	r.GetAvatarURL()
+	r = nil
+	r.GetAvatarURL()
+}
+
 func TestRepoStatus_GetContext(tt *testing.T) {
 	var zeroValue string
 	r := &RepoStatus{Context: &zeroValue}
