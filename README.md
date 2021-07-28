@@ -250,6 +250,10 @@ For complete usage of go-github, see the full [package docs][].
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 
+### Testing code that uses `go-github`
+
+The repo [migueleliasweb/go-github-mock](https://github.com/migueleliasweb/go-github-mock) provides a way to mock responses. Check the repo for more details.
+
 ### Integration Tests ###
 
 You can run integration tests from the `test` directory. See the integration tests [README](test/README.md).
