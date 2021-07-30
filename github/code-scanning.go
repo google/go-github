@@ -24,6 +24,7 @@ type Rule struct {
 	Severity        *string  `json:"severity,omitempty"`
 	Description     *string  `json:"description,omitempty"`
 	Name            *string  `json:"name,omitempty"`
+	SeverityLevel   *string  `json:"security_severity_level,omitempty"`
 	FullDescription *string  `json:"full_description,omitempty"`
 	Tags            []string `json:"tags,omitempty"`
 	Help            *string  `json:"help,omitempty"`

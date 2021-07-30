@@ -16786,6 +16786,16 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRule_GetSeverityLevel(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{SeverityLevel: &zeroValue}
+	r.GetSeverityLevel()
+	r = &Rule{}
+	r.GetSeverityLevel()
+	r = nil
+	r.GetSeverityLevel()
+}
+
 func TestRunner_GetBusy(tt *testing.T) {
 	var zeroValue bool
 	r := &Runner{Busy: &zeroValue}

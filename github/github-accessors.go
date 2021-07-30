@@ -14364,6 +14364,14 @@ func (r *Rule) GetSeverity() string {
 	return *r.Severity
 }
 
+// GetSeverityLevel returns the SeverityLevel field if it's non-nil, zero value otherwise.
+func (r *Rule) GetSeverityLevel() string {
+	if r == nil || r.SeverityLevel == nil {
+		return ""
+	}
+	return *r.SeverityLevel
+}
+
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.
 func (r *Runner) GetBusy() bool {
 	if r == nil || r.Busy == nil {
