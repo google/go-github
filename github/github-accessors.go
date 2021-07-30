@@ -14356,20 +14356,20 @@ func (r *Rule) GetName() string {
 	return *r.Name
 }
 
+// GetSecuritySeverityLevel returns the SecuritySeverityLevel field if it's non-nil, zero value otherwise.
+func (r *Rule) GetSecuritySeverityLevel() string {
+	if r == nil || r.SecuritySeverityLevel == nil {
+		return ""
+	}
+	return *r.SecuritySeverityLevel
+}
+
 // GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
 func (r *Rule) GetSeverity() string {
 	if r == nil || r.Severity == nil {
 		return ""
 	}
 	return *r.Severity
-}
-
-// GetSeverityLevel returns the SeverityLevel field if it's non-nil, zero value otherwise.
-func (r *Rule) GetSeverityLevel() string {
-	if r == nil || r.SeverityLevel == nil {
-		return ""
-	}
-	return *r.SeverityLevel
 }
 
 // GetBusy returns the Busy field if it's non-nil, zero value otherwise.

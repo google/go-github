@@ -16776,6 +16776,16 @@ func TestRule_GetName(tt *testing.T) {
 	r.GetName()
 }
 
+func TestRule_GetSecuritySeverityLevel(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{SecuritySeverityLevel: &zeroValue}
+	r.GetSecuritySeverityLevel()
+	r = &Rule{}
+	r.GetSecuritySeverityLevel()
+	r = nil
+	r.GetSecuritySeverityLevel()
+}
+
 func TestRule_GetSeverity(tt *testing.T) {
 	var zeroValue string
 	r := &Rule{Severity: &zeroValue}
@@ -16784,16 +16794,6 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
-}
-
-func TestRule_GetSeverityLevel(tt *testing.T) {
-	var zeroValue string
-	r := &Rule{SeverityLevel: &zeroValue}
-	r.GetSeverityLevel()
-	r = &Rule{}
-	r.GetSeverityLevel()
-	r = nil
-	r.GetSeverityLevel()
 }
 
 func TestRunner_GetBusy(tt *testing.T) {

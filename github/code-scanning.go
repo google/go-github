@@ -20,14 +20,14 @@ type CodeScanningService service
 
 // Rule represents the complete details of GitHub Code Scanning alert type.
 type Rule struct {
-	ID              *string  `json:"id,omitempty"`
-	Severity        *string  `json:"severity,omitempty"`
-	Description     *string  `json:"description,omitempty"`
-	Name            *string  `json:"name,omitempty"`
-	SeverityLevel   *string  `json:"security_severity_level,omitempty"`
-	FullDescription *string  `json:"full_description,omitempty"`
-	Tags            []string `json:"tags,omitempty"`
-	Help            *string  `json:"help,omitempty"`
+	ID                    *string  `json:"id,omitempty"`
+	Severity              *string  `json:"severity,omitempty"`
+	Description           *string  `json:"description,omitempty"`
+	Name                  *string  `json:"name,omitempty"`
+	SecuritySeverityLevel *string  `json:"security_severity_level,omitempty"`
+	FullDescription       *string  `json:"full_description,omitempty"`
+	Tags                  []string `json:"tags,omitempty"`
+	Help                  *string  `json:"help,omitempty"`
 }
 
 // Location represents the exact location of the GitHub Code Scanning Alert in the scanned project.
