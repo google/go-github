@@ -519,6 +519,16 @@ func TestAppConfig_GetPEM(tt *testing.T) {
 	a.GetPEM()
 }
 
+func TestAppConfig_GetSlug(tt *testing.T) {
+	var zeroValue string
+	a := &AppConfig{Slug: &zeroValue}
+	a.GetSlug()
+	a = &AppConfig{}
+	a.GetSlug()
+	a = nil
+	a.GetSlug()
+}
+
 func TestAppConfig_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	a := &AppConfig{UpdatedAt: &zeroValue}
