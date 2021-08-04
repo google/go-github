@@ -72,6 +72,7 @@ func TestAppConfig_Marshal(t *testing.T) {
 
 	u := &AppConfig{
 		ID:     Int64(1),
+		Slug:   String("s"),
 		NodeID: String("nid"),
 		Owner: &User{
 			Login:           String("l"),
@@ -107,6 +108,7 @@ func TestAppConfig_Marshal(t *testing.T) {
 
 	want := `{
 		"id": 1,
+		"slug": "s",
 		"node_id": "nid",
 		"owner": {
 			"login": "l",

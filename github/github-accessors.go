@@ -460,6 +460,14 @@ func (a *AppConfig) GetPEM() string {
 	return *a.PEM
 }
 
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetSlug() string {
+	if a == nil || a.Slug == nil {
+		return ""
+	}
+	return *a.Slug
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (a *AppConfig) GetUpdatedAt() Timestamp {
 	if a == nil || a.UpdatedAt == nil {
