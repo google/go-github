@@ -37,6 +37,8 @@ const (
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
 
+	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
+
 	mediaTypeV3                = "application/vnd.github.v3+json"
 	defaultMediaType           = "application/octet-stream"
 	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
@@ -558,7 +560,7 @@ func parseRate(r *http.Response) Rate {
 // parseTokenExpiration parses the TokenExpiration related headers.
 func parseTokenExpiration(r *http.Response) Timestamp {
 	var exp Timestamp
-	if v := r.Header.Get("GitHub-Authentication-Token-Expiration"); v != "" {
+	if v := r.Header.Get(headerTokenExpiration); v != "" {
 		t, _ := time.Parse("2006-01-02 03:04:05 MST", v)
 		exp = Timestamp{t.Local()}
 	}
