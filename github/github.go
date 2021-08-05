@@ -464,6 +464,9 @@ type Response struct {
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
+
+	// token's expiration date
+	TokenExpiration Timestamp
 }
 
 // newResponse creates a new Response for the provided http.Response.
@@ -472,6 +475,7 @@ func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
 	response.populatePageValues()
 	response.Rate = parseRate(r)
+	response.TokenExpiration = parseTokenExpiration(r)
 	return response
 }
 
@@ -549,6 +553,16 @@ func parseRate(r *http.Response) Rate {
 		}
 	}
 	return rate
+}
+
+// parseTokenExpiration parses the TokenExpiration related headers.
+func parseTokenExpiration(r *http.Response) Timestamp {
+	var exp Timestamp
+	if v := r.Header.Get("GitHub-Authentication-Token-Expiration"); v != "" {
+		t, _ := time.Parse("20006-15-04", v)
+		exp = Timestamp{t}
+	}
+	return exp
 }
 
 type requestContext uint8
