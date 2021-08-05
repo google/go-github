@@ -561,8 +561,9 @@ func parseRate(r *http.Response) Rate {
 func parseTokenExpiration(r *http.Response) Timestamp {
 	var exp Timestamp
 	if v := r.Header.Get(headerTokenExpiration); v != "" {
-		t, _ := time.Parse("2006-01-02 03:04:05 MST", v)
-		exp = Timestamp{t.Local()}
+		if t, err := time.Parse("2006-01-02 03:04:05 MST", v); err == nil {
+			exp = Timestamp{t.Local()}
+		}
 	}
 	return exp
 }
