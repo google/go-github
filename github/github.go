@@ -559,7 +559,7 @@ func parseRate(r *http.Response) Rate {
 func parseTokenExpiration(r *http.Response) Timestamp {
 	var exp Timestamp
 	if v := r.Header.Get("GitHub-Authentication-Token-Expiration"); v != "" {
-		t, _ := time.Parse("20006-15-04", v)
+		t, _ := time.Parse("2006-01-02 03:04:05 MST", v)
 		exp = Timestamp{t}
 	}
 	return exp
