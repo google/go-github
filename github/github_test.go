@@ -2209,31 +2209,27 @@ func TestRateLimits_Marshal(t *testing.T) {
 
 func TestParseTokenExpiration(t *testing.T) {
 	tests := []struct {
-		res    *http.Response
 		header string
 		want   Timestamp
 	}{
 		{
-			res: &http.Response{
-				Request: &http.Request{},
-				Header:  http.Header{},
-			},
 			header: "",
 			want:   Timestamp{},
 		},
 		{
-			res: &http.Response{
-				Request: &http.Request{},
-				Header:  http.Header{},
-			},
 			header: "2021-09-03 02:34:04 UTC",
 			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
 		},
 	}
 
 	for _, tt := range tests {
-		tt.res.Header.Set(headerTokenExpiration, tt.header)
-		exp := parseTokenExpiration(tt.res)
+		res := &http.Response{
+			Request: &http.Request{},
+			Header:  http.Header{},
+		}
+
+		res.Header.Set(headerTokenExpiration, tt.header)
+		exp := parseTokenExpiration(res)
 		if !exp.Equal(tt.want) {
 			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
 		}
