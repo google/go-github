@@ -13646,6 +13646,16 @@ func TestPunchCard_GetHour(tt *testing.T) {
 	p.GetHour()
 }
 
+func TestPushEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &PushEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &PushEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
 func TestPushEvent_GetAfter(tt *testing.T) {
 	var zeroValue string
 	p := &PushEvent{After: &zeroValue}
@@ -13748,6 +13758,13 @@ func TestPushEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPushEvent_GetOrganization(tt *testing.T) {
+	p := &PushEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
 }
 
 func TestPushEvent_GetPusher(tt *testing.T) {

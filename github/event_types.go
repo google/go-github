@@ -785,6 +785,7 @@ type PushEvent struct {
 	DistinctSize *int          `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
+	Action       *string              `json:"action,omitempty"`
 	After        *string              `json:"after,omitempty"`
 	Created      *bool                `json:"created,omitempty"`
 	Deleted      *bool                `json:"deleted,omitempty"`
@@ -796,6 +797,7 @@ type PushEvent struct {
 	Pusher       *User                `json:"pusher,omitempty"`
 	Sender       *User                `json:"sender,omitempty"`
 	Installation *Installation        `json:"installation,omitempty"`
+	Organization *Organization        `json:"organization,omitempty"`
 }
 
 func (p PushEvent) String() string {

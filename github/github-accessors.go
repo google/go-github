@@ -11732,6 +11732,14 @@ func (p *PunchCard) GetHour() int {
 	return *p.Hour
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *PushEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
 // GetAfter returns the After field if it's non-nil, zero value otherwise.
 func (p *PushEvent) GetAfter() string {
 	if p == nil || p.After == nil {
@@ -11818,6 +11826,14 @@ func (p *PushEvent) GetInstallation() *Installation {
 		return nil
 	}
 	return p.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (p *PushEvent) GetOrganization() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Organization
 }
 
 // GetPusher returns the Pusher field.
