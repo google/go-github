@@ -2206,3 +2206,36 @@ func TestRateLimits_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestParseTokenExpiration(t *testing.T) {
+	tests := []struct {
+		header string
+		want   Timestamp
+	}{
+		{
+			header: "",
+			want:   Timestamp{},
+		},
+		{
+			header: "this is a garbage",
+			want:   Timestamp{},
+		},
+		{
+			header: "2021-09-03 02:34:04 UTC",
+			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
+		},
+	}
+
+	for _, tt := range tests {
+		res := &http.Response{
+			Request: &http.Request{},
+			Header:  http.Header{},
+		}
+
+		res.Header.Set(headerTokenExpiration, tt.header)
+		exp := parseTokenExpiration(res)
+		if !exp.Equal(tt.want) {
+			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
+		}
+	}
+}
