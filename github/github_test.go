@@ -2217,6 +2217,10 @@ func TestParseTokenExpiration(t *testing.T) {
 			want:   Timestamp{},
 		},
 		{
+			header: "this is a garbage",
+			want:   Timestamp{},
+		},
+		{
 			header: "2021-09-03 02:34:04 UTC",
 			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
 		},
