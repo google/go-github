@@ -220,14 +220,6 @@ func (a *Alert) GetMostRecentInstance() *MostRecentInstance {
 	return a.MostRecentInstance
 }
 
-// GetOpen returns the Open field if it's non-nil, zero value otherwise.
-func (a *Alert) GetOpen() bool {
-	if a == nil || a.Open == nil {
-		return false
-	}
-	return *a.Open
-}
-
 // GetRule returns the Rule field.
 func (a *Alert) GetRule() *Rule {
 	if a == nil {
@@ -258,6 +250,14 @@ func (a *Alert) GetRuleSeverity() string {
 		return ""
 	}
 	return *a.RuleSeverity
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (a *Alert) GetState() string {
+	if a == nil || a.State == nil {
+		return ""
+	}
+	return *a.State
 }
 
 // GetTool returns the Tool field.
@@ -14370,6 +14370,14 @@ func (r *Rule) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetSecuritySeverityLevel returns the SecuritySeverityLevel field if it's non-nil, zero value otherwise.
+func (r *Rule) GetSecuritySeverityLevel() string {
+	if r == nil || r.SecuritySeverityLevel == nil {
+		return ""
+	}
+	return *r.SecuritySeverityLevel
 }
 
 // GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
