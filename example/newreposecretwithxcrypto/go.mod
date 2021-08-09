@@ -1,4 +1,4 @@
-module newreposecret
+module newreposecretwithxcrypto
 
 go 1.15
 
