@@ -1,10 +1,10 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 // newreposecretwithxcrypto creates a new secret in GitHub for a given owner/repo.
-// newreposecretwithxcrypto uses x/cryptocrypto/nacl/box instead of sodium.
+// newreposecretwithxcrypto uses x/crypto/nacl/box instead of sodium.
 // It does not depend on any native libraries and is easier to cross-compile for different platforms.
 // Quite possibly there is a performance penalty due to this.
 //
@@ -115,18 +115,20 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 // Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
-// using the public key of the target repo. This encryption must be done using sodium.
+// using the public key of the target repo. This encryption is done using x/crypto/nacl/box.
 //
 // First, the public key of the repo is retrieved. The public key comes base64
-// encoded, so it must be decoded prior to use in sodiumlib.
+// encoded, so it must be decoded prior to use.
 //
-// Second, the secret value is converted into a slice of bytes.
+// Second, the decode key is converted into a fixed size byte array.
 //
-// Third, the secret is encrypted with sodium.CryptoBoxSeal using the repo's decoded public key.
+// Third, the secret value is converted into a slice of bytes.
 //
-// Fourth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
+// Fourth, the secret is encrypted with box.SealAnonymous using the repo's decoded public key.
 //
-// Fifth, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
+// Fifth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
+//
+// Sixt, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
 // (string not base64), and the KeyID of the public key used to encrypt the secret.
 // This can be retrieved via the public key's GetKeyID method.
 //
