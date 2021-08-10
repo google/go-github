@@ -1,13 +1,14 @@
-// Copyright 2020 The go-github AUTHORS. All rights reserved.
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// newreposecret creates a new secret in GitHub for a given owner/repo.
-// newreposecret depends on sodium being installed. Installation instructions for Sodium can be found at this url:
-// https://github.com/jedisct1/libsodium
+// newreposecretwithxcrypto creates a new secret in GitHub for a given owner/repo.
+// newreposecretwithxcrypto uses x/crypto/nacl/box instead of sodium.
+// It does not depend on any native libraries and is easier to cross-compile for different platforms.
+// Quite possibly there is a performance penalty due to this.
 //
-// newreposecret has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
+// newreposecretwithxcrypto has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
 // The secret value is pulled from an environment variable based on the secret name.
 // To authenticate with GitHub, provide your token via an environment variable GITHUB_AUTH_TOKEN.
 //
@@ -26,15 +27,15 @@ package main
 
 import (
 	"context"
+	crypto_rand "crypto/rand"
 	"encoding/base64"
-	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 
-	sodium "github.com/GoKillers/libsodium-go/cryptobox"
 	"github.com/google/go-github/v37/github"
+	"golang.org/x/crypto/nacl/box"
 	"golang.org/x/oauth2"
 )
 
@@ -114,18 +115,20 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 // Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
-// using the public key of the target repo. This encryption must be done using sodium.
+// using the public key of the target repo. This encryption is done using x/crypto/nacl/box.
 //
 // First, the public key of the repo is retrieved. The public key comes base64
-// encoded, so it must be decoded prior to use in sodiumlib.
+// encoded, so it must be decoded prior to use.
 //
-// Second, the secret value is converted into a slice of bytes.
+// Second, the decode key is converted into a fixed size byte array.
 //
-// Third, the secret is encrypted with sodium.CryptoBoxSeal using the repo's decoded public key.
+// Third, the secret value is converted into a slice of bytes.
 //
-// Fourth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
+// Fourth, the secret is encrypted with box.SealAnonymous using the repo's decoded public key.
 //
-// Fifth, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
+// Fifth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
+//
+// Sixt, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
 // (string not base64), and the KeyID of the public key used to encrypt the secret.
 // This can be retrieved via the public key's GetKeyID method.
 //
@@ -150,15 +153,18 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner string, rep
 }
 
 func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName string, secretValue string) (*github.EncryptedSecret, error) {
+
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
 		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
 	}
 
+	var boxKey [32]byte
+	copy(boxKey[:], decodedPublicKey)
 	secretBytes := []byte(secretValue)
-	encryptedBytes, exit := sodium.CryptoBoxSeal(secretBytes, decodedPublicKey)
-	if exit != 0 {
-		return nil, errors.New("sodium.CryptoBoxSeal exited with non zero exit code")
+	encryptedBytes, err := box.SealAnonymous([]byte{}, secretBytes, &boxKey, crypto_rand.Reader)
+	if err != nil {
+		return nil, fmt.Errorf("box.SealAnonymous failed with error %w", err)
 	}
 
 	encryptedString := base64.StdEncoding.EncodeToString(encryptedBytes)

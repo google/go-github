@@ -1,4 +1,4 @@
-module newreposecret
+module newreposecretwithlibsodium
 
 go 1.15
 
