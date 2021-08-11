@@ -17452,6 +17452,46 @@ func (w *WorkflowJob) GetURL() string {
 	return *w.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (w *WorkflowJobEvent) GetAction() string {
+	if w == nil || w.Action == nil {
+		return ""
+	}
+	return *w.Action
+}
+
+// GetOrg returns the Org field.
+func (w *WorkflowJobEvent) GetOrg() *Organization {
+	if w == nil {
+		return nil
+	}
+	return w.Org
+}
+
+// GetRepo returns the Repo field.
+func (w *WorkflowJobEvent) GetRepo() *Repository {
+	if w == nil {
+		return nil
+	}
+	return w.Repo
+}
+
+// GetSender returns the Sender field.
+func (w *WorkflowJobEvent) GetSender() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Sender
+}
+
+// GetWorkflowJob returns the WorkflowJob field.
+func (w *WorkflowJobEvent) GetWorkflowJob() *WorkflowJob {
+	if w == nil {
+		return nil
+	}
+	return w.WorkflowJob
+}
+
 // GetArtifactsURL returns the ArtifactsURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetArtifactsURL() string {
 	if w == nil || w.ArtifactsURL == nil {
