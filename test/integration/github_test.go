@@ -15,7 +15,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v37/github"
+	"github.com/google/go-github/v38/github"
 	"golang.org/x/oauth2"
 )
 
