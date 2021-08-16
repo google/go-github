@@ -4708,6 +4708,14 @@ func (g *GPGKey) GetPublicKey() string {
 	return *g.PublicKey
 }
 
+// GetRawKey returns the RawKey field if it's non-nil, zero value otherwise.
+func (g *GPGKey) GetRawKey() string {
+	if g == nil || g.RawKey == nil {
+		return ""
+	}
+	return *g.RawKey
+}
+
 // GetApp returns the App field.
 func (g *Grant) GetApp() *AuthorizationApp {
 	if g == nil {

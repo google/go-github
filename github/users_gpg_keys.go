@@ -18,6 +18,7 @@ type GPGKey struct {
 	ID                *int64      `json:"id,omitempty"`
 	PrimaryKeyID      *int64      `json:"primary_key_id,omitempty"`
 	KeyID             *string     `json:"key_id,omitempty"`
+	RawKey            *string     `json:"raw_key,omitempty"`
 	PublicKey         *string     `json:"public_key,omitempty"`
 	Emails            []*GPGEmail `json:"emails,omitempty"`
 	Subkeys           []*GPGKey   `json:"subkeys,omitempty"`

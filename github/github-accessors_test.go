@@ -5502,6 +5502,16 @@ func TestGPGKey_GetPublicKey(tt *testing.T) {
 	g.GetPublicKey()
 }
 
+func TestGPGKey_GetRawKey(tt *testing.T) {
+	var zeroValue string
+	g := &GPGKey{RawKey: &zeroValue}
+	g.GetRawKey()
+	g = &GPGKey{}
+	g.GetRawKey()
+	g = nil
+	g.GetRawKey()
+}
+
 func TestGrant_GetApp(tt *testing.T) {
 	g := &Grant{}
 	g.GetApp()
