@@ -458,7 +458,7 @@ type Response struct {
 	// calling the endpoint again.
 	NextPageToken string
 
-	// For APIs that support cursor pagination, such as RepositoryService.ListRepositoryHookDeliveries,
+	// For APIs that support cursor pagination, such as RepositoriesService.ListHookDeliveries,
 	// the following field will be populated to point to the next page.
 	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
 	Cursor string
