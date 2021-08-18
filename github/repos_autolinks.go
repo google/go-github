@@ -16,8 +16,7 @@ type AutolinkOptions struct {
 	URLTemplate *string `json:"url_template,omitempty"`
 }
 
-// Autolink represents an autolink reference of a repository and is used by
-// RepositoriesService.ListAutolinks, RepositoriesService.AddAutolink and RepositoriesService.GetAutolink methods.
+// Autolink represents autolinks to external resources like JIRA issues and Zendesk tickets.
 type Autolink struct {
 	ID          *int64  `json:"id,omitempty"`
 	KeyPrefix   *string `json:"key_prefix,omitempty"`
