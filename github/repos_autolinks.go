@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// AutolinkOptions specifies parameters for RepositoriesService.AddAutolink method
+// AutolinkOptions specifies parameters for RepositoriesService.AddAutolink method.
 // Also this struct is embedded into an Autolink struct which contains one additional ID field
 type AutolinkOptions struct {
 	KeyPrefix   *string `json:"key_prefix,omitempty"`
@@ -26,6 +26,7 @@ type Autolink struct {
 
 // ListAutolinks returns a list of autolinks configured for the given repository.
 // Information about autolinks are only available to repository administrators.
+//
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#list-all-autolinks-of-a-repository
 func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
@@ -50,6 +51,7 @@ func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo str
 
 // AddAutolink creates an autolink reference for a repository.
 // Users with admin access to the repository can create an autolink.
+//
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#create-an-autolink-reference-for-a-repository
 func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, opts *AutolinkOptions) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
@@ -57,6 +59,7 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 	if err != nil {
 		return nil, nil, err
 	}
+
 	al := new(Autolink)
 	resp, err := s.client.Do(ctx, req, al)
 	if err != nil {
@@ -67,9 +70,10 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 
 // GetAutolink returns a single autolink reference by ID that was configured for the given repository.
 // Information about autolinks are only available to repository administrators.
+//
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-an-autolink-reference-of-a-repository
-func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo string, id int) (*Autolink, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks/%d", owner, repo, id)
+func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo string, id int64) (*Autolink, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -87,9 +91,10 @@ func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo strin
 
 // DeleteAutolink deletes a single autolink reference by ID that was configured for the given repository.
 // Information about autolinks are only available to repository administrators.
+//
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#delete-an-autolink-reference-from-a-repository
-func (s *RepositoriesService) DeleteAutolink(ctx context.Context, owner, repo string, id int) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/autolinks/%d", owner, repo, id)
+func (s *RepositoriesService) DeleteAutolink(ctx context.Context, owner, repo string, id int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
