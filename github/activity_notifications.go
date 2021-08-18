@@ -51,7 +51,7 @@ type NotificationListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/#list-notifications-for-the-authenticated-user
 func (s *ActivityService) ListNotifications(ctx context.Context, opts *NotificationListOptions) ([]*Notification, *Response, error) {
-	u := fmt.Sprintf("notifications")
+	u := "notifications"
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
