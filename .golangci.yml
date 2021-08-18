@@ -11,3 +11,12 @@ linters:
     - unconvert
     - unparam
     - whitespace
+issues: 
+  exclude-rules:
+  - linters:
+    - dogsled
+    text:  "declaration has 3 blank identifiers"
+    path: _test\.go
+  - linters:
+    - dupl
+    path: _test\.go
