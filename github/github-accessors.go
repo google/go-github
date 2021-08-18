@@ -1197,6 +1197,22 @@ func (a *Autolink) GetID() int64 {
 }
 
 // GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetKeyPrefix() string {
+	if a == nil || a.KeyPrefix == nil {
+		return ""
+	}
+	return *a.KeyPrefix
+}
+
+// GetURLTemplate returns the URLTemplate field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetURLTemplate() string {
+	if a == nil || a.URLTemplate == nil {
+		return ""
+	}
+	return *a.URLTemplate
+}
+
+// GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
 func (a *AutolinkOptions) GetKeyPrefix() string {
 	if a == nil || a.KeyPrefix == nil {
 		return ""

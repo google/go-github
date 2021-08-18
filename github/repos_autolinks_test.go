@@ -35,8 +35,8 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	}
 
 	want := []*Autolink{
-		{ID: Int64(1), AutolinkOptions: &AutolinkOptions{KeyPrefix: String("TICKET-"), URLTemplate: String("https://example.com/TICKET?query=<num>")}},
-		{ID: Int64(2), AutolinkOptions: &AutolinkOptions{KeyPrefix: String("STORY-"), URLTemplate: String("https://example.com/STORY?query=<num>")}},
+		{ID: Int64(1), KeyPrefix: String("TICKET-"), URLTemplate: String("https://example.com/TICKET?query=<num>")},
+		{ID: Int64(2), KeyPrefix: String("STORY-"), URLTemplate: String("https://example.com/STORY?query=<num>")},
 	}
 
 	if !cmp.Equal(autolinks, want) {
@@ -79,10 +79,8 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		t.Errorf("Repositories.AddAutolink returned error: %v", err)
 	}
 	want := &Autolink{
-		AutolinkOptions: &AutolinkOptions{
-			KeyPrefix:   String("TICKET-"),
-			URLTemplate: String("https://example.com/TICKET?query=<num>"),
-		},
+		KeyPrefix:   String("TICKET-"),
+		URLTemplate: String("https://example.com/TICKET?query=<num>"),
 	}
 
 	if !cmp.Equal(autolink, want) {
@@ -119,7 +117,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 		t.Errorf("Repositories.GetAutolink returned error: %v", err)
 	}
 
-	want := &Autolink{ID: Int64(1), AutolinkOptions: &AutolinkOptions{KeyPrefix: String("TICKET-"), URLTemplate: String("https://example.com/TICKET?query=<num>")}}
+	want := &Autolink{ID: Int64(1), KeyPrefix: String("TICKET-"), URLTemplate: String("https://example.com/TICKET?query=<num>")}
 	if !cmp.Equal(autolink, want) {
 		t.Errorf("Repositories.GetAutolink returned %+v, want %+v", autolink, want)
 	}

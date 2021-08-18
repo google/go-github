@@ -17,11 +17,12 @@ type AutolinkOptions struct {
 	URLTemplate *string `json:"url_template,omitempty"`
 }
 
-// Autolink embeds an AutolinkOptions struct and is used by
-// RepositoriesService.ListAutolinks, RepositoriesService.AddAutolink and RepositoriesService.GetAutolink methods
+// Autolink represents an autolink reference of a repository and is used by
+// RepositoriesService.ListAutolinks, RepositoriesService.AddAutolink and RepositoriesService.GetAutolink methods.
 type Autolink struct {
-	ID *int64 `json:"id,omitempty"`
-	*AutolinkOptions
+	ID          *int64  `json:"id,omitempty"`
+	KeyPrefix   *string `json:"key_prefix,omitempty"`
+	URLTemplate *string `json:"url_template,omitempty"`
 }
 
 // ListAutolinks returns a list of autolinks configured for the given repository.

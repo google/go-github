@@ -1427,6 +1427,26 @@ func TestAutolink_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestAutolink_GetKeyPrefix(tt *testing.T) {
+	var zeroValue string
+	a := &Autolink{KeyPrefix: &zeroValue}
+	a.GetKeyPrefix()
+	a = &Autolink{}
+	a.GetKeyPrefix()
+	a = nil
+	a.GetKeyPrefix()
+}
+
+func TestAutolink_GetURLTemplate(tt *testing.T) {
+	var zeroValue string
+	a := &Autolink{URLTemplate: &zeroValue}
+	a.GetURLTemplate()
+	a = &Autolink{}
+	a.GetURLTemplate()
+	a = nil
+	a.GetURLTemplate()
+}
+
 func TestAutolinkOptions_GetKeyPrefix(tt *testing.T) {
 	var zeroValue string
 	a := &AutolinkOptions{KeyPrefix: &zeroValue}
