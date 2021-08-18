@@ -1,4 +1,8 @@
 linters:
+  # TODO: fix errors so that all of the linters below pass.
+  # The linters that are commented out, as well as those explicitly disabled,
+  # are currently failing.  We should fix those failures or define exclusion
+  # rules, and then enable those linters.
   enable:
     - dogsled
     - dupl
