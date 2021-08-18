@@ -11,7 +11,6 @@ import (
 )
 
 // AutolinkOptions specifies parameters for RepositoriesService.AddAutolink method.
-// Also this struct is embedded into an Autolink struct which contains one additional ID field
 type AutolinkOptions struct {
 	KeyPrefix   *string `json:"key_prefix,omitempty"`
 	URLTemplate *string `json:"url_template,omitempty"`
