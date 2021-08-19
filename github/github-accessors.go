@@ -220,14 +220,6 @@ func (a *Alert) GetMostRecentInstance() *MostRecentInstance {
 	return a.MostRecentInstance
 }
 
-// GetOpen returns the Open field if it's non-nil, zero value otherwise.
-func (a *Alert) GetOpen() bool {
-	if a == nil || a.Open == nil {
-		return false
-	}
-	return *a.Open
-}
-
 // GetRule returns the Rule field.
 func (a *Alert) GetRule() *Rule {
 	if a == nil {
@@ -258,6 +250,14 @@ func (a *Alert) GetRuleSeverity() string {
 		return ""
 	}
 	return *a.RuleSeverity
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (a *Alert) GetState() string {
+	if a == nil || a.State == nil {
+		return ""
+	}
+	return *a.State
 }
 
 // GetTool returns the Tool field.
@@ -458,6 +458,14 @@ func (a *AppConfig) GetPEM() string {
 		return ""
 	}
 	return *a.PEM
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (a *AppConfig) GetSlug() string {
+	if a == nil || a.Slug == nil {
+		return ""
+	}
+	return *a.Slug
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -4698,6 +4706,14 @@ func (g *GPGKey) GetPublicKey() string {
 		return ""
 	}
 	return *g.PublicKey
+}
+
+// GetRawKey returns the RawKey field if it's non-nil, zero value otherwise.
+func (g *GPGKey) GetRawKey() string {
+	if g == nil || g.RawKey == nil {
+		return ""
+	}
+	return *g.RawKey
 }
 
 // GetApp returns the App field.
@@ -14212,6 +14228,14 @@ func (r *RepoStats) GetTotalWikis() int {
 	return *r.TotalWikis
 }
 
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (r *RepoStatus) GetAvatarURL() string {
+	if r == nil || r.AvatarURL == nil {
+		return ""
+	}
+	return *r.AvatarURL
+}
+
 // GetContext returns the Context field if it's non-nil, zero value otherwise.
 func (r *RepoStatus) GetContext() string {
 	if r == nil || r.Context == nil {
@@ -14354,6 +14378,14 @@ func (r *Rule) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetSecuritySeverityLevel returns the SecuritySeverityLevel field if it's non-nil, zero value otherwise.
+func (r *Rule) GetSecuritySeverityLevel() string {
+	if r == nil || r.SecuritySeverityLevel == nil {
+		return ""
+	}
+	return *r.SecuritySeverityLevel
 }
 
 // GetSeverity returns the Severity field if it's non-nil, zero value otherwise.

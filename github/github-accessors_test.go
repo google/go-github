@@ -234,16 +234,6 @@ func TestAlert_GetMostRecentInstance(tt *testing.T) {
 	a.GetMostRecentInstance()
 }
 
-func TestAlert_GetOpen(tt *testing.T) {
-	var zeroValue bool
-	a := &Alert{Open: &zeroValue}
-	a.GetOpen()
-	a = &Alert{}
-	a.GetOpen()
-	a = nil
-	a.GetOpen()
-}
-
 func TestAlert_GetRule(tt *testing.T) {
 	a := &Alert{}
 	a.GetRule()
@@ -279,6 +269,16 @@ func TestAlert_GetRuleSeverity(tt *testing.T) {
 	a.GetRuleSeverity()
 	a = nil
 	a.GetRuleSeverity()
+}
+
+func TestAlert_GetState(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{State: &zeroValue}
+	a.GetState()
+	a = &Alert{}
+	a.GetState()
+	a = nil
+	a.GetState()
 }
 
 func TestAlert_GetTool(tt *testing.T) {
@@ -517,6 +517,16 @@ func TestAppConfig_GetPEM(tt *testing.T) {
 	a.GetPEM()
 	a = nil
 	a.GetPEM()
+}
+
+func TestAppConfig_GetSlug(tt *testing.T) {
+	var zeroValue string
+	a := &AppConfig{Slug: &zeroValue}
+	a.GetSlug()
+	a = &AppConfig{}
+	a.GetSlug()
+	a = nil
+	a.GetSlug()
 }
 
 func TestAppConfig_GetUpdatedAt(tt *testing.T) {
@@ -5490,6 +5500,16 @@ func TestGPGKey_GetPublicKey(tt *testing.T) {
 	g.GetPublicKey()
 	g = nil
 	g.GetPublicKey()
+}
+
+func TestGPGKey_GetRawKey(tt *testing.T) {
+	var zeroValue string
+	g := &GPGKey{RawKey: &zeroValue}
+	g.GetRawKey()
+	g = &GPGKey{}
+	g.GetRawKey()
+	g = nil
+	g.GetRawKey()
 }
 
 func TestGrant_GetApp(tt *testing.T) {
@@ -16599,6 +16619,16 @@ func TestRepoStats_GetTotalWikis(tt *testing.T) {
 	r.GetTotalWikis()
 }
 
+func TestRepoStatus_GetAvatarURL(tt *testing.T) {
+	var zeroValue string
+	r := &RepoStatus{AvatarURL: &zeroValue}
+	r.GetAvatarURL()
+	r = &RepoStatus{}
+	r.GetAvatarURL()
+	r = nil
+	r.GetAvatarURL()
+}
+
 func TestRepoStatus_GetContext(tt *testing.T) {
 	var zeroValue string
 	r := &RepoStatus{Context: &zeroValue}
@@ -16774,6 +16804,16 @@ func TestRule_GetName(tt *testing.T) {
 	r.GetName()
 	r = nil
 	r.GetName()
+}
+
+func TestRule_GetSecuritySeverityLevel(tt *testing.T) {
+	var zeroValue string
+	r := &Rule{SecuritySeverityLevel: &zeroValue}
+	r.GetSecuritySeverityLevel()
+	r = &Rule{}
+	r.GetSecuritySeverityLevel()
+	r = nil
+	r.GetSecuritySeverityLevel()
 }
 
 func TestRule_GetSeverity(tt *testing.T) {

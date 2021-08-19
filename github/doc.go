@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v37/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+	import "github.com/google/go-github/v38/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 	import "github.com/google/go-github/github"     // with go modules disabled
 
 Construct a new GitHub client, then use the various services on the client to
@@ -112,7 +112,7 @@ To detect an API rate limit error, you can check if its type is *github.RateLimi
 	}
 
 Learn more about GitHub rate limiting at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/#rate-limiting.
+https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#rate-limiting.
 
 Accepted Status
 
@@ -138,7 +138,7 @@ instead designed to work with a caching http.Transport. We recommend using
 https://github.com/gregjones/httpcache for that.
 
 Learn more about GitHub conditional requests at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/#conditional-requests.
+https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#conditional-requests.
 
 Creating and Updating Resources
 

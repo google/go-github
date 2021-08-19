@@ -14,7 +14,7 @@ import (
 	"log"
 	"syscall"
 
-	"github.com/google/go-github/v37/github"
+	"github.com/google/go-github/v38/github"
 	"golang.org/x/crypto/ssh/terminal"
 	"golang.org/x/oauth2"
 )
@@ -22,6 +22,7 @@ import (
 func main() {
 	fmt.Print("GitHub Token: ")
 	byteToken, _ := terminal.ReadPassword(int(syscall.Stdin))
+	println()
 	token := string(byteToken)
 
 	ctx := context.Background()
@@ -39,7 +40,12 @@ func main() {
 	}
 
 	// Rate.Limit should most likely be 5000 when authorized.
-	log.Printf("Rate: %#v", resp.Rate)
+	log.Printf("Rate: %#v\n", resp.Rate)
+
+	// If a Token Expiration has been set, it will be displayed.
+	if !resp.TokenExpiration.IsZero() {
+		log.Printf("Token Expiration: %v\n", resp.TokenExpiration)
+	}
 
 	fmt.Printf("\n%v\n", github.Stringify(user))
 }

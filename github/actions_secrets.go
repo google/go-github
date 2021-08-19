@@ -302,7 +302,7 @@ func (s *ActionsService) SetSelectedReposForOrgSecret(ctx context.Context, org, 
 	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", org, name)
 
 	type repoIDs struct {
-		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
 	req, err := s.client.NewRequest("PUT", u, repoIDs{SelectedIDs: ids})

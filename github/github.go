@@ -37,6 +37,8 @@ const (
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
 
+	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
+
 	mediaTypeV3                = "application/vnd.github.v3+json"
 	defaultMediaType           = "application/octet-stream"
 	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
@@ -456,7 +458,7 @@ type Response struct {
 	// calling the endpoint again.
 	NextPageToken string
 
-	// For APIs that support cursor pagination, such as RepositoryService.ListRepositoryHookDeliveries,
+	// For APIs that support cursor pagination, such as RepositoriesService.ListHookDeliveries,
 	// the following field will be populated to point to the next page.
 	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
 	Cursor string
@@ -464,6 +466,9 @@ type Response struct {
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
+
+	// token's expiration date
+	TokenExpiration Timestamp
 }
 
 // newResponse creates a new Response for the provided http.Response.
@@ -472,6 +477,7 @@ func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
 	response.populatePageValues()
 	response.Rate = parseRate(r)
+	response.TokenExpiration = parseTokenExpiration(r)
 	return response
 }
 
@@ -549,6 +555,17 @@ func parseRate(r *http.Response) Rate {
 		}
 	}
 	return rate
+}
+
+// parseTokenExpiration parses the TokenExpiration related headers.
+func parseTokenExpiration(r *http.Response) Timestamp {
+	var exp Timestamp
+	if v := r.Header.Get(headerTokenExpiration); v != "" {
+		if t, err := time.Parse("2006-01-02 03:04:05 MST", v); err == nil {
+			exp = Timestamp{t.Local()}
+		}
+	}
+	return exp
 }
 
 type requestContext uint8

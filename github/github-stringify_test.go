@@ -375,13 +375,14 @@ func TestGPGKey_String(t *testing.T) {
 		ID:                Int64(0),
 		PrimaryKeyID:      Int64(0),
 		KeyID:             String(""),
+		RawKey:            String(""),
 		PublicKey:         String(""),
 		CanSign:           Bool(false),
 		CanEncryptComms:   Bool(false),
 		CanEncryptStorage: Bool(false),
 		CanCertify:        Bool(false),
 	}
-	want := `github.GPGKey{ID:0, PrimaryKeyID:0, KeyID:"", PublicKey:"", CanSign:false, CanEncryptComms:false, CanEncryptStorage:false, CanCertify:false}`
+	want := `github.GPGKey{ID:0, PrimaryKeyID:0, KeyID:"", RawKey:"", PublicKey:"", CanSign:false, CanEncryptComms:false, CanEncryptStorage:false, CanCertify:false}`
 	if got := v.String(); got != want {
 		t.Errorf("GPGKey.String = %v, want %v", got, want)
 	}
@@ -1372,9 +1373,10 @@ func TestRepoStatus_String(t *testing.T) {
 		TargetURL:   String(""),
 		Description: String(""),
 		Context:     String(""),
+		AvatarURL:   String(""),
 		Creator:     &User{},
 	}
-	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", Creator:github.User{}}`
+	want := `github.RepoStatus{ID:0, NodeID:"", URL:"", State:"", TargetURL:"", Description:"", Context:"", AvatarURL:"", Creator:github.User{}}`
 	if got := v.String(); got != want {
 		t.Errorf("RepoStatus.String = %v, want %v", got, want)
 	}
