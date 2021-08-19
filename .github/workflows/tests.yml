@@ -21,10 +21,12 @@ jobs:
           # is very little in the library that is platform specific
           - go-version: 1.x
             platform: windows-latest
+            go-build: ~/AppData/Local/go-build
 
           # only update test coverage stats with the most recent go version on linux
           - go-version: 1.x
             platform: ubuntu-latest
+            go-build: ~/.cache/go-build
             update-coverage: true
     runs-on: ${{ matrix.platform }}
 
@@ -42,7 +44,9 @@ jobs:
     - name: Cache go modules
       uses: actions/cache@v2
       with:
-        path: ~/go/pkg/mod
+        path: |
+          ${{ matrix.go-build }}
+          ~/go/pkg/mod
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
