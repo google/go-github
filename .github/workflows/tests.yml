@@ -21,7 +21,7 @@ jobs:
           # is very little in the library that is platform specific
           - go-version: 1.x
             platform: windows-latest
-
+            
           # only update test coverage stats with the most recent go version on linux
           - go-version: 1.x
             platform: ubuntu-latest
@@ -38,11 +38,19 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v2
-
+    
+    # Get values for cache paths to be used in later steps 
+    - id: cache-paths
+      run: |
+        echo "::set-output name=go-cache::$(go env GOCACHE)"
+        echo "::set-output name=go-mod-cache::$(go env GOMODCACHE)"
+      
     - name: Cache go modules
       uses: actions/cache@v2
       with:
-        path: ~/go/pkg/mod
+        path: |
+          ${{ steps.cache-paths.outputs.go-cache }}
+          ${{ steps.cache-paths.outputs.go-mod-cache }}
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
