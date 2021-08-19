@@ -72,4 +72,4 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: ${{ matrix.update-coverage }}
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.0.2
