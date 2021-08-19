@@ -4,6 +4,14 @@ updates:
   directory: /
   schedule:
     interval: weekly
+- package-ecosystem: gomod
+  directory: scrape
+  schedule:
+    interval: weekly
+- package-ecosystem: gomod
+  directory: update-urls
+  schedule:
+    interval: weekly
 - package-ecosystem: github-actions
   directory: /
   schedule:
