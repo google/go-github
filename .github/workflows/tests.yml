@@ -21,15 +21,10 @@ jobs:
           # is very little in the library that is platform specific
           - go-version: 1.x
             platform: windows-latest
-            go-build: ~/AppData/Local/go-build
             
-          - go-version: 1.15.x
-            platform: ubuntu-latest
-            go-build: ~/.cache/go-build
           # only update test coverage stats with the most recent go version on linux
           - go-version: 1.x
             platform: ubuntu-latest
-            go-build: ~/.cache/go-build
             update-coverage: true
     runs-on: ${{ matrix.platform }}
 
@@ -43,12 +38,16 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v2
-
+    
+    # Get values for cache paths to be used in later steps 
+    - id: go-cache
+      run: echo "::set-output name=go-build::$(go env GOCACHE)"
+      
     - name: Cache go modules
       uses: actions/cache@v2
       with:
         path: |
-          ${{ matrix.go-build }}
+          ${{ steps.go-cache.outputs.go-build }}
           ~/go/pkg/mod
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
