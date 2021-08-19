@@ -40,15 +40,17 @@ jobs:
     - uses: actions/checkout@v2
     
     # Get values for cache paths to be used in later steps 
-    - id: go-cache
-      run: echo "::set-output name=go-build::$(go env GOCACHE)"
+    - id: cache-paths
+      run: |
+        echo "::set-output name=go-cache::$(go env GOCACHE)"
+        echo "::set-output name=go-mod-cache::$(go env GOMODCACHE)"
       
     - name: Cache go modules
       uses: actions/cache@v2
       with:
         path: |
-          ${{ steps.go-cache.outputs.go-build }}
-          ~/go/pkg/mod
+          ${{ steps.cache-paths.outputs.go-cache }}
+          ${{ steps.cache-paths.outputs.go-mod-cache }}
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
