@@ -126,7 +126,9 @@ func main() {
 	}
 
 	if err := os.Chdir("./github"); err != nil {
-		log.Fatalf("Please run this from the go-github directory.")
+		if err := os.Chdir("../github"); err != nil {
+			log.Fatalf("Please run this from the go-github directory.")
+		}
 	}
 
 	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, parser.ParseComments)
@@ -427,7 +429,7 @@ func (rafi *realAstFileIterator) Reset() {
 		var count int
 		for _, pkg := range rafi.pkgs {
 			for filename, f := range pkg.Files {
-				logf("Sending file #%v: %v to channel", count, filename)
+				// logf("Sending file #%v: %v to channel", count, filename)
 				rafi.ch <- &filenameAstFilePair{filename: filename, astFile: f}
 				count++
 			}
@@ -443,7 +445,7 @@ func (rafi *realAstFileIterator) Reset() {
 
 func (rafi *realAstFileIterator) Next() *filenameAstFilePair {
 	for pair := range rafi.ch {
-		logf("Next: returning file %v", pair.filename)
+		// logf("Next: returning file %v", pair.filename)
 		return pair
 	}
 	return nil
@@ -704,7 +706,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 
 			receiverName := recv.Names[0].Name
 
-			logf("ast.FuncDecl: %#v", *decl)           // Doc, Recv, Name, Type, Body
+			logf("\n\nast.FuncDecl: %#v", *decl)       // Doc, Recv, Name, Type, Body
 			logf("ast.FuncDecl.Name: %#v", *decl.Name) // NamePos, Name, Obj(nil)
 			// logf("ast.FuncDecl.Recv: %#v", *decl.Recv)  // Opening, List, Closing
 			logf("ast.FuncDecl.Recv.List[0]: %#v", *recv) // Doc, Names, Type, Tag, Comment
@@ -1055,8 +1057,10 @@ func processCallExpr(expr *ast.CallExpr) (recv, funcName string, args []string) 
 		case *ast.SelectorExpr: // X, Sel
 			logf("processCallExpr: X recv *ast.SelectorExpr: %#v", x.Sel)
 			recv = x.Sel.Name
+		case *ast.CallExpr: // Fun, LParen, Args, Ellipsis, RParen
+			logf("processCallExpr: X recv *ast.CallExpr: %#v", x)
 		default:
-			log.Fatalf("processCallExpr: unhandled X receiver type: %T", x)
+			log.Fatalf("processCallExpr: unhandled X receiver type: %T, funcName=%q", x, funcName)
 		}
 	default:
 		log.Fatalf("processCallExpr: unhandled Fun: %T", expr.Fun)
@@ -1191,9 +1195,7 @@ func parseEndpoint(s, method string) *Endpoint {
 	// 	eol = v
 	// }
 	path := strings.TrimSpace(s[len(method):eol])
-	if strings.HasPrefix(path, "{server}") { // Hack to remove {server}
-		path = strings.TrimPrefix(path, "{server}")
-	}
+	path = strings.TrimPrefix(path, "{server}")
 	path = paramLegacyRE.ReplaceAllString(path, "%v")
 	path = paramRE.ReplaceAllString(path, "%v")
 	// strip leading garbage

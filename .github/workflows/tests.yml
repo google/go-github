@@ -56,7 +56,7 @@ jobs:
 
     - name: Ensure go generate produces a zero diff
       shell: bash
-      run:  go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+      run: go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
 
     - name: Run go test
       run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
@@ -73,3 +73,10 @@ jobs:
     - name: Upload coverage to Codecov
       if: ${{ matrix.update-coverage }}
       uses: codecov/codecov-action@51d810878be5422784e86451c0e7c14e5860ec47 #v2.0.2
+
+    - name: Ensure go generate produces a zero diff for update-urls
+      shell: bash
+      run: cd update-urls && go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+
+    - name: Run go test for update-urls
+      run: cd update-urls && go test -v -race ./...
