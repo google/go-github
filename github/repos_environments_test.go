@@ -238,3 +238,91 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 		return client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
 	})
 }
+
+func TestRepoEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EnvResponse{}, "{}")
+
+	repoEnv := &EnvResponse{
+		TotalCount: Int(1),
+		Environments: []*Environment{
+			{
+				Owner:           String("me"),
+				Repo:            String("se"),
+				EnvironmentName: String("dev"),
+				WaitTimer:       Int(123),
+				Reviewers: []*EnvReviewers{
+					{
+						Type: String("main"),
+						ID:   Int64(1),
+					},
+					{
+						Type: String("rev"),
+						ID:   Int64(2),
+					},
+				},
+				DeploymentBranchPolicy: &BranchPolicy{
+					ProtectedBranches:    Bool(false),
+					CustomBranchPolicies: Bool(false),
+				},
+				ID:        Int64(2),
+				NodeID:    String("star"),
+				Name:      String("eg"),
+				URL:       String("https://hey.in"),
+				HTMLURL:   String("htmlurl"),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+				ProtectionRules: []*ProtectionRule{
+					{
+						ID:        Int64(21),
+						NodeID:    String("mnb"),
+						Type:      String("ewq"),
+						WaitTimer: Int(9090),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count":1,
+		"environments":[
+		   {
+			  "owner":"me",
+			  "repo":"se",
+			  "environment_name":"dev",
+			  "wait_timer":123,
+			  "reviewers":[
+				 {
+					"type":"main",
+					"id":1
+				 },
+				 {
+					"type":"rev",
+					"id":2
+				 }
+			  ],
+			  "deployment_branch_policy":{
+				 "protected_branches":false,
+				 "custom_branch_policies":false
+			  },
+			  "id":2,
+			  "node_id":"star",
+			  "name":"eg",
+			  "url":"https://hey.in",
+			  "html_url":"htmlurl",
+			  "created_at":` + referenceTimeStr + `,
+			  "updated_at":` + referenceTimeStr + `,
+			  "protection_rules":[
+				 {
+					"id":21,
+					"node_id":"mnb",
+					"type":"ewq",
+					"wait_timer":9090
+				 }
+			  ]
+		   }
+		]
+	 }`
+
+	testJSONMarshal(t, repoEnv, want)
+}
