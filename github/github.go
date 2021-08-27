@@ -181,8 +181,8 @@ type Client struct {
 	PullRequests   *PullRequestsService
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
-	Search         *SearchService
 	SCIM           *SCIMService
+	Search         *SearchService
 	Teams          *TeamsService
 	Users          *UsersService
 }

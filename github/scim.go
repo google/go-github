@@ -1,3 +1,8 @@
+// Copyright 2021 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -12,33 +17,41 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim
 type SCIMService service
 
+// SCIMUserAttributes represents supported SCIM User atrributes.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/scim#supported-scim-user-attributes
 type SCIMUserAttributes struct {
-	UserName    string            `json:"user_name"`              // Configured by the admin. Could be an email, login, or username. (Required.)
-	Name        SCIMUserName      `json:"name"`                   // (Required.)
-	DisplayName *string           `json:"display_name,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
-	Emails      []*SCIMUserEmails `json:"email"`                  // User emails. (Required.)
-	Schemas     []*string         `json:"schemas,omitempty"`      // (Optional.)
-	ExternalID  *string           `json:"external_id,omitempty"`  // (Optional.)
-	Groups      []*string         `json:"groups,omitempty"`       // (Optional.)
-	Active      bool              `json:"active,omitempty"`       // (Optional.)
+	UserName    string           `json:"user_name"`              // Configured by the admin. Could be an email, login, or username. (Required.)
+	Name        SCIMUserName     `json:"name"`                   // (Required.)
+	DisplayName *string          `json:"display_name,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
+	Emails      []*SCIMUserEmail `json:"email"`                  // User emails. (Required.)
+	Schemas     []string         `json:"schemas,omitempty"`      // (Optional.)
+	ExternalID  *string          `json:"external_id,omitempty"`  // (Optional.)
+	Groups      []string         `json:"groups,omitempty"`       // (Optional.)
+	Active      *bool            `json:"active,omitempty"`       // (Optional.)
 }
 
+// SCIMUserName represents SCIM user information.
 type SCIMUserName struct {
 	GivenName  string  `json:"given_name"`          // The first name of the user. (Required.)
 	FamilyName string  `json:"family_name"`         // The last name of the user. (Required.)
 	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
 }
 
-type SCIMUserEmails struct {
+//SCIMUserEmail represents SCIM user email.
+type SCIMUserEmail struct {
 	Value   string  `json:"value"`             // (Required.)
-	Primary bool    `json:"primary,omitempty"` // (Optional.)
+	Primary *bool   `json:"primary,omitempty"` // (Optional.)
 	Type    *string `json:"type,omitempty"`    // (Optional.)
 }
 
+// ListSCIMProvisionedIdentitiesOptions represents options for ListSCIMProvisionedIdentities.
+//
+// Github API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities--parameters
 type ListSCIMProvisionedIdentitiesOptions struct {
 	StartIndex *int    `json:"start_index,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
 	Count      *int    `json:"count,omitempty"`       // Used for pagination: the number of results to return. (Optional.)
-	Filter     *string `json:"filter,omitempty"`      // Filters results using the equals query parameter operator (eq). You can filter results that are equal to id, userName, emails, and external_id. For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\". To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\". (Optional.)
+	Filter     *string `json:"filter,omitempty"`      // Filter results using the equals query parameter operator (eq). You can filter results that are equal to id, userName, emails, and external_id. For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\". To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\". (Optional.)
 }
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
@@ -57,7 +70,7 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 	return s.client.Do(ctx, req, nil)
 }
 
-// ProvisionAndInviteSCIMUser provisions organization membership for a user, and send an activation email to the email address.
+// ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#provision-and-invite-a-scim-user
 func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*Response, error) {
@@ -73,7 +86,7 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 	return s.client.Do(ctx, req, nil)
 }
 
-// GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user
+// GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#get-scim-provisioning-information-for-a-user
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*Response, error) {
@@ -102,8 +115,8 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 }
 
 type UpdateAttributeForSCIMUserOptions struct {
-	Schemas    []*string                            `json:"schemas"`    // (Optional.)
-	Operations UpdateAttributeForSCIMUserOperations `json:"operations"` // Set of operations to be performed. (Required.)
+	Schemas    []string                             `json:"schemas,omitempty"` // (Optional.)
+	Operations UpdateAttributeForSCIMUserOperations `json:"operations"`        // Set of operations to be performed. (Required.)
 }
 
 type UpdateAttributeForSCIMUserOperations struct {
@@ -128,7 +141,7 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 	return s.client.Do(ctx, req, nil)
 }
 
-// DeleteSCIMUserFromOrg deletes SCIM user from an organization
+// DeleteSCIMUserFromOrg deletes SCIM user from an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#delete-a-scim-user-from-an-organization
 func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID string) (*Response, error) {

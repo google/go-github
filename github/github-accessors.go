@@ -14596,6 +14596,14 @@ func (r *RunnerLabels) GetType() string {
 	return *r.Type
 }
 
+// GetActive returns the Active field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetActive() bool {
+	if s == nil || s.Active == nil {
+		return false
+	}
+	return *s.Active
+}
+
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
 func (s *SCIMUserAttributes) GetDisplayName() string {
 	if s == nil || s.DisplayName == nil {
@@ -14612,8 +14620,16 @@ func (s *SCIMUserAttributes) GetExternalID() string {
 	return *s.ExternalID
 }
 
+// GetPrimary returns the Primary field if it's non-nil, zero value otherwise.
+func (s *SCIMUserEmail) GetPrimary() bool {
+	if s == nil || s.Primary == nil {
+		return false
+	}
+	return *s.Primary
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
-func (s *SCIMUserEmails) GetType() string {
+func (s *SCIMUserEmail) GetType() string {
 	if s == nil || s.Type == nil {
 		return ""
 	}

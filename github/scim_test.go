@@ -49,7 +49,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 			GivenName:  "givenName",
 			FamilyName: "familyName",
 		},
-		Emails: []*SCIMUserEmails{
+		Emails: []*SCIMUserEmail{
 			{
 				Value: "octocat@github.com",
 			},
@@ -113,7 +113,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 			GivenName:  "givenName",
 			FamilyName: "familyName",
 		},
-		Emails: []*SCIMUserEmails{
+		Emails: []*SCIMUserEmail{
 			{
 				Value: "octocat@github.com",
 			},

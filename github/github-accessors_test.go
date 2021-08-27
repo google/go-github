@@ -17076,6 +17076,16 @@ func TestRunnerLabels_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestSCIMUserAttributes_GetActive(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserAttributes{Active: &zeroValue}
+	s.GetActive()
+	s = &SCIMUserAttributes{}
+	s.GetActive()
+	s = nil
+	s.GetActive()
+}
+
 func TestSCIMUserAttributes_GetDisplayName(tt *testing.T) {
 	var zeroValue string
 	s := &SCIMUserAttributes{DisplayName: &zeroValue}
@@ -17096,11 +17106,21 @@ func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
 	s.GetExternalID()
 }
 
-func TestSCIMUserEmails_GetType(tt *testing.T) {
+func TestSCIMUserEmail_GetPrimary(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserEmail{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMUserEmail{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMUserEmail_GetType(tt *testing.T) {
 	var zeroValue string
-	s := &SCIMUserEmails{Type: &zeroValue}
+	s := &SCIMUserEmail{Type: &zeroValue}
 	s.GetType()
-	s = &SCIMUserEmails{}
+	s = &SCIMUserEmail{}
 	s.GetType()
 	s = nil
 	s.GetType()
