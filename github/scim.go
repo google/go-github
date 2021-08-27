@@ -49,9 +49,14 @@ type SCIMUserEmail struct {
 //
 // Github API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities--parameters
 type ListSCIMProvisionedIdentitiesOptions struct {
-	StartIndex *int    `json:"start_index,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
-	Count      *int    `json:"count,omitempty"`       // Used for pagination: the number of results to return. (Optional.)
-	Filter     *string `json:"filter,omitempty"`      // Filter results using the equals query parameter operator (eq). You can filter results that are equal to id, userName, emails, and external_id. For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\". To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\". (Optional.)
+	StartIndex *int `json:"start_index,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
+	Count      *int `json:"count,omitempty"`       // Used for pagination: the number of results to return. (Optional.)
+	// Filter results using the equals query parameter operator (eq).
+	//You can filter results that are equal to id, userName, emails, and external_id.
+	//For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\".
+	//To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\".
+	//(Optional.)
+	Filter *string `json:"filter,omitempty"`
 }
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
@@ -114,11 +119,15 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 	return s.client.Do(ctx, req, nil)
 }
 
+// UpdateAttributeForSCIMUserOptions represents options for UpdateAttributeForSCIMUser.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/scim#update-an-attribute-for-a-scim-user--parameters
 type UpdateAttributeForSCIMUserOptions struct {
 	Schemas    []string                             `json:"schemas,omitempty"` // (Optional.)
 	Operations UpdateAttributeForSCIMUserOperations `json:"operations"`        // Set of operations to be performed. (Required.)
 }
 
+// UpdateAttributeForSCIMUserOperations represents operations for UpdateAttributeForSCIMUser.
 type UpdateAttributeForSCIMUserOperations struct {
 	Op    string          `json:"op"`              // (Required.)
 	Path  *string         `json:"path,omitempty"`  // (Optional.)
