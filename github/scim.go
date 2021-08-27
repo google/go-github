@@ -17,7 +17,7 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim
 type SCIMService service
 
-// SCIMUserAttributes represents supported SCIM User atrributes.
+// SCIMUserAttributes represents supported SCIM User attributes.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#supported-scim-user-attributes
 type SCIMUserAttributes struct {
@@ -33,9 +33,9 @@ type SCIMUserAttributes struct {
 
 // SCIMUserName represents SCIM user information.
 type SCIMUserName struct {
-	GivenName string  `json:"givenName"`           // The first name of the user. (Required.)
-	LastName  string  `json:"lastName"`            // The last name of the user. (Required.)
-	Formatted *string `json:"formatted,omitempty"` // (Optional.)
+	GivenName  string  `json:"givenName"`           // The first name of the user. (Required.)
+	FamilyName string  `json:"familyName"`          // The family name of the user. (Required.)
+	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
 }
 
 //SCIMUserEmail represents SCIM user email.

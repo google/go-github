@@ -51,8 +51,8 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	opts := &SCIMUserAttributes{
 		UserName: "userName",
 		Name: SCIMUserName{
-			GivenName: "givenName",
-			LastName:  "lastName",
+			GivenName:  "givenName",
+			FamilyName: "familyName",
 		},
 		Emails: []*SCIMUserEmail{
 			{
@@ -115,8 +115,8 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 	opts := &SCIMUserAttributes{
 		UserName: "userName",
 		Name: SCIMUserName{
-			GivenName: "givenName",
-			LastName:  "lastName",
+			GivenName:  "givenName",
+			FamilyName: "familyName",
 		},
 		Emails: []*SCIMUserEmail{
 			{
