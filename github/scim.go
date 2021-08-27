@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -23,15 +24,15 @@ type SCIMUserAttributes struct {
 }
 
 type SCIMUserName struct {
-	GivenName  string  `json:"given_name"`  // The first name of the user. (Required.)
-	FamilyName string  `json:"family_name"` // The last name of the user. (Required.)
-	Formatted  *string `json:"formatted,omitempty"`
+	GivenName  string  `json:"given_name"`          // The first name of the user. (Required.)
+	FamilyName string  `json:"family_name"`         // The last name of the user. (Required.)
+	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
 }
 
 type SCIMUserEmails struct {
-	Value   string  `json:"value"` // (Required.)
-	Primary bool    `json:"primary,omitempty"`
-	Type    *string `json:"type,omitempty"`
+	Value   string  `json:"value"`             // (Required.)
+	Primary bool    `json:"primary,omitempty"` // (Optional.)
+	Type    *string `json:"type,omitempty"`    // (Optional.)
 }
 
 type ListSCIMProvisionedIdentitiesOptions struct {
@@ -44,7 +45,7 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities
 func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*Response, error) {
-	u := fmt.Sprintf("/scim/v2/organizations/%v/Users", org)
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, err
@@ -60,7 +61,7 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#provision-and-invite-a-scim-user
 func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*Response, error) {
-	u := fmt.Sprintf("/scim/v2/organizations/%v/Users", org)
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, err
@@ -76,7 +77,7 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#get-scim-provisioning-information-for-a-user
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*Response, error) {
-	u := fmt.Sprintf("/scim/v2/organizations/%v/Users/%v", org, scimUserID)
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, err
@@ -88,7 +89,7 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#update-a-provisioned-organization-membership
 func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) {
-	u := fmt.Sprintf("/scim/v2/organizations/%v/Users/%v", org, scimUserID)
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, err
@@ -101,28 +102,37 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 }
 
 type UpdateAttributeForSCIMUserOptions struct {
-	Schemas    []*string
-	Operations UpdateAttributeForSCIMUserOperations
+	Schemas    []*string                            `json:"schemas"`    // (Optional.)
+	Operations UpdateAttributeForSCIMUserOperations `json:"operations"` // Set of operations to be performed. (Required.)
 }
 
 type UpdateAttributeForSCIMUserOperations struct {
-	Op    string  `json:"op"` // (Required.)
-	Path  *string `json:"path,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Op    string          `json:"op"`              // (Required.)
+	Path  *string         `json:"path,omitempty"`  // (Optional.)
+	Value json.RawMessage `json:"value,omitempty"` // (Optional.)
 }
 
 // UpdateAttributeForSCIMUser updates an attribute for an SCIM user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#update-an-attribute-for-a-scim-user
-func UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string) (*Response, error) {
-	return nil, nil
+func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string, opts *UpdateAttributeForSCIMUserOptions) (*Response, error) {
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, err
+	}
+	req, err := s.client.NewRequest("PATCH", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(ctx, req, nil)
 }
 
 // DeleteSCIMUserFromOrg deletes SCIM user from an organization
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#delete-a-scim-user-from-an-organization
 func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID string) (*Response, error) {
-	u := fmt.Sprintf("/scim/v2/organizations/%v/Users/%v", org, scimUserID)
+	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
