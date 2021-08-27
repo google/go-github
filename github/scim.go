@@ -21,21 +21,21 @@ type SCIMService service
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#supported-scim-user-attributes
 type SCIMUserAttributes struct {
-	UserName    string           `json:"user_name"`              // Configured by the admin. Could be an email, login, or username. (Required.)
-	Name        SCIMUserName     `json:"name"`                   // (Required.)
-	DisplayName *string          `json:"display_name,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
-	Emails      []*SCIMUserEmail `json:"email"`                  // User emails. (Required.)
-	Schemas     []string         `json:"schemas,omitempty"`      // (Optional.)
-	ExternalID  *string          `json:"external_id,omitempty"`  // (Optional.)
-	Groups      []string         `json:"groups,omitempty"`       // (Optional.)
-	Active      *bool            `json:"active,omitempty"`       // (Optional.)
+	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
+	Name        SCIMUserName     `json:"name"`                  // (Required.)
+	DisplayName *string          `json:"displayName,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
+	Emails      []*SCIMUserEmail `json:"emails"`                // User emails. (Required.)
+	Schemas     []string         `json:"schemas,omitempty"`     // (Optional.)
+	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
+	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
+	Active      *bool            `json:"active,omitempty"`      // (Optional.)
 }
 
 // SCIMUserName represents SCIM user information.
 type SCIMUserName struct {
-	GivenName  string  `json:"given_name"`          // The first name of the user. (Required.)
-	FamilyName string  `json:"family_name"`         // The last name of the user. (Required.)
-	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
+	GivenName string  `json:"givenName"`           // The first name of the user. (Required.)
+	LastName  string  `json:"lastName"`            // The last name of the user. (Required.)
+	Formatted *string `json:"formatted,omitempty"` // (Optional.)
 }
 
 //SCIMUserEmail represents SCIM user email.
@@ -49,8 +49,8 @@ type SCIMUserEmail struct {
 //
 // Github API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities--parameters
 type ListSCIMProvisionedIdentitiesOptions struct {
-	StartIndex *int `json:"start_index,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
-	Count      *int `json:"count,omitempty"`       // Used for pagination: the number of results to return. (Optional.)
+	StartIndex *int `json:"startIndex,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
+	Count      *int `json:"count,omitempty"`      // Used for pagination: the number of results to return. (Optional.)
 	// Filter results using the equals query parameter operator (eq).
 	// You can filter results that are equal to id, userName, emails, and external_id.
 	// For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\".
