@@ -145,5 +145,4 @@ func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, f
 		resp, err = s.getWorkflowLogsFromURL(ctx, u, false)
 	}
 	return resp, err
-
 }

@@ -2002,7 +2002,6 @@ func TestAddOptions_QueryValues(t *testing.T) {
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-
 	client, mux, _, teardown := setup()
 	defer teardown()
 

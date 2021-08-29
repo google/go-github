@@ -295,7 +295,6 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 		"workflow_runs":[
 			{"id":298499444,"run_number":301,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"},
 			{"id":298499445,"run_number":302,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"}]}`)
-
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -341,7 +340,6 @@ func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-
 		w.WriteHeader(http.StatusNoContent)
 	})
 

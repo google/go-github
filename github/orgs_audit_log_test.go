@@ -110,7 +110,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
@@ -143,7 +142,6 @@ func TestGetAuditLogOptions_Marshal(t *testing.T) {
 
 func TestHookConfig_Marshal(t *testing.T) {
 	testJSONMarshal(t, &HookConfig{}, "{}")
-
 	u := &HookConfig{
 		ContentType: String("ct"),
 		InsecureSSL: String("ct"),
@@ -161,7 +159,6 @@ func TestHookConfig_Marshal(t *testing.T) {
 
 func TestAuditEntry_Marshal(t *testing.T) {
 	testJSONMarshal(t, &AuditEntry{}, "{}")
-
 	u := &AuditEntry{
 		Action:                String("a"),
 		Active:                Bool(false),

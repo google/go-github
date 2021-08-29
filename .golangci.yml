@@ -15,7 +15,7 @@ linters:
   # - stylecheck
   # - unconvert
   # - unparam
-  # - whitespace
+    - whitespace
   disable:
     - errcheck
     - staticcheck
