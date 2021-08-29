@@ -14,7 +14,7 @@ linters:
     - nakedret
   # - stylecheck
   # - unconvert
-  # - unparam
+    - unparam
     - whitespace
   disable:
     - errcheck

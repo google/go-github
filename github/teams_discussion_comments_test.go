@@ -17,8 +17,8 @@ import (
 )
 
 // "Team Discussion Comments" endpoint, when using a teamID.
-func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) string {
-	out := fmt.Sprintf("/organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
+func tdcEndpointByID(commentNumber string) string {
+	out := "/organizations/1/team/2/discussions/3/comments"
 	if commentNumber != "" {
 		return fmt.Sprintf("%v/%v", out, commentNumber)
 	}
@@ -26,8 +26,8 @@ func tdcEndpointByID(orgID, teamID, discussionNumber, commentNumber string) stri
 }
 
 // "Team Discussion Comments" endpoint, when using a team slug.
-func tdcEndpointBySlug(org, slug, dicsuccionsNumber, commentNumber string) string {
-	out := fmt.Sprintf("/orgs/%v/teams/%v/discussions/%v/comments", org, slug, dicsuccionsNumber)
+func tdcEndpointBySlug(commentNumber string) string {
+	out := "/orgs/a/teams/b/discussions/3/comments"
 	if commentNumber != "" {
 		return fmt.Sprintf("%v/%v", out, commentNumber)
 	}
@@ -115,7 +115,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 		},
 	}
 
-	e := tdcEndpointByID("1", "2", "3", "")
+	e := tdcEndpointByID("")
 	mux.HandleFunc(e, handleFunc)
 
 	ctx := context.Background()
@@ -129,7 +129,7 @@ func TestTeamsService_ListComments(t *testing.T) {
 		t.Errorf("Teams.ListCommentsByID returned %+v, want %+v", commentsByID, want)
 	}
 
-	e = tdcEndpointBySlug("a", "b", "3", "")
+	e = tdcEndpointBySlug("")
 	mux.HandleFunc(e, handleFunc)
 
 	commentsBySlug, _, err := client.Teams.ListCommentsBySlug(ctx, "a", "b", 3,
@@ -185,7 +185,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 	}
 	want := &DiscussionComment{Number: Int(4)}
 
-	e := tdcEndpointByID("1", "2", "3", "4")
+	e := tdcEndpointByID("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	ctx := context.Background()
@@ -198,7 +198,7 @@ func TestTeamsService_GetComment(t *testing.T) {
 		t.Errorf("Teams.GetCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
-	e = tdcEndpointBySlug("a", "b", "3", "4")
+	e = tdcEndpointBySlug("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	commentBySlug, _, err := client.Teams.GetCommentBySlug(ctx, "a", "b", 3, 4)
@@ -258,7 +258,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 	}
 	want := &DiscussionComment{Number: Int(4)}
 
-	e := tdcEndpointByID("1", "2", "3", "")
+	e := tdcEndpointByID("")
 	mux.HandleFunc(e, handlerFunc)
 
 	ctx := context.Background()
@@ -271,7 +271,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 		t.Errorf("Teams.CreateCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
-	e = tdcEndpointBySlug("a", "b", "3", "")
+	e = tdcEndpointBySlug("")
 	mux.HandleFunc(e, handlerFunc)
 
 	commentBySlug, _, err := client.Teams.CreateCommentBySlug(ctx, "a", "b", 3, input)
@@ -330,7 +330,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	}
 	want := &DiscussionComment{Number: Int(4)}
 
-	e := tdcEndpointByID("1", "2", "3", "4")
+	e := tdcEndpointByID("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	ctx := context.Background()
@@ -343,7 +343,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 		t.Errorf("Teams.EditCommentByID returned %+v, want %+v", commentByID, want)
 	}
 
-	e = tdcEndpointBySlug("a", "b", "3", "4")
+	e = tdcEndpointBySlug("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	commentBySlug, _, err := client.Teams.EditCommentBySlug(ctx, "a", "b", 3, 4, input)
@@ -392,7 +392,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	}
 
-	e := tdcEndpointByID("1", "2", "3", "4")
+	e := tdcEndpointByID("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	ctx := context.Background()
@@ -401,7 +401,7 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 		t.Errorf("Teams.DeleteCommentByID returned error: %v", err)
 	}
 
-	e = tdcEndpointBySlug("a", "b", "3", "4")
+	e = tdcEndpointBySlug("4")
 	mux.HandleFunc(e, handlerFunc)
 
 	_, err = client.Teams.DeleteCommentBySlug(ctx, "a", "b", 3, 4)
