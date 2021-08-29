@@ -612,7 +612,7 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
 
-	inputs := make(map[string]interface{}, 0)
+	inputs := make(map[string]interface{})
 	inputs["key"] = "value"
 
 	u := &CreateWorkflowDispatchEventRequest{

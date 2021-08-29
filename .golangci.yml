@@ -9,6 +9,7 @@ linters:
     - gofmt
     - goimports
   # - gosec
+    - gosimple
     - misspell
     - nakedret
   # - stylecheck
@@ -17,7 +18,6 @@ linters:
   # - whitespace
   disable:
     - errcheck
-    - gosimple
     - staticcheck
     - ineffassign
     - unused
