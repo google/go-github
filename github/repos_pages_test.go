@@ -408,11 +408,11 @@ func TestPages_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Pages{}, "{}")
 
 	u := &Pages{
-		URL:       String("cname"),
-		Status:    String("cname"),
+		URL:       String("url"),
+		Status:    String("status"),
 		CNAME:     String("cname"),
 		Custom404: Bool(false),
-		HTMLURL:   String("src"),
+		HTMLURL:   String("hurl"),
 		Source: &PagesSource{
 			Branch: String("branch"),
 			Path:   String("path"),
@@ -420,11 +420,11 @@ func TestPages_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"url": "cname",
-		"status": "cname",
+		"url": "url",
+		"status": "status",
 		"cname": "cname",
 		"custom_404": false,
-		"html_url": "src",
+		"html_url": "hurl",
 		"source": {
 			"branch": "branch",
 			"path": "path"
@@ -438,28 +438,28 @@ func TestPagesBuild_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PagesBuild{}, "{}")
 
 	u := &PagesBuild{
-		URL:    String("cname"),
-		Status: String("cname"),
+		URL:    String("url"),
+		Status: String("status"),
 		Error: &PagesError{
 			Message: String("message"),
 		},
 		Pusher:    &User{ID: Int64(1)},
-		Commit:    String("cname"),
+		Commit:    String("commit"),
 		Duration:  Int(1),
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 	}
 
 	want := `{
-		"url": "cname",
-		"status": "cname",
+		"url": "url",
+		"status": "status",
 		"error": {
 			"message": "message"
 		},
 		"pusher": {
 			"id": 1
 		},
-		"commit": "cname",
+		"commit": "commit",
 		"duration": 1,
 		"created_at": ` + referenceTimeStr + `,
 		"updated_at": ` + referenceTimeStr + `
