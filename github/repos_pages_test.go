@@ -357,3 +357,133 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestPagesSource_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesSource{}, "{}")
+
+	u := &PagesSource{
+		Branch: String("branch"),
+		Path:   String("path"),
+	}
+
+	want := `{
+		"branch": "branch",
+		"path": "path"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesError{}, "{}")
+
+	u := &PagesError{
+		Message: String("message"),
+	}
+
+	want := `{
+		"message": "message"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesUpdate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesUpdate{}, "{}")
+
+	u := &PagesUpdate{
+		CNAME:  String("cname"),
+		Source: String("src"),
+	}
+
+	want := `{
+		"cname": "cname",
+		"source": "src"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPages_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Pages{}, "{}")
+
+	u := &Pages{
+		URL:       String("cname"),
+		Status:    String("cname"),
+		CNAME:     String("cname"),
+		Custom404: Bool(false),
+		HTMLURL:   String("src"),
+		Source: &PagesSource{
+			Branch: String("branch"),
+			Path:   String("path"),
+		},
+	}
+
+	want := `{
+		"url": "cname",
+		"status": "cname",
+		"cname": "cname",
+		"custom_404": false,
+		"html_url": "src",
+		"source": {
+			"branch": "branch",
+			"path": "path"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesBuild_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesBuild{}, "{}")
+
+	u := &PagesBuild{
+		URL:    String("cname"),
+		Status: String("cname"),
+		Error: &PagesError{
+			Message: String("message"),
+		},
+		Pusher:    &User{ID: Int64(1)},
+		Commit:    String("cname"),
+		Duration:  Int(1),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"url": "cname",
+		"status": "cname",
+		"error": {
+			"message": "message"
+		},
+		"pusher": {
+			"id": 1
+		},
+		"commit": "cname",
+		"duration": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreatePagesRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createPagesRequest{}, "{}")
+
+	u := &createPagesRequest{
+		Source: &PagesSource{
+			Branch: String("branch"),
+			Path:   String("path"),
+		},
+	}
+
+	want := `{
+		"source": {
+			"branch": "branch",
+			"path": "path"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
