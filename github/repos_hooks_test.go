@@ -296,3 +296,258 @@ func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.TestHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
+
+func TestBranchWebHookPayload_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WebHookPayload{}, "{}")
+
+	v := &WebHookPayload{
+		Action: String("action"),
+		After:  String("after"),
+		Before: String("before"),
+		Commits: []*WebHookCommit{
+			{
+				Added: []string{"1", "2", "3"},
+				Author: &WebHookAuthor{
+					Email:    String("abc@gmail.com"),
+					Name:     String("abc"),
+					Username: String("abc_12"),
+				},
+				Committer: &WebHookAuthor{
+					Email:    String("abc@gmail.com"),
+					Name:     String("abc"),
+					Username: String("abc_12"),
+				},
+				ID:       String("1"),
+				Message:  String("WebHookCommit"),
+				Modified: []string{"abc", "efg", "erd"},
+				Removed:  []string{"cmd", "rti", "duv"},
+			},
+		},
+		Compare: String("compare"),
+		Created: Bool(true),
+		Forced:  Bool(false),
+		HeadCommit: &WebHookCommit{
+			Added: []string{"1", "2", "3"},
+			Author: &WebHookAuthor{
+				Email:    String("abc@gmail.com"),
+				Name:     String("abc"),
+				Username: String("abc_12"),
+			},
+			Committer: &WebHookAuthor{
+				Email:    String("abc@gmail.com"),
+				Name:     String("abc"),
+				Username: String("abc_12"),
+			},
+			ID:       String("1"),
+			Message:  String("WebHookCommit"),
+			Modified: []string{"abc", "efg", "erd"},
+			Removed:  []string{"cmd", "rti", "duv"},
+		},
+		Installation: &Installation{
+			ID: Int64(12),
+		},
+		Organization: &Organization{
+			ID: Int64(22),
+		},
+		Pusher: &User{
+			Login: String("rd@yahoo.com"),
+			ID:    Int64(112),
+		},
+		Repo: &Repository{
+			ID:     Int64(321),
+			NodeID: String("node_321"),
+		},
+		Sender: &User{
+			Login: String("st@gmail.com"),
+			ID:    Int64(202),
+		},
+	}
+
+	want := `{
+		"action": "action",
+		"after":  "after",
+		"before": "before",
+		"commits": [
+			{
+			"added":   ["1", "2", "3"],
+			"author":{
+				"email": "abc@gmail.com",
+				"name": "abc",
+				"username": "abc_12"
+			},
+			"committer": {
+				"email": "abc@gmail.com",
+				"name": "abc",
+				"username": "abc_12"
+			}, 
+			"id":       "1",
+			"message":  "WebHookCommit",
+			"modified": ["abc", "efg", "erd"],
+			"removed":  ["cmd", "rti", "duv"]
+			}
+		],
+		"compare": "compare",
+		"created": true,
+		"forced":  false,
+		"head_commit": {
+			"added":   ["1", "2", "3"],
+		"author":{
+			"email": "abc@gmail.com",
+			"name": "abc",
+			"username": "abc_12"
+		},
+		"committer": {
+			"email": "abc@gmail.com",
+			"name": "abc",
+			"username": "abc_12"
+		}, 
+		"id":       "1",
+		"message":  "WebHookCommit",
+		"modified": ["abc", "efg", "erd"],
+		"removed":  ["cmd", "rti", "duv"]
+		},
+		"installation": {
+			"id": 12
+		},
+		"organization": {
+			"id" : 22
+		},
+		"pusher":{
+			"login": "rd@yahoo.com",
+			"id": 112
+		},
+		"repository":{
+			"id": 321,
+			"node_id": "node_321"
+		},
+		"sender":{
+			"login": "st@gmail.com",
+			"id": 202
+		}
+	}`
+	testJSONMarshal(t, v, want)
+}
+
+func TestBranchWebHookAuthor_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WebHookAuthor{}, "{}")
+
+	v := &WebHookAuthor{
+		Email:    String("abc@gmail.com"),
+		Name:     String("abc"),
+		Username: String("abc_12"),
+	}
+
+	want := `{
+			"email": "abc@gmail.com",
+			"name": "abc",
+			"username": "abc_12"
+	}`
+	testJSONMarshal(t, v, want)
+}
+
+func TestBranchWebHookCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WebHookPayload{}, "{}")
+
+	v := &WebHookCommit{
+		Added: []string{"1", "2", "3"},
+		Author: &WebHookAuthor{
+			Email:    String("abc@gmail.com"),
+			Name:     String("abc"),
+			Username: String("abc_12"),
+		},
+		Committer: &WebHookAuthor{
+			Email:    String("abc@gmail.com"),
+			Name:     String("abc"),
+			Username: String("abc_12"),
+		},
+		ID:       String("1"),
+		Message:  String("WebHookCommit"),
+		Modified: []string{"abc", "efg", "erd"},
+		Removed:  []string{"cmd", "rti", "duv"},
+	}
+
+	want := `{
+			"added":   ["1", "2", "3"],
+			"author":{
+				"email": "abc@gmail.com",
+				"name": "abc",
+				"username": "abc_12"
+			},
+			"committer": {
+				"email": "abc@gmail.com",
+				"name": "abc",
+				"username": "abc_12"
+			}, 
+			"id":       "1",
+			"message":  "WebHookCommit",
+			"modified": ["abc", "efg", "erd"],
+			"removed":  ["cmd", "rti", "duv"]
+			}`
+	testJSONMarshal(t, v, want)
+}
+
+func TestBranchcreateHookRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WebHookAuthor{}, "{}")
+
+	v := &createHookRequest{
+		Name:   "abc",
+		Events: []string{"1", "2", "3"},
+		Active: Bool(true),
+		Config: map[string]interface{}{
+			"thing": "@123",
+		},
+	}
+
+	want := `{
+			"name": "abc",
+			"active": true,
+			"events": ["1","2","3"],
+			"config":{
+				"thing": "@123"
+			}
+	}`
+	testJSONMarshal(t, v, want)
+}
+func TestBranchHook_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Hook{}, "{}")
+
+	v := &Hook{
+		CreatedAt: &referenceTime,
+		UpdatedAt: &referenceTime,
+		URL:       String("url"),
+		ID:        Int64(1),
+		Type:      String("type"),
+		Name:      String("name"),
+		TestURL:   String("testurl"),
+		PingURL:   String("pingurl"),
+		LastResponse: map[string]interface{}{
+			"item": "item",
+		},
+		Config: map[string]interface{}{
+			"thing": "@123",
+		},
+		Events: []string{"1", "2", "3"},
+		Active: Bool(true),
+	}
+
+	want := `{
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"url": "url",
+		"id": 1,
+		"type": "type",
+		"name": "name",
+		"test_url": "testurl",
+		"ping_url": "pingurl",
+		"last_response":{
+			"item": "item"
+		},
+		"config":{
+			"thing": "@123"
+		},
+		"events": ["1","2","3"],
+		"active": true
+		
+	}`
+	testJSONMarshal(t, v, want)
+}
