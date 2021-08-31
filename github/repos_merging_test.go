@@ -62,3 +62,21 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoryMergeRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryMergeRequest{}, "{}")
+
+	u := &RepositoryMergeRequest{
+		Base:          String("base"),
+		Head:          String("head"),
+		CommitMessage: String("cm"),
+	}
+
+	want := `{
+		"base": "base",
+		"head": "head",
+		"commit_message": "cm"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
