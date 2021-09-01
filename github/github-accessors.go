@@ -12564,6 +12564,14 @@ func (r *RepositoriesSearchResult) GetTotal() int {
 	return *r.Total
 }
 
+// GetAllowAutoMerge returns the AllowAutoMerge field if it's non-nil, zero value otherwise.
+func (r *Repository) GetAllowAutoMerge() bool {
+	if r == nil || r.AllowAutoMerge == nil {
+		return false
+	}
+	return *r.AllowAutoMerge
+}
+
 // GetAllowMergeCommit returns the AllowMergeCommit field if it's non-nil, zero value otherwise.
 func (r *Repository) GetAllowMergeCommit() bool {
 	if r == nil || r.AllowMergeCommit == nil {

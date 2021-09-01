@@ -14641,6 +14641,16 @@ func TestRepositoriesSearchResult_GetTotal(tt *testing.T) {
 	r.GetTotal()
 }
 
+func TestRepository_GetAllowAutoMerge(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{AllowAutoMerge: &zeroValue}
+	r.GetAllowAutoMerge()
+	r = &Repository{}
+	r.GetAllowAutoMerge()
+	r = nil
+	r.GetAllowAutoMerge()
+}
+
 func TestRepository_GetAllowMergeCommit(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{AllowMergeCommit: &zeroValue}
