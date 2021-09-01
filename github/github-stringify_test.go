@@ -1422,6 +1422,7 @@ func TestRepository_String(t *testing.T) {
 		AllowRebaseMerge:    Bool(false),
 		AllowSquashMerge:    Bool(false),
 		AllowMergeCommit:    Bool(false),
+		AllowAutoMerge:      Bool(false),
 		DeleteBranchOnMerge: Bool(false),
 		Archived:            Bool(false),
 		Disabled:            Bool(false),

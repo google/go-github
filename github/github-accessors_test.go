@@ -14671,6 +14671,16 @@ func TestRepository_GetAllowSquashMerge(tt *testing.T) {
 	r.GetAllowSquashMerge()
 }
 
+func TestRepository_GetAllowAutoMerge(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{AllowAutoMerge: &zeroValue}
+	r.GetAllowAutoMerge()
+	r = &Repository{}
+	r.GetAllowAutoMerge()
+	r = nil
+	r.GetAllowAutoMerge()
+}
+
 func TestRepository_GetArchived(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{Archived: &zeroValue}

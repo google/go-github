@@ -12588,6 +12588,14 @@ func (r *Repository) GetAllowSquashMerge() bool {
 	return *r.AllowSquashMerge
 }
 
+// GetAllowAutoMerge returns the AllowAutoMerge field if it's non-nil, zero value otherwise.
+func (r *Repository) GetAllowAutoMerge() bool {
+	if r == nil || r.AllowAutoMerge == nil {
+		return false
+	}
+	return *r.AllowAutoMerge
+}
+
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
 func (r *Repository) GetArchived() bool {
 	if r == nil || r.Archived == nil {
