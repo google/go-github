@@ -60,6 +60,7 @@ type Repository struct {
 	AllowRebaseMerge    *bool           `json:"allow_rebase_merge,omitempty"`
 	AllowSquashMerge    *bool           `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool           `json:"allow_merge_commit,omitempty"`
+	AllowAutoMerge      *bool           `json:"allow_auto_merge,omitempty"`
 	DeleteBranchOnMerge *bool           `json:"delete_branch_on_merge,omitempty"`
 	Topics              []string        `json:"topics,omitempty"`
 	Archived            *bool           `json:"archived,omitempty"`
@@ -320,6 +321,7 @@ type createRepoRequest struct {
 	AllowSquashMerge    *bool   `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool   `json:"allow_merge_commit,omitempty"`
 	AllowRebaseMerge    *bool   `json:"allow_rebase_merge,omitempty"`
+	AllowAutoMerge      *bool   `json:"allow_auto_merge,omitempty"`
 	DeleteBranchOnMerge *bool   `json:"delete_branch_on_merge,omitempty"`
 }
 
@@ -362,6 +364,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowSquashMerge:    repo.AllowSquashMerge,
 		AllowMergeCommit:    repo.AllowMergeCommit,
 		AllowRebaseMerge:    repo.AllowRebaseMerge,
+		AllowAutoMerge:      repo.AllowAutoMerge,
 		DeleteBranchOnMerge: repo.DeleteBranchOnMerge,
 	}
 
