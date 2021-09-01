@@ -653,3 +653,125 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		})
 	}
 }
+
+func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
+
+	u := &repositoryReleaseRequest{
+		TagName:                String("tn"),
+		TargetCommitish:        String("tc"),
+		Name:                   String("name"),
+		Body:                   String("body"),
+		Draft:                  Bool(false),
+		Prerelease:             Bool(false),
+		DiscussionCategoryName: String("dcn"),
+	}
+
+	want := `{
+		"tag_name": "tn",
+		"target_commitish": "tc",
+		"name": "name",
+		"body": "body",
+		"draft": false,
+		"prerelease": false,
+		"discussion_category_name": "dcn"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestReleaseAsset_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ReleaseAsset{}, "{}")
+
+	u := &ReleaseAsset{
+		ID:                 Int64(1),
+		URL:                String("url"),
+		Name:               String("name"),
+		Label:              String("label"),
+		State:              String("state"),
+		ContentType:        String("ct"),
+		Size:               Int(1),
+		DownloadCount:      Int(1),
+		CreatedAt:          &Timestamp{referenceTime},
+		UpdatedAt:          &Timestamp{referenceTime},
+		BrowserDownloadURL: String("bdu"),
+		Uploader:           &User{ID: Int64(1)},
+		NodeID:             String("nid"),
+	}
+
+	want := `{
+		"id": 1,
+		"url": "url",
+		"name": "name",
+		"label": "label",
+		"state": "state",
+		"content_type": "ct",
+		"size": 1,
+		"download_count": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"browser_download_url": "bdu",
+		"uploader": {
+			"id": 1
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRepositoryRelease_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryRelease{}, "{}")
+
+	u := &RepositoryRelease{
+		TagName:                String("tn"),
+		TargetCommitish:        String("tc"),
+		Name:                   String("name"),
+		Body:                   String("body"),
+		Draft:                  Bool(false),
+		Prerelease:             Bool(false),
+		DiscussionCategoryName: String("dcn"),
+		ID:                     Int64(1),
+		CreatedAt:              &Timestamp{referenceTime},
+		PublishedAt:            &Timestamp{referenceTime},
+		URL:                    String("url"),
+		HTMLURL:                String("hurl"),
+		AssetsURL:              String("aurl"),
+		Assets:                 []*ReleaseAsset{{ID: Int64(1)}},
+		UploadURL:              String("uurl"),
+		ZipballURL:             String("zurl"),
+		TarballURL:             String("turl"),
+		Author:                 &User{ID: Int64(1)},
+		NodeID:                 String("nid"),
+	}
+
+	want := `{
+		"tag_name": "tn",
+		"target_commitish": "tc",
+		"name": "name",
+		"body": "body",
+		"draft": false,
+		"prerelease": false,
+		"discussion_category_name": "dcn",
+		"id": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"published_at": ` + referenceTimeStr + `,
+		"url": "url",
+		"html_url": "hurl",
+		"assets_url": "aurl",
+		"assets": [
+			{
+				"id": 1
+			}
+		],
+		"upload_url": "uurl",
+		"zipball_url": "zurl",
+		"tarball_url": "turl",
+		"author": {
+			"id": 1
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
