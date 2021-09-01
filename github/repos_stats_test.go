@@ -327,3 +327,93 @@ func TestRepositoriesService_AcceptedError(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoryParticipation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryParticipation{}, "{}")
+
+	u := &RepositoryParticipation{
+		All:   []int{1},
+		Owner: []int{1},
+	}
+
+	want := `{
+		"all": [1],
+		"owner": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWeeklyCommitActivity_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WeeklyCommitActivity{}, "{}")
+
+	u := &WeeklyCommitActivity{
+		Days:  []int{1},
+		Total: Int(1),
+		Week:  &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"days": [
+			1
+		],
+		"total": 1,
+		"week": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWeeklyStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WeeklyStats{}, "{}")
+
+	u := &WeeklyStats{
+		Week:      &Timestamp{referenceTime},
+		Additions: Int(1),
+		Deletions: Int(1),
+		Commits:   Int(1),
+	}
+
+	want := `{
+		"w": ` + referenceTimeStr + `,
+		"a": 1,
+		"d": 1,
+		"c": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestContributorStats_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ContributorStats{}, "{}")
+
+	u := &ContributorStats{
+		Author: &Contributor{ID: Int64(1)},
+		Total:  Int(1),
+		Weeks: []*WeeklyStats{
+			{
+				Week:      &Timestamp{referenceTime},
+				Additions: Int(1),
+				Deletions: Int(1),
+				Commits:   Int(1),
+			},
+		},
+	}
+
+	want := `{
+		"author": {
+			"id": 1
+		},
+		"total": 1,
+		"weeks": [
+			{
+				"w": ` + referenceTimeStr + `,
+				"a": 1,
+				"d": 1,
+				"c": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
