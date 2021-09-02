@@ -15,12 +15,16 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#list-packages-for-the-authenticated-users-namespace
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#list-packages-for-a-user
-func (s *UsersService) ListPackages(ctx context.Context, user string) ([]*Package, *Response, error) {
+func (s *UsersService) ListPackages(ctx context.Context, user string, opts *PackageListOptions) ([]*Package, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("user/%v/packages", user)
 	} else {
 		u = "user/packages"
+	}
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -44,7 +48,7 @@ func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packag
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -68,7 +72,7 @@ func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, pac
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
 	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -88,7 +92,7 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/restore", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v/restore", packageType, packageName)
+		u = fmt.Sprintf("user/packages/%v/%v/restore", packageType, packageName)
 	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
@@ -103,16 +107,12 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/users#delete-an-email-address-for-the-authenticated-user
-func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string, opts *ListOptions) ([]*PackageVersion, *Response, error) {
+func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v/versions", packageType, packageName)
-	}
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
+		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -132,12 +132,12 @@ func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageT
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#get-a-package-version-for-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#get-a-package-version-for-a-user
-func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType, packageName, packageVersionID string) (*PackageVersion, *Response, error) {
+func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -157,12 +157,12 @@ func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType,
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#delete-a-package-version-for-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#delete-package-version-for-a-user
-func (s *UsersService) DeletePackageVersion(ctx context.Context, user, packageType, packageName, packageVersionID string) (*Response, error) {
+func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v/versions/%v", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
 	}
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -177,12 +177,12 @@ func (s *UsersService) DeletePackageVersion(ctx context.Context, user, packageTy
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#restore-a-package-version-for-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#restore-package-version-for-a-user
-func (s *UsersService) RestorePackageVersion(ctx context.Context, user, packageType, packageName, packageVersionID string) (*Response, error) {
+func (s *UsersService) PackageRestoreVersion(ctx context.Context, user, packageType, packageName string, packageVersionID int64) (*Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/versions/%v/restore", user, packageType, packageName, packageVersionID)
 	} else {
-		u = fmt.Sprintf("user/package/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
+		u = fmt.Sprintf("user/packages/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
 	}
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {

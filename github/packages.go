@@ -47,6 +47,8 @@ type PackageVersion struct {
 	InstallationCommand *string          `json:"installation_command,omitempty"`
 	Metadata            *PackageMetadata `json:"metadata,omitempty"`
 	PackageHTMLURL      *string          `json:"package_html_url,omitempty"`
+	Name                *string          `json:"name,omitempty"`
+	URL                 *string          `json:"url,omitempty"`
 }
 
 func (pv PackageVersion) String() string {
@@ -105,13 +107,39 @@ func (r PackageRegistry) String() string {
 	return Stringify(r)
 }
 
+// PackageListOptions represents the optional list options for a package
+type PackageListOptions struct {
+	// Visibility of packages public, internal or private
+	Visibility string `url:"visibility,omitempty"`
+
+	// Type of package
+	PackageType string `url:"package_type,omitempty"`
+
+	// State of package either active or deleted
+	State string `url:"state,omitempty"`
+
+	// For paginated result sets, page of results to retrieve.
+	Page int `url:"page,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage int `url:"per_page,omitempty"`
+}
+
 // PackageMetadata represents metadata from a package
 type PackageMetadata struct {
 	PackageType *string                   `json:"package_type,omitempty"`
 	Container   *PackageContainerMetadata `json:"container,omitempty"`
 }
 
+func (r PackageMetadata) String() string {
+	return Stringify(r)
+}
+
 // PackageContainerMetadata represents container metadata for docker container packages
 type PackageContainerMetadata struct {
 	Tags []*string `json:"tags,omitempty"`
+}
+
+func (r PackageContainerMetadata) String() string {
+	return Stringify(r)
 }
