@@ -13,7 +13,7 @@ linters:
     - misspell
     - nakedret
     - stylecheck
-  # - unconvert
+    - unconvert
     - unparam
     - whitespace
   disable:
