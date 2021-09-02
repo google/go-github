@@ -227,7 +227,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "test", "container", "hello_docker", &PackageListOptions{PerPage: 10, Page: 2, State: "deleted"})
+	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "test", "container", "hello_docker", &PackageListOptions{State: String("deleted")})
 	if err != nil {
 		t.Errorf("Organizations.PackageGetAllVersions returned error: %v", err)
 	}
@@ -243,7 +243,7 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
-				Tags: []*string{String("latest")},
+				Tags: []string{"latest"},
 			},
 		},
 	}}
@@ -304,7 +304,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
-				Tags: []*string{String("latest")},
+				Tags: []string{"latest"},
 			},
 		},
 	}

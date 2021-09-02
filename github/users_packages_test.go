@@ -35,7 +35,7 @@ func TestUsersService_ListPackages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: "container", Visibility: "private"})
+	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: String("container"), Visibility: String("private")})
 	if err != nil {
 		t.Errorf("Users.ListPackages returned error: %v", err)
 	}
@@ -202,7 +202,7 @@ func TestUsersService_ListPackagesVersions(t *testing.T) {
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
-				Tags: []*string{String("latest")},
+				Tags: []string{"latest"},
 			},
 		},
 	}}
@@ -263,7 +263,7 @@ func TestUsersService_PackageGetVersion(t *testing.T) {
 		Metadata: &PackageMetadata{
 			PackageType: String("container"),
 			Container: &PackageContainerMetadata{
-				Tags: []*string{String("latest")},
+				Tags: []string{"latest"},
 			},
 		},
 	}

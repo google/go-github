@@ -8844,6 +8844,14 @@ func (p *Package) GetRegistry() *PackageRegistry {
 	return p.Registry
 }
 
+// GetRepository returns the Repository field.
+func (p *Package) GetRepository() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repository
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *Package) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
@@ -9010,6 +9018,30 @@ func (p *PackageFile) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetPackageType returns the PackageType field if it's non-nil, zero value otherwise.
+func (p *PackageListOptions) GetPackageType() string {
+	if p == nil || p.PackageType == nil {
+		return ""
+	}
+	return *p.PackageType
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (p *PackageListOptions) GetState() string {
+	if p == nil || p.State == nil {
+		return ""
+	}
+	return *p.State
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (p *PackageListOptions) GetVisibility() string {
+	if p == nil || p.Visibility == nil {
+		return ""
+	}
+	return *p.Visibility
 }
 
 // GetContainer returns the Container field.

@@ -10375,6 +10375,13 @@ func TestPackage_GetRegistry(tt *testing.T) {
 	p.GetRegistry()
 }
 
+func TestPackage_GetRepository(tt *testing.T) {
+	p := &Package{}
+	p.GetRepository()
+	p = nil
+	p.GetRepository()
+}
+
 func TestPackage_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	p := &Package{UpdatedAt: &zeroValue}
@@ -10568,6 +10575,36 @@ func TestPackageFile_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestPackageListOptions_GetPackageType(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{PackageType: &zeroValue}
+	p.GetPackageType()
+	p = &PackageListOptions{}
+	p.GetPackageType()
+	p = nil
+	p.GetPackageType()
+}
+
+func TestPackageListOptions_GetState(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{State: &zeroValue}
+	p.GetState()
+	p = &PackageListOptions{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPackageListOptions_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{Visibility: &zeroValue}
+	p.GetVisibility()
+	p = &PackageListOptions{}
+	p.GetVisibility()
+	p = nil
+	p.GetVisibility()
 }
 
 func TestPackageMetadata_GetContainer(tt *testing.T) {

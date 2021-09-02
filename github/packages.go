@@ -19,6 +19,7 @@ type Package struct {
 	URL            *string          `json:"url,omitempty"`
 	VersionCount   *int64           `json:"version_count,omitempty"`
 	Visibility     *string          `json:"visibility,omitempty"`
+	Repository     *Repository      `json:"repository,omitempty"`
 }
 
 func (p Package) String() string {
@@ -107,25 +108,22 @@ func (r PackageRegistry) String() string {
 	return Stringify(r)
 }
 
-// PackageListOptions represents the optional list options for a package
+// PackageListOptions represents the optional list options for a package.
 type PackageListOptions struct {
-	// Visibility of packages public, internal or private
-	Visibility string `url:"visibility,omitempty"`
+	// Visibility of packages "public", "internal" or "private".
+	Visibility *string `url:"visibility,omitempty"`
 
-	// Type of package
-	PackageType string `url:"package_type,omitempty"`
+	// PackageType represents the type of package.
+	// It can be one of "npm", "maven", "rubygems", "nuget", "docker", or "container".
+	PackageType *string `url:"package_type,omitempty"`
 
-	// State of package either active or deleted
-	State string `url:"state,omitempty"`
+	// State of package either "active" or "deleted".
+	State *string `url:"state,omitempty"`
 
-	// For paginated result sets, page of results to retrieve.
-	Page int `url:"page,omitempty"`
-
-	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
+	ListOptions
 }
 
-// PackageMetadata represents metadata from a package
+// PackageMetadata represents metadata from a package.
 type PackageMetadata struct {
 	PackageType *string                   `json:"package_type,omitempty"`
 	Container   *PackageContainerMetadata `json:"container,omitempty"`
@@ -135,9 +133,9 @@ func (r PackageMetadata) String() string {
 	return Stringify(r)
 }
 
-// PackageContainerMetadata represents container metadata for docker container packages
+// PackageContainerMetadata represents container metadata for docker container packages.
 type PackageContainerMetadata struct {
-	Tags []*string `json:"tags,omitempty"`
+	Tags []string `json:"tags,omitempty"`
 }
 
 func (r PackageContainerMetadata) String() string {
