@@ -104,3 +104,47 @@ func TestOrganizationsService_GetHookDelivery_invalidOwner(t *testing.T) {
 	_, _, err := client.Organizations.GetHookDelivery(ctx, "%", 1, 1)
 	testURLParseError(t, err)
 }
+
+func TestOrganizationsService_RedeliverHookDelivery(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Organizations.RedeliverHookDelivery(ctx, "o", 1, 1)
+	if err != nil {
+		t.Errorf("Organizations.RedeliverHookDelivery returned error: %v", err)
+	}
+
+	want := &HookDelivery{ID: Int64(1)}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Organizations.RedeliverHookDelivery returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "Rede;overHookDelivery"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.RedeliverHookDelivery(ctx, "\n", -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.RedeliverHookDelivery(ctx, "o", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestOrganizationsService_RedeliverHookDelivery_invalidOwner(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+	_, _, err := client.Organizations.RedeliverHookDelivery(ctx, "%", 1, 1)
+	testURLParseError(t, err)
+}

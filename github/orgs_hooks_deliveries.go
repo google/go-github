@@ -52,3 +52,22 @@ func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string
 
 	return h, resp, nil
 }
+
+// RedeliverHookDelivery redelivers a delivery for a webhook configured in an organization.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/orgs#redeliver-a-delivery-for-an-organization-webhook
+func (s *OrganizationsService) RedeliverHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries/%v/attempts", owner, hookID, deliveryID)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	h := new(HookDelivery)
+	resp, err := s.client.Do(ctx, req, h)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return h, resp, nil
+}
