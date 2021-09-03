@@ -111,3 +111,55 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepositoryInvitations_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoryInvitation{}, "{}")
+
+	r := &RepositoryInvitation{
+		ID: Int64(1),
+		Repo: &Repository{
+			ID:   Int64(1),
+			Name: String("n"),
+			URL:  String("u"),
+		},
+		Invitee: &User{
+			ID:   Int64(1),
+			Name: String("n"),
+			URL:  String("u"),
+		},
+		Inviter: &User{
+			ID:   Int64(1),
+			Name: String("n"),
+			URL:  String("u"),
+		},
+		Permissions: String("p"),
+		CreatedAt:   &Timestamp{referenceTime},
+		URL:         String("u"),
+		HTMLURL:     String("h"),
+	}
+
+	want := `{
+		"id":1,
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		},
+		"invitee":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		},
+		"inviter":{
+			"id":1,
+			"name":"n",
+			"url":"u"
+		},
+		"permissions":"p",
+		"created_at":` + referenceTimeStr + `,
+		"url":"u",
+		"html_url":"h"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
