@@ -20618,6 +20618,44 @@ func TestWorkflowJob_GetURL(tt *testing.T) {
 	w.GetURL()
 }
 
+func TestWorkflowJobEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobEvent{Action: &zeroValue}
+	w.GetAction()
+	w = &WorkflowJobEvent{}
+	w.GetAction()
+	w = nil
+	w.GetAction()
+}
+
+func TestWorkflowJobEvent_GetOrg(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetOrg()
+	w = nil
+	w.GetOrg()
+}
+
+func TestWorkflowJobEvent_GetRepo(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetRepo()
+	w = nil
+	w.GetRepo()
+}
+
+func TestWorkflowJobEvent_GetSender(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetSender()
+	w = nil
+	w.GetSender()
+}
+
+func TestWorkflowJobEvent_GetWorkflowJob(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetWorkflowJob()
+	w = nil
+	w.GetWorkflowJob()
+}
+
 func TestWorkflowRun_GetArtifactsURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{ArtifactsURL: &zeroValue}

@@ -155,6 +155,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"user":                           &UserEvent{},
 	"watch":                          &WatchEvent{},
 	"workflow_dispatch":              &WorkflowDispatchEvent{},
+	"workflow_job":                   &WorkflowJobEvent{},
 	"workflow_run":                   &WorkflowRunEvent{},
 }
 
