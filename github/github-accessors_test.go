@@ -8477,6 +8477,36 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListSCIMProvisionedIdentitiesOptions_GetCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_GetFilter(tt *testing.T) {
+	var zeroValue string
+	l := &ListSCIMProvisionedIdentitiesOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_GetStartIndex(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
 func TestLocation_GetEndColumn(tt *testing.T) {
 	var zeroValue int
 	l := &Location{EndColumn: &zeroValue}
@@ -17106,6 +17136,66 @@ func TestRunnerLabels_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestSCIMUserAttributes_GetActive(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserAttributes{Active: &zeroValue}
+	s.GetActive()
+	s = &SCIMUserAttributes{}
+	s.GetActive()
+	s = nil
+	s.GetActive()
+}
+
+func TestSCIMUserAttributes_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{DisplayName: &zeroValue}
+	s.GetDisplayName()
+	s = &SCIMUserAttributes{}
+	s.GetDisplayName()
+	s = nil
+	s.GetDisplayName()
+}
+
+func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{ExternalID: &zeroValue}
+	s.GetExternalID()
+	s = &SCIMUserAttributes{}
+	s.GetExternalID()
+	s = nil
+	s.GetExternalID()
+}
+
+func TestSCIMUserEmail_GetPrimary(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserEmail{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMUserEmail{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMUserEmail_GetType(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserEmail{Type: &zeroValue}
+	s.GetType()
+	s = &SCIMUserEmail{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSCIMUserName_GetFormatted(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserName{Formatted: &zeroValue}
+	s.GetFormatted()
+	s = &SCIMUserName{}
+	s.GetFormatted()
+	s = nil
+	s.GetFormatted()
+}
+
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	s := &SelectedReposList{TotalCount: &zeroValue}
@@ -18905,6 +18995,16 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
+}
+
+func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateAttributeForSCIMUserOperations{Path: &zeroValue}
+	u.GetPath()
+	u = &UpdateAttributeForSCIMUserOperations{}
+	u.GetPath()
+	u = nil
+	u.GetPath()
 }
 
 func TestUpdateCheckRunOptions_GetCompletedAt(tt *testing.T) {
