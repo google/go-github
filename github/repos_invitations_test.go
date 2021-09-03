@@ -112,7 +112,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 	})
 }
 
-func TestRepositoryInvitations_Marshal(t *testing.T) {
+func TestRepositoryInvitation_Marshal(t *testing.T) {
 	testJSONMarshal(t, &RepositoryInvitation{}, "{}")
 
 	r := &RepositoryInvitation{
