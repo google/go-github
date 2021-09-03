@@ -181,7 +181,7 @@ type ForkEvent struct {
 // GitHub Application is revoked.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#github_app_authorization
-type GitHubAppAuthorizationEvent struct {
+type GitHubAppAuthorizationEvent struct { //nolint:revive
 	// The action performed. Possible value is: "revoked".
 	Action *string `json:"action,omitempty"`
 

@@ -12,6 +12,7 @@ linters:
     - gosimple
     - misspell
     - nakedret
+    - revive
     - stylecheck
     - unconvert
     - unparam
