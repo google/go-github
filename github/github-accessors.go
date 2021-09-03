@@ -1188,6 +1188,46 @@ func (a *AuthorizationUpdateRequest) GetNoteURL() string {
 	return *a.NoteURL
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetKeyPrefix() string {
+	if a == nil || a.KeyPrefix == nil {
+		return ""
+	}
+	return *a.KeyPrefix
+}
+
+// GetURLTemplate returns the URLTemplate field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetURLTemplate() string {
+	if a == nil || a.URLTemplate == nil {
+		return ""
+	}
+	return *a.URLTemplate
+}
+
+// GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
+func (a *AutolinkOptions) GetKeyPrefix() string {
+	if a == nil || a.KeyPrefix == nil {
+		return ""
+	}
+	return *a.KeyPrefix
+}
+
+// GetURLTemplate returns the URLTemplate field if it's non-nil, zero value otherwise.
+func (a *AutolinkOptions) GetURLTemplate() string {
+	if a == nil || a.URLTemplate == nil {
+		return ""
+	}
+	return *a.URLTemplate
+}
+
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
 func (a *AutoTriggerCheck) GetAppID() int64 {
 	if a == nil || a.AppID == nil {
