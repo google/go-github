@@ -2991,6 +2991,13 @@ func TestCommunityHealthFiles_GetCodeOfConduct(tt *testing.T) {
 	c.GetCodeOfConduct()
 }
 
+func TestCommunityHealthFiles_GetCodeOfConductFile(tt *testing.T) {
+	c := &CommunityHealthFiles{}
+	c.GetCodeOfConductFile()
+	c = nil
+	c.GetCodeOfConductFile()
+}
+
 func TestCommunityHealthFiles_GetContributing(tt *testing.T) {
 	c := &CommunityHealthFiles{}
 	c.GetContributing()
@@ -3024,6 +3031,36 @@ func TestCommunityHealthFiles_GetReadme(tt *testing.T) {
 	c.GetReadme()
 	c = nil
 	c.GetReadme()
+}
+
+func TestCommunityHealthMetrics_GetContentReportsEnabled(tt *testing.T) {
+	var zeroValue bool
+	c := &CommunityHealthMetrics{ContentReportsEnabled: &zeroValue}
+	c.GetContentReportsEnabled()
+	c = &CommunityHealthMetrics{}
+	c.GetContentReportsEnabled()
+	c = nil
+	c.GetContentReportsEnabled()
+}
+
+func TestCommunityHealthMetrics_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CommunityHealthMetrics{Description: &zeroValue}
+	c.GetDescription()
+	c = &CommunityHealthMetrics{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCommunityHealthMetrics_GetDocumentation(tt *testing.T) {
+	var zeroValue string
+	c := &CommunityHealthMetrics{Documentation: &zeroValue}
+	c.GetDocumentation()
+	c = &CommunityHealthMetrics{}
+	c.GetDocumentation()
+	c = nil
+	c.GetDocumentation()
 }
 
 func TestCommunityHealthMetrics_GetFiles(tt *testing.T) {
@@ -9125,6 +9162,26 @@ func TestMetric_GetName(tt *testing.T) {
 	m.GetName()
 	m = nil
 	m.GetName()
+}
+
+func TestMetric_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	m := &Metric{NodeID: &zeroValue}
+	m.GetNodeID()
+	m = &Metric{}
+	m.GetNodeID()
+	m = nil
+	m.GetNodeID()
+}
+
+func TestMetric_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	m := &Metric{SPDXID: &zeroValue}
+	m.GetSPDXID()
+	m = &Metric{}
+	m.GetSPDXID()
+	m = nil
+	m.GetSPDXID()
 }
 
 func TestMetric_GetURL(tt *testing.T) {
