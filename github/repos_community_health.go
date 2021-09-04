@@ -52,9 +52,6 @@ func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, own
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeRepositoryCommunityHealthMetricsPreview)
-
 	metrics := &CommunityHealthMetrics{}
 	resp, err := s.client.Do(ctx, req, metrics)
 	if err != nil {
