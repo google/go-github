@@ -296,6 +296,7 @@ func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.TestHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
+
 func TestBranchWebHookPayload_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WebHookPayload{}, "{}")
 
@@ -511,6 +512,7 @@ func TestBranchcreateHookRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, v, want)
 }
+
 func TestBranchHook_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Hook{}, "{}")
 
