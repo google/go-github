@@ -49,10 +49,11 @@ type WorkflowRuns struct {
 
 // ListWorkflowRunsOptions specifies optional parameters to ListWorkflowRuns.
 type ListWorkflowRunsOptions struct {
-	Actor  string `url:"actor,omitempty"`
-	Branch string `url:"branch,omitempty"`
-	Event  string `url:"event,omitempty"`
-	Status string `url:"status,omitempty"`
+	Actor   string `url:"actor,omitempty"`
+	Branch  string `url:"branch,omitempty"`
+	Event   string `url:"event,omitempty"`
+	Status  string `url:"status,omitempty"`
+	Created string `url:"created,omitempty"`
 	ListOptions
 }
 
