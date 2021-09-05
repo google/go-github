@@ -91,6 +91,7 @@ var eventTypeMapping = map[string]string{
 	"user":                           "UserEvent",
 	"watch":                          "WatchEvent",
 	"workflow_dispatch":              "WorkflowDispatchEvent",
+	"workflow_job":                   "WorkflowJobEvent",
 	"workflow_run":                   "WorkflowRunEvent",
 }
 

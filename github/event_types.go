@@ -1083,6 +1083,20 @@ type WorkflowDispatchEvent struct {
 	Sender *User         `json:"sender,omitempty"`
 }
 
+// WorkflowJobEvent is triggered when a job is queued, started or completed.
+//
+// GitHub API docs: pending
+type WorkflowJobEvent struct {
+	WorkflowJob *WorkflowJob `json:"workflow_job,omitempty"`
+
+	Action *string `json:"action,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Org    *Organization `json:"organization,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
+}
+
 // WorkflowRunEvent is triggered when a GitHub Actions workflow run is requested or completed.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#workflow_run

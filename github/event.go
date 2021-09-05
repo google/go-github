@@ -124,6 +124,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &WatchEvent{}
 	case "WorkflowDispatchEvent":
 		payload = &WorkflowDispatchEvent{}
+	case "WorkflowJobEvent":
+		payload = &WorkflowJobEvent{}
 	case "WorkflowRunEvent":
 		payload = &WorkflowRunEvent{}
 	}
