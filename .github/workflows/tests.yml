@@ -1,3 +1,5 @@
+name: Tests
+
 on:
   push:
     branches:
@@ -6,7 +8,6 @@ on:
     branches:
     - master
 
-name: tests
 env:
   GO111MODULE: on
 
