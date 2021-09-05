@@ -448,7 +448,7 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 }
 
 func TestBranchWebHookCommit_Marshal(t *testing.T) {
-	testJSONMarshal(t, &WebHookPayload{}, "{}")
+	testJSONMarshal(t, &WebHookCommit{}, "{}")
 
 	v := &WebHookCommit{
 		Added: []string{"1", "2", "3"},
@@ -489,8 +489,8 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 	testJSONMarshal(t, v, want)
 }
 
-func TestBranchcreateHookRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &WebHookAuthor{}, "{}")
+func TestBranchCreateHookRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createHookRequest{}, "{}")
 
 	v := &createHookRequest{
 		Name:   "abc",
