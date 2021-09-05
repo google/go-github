@@ -7,9 +7,8 @@ package github
 
 import (
 	"context"
-	"fmt"
-
 	"encoding/json"
+	"fmt"
 )
 
 // RepositoryListForksOptions specifies the optional parameters to the
