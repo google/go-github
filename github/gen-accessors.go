@@ -186,7 +186,7 @@ func (t *templateData) dump() error {
 		}
 
 		logf("Writing %v...", filename)
-		if err := ioutil.WriteFile(filename, clean, 0644); err != nil {
+		if err := ioutil.WriteFile(filename, clean, 0o644); err != nil {
 			return err
 		}
 
@@ -226,7 +226,7 @@ func (t *templateData) addArrayType(x *ast.ArrayType, receiverType, fieldName st
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
-	var namedStruct = false
+	namedStruct := false
 	switch x.String() {
 	case "int", "int64":
 		zeroValue = "0"

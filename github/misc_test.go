@@ -116,7 +116,8 @@ func TestListCodesOfConduct(t *testing.T) {
 			Key:  String("key"),
 			Name: String("name"),
 			URL:  String("url"),
-		}}
+		},
+	}
 	if !cmp.Equal(want, cs) {
 		t.Errorf("ListCodesOfConduct returned %+v, want %+v", cs, want)
 	}

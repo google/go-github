@@ -174,7 +174,7 @@ github.Response struct.
 	var allRepos []*github.Repository
 	for {
 		repos, resp, err := client.Repositories.ListByOrg(ctx, "github", opt)
-		if err != nil {
+        if err != nil {
 			return err
 		}
 		allRepos = append(allRepos, repos...)

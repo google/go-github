@@ -36,8 +36,8 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Int(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
+			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -79,8 +79,8 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Int(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(399444496), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
+			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -120,8 +120,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	want := &WorkflowRun{
 		ID:        Int64(399444496),
 		RunNumber: Int(296),
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
 	}
 
 	if !cmp.Equal(runs, want) {
@@ -300,7 +300,6 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	ctx := context.Background()
 	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(ctx, "o", "r", opts)
-
 	if err != nil {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned error: %v", err)
 	}

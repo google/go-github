@@ -36,8 +36,8 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	want := &Workflows{
 		TotalCount: Int(4),
 		Workflows: []*Workflow{
-			{ID: Int64(72844), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{ID: Int64(72844), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
+			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(workflows, want) {
@@ -76,8 +76,8 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 
 	want := &Workflow{
 		ID:        Int64(72844),
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
 	}
 	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByID returned %+v, want %+v", workflow, want)
@@ -115,8 +115,8 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 
 	want := &Workflow{
 		ID:        Int64(72844),
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
 	}
 	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)

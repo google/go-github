@@ -8,6 +8,7 @@ linters:
     - dupl
     - gci
     - gofmt
+    - gofumpt
     - goimports
   # - gosec
     - gosimple

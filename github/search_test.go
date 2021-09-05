@@ -414,10 +414,11 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 
 	wantedCodeResult := &CodeResult{
 		Name: String("gopher1"),
-		TextMatches: []*TextMatch{{
-			Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-			Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
-		},
+		TextMatches: []*TextMatch{
+			{
+				Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+				Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
+			},
 		},
 	}
 

@@ -30,9 +30,11 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned error: %v", err)
 	}
 
-	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+	want := &RegistrationToken{
+		Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
-			123000000, time.UTC)}}
+			123000000, time.UTC)},
+	}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}

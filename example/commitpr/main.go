@@ -54,8 +54,10 @@ Example: README.md,main.go:github/examples/commitpr/main.go`)
 	authorEmail = flag.String("author-email", "", "Email of the author of the commit.")
 )
 
-var client *github.Client
-var ctx = context.Background()
+var (
+	client *github.Client
+	ctx    = context.Background()
+)
 
 // getRef returns the commit branch reference object if it exists or creates it
 // from the base branch before returning it.

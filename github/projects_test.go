@@ -432,13 +432,15 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{
 			"archived_state": "all",
-			"page":           "2"})
+			"page":           "2",
+		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
 	opt := &ProjectCardListOptions{
 		ArchivedState: String("all"),
-		ListOptions:   ListOptions{Page: 2}}
+		ListOptions:   ListOptions{Page: 2},
+	}
 	ctx := context.Background()
 	cards, _, err := client.Projects.ListProjectCards(ctx, 1, opt)
 	if err != nil {

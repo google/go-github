@@ -37,7 +37,9 @@ func TestIssuesService_List_all(t *testing.T) {
 	})
 
 	opt := &IssueListOptions{
-		"all", "closed", []string{"a", "b"}, "updated", "asc",
+		"all", "closed",
+		[]string{"a", "b"},
+		"updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions{Page: 1, PerPage: 2},
 	}
@@ -151,7 +153,9 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	})
 
 	opt := &IssueListByRepoOptions{
-		"*", "closed", "a", "c", "m", []string{"a", "b"}, "updated", "asc",
+		"*", "closed", "a", "c", "m",
+		[]string{"a", "b"},
+		"updated", "asc",
 		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
 		ListOptions{0, 0},
 	}

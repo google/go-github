@@ -71,6 +71,7 @@ func TestGistComments_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
 func TestGistsService_ListComments(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

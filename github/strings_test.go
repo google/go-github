@@ -14,7 +14,7 @@ import (
 func TestStringify(t *testing.T) {
 	var nilPointer *string
 
-	var tests = []struct {
+	tests := []struct {
 		in  interface{}
 		out string
 	}{
@@ -54,11 +54,11 @@ func TestStringify(t *testing.T) {
 
 		// actual GitHub structs
 		{
-			Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
+			Timestamp{time.Date(2006, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
-			&Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)},
+			&Timestamp{time.Date(2006, time.January, 0o2, 15, 0o4, 0o5, 0, time.UTC)},
 			`github.Timestamp{2006-01-02 15:04:05 +0000 UTC}`,
 		},
 		{
@@ -85,7 +85,7 @@ func TestStringify(t *testing.T) {
 // used to build the strings, which we do by verifying that pointers are
 // stringified as their underlying value.
 func TestString(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		in  interface{}
 		out string
 	}{

@@ -226,7 +226,7 @@ func (t *templateData) addMapType(receiverType, fieldName string) {
 
 func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
-	var namedStruct = false
+	namedStruct := false
 	switch x.String() {
 	case "int":
 		zeroValue = "0"
@@ -250,7 +250,7 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 
 func (t *templateData) addIdentPtr(x *ast.Ident, receiverType, fieldName string) {
 	var zeroValue string
-	var namedStruct = false
+	namedStruct := false
 	switch x.String() {
 	case "int":
 		zeroValue = "Int(0)"
@@ -301,7 +301,7 @@ func (t *templateData) dump() error {
 	}
 
 	logf("Writing %v...", t.filename)
-	return ioutil.WriteFile(t.filename, clean, 0644)
+	return ioutil.WriteFile(t.filename, clean, 0o644)
 }
 
 func newStructField(receiverType, fieldName, fieldType, zeroValue string, namedStruct bool) *structField {

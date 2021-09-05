@@ -612,7 +612,8 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 			},
 			TeamCount:         Int(2),
 			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
-		}}
+		},
+	}
 
 	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
