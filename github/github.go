@@ -76,9 +76,6 @@ const (
 	// https://developer.github.com/changes/2017-02-28-user-blocking-apis-and-webhook/
 	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"
 
-	// https://developer.github.com/changes/2017-02-09-community-health/
-	mediaTypeRepositoryCommunityHealthMetricsPreview = "application/vnd.github.black-panther-preview+json"
-
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
@@ -181,6 +178,7 @@ type Client struct {
 	PullRequests   *PullRequestsService
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
+	SCIM           *SCIMService
 	Search         *SearchService
 	Teams          *TeamsService
 	Users          *UsersService
@@ -308,6 +306,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
+	c.SCIM = (*SCIMService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)

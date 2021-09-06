@@ -1417,6 +1417,56 @@ func TestAuthorizationUpdateRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 }
 
+func TestAutolink_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &Autolink{ID: &zeroValue}
+	a.GetID()
+	a = &Autolink{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAutolink_GetKeyPrefix(tt *testing.T) {
+	var zeroValue string
+	a := &Autolink{KeyPrefix: &zeroValue}
+	a.GetKeyPrefix()
+	a = &Autolink{}
+	a.GetKeyPrefix()
+	a = nil
+	a.GetKeyPrefix()
+}
+
+func TestAutolink_GetURLTemplate(tt *testing.T) {
+	var zeroValue string
+	a := &Autolink{URLTemplate: &zeroValue}
+	a.GetURLTemplate()
+	a = &Autolink{}
+	a.GetURLTemplate()
+	a = nil
+	a.GetURLTemplate()
+}
+
+func TestAutolinkOptions_GetKeyPrefix(tt *testing.T) {
+	var zeroValue string
+	a := &AutolinkOptions{KeyPrefix: &zeroValue}
+	a.GetKeyPrefix()
+	a = &AutolinkOptions{}
+	a.GetKeyPrefix()
+	a = nil
+	a.GetKeyPrefix()
+}
+
+func TestAutolinkOptions_GetURLTemplate(tt *testing.T) {
+	var zeroValue string
+	a := &AutolinkOptions{URLTemplate: &zeroValue}
+	a.GetURLTemplate()
+	a = &AutolinkOptions{}
+	a.GetURLTemplate()
+	a = nil
+	a.GetURLTemplate()
+}
+
 func TestAutoTriggerCheck_GetAppID(tt *testing.T) {
 	var zeroValue int64
 	a := &AutoTriggerCheck{AppID: &zeroValue}
@@ -2941,6 +2991,13 @@ func TestCommunityHealthFiles_GetCodeOfConduct(tt *testing.T) {
 	c.GetCodeOfConduct()
 }
 
+func TestCommunityHealthFiles_GetCodeOfConductFile(tt *testing.T) {
+	c := &CommunityHealthFiles{}
+	c.GetCodeOfConductFile()
+	c = nil
+	c.GetCodeOfConductFile()
+}
+
 func TestCommunityHealthFiles_GetContributing(tt *testing.T) {
 	c := &CommunityHealthFiles{}
 	c.GetContributing()
@@ -2974,6 +3031,36 @@ func TestCommunityHealthFiles_GetReadme(tt *testing.T) {
 	c.GetReadme()
 	c = nil
 	c.GetReadme()
+}
+
+func TestCommunityHealthMetrics_GetContentReportsEnabled(tt *testing.T) {
+	var zeroValue bool
+	c := &CommunityHealthMetrics{ContentReportsEnabled: &zeroValue}
+	c.GetContentReportsEnabled()
+	c = &CommunityHealthMetrics{}
+	c.GetContentReportsEnabled()
+	c = nil
+	c.GetContentReportsEnabled()
+}
+
+func TestCommunityHealthMetrics_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CommunityHealthMetrics{Description: &zeroValue}
+	c.GetDescription()
+	c = &CommunityHealthMetrics{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCommunityHealthMetrics_GetDocumentation(tt *testing.T) {
+	var zeroValue string
+	c := &CommunityHealthMetrics{Documentation: &zeroValue}
+	c.GetDocumentation()
+	c = &CommunityHealthMetrics{}
+	c.GetDocumentation()
+	c = nil
+	c.GetDocumentation()
 }
 
 func TestCommunityHealthMetrics_GetFiles(tt *testing.T) {
@@ -8427,6 +8514,36 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListSCIMProvisionedIdentitiesOptions_GetCount(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_GetFilter(tt *testing.T) {
+	var zeroValue string
+	l := &ListSCIMProvisionedIdentitiesOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_GetStartIndex(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListSCIMProvisionedIdentitiesOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
 func TestLocation_GetEndColumn(tt *testing.T) {
 	var zeroValue int
 	l := &Location{EndColumn: &zeroValue}
@@ -9045,6 +9162,26 @@ func TestMetric_GetName(tt *testing.T) {
 	m.GetName()
 	m = nil
 	m.GetName()
+}
+
+func TestMetric_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	m := &Metric{NodeID: &zeroValue}
+	m.GetNodeID()
+	m = &Metric{}
+	m.GetNodeID()
+	m = nil
+	m.GetNodeID()
+}
+
+func TestMetric_GetSPDXID(tt *testing.T) {
+	var zeroValue string
+	m := &Metric{SPDXID: &zeroValue}
+	m.GetSPDXID()
+	m = &Metric{}
+	m.GetSPDXID()
+	m = nil
+	m.GetSPDXID()
 }
 
 func TestMetric_GetURL(tt *testing.T) {
@@ -17177,6 +17314,66 @@ func TestRunnerLabels_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestSCIMUserAttributes_GetActive(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserAttributes{Active: &zeroValue}
+	s.GetActive()
+	s = &SCIMUserAttributes{}
+	s.GetActive()
+	s = nil
+	s.GetActive()
+}
+
+func TestSCIMUserAttributes_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{DisplayName: &zeroValue}
+	s.GetDisplayName()
+	s = &SCIMUserAttributes{}
+	s.GetDisplayName()
+	s = nil
+	s.GetDisplayName()
+}
+
+func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{ExternalID: &zeroValue}
+	s.GetExternalID()
+	s = &SCIMUserAttributes{}
+	s.GetExternalID()
+	s = nil
+	s.GetExternalID()
+}
+
+func TestSCIMUserEmail_GetPrimary(tt *testing.T) {
+	var zeroValue bool
+	s := &SCIMUserEmail{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMUserEmail{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMUserEmail_GetType(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserEmail{Type: &zeroValue}
+	s.GetType()
+	s = &SCIMUserEmail{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSCIMUserName_GetFormatted(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserName{Formatted: &zeroValue}
+	s.GetFormatted()
+	s = &SCIMUserName{}
+	s.GetFormatted()
+	s = nil
+	s.GetFormatted()
+}
+
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	s := &SelectedReposList{TotalCount: &zeroValue}
@@ -18978,6 +19175,16 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
+	var zeroValue string
+	u := &UpdateAttributeForSCIMUserOperations{Path: &zeroValue}
+	u.GetPath()
+	u = &UpdateAttributeForSCIMUserOperations{}
+	u.GetPath()
+	u = nil
+	u.GetPath()
+}
+
 func TestUpdateCheckRunOptions_GetCompletedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	u := &UpdateCheckRunOptions{CompletedAt: &zeroValue}
@@ -20587,6 +20794,44 @@ func TestWorkflowJob_GetURL(tt *testing.T) {
 	w.GetURL()
 	w = nil
 	w.GetURL()
+}
+
+func TestWorkflowJobEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJobEvent{Action: &zeroValue}
+	w.GetAction()
+	w = &WorkflowJobEvent{}
+	w.GetAction()
+	w = nil
+	w.GetAction()
+}
+
+func TestWorkflowJobEvent_GetOrg(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetOrg()
+	w = nil
+	w.GetOrg()
+}
+
+func TestWorkflowJobEvent_GetRepo(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetRepo()
+	w = nil
+	w.GetRepo()
+}
+
+func TestWorkflowJobEvent_GetSender(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetSender()
+	w = nil
+	w.GetSender()
+}
+
+func TestWorkflowJobEvent_GetWorkflowJob(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetWorkflowJob()
+	w = nil
+	w.GetWorkflowJob()
 }
 
 func TestWorkflowRun_GetArtifactsURL(tt *testing.T) {
