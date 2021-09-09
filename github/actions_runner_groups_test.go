@@ -234,11 +234,13 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "1", "page": "1"})
 		fmt.Fprint(w, `{"total_count": 1, "repositories": [{"id": 43, "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5", "name": "Hello-World", "full_name": "octocat/Hello-World"}]}`)
 	})
 
 	ctx := context.Background()
-	groups, _, err := client.Actions.ListRepositoryAccessRunnerGroup(ctx, "o", 2)
+	opts := &ListOptions{Page: 1, PerPage: 1}
+	groups, _, err := client.Actions.ListRepositoryAccessRunnerGroup(ctx, "o", 2, opts)
 	if err != nil {
 		t.Errorf("Actions.ListRepositoryAccessRunnerGroup returned error: %v", err)
 	}
@@ -255,12 +257,12 @@ func TestActionsService_ListRepositoryAccessRunnerGroup(t *testing.T) {
 
 	const methodName = "ListRepositoryAccessRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListRepositoryAccessRunnerGroup(ctx, "\n", 2)
+		_, _, err = client.Actions.ListRepositoryAccessRunnerGroup(ctx, "\n", 2, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListRepositoryAccessRunnerGroup(ctx, "o", 2)
+		got, resp, err := client.Actions.ListRepositoryAccessRunnerGroup(ctx, "o", 2, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
