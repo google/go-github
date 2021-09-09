@@ -159,8 +159,13 @@ func (s *ActionsService) UpdateOrganizationRunnerGroup(ctx context.Context, org 
 // ListRepositoryAccessRunnerGroup lists the repositories with access to a self-hosted runner group configured in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-repository-access-to-a-self-hosted-runner-group-in-an-organization
-func (s *ActionsService) ListRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64) (*ListRepositories, *Response, error) {
+func (s *ActionsService) ListRepositoryAccessRunnerGroup(ctx context.Context, org string, groupID int64, opts *ListOptions) (*ListRepositories, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runner-groups/%v/repositories", org, groupID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
