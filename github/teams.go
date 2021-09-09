@@ -26,6 +26,7 @@ type Team struct {
 	NodeID      *string `json:"node_id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
+	HTMLURL     *string `json:"html_url,omitempty"`
 	URL         *string `json:"url,omitempty"`
 	Slug        *string `json:"slug,omitempty"`
 
