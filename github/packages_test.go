@@ -400,6 +400,7 @@ func TestPackage_Marshal(t *testing.T) {
 		HTMLURL:     String("hurl"),
 		CreatedAt:   &Timestamp{referenceTime},
 		UpdatedAt:   &Timestamp{referenceTime},
+		Visibility:  String("private"),
 		Owner: &User{
 			Login:           String("l"),
 			ID:              Int64(1),
@@ -540,6 +541,7 @@ func TestPackage_Marshal(t *testing.T) {
 		"html_url": "hurl",
 		"created_at": ` + referenceTimeStr + `,
 		"updated_at": ` + referenceTimeStr + `,
+		"visibility": "private",
 		"owner": {
 			"login": "l",
 			"id": 1,

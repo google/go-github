@@ -96,6 +96,11 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 	}
 
 	const methodName = "ListPackages"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListPackages(ctx, "\n", nil)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.ListPackages(ctx, "o", nil)
 		if got != nil {
@@ -146,6 +151,11 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	}
 
 	const methodName = "GetPackage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetPackage(ctx, "\n", "", "")
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.GetPackage(ctx, "", "", "")
 		if got != nil {
@@ -170,6 +180,11 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 	}
 
 	const methodName = "DeletePackage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.GetPackage(ctx, "\n", "", "")
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.GetPackage(ctx, "", "", "")
 		if got != nil {
@@ -194,6 +209,11 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 	}
 
 	const methodName = "RestorePackage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.RestorePackage(ctx, "\n", "", "")
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.RestorePackage(ctx, "", "container", "hello_docker")
 	})
@@ -255,6 +275,11 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	}
 
 	const methodName = "PackageGetAllVersions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.PackageGetAllVersions(ctx, "\n", "", "", nil)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.PackageGetAllVersions(ctx, "", "", "", nil)
 		if got != nil {
@@ -316,6 +341,11 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	}
 
 	const methodName = "PackageGetVersion"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.PackageGetVersion(ctx, "\n", "", "", 0)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.PackageGetVersion(ctx, "", "", "", 45763)
 		if got != nil {
@@ -340,6 +370,11 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 	}
 
 	const methodName = "PackageDeleteVersion"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.PackageDeleteVersion(ctx, "\n", "", "", 0)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.PackageDeleteVersion(ctx, "", "", "", 45763)
 
@@ -361,6 +396,11 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 	}
 
 	const methodName = "PackageRestoreVersion"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Organizations.PackageRestoreVersion(ctx, "\n", "", "", 0)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.PackageRestoreVersion(ctx, "", "", "", 45763)
 
