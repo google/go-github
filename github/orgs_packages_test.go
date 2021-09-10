@@ -18,7 +18,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{
 			"id": 197,
@@ -55,7 +55,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.ListPackages(ctx, "test", nil)
+	packages, _, err := client.Organizations.ListPackages(ctx, "o", nil)
 	if err != nil {
 		t.Errorf("Organizations.ListPackages returned error: %v", err)
 	}
@@ -97,7 +97,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 
 	const methodName = "ListPackages"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListPackages(ctx, "test", nil)
+		got, resp, err := client.Organizations.ListPackages(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -109,7 +109,7 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"id": 197,
@@ -125,7 +125,7 @@ func TestOrganizationsService_GetPackage(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.GetPackage(ctx, "test", "container", "hello_docker")
+	packages, _, err := client.Organizations.GetPackage(ctx, "o", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.GetPackage returned error: %v", err)
 	}
@@ -159,12 +159,12 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.DeletePackage(ctx, "test", "container", "hello_docker")
+	_, err := client.Organizations.DeletePackage(ctx, "o", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.DeletePackage returned error: %v", err)
 	}
@@ -183,12 +183,12 @@ func TestOrganizationsService_RestorePackage(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.RestorePackage(ctx, "test", "container", "hello_docker")
+	_, err := client.Organizations.RestorePackage(ctx, "o", "container", "hello_docker")
 	if err != nil {
 		t.Errorf("Organizations.RestorePackage returned error: %v", err)
 	}
@@ -203,9 +203,9 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"per_page": "10", "page": "2", "state": "deleted"})
+		testFormValues(t, r, values{"per_page": "2", "page": "1", "state": "deleted", "visibility": "internal", "package_type": "container"})
 		fmt.Fprint(w, `[
 			{
 			  "id": 45763,
@@ -227,7 +227,10 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "test", "container", "hello_docker", &PackageListOptions{State: String("deleted")})
+	opts := &PackageListOptions{
+		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+	}
+	packages, _, err := client.Organizations.PackageGetAllVersions(ctx, "o", "container", "hello_docker", opts)
 	if err != nil {
 		t.Errorf("Organizations.PackageGetAllVersions returned error: %v", err)
 	}
@@ -265,7 +268,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `
 			{
@@ -288,7 +291,7 @@ func TestOrganizationsService_PackageGetVersion(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.PackageGetVersion(ctx, "test", "container", "hello_docker", 45763)
+	packages, _, err := client.Organizations.PackageGetVersion(ctx, "o", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageGetVersion returned error: %v", err)
 	}
@@ -326,12 +329,12 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.PackageDeleteVersion(ctx, "test", "container", "hello_docker", 45763)
+	_, err := client.Organizations.PackageDeleteVersion(ctx, "o", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageDeleteVersion returned error: %v", err)
 	}
@@ -347,12 +350,12 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/test/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/packages/container/hello_docker/versions/45763/restore", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 	})
 
 	ctx := context.Background()
-	_, err := client.Organizations.PackageRestoreVersion(ctx, "test", "container", "hello_docker", 45763)
+	_, err := client.Organizations.PackageRestoreVersion(ctx, "o", "container", "hello_docker", 45763)
 	if err != nil {
 		t.Errorf("Organizations.PackageRestoreVersion returned error: %v", err)
 	}
