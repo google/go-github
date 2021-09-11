@@ -55,7 +55,7 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Organizations.ListPackages(ctx, "o", nil)
+	packages, _, err := client.Organizations.ListPackages(ctx, "o", &PackageListOptions{})
 	if err != nil {
 		t.Errorf("Organizations.ListPackages returned error: %v", err)
 	}
