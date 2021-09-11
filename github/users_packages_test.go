@@ -60,6 +60,7 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 		_, _, err = client.Users.ListPackages(ctx, "\n", nil)
 		return err
 	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.ListPackages(ctx, "", nil)
 		if got != nil {
