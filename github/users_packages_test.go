@@ -57,12 +57,12 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 
 	const methodName = "ListPackages"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListPackages(ctx, "\n", nil)
+		_, _, err = client.Users.ListPackages(ctx, "\n", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListPackages(ctx, "", nil)
+		got, resp, err := client.Users.ListPackages(ctx, "", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -113,12 +113,12 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 
 	const methodName = "ListPackages"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListPackages(ctx, "\n", nil)
+		_, _, err = client.Users.ListPackages(ctx, "\n", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListPackages(ctx, "", nil)
+		got, resp, err := client.Users.ListPackages(ctx, "", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

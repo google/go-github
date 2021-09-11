@@ -97,12 +97,12 @@ func TestOrganizationsService_ListPackages(t *testing.T) {
 
 	const methodName = "ListPackages"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListPackages(ctx, "\n", nil)
+		_, _, err = client.Organizations.ListPackages(ctx, "\n", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListPackages(ctx, "o", nil)
+		got, resp, err := client.Organizations.ListPackages(ctx, "o", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -276,12 +276,12 @@ func TestOrganizationsService_ListPackagesVersions(t *testing.T) {
 
 	const methodName = "PackageGetAllVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.PackageGetAllVersions(ctx, "\n", "", "", nil)
+		_, _, err = client.Organizations.PackageGetAllVersions(ctx, "\n", "", "", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.PackageGetAllVersions(ctx, "", "", "", nil)
+		got, resp, err := client.Organizations.PackageGetAllVersions(ctx, "", "", "", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
