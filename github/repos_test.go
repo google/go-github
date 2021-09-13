@@ -1150,6 +1150,32 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 	}
 }
 
+func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, `{
+			"message": "Branch not protected",
+			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			}`)
+	})
+
+	ctx := context.Background()
+	protection, _, err := client.Repositories.GetBranchProtection(ctx, "o", "r", "b")
+
+	if protection != nil {
+		t.Errorf("Repositories.GetBranchProtection returned non-nil protection data")
+	}
+
+	if err != ErrBranchNotProtected {
+		t.Errorf("Repositories.GetBranchProtection returned an invalid error: %v", err)
+	}
+}
+
 func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -1387,6 +1413,32 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, `{
+			"message": "Branch not protected",
+			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			}`)
+	})
+
+	ctx := context.Background()
+	checks, _, err := client.Repositories.GetRequiredStatusChecks(ctx, "o", "r", "b")
+
+	if checks != nil {
+		t.Errorf("Repositories.GetRequiredStatusChecks returned non-nil status-checks data")
+	}
+
+	if err != ErrBranchNotProtected {
+		t.Errorf("Repositories.GetRequiredStatusChecks returned an invalid error: %v", err)
+	}
+}
+
 func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -1500,6 +1552,32 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks/contexts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, `{
+			"message": "Branch not protected",
+			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			}`)
+	})
+
+	ctx := context.Background()
+	contexts, _, err := client.Repositories.ListRequiredStatusChecksContexts(ctx, "o", "r", "b")
+
+	if contexts != nil {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned non-nil contexts data")
+	}
+
+	if err != ErrBranchNotProtected {
+		t.Errorf("Repositories.ListRequiredStatusChecksContexts returned an invalid error: %v", err)
+	}
 }
 
 func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {

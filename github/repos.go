@@ -8,10 +8,15 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
 )
+
+const githubBranchNotProtected string = "Branch not protected"
+
+var ErrBranchNotProtected = errors.New("branch is not protected")
 
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
@@ -1009,6 +1014,9 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
+		if isBranchNotProtected(err) {
+			err = ErrBranchNotProtected
+		}
 		return nil, resp, err
 	}
 
@@ -1028,6 +1036,9 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 	p := new(RequiredStatusChecks)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
+		if isBranchNotProtected(err) {
+			err = ErrBranchNotProtected
+		}
 		return nil, resp, err
 	}
 
@@ -1046,6 +1057,9 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 
 	resp, err = s.client.Do(ctx, req, &contexts)
 	if err != nil {
+		if isBranchNotProtected(err) {
+			err = ErrBranchNotProtected
+		}
 		return nil, resp, err
 	}
 
@@ -1538,4 +1552,13 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 	}
 
 	return r, resp, nil
+}
+
+// isBranchNotProtected determines whether a branch is not protected
+// based on the error message returned by GitHub API.
+func isBranchNotProtected(err error) bool {
+	if errorResponse, ok := err.(*ErrorResponse); ok {
+		return errorResponse.Message == githubBranchNotProtected
+	}
+	return false
 }
