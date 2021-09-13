@@ -72,7 +72,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: ${{ matrix.update-coverage }}
-      uses: codecov/codecov-action@5a8bb4701eca7ba3673f21664b887f652c58d0a3 #v2.0.3
+      uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b #v2.0.3
 
     - name: Ensure go generate produces a zero diff for update-urls
       shell: bash
