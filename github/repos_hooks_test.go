@@ -107,6 +107,14 @@ func TestRepositoriesService_ListHooks_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_ListHooks_403_code_no_rate_limit(t *testing.T) {
+	testErrorResponseForStatusCode(t, http.StatusForbidden)
+}
+
+func TestRepositoriesService_ListHooks_404_code(t *testing.T) {
+	testErrorResponseForStatusCode(t, http.StatusNotFound)
+}
+
 func TestRepositoriesService_GetHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

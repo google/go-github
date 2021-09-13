@@ -216,6 +216,32 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 }
 
+// Test that all error response types contain the status code
+func testErrorResponseForStatusCode(t *testing.T, code int) {
+	t.Helper()
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(code)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListHooks(ctx, "o", "r", nil)
+
+	switch e := err.(type) {
+	case *ErrorResponse:
+	case *RateLimitError:
+	case *AbuseRateLimitError:
+		if code != e.Response.StatusCode {
+			t.Error("Error response does not contain status code")
+		}
+	default:
+		t.Error("Unknown error response type")
+	}
+}
+
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 
