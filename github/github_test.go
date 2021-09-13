@@ -216,7 +216,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 }
 
-// Test that all error response types contain the status code
+// Test that all error response types contain the status code.
 func testErrorResponseForStatusCode(t *testing.T, code int) {
 	t.Helper()
 	client, mux, _, teardown := setup()
