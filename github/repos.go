@@ -1557,8 +1557,6 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 // isBranchNotProtected determines whether a branch is not protected
 // based on the error message returned by GitHub API.
 func isBranchNotProtected(err error) bool {
-	if errorResponse, ok := err.(*ErrorResponse); ok {
-		return errorResponse.Message == githubBranchNotProtected
-	}
-	return false
+	errorResponse, ok := err.(*ErrorResponse)
+	return ok && errorResponse.Message == githubBranchNotProtected
 }
