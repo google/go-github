@@ -4988,6 +4988,14 @@ func (h *HookConfig) GetInsecureSSL() string {
 	return *h.InsecureSSL
 }
 
+// GetSecret returns the Secret field if it's non-nil, zero value otherwise.
+func (h *HookConfig) GetSecret() string {
+	if h == nil || h.Secret == nil {
+		return ""
+	}
+	return *h.Secret
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (h *HookConfig) GetURL() string {
 	if h == nil || h.URL == nil {
