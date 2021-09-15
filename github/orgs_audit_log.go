@@ -25,7 +25,7 @@ type HookConfig struct {
 	InsecureSSL *string `json:"insecure_ssl,omitempty"`
 	URL         *string `json:"url,omitempty"`
 
-	// Secret is returned obfuscated by GitHub, but it can be set for outgoing requests
+	// Secret is returned obfuscated by GitHub, but it can be set for outgoing requests.
 	Secret *string `json:"secret,omitempty"`
 }
 
