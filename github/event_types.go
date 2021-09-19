@@ -1106,7 +1106,8 @@ type WorkflowRunEvent struct {
 	WorkflowRun *WorkflowRun `json:"workflow_run,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Org    *Organization `json:"organization,omitempty"`
-	Repo   *Repository   `json:"repository,omitempty"`
-	Sender *User         `json:"sender,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
 }
