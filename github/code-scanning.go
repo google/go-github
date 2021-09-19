@@ -117,7 +117,7 @@ type AlertListOptions struct {
 	Ref string `url:"ref,omitempty"`
 
 	// Returns the results based on Page number. Page number is set to 1 by default
-	Page string `url:"page,omitempty"`
+	Page int `url:"page,omitempty"`
 
 	// Results per page. Maximum is 100 results page
 	PerPage int `url:"per_page,omitempty"`
