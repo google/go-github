@@ -17764,6 +17764,22 @@ func (w *WorkflowRun) GetCancelURL() string {
 	return *w.CancelURL
 }
 
+// GetCheckSuiteID returns the CheckSuiteID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetCheckSuiteID() int64 {
+	if w == nil || w.CheckSuiteID == nil {
+		return 0
+	}
+	return *w.CheckSuiteID
+}
+
+// GetCheckSuiteNodeID returns the CheckSuiteNodeID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetCheckSuiteNodeID() string {
+	if w == nil || w.CheckSuiteNodeID == nil {
+		return ""
+	}
+	return *w.CheckSuiteNodeID
+}
+
 // GetCheckSuiteURL returns the CheckSuiteURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetCheckSuiteURL() string {
 	if w == nil || w.CheckSuiteURL == nil {

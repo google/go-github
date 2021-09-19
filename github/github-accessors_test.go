@@ -20796,6 +20796,26 @@ func TestWorkflowRun_GetCancelURL(tt *testing.T) {
 	w.GetCancelURL()
 }
 
+func TestWorkflowRun_GetCheckSuiteID(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowRun{CheckSuiteID: &zeroValue}
+	w.GetCheckSuiteID()
+	w = &WorkflowRun{}
+	w.GetCheckSuiteID()
+	w = nil
+	w.GetCheckSuiteID()
+}
+
+func TestWorkflowRun_GetCheckSuiteNodeID(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{CheckSuiteNodeID: &zeroValue}
+	w.GetCheckSuiteNodeID()
+	w = &WorkflowRun{}
+	w.GetCheckSuiteNodeID()
+	w = nil
+	w.GetCheckSuiteNodeID()
+}
+
 func TestWorkflowRun_GetCheckSuiteURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{CheckSuiteURL: &zeroValue}
