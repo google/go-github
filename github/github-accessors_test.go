@@ -3681,6 +3681,13 @@ func TestDeployKeyEvent_GetAction(tt *testing.T) {
 	d.GetAction()
 }
 
+func TestDeployKeyEvent_GetInstallation(tt *testing.T) {
+	d := &DeployKeyEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
 func TestDeployKeyEvent_GetKey(tt *testing.T) {
 	d := &DeployKeyEvent{}
 	d.GetKey()
@@ -5389,6 +5396,13 @@ func TestGitHubAppAuthorizationEvent_GetAction(tt *testing.T) {
 	g.GetAction()
 	g = nil
 	g.GetAction()
+}
+
+func TestGitHubAppAuthorizationEvent_GetInstallation(tt *testing.T) {
+	g := &GitHubAppAuthorizationEvent{}
+	g.GetInstallation()
+	g = nil
+	g.GetInstallation()
 }
 
 func TestGitHubAppAuthorizationEvent_GetSender(tt *testing.T) {
@@ -9134,6 +9148,13 @@ func TestMetaEvent_GetHookID(tt *testing.T) {
 	m.GetHookID()
 }
 
+func TestMetaEvent_GetInstallation(tt *testing.T) {
+	m := &MetaEvent{}
+	m.GetInstallation()
+	m = nil
+	m.GetInstallation()
+}
+
 func TestMetric_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	m := &Metric{HTMLURL: &zeroValue}
@@ -10530,6 +10551,13 @@ func TestPackageEvent_GetAction(tt *testing.T) {
 	p.GetAction()
 	p = nil
 	p.GetAction()
+}
+
+func TestPackageEvent_GetInstallation(tt *testing.T) {
+	p := &PackageEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
 }
 
 func TestPackageEvent_GetOrg(tt *testing.T) {
@@ -16699,6 +16727,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetAlert(tt *testing.T) {
 	r.GetAlert()
 }
 
+func TestRepositoryVulnerabilityAlertEvent_GetInstallation(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetInstallation()
+	r = nil
+	r.GetInstallation()
+}
+
 func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
 	r := &RepositoryVulnerabilityAlertEvent{}
 	r.GetRepository()
@@ -17455,6 +17490,13 @@ func TestStarEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 	s = nil
 	s.GetAction()
+}
+
+func TestStarEvent_GetInstallation(tt *testing.T) {
+	s := &StarEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
 }
 
 func TestStarEvent_GetOrg(tt *testing.T) {
@@ -19752,6 +19794,13 @@ func TestUserEvent_GetEnterprise(tt *testing.T) {
 	u.GetEnterprise()
 }
 
+func TestUserEvent_GetInstallation(tt *testing.T) {
+	u := &UserEvent{}
+	u.GetInstallation()
+	u = nil
+	u.GetInstallation()
+}
+
 func TestUserEvent_GetSender(tt *testing.T) {
 	u := &UserEvent{}
 	u.GetSender()
@@ -20483,6 +20532,13 @@ func TestWorkflowBill_GetTotalMS(tt *testing.T) {
 	w.GetTotalMS()
 }
 
+func TestWorkflowDispatchEvent_GetInstallation(tt *testing.T) {
+	w := &WorkflowDispatchEvent{}
+	w.GetInstallation()
+	w = nil
+	w.GetInstallation()
+}
+
 func TestWorkflowDispatchEvent_GetOrg(tt *testing.T) {
 	w := &WorkflowDispatchEvent{}
 	w.GetOrg()
@@ -20685,6 +20741,13 @@ func TestWorkflowJobEvent_GetAction(tt *testing.T) {
 	w.GetAction()
 }
 
+func TestWorkflowJobEvent_GetInstallation(tt *testing.T) {
+	w := &WorkflowJobEvent{}
+	w.GetInstallation()
+	w = nil
+	w.GetInstallation()
+}
+
 func TestWorkflowJobEvent_GetOrg(tt *testing.T) {
 	w := &WorkflowJobEvent{}
 	w.GetOrg()
@@ -20731,6 +20794,26 @@ func TestWorkflowRun_GetCancelURL(tt *testing.T) {
 	w.GetCancelURL()
 	w = nil
 	w.GetCancelURL()
+}
+
+func TestWorkflowRun_GetCheckSuiteID(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowRun{CheckSuiteID: &zeroValue}
+	w.GetCheckSuiteID()
+	w = &WorkflowRun{}
+	w.GetCheckSuiteID()
+	w = nil
+	w.GetCheckSuiteID()
+}
+
+func TestWorkflowRun_GetCheckSuiteNodeID(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{CheckSuiteNodeID: &zeroValue}
+	w.GetCheckSuiteNodeID()
+	w = &WorkflowRun{}
+	w.GetCheckSuiteNodeID()
+	w = nil
+	w.GetCheckSuiteNodeID()
 }
 
 func TestWorkflowRun_GetCheckSuiteURL(tt *testing.T) {
@@ -20993,6 +21076,13 @@ func TestWorkflowRunEvent_GetAction(tt *testing.T) {
 	w.GetAction()
 	w = nil
 	w.GetAction()
+}
+
+func TestWorkflowRunEvent_GetInstallation(tt *testing.T) {
+	w := &WorkflowRunEvent{}
+	w.GetInstallation()
+	w = nil
+	w.GetInstallation()
 }
 
 func TestWorkflowRunEvent_GetOrg(tt *testing.T) {
