@@ -3148,6 +3148,14 @@ func (d *DeployKeyEvent) GetAction() string {
 	return *d.Action
 }
 
+// GetInstallation returns the Installation field.
+func (d *DeployKeyEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
 // GetKey returns the Key field.
 func (d *DeployKeyEvent) GetKey() *Key {
 	if d == nil {
@@ -4610,6 +4618,14 @@ func (g *GitHubAppAuthorizationEvent) GetAction() string {
 		return ""
 	}
 	return *g.Action
+}
+
+// GetInstallation returns the Installation field.
+func (g *GitHubAppAuthorizationEvent) GetInstallation() *Installation {
+	if g == nil {
+		return nil
+	}
+	return g.Installation
 }
 
 // GetSender returns the Sender field.
@@ -7796,6 +7812,14 @@ func (m *MetaEvent) GetHookID() int64 {
 	return *m.HookID
 }
 
+// GetInstallation returns the Installation field.
+func (m *MetaEvent) GetInstallation() *Installation {
+	if m == nil {
+		return nil
+	}
+	return m.Installation
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (m *Metric) GetHTMLURL() string {
 	if m == nil || m.HTMLURL == nil {
@@ -8970,6 +8994,14 @@ func (p *PackageEvent) GetAction() string {
 		return ""
 	}
 	return *p.Action
+}
+
+// GetInstallation returns the Installation field.
+func (p *PackageEvent) GetInstallation() *Installation {
+	if p == nil {
+		return nil
+	}
+	return p.Installation
 }
 
 // GetOrg returns the Org field.
@@ -14292,6 +14324,14 @@ func (r *RepositoryVulnerabilityAlertEvent) GetAlert() *RepositoryVulnerabilityA
 	return r.Alert
 }
 
+// GetInstallation returns the Installation field.
+func (r *RepositoryVulnerabilityAlertEvent) GetInstallation() *Installation {
+	if r == nil {
+		return nil
+	}
+	return r.Installation
+}
+
 // GetRepository returns the Repository field.
 func (r *RepositoryVulnerabilityAlertEvent) GetRepository() *Repository {
 	if r == nil {
@@ -14906,6 +14946,14 @@ func (s *StarEvent) GetAction() string {
 		return ""
 	}
 	return *s.Action
+}
+
+// GetInstallation returns the Installation field.
+func (s *StarEvent) GetInstallation() *Installation {
+	if s == nil {
+		return nil
+	}
+	return s.Installation
 }
 
 // GetOrg returns the Org field.
@@ -16852,6 +16900,14 @@ func (u *UserEvent) GetEnterprise() *Enterprise {
 	return u.Enterprise
 }
 
+// GetInstallation returns the Installation field.
+func (u *UserEvent) GetInstallation() *Installation {
+	if u == nil {
+		return nil
+	}
+	return u.Installation
+}
+
 // GetSender returns the Sender field.
 func (u *UserEvent) GetSender() *User {
 	if u == nil {
@@ -17468,6 +17524,14 @@ func (w *WorkflowBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
+// GetInstallation returns the Installation field.
+func (w *WorkflowDispatchEvent) GetInstallation() *Installation {
+	if w == nil {
+		return nil
+	}
+	return w.Installation
+}
+
 // GetOrg returns the Org field.
 func (w *WorkflowDispatchEvent) GetOrg() *Organization {
 	if w == nil {
@@ -17642,6 +17706,14 @@ func (w *WorkflowJobEvent) GetAction() string {
 		return ""
 	}
 	return *w.Action
+}
+
+// GetInstallation returns the Installation field.
+func (w *WorkflowJobEvent) GetInstallation() *Installation {
+	if w == nil {
+		return nil
+	}
+	return w.Installation
 }
 
 // GetOrg returns the Org field.
@@ -17914,6 +17986,14 @@ func (w *WorkflowRunEvent) GetAction() string {
 		return ""
 	}
 	return *w.Action
+}
+
+// GetInstallation returns the Installation field.
+func (w *WorkflowRunEvent) GetInstallation() *Installation {
+	if w == nil {
+		return nil
+	}
+	return w.Installation
 }
 
 // GetOrg returns the Org field.
