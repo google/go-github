@@ -115,6 +115,8 @@ type AlertListOptions struct {
 
 	// Return code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
 	Ref string `url:"ref,omitempty"`
+
+	ListOptions
 }
 
 // ListAlertsForRepo lists code scanning alerts for a repository.
