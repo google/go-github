@@ -116,11 +116,7 @@ type AlertListOptions struct {
 	// Return code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
 	Ref string `url:"ref,omitempty"`
 
-	// Returns the results based on Page number. Page number is set to 1 by default
-	Page int `url:"page,omitempty"`
-
-	// Results per page. Maximum is 100 results page
-	PerPage int `url:"per_page,omitempty"`
+	ListOptions
 }
 
 // ListAlertsForRepo lists code scanning alerts for a repository.
