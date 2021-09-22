@@ -789,7 +789,7 @@ type ProtectionRule struct {
 	AllowDeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
 	MergeQueueEnforcementLevel         *string    `json:"merge_queue_enforcement_level,omitempty"`
 	RequiredDeploymentsEnforcementLevel         *string    `json:"required_deployments_enforcement_level,omitempty"`
-	ConversationResolutionLevel        *string    `json:"required_conversation_resolution_level,omitempty"`
+	RequiredConversationResolutionLevel        *string    `json:"required_conversation_resolution_level,omitempty"`
 	AuthorizedActorsOnly               bool       `json:"authorized_actors_only"`
 	AuthorizedActorNames               []string   `json:"authorized_actor_names,omitempty"`
 }
