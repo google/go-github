@@ -800,7 +800,7 @@ type ProtectionChanges struct {
 }
 
 type AuthorizedActorNames struct {
-	From []string `json:"from"`
+	From []string `json:"from,omitempty"`
 }
 
 type AuthorizedActorsOnly struct {
