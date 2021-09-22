@@ -795,7 +795,7 @@ type ProtectionRules struct {
 
 // If the BranchProtection was edited, the changes to the rule
 type ProtectionChanges struct {
-	AuthorizedActorsOnly *AuthorizedActorsOnly `json:"authorized_actors_only"`
+	AuthorizedActorsOnly *AuthorizedActorsOnly `json:"authorized_actors_only,omitempty"`
 	AuthorizedActorNames *AuthorizedActorNames `json:"authorized_actor_names,omitempty"`
 }
 
