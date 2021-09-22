@@ -1364,6 +1364,54 @@ func (b *BranchPolicy) GetProtectedBranches() bool {
 	return *b.ProtectedBranches
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRuleEvent) GetAction() string {
+	if b == nil || b.Action == nil {
+		return ""
+	}
+	return *b.Action
+}
+
+// GetChanges returns the Changes field.
+func (b *BranchProtectionRuleEvent) GetChanges() *ProtectionChanges {
+	if b == nil {
+		return nil
+	}
+	return b.Changes
+}
+
+// GetOrg returns the Org field.
+func (b *BranchProtectionRuleEvent) GetOrg() *Organization {
+	if b == nil {
+		return nil
+	}
+	return b.Org
+}
+
+// GetRepo returns the Repo field.
+func (b *BranchProtectionRuleEvent) GetRepo() *Repository {
+	if b == nil {
+		return nil
+	}
+	return b.Repo
+}
+
+// GetRule returns the Rule field.
+func (b *BranchProtectionRuleEvent) GetRule() *ProtectionRules {
+	if b == nil {
+		return nil
+	}
+	return b.Rule
+}
+
+// GetSender returns the Sender field.
+func (b *BranchProtectionRuleEvent) GetSender() *User {
+	if b == nil {
+		return nil
+	}
+	return b.Sender
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -10508,6 +10556,22 @@ func (p *Protection) GetRestrictions() *BranchRestrictions {
 	return p.Restrictions
 }
 
+// GetAuthorizedActorNames returns the AuthorizedActorNames field.
+func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNames {
+	if p == nil {
+		return nil
+	}
+	return p.AuthorizedActorNames
+}
+
+// GetAuthorizedActorsOnly returns the AuthorizedActorsOnly field.
+func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnly {
+	if p == nil {
+		return nil
+	}
+	return p.AuthorizedActorsOnly
+}
+
 // GetAllowDeletions returns the AllowDeletions field if it's non-nil, zero value otherwise.
 func (p *ProtectionRequest) GetAllowDeletions() bool {
 	if p == nil || p.AllowDeletions == nil {
@@ -10594,6 +10658,110 @@ func (p *ProtectionRule) GetWaitTimer() int {
 		return 0
 	}
 	return *p.WaitTimer
+}
+
+// GetConversationResolutionLevel returns the ConversationResolutionLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetConversationResolutionLevel() string {
+	if p == nil || p.ConversationResolutionLevel == nil {
+		return ""
+	}
+	return *p.ConversationResolutionLevel
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetDeletionsEnforcementLevel returns the DeletionsEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetDeletionsEnforcementLevel() string {
+	if p == nil || p.DeletionsEnforcementLevel == nil {
+		return ""
+	}
+	return *p.DeletionsEnforcementLevel
+}
+
+// GetDeploymentEnforcementLevel returns the DeploymentEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetDeploymentEnforcementLevel() string {
+	if p == nil || p.DeploymentEnforcementLevel == nil {
+		return ""
+	}
+	return *p.DeploymentEnforcementLevel
+}
+
+// GetForcePushesEnforcementLevel returns the ForcePushesEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetForcePushesEnforcementLevel() string {
+	if p == nil || p.ForcePushesEnforcementLevel == nil {
+		return ""
+	}
+	return *p.ForcePushesEnforcementLevel
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetLinearHistoryEnforcementLevel returns the LinearHistoryEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetLinearHistoryEnforcementLevel() string {
+	if p == nil || p.LinearHistoryEnforcementLevel == nil {
+		return ""
+	}
+	return *p.LinearHistoryEnforcementLevel
+}
+
+// GetMergeQueueEnforcementLevel returns the MergeQueueEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetMergeQueueEnforcementLevel() string {
+	if p == nil || p.MergeQueueEnforcementLevel == nil {
+		return ""
+	}
+	return *p.MergeQueueEnforcementLevel
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetPullRequestReviewsEnforcementLevel returns the PullRequestReviewsEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetPullRequestReviewsEnforcementLevel() string {
+	if p == nil || p.PullRequestReviewsEnforcementLevel == nil {
+		return ""
+	}
+	return *p.PullRequestReviewsEnforcementLevel
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetRepositoryID() int64 {
+	if p == nil || p.RepositoryID == nil {
+		return 0
+	}
+	return *p.RepositoryID
+}
+
+// GetStatusChecksEnforcementLevel returns the StatusChecksEnforcementLevel field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetStatusChecksEnforcementLevel() string {
+	if p == nil || p.StatusChecksEnforcementLevel == nil {
+		return ""
+	}
+	return *p.StatusChecksEnforcementLevel
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *ProtectionRules) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
 }
 
 // GetInstallation returns the Installation field.
