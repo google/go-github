@@ -783,7 +783,7 @@ type ProtectionRule struct {
 	RequiredStatusChecksEnforcementLevel       *string    `json:"required_status_checks_enforcement_level,omitempty"`
 	StrictRequiredStatusChecksPolicy   *bool       `json:"strict_required_status_checks_policy,omitempty"`
 	SignatureRequirementEnforcementLevel   *string       `json:"signature_requirement_enforcement_level,omitempty"`
-	LinearHistoryEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
+	LinearHistoryRequirementEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
 	AdminEnforced                      bool       `json:"admin_enforced"`
 	ForcePushesEnforcementLevel        *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
 	DeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
