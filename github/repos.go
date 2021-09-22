@@ -786,7 +786,7 @@ type ProtectionRule struct {
 	LinearHistoryRequirementEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
 	AdminEnforced                      *bool       `json:"admin_enforced,omitempty"`
 	AllowForcePushesEnforcementLevel        *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
-	DeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
+	AllowDeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
 	MergeQueueEnforcementLevel         *string    `json:"merge_queue_enforcement_level,omitempty"`
 	DeploymentEnforcementLevel         *string    `json:"required_deployments_enforcement_level,omitempty"`
 	ConversationResolutionLevel        *string    `json:"required_conversation_resolution_level,omitempty"`
