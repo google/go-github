@@ -767,7 +767,7 @@ type Protection struct {
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 }
 
-type ProtectionRules struct {
+type ProtectionRule struct {
 	ID                                 *int64     `json:"id,omitempty"`
 	RepositoryID                       *int64     `json:"repository_id,omitempty"`
 	Name                               *string    `json:"name,omitempty"`
