@@ -767,6 +767,46 @@ type Protection struct {
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 }
 
+type ProtectionRules struct {
+	ID                                 *int64     `json:"id,omitempty"`
+	RepositoryID                       *int64     `json:"repository_id,omitempty"`
+	Name                               *string    `json:"name,omitempty"`
+	CreatedAt                          *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt                          *Timestamp `json:"updated_at,omitempty"`
+	PullRequestReviewsEnforcementLevel *string    `json:"pull_request_reviews_enforcement_level,omitempty"`
+	RequiredApprovingReviewCount       int        `json:"required_approving_review_count"`
+	DismissStaleReviewsonPush          bool       `json:"dismiss_stale_reviews_on_push"`
+	AuthorizedDismissalActors          bool       `json:"authorized_dismissal_actors_only"`
+	IgnoreApprovalsFromContributors    bool       `json:"ignore_approvals_from_contributors"`
+	RequireCodeOwnerReviews            bool       `json:"require_code_owner_reviews,omitempty"`
+	RequiredStatusChecks               []string   `json:"required_status_checks,omitempty"`
+	StatusChecksEnforcementLevel       *string    `json:"required_status_checks_enforcement_level,omitempty"`
+	StrictRequiredStatusChecksPolicy   bool       `json:"strict_required_status_checks_policy"`
+	LinearHistoryEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
+	AdminEnforced                      bool       `json:"admin_enforced"`
+	ForcePushesEnforcementLevel        *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
+	DeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
+	MergeQueueEnforcementLevel         *string    `json:"merge_queue_enforcement_level,omitempty"`
+	DeploymentEnforcementLevel         *string    `json:"required_deployments_enforcement_level,omitempty"`
+	ConversationResolutionLevel        *string    `json:"required_conversation_resolution_level,omitempty"`
+	AuthorizedActorsOnly               bool       `json:"authorized_actors_only"`
+	AuthorizedActorNames               []string   `json:"authorized_actor_names,omitempty"`
+}
+
+// If the BranchProtection was edited, the changes to the rule
+type ProtectionChanges struct {
+	AuthorizedActorsOnly *AuthorizedActorsOnly `json:"authorized_actors_only"`
+	AuthorizedActorNames *AuthorizedActorNames `json:"authorized_actor_names,omitempty"`
+}
+
+type AuthorizedActorNames struct {
+	From []string `json:"from"`
+}
+
+type AuthorizedActorsOnly struct {
+	From bool `json:"from"`
+}
+
 // ProtectionRequest represents a request to create/edit a branch's protection.
 type ProtectionRequest struct {
 	RequiredStatusChecks       *RequiredStatusChecks                 `json:"required_status_checks"`
