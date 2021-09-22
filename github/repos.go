@@ -780,7 +780,7 @@ type ProtectionRule struct {
 	IgnoreApprovalsFromContributors    *bool       `json:"ignore_approvals_from_contributors,omitempty"`
 	RequireCodeOwnerReview            *bool       `json:"require_code_owner_review,omitempty"`
 	RequiredStatusChecks               []string   `json:"required_status_checks,omitempty"`
-	StatusChecksEnforcementLevel       *string    `json:"required_status_checks_enforcement_level,omitempty"`
+	RequiredStatusChecksEnforcementLevel       *string    `json:"required_status_checks_enforcement_level,omitempty"`
 	StrictRequiredStatusChecksPolicy   bool       `json:"strict_required_status_checks_policy"`
 	LinearHistoryEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
 	AdminEnforced                      bool       `json:"admin_enforced"`
