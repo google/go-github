@@ -776,7 +776,7 @@ type ProtectionRule struct {
 	PullRequestReviewsEnforcementLevel *string    `json:"pull_request_reviews_enforcement_level,omitempty"`
 	RequiredApprovingReviewCount       *int        `json:"required_approving_review_count,omitempty"`
 	DismissStaleReviewsOnPush          *bool       `json:"dismiss_stale_reviews_on_push,omitempty"`
-	AuthorizedDismissalActors          bool       `json:"authorized_dismissal_actors_only"`
+	AuthorizedDismissalActorsOnly          *bool       `json:"authorized_dismissal_actors_only,omitempty"`
 	IgnoreApprovalsFromContributors    bool       `json:"ignore_approvals_from_contributors"`
 	RequireCodeOwnerReview            *bool       `json:"require_code_owner_review,omitempty"`
 	RequiredStatusChecks               []string   `json:"required_status_checks,omitempty"`
