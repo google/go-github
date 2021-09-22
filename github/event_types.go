@@ -15,7 +15,7 @@ type RequestedAction struct {
 	Identifier string `json:"identifier"` // The integrator reference of the action requested by the user.
 }
 
-// BranchProtectionEvent triggered when a check suite is "created", "edited", or "deleted".
+// BranchProtectionRuleEvent triggered when a check suite is "created", "edited", or "deleted".
 // The Webhook event name is "branch_protection_rule".
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_rule
