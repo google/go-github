@@ -1417,6 +1417,16 @@ func TestAuthorizationUpdateRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 }
 
+func TestAuthorizedActorsOnly_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	a := &AuthorizedActorsOnly{From: &zeroValue}
+	a.GetFrom()
+	a = &AuthorizedActorsOnly{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
+}
+
 func TestAutolink_GetID(tt *testing.T) {
 	var zeroValue int64
 	a := &Autolink{ID: &zeroValue}
@@ -1629,6 +1639,226 @@ func TestBranchPolicy_GetProtectedBranches(tt *testing.T) {
 	b.GetProtectedBranches()
 	b = nil
 	b.GetProtectedBranches()
+}
+
+func TestBranchProtectionRule_GetAdminEnforced(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{AdminEnforced: &zeroValue}
+	b.GetAdminEnforced()
+	b = &BranchProtectionRule{}
+	b.GetAdminEnforced()
+	b = nil
+	b.GetAdminEnforced()
+}
+
+func TestBranchProtectionRule_GetAllowDeletionsEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{AllowDeletionsEnforcementLevel: &zeroValue}
+	b.GetAllowDeletionsEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetAllowDeletionsEnforcementLevel()
+	b = nil
+	b.GetAllowDeletionsEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetAllowForcePushesEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{AllowForcePushesEnforcementLevel: &zeroValue}
+	b.GetAllowForcePushesEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetAllowForcePushesEnforcementLevel()
+	b = nil
+	b.GetAllowForcePushesEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetAuthorizedActorsOnly(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{AuthorizedActorsOnly: &zeroValue}
+	b.GetAuthorizedActorsOnly()
+	b = &BranchProtectionRule{}
+	b.GetAuthorizedActorsOnly()
+	b = nil
+	b.GetAuthorizedActorsOnly()
+}
+
+func TestBranchProtectionRule_GetAuthorizedDismissalActorsOnly(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{AuthorizedDismissalActorsOnly: &zeroValue}
+	b.GetAuthorizedDismissalActorsOnly()
+	b = &BranchProtectionRule{}
+	b.GetAuthorizedDismissalActorsOnly()
+	b = nil
+	b.GetAuthorizedDismissalActorsOnly()
+}
+
+func TestBranchProtectionRule_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	b := &BranchProtectionRule{CreatedAt: &zeroValue}
+	b.GetCreatedAt()
+	b = &BranchProtectionRule{}
+	b.GetCreatedAt()
+	b = nil
+	b.GetCreatedAt()
+}
+
+func TestBranchProtectionRule_GetDismissStaleReviewsOnPush(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{DismissStaleReviewsOnPush: &zeroValue}
+	b.GetDismissStaleReviewsOnPush()
+	b = &BranchProtectionRule{}
+	b.GetDismissStaleReviewsOnPush()
+	b = nil
+	b.GetDismissStaleReviewsOnPush()
+}
+
+func TestBranchProtectionRule_GetID(tt *testing.T) {
+	var zeroValue int64
+	b := &BranchProtectionRule{ID: &zeroValue}
+	b.GetID()
+	b = &BranchProtectionRule{}
+	b.GetID()
+	b = nil
+	b.GetID()
+}
+
+func TestBranchProtectionRule_GetIgnoreApprovalsFromContributors(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{IgnoreApprovalsFromContributors: &zeroValue}
+	b.GetIgnoreApprovalsFromContributors()
+	b = &BranchProtectionRule{}
+	b.GetIgnoreApprovalsFromContributors()
+	b = nil
+	b.GetIgnoreApprovalsFromContributors()
+}
+
+func TestBranchProtectionRule_GetLinearHistoryRequirementEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{LinearHistoryRequirementEnforcementLevel: &zeroValue}
+	b.GetLinearHistoryRequirementEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetLinearHistoryRequirementEnforcementLevel()
+	b = nil
+	b.GetLinearHistoryRequirementEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetMergeQueueEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{MergeQueueEnforcementLevel: &zeroValue}
+	b.GetMergeQueueEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetMergeQueueEnforcementLevel()
+	b = nil
+	b.GetMergeQueueEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetName(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{Name: &zeroValue}
+	b.GetName()
+	b = &BranchProtectionRule{}
+	b.GetName()
+	b = nil
+	b.GetName()
+}
+
+func TestBranchProtectionRule_GetPullRequestReviewsEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{PullRequestReviewsEnforcementLevel: &zeroValue}
+	b.GetPullRequestReviewsEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetPullRequestReviewsEnforcementLevel()
+	b = nil
+	b.GetPullRequestReviewsEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	b := &BranchProtectionRule{RepositoryID: &zeroValue}
+	b.GetRepositoryID()
+	b = &BranchProtectionRule{}
+	b.GetRepositoryID()
+	b = nil
+	b.GetRepositoryID()
+}
+
+func TestBranchProtectionRule_GetRequireCodeOwnerReview(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{RequireCodeOwnerReview: &zeroValue}
+	b.GetRequireCodeOwnerReview()
+	b = &BranchProtectionRule{}
+	b.GetRequireCodeOwnerReview()
+	b = nil
+	b.GetRequireCodeOwnerReview()
+}
+
+func TestBranchProtectionRule_GetRequiredApprovingReviewCount(tt *testing.T) {
+	var zeroValue int
+	b := &BranchProtectionRule{RequiredApprovingReviewCount: &zeroValue}
+	b.GetRequiredApprovingReviewCount()
+	b = &BranchProtectionRule{}
+	b.GetRequiredApprovingReviewCount()
+	b = nil
+	b.GetRequiredApprovingReviewCount()
+}
+
+func TestBranchProtectionRule_GetRequiredConversationResolutionLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{RequiredConversationResolutionLevel: &zeroValue}
+	b.GetRequiredConversationResolutionLevel()
+	b = &BranchProtectionRule{}
+	b.GetRequiredConversationResolutionLevel()
+	b = nil
+	b.GetRequiredConversationResolutionLevel()
+}
+
+func TestBranchProtectionRule_GetRequiredDeploymentsEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{RequiredDeploymentsEnforcementLevel: &zeroValue}
+	b.GetRequiredDeploymentsEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetRequiredDeploymentsEnforcementLevel()
+	b = nil
+	b.GetRequiredDeploymentsEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetRequiredStatusChecksEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{RequiredStatusChecksEnforcementLevel: &zeroValue}
+	b.GetRequiredStatusChecksEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetRequiredStatusChecksEnforcementLevel()
+	b = nil
+	b.GetRequiredStatusChecksEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetSignatureRequirementEnforcementLevel(tt *testing.T) {
+	var zeroValue string
+	b := &BranchProtectionRule{SignatureRequirementEnforcementLevel: &zeroValue}
+	b.GetSignatureRequirementEnforcementLevel()
+	b = &BranchProtectionRule{}
+	b.GetSignatureRequirementEnforcementLevel()
+	b = nil
+	b.GetSignatureRequirementEnforcementLevel()
+}
+
+func TestBranchProtectionRule_GetStrictRequiredStatusChecksPolicy(tt *testing.T) {
+	var zeroValue bool
+	b := &BranchProtectionRule{StrictRequiredStatusChecksPolicy: &zeroValue}
+	b.GetStrictRequiredStatusChecksPolicy()
+	b = &BranchProtectionRule{}
+	b.GetStrictRequiredStatusChecksPolicy()
+	b = nil
+	b.GetStrictRequiredStatusChecksPolicy()
+}
+
+func TestBranchProtectionRule_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	b := &BranchProtectionRule{UpdatedAt: &zeroValue}
+	b.GetUpdatedAt()
+	b = &BranchProtectionRule{}
+	b.GetUpdatedAt()
+	b = nil
+	b.GetUpdatedAt()
 }
 
 func TestBranchProtectionRuleEvent_GetAction(tt *testing.T) {
@@ -12424,136 +12654,6 @@ func TestProtectionRule_GetWaitTimer(tt *testing.T) {
 	p.GetWaitTimer()
 	p = nil
 	p.GetWaitTimer()
-}
-
-func TestProtectionRules_GetConversationResolutionLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{ConversationResolutionLevel: &zeroValue}
-	p.GetConversationResolutionLevel()
-	p = &ProtectionRules{}
-	p.GetConversationResolutionLevel()
-	p = nil
-	p.GetConversationResolutionLevel()
-}
-
-func TestProtectionRules_GetCreatedAt(tt *testing.T) {
-	var zeroValue Timestamp
-	p := &ProtectionRules{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &ProtectionRules{}
-	p.GetCreatedAt()
-	p = nil
-	p.GetCreatedAt()
-}
-
-func TestProtectionRules_GetDeletionsEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{DeletionsEnforcementLevel: &zeroValue}
-	p.GetDeletionsEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetDeletionsEnforcementLevel()
-	p = nil
-	p.GetDeletionsEnforcementLevel()
-}
-
-func TestProtectionRules_GetDeploymentEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{DeploymentEnforcementLevel: &zeroValue}
-	p.GetDeploymentEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetDeploymentEnforcementLevel()
-	p = nil
-	p.GetDeploymentEnforcementLevel()
-}
-
-func TestProtectionRules_GetForcePushesEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{ForcePushesEnforcementLevel: &zeroValue}
-	p.GetForcePushesEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetForcePushesEnforcementLevel()
-	p = nil
-	p.GetForcePushesEnforcementLevel()
-}
-
-func TestProtectionRules_GetID(tt *testing.T) {
-	var zeroValue int64
-	p := &ProtectionRules{ID: &zeroValue}
-	p.GetID()
-	p = &ProtectionRules{}
-	p.GetID()
-	p = nil
-	p.GetID()
-}
-
-func TestProtectionRules_GetLinearHistoryEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{LinearHistoryEnforcementLevel: &zeroValue}
-	p.GetLinearHistoryEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetLinearHistoryEnforcementLevel()
-	p = nil
-	p.GetLinearHistoryEnforcementLevel()
-}
-
-func TestProtectionRules_GetMergeQueueEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{MergeQueueEnforcementLevel: &zeroValue}
-	p.GetMergeQueueEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetMergeQueueEnforcementLevel()
-	p = nil
-	p.GetMergeQueueEnforcementLevel()
-}
-
-func TestProtectionRules_GetName(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{Name: &zeroValue}
-	p.GetName()
-	p = &ProtectionRules{}
-	p.GetName()
-	p = nil
-	p.GetName()
-}
-
-func TestProtectionRules_GetPullRequestReviewsEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{PullRequestReviewsEnforcementLevel: &zeroValue}
-	p.GetPullRequestReviewsEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetPullRequestReviewsEnforcementLevel()
-	p = nil
-	p.GetPullRequestReviewsEnforcementLevel()
-}
-
-func TestProtectionRules_GetRepositoryID(tt *testing.T) {
-	var zeroValue int64
-	p := &ProtectionRules{RepositoryID: &zeroValue}
-	p.GetRepositoryID()
-	p = &ProtectionRules{}
-	p.GetRepositoryID()
-	p = nil
-	p.GetRepositoryID()
-}
-
-func TestProtectionRules_GetStatusChecksEnforcementLevel(tt *testing.T) {
-	var zeroValue string
-	p := &ProtectionRules{StatusChecksEnforcementLevel: &zeroValue}
-	p.GetStatusChecksEnforcementLevel()
-	p = &ProtectionRules{}
-	p.GetStatusChecksEnforcementLevel()
-	p = nil
-	p.GetStatusChecksEnforcementLevel()
-}
-
-func TestProtectionRules_GetUpdatedAt(tt *testing.T) {
-	var zeroValue Timestamp
-	p := &ProtectionRules{UpdatedAt: &zeroValue}
-	p.GetUpdatedAt()
-	p = &ProtectionRules{}
-	p.GetUpdatedAt()
-	p = nil
-	p.GetUpdatedAt()
 }
 
 func TestPublicEvent_GetInstallation(tt *testing.T) {

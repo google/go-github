@@ -767,31 +767,32 @@ type Protection struct {
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 }
 
-type ProtectionRule struct {
-	ID                                 *int64     `json:"id,omitempty"`
-	RepositoryID                       *int64     `json:"repository_id,omitempty"`
-	Name                               *string    `json:"name,omitempty"`
-	CreatedAt                          *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt                          *Timestamp `json:"updated_at,omitempty"`
-	PullRequestReviewsEnforcementLevel *string    `json:"pull_request_reviews_enforcement_level,omitempty"`
-	RequiredApprovingReviewCount       *int        `json:"required_approving_review_count,omitempty"`
-	DismissStaleReviewsOnPush          *bool       `json:"dismiss_stale_reviews_on_push,omitempty"`
-	AuthorizedDismissalActorsOnly          *bool       `json:"authorized_dismissal_actors_only,omitempty"`
-	IgnoreApprovalsFromContributors    *bool       `json:"ignore_approvals_from_contributors,omitempty"`
-	RequireCodeOwnerReview            *bool       `json:"require_code_owner_review,omitempty"`
-	RequiredStatusChecks               []string   `json:"required_status_checks,omitempty"`
-	RequiredStatusChecksEnforcementLevel       *string    `json:"required_status_checks_enforcement_level,omitempty"`
-	StrictRequiredStatusChecksPolicy   *bool       `json:"strict_required_status_checks_policy,omitempty"`
-	SignatureRequirementEnforcementLevel   *string       `json:"signature_requirement_enforcement_level,omitempty"`
-	LinearHistoryRequirementEnforcementLevel      *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
-	AdminEnforced                      *bool       `json:"admin_enforced,omitempty"`
-	AllowForcePushesEnforcementLevel        *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
-	AllowDeletionsEnforcementLevel          *string    `json:"allow_deletions_enforcement_level,omitempty"`
-	MergeQueueEnforcementLevel         *string    `json:"merge_queue_enforcement_level,omitempty"`
-	RequiredDeploymentsEnforcementLevel         *string    `json:"required_deployments_enforcement_level,omitempty"`
-	RequiredConversationResolutionLevel        *string    `json:"required_conversation_resolution_level,omitempty"`
-	AuthorizedActorsOnly               *bool       `json:"authorized_actors_only,omitempty"`
-	AuthorizedActorNames               []string   `json:"authorized_actor_names,omitempty"`
+// BranchProtectionRule represents the rule applied to a repositories branch.
+type BranchProtectionRule struct {
+	ID                                       *int64     `json:"id,omitempty"`
+	RepositoryID                             *int64     `json:"repository_id,omitempty"`
+	Name                                     *string    `json:"name,omitempty"`
+	CreatedAt                                *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt                                *Timestamp `json:"updated_at,omitempty"`
+	PullRequestReviewsEnforcementLevel       *string    `json:"pull_request_reviews_enforcement_level,omitempty"`
+	RequiredApprovingReviewCount             *int       `json:"required_approving_review_count,omitempty"`
+	DismissStaleReviewsOnPush                *bool      `json:"dismiss_stale_reviews_on_push,omitempty"`
+	AuthorizedDismissalActorsOnly            *bool      `json:"authorized_dismissal_actors_only,omitempty"`
+	IgnoreApprovalsFromContributors          *bool      `json:"ignore_approvals_from_contributors,omitempty"`
+	RequireCodeOwnerReview                   *bool      `json:"require_code_owner_review,omitempty"`
+	RequiredStatusChecks                     []string   `json:"required_status_checks,omitempty"`
+	RequiredStatusChecksEnforcementLevel     *string    `json:"required_status_checks_enforcement_level,omitempty"`
+	StrictRequiredStatusChecksPolicy         *bool      `json:"strict_required_status_checks_policy,omitempty"`
+	SignatureRequirementEnforcementLevel     *string    `json:"signature_requirement_enforcement_level,omitempty"`
+	LinearHistoryRequirementEnforcementLevel *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
+	AdminEnforced                            *bool      `json:"admin_enforced,omitempty"`
+	AllowForcePushesEnforcementLevel         *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
+	AllowDeletionsEnforcementLevel           *string    `json:"allow_deletions_enforcement_level,omitempty"`
+	MergeQueueEnforcementLevel               *string    `json:"merge_queue_enforcement_level,omitempty"`
+	RequiredDeploymentsEnforcementLevel      *string    `json:"required_deployments_enforcement_level,omitempty"`
+	RequiredConversationResolutionLevel      *string    `json:"required_conversation_resolution_level,omitempty"`
+	AuthorizedActorsOnly                     *bool      `json:"authorized_actors_only,omitempty"`
+	AuthorizedActorNames                     []string   `json:"authorized_actor_names,omitempty"`
 }
 
 // ProtectionChanges represents the changes to the rule if the BranchProtection was edited.
@@ -800,10 +801,12 @@ type ProtectionChanges struct {
 	AuthorizedActorNames *AuthorizedActorNames `json:"authorized_actor_names,omitempty"`
 }
 
+// AuthorizedActorNames represents who are authorized to edit the branch protection rules.
 type AuthorizedActorNames struct {
 	From []string `json:"from,omitempty"`
 }
 
+// AuthorizedActorsOnly represents if the branche rule can be edited by authorized actors only.
 type AuthorizedActorsOnly struct {
 	From *bool `json:"from,omitempty"`
 }

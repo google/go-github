@@ -16,16 +16,16 @@ type RequestedAction struct {
 }
 
 // BranchProtectionEvent triggered when a check suite is "created", "edited", or "deleted".
-// The Webhook event name is "branch_protection".
+// The Webhook event name is "branch_protection_rule".
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_rule
 type BranchProtectionRuleEvent struct {
-	Action  *string            `json:"action,omitempty"`
-	Rule    *ProtectionRules   `json:"rule,omitempty"`
-	Changes *ProtectionChanges `json:"changes,omitempty"`
-	Repo    *Repository        `json:"repository,omitempty"`
-	Org     *Organization      `json:"organization,omitempty"`
-	Sender  *User              `json:"sender,omitempty"`
+	Action  *string               `json:"action,omitempty"`
+	Rule    *BranchProtectionRule `json:"rule,omitempty"`
+	Changes *ProtectionChanges    `json:"changes,omitempty"`
+	Repo    *Repository           `json:"repository,omitempty"`
+	Org     *Organization         `json:"organization,omitempty"`
+	Sender  *User                 `json:"sender,omitempty"`
 }
 
 // CheckRunEvent is triggered when a check run is "created", "completed", or "rerequested".
