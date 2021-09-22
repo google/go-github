@@ -804,7 +804,7 @@ type AuthorizedActorNames struct {
 }
 
 type AuthorizedActorsOnly struct {
-	From bool `json:"from"`
+	From *bool `json:"from,omitempty"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
