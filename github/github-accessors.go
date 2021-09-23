@@ -1188,6 +1188,14 @@ func (a *AuthorizationUpdateRequest) GetNoteURL() string {
 	return *a.NoteURL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (a *AuthorizedActorsOnly) GetFrom() bool {
+	if a == nil || a.From == nil {
+		return false
+	}
+	return *a.From
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (a *Autolink) GetID() int64 {
 	if a == nil || a.ID == nil {
@@ -1362,6 +1370,230 @@ func (b *BranchPolicy) GetProtectedBranches() bool {
 		return false
 	}
 	return *b.ProtectedBranches
+}
+
+// GetAdminEnforced returns the AdminEnforced field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetAdminEnforced() bool {
+	if b == nil || b.AdminEnforced == nil {
+		return false
+	}
+	return *b.AdminEnforced
+}
+
+// GetAllowDeletionsEnforcementLevel returns the AllowDeletionsEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetAllowDeletionsEnforcementLevel() string {
+	if b == nil || b.AllowDeletionsEnforcementLevel == nil {
+		return ""
+	}
+	return *b.AllowDeletionsEnforcementLevel
+}
+
+// GetAllowForcePushesEnforcementLevel returns the AllowForcePushesEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetAllowForcePushesEnforcementLevel() string {
+	if b == nil || b.AllowForcePushesEnforcementLevel == nil {
+		return ""
+	}
+	return *b.AllowForcePushesEnforcementLevel
+}
+
+// GetAuthorizedActorsOnly returns the AuthorizedActorsOnly field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetAuthorizedActorsOnly() bool {
+	if b == nil || b.AuthorizedActorsOnly == nil {
+		return false
+	}
+	return *b.AuthorizedActorsOnly
+}
+
+// GetAuthorizedDismissalActorsOnly returns the AuthorizedDismissalActorsOnly field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetAuthorizedDismissalActorsOnly() bool {
+	if b == nil || b.AuthorizedDismissalActorsOnly == nil {
+		return false
+	}
+	return *b.AuthorizedDismissalActorsOnly
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetCreatedAt() Timestamp {
+	if b == nil || b.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *b.CreatedAt
+}
+
+// GetDismissStaleReviewsOnPush returns the DismissStaleReviewsOnPush field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetDismissStaleReviewsOnPush() bool {
+	if b == nil || b.DismissStaleReviewsOnPush == nil {
+		return false
+	}
+	return *b.DismissStaleReviewsOnPush
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetID() int64 {
+	if b == nil || b.ID == nil {
+		return 0
+	}
+	return *b.ID
+}
+
+// GetIgnoreApprovalsFromContributors returns the IgnoreApprovalsFromContributors field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetIgnoreApprovalsFromContributors() bool {
+	if b == nil || b.IgnoreApprovalsFromContributors == nil {
+		return false
+	}
+	return *b.IgnoreApprovalsFromContributors
+}
+
+// GetLinearHistoryRequirementEnforcementLevel returns the LinearHistoryRequirementEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetLinearHistoryRequirementEnforcementLevel() string {
+	if b == nil || b.LinearHistoryRequirementEnforcementLevel == nil {
+		return ""
+	}
+	return *b.LinearHistoryRequirementEnforcementLevel
+}
+
+// GetMergeQueueEnforcementLevel returns the MergeQueueEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetMergeQueueEnforcementLevel() string {
+	if b == nil || b.MergeQueueEnforcementLevel == nil {
+		return ""
+	}
+	return *b.MergeQueueEnforcementLevel
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetName() string {
+	if b == nil || b.Name == nil {
+		return ""
+	}
+	return *b.Name
+}
+
+// GetPullRequestReviewsEnforcementLevel returns the PullRequestReviewsEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetPullRequestReviewsEnforcementLevel() string {
+	if b == nil || b.PullRequestReviewsEnforcementLevel == nil {
+		return ""
+	}
+	return *b.PullRequestReviewsEnforcementLevel
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRepositoryID() int64 {
+	if b == nil || b.RepositoryID == nil {
+		return 0
+	}
+	return *b.RepositoryID
+}
+
+// GetRequireCodeOwnerReview returns the RequireCodeOwnerReview field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequireCodeOwnerReview() bool {
+	if b == nil || b.RequireCodeOwnerReview == nil {
+		return false
+	}
+	return *b.RequireCodeOwnerReview
+}
+
+// GetRequiredApprovingReviewCount returns the RequiredApprovingReviewCount field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequiredApprovingReviewCount() int {
+	if b == nil || b.RequiredApprovingReviewCount == nil {
+		return 0
+	}
+	return *b.RequiredApprovingReviewCount
+}
+
+// GetRequiredConversationResolutionLevel returns the RequiredConversationResolutionLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequiredConversationResolutionLevel() string {
+	if b == nil || b.RequiredConversationResolutionLevel == nil {
+		return ""
+	}
+	return *b.RequiredConversationResolutionLevel
+}
+
+// GetRequiredDeploymentsEnforcementLevel returns the RequiredDeploymentsEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequiredDeploymentsEnforcementLevel() string {
+	if b == nil || b.RequiredDeploymentsEnforcementLevel == nil {
+		return ""
+	}
+	return *b.RequiredDeploymentsEnforcementLevel
+}
+
+// GetRequiredStatusChecksEnforcementLevel returns the RequiredStatusChecksEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetRequiredStatusChecksEnforcementLevel() string {
+	if b == nil || b.RequiredStatusChecksEnforcementLevel == nil {
+		return ""
+	}
+	return *b.RequiredStatusChecksEnforcementLevel
+}
+
+// GetSignatureRequirementEnforcementLevel returns the SignatureRequirementEnforcementLevel field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetSignatureRequirementEnforcementLevel() string {
+	if b == nil || b.SignatureRequirementEnforcementLevel == nil {
+		return ""
+	}
+	return *b.SignatureRequirementEnforcementLevel
+}
+
+// GetStrictRequiredStatusChecksPolicy returns the StrictRequiredStatusChecksPolicy field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetStrictRequiredStatusChecksPolicy() bool {
+	if b == nil || b.StrictRequiredStatusChecksPolicy == nil {
+		return false
+	}
+	return *b.StrictRequiredStatusChecksPolicy
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRule) GetUpdatedAt() Timestamp {
+	if b == nil || b.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *b.UpdatedAt
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (b *BranchProtectionRuleEvent) GetAction() string {
+	if b == nil || b.Action == nil {
+		return ""
+	}
+	return *b.Action
+}
+
+// GetChanges returns the Changes field.
+func (b *BranchProtectionRuleEvent) GetChanges() *ProtectionChanges {
+	if b == nil {
+		return nil
+	}
+	return b.Changes
+}
+
+// GetOrg returns the Org field.
+func (b *BranchProtectionRuleEvent) GetOrg() *Organization {
+	if b == nil {
+		return nil
+	}
+	return b.Org
+}
+
+// GetRepo returns the Repo field.
+func (b *BranchProtectionRuleEvent) GetRepo() *Repository {
+	if b == nil {
+		return nil
+	}
+	return b.Repo
+}
+
+// GetRule returns the Rule field.
+func (b *BranchProtectionRuleEvent) GetRule() *BranchProtectionRule {
+	if b == nil {
+		return nil
+	}
+	return b.Rule
+}
+
+// GetSender returns the Sender field.
+func (b *BranchProtectionRuleEvent) GetSender() *User {
+	if b == nil {
+		return nil
+	}
+	return b.Sender
 }
 
 // GetApp returns the App field.
@@ -10506,6 +10738,22 @@ func (p *Protection) GetRestrictions() *BranchRestrictions {
 		return nil
 	}
 	return p.Restrictions
+}
+
+// GetAuthorizedActorNames returns the AuthorizedActorNames field.
+func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNames {
+	if p == nil {
+		return nil
+	}
+	return p.AuthorizedActorNames
+}
+
+// GetAuthorizedActorsOnly returns the AuthorizedActorsOnly field.
+func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnly {
+	if p == nil {
+		return nil
+	}
+	return p.AuthorizedActorsOnly
 }
 
 // GetAllowDeletions returns the AllowDeletions field if it's non-nil, zero value otherwise.
