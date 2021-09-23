@@ -262,6 +262,10 @@ func TestParseWebHook(t *testing.T) {
 		messageType string
 	}{
 		{
+			payload:     &BranchProtectionRuleEvent{},
+			messageType: "branch_protection_rule",
+		},
+		{
 			payload:     &CheckRunEvent{},
 			messageType: "check_run",
 		},
