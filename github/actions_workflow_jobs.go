@@ -38,7 +38,7 @@ type WorkflowJob struct {
 	Name        *string     `json:"name,omitempty"`
 	Steps       []*TaskStep `json:"steps,omitempty"`
 	CheckRunURL *string     `json:"check_run_url,omitempty"`
-	// Labels is runner labels from the `runs-on:` key from a GitHub Actions workflow
+	// Labels represents runner labels from the `runs-on:` key from a GitHub Actions workflow.
 	Labels []string `json:"labels,omitempty"`
 }
 
