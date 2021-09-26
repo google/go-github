@@ -708,10 +708,10 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 	return nil
 }
 
-// compareHttpResponse returns whether two http.Response objects are equal or not.
+// compareHTTPResponse returns whether two http.Response objects are equal or not.
 // Currently, only StatusCode is checked. This function is used when implementing the
 // Is(error) bool interface for the custom error types in this package.
-func compareHttpResponse(r1, r2 *http.Response) bool {
+func compareHTTPResponse(r1, r2 *http.Response) bool {
 	if r1 == nil && r2 == nil {
 		return true
 	}
@@ -761,7 +761,7 @@ func (r *ErrorResponse) Is(target error) bool {
 	}
 
 	if r.Message != v.Message || (r.DocumentationURL != v.DocumentationURL) ||
-		!compareHttpResponse(r.Response, v.Response) {
+		!compareHTTPResponse(r.Response, v.Response) {
 		return false
 	}
 
@@ -827,7 +827,7 @@ func (r *RateLimitError) Is(target error) bool {
 
 	return r.Rate == v.Rate &&
 		r.Message == v.Message &&
-		compareHttpResponse(r.Response, v.Response)
+		compareHTTPResponse(r.Response, v.Response)
 }
 
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
@@ -881,7 +881,7 @@ func (r *AbuseRateLimitError) Is(target error) bool {
 
 	return r.Message == v.Message &&
 		r.RetryAfter == v.RetryAfter &&
-		compareHttpResponse(r.Response, v.Response)
+		compareHTTPResponse(r.Response, v.Response)
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be

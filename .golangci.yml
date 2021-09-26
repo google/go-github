@@ -11,10 +11,10 @@ linters:
   # - gosec
     - misspell
     - nakedret
-  # - stylecheck
+    - stylecheck
   # - unconvert
   # - unparam
-  # - whitespace
+    - whitespace
   disable:
     - errcheck
     - gosimple
