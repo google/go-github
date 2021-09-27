@@ -357,7 +357,6 @@ func TestOrganizationsService_ListInstallations_invalidOrg(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Organizations.ListInstallations(ctx, "%", nil)
 	testURLParseError(t, err)
-
 }
 
 func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {

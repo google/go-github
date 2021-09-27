@@ -1229,7 +1229,7 @@ func TestCompareHttpResponse(t *testing.T) {
 
 	for name, tc := range testcases {
 		t.Run(name, func(t *testing.T) {
-			v := compareHttpResponse(tc.h1, tc.h2)
+			v := compareHTTPResponse(tc.h1, tc.h2)
 			if tc.expected != v {
 				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
 			}
@@ -2028,7 +2028,6 @@ func TestAddOptions_QueryValues(t *testing.T) {
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-
 	client, mux, _, teardown := setup()
 	defer teardown()
 

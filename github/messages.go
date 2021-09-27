@@ -192,7 +192,7 @@ func ValidatePayloadFromBody(contentType string, readable io.Reader, signature s
 		payload = []byte(form.Get(payloadFormParam))
 
 	default:
-		return nil, fmt.Errorf("Webhook request has unsupported Content-Type %q", contentType)
+		return nil, fmt.Errorf("webhook request has unsupported Content-Type %q", contentType)
 	}
 
 	// Only validate the signature if a secret token exists. This is intended for

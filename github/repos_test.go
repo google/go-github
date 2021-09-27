@@ -1090,7 +1090,6 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
-
 		testMethod(t, r, "GET")
 		// TODO: remove custom Accept header when this API fully launches
 		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
@@ -2319,8 +2318,8 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 			Baz: false,
 		},
 	}
-	for _, tc := range testCases {
 
+	for _, tc := range testCases {
 		if tc == nil {
 			input = DispatchRequestOptions{EventType: "go"}
 		} else {

@@ -110,7 +110,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
