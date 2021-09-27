@@ -233,7 +233,7 @@ type fakeDocCache struct {
 	endpoints endpointsByFragmentID
 }
 
-func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+func (f *fakeDocCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
 	f.t.Helper()
 	for fragmentID, endpoints := range f.endpoints {
 		for _, endpoint := range endpoints {
@@ -241,13 +241,13 @@ func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
 				key := fmt.Sprintf("%v %v", endpoint.httpMethod, urlFormat)
 				if key == methodAndPath {
 					url := fmt.Sprintf("%v#%v", f.baseURL, fragmentID)
-					// log.Printf("UrlByMethodAndPath(%q) = (%q, true)", methodAndPath, url)
+					// log.Printf("URLByMethodAndPath(%q) = (%q, true)", methodAndPath, url)
 					return url, true
 				}
 			}
 		}
 	}
-	f.t.Fatalf("fakeDocCache.UrlByMethodAndPath: unable to find method %v", methodAndPath)
+	f.t.Fatalf("fakeDocCache.URLByMethodAndPath: unable to find method %v", methodAndPath)
 	return "", false
 }
 

@@ -622,7 +622,6 @@ func TestUsersService_Authenticated_PackageDeleteVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.PackageDeleteVersion(ctx, "", "", "", 45763)
-
 	})
 }
 
@@ -648,7 +647,6 @@ func TestUsersService_specifiedUser_PackageDeleteVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.PackageDeleteVersion(ctx, "", "", "", 45763)
-
 	})
 }
 
@@ -674,7 +672,6 @@ func TestUsersService_Authenticated_PackageRestoreVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.PackageRestoreVersion(ctx, "", "", "", 45763)
-
 	})
 }
 
@@ -700,6 +697,5 @@ func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.PackageRestoreVersion(ctx, "", "", "", 45763)
-
 	})
 }

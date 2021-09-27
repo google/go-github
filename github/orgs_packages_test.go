@@ -377,7 +377,6 @@ func TestOrganizationsService_PackageDeleteVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.PackageDeleteVersion(ctx, "", "", "", 45763)
-
 	})
 }
 
@@ -403,6 +402,5 @@ func TestOrganizationsService_PackageRestoreVersion(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.PackageRestoreVersion(ctx, "", "", "", 45763)
-
 	})
 }
