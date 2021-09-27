@@ -96,5 +96,4 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }

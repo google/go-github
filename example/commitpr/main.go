@@ -67,11 +67,11 @@ func getRef() (ref *github.Reference, err error) {
 	// We consider that an error means the branch has not been found and needs to
 	// be created.
 	if *commitBranch == *baseBranch {
-		return nil, errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
+		return nil, errors.New("the commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
 	}
 
 	if *baseBranch == "" {
-		return nil, errors.New("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
+		return nil, errors.New("the `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
 	}
 
 	var baseRef *github.Reference

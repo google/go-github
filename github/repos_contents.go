@@ -132,7 +132,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
-				return nil, resp, fmt.Errorf("No download link found for %s", filepath)
+				return nil, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
 			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
@@ -141,7 +141,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 			return dlResp.Body, &Response{Response: dlResp}, nil
 		}
 	}
-	return nil, resp, fmt.Errorf("No file named %s found in %s", filename, dir)
+	return nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
 }
 
 // DownloadContentsWithMeta is identical to DownloadContents but additionally
@@ -162,7 +162,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
-				return nil, contents, resp, fmt.Errorf("No download link found for %s", filepath)
+				return nil, contents, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
 			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
@@ -171,7 +171,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 			return dlResp.Body, contents, &Response{Response: dlResp}, nil
 		}
 	}
-	return nil, nil, resp, fmt.Errorf("No file named %s found in %s", filename, dir)
+	return nil, nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
 }
 
 // GetContents can return either the metadata and content of a single file
