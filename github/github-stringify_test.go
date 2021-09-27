@@ -969,8 +969,12 @@ func TestPackage_String(t *testing.T) {
 		Owner:          &User{},
 		PackageVersion: &PackageVersion{},
 		Registry:       &PackageRegistry{},
+		URL:            String(""),
+		VersionCount:   Int64(0),
+		Visibility:     String(""),
+		Repository:     &Repository{},
 	}
-	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Owner:github.User{}, PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}}`
+	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Owner:github.User{}, PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0, Visibility:"", Repository:github.Repository{}}`
 	if got := v.String(); got != want {
 		t.Errorf("Package.String = %v, want %v", got, want)
 	}
@@ -994,6 +998,17 @@ func TestPackageFile_String(t *testing.T) {
 	want := `github.PackageFile{DownloadURL:"", ID:0, Name:"", SHA256:"", SHA1:"", MD5:"", ContentType:"", State:"", Author:github.User{}, Size:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageFile.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageMetadata_String(t *testing.T) {
+	v := PackageMetadata{
+		PackageType: String(""),
+		Container:   &PackageContainerMetadata{},
+	}
+	want := `github.PackageMetadata{PackageType:"", Container:github.PackageContainerMetadata{}}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageMetadata.String = %v, want %v", got, want)
 	}
 }
 
@@ -1050,8 +1065,12 @@ func TestPackageVersion_String(t *testing.T) {
 		UpdatedAt:           &Timestamp{},
 		Author:              &User{},
 		InstallationCommand: String(""),
+		Metadata:            &PackageMetadata{},
+		PackageHTMLURL:      String(""),
+		Name:                String(""),
+		URL:                 String(""),
 	}
-	want := `github.PackageVersion{ID:0, Version:"", Summary:"", Body:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Author:github.User{}, InstallationCommand:""}`
+	want := `github.PackageVersion{ID:0, Version:"", Summary:"", Body:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Author:github.User{}, InstallationCommand:"", Metadata:github.PackageMetadata{}, PackageHTMLURL:"", Name:"", URL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PackageVersion.String = %v, want %v", got, want)
 	}
