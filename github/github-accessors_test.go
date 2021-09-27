@@ -10808,6 +10808,13 @@ func TestPackage_GetRegistry(tt *testing.T) {
 	p.GetRegistry()
 }
 
+func TestPackage_GetRepository(tt *testing.T) {
+	p := &Package{}
+	p.GetRepository()
+	p = nil
+	p.GetRepository()
+}
+
 func TestPackage_GetUpdatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	p := &Package{UpdatedAt: &zeroValue}
@@ -10816,6 +10823,36 @@ func TestPackage_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestPackage_GetURL(tt *testing.T) {
+	var zeroValue string
+	p := &Package{URL: &zeroValue}
+	p.GetURL()
+	p = &Package{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPackage_GetVersionCount(tt *testing.T) {
+	var zeroValue int64
+	p := &Package{VersionCount: &zeroValue}
+	p.GetVersionCount()
+	p = &Package{}
+	p.GetVersionCount()
+	p = nil
+	p.GetVersionCount()
+}
+
+func TestPackage_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	p := &Package{Visibility: &zeroValue}
+	p.GetVisibility()
+	p = &Package{}
+	p.GetVisibility()
+	p = nil
+	p.GetVisibility()
 }
 
 func TestPackageEvent_GetAction(tt *testing.T) {
@@ -10978,6 +11015,53 @@ func TestPackageFile_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestPackageListOptions_GetPackageType(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{PackageType: &zeroValue}
+	p.GetPackageType()
+	p = &PackageListOptions{}
+	p.GetPackageType()
+	p = nil
+	p.GetPackageType()
+}
+
+func TestPackageListOptions_GetState(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{State: &zeroValue}
+	p.GetState()
+	p = &PackageListOptions{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPackageListOptions_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	p := &PackageListOptions{Visibility: &zeroValue}
+	p.GetVisibility()
+	p = &PackageListOptions{}
+	p.GetVisibility()
+	p = nil
+	p.GetVisibility()
+}
+
+func TestPackageMetadata_GetContainer(tt *testing.T) {
+	p := &PackageMetadata{}
+	p.GetContainer()
+	p = nil
+	p.GetContainer()
+}
+
+func TestPackageMetadata_GetPackageType(tt *testing.T) {
+	var zeroValue string
+	p := &PackageMetadata{PackageType: &zeroValue}
+	p.GetPackageType()
+	p = &PackageMetadata{}
+	p.GetPackageType()
+	p = nil
+	p.GetPackageType()
 }
 
 func TestPackageRegistry_GetAboutURL(tt *testing.T) {
@@ -11224,6 +11308,33 @@ func TestPackageVersion_GetManifest(tt *testing.T) {
 	p.GetManifest()
 }
 
+func TestPackageVersion_GetMetadata(tt *testing.T) {
+	p := &PackageVersion{}
+	p.GetMetadata()
+	p = nil
+	p.GetMetadata()
+}
+
+func TestPackageVersion_GetName(tt *testing.T) {
+	var zeroValue string
+	p := &PackageVersion{Name: &zeroValue}
+	p.GetName()
+	p = &PackageVersion{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPackageVersion_GetPackageHTMLURL(tt *testing.T) {
+	var zeroValue string
+	p := &PackageVersion{PackageHTMLURL: &zeroValue}
+	p.GetPackageHTMLURL()
+	p = &PackageVersion{}
+	p.GetPackageHTMLURL()
+	p = nil
+	p.GetPackageHTMLURL()
+}
+
 func TestPackageVersion_GetPrerelease(tt *testing.T) {
 	var zeroValue bool
 	p := &PackageVersion{Prerelease: &zeroValue}
@@ -11289,6 +11400,16 @@ func TestPackageVersion_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
+}
+
+func TestPackageVersion_GetURL(tt *testing.T) {
+	var zeroValue string
+	p := &PackageVersion{URL: &zeroValue}
+	p.GetURL()
+	p = &PackageVersion{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPackageVersion_GetVersion(tt *testing.T) {
