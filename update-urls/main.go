@@ -199,10 +199,10 @@ func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpoin
 				path = strings.ReplaceAll(path, "%s", "%v")
 
 				// Check the overrides.
-				endpoint.checkHttpMethodOverride(path)
+				endpoint.checkHTTPMethodOverride(path)
 
 				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
-				url, ok := docCache.UrlByMethodAndPath(methodAndPath)
+				url, ok := docCache.URLByMethodAndPath(methodAndPath)
 				if !ok {
 					if i := len(endpoint.endpointComments); i > 0 {
 						pos := fileRewriter.Position(endpoint.endpointComments[i-1].Pos())
@@ -529,7 +529,7 @@ func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWr
 }
 
 type documentCacheReader interface {
-	UrlByMethodAndPath(string) (string, bool)
+	URLByMethodAndPath(string) (string, bool)
 }
 
 type documentCacheWriter interface {
@@ -542,7 +542,7 @@ type documentCache struct {
 	urlByMethodAndPath map[string]string
 }
 
-func (dc *documentCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+func (dc *documentCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
 	url, ok := dc.urlByMethodAndPath[methodAndPath]
 	return url, ok
 }
@@ -657,7 +657,7 @@ func (e *Endpoint) String() string {
 	return b.String()
 }
 
-func (e *Endpoint) checkHttpMethodOverride(path string) {
+func (e *Endpoint) checkHTTPMethodOverride(path string) {
 	lookupOverride := fmt.Sprintf("%v.%v: %v %v", e.serviceName, e.endpointName, e.httpMethod, path)
 	logf("Looking up override for %q", lookupOverride)
 	if v, ok := methodOverrides[lookupOverride]; ok {
@@ -747,7 +747,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 				stdRefLines:        stdRefLines,
 				endpointComments:   endpointComments,
 			}
-			// ep.checkHttpMethodOverride("")
+			// ep.checkHTTPMethodOverride("")
 			endpoints[fullName] = ep
 			logf("endpoints[%q] = %#v", fullName, endpoints[fullName])
 			if ep.httpMethod == "" && (ep.helperMethod == "" || len(ep.urlFormats) == 0) {
