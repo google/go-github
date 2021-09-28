@@ -48,10 +48,10 @@ type PagesBuild struct {
 
 // PagesBuild represents the HTTPS Certificate information for a GitHub Pages site.
 type PagesHttpsCertificate struct {
-	State       *string   `json:"state,omitempty"`
-	Description *string   `json:"description,omitempty"`
+	State       *string    `json:"state,omitempty"`
+	Description *string    `json:"description,omitempty"`
 	Domains     *[]*string `json:"domains,omitempty"`
-	ExpiresAt   *string   `json:"expires_at,omitempty"`
+	ExpiresAt   *string    `json:"expires_at,omitempty"`
 }
 
 // createPagesRequest is a subset of Pages and is used internally
