@@ -92,7 +92,7 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 		Name:    String("Project Name"),
 		Body:    String("Project body."),
 		State:   String("open"),
-		Private: Bool(true),
+		Private: Bool(false),
 
 		OrganizationPermission: String("read"),
 	}
@@ -857,7 +857,7 @@ func TestProjectOptions_Marshal(t *testing.T) {
 		Body:                   String("body"),
 		State:                  String("state"),
 		OrganizationPermission: String("op"),
-		Private:                Bool(true),
+		Private:                Bool(false),
 	}
 
 	want := `{
@@ -865,7 +865,7 @@ func TestProjectOptions_Marshal(t *testing.T) {
 		"body": "body",
 		"state": "state",
 		"organization_permission": "op",
-		"private": true
+		"private": false
 	}`
 
 	testJSONMarshal(t, u, want)
