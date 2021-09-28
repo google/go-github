@@ -1116,21 +1116,23 @@ func TestPreReceiveHook_String(t *testing.T) {
 
 func TestProject_String(t *testing.T) {
 	v := Project{
-		ID:         Int64(0),
-		URL:        String(""),
-		HTMLURL:    String(""),
-		ColumnsURL: String(""),
-		OwnerURL:   String(""),
-		Name:       String(""),
-		Body:       String(""),
-		Number:     Int(0),
-		State:      String(""),
-		CreatedAt:  &Timestamp{},
-		UpdatedAt:  &Timestamp{},
-		NodeID:     String(""),
-		Creator:    &User{},
+		ID:                     Int64(0),
+		URL:                    String(""),
+		HTMLURL:                String(""),
+		ColumnsURL:             String(""),
+		OwnerURL:               String(""),
+		Name:                   String(""),
+		Body:                   String(""),
+		Number:                 Int(0),
+		State:                  String(""),
+		CreatedAt:              &Timestamp{},
+		UpdatedAt:              &Timestamp{},
+		NodeID:                 String(""),
+		OrganizationPermission: String(""),
+		Private:                Bool(false),
+		Creator:                &User{},
 	}
-	want := `github.Project{ID:0, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", Number:0, State:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:"", Creator:github.User{}}`
+	want := `github.Project{ID:0, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", Number:0, State:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:"", OrganizationPermission:"", Private:false, Creator:github.User{}}`
 	if got := v.String(); got != want {
 		t.Errorf("Project.String = %v, want %v", got, want)
 	}
