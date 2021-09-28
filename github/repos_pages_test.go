@@ -27,14 +27,6 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 			Path:   String("/"),
 		},
 		CNAME: String("www.my-domain.com"), // not passed along.
-		Public: Bool(true),
-		HttpsCertificate: &PagesHttpsCertificate{
-			State: String("approved"),
-			Description: String("Certificate is approved"),
-			// Domains: &[]*string{String("developer.github.com")},
-			ExpiresAt: String("2021-05-22"),
-		},
-		HttpsEnforced: Bool(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +40,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
-		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}, "public":true, "https_certificate": {"state":"approved","description": "Certificate is approved","domains": ["developer.github.com"],"expires_at": "2021-05-22"},"https_enforced": true}`)
+		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h", "source": {"branch":"master", "path":"/"}}`)
 	})
 
 	ctx := context.Background()
@@ -178,7 +170,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h"}`)
+		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","public":true, "https_certificate": {"state":"approved","description": "Certificate is approved","domains": ["developer.github.com"],"expires_at": "2021-05-22"},"https_enforced": true}`)
 	})
 
 	ctx := context.Background()
@@ -187,7 +179,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h")}
+	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Public: Bool(true), HttpsCertificate: &PagesHttpsCertificate{State: String("approved"), Description: String("Certificate is approved"), Domains: &[]*string{String("developer.github.com")}, ExpiresAt: String("2021-05-22"),}, HttpsEnforced: Bool(true),}
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
