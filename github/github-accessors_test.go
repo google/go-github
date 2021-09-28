@@ -11550,6 +11550,33 @@ func TestPages_GetHTMLURL(tt *testing.T) {
 	p.GetHTMLURL()
 }
 
+func TestPages_GetHttpsCertificate(tt *testing.T) {
+	p := &Pages{}
+	p.GetHttpsCertificate()
+	p = nil
+	p.GetHttpsCertificate()
+}
+
+func TestPages_GetHttpsEnforced(tt *testing.T) {
+	var zeroValue bool
+	p := &Pages{HttpsEnforced: &zeroValue}
+	p.GetHttpsEnforced()
+	p = &Pages{}
+	p.GetHttpsEnforced()
+	p = nil
+	p.GetHttpsEnforced()
+}
+
+func TestPages_GetPublic(tt *testing.T) {
+	var zeroValue bool
+	p := &Pages{Public: &zeroValue}
+	p.GetPublic()
+	p = &Pages{}
+	p.GetPublic()
+	p = nil
+	p.GetPublic()
+}
+
 func TestPages_GetSource(tt *testing.T) {
 	p := &Pages{}
 	p.GetSource()
@@ -11659,6 +11686,36 @@ func TestPagesError_GetMessage(tt *testing.T) {
 	p.GetMessage()
 	p = nil
 	p.GetMessage()
+}
+
+func TestPagesHttpsCertificate_GetDescription(tt *testing.T) {
+	var zeroValue string
+	p := &PagesHttpsCertificate{Description: &zeroValue}
+	p.GetDescription()
+	p = &PagesHttpsCertificate{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestPagesHttpsCertificate_GetExpiresAt(tt *testing.T) {
+	var zeroValue string
+	p := &PagesHttpsCertificate{ExpiresAt: &zeroValue}
+	p.GetExpiresAt()
+	p = &PagesHttpsCertificate{}
+	p.GetExpiresAt()
+	p = nil
+	p.GetExpiresAt()
+}
+
+func TestPagesHttpsCertificate_GetState(tt *testing.T) {
+	var zeroValue string
+	p := &PagesHttpsCertificate{State: &zeroValue}
+	p.GetState()
+	p = &PagesHttpsCertificate{}
+	p.GetState()
+	p = nil
+	p.GetState()
 }
 
 func TestPagesSource_GetBranch(tt *testing.T) {
