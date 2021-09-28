@@ -14,7 +14,7 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.x, 1.15.x]
+        go-version: [1.x, 1.16.x]
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
