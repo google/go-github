@@ -19,7 +19,7 @@ type Pages struct {
 	HTMLURL          *string                `json:"html_url,omitempty"`
 	Source           *PagesSource           `json:"source,omitempty"`
 	Public           *bool                  `json:"public,omitempty"`
-	HttpsCertificate *PagesHttpsCertificate `json:"https_certificate,omitempty"`
+	HTTPSCertificate *PagesHTTPSCertificate `json:"https_certificate,omitempty"`
 	HttpsEnforced    *bool                  `json:"https_enforced,omitempty"`
 }
 
@@ -47,11 +47,11 @@ type PagesBuild struct {
 }
 
 // PagesBuild represents the HTTPS Certificate information for a GitHub Pages site.
-type PagesHttpsCertificate struct {
-	State       *string    `json:"state,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	Domains     *[]*string `json:"domains,omitempty"`
-	ExpiresAt   *string    `json:"expires_at,omitempty"`
+type PagesHTTPSCertificate struct {
+	State       *string  `json:"state,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Domains     []string `json:"domains,omitempty"`
+	ExpiresAt   *string  `json:"expires_at,omitempty"`
 }
 
 // createPagesRequest is a subset of Pages and is used internally

@@ -179,7 +179,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
 
-	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Public: Bool(true), HttpsCertificate: &PagesHttpsCertificate{State: String("approved"), Description: String("Certificate is approved"), Domains: &[]*string{String("developer.github.com")}, ExpiresAt: String("2021-05-22")}, HttpsEnforced: Bool(true)}
+	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Public: Bool(true), HTTPSCertificate: &PagesHTTPSCertificate{State: String("approved"), Description: String("Certificate is approved"), Domains: []string{"developer.github.com"}, ExpiresAt: String("2021-05-22")}, HttpsEnforced: Bool(true)}
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
