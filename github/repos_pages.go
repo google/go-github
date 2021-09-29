@@ -51,7 +51,7 @@ type PagesHTTPSCertificate struct {
 	State       *string  `json:"state,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	Domains     []string `json:"domains,omitempty"`
-	// GitHub's API doesn't return a standard Timestamp, rather it returns a YYYY-MM-DD string
+	// GitHub's API doesn't return a standard Timestamp, rather it returns a YYYY-MM-DD string.
 	ExpiresAt *string `json:"expires_at,omitempty"`
 }
 
