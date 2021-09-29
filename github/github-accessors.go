@@ -9852,12 +9852,12 @@ func (p *Pages) GetHTTPSCertificate() *PagesHTTPSCertificate {
 	return p.HTTPSCertificate
 }
 
-// GetHttpsEnforced returns the HttpsEnforced field if it's non-nil, zero value otherwise.
-func (p *Pages) GetHttpsEnforced() bool {
-	if p == nil || p.HttpsEnforced == nil {
+// GetHTTPSEnforced returns the HTTPSEnforced field if it's non-nil, zero value otherwise.
+func (p *Pages) GetHTTPSEnforced() bool {
+	if p == nil || p.HTTPSEnforced == nil {
 		return false
 	}
-	return *p.HttpsEnforced
+	return *p.HTTPSEnforced
 }
 
 // GetPublic returns the Public field if it's non-nil, zero value otherwise.

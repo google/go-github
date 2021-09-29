@@ -20,7 +20,7 @@ type Pages struct {
 	Source           *PagesSource           `json:"source,omitempty"`
 	Public           *bool                  `json:"public,omitempty"`
 	HTTPSCertificate *PagesHTTPSCertificate `json:"https_certificate,omitempty"`
-	HttpsEnforced    *bool                  `json:"https_enforced,omitempty"`
+	HTTPSEnforced    *bool                  `json:"https_enforced,omitempty"`
 }
 
 // PagesSource represents a GitHub page's source.

@@ -11557,14 +11557,14 @@ func TestPages_GetHTTPSCertificate(tt *testing.T) {
 	p.GetHTTPSCertificate()
 }
 
-func TestPages_GetHttpsEnforced(tt *testing.T) {
+func TestPages_GetHTTPSEnforced(tt *testing.T) {
 	var zeroValue bool
-	p := &Pages{HttpsEnforced: &zeroValue}
-	p.GetHttpsEnforced()
+	p := &Pages{HTTPSEnforced: &zeroValue}
+	p.GetHTTPSEnforced()
 	p = &Pages{}
-	p.GetHttpsEnforced()
+	p.GetHTTPSEnforced()
 	p = nil
-	p.GetHttpsEnforced()
+	p.GetHTTPSEnforced()
 }
 
 func TestPages_GetPublic(tt *testing.T) {
