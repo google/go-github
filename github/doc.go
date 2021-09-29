@@ -73,7 +73,7 @@ BasicAuthTransport.
 
 GitHub Apps authentication can be provided by the
 https://github.com/bradleyfalzon/ghinstallation package.
-It supports both authentication as an installation, using an installation access token
+It supports both authentication as an installation, using an installation access token,
 and as an app, using a JWT.
 
 To authenticate as an installation:
