@@ -6129,6 +6129,16 @@ func TestHookConfig_GetInsecureSSL(tt *testing.T) {
 	h.GetInsecureSSL()
 }
 
+func TestHookConfig_GetSecret(tt *testing.T) {
+	var zeroValue string
+	h := &HookConfig{Secret: &zeroValue}
+	h.GetSecret()
+	h = &HookConfig{}
+	h.GetSecret()
+	h = nil
+	h.GetSecret()
+}
+
 func TestHookConfig_GetURL(tt *testing.T) {
 	var zeroValue string
 	h := &HookConfig{URL: &zeroValue}
