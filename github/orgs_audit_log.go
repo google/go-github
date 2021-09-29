@@ -24,6 +24,9 @@ type HookConfig struct {
 	ContentType *string `json:"content_type,omitempty"`
 	InsecureSSL *string `json:"insecure_ssl,omitempty"`
 	URL         *string `json:"url,omitempty"`
+
+	// Secret is returned obfuscated by GitHub, but it can be set for outgoing requests.
+	Secret *string `json:"secret,omitempty"`
 }
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
