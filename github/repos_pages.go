@@ -46,7 +46,7 @@ type PagesBuild struct {
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
 }
 
-// PagesBuild represents the HTTPS Certificate information for a GitHub Pages site.
+// PagesHTTPSCertificate represents the HTTPS Certificate information for a GitHub Pages site.
 type PagesHTTPSCertificate struct {
 	State       *string  `json:"state,omitempty"`
 	Description *string  `json:"description,omitempty"`
