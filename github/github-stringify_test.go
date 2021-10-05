@@ -1589,6 +1589,7 @@ func TestRepositoryRelease_String(t *testing.T) {
 		Draft:                  Bool(false),
 		Prerelease:             Bool(false),
 		DiscussionCategoryName: String(""),
+		GenerateReleaseNotes:   Bool(false),
 		ID:                     Int64(0),
 		CreatedAt:              &Timestamp{},
 		PublishedAt:            &Timestamp{},
@@ -1601,7 +1602,7 @@ func TestRepositoryRelease_String(t *testing.T) {
 		Author:                 &User{},
 		NodeID:                 String(""),
 	}
-	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, DiscussionCategoryName:"", ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
+	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, DiscussionCategoryName:"", GenerateReleaseNotes:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:""}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryRelease.String = %v, want %v", got, want)
 	}

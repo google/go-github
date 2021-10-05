@@ -16856,6 +16856,16 @@ func TestRepositoryRelease_GetDraft(tt *testing.T) {
 	r.GetDraft()
 }
 
+func TestRepositoryRelease_GetGenerateReleaseNotes(tt *testing.T) {
+	var zeroValue bool
+	r := &RepositoryRelease{GenerateReleaseNotes: &zeroValue}
+	r.GetGenerateReleaseNotes()
+	r = &RepositoryRelease{}
+	r.GetGenerateReleaseNotes()
+	r = nil
+	r.GetGenerateReleaseNotes()
+}
+
 func TestRepositoryRelease_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryRelease{HTMLURL: &zeroValue}

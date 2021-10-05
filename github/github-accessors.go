@@ -14444,6 +14444,14 @@ func (r *RepositoryRelease) GetDraft() bool {
 	return *r.Draft
 }
 
+// GetGenerateReleaseNotes returns the GenerateReleaseNotes field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetGenerateReleaseNotes() bool {
+	if r == nil || r.GenerateReleaseNotes == nil {
+		return false
+	}
+	return *r.GenerateReleaseNotes
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetHTMLURL() string {
 	if r == nil || r.HTMLURL == nil {
