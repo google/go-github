@@ -4516,6 +4516,22 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
+// GetPreviousTag returns the PreviousTag field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetPreviousTag() string {
+	if g == nil || g.PreviousTag == nil {
+		return ""
+	}
+	return *g.PreviousTag
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetTargetCommitish() string {
+	if g == nil || g.TargetCommitish == nil {
+		return ""
+	}
+	return *g.TargetCommitish
+}
+
 // GetInclude returns the Include field if it's non-nil, zero value otherwise.
 func (g *GetAuditLogOptions) GetInclude() string {
 	if g == nil || g.Include == nil {

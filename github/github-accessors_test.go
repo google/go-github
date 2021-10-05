@@ -5268,6 +5268,26 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
+func TestGenerateNotesOptions_GetPreviousTag(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateNotesOptions{PreviousTag: &zeroValue}
+	g.GetPreviousTag()
+	g = &GenerateNotesOptions{}
+	g.GetPreviousTag()
+	g = nil
+	g.GetPreviousTag()
+}
+
+func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateNotesOptions{TargetCommitish: &zeroValue}
+	g.GetTargetCommitish()
+	g = &GenerateNotesOptions{}
+	g.GetTargetCommitish()
+	g = nil
+	g.GetTargetCommitish()
+}
+
 func TestGetAuditLogOptions_GetInclude(tt *testing.T) {
 	var zeroValue string
 	g := &GetAuditLogOptions{Include: &zeroValue}
