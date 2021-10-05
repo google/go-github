@@ -4516,12 +4516,12 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
-// GetPreviousTag returns the PreviousTag field if it's non-nil, zero value otherwise.
-func (g *GenerateNotesOptions) GetPreviousTag() string {
-	if g == nil || g.PreviousTag == nil {
+// GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetPreviousTagName() string {
+	if g == nil || g.PreviousTagName == nil {
 		return ""
 	}
-	return *g.PreviousTag
+	return *g.PreviousTagName
 }
 
 // GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.

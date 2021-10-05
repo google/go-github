@@ -56,7 +56,7 @@ type RepositoryReleaseNotes struct {
 // GenerateNotesOptions represents the options to generate release notes.
 type GenerateNotesOptions struct {
 	TagName         string  `json:"tag_name"`
-	PreviousTag     *string `json:"previous_tag_name,omitempty"`
+	PreviousTagName *string `json:"previous_tag_name,omitempty"`
 	TargetCommitish *string `json:"target_commitish,omitempty"`
 }
 

@@ -5268,14 +5268,14 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
-func TestGenerateNotesOptions_GetPreviousTag(tt *testing.T) {
+func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
 	var zeroValue string
-	g := &GenerateNotesOptions{PreviousTag: &zeroValue}
-	g.GetPreviousTag()
+	g := &GenerateNotesOptions{PreviousTagName: &zeroValue}
+	g.GetPreviousTagName()
 	g = &GenerateNotesOptions{}
-	g.GetPreviousTag()
+	g.GetPreviousTagName()
 	g = nil
-	g.GetPreviousTag()
+	g.GetPreviousTagName()
 }
 
 func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
