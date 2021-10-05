@@ -49,15 +49,15 @@ func (r RepositoryRelease) String() string {
 
 // RepositoryReleaseNotes represents a GitHub-generated release notes.
 type RepositoryReleaseNotes struct {
-	Name string `json:"name,omitempty"`
-	Body string `json:"body,omitempty"`
+	Name string `json:"name"`
+	Body string `json:"body"`
 }
 
 // GenerateNotesOptions represents the options to generate release notes.
 type GenerateNotesOptions struct {
-	TagName         string `json:"tag_name"`
-	PreviousTag     string `json:"previous_tag_name,omitempty"`
-	TargetCommitish string `json:"target_commitish,omitempty"`
+	TagName         string  `json:"tag_name"`
+	PreviousTag     *string `json:"previous_tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
 }
 
 // ReleaseAsset represents a GitHub release asset in a repository.
