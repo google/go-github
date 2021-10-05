@@ -7721,6 +7721,13 @@ func TestIssueCommentEvent_GetIssue(tt *testing.T) {
 	i.GetIssue()
 }
 
+func TestIssueCommentEvent_GetOrganization(tt *testing.T) {
+	i := &IssueCommentEvent{}
+	i.GetOrganization()
+	i = nil
+	i.GetOrganization()
+}
+
 func TestIssueCommentEvent_GetRepo(tt *testing.T) {
 	i := &IssueCommentEvent{}
 	i.GetRepo()
@@ -14343,6 +14350,13 @@ func TestPushEvent_GetInstallation(tt *testing.T) {
 	p.GetInstallation()
 	p = nil
 	p.GetInstallation()
+}
+
+func TestPushEvent_GetOrganization(tt *testing.T) {
+	p := &PushEvent{}
+	p.GetOrganization()
+	p = nil
+	p.GetOrganization()
 }
 
 func TestPushEvent_GetPusher(tt *testing.T) {

@@ -6572,6 +6572,14 @@ func (i *IssueCommentEvent) GetIssue() *Issue {
 	return i.Issue
 }
 
+// GetOrganization returns the Organization field.
+func (i *IssueCommentEvent) GetOrganization() *Organization {
+	if i == nil {
+		return nil
+	}
+	return i.Organization
+}
+
 // GetRepo returns the Repo field.
 func (i *IssueCommentEvent) GetRepo() *Repository {
 	if i == nil {
@@ -12330,6 +12338,14 @@ func (p *PushEvent) GetInstallation() *Installation {
 		return nil
 	}
 	return p.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (p *PushEvent) GetOrganization() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Organization
 }
 
 // GetPusher returns the Pusher field.
