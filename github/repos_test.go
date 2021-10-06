@@ -985,16 +985,14 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	renameBranchReq := &RenameBranchRequest{
-		NewName: "nn",
-	}
+	renameBranchReq := "nn"
 
 	mux.HandleFunc("/repos/o/r/branches/b/rename", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RenameBranchRequest)
+		v := new(renameBranchRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		want := &RenameBranchRequest{NewName: "nn"}
+		want := &renameBranchRequest{NewName: "nn"}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
