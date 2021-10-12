@@ -4516,6 +4516,22 @@ func (f *ForkEvent) GetSender() *User {
 	return f.Sender
 }
 
+// GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetPreviousTagName() string {
+	if g == nil || g.PreviousTagName == nil {
+		return ""
+	}
+	return *g.PreviousTagName
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetTargetCommitish() string {
+	if g == nil || g.TargetCommitish == nil {
+		return ""
+	}
+	return *g.TargetCommitish
+}
+
 // GetInclude returns the Include field if it's non-nil, zero value otherwise.
 func (g *GetAuditLogOptions) GetInclude() string {
 	if g == nil || g.Include == nil {
@@ -14458,6 +14474,14 @@ func (r *RepositoryRelease) GetDraft() bool {
 		return false
 	}
 	return *r.Draft
+}
+
+// GetGenerateReleaseNotes returns the GenerateReleaseNotes field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetGenerateReleaseNotes() bool {
+	if r == nil || r.GenerateReleaseNotes == nil {
+		return false
+	}
+	return *r.GenerateReleaseNotes
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.

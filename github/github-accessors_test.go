@@ -5268,6 +5268,26 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
+func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateNotesOptions{PreviousTagName: &zeroValue}
+	g.GetPreviousTagName()
+	g = &GenerateNotesOptions{}
+	g.GetPreviousTagName()
+	g = nil
+	g.GetPreviousTagName()
+}
+
+func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
+	var zeroValue string
+	g := &GenerateNotesOptions{TargetCommitish: &zeroValue}
+	g.GetTargetCommitish()
+	g = &GenerateNotesOptions{}
+	g.GetTargetCommitish()
+	g = nil
+	g.GetTargetCommitish()
+}
+
 func TestGetAuditLogOptions_GetInclude(tt *testing.T) {
 	var zeroValue string
 	g := &GetAuditLogOptions{Include: &zeroValue}
@@ -16868,6 +16888,16 @@ func TestRepositoryRelease_GetDraft(tt *testing.T) {
 	r.GetDraft()
 	r = nil
 	r.GetDraft()
+}
+
+func TestRepositoryRelease_GetGenerateReleaseNotes(tt *testing.T) {
+	var zeroValue bool
+	r := &RepositoryRelease{GenerateReleaseNotes: &zeroValue}
+	r.GetGenerateReleaseNotes()
+	r = &RepositoryRelease{}
+	r.GetGenerateReleaseNotes()
+	r = nil
+	r.GetGenerateReleaseNotes()
 }
 
 func TestRepositoryRelease_GetHTMLURL(tt *testing.T) {
