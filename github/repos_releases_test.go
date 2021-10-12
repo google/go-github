@@ -55,6 +55,47 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, `{"tag_name":"v1.0.0"}`+"\n")
+		fmt.Fprint(w, `{"name":"v1.0.0","body":"**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0"}`)
+	})
+
+	opt := &GenerateNotesOptions{
+		TagName: "v1.0.0",
+	}
+	ctx := context.Background()
+	releases, _, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.GenerateReleaseNotes returned error: %v", err)
+	}
+	want := &RepositoryReleaseNotes{
+		Name: "v1.0.0",
+		Body: "**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0",
+	}
+	if !cmp.Equal(releases, want) {
+		t.Errorf("Repositories.GenerateReleaseNotes returned %+v, want %+v", releases, want)
+	}
+
+	const methodName = "GenerateReleaseNotes"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.GenerateReleaseNotes(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_GetRelease(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -167,6 +208,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 	input := &RepositoryRelease{
 		Name:                   String("v1.0"),
 		DiscussionCategoryName: String("General"),
+		GenerateReleaseNotes:   Bool(true),
 		// Fields to be removed:
 		ID:          Int64(2),
 		CreatedAt:   &Timestamp{referenceTime},
@@ -190,6 +232,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		want := &repositoryReleaseRequest{
 			Name:                   String("v1.0"),
 			DiscussionCategoryName: String("General"),
+			GenerateReleaseNotes:   Bool(true),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -230,6 +273,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	input := &RepositoryRelease{
 		Name:                   String("n"),
 		DiscussionCategoryName: String("General"),
+		GenerateReleaseNotes:   Bool(true),
 		// Fields to be removed:
 		ID:          Int64(2),
 		CreatedAt:   &Timestamp{referenceTime},
@@ -253,6 +297,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		want := &repositoryReleaseRequest{
 			Name:                   String("n"),
 			DiscussionCategoryName: String("General"),
+			GenerateReleaseNotes:   Bool(true),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
