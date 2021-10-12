@@ -387,6 +387,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 
 	installationTokenOptions := &InstallationTokenOptions{
 		RepositoryIDs: []int64{1234},
+		Repositories:  []string{"foo"},
 		Permissions: &InstallationPermissions{
 			Contents: String("write"),
 			Issues:   String("read"),
