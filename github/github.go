@@ -49,9 +49,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
-	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
-
 	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
 	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
 
