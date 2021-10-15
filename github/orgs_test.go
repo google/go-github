@@ -187,7 +187,6 @@ func TestOrganizationsService_Get(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		fmt.Fprint(w, `{"id":1, "login":"l", "url":"u", "avatar_url": "a", "location":"l"}`)
 	})
 
@@ -271,7 +270,6 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		v := new(Organization)
 		json.NewDecoder(r.Body).Decode(v)
 
-		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
