@@ -37,9 +37,6 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
-
 	var hooks []*PreReceiveHook
 	resp, err := s.client.Do(ctx, req, &hooks)
 	if err != nil {
@@ -58,9 +55,6 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	h := new(PreReceiveHook)
 	resp, err := s.client.Do(ctx, req, h)
@@ -81,9 +75,6 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
-
 	h := new(PreReceiveHook)
 	resp, err := s.client.Do(ctx, req, h)
 	if err != nil {
@@ -102,9 +93,6 @@ func (s *RepositoriesService) DeletePreReceiveHook(ctx context.Context, owner, r
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

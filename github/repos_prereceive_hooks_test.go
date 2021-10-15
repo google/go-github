@@ -21,7 +21,6 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypePreReceiveHooksPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -69,7 +68,6 @@ func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypePreReceiveHooksPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
