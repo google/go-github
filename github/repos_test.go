@@ -648,7 +648,6 @@ func TestRepositoriesService_EnableAutomatedSecurityFixes(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -665,7 +664,6 @@ func TestRepositoriesService_DisableAutomatedSecurityFixes(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/automated-security-fixes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

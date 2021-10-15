@@ -609,9 +609,6 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -625,9 +622,6 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredAutomatedSecurityFixesPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
