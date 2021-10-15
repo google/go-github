@@ -272,10 +272,6 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	}
 
 	switch {
-	case searchType == "commits":
-		// Accept header for search commits preview endpoint
-		// TODO: remove custom Accept header when this API fully launches.
-		req.Header.Set("Accept", mediaTypeCommitSearchPreview)
 	case searchType == "topics":
 		// Accept header for search repositories based on topics preview endpoint
 		// TODO: remove custom Accept header when this API fully launches.
