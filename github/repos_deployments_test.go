@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -100,8 +99,6 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -176,10 +173,8 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -215,10 +210,8 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":4}`)
 	})
 
@@ -259,8 +252,6 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}

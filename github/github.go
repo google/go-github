@@ -49,9 +49,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2018-10-16-deployments-environments-states-and-auto-inactive-updates/
-	mediaTypeExpandDeploymentStatusPreview = "application/vnd.github.flash-preview+json"
-
 	// https://developer.github.com/changes/2016-05-12-reactions-api-preview/
 	mediaTypeReactionsPreview = "application/vnd.github.squirrel-girl-preview"
 

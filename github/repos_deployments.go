@@ -9,7 +9,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"strings"
 )
 
 // Deployment represents a deployment in a repo
@@ -116,10 +115,6 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	d := new(Deployment)
 	resp, err := s.client.Do(ctx, req, d)
 	if err != nil {
@@ -188,10 +183,6 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	var statuses []*DeploymentStatus
 	resp, err := s.client.Do(ctx, req, &statuses)
 	if err != nil {
@@ -212,10 +203,6 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	d := new(DeploymentStatus)
 	resp, err := s.client.Do(ctx, req, d)
 	if err != nil {
@@ -235,10 +222,6 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(DeploymentStatus)
 	resp, err := s.client.Do(ctx, req, d)
