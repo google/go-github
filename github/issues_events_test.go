@@ -20,7 +20,6 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectCardDetailsPreview)
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",

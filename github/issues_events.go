@@ -113,8 +113,6 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeProjectCardDetailsPreview)
-
 	var events []*IssueEvent
 	resp, err := s.client.Do(ctx, req, &events)
 	if err != nil {

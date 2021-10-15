@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -150,10 +149,6 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeProjectCardDetailsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var events []*Timeline
 	resp, err := s.client.Do(ctx, req, &events)

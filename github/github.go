@@ -52,9 +52,6 @@ const (
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
-	// https://developer.github.com/changes/2018-09-05-project-card-events/
-	mediaTypeProjectCardDetailsPreview = "application/vnd.github.starfox-preview+json"
-
 	// https://developer.github.com/changes/2018-12-18-interactions-preview/
 	mediaTypeInteractionRestrictionsPreview = "application/vnd.github.sombra-preview+json"
 
