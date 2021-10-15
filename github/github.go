@@ -52,9 +52,6 @@ const (
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
-	// https://developer.github.com/changes/2019-10-03-multi-line-comments/
-	mediaTypeMultiLineCommentsPreview = "application/vnd.github.comfort-fade-preview+json"
-
 	// https://developer.github.com/changes/2019-11-05-deprecated-passwords-and-authorizations-api/
 	mediaTypeOAuthAppPreview = "application/vnd.github.doctor-strange-preview+json"
 

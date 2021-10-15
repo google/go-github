@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -85,10 +84,6 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	var comments []*PullRequestComment
 	resp, err := s.client.Do(ctx, req, &comments)
 	if err != nil {
@@ -108,10 +103,6 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	comment := new(PullRequestComment)
 	resp, err := s.client.Do(ctx, req, comment)
 	if err != nil {
@@ -130,9 +121,6 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, nil, err
 	}
-	// TODO: remove custom Accept headers when their respective API fully launches.
-	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	c := new(PullRequestComment)
 	resp, err := s.client.Do(ctx, req, c)
