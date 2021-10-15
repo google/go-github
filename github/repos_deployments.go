@@ -117,7 +117,7 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(Deployment)
@@ -189,7 +189,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var statuses []*DeploymentStatus
@@ -213,7 +213,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(DeploymentStatus)
@@ -237,7 +237,7 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 	}
 
 	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	acceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	d := new(DeploymentStatus)

@@ -100,7 +100,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+		wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
@@ -176,7 +176,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -215,7 +215,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+	wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 	mux.HandleFunc("/repos/o/r/deployments/3/statuses/4", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -259,7 +259,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
+		wantAcceptHeaders := []string{mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
