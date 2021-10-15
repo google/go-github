@@ -20,7 +20,6 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		testFormValues(t, r, values{
 			"sort": "newest",
 			"page": "3",

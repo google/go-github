@@ -22,7 +22,7 @@ func TestRepositoriesService_List_authenticatedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -59,7 +59,7 @@ func TestRepositoriesService_List_specifiedUser(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -96,7 +96,7 @@ func TestRepositoriesService_List_specifiedUser_type(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -134,7 +134,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -356,7 +356,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeTopicsPreview, mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -1959,7 +1959,6 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
@@ -1995,7 +1994,6 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
@@ -2017,7 +2015,6 @@ func TestRepositoriesService_ReplaceAllTopics(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
@@ -2053,7 +2050,6 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		testBody(t, r, `{"names":[]}`+"\n")
 		fmt.Fprint(w, `{"names":[]}`)
 	})
@@ -2076,7 +2072,6 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		testBody(t, r, `{"names":[]}`+"\n")
 		fmt.Fprint(w, `{"names":[]}`)
 	})

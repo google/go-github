@@ -538,8 +538,6 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -577,8 +575,6 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		wantAcceptHeaders := []string{mediaTypeTopicsPreview}
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})

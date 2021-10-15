@@ -361,10 +361,6 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when topics API fully launches.
-	headers := []string{mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
-
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
@@ -388,10 +384,6 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when topics API fully launches.
-	headers := []string{mediaTypeTopicsPreview}
-	req.Header.Set("Accept", strings.Join(headers, ", "))
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)

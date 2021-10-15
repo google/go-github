@@ -20,7 +20,6 @@ func TestAppsService_ListRepos(t *testing.T) {
 	defer teardown()
 
 	wantAcceptHeaders := []string{
-		mediaTypeTopicsPreview,
 		mediaTypeRepositoryVisibilityPreview,
 		mediaTypeRepositoryTemplatePreview,
 	}
@@ -61,7 +60,6 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	defer teardown()
 
 	wantAcceptHeaders := []string{
-		mediaTypeTopicsPreview,
 		mediaTypeRepositoryVisibilityPreview,
 		mediaTypeRepositoryTemplatePreview,
 	}

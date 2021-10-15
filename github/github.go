@@ -52,9 +52,6 @@ const (
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
-	// https://developer.github.com/changes/2017-07-17-update-topics-on-repositories/
-	mediaTypeTopicsPreview = "application/vnd.github.mercy-preview+json"
-
 	// https://developer.github.com/changes/2018-03-16-protected-branches-required-approving-reviews/
 	mediaTypeRequiredApprovingReviewsPreview = "application/vnd.github.luke-cage-preview+json"
 
