@@ -1134,9 +1134,6 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeSignaturePreview)
-
 	p := new(SignaturesProtectedBranch)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
@@ -1157,9 +1154,6 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeSignaturePreview)
-
 	r := new(SignaturesProtectedBranch)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -1178,9 +1172,6 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	return s.client.Do(ctx, req, nil)
 }

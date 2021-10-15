@@ -1795,7 +1795,6 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":false}`)
 	})
 
@@ -1835,7 +1834,6 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
 		fmt.Fprintf(w, `{"url":"/repos/o/r/branches/b/protection/required_signatures","enabled":true}`)
 	})
 
@@ -1875,7 +1873,6 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_signatures", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeSignaturePreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
