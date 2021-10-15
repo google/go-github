@@ -64,8 +64,6 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
-
 	enable := new(Pages)
 	resp, err := s.client.Do(ctx, req, enable)
 	if err != nil {
@@ -113,9 +111,6 @@ func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo stri
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

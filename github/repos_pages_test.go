@@ -34,7 +34,6 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{Source: &PagesSource{Branch: String("master"), Path: String("/")}}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -144,7 +143,6 @@ func TestRepositoriesService_DisablePages(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 	})
 
 	ctx := context.Background()
