@@ -52,9 +52,6 @@ const (
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
-	// https://developer.github.com/changes/2019-04-11-pulls-branches-for-commit/
-	mediaTypeListPullsOrBranchesForCommitPreview = "application/vnd.github.groot-preview+json"
-
 	// https://docs.github.com/en/free-pro-team@latest/rest/reference/previews/#repository-creation-permissions
 	mediaTypeMemberAllowedRepoCreationTypePreview = "application/vnd.github.surtur-preview+json"
 

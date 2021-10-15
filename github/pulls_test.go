@@ -67,7 +67,6 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/sha/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 		testFormValues(t, r, values{
 			"state":     "closed",
 			"head":      "h",
