@@ -21,7 +21,6 @@ func TestInteractionsService_GetRestrictionsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})
 
@@ -62,7 +61,6 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
@@ -101,7 +99,6 @@ func TestInteractionsService_RemoveRestrictionsFromRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
 	})
 
 	ctx := context.Background()

@@ -20,9 +20,6 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
-
 	organizationInteractions := new(InteractionRestriction)
 
 	resp, err := s.client.Do(ctx, req, organizationInteractions)
@@ -50,9 +47,6 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
-
 	organizationInteractions := new(InteractionRestriction)
 
 	resp, err := s.client.Do(ctx, req, organizationInteractions)
@@ -72,9 +66,6 @@ func (s *InteractionsService) RemoveRestrictionsFromOrg(ctx context.Context, org
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
