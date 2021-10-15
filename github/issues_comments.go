@@ -69,9 +69,6 @@ func (s *IssuesService) ListComments(ctx context.Context, owner string, repo str
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var comments []*IssueComment
 	resp, err := s.client.Do(ctx, req, &comments)
 	if err != nil {
@@ -91,9 +88,6 @@ func (s *IssuesService) GetComment(ctx context.Context, owner string, repo strin
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	comment := new(IssueComment)
 	resp, err := s.client.Do(ctx, req, comment)

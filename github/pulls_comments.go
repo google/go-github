@@ -86,7 +86,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
+	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var comments []*PullRequestComment
@@ -109,7 +109,7 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 	}
 
 	// TODO: remove custom Accept header when this API fully launches.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
+	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	comment := new(PullRequestComment)
@@ -131,7 +131,7 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 	// TODO: remove custom Accept headers when their respective API fully launches.
-	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
+	acceptHeaders := []string{mediaTypeMultiLineCommentsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	c := new(PullRequestComment)

@@ -140,46 +140,46 @@ var reactionsTestWebPage = `
   <meta name="site.data.ui.search.placeholder" content="Search topics, products...">
   <!-- end localized data -->
 
-  
+
 
   <!-- hreflangs -->
-  
+
     <link
       rel="alternate"
       hreflang="en"
       href="https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions"
     />
-  
+
     <link
       rel="alternate"
       hreflang="zh-Hans"
       href="https://docs.github.com/cn/rest/reference/reactions"
     />
-  
+
     <link
       rel="alternate"
       hreflang="ja"
       href="https://docs.github.com/ja/rest/reference/reactions"
     />
-  
+
     <link
       rel="alternate"
       hreflang="es"
       href="https://docs.github.com/es/rest/reference/reactions"
     />
-  
+
     <link
       rel="alternate"
       hreflang="pt"
       href="https://docs.github.com/pt/rest/reference/reactions"
     />
-  
+
     <link
       rel="alternate"
       hreflang="de"
       href="https://docs.github.com/de/rest/reference/reactions"
     />
-  
+
 
   <link rel="stylesheet" href="/dist/index.css">
   <link rel="alternate icon" type="image/png" href="/assets/images/site/favicon.png">
@@ -198,7 +198,7 @@ var reactionsTestWebPage = `
     <a href="/en" class="h4-mktg text-white no-underline no-wrap pl-2 flex-auto">GitHub Docs</a>
   </div>
 
-    
+
     <ul class="sidebar-products">
       <!--
   Styling note:
@@ -219,8 +219,8 @@ var reactionsTestWebPage = `
   <a href="/en/rest" class="pl-4 pr-5 pb-1 f4">REST API</a>
 </li>
 <ul class="sidebar-categories list-style-none">
-  
-  
+
+
 
   <li class="sidebar-category py-1 ">
     <details class="dropdown-withArrow details details-reset" open>
@@ -231,50 +231,50 @@ var reactionsTestWebPage = `
         </div>
       </summary>
       <!-- some categories have maptopics with child articles -->
-      
+
       <ul class="sidebar-articles list-style-none">
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api" class="pl-4 pr-5 py-1">Resources in the REST API</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/media-types" class="pl-4 pr-5 py-1">Media types</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/other-authentication-methods" class="pl-4 pr-5 py-1">Other authentication methods</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/troubleshooting" class="pl-4 pr-5 py-1">Troubleshooting</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/api-previews" class="pl-4 pr-5 py-1">API previews</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/libraries" class="pl-4 pr-5 py-1">Libraries</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/overview/endpoints-available-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Endpoints available for GitHub Apps</a>
         </li>
-        
+
       </ul>
-      
+
     </details>
   </li>
-  
-  
+
+
 
   <li class="sidebar-category py-1 active ">
     <details class="dropdown-withArrow details details-reset" open>
@@ -285,165 +285,165 @@ var reactionsTestWebPage = `
         </div>
       </summary>
       <!-- some categories have maptopics with child articles -->
-      
+
       <ul class="sidebar-articles list-style-none">
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article active is-current-page">
           <a href="/en/free-pro-team@latest/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
         </li>
-        
+
       </ul>
-      
+
     </details>
   </li>
-  
-  
+
+
 
   <li class="sidebar-category py-1 ">
     <details class="dropdown-withArrow details details-reset" open>
@@ -454,82 +454,82 @@ var reactionsTestWebPage = `
         </div>
       </summary>
       <!-- some categories have maptopics with child articles -->
-      
+
       <ul class="sidebar-articles list-style-none">
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-rest-api" class="pl-4 pr-5 py-1">Getting started with the REST API</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/basics-of-authentication" class="pl-4 pr-5 py-1">Basics of authentication</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/discovering-resources-for-a-user" class="pl-4 pr-5 py-1">Discovering resources for a user</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/delivering-deployments" class="pl-4 pr-5 py-1">Delivering deployments</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/rendering-data-as-graphs" class="pl-4 pr-5 py-1">Rendering data as graphs</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/working-with-comments" class="pl-4 pr-5 py-1">Working with comments</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/traversing-with-pagination" class="pl-4 pr-5 py-1">Traversing with pagination</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/building-a-ci-server" class="pl-4 pr-5 py-1">Building a CI server</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/best-practices-for-integrators" class="pl-4 pr-5 py-1">Best practices for integrators</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-git-database-api" class="pl-4 pr-5 py-1">Getting started with the Git Database API</a>
         </li>
-        
-        
+
+
         <li class="sidebar-article ">
           <a href="/en/free-pro-team@latest/rest/guides/getting-started-with-the-checks-api" class="pl-4 pr-5 py-1 pb-2">Getting started with the Checks API</a>
         </li>
-        
+
       </ul>
-      
+
     </details>
   </li>
-  
+
 </ul>
 
     </ul>
-    
+
 </div>
 
 
     <main class="width-full">
       <div class="border-bottom border-gray-light no-print">
 
-  
 
-  
+
+
 
     <header class="container-xl px-3 px-md-6 pt-3 pb-2 position-relative d-flex flex-justify-between width-full ">
 
@@ -559,165 +559,165 @@ var reactionsTestWebPage = `
                     </div>
                   </summary>
                   <div id="homepages" class="position-md-absolute nav-desktop-productDropdown p-md-4 left-md-n4 top-md-6" style="z-index: 6;">
-                    
+
                     <a href="/en/github"
                        class="d-block py-2 link-gray-dark no-underline">
                        GitHub.com
-                       
+
                     </a>
-                    
+
                     <a href="/en/enterprise/admin"
                        class="d-block py-2 link-gray-dark no-underline">
                        Enterprise Server
-                       
+
                     </a>
-                    
+
                     <a href="/en/actions"
                        class="d-block py-2 link-gray-dark no-underline">
                        GitHub Actions
-                       
+
                     </a>
-                    
+
                     <a href="/en/packages"
                        class="d-block py-2 link-gray-dark no-underline">
                        GitHub Packages
-                       
+
                     </a>
-                    
+
                     <a href="/en/developers"
                        class="d-block py-2 link-gray-dark no-underline">
                        Developers
-                       
+
                     </a>
-                    
+
                     <a href="/en/rest"
                        class="d-block py-2 text-blue-mktg text-underline active">
                        REST API
-                       
+
                     </a>
-                    
+
                     <a href="/en/graphql"
                        class="d-block py-2 link-gray-dark no-underline">
                        GraphQL API
-                       
+
                     </a>
-                    
+
                     <a href="/en/insights"
                        class="d-block py-2 link-gray-dark no-underline">
                        GitHub Insights
-                       
+
                     </a>
-                    
+
                     <a href="/en/desktop"
                        class="d-block py-2 link-gray-dark no-underline">
                        GitHub Desktop
-                       
+
                     </a>
-                    
+
                     <a href="https://atom.io/docs"
                        class="d-block py-2 link-gray-dark no-underline">
                        Atom
-                       
+
                        <span class="ml-1"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#24292e" d="M.646 8.789l8-8M8.5 9V1M1 .643h8"/></svg></span>
-                       
+
                     </a>
-                    
+
                     <a href="https://electronjs.org/docs"
                        class="d-block py-2 link-gray-dark no-underline">
                        Electron
-                       
+
                        <span class="ml-1"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#24292e" d="M.646 8.789l8-8M8.5 9V1M1 .643h8"/></svg></span>
-                       
+
                     </a>
-                    
+
                   </div>
                 </details>
               </div>
               <div class="d-md-inline-block">
 
-                
+
                   <div class="border-top border-md-top-0 py-2 py-md-0 d-md-inline-block">
                     <details class="dropdown-withArrow position-relative details details-reset mr-md-3 close-when-clicked-outside">
                       <summary class="py-2 text-gray-dark" role="button" aria-label="Toggle languages list">
                         <div class="d-flex flex-items-center flex-justify-between">
                           <!-- Language switcher - 'English', 'Japanese', etc -->
-                          
+
                             English
-                          
+
                           <svg class="arrow ml-md-1" width="14px" height="8px" viewBox="0 0 14 8" xml:space="preserve" fill="none" stroke="#1B1F23"><path d="M1,1l6.2,6L13,1"></path></svg>
                         </div>
                       </summary>
                       <div id="languages-selector" class="position-md-absolute nav-desktop-langDropdown p-md-4 right-md-n4 top-md-6" style="z-index: 6;">
-                      
-                        
+
+
                           <a
                             href="/en/free-pro-team@latest/rest/reference/reactions"
                             class="d-block py-2 no-underline active link-gray"
                             style="white-space: nowrap"
                           >
-                            
+
                               English
-                            
+
                           </a>
-                        
-                      
-                        
+
+
+
                           <a
                             href="/cn/rest/reference/reactions"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
-                            
+
                               简体中文 (Simplified Chinese)
-                            
+
                           </a>
-                        
-                      
-                        
+
+
+
                           <a
                             href="/ja/rest/reference/reactions"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
-                            
+
                               日本語 (Japanese)
-                            
+
                           </a>
-                        
-                      
-                        
+
+
+
                           <a
                             href="/es/rest/reference/reactions"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
-                            
+
                               Español (Spanish)
-                            
+
                           </a>
-                        
-                      
-                        
+
+
+
                           <a
                             href="/pt/rest/reference/reactions"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
-                            
+
                               Português do Brasil (Portuguese)
-                            
+
                           </a>
-                        
-                      
-                        
-                      
+
+
+
+
                       </div>
                     </details>
                   </div>
-                
+
 
                 <!-- GitHub.com homepage and 404 page has a stylized search; Enterprise homepages do not -->
-                
+
                 <div class="pt-3 pt-md-0 d-md-inline-block ml-md-3 bord'er-top border-md-top-0">
                   <!--
   This form is used in two places:
@@ -735,7 +735,7 @@ var reactionsTestWebPage = `
                   <div id="search-results-container"></div>
                   <div class="search-overlay-desktop"></div>
                 </div>
-                
+
 
               </div>
             </div>
@@ -745,15 +745,15 @@ var reactionsTestWebPage = `
     </header>
   </div>
 
-      
+
         <main class="container-xl px-3 px-md-6 my-4 my-lg-4 d-lg-flex">
   <article class="markdown-body width-full">
-    
+
 
 
     <div class="article-grid-container">
       <div class="article-grid-toc">
-        
+
   <details id="article-versions" class="dropdown-withArrow d-inline-block details details-reset mb-4 mb-md-0 position-relative close-when-clicked-outside">
     <summary class="d-flex flex-items-center flex-justify-between f4 h5-mktg btn-outline-mktg btn-mktg p-2">
       <!-- GitHub.com, Enterprise Server 2.16, etc -->
@@ -762,27 +762,27 @@ var reactionsTestWebPage = `
     </summary>
 
     <div class="nav-dropdown position-md-absolute bg-white rounded-1 px-4 py-3 top-7 box-shadow-large" style="z-index: 6; width: 210px;">
-      
+
       <a
       href="/en/free-pro-team@latest/rest/reference/reactions"
       class="d-block py-2 link-blue active"
       >GitHub.com</a>
-      
+
       <a
       href="/en/enterprise/2.21/user/rest/reference/reactions"
       class="d-block py-2 link-gray-dark no-underline"
       >Enterprise Server 2.21</a>
-      
+
       <a
       href="/en/enterprise/2.20/user/rest/reference/reactions"
       class="d-block py-2 link-gray-dark no-underline"
       >Enterprise Server 2.20</a>
-      
+
       <a
       href="/en/enterprise/2.19/user/rest/reference/reactions"
       class="d-block py-2 link-gray-dark no-underline"
       >Enterprise Server 2.19</a>
-      
+
     </div>
   </details>
 
@@ -790,16 +790,16 @@ var reactionsTestWebPage = `
       </div>
       <div class="article-grid-body d-flex flex-items-center" style="height: 39px;">
         <nav class="breadcrumbs f5" aria-label="Breadcrumb">
-  
+
   <a title="product: REST API" href="/en/rest" class="d-inline-block ">
     REST API</a>
-  
+
   <a title="category: Reference" href="/en/free-pro-team@latest/rest/reference" class="d-inline-block ">
     Reference</a>
-  
+
   <a title="article: Reactions" href="/en/free-pro-team@latest/rest/reference/reactions" class="d-inline-block text-gray-light">
     Reactions</a>
-  
+
 </nav>
 
       </div>
@@ -818,118 +818,118 @@ var reactionsTestWebPage = `
         </div>
       </div>
 
-      
 
-      
 
-      
 
-      
+
+
+
+
     </div>
     <div class="article-grid-toc border-bottom border-xl-0 pb-4 mb-5 pb-xl-0 mb-xl-0">
       <div class="article-grid-toc-content">
-        
+
         <h3 id="in-this-article" class="f5 mb-2"><a class="link-gray-dark" href="#in-this-article">In this article</a></h3>
         <ul class="list-style-none pl-0 f5 mb-0">
-          
+
           <li class="ml-0  mb-2 lh-condensed"><a href="#reaction-types">Reaction types</a></li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-team-discussion-comment">List reactions for a team discussion comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-team-discussion-comment">Create reaction for a team discussion comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-team-discussion-comment-reaction">Delete team discussion comment reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-team-discussion">List reactions for a team discussion</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-team-discussion">Create reaction for a team discussion</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-team-discussion-reaction">Delete team discussion reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-a-reaction-legacy">Delete a reaction (Legacy)</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-commit-comment">List reactions for a commit comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-commit-comment">Create reaction for a commit comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-a-commit-comment-reaction">Delete a commit comment reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-an-issue-comment">List reactions for an issue comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-an-issue-comment">Create reaction for an issue comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-an-issue-comment-reaction">Delete an issue comment reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-an-issue">List reactions for an issue</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-an-issue">Create reaction for an issue</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-an-issue-reaction">Delete an issue reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-pull-request-review-comment">List reactions for a pull request review comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-pull-request-review-comment">Create reaction for a pull request review comment</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#delete-a-pull-request-comment-reaction">Delete a pull request comment reaction</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-team-discussion-comment-legacy">List reactions for a team discussion comment (Legacy)</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-team-discussion-comment-legacy">Create reaction for a team discussion comment (Legacy)</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#list-reactions-for-a-team-discussion-legacy">List reactions for a team discussion (Legacy)</a>
     </li>
-          
+
           <li class="ml-0  mb-2 lh-condensed">
       <a href="#create-reaction-for-a-team-discussion-legacy">Create reaction for a team discussion (Legacy)</a>
     </li>
-          
+
         </ul>
-        
+
         <div class="d-none d-xl-block border-top border-gray-light mt-4">
-          
+
           <form class="js-helpfulness mt-4 f5" id="helpfulness-xl">
   <h4
     data-help-start
@@ -1069,7 +1069,7 @@ var reactionsTestWebPage = `
       </div>
     </div>
     <div id="article-contents" class="article-grid-body">
-      
+
       <h3 id="reaction-types"><a href="#reaction-types">Reaction types</a></h3>
 <p>When creating a reaction, the allowed values for the <code>content</code> parameter are as follows (with the corresponding emoji for reference):</p>
 
@@ -1124,7 +1124,7 @@ var reactionsTestWebPage = `
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-team-discussion-comment--parameters">
         <a href="#list-reactions-for-a-team-discussion-comment--parameters">Parameters</a>
       </h4>
@@ -1138,118 +1138,118 @@ var reactionsTestWebPage = `
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-team-discussion-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a team discussion comment.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-comment--code-samples">
         <a href="#list-reactions-for-a-team-discussion-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/comments/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -1263,10 +1263,10 @@ var reactionsTestWebPage = `
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -1298,22 +1298,22 @@ var reactionsTestWebPage = `
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -1336,8 +1336,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -1351,7 +1351,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-team-discussion-comment--parameters">
         <a href="#create-reaction-for-a-team-discussion-comment--parameters">Parameters</a>
       </h4>
@@ -1365,87 +1365,87 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-team-discussion-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the team discussion comment.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion-comment--code-samples">
         <a href="#create-reaction-for-a-team-discussion-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -1453,13 +1453,13 @@ and creating</a> reactions.</p>
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/comments/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -1474,10 +1474,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -1507,22 +1507,22 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -1545,8 +1545,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -1560,7 +1560,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-team-discussion-comment-reaction--parameters">
         <a href="#delete-team-discussion-comment-reaction--parameters">Parameters</a>
       </h4>
@@ -1574,99 +1574,99 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-team-discussion-comment-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-team-discussion-comment-reaction--code-samples">
         <a href="#delete-team-discussion-comment-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/comments/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -1681,29 +1681,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-team-discussion-comment-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -1726,8 +1726,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -1741,7 +1741,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-team-discussion--parameters">
         <a href="#list-reactions-for-a-team-discussion--parameters">Parameters</a>
       </h4>
@@ -1755,108 +1755,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-team-discussion-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a team discussion.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion--code-samples">
         <a href="#list-reactions-for-a-team-discussion--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -1869,10 +1869,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -1904,22 +1904,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -1942,8 +1942,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -1957,7 +1957,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-team-discussion--parameters">
         <a href="#create-reaction-for-a-team-discussion--parameters">Parameters</a>
       </h4>
@@ -1971,77 +1971,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-team-discussion-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the team discussion.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion--code-samples">
         <a href="#create-reaction-for-a-team-discussion--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -2049,13 +2049,13 @@ and creating</a> reactions.</p>
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -2069,10 +2069,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -2102,15 +2102,15 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
-    
+
+
+
       <h4 id="create-reaction-for-a-team-discussion-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -2133,8 +2133,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -2148,7 +2148,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-team-discussion-reaction--parameters">
         <a href="#delete-team-discussion-reaction--parameters">Parameters</a>
       </h4>
@@ -2162,89 +2162,89 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-team-discussion-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>org</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_slug</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-team-discussion-reaction--code-samples">
         <a href="#delete-team-discussion-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/orgs/ORG/teams/TEAM_SLUG/discussions/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">org</span>: <span class="hljs-string">&apos;org&apos;</span>,
@@ -2258,29 +2258,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-team-discussion-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -2303,8 +2303,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -2318,7 +2318,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-a-reaction-legacy--parameters">
         <a href="#delete-a-reaction-legacy--parameters">Parameters</a>
       </h4>
@@ -2332,59 +2332,59 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-a-reaction-legacy-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-a-reaction-legacy--code-samples">
         <a href="#delete-a-reaction-legacy--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">reaction_id</span>: <span class="hljs-number">42</span>,
@@ -2395,29 +2395,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-a-reaction-legacy-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -2440,8 +2440,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -2454,7 +2454,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /repos/{owner}/{repo}/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-commit-comment--parameters">
         <a href="#list-reactions-for-a-commit-comment--parameters">Parameters</a>
       </h4>
@@ -2468,108 +2468,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-commit-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a commit comment.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-commit-comment--code-samples">
         <a href="#list-reactions-for-a-commit-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/comments/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /repos/{owner}/{repo}/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -2582,10 +2582,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -2617,22 +2617,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-commit-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -2655,8 +2655,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -2669,7 +2669,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /repos/{owner}/{repo}/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-commit-comment--parameters">
         <a href="#create-reaction-for-a-commit-comment--parameters">Parameters</a>
       </h4>
@@ -2683,77 +2683,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-commit-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the commit comment.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-commit-comment--code-samples">
         <a href="#create-reaction-for-a-commit-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -2761,13 +2761,13 @@ and creating</a> reactions.</p>
   https://api.github.com/repos/octocat/hello-world/comments/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /repos/{owner}/{repo}/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -2781,10 +2781,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -2814,22 +2814,22 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="create-reaction-for-a-commit-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -2852,8 +2852,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -2867,7 +2867,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-a-commit-comment-reaction--parameters">
         <a href="#delete-a-commit-comment-reaction--parameters">Parameters</a>
       </h4>
@@ -2881,89 +2881,89 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-a-commit-comment-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-a-commit-comment-reaction--code-samples">
         <a href="#delete-a-commit-comment-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/comments/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -2977,29 +2977,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-a-commit-comment-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -3022,8 +3022,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -3036,7 +3036,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-an-issue-comment--parameters">
         <a href="#list-reactions-for-an-issue-comment--parameters">Parameters</a>
       </h4>
@@ -3050,108 +3050,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-an-issue-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to an issue comment.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-an-issue-comment--code-samples">
         <a href="#list-reactions-for-an-issue-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/issues/comments/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -3164,10 +3164,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -3199,22 +3199,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-an-issue-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -3237,8 +3237,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -3251,7 +3251,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-an-issue-comment--parameters">
         <a href="#create-reaction-for-an-issue-comment--parameters">Parameters</a>
       </h4>
@@ -3265,77 +3265,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-an-issue-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the issue comment.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-an-issue-comment--code-samples">
         <a href="#create-reaction-for-an-issue-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -3343,13 +3343,13 @@ and creating</a> reactions.</p>
   https://api.github.com/repos/octocat/hello-world/issues/comments/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -3363,10 +3363,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -3396,22 +3396,22 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="create-reaction-for-an-issue-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -3434,8 +3434,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -3449,7 +3449,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-an-issue-comment-reaction--parameters">
         <a href="#delete-an-issue-comment-reaction--parameters">Parameters</a>
       </h4>
@@ -3463,89 +3463,89 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-an-issue-comment-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-an-issue-comment-reaction--code-samples">
         <a href="#delete-an-issue-comment-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/issues/comments/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -3559,29 +3559,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-an-issue-comment-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -3604,8 +3604,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -3618,7 +3618,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /repos/{owner}/{repo}/issues/{issue_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-an-issue--parameters">
         <a href="#list-reactions-for-an-issue--parameters">Parameters</a>
       </h4>
@@ -3632,108 +3632,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-an-issue-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>issue_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to an issue.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-an-issue--code-samples">
         <a href="#list-reactions-for-an-issue--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/issues/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /repos/{owner}/{repo}/issues/{issue_number}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -3746,10 +3746,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -3781,22 +3781,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-an-issue-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -3819,8 +3819,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -3833,7 +3833,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /repos/{owner}/{repo}/issues/{issue_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-an-issue--parameters">
         <a href="#create-reaction-for-an-issue--parameters">Parameters</a>
       </h4>
@@ -3847,77 +3847,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-an-issue-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>issue_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the issue.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-an-issue--code-samples">
         <a href="#create-reaction-for-an-issue--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -3925,13 +3925,13 @@ and creating</a> reactions.</p>
   https://api.github.com/repos/octocat/hello-world/issues/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /repos/{owner}/{repo}/issues/{issue_number}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -3945,10 +3945,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -3978,15 +3978,15 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
-    
+
+
+
       <h4 id="create-reaction-for-an-issue-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4009,8 +4009,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4024,7 +4024,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-an-issue-reaction--parameters">
         <a href="#delete-an-issue-reaction--parameters">Parameters</a>
       </h4>
@@ -4038,89 +4038,89 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-an-issue-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>issue_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-an-issue-reaction--code-samples">
         <a href="#delete-an-issue-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/issues/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -4134,29 +4134,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-an-issue-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4179,8 +4179,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4193,7 +4193,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-pull-request-review-comment--parameters">
         <a href="#list-reactions-for-a-pull-request-review-comment--parameters">Parameters</a>
       </h4>
@@ -4207,108 +4207,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-pull-request-review-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a pull request review comment.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-pull-request-review-comment--code-samples">
         <a href="#list-reactions-for-a-pull-request-review-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/pulls/comments/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -4321,10 +4321,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -4356,22 +4356,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-pull-request-review-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4394,8 +4394,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4408,7 +4408,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-pull-request-review-comment--parameters">
         <a href="#create-reaction-for-a-pull-request-review-comment--parameters">Parameters</a>
       </h4>
@@ -4422,77 +4422,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-pull-request-review-comment-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the pull request review comment.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-pull-request-review-comment--code-samples">
         <a href="#create-reaction-for-a-pull-request-review-comment--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -4500,13 +4500,13 @@ and creating</a> reactions.</p>
   https://api.github.com/repos/octocat/hello-world/pulls/comments/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -4520,10 +4520,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -4553,22 +4553,22 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="create-reaction-for-a-pull-request-review-comment-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4591,8 +4591,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4606,7 +4606,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">delete</span> /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}</code></pre>
   <div>
-    
+
       <h4 id="delete-a-pull-request-comment-reaction--parameters">
         <a href="#delete-a-pull-request-comment-reaction--parameters">Parameters</a>
       </h4>
@@ -4620,89 +4620,89 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#delete-a-pull-request-comment-reaction-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>owner</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>repo</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>reaction_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="delete-a-pull-request-comment-reaction--code-samples">
         <a href="#delete-a-pull-request-comment-reaction--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X DELETE \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/repos/octocat/hello-world/pulls/comments/42/reactions/42
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}&apos;</span>, {
   <span class="hljs-attr">owner</span>: <span class="hljs-string">&apos;octocat&apos;</span>,
@@ -4716,29 +4716,29 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default Response</h4>
       <pre><code>Status: 204 No Content</code></pre>
       <div class="height-constrained-code-block"></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="delete-a-pull-request-comment-reaction-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4761,8 +4761,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4776,7 +4776,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-team-discussion-comment-legacy--parameters">
         <a href="#list-reactions-for-a-team-discussion-comment-legacy--parameters">Parameters</a>
       </h4>
@@ -4790,108 +4790,108 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-team-discussion-comment-legacy-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a team discussion comment.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-comment-legacy--code-samples">
         <a href="#list-reactions-for-a-team-discussion-comment-legacy--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/teams/42/discussions/42/comments/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions&apos;</span>, {
   <span class="hljs-attr">team_id</span>: <span class="hljs-number">42</span>,
@@ -4904,10 +4904,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -4939,22 +4939,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-comment-legacy-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -4977,8 +4977,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -4992,7 +4992,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-team-discussion-comment-legacy--parameters">
         <a href="#create-reaction-for-a-team-discussion-comment-legacy--parameters">Parameters</a>
       </h4>
@@ -5006,77 +5006,77 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-team-discussion-comment-legacy-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>comment_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the team discussion comment.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion-comment-legacy--code-samples">
         <a href="#create-reaction-for-a-team-discussion-comment-legacy--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -5084,13 +5084,13 @@ and creating</a> reactions.</p>
   https://api.github.com/teams/42/discussions/42/comments/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions&apos;</span>, {
   <span class="hljs-attr">team_id</span>: <span class="hljs-number">42</span>,
@@ -5104,10 +5104,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -5137,22 +5137,22 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion-comment-legacy-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -5175,8 +5175,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -5190,7 +5190,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">get</span> /teams/{team_id}/discussions/{discussion_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="list-reactions-for-a-team-discussion-legacy--parameters">
         <a href="#list-reactions-for-a-team-discussion-legacy--parameters">Parameters</a>
       </h4>
@@ -5204,98 +5204,98 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#list-reactions-for-a-team-discussion-legacy-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>content</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Returns a single <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a>. Omit this parameter to list all reactions to a team discussion.</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>per_page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Results per page (max 100)</p>
-                
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>page</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">query</td>
               <td class="opacity-70">
                 <p>Page number of the results to fetch.</p>
-                
+
               </td>
             </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-legacy--code-samples">
         <a href="#list-reactions-for-a-team-discussion-legacy--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -H &quot;Accept: application/vnd.github.squirrel-girl-preview+json&quot; \
   https://api.github.com/teams/42/discussions/42/reactions
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;GET /teams/{team_id}/discussions/{discussion_number}/reactions&apos;</span>, {
   <span class="hljs-attr">team_id</span>: <span class="hljs-number">42</span>,
@@ -5307,10 +5307,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 200 OK</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">[
@@ -5342,22 +5342,22 @@ and creating</a> reactions.</p>
   }
 ]
 </code></pre></div>
-    
-    
+
+
       <h4>Notes</h4>
       <ul class="mt-2">
-      
+
         <li><a href="/en/developers/apps">Works with GitHub Apps</a></li>
-      
+
       </ul>
-    
-    
+
+
       <h4 id="list-reactions-for-a-team-discussion-legacy-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -5380,8 +5380,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -5395,7 +5395,7 @@ and creating</a> reactions.</p>
   </div>
   <pre><code><span class="bg-blue text-white rounded-1 px-2 py-1" style="text-transform: uppercase">post</span> /teams/{team_id}/discussions/{discussion_number}/reactions</code></pre>
   <div>
-    
+
       <h4 id="create-reaction-for-a-team-discussion-legacy--parameters">
         <a href="#create-reaction-for-a-team-discussion-legacy--parameters">Parameters</a>
       </h4>
@@ -5409,67 +5409,67 @@ and creating</a> reactions.</p>
           </tr>
         </thead>
         <tbody>
-          
+
             <tr>
               <td><code>accept</code></td>
               <td class="opacity-70">string</td>
               <td class="opacity-70">header</td>
               <td class="opacity-70">
                 <p>This API is under preview and subject to change.</p>
-                
+
                   <a href="#create-reaction-for-a-team-discussion-legacy-preview-notices">
-                    
+
                       See preview notice.
-                    
-                  </a>                
+
+                  </a>
               </td>
             </tr>
-          
+
             <tr>
               <td><code>team_id</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
+
             <tr>
               <td><code>discussion_number</code></td>
               <td class="opacity-70">integer</td>
               <td class="opacity-70">path</td>
               <td class="opacity-70">
-                
-                
+
+
               </td>
             </tr>
-          
-          
+
+
           <tr>
             <td><code>content</code></td>
             <td class="opacity-70">string</td>
             <td class="opacity-70">body</td>
             <td class="opacity-70">
               <p><strong>Required</strong>. The <a href="https://developer.github.com/v3/reactions/#reaction-types">reaction type</a> to add to the team discussion.</p>
-              
+
             </td>
           </tr>
-          
-          
+
+
         </tbody>
       </table>
-    
-    
+
+
       <h4 id="create-reaction-for-a-team-discussion-legacy--code-samples">
         <a href="#create-reaction-for-a-team-discussion-legacy--code-samples">Code samples</a>
       </h4>
-      
-        
+
+
           <h5>
-            
+
               Shell
-            
+
           </h5>
           <pre><code class="hljs language-shell">curl \
   -X POST \
@@ -5477,13 +5477,13 @@ and creating</a> reactions.</p>
   https://api.github.com/teams/42/discussions/42/reactions \
   -d &apos;{&quot;content&quot;:&quot;content&quot;}&apos;
 </code></pre>
-        
-      
-        
+
+
+
           <h5>
-            
+
               JavaScript (<a href="https://github.com/octokit/core.js#readme">@octokit/core.js</a>)
-            
+
           </h5>
           <pre><code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;POST /teams/{team_id}/discussions/{discussion_number}/reactions&apos;</span>, {
   <span class="hljs-attr">team_id</span>: <span class="hljs-number">42</span>,
@@ -5496,10 +5496,10 @@ and creating</a> reactions.</p>
   }
 })
 </code></pre>
-        
-      
-    
-    
+
+
+
+
       <h4>Default response</h4>
       <pre><code>Status: 201 Created</code></pre>
       <div class="height-constrained-code-block"><pre><code class="hljs language-json">{
@@ -5529,15 +5529,15 @@ and creating</a> reactions.</p>
   <span class="hljs-attr">&quot;created_at&quot;</span>: <span class="hljs-string">&quot;2016-05-20T20:09:31Z&quot;</span>
 }
 </code></pre></div>
-    
-    
-    
+
+
+
       <h4 id="create-reaction-for-a-team-discussion-legacy-preview-notices">
-        
+
           Preview notice
-        
+
       </h4>
-      
+
         <div class="extended-markdown note border rounded-1 mb-4 p-3 border-blue bg-blue-light f5">
           <p>An additional <code>reactions</code> object in the issue comment payload is currently available for developers to preview. During
 the preview period, the APIs may change without advance notice. Please see the <a href="https://developer.github.com/changes/2016-05-12-reactions-api-preview">blog
@@ -5560,8 +5560,8 @@ and creating</a> reactions.</p>
 </code></pre>
           &#x261D;&#xFE0F; This header is <strong>required</strong>.
         </div>
-      
-    
+
+
   </div>
   <hr>
 </div>
@@ -5569,7 +5569,7 @@ and creating</a> reactions.</p>
     </div>
   </article>
   <div class="d-block d-xl-none border-top border-gray-light mt-4 markdown-body">
-    
+
     <form class="js-helpfulness mt-4 f5" id="helpfulness-sm">
   <h4
     data-help-start
@@ -5708,7 +5708,7 @@ and creating</a> reactions.</p>
   </div>
 </main>
 
-      
+
       <!-- Contact support banner -->
 <section class="mt-lg-9 py-7 no-print" style="background-color: #fafbfc;">
   <div class="container-xl px-3 px-md-6">
@@ -5892,9 +5892,6 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -5918,9 +5915,6 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -5964,9 +5958,6 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -5990,9 +5981,6 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6036,9 +6024,6 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6062,9 +6047,6 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6108,9 +6090,6 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6134,9 +6113,6 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6180,8 +6156,6 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6203,8 +6177,6 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6248,8 +6220,6 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6270,8 +6240,6 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6305,9 +6273,6 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -6384,9 +6349,6 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6410,9 +6372,6 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6456,9 +6415,6 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6482,9 +6438,6 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6528,9 +6481,6 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6554,9 +6504,6 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6600,9 +6547,6 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6626,9 +6570,6 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6672,8 +6613,6 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6695,8 +6634,6 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6740,8 +6677,6 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -6762,8 +6697,6 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -6797,9 +6730,6 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

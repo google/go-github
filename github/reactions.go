@@ -73,9 +73,6 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -99,9 +96,6 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -145,9 +139,6 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -171,9 +162,6 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -217,9 +205,6 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -243,9 +228,6 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -289,9 +271,6 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -315,9 +294,6 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -361,8 +337,6 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -384,8 +358,6 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -429,8 +401,6 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
-
 	var m []*Reaction
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -451,8 +421,6 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	if err != nil {
 		return nil, nil, err
 	}
-
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	m := &Reaction{}
 	resp, err := s.client.Do(ctx, req, m)
@@ -486,9 +454,6 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
