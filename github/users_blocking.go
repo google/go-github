@@ -25,9 +25,6 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
-
 	var blockedUsers []*User
 	resp, err := s.client.Do(ctx, req, &blockedUsers)
 	if err != nil {
@@ -48,9 +45,6 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 		return false, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
-
 	resp, err := s.client.Do(ctx, req, nil)
 	isBlocked, err := parseBoolResponse(err)
 	return isBlocked, resp, err
@@ -67,9 +61,6 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -83,9 +74,6 @@ func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

@@ -20,7 +20,6 @@ func TestOrganizationsService_ListBlockedUsers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/blocks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{
 			"login": "octocat"
@@ -60,7 +59,6 @@ func TestOrganizationsService_IsBlocked(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -94,7 +92,6 @@ func TestOrganizationsService_BlockUser(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -121,7 +118,6 @@ func TestOrganizationsService_UnblockUser(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/blocks/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeBlockUsersPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

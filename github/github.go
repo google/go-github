@@ -49,9 +49,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2017-02-28-user-blocking-apis-and-webhook/
-	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"
-
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
 
