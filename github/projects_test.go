@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -99,7 +98,6 @@ func TestProjectsService_UpdateProject(t *testing.T) {
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -142,7 +140,6 @@ func TestProjectsService_GetProject(t *testing.T) {
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -178,7 +175,6 @@ func TestProjectsService_DeleteProject(t *testing.T) {
 
 	mux.HandleFunc("/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
 	ctx := context.Background()
@@ -202,10 +198,8 @@ func TestProjectsService_ListProjectColumns(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -243,7 +237,6 @@ func TestProjectsService_GetProjectColumn(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -281,7 +274,6 @@ func TestProjectsService_CreateProjectColumn(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/columns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -326,7 +318,6 @@ func TestProjectsService_UpdateProjectColumn(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectColumnOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -369,7 +360,6 @@ func TestProjectsService_DeleteProjectColumn(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
 	ctx := context.Background()
@@ -397,7 +387,6 @@ func TestProjectsService_MoveProjectColumn(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1/moves", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectColumnMoveOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -429,7 +418,6 @@ func TestProjectsService_ListProjectCards(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{
 			"archived_state": "all",
 			"page":           "2"})
@@ -471,7 +459,6 @@ func TestProjectsService_GetProjectCard(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -512,7 +499,6 @@ func TestProjectsService_CreateProjectCard(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/1/cards", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -560,7 +546,6 @@ func TestProjectsService_UpdateProjectCard(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCardOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -603,7 +588,6 @@ func TestProjectsService_DeleteProjectCard(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/cards/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 	})
 
 	ctx := context.Background()
@@ -631,7 +615,6 @@ func TestProjectsService_MoveProjectCard(t *testing.T) {
 
 	mux.HandleFunc("/projects/columns/cards/1/moves", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCardMoveOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -667,7 +650,6 @@ func TestProjectsService_AddProjectCollaborator(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectCollaboratorOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -710,7 +692,6 @@ func TestProjectsService_RemoveCollaborator(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -746,7 +727,6 @@ func TestProjectsService_ListCollaborators(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -786,7 +766,6 @@ func TestProjectsService_ListCollaborators_withAffiliation(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/collaborators", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"affiliation": "all", "page": "2"})
 		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
 	})
@@ -813,7 +792,6 @@ func TestProjectsService_ReviewProjectCollaboratorPermission(t *testing.T) {
 
 	mux.HandleFunc("/projects/1/collaborators/u/permission", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		fmt.Fprintf(w, `{"permission":"admin","user":{"login":"u"}}`)
 	})
 

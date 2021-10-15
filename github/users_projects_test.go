@@ -21,7 +21,6 @@ func TestUsersService_ListProjects(t *testing.T) {
 
 	mux.HandleFunc("/users/u/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"state": "open", "page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -61,7 +60,6 @@ func TestUsersService_CreateProject(t *testing.T) {
 
 	mux.HandleFunc("/user/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &CreateUserProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)

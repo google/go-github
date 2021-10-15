@@ -34,9 +34,6 @@ func (s *RepositoriesService) ListProjects(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
@@ -55,9 +52,6 @@ func (s *RepositoriesService) CreateProject(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	project := &Project{}
 	resp, err := s.client.Do(ctx, req, project)

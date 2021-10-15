@@ -1016,10 +1016,8 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -1053,10 +1051,8 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
@@ -1090,10 +1086,8 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -1127,10 +1121,8 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -1168,10 +1160,8 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 		Permission: String("admin"),
 	}
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 
 		v := &TeamProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -1207,10 +1197,8 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 		Permission: String("admin"),
 	}
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 
 		v := &TeamProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)
@@ -1242,10 +1230,8 @@ func TestTeamsService_RemoveTeamProjectByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1270,10 +1256,8 @@ func TestTeamsService_RemoveTeamProjectBySlug(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeProjectsPreview}
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1666,7 +1650,7 @@ func TestTeams_Marshal(t *testing.T) {
 			"members_count": 1,
 			"repos_count": 1
 		},
-		"ldap_dn": "l"	
+		"ldap_dn": "l"
 	}`
 
 	testJSONMarshal(t, u, want)

@@ -21,7 +21,6 @@ func TestRepositoriesService_ListProjects(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
@@ -61,7 +60,6 @@ func TestRepositoriesService_CreateProject(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/projects", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
 		v := &ProjectOptions{}
 		json.NewDecoder(r.Body).Decode(v)

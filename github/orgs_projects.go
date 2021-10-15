@@ -25,9 +25,6 @@ func (s *OrganizationsService) ListProjects(ctx context.Context, org string, opt
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	var projects []*Project
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
@@ -46,9 +43,6 @@ func (s *OrganizationsService) CreateProject(ctx context.Context, org string, op
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	project := &Project{}
 	resp, err := s.client.Do(ctx, req, project)

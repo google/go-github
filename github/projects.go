@@ -49,9 +49,6 @@ func (s *ProjectsService) GetProject(ctx context.Context, id int64) (*Project, *
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	project := &Project{}
 	resp, err := s.client.Do(ctx, req, project)
 	if err != nil {
@@ -96,9 +93,6 @@ func (s *ProjectsService) UpdateProject(ctx context.Context, id int64, opts *Pro
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	project := &Project{}
 	resp, err := s.client.Do(ctx, req, project)
 	if err != nil {
@@ -117,9 +111,6 @@ func (s *ProjectsService) DeleteProject(ctx context.Context, id int64) (*Respons
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -153,9 +144,6 @@ func (s *ProjectsService) ListProjectColumns(ctx context.Context, projectID int6
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	columns := []*ProjectColumn{}
 	resp, err := s.client.Do(ctx, req, &columns)
 	if err != nil {
@@ -174,9 +162,6 @@ func (s *ProjectsService) GetProjectColumn(ctx context.Context, id int64) (*Proj
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	column := &ProjectColumn{}
 	resp, err := s.client.Do(ctx, req, column)
@@ -205,9 +190,6 @@ func (s *ProjectsService) CreateProjectColumn(ctx context.Context, projectID int
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	column := &ProjectColumn{}
 	resp, err := s.client.Do(ctx, req, column)
 	if err != nil {
@@ -227,9 +209,6 @@ func (s *ProjectsService) UpdateProjectColumn(ctx context.Context, columnID int6
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	column := &ProjectColumn{}
 	resp, err := s.client.Do(ctx, req, column)
 	if err != nil {
@@ -248,9 +227,6 @@ func (s *ProjectsService) DeleteProjectColumn(ctx context.Context, columnID int6
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -272,9 +248,6 @@ func (s *ProjectsService) MoveProjectColumn(ctx context.Context, columnID int64,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -329,9 +302,6 @@ func (s *ProjectsService) ListProjectCards(ctx context.Context, columnID int64, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	cards := []*ProjectCard{}
 	resp, err := s.client.Do(ctx, req, &cards)
 	if err != nil {
@@ -350,9 +320,6 @@ func (s *ProjectsService) GetProjectCard(ctx context.Context, cardID int64) (*Pr
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	card := &ProjectCard{}
 	resp, err := s.client.Do(ctx, req, card)
@@ -389,9 +356,6 @@ func (s *ProjectsService) CreateProjectCard(ctx context.Context, columnID int64,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	card := &ProjectCard{}
 	resp, err := s.client.Do(ctx, req, card)
 	if err != nil {
@@ -411,9 +375,6 @@ func (s *ProjectsService) UpdateProjectCard(ctx context.Context, cardID int64, o
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	card := &ProjectCard{}
 	resp, err := s.client.Do(ctx, req, card)
 	if err != nil {
@@ -432,9 +393,6 @@ func (s *ProjectsService) DeleteProjectCard(ctx context.Context, cardID int64) (
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -460,9 +418,6 @@ func (s *ProjectsService) MoveProjectCard(ctx context.Context, cardID int64, opt
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -491,9 +446,6 @@ func (s *ProjectsService) AddProjectCollaborator(ctx context.Context, id int64, 
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -507,9 +459,6 @@ func (s *ProjectsService) RemoveProjectCollaborator(ctx context.Context, id int6
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -549,9 +498,6 @@ func (s *ProjectsService) ListProjectCollaborators(ctx context.Context, id int64
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
-
 	var users []*User
 	resp, err := s.client.Do(ctx, req, &users)
 	if err != nil {
@@ -581,9 +527,6 @@ func (s *ProjectsService) ReviewProjectCollaboratorPermission(ctx context.Contex
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	ppl := new(ProjectPermissionLevel)
 	resp, err := s.client.Do(ctx, req, ppl)

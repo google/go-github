@@ -49,9 +49,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://developer.github.com/changes/2016-09-14-projects-api/
-	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
-
 	// https://developer.github.com/changes/2017-01-05-commit-search-api/
 	mediaTypeCommitSearchPreview = "application/vnd.github.cloak-preview+json"
 
