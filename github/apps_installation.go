@@ -34,7 +34,6 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRe
 	// TODO: remove custom Accept headers when APIs fully launch.
 	acceptHeaders := []string{
 		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
@@ -67,7 +66,6 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 	// TODO: remove custom Accept headers when APIs fully launch.
 	acceptHeaders := []string{
 		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 

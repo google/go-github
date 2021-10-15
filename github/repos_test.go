@@ -227,7 +227,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		Archived: Bool(true), // not passed along.
 	}
 
-	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
@@ -277,7 +277,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		Archived: Bool(true), // not passed along.
 	}
 
-	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createRepoRequest)
 		json.NewDecoder(r.Body).Decode(v)
@@ -317,7 +317,6 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
 		want := &TemplateRepoRequest{Name: String("n")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -356,7 +355,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeCodesOfConductPreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
@@ -473,7 +472,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	i := true
 	input := &Repository{HasIssues: &i}
 
-	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	wantAcceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		v := new(Repository)
 		json.NewDecoder(r.Body).Decode(v)

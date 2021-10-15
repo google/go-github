@@ -373,7 +373,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
@@ -406,7 +406,6 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 		return nil, nil, err
 	}
 
-	req.Header.Set("Accept", mediaTypeRepositoryTemplatePreview)
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -430,7 +429,6 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	// https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-a-repositorys-license
 	acceptHeaders := []string{
 		mediaTypeCodesOfConductPreview,
-		mediaTypeRepositoryTemplatePreview,
 		mediaTypeRepositoryVisibilityPreview,
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
@@ -495,7 +493,7 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
+	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)

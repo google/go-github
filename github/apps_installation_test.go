@@ -21,7 +21,6 @@ func TestAppsService_ListRepos(t *testing.T) {
 
 	wantAcceptHeaders := []string{
 		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
 	}
 	mux.HandleFunc("/installation/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -61,7 +60,6 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 
 	wantAcceptHeaders := []string{
 		mediaTypeRepositoryVisibilityPreview,
-		mediaTypeRepositoryTemplatePreview,
 	}
 	mux.HandleFunc("/user/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
