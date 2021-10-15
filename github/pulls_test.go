@@ -417,7 +417,6 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/update-branch", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeUpdatePullRequestBranchPreview)
 		fmt.Fprint(w, `
 			{
 			  "message": "Updating pull request branch.",

@@ -301,9 +301,6 @@ func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
-
 	p := new(PullRequestBranchUpdateResponse)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
