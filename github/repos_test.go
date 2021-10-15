@@ -561,7 +561,6 @@ func TestRepositoriesService_GetVulnerabilityAlerts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -597,7 +596,6 @@ func TestRepositoriesService_EnableVulnerabilityAlerts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -624,7 +622,6 @@ func TestRepositoriesService_DisableVulnerabilityAlerts(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/vulnerability-alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

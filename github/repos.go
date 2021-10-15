@@ -564,9 +564,6 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 		return false, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
-
 	resp, err := s.client.Do(ctx, req, nil)
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
 
@@ -584,9 +581,6 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -600,9 +594,6 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
