@@ -82,9 +82,6 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	m := &UserMigration{}
 	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
@@ -104,9 +101,6 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context) ([]*UserMigra
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m []*UserMigration
 	resp, err := s.client.Do(ctx, req, &m)
@@ -129,9 +123,6 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	m := &UserMigration{}
 	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
@@ -152,9 +143,6 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 	if err != nil {
 		return "", err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	m := &UserMigration{}
 
@@ -187,9 +175,6 @@ func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -206,9 +191,6 @@ func (s *MigrationService) UnlockUserRepo(ctx context.Context, id int64, repo st
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

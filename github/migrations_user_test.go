@@ -21,7 +21,6 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write(userMigrationJSON)
@@ -59,7 +58,6 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(fmt.Sprintf("[%s]", userMigrationJSON)))
@@ -92,7 +90,6 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
 		w.Write(userMigrationJSON)
@@ -125,7 +122,6 @@ func TestMigrationService_UserMigrationArchiveURL(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		http.Redirect(w, r, "/go-github", http.StatusFound)
 	})
@@ -154,7 +150,6 @@ func TestMigrationService_DeleteUserMigration(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -186,7 +181,6 @@ func TestMigrationService_UnlockUserRepo(t *testing.T) {
 
 	mux.HandleFunc("/user/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

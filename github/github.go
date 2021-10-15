@@ -49,9 +49,6 @@ const (
 
 	// Media Type values to access preview APIs
 
-	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
-	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
-
 	// https://developer.github.com/changes/2016-04-06-deployment-and-deployment-status-enhancements/
 	mediaTypeDeploymentStatusPreview = "application/vnd.github.ant-man-preview+json"
 

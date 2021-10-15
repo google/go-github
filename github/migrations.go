@@ -89,9 +89,6 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	m := &Migration{}
 	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
@@ -116,9 +113,6 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	var m []*Migration
 	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
@@ -140,9 +134,6 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	m := &Migration{}
 	resp, err := s.client.Do(ctx, req, m)
 	if err != nil {
@@ -163,9 +154,6 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 	if err != nil {
 		return "", err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	s.client.clientMu.Lock()
 	defer s.client.clientMu.Unlock()
@@ -201,9 +189,6 @@ func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id i
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
-
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -220,9 +205,6 @@ func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int64,
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches.
-	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	return s.client.Do(ctx, req, nil)
 }

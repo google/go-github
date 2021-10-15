@@ -21,7 +21,6 @@ func TestMigrationService_StartMigration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusCreated)
 		w.Write(migrationJSON)
@@ -61,7 +60,6 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(fmt.Sprintf("[%s]", migrationJSON)))
@@ -97,7 +95,6 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
 		w.Write(migrationJSON)
@@ -133,7 +130,6 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		http.Redirect(w, r, "/yo", http.StatusFound)
 	})
@@ -166,7 +162,6 @@ func TestMigrationService_DeleteMigration(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -193,7 +188,6 @@ func TestMigrationService_UnlockRepo(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/migrations/1/repos/r/lock", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
