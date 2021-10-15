@@ -205,10 +205,6 @@ func (s *RepositoriesService) List(ctx context.Context, user string, opts *Repos
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
@@ -250,10 +246,6 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *R
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept headers when APIs fully launch.
-	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*Repository
 	resp, err := s.client.Do(ctx, req, &repos)
@@ -373,8 +365,6 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -429,7 +419,6 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	// https://docs.github.com/en/free-pro-team@latest/rest/reference/licenses/#get-a-repositorys-license
 	acceptHeaders := []string{
 		mediaTypeCodesOfConductPreview,
-		mediaTypeRepositoryVisibilityPreview,
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
@@ -493,8 +482,6 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 		return nil, nil, err
 	}
 
-	acceptHeaders := []string{mediaTypeRepositoryVisibilityPreview}
-	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	r := new(Repository)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
