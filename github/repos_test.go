@@ -990,8 +990,6 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
 				"required_status_checks":{
 					"strict":true,
@@ -1091,8 +1089,6 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
 				"required_status_checks":{
 					"strict":true,
@@ -1181,8 +1177,6 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
 			"required_status_checks":{
 				"strict":true,
@@ -1507,8 +1501,6 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -1578,8 +1570,6 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		fmt.Fprintf(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -1635,8 +1625,6 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection/required_pull_request_reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		// TODO: remove custom Accept header when this API fully launches
-		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 		testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
 		fmt.Fprintf(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 	})

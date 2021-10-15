@@ -1046,9 +1046,6 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
@@ -1104,9 +1101,6 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	p := new(Protection)
 	resp, err := s.client.Do(ctx, req, p)
@@ -1252,9 +1246,6 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
-
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
@@ -1274,9 +1265,6 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
@@ -1302,9 +1290,6 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 	if err != nil {
 		return nil, nil, err
 	}
-
-	// TODO: remove custom Accept header when this API fully launches
-	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(PullRequestReviewsEnforcement)
 	resp, err := s.client.Do(ctx, req, r)
