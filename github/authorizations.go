@@ -155,7 +155,6 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	a := new(Authorization)
 	resp, err := s.client.Do(ctx, req, a)
@@ -188,7 +187,6 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	a := new(Authorization)
 	resp, err := s.client.Do(ctx, req, a)
@@ -217,7 +215,6 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
@@ -238,7 +235,6 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	return s.client.Do(ctx, req, nil)
 }
