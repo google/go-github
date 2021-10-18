@@ -869,9 +869,9 @@ func (a *AuditEntry) GetRepositoryPublic() bool {
 }
 
 // GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetRunnerGroupID() string {
+func (a *AuditEntry) GetRunnerGroupID() int64 {
 	if a == nil || a.RunnerGroupID == nil {
-		return ""
+		return 0
 	}
 	return *a.RunnerGroupID
 }
@@ -885,9 +885,9 @@ func (a *AuditEntry) GetRunnerGroupName() string {
 }
 
 // GetRunnerID returns the RunnerID field if it's non-nil, zero value otherwise.
-func (a *AuditEntry) GetRunnerID() string {
+func (a *AuditEntry) GetRunnerID() int64 {
 	if a == nil || a.RunnerID == nil {
-		return ""
+		return 0
 	}
 	return *a.RunnerID
 }
