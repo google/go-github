@@ -1024,7 +1024,7 @@ func TestAuditEntry_GetRepositoryPublic(tt *testing.T) {
 }
 
 func TestAuditEntry_GetRunnerGroupID(tt *testing.T) {
-	var zeroValue string
+	var zeroValue int64
 	a := &AuditEntry{RunnerGroupID: &zeroValue}
 	a.GetRunnerGroupID()
 	a = &AuditEntry{}
@@ -1044,7 +1044,7 @@ func TestAuditEntry_GetRunnerGroupName(tt *testing.T) {
 }
 
 func TestAuditEntry_GetRunnerID(tt *testing.T) {
-	var zeroValue string
+	var zeroValue int64
 	a := &AuditEntry{RunnerID: &zeroValue}
 	a.GetRunnerID()
 	a = &AuditEntry{}
