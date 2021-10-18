@@ -268,9 +268,9 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"repo": "r",
 		"repository": "repo",
 		"repository_public": false,
-		"runner_group_id": "rgid",
+		"runner_group_id": 1,
 		"runner_group_name": "rgn",
-		"runner_id": "rid",
+		"runner_id": 1,
 		"runner_labels": [
 			"s"
 		],
