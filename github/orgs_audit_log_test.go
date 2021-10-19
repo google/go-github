@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -57,7 +58,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		Order:   String("asc"),
 	}
 
-	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
+	auditEntries, resp, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
 	if err != nil {
 		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
@@ -95,6 +96,12 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 	if !cmp.Equal(auditEntries, want) {
 		t.Errorf("Organizations.GetAuditLog return \ngot: %+v,\nwant:%+v", auditEntries, want)
+	}
+
+	// assert query string has lower case params
+	requestedQuery := resp.Request.URL.RawQuery
+	if !strings.Contains(requestedQuery, "phrase") {
+		t.Errorf("Organizations.GetAuditLog query string \ngot: %+v,\nwant:%+v", requestedQuery, "phrase")
 	}
 
 	const methodName = "GetAuditLog"
