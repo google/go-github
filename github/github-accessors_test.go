@@ -21155,6 +21155,46 @@ func TestWorkflowJob_GetRunID(tt *testing.T) {
 	w.GetRunID()
 }
 
+func TestWorkflowJob_GetRunnerGroupID(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowJob{RunnerGroupID: &zeroValue}
+	w.GetRunnerGroupID()
+	w = &WorkflowJob{}
+	w.GetRunnerGroupID()
+	w = nil
+	w.GetRunnerGroupID()
+}
+
+func TestWorkflowJob_GetRunnerGroupName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{RunnerGroupName: &zeroValue}
+	w.GetRunnerGroupName()
+	w = &WorkflowJob{}
+	w.GetRunnerGroupName()
+	w = nil
+	w.GetRunnerGroupName()
+}
+
+func TestWorkflowJob_GetRunnerID(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowJob{RunnerID: &zeroValue}
+	w.GetRunnerID()
+	w = &WorkflowJob{}
+	w.GetRunnerID()
+	w = nil
+	w.GetRunnerID()
+}
+
+func TestWorkflowJob_GetRunnerName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{RunnerName: &zeroValue}
+	w.GetRunnerName()
+	w = &WorkflowJob{}
+	w.GetRunnerName()
+	w = nil
+	w.GetRunnerName()
+}
+
 func TestWorkflowJob_GetRunURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJob{RunURL: &zeroValue}
