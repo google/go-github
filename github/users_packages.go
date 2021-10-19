@@ -18,7 +18,7 @@ import (
 func (s *UsersService) ListPackages(ctx context.Context, user string, opts *PackageListOptions) ([]*Package, *Response, error) {
 	var u string
 	if user != "" {
-		u = fmt.Sprintf("user/%v/packages", user)
+		u = fmt.Sprintf("users/%v/packages", user)
 	} else {
 		u = "user/packages"
 	}

@@ -74,7 +74,7 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/user/u/packages", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/packages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"package_type": "container", "visibility": "public"})
 		fmt.Fprint(w, `[{
