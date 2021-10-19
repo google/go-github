@@ -18068,6 +18068,38 @@ func (w *WorkflowJob) GetRunID() int64 {
 	return *w.RunID
 }
 
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunnerGroupID() int64 {
+	if w == nil || w.RunnerGroupID == nil {
+		return 0
+	}
+	return *w.RunnerGroupID
+}
+
+// GetRunnerGroupName returns the RunnerGroupName field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunnerGroupName() string {
+	if w == nil || w.RunnerGroupName == nil {
+		return ""
+	}
+	return *w.RunnerGroupName
+}
+
+// GetRunnerID returns the RunnerID field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunnerID() int64 {
+	if w == nil || w.RunnerID == nil {
+		return 0
+	}
+	return *w.RunnerID
+}
+
+// GetRunnerName returns the RunnerName field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunnerName() string {
+	if w == nil || w.RunnerName == nil {
+		return ""
+	}
+	return *w.RunnerName
+}
+
 // GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetRunURL() string {
 	if w == nil || w.RunURL == nil {
