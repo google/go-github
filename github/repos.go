@@ -187,7 +187,7 @@ type RepositoryListOptions struct {
 }
 
 // SecurityAndAnalysis specifies the optional advanced security features
-// that are enabled on a given repository
+// that are enabled on a given repository.
 type SecurityAndAnalysis struct {
 	AdvancedSecurity *AdvancedSecurity `json:"advanced_security,omitempty"`
 	SecretScanning   *SecretScanning   `json:"secret_scanning,omitempty"`
@@ -197,20 +197,22 @@ func (s SecurityAndAnalysis) String() string {
 	return Stringify(s)
 }
 
-// AdvancedSecurity specifies the state of advanced security on a repository
-// https://docs.github.com/en/github/getting-started-with-github/learning-about-github/about-github-advanced-security
+// AdvancedSecurity specifies the state of advanced security on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/github/getting-started-with-github/learning-about-github/about-github-advanced-security
 type AdvancedSecurity struct {
-	Status *string `json:"status"`
+	Status *string `json:"status,omitempty"`
 }
 
 func (a AdvancedSecurity) String() string {
 	return Stringify(a)
 }
 
-// SecretScanning specifies the state of secret scanning on a repository
-// https://docs.github.com/en/code-security/secret-security/about-secret-scanning
+// SecretScanning specifies the state of secret scanning on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/secret-security/about-secret-scanning
 type SecretScanning struct {
-	Status *string `json:"status"`
+	Status *string `json:"status,omitempty"`
 }
 
 func (s SecretScanning) String() string {
