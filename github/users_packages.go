@@ -10,6 +10,16 @@ import (
 	"fmt"
 )
 
+// The type of supported package.
+var (
+	NpmPackageType       string = "npm"
+	MavenPackageType     string = "maven"
+	RubygemsPackageType  string = "rubygems"
+	NugetPackageType     string = "nuget"
+	DockerPackageType    string = "docker"
+	ContainerPackageType string = "container"
+)
+
 // List the packages for a user. Passing the empty string for "user" will
 // list packages for the authenticated user.
 //
