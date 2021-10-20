@@ -148,6 +148,14 @@ func (a *AdminStats) GetUsers() *UserStats {
 	return a.Users
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (a *AdvancedSecurity) GetStatus() string {
+	if a == nil || a.Status == nil {
+		return ""
+	}
+	return *a.Status
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -13676,6 +13684,14 @@ func (r *Repository) GetReleasesURL() string {
 	return *r.ReleasesURL
 }
 
+// GetSecurityAndAnalysis returns the SecurityAndAnalysis field.
+func (r *Repository) GetSecurityAndAnalysis() *SecurityAndAnalysis {
+	if r == nil {
+		return nil
+	}
+	return r.SecurityAndAnalysis
+}
+
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
 func (r *Repository) GetSize() int {
 	if r == nil || r.Size == nil {
@@ -15178,6 +15194,30 @@ func (s *SCIMUserName) GetFormatted() string {
 		return ""
 	}
 	return *s.Formatted
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (s *SecretScanning) GetStatus() string {
+	if s == nil || s.Status == nil {
+		return ""
+	}
+	return *s.Status
+}
+
+// GetAdvancedSecurity returns the AdvancedSecurity field.
+func (s *SecurityAndAnalysis) GetAdvancedSecurity() *AdvancedSecurity {
+	if s == nil {
+		return nil
+	}
+	return s.AdvancedSecurity
+}
+
+// GetSecretScanning returns the SecretScanning field.
+func (s *SecurityAndAnalysis) GetSecretScanning() *SecretScanning {
+	if s == nil {
+		return nil
+	}
+	return s.SecretScanning
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
