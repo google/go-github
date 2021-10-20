@@ -153,6 +153,16 @@ func TestAdminStats_GetUsers(tt *testing.T) {
 	a.GetUsers()
 }
 
+func TestAdvancedSecurity_GetStatus(tt *testing.T) {
+	var zeroValue string
+	a := &AdvancedSecurity{Status: &zeroValue}
+	a.GetStatus()
+	a = &AdvancedSecurity{}
+	a.GetStatus()
+	a = nil
+	a.GetStatus()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	a := &Alert{ClosedAt: &zeroValue}
@@ -15965,6 +15975,13 @@ func TestRepository_GetReleasesURL(tt *testing.T) {
 	r.GetReleasesURL()
 }
 
+func TestRepository_GetSecurityAndAnalysis(tt *testing.T) {
+	r := &Repository{}
+	r.GetSecurityAndAnalysis()
+	r = nil
+	r.GetSecurityAndAnalysis()
+}
+
 func TestRepository_GetSize(tt *testing.T) {
 	var zeroValue int
 	r := &Repository{Size: &zeroValue}
@@ -17750,6 +17767,30 @@ func TestSCIMUserName_GetFormatted(tt *testing.T) {
 	s.GetFormatted()
 	s = nil
 	s.GetFormatted()
+}
+
+func TestSecretScanning_GetStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanning{Status: &zeroValue}
+	s.GetStatus()
+	s = &SecretScanning{}
+	s.GetStatus()
+	s = nil
+	s.GetStatus()
+}
+
+func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetAdvancedSecurity()
+	s = nil
+	s.GetAdvancedSecurity()
+}
+
+func TestSecurityAndAnalysis_GetSecretScanning(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetSecretScanning()
+	s = nil
+	s.GetSecretScanning()
 }
 
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {

@@ -80,6 +80,9 @@ type Repository struct {
 	LicenseTemplate   *string `json:"license_template,omitempty"`
 	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
 
+	// Options for configuring Advanced Security and Secret Scanning
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
+
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
 
@@ -181,6 +184,39 @@ type RepositoryListOptions struct {
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions
+}
+
+// SecurityAndAnalysis specifies the optional advanced security features
+// that are enabled on a given repository.
+type SecurityAndAnalysis struct {
+	AdvancedSecurity *AdvancedSecurity `json:"advanced_security,omitempty"`
+	SecretScanning   *SecretScanning   `json:"secret_scanning,omitempty"`
+}
+
+func (s SecurityAndAnalysis) String() string {
+	return Stringify(s)
+}
+
+// AdvancedSecurity specifies the state of advanced security on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/github/getting-started-with-github/learning-about-github/about-github-advanced-security
+type AdvancedSecurity struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (a AdvancedSecurity) String() string {
+	return Stringify(a)
+}
+
+// SecretScanning specifies the state of secret scanning on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/secret-security/about-secret-scanning
+type SecretScanning struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (s SecretScanning) String() string {
+	return Stringify(s)
 }
 
 // List the repositories for a user. Passing the empty string will list
