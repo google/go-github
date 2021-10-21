@@ -481,3 +481,49 @@ func TestSearchService_Labels_coverage(t *testing.T) {
 		return err
 	})
 }
+
+func TestMatch_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Match{}, "{}")
+
+	u := &Match{
+		Text:    String("txt"),
+		Indices: []int{1},
+	}
+
+	want := `{
+		"text": "txt",
+		"indices": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTextMatch_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TextMatch{}, "{}")
+
+	u := &TextMatch{
+		ObjectURL:  String("ourl"),
+		ObjectType: String("otype"),
+		Property:   String("prop"),
+		Fragment:   String("fragment"),
+		Matches: []*Match{
+			{
+				Text:    String("txt"),
+				Indices: []int{1},
+			},
+		},
+	}
+
+	want := `{
+		"object_url": "ourl",
+		"object_type": "otype",
+		"property": "prop",
+		"fragment": "fragment",
+		"matches": [{
+			"text": "txt",
+			"indices": [1]
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
