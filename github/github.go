@@ -517,8 +517,14 @@ func (r *Response) populatePageValues() {
 			}
 
 			page := q.Get("page")
-			if page == "" {
+			since := q.Get("since")
+
+			if page == "" && since == "" {
 				continue
+			}
+
+			if since != "" {
+				page = since
 			}
 
 			for _, segment := range segments[1:] {

@@ -648,6 +648,35 @@ func TestResponse_populatePageValues(t *testing.T) {
 	}
 }
 
+func TestResponse_populateSinceValues(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
+				` <https://api.github.com/?since=2>; rel="prev",` +
+				` <https://api.github.com/?since=4>; rel="next",` +
+				` <https://api.github.com/?since=5>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 1; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 2; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 4; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 5; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
 func TestResponse_cursorPagination(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
@@ -718,6 +747,45 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	r = http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/%?page=2>; rel="first"`},
+		},
+	}
+
+	response = newResponse(&r)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_populateSinceValues_invalid(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?since=1>,` +
+				`<https://api.github.com/?since=abc>; rel="first",` +
+				`https://api.github.com/?since=2; rel="prev",` +
+				`<https://api.github.com/>; rel="next",` +
+				`<https://api.github.com/?since=>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; got != want {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; got != want {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; got != want {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+
+	// more invalid URLs
+	r = http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/%?since=2>; rel="first"`},
 		},
 	}
 
