@@ -16,7 +16,7 @@ import (
 // data between jobs in a workflow and provide storage for data
 // once a workflow is complete.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/artifacts/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#artifacts
 type Artifact struct {
 	ID                 *int64     `json:"id,omitempty"`
 	NodeID             *string    `json:"node_id,omitempty"`
@@ -30,7 +30,7 @@ type Artifact struct {
 
 // ArtifactList represents a list of GitHub artifacts.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/artifacts/
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#artifacts
 type ArtifactList struct {
 	TotalCount *int64      `json:"total_count,omitempty"`
 	Artifacts  []*Artifact `json:"artifacts,omitempty"`
@@ -106,7 +106,7 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 
 // DownloadArtifact gets a redirect URL to download an archive for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/artifacts/#download-an-artifact
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#download-an-artifact
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
