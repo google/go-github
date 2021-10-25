@@ -152,3 +152,37 @@ func TestRepositoriesService_DeleteAutolink(t *testing.T) {
 		return client.Repositories.DeleteAutolink(ctx, "o", "r", 2)
 	})
 }
+
+func TestAutolinkOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AutolinkOptions{}, "{}")
+
+	r := &AutolinkOptions{
+		KeyPrefix:   String("kp"),
+		URLTemplate: String("URLT"),
+	}
+
+	want := `{
+		"key_prefix": "kp",
+		"url_template": "URLT"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestAutolink_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Autolink{}, "{}")
+
+	r := &Autolink{
+		ID:          Int64(1),
+		KeyPrefix:   String("kp"),
+		URLTemplate: String("URLT"),
+	}
+
+	want := `{
+		"id": 1,
+		"key_prefix": "kp",
+		"url_template": "URLT"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
