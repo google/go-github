@@ -171,3 +171,19 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 
 	return a, resp, nil
 }
+
+func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, sarif)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, "{}")
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
