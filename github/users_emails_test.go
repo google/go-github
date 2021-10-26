@@ -120,3 +120,23 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 		return client.Users.DeleteEmails(ctx, input)
 	})
 }
+
+func TestUserEmail_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserEmail{}, "{}")
+
+	u := &UserEmail{
+		Email:      String("qwe@qwe.qwe"),
+		Primary:    Bool(false),
+		Verified:   Bool(true),
+		Visibility: String("yes"),
+	}
+
+	want := `{
+		"email": "qwe@qwe.qwe",
+		"primary": false,
+		"verified": true,
+		"visibility": "yes"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
