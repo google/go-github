@@ -527,3 +527,33 @@ func TestTextMatch_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTopicResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TopicResult{}, "{}")
+
+	u := &TopicResult{
+		Name:             String("name"),
+		DisplayName:      String("displayName"),
+		ShortDescription: String("shortDescription"),
+		Description:      String("description"),
+		CreatedBy:        String("createdBy"),
+		UpdatedAt:        String("2021-10-26"),
+		Featured:         Bool(false),
+		Curated:          Bool(true),
+		Score:            Float64(99.9),
+	}
+
+	want := `{
+		"name": "name",
+		"display_name": "displayName",
+		"short_description": "shortDescription",
+		"description": "description",
+		"created_by": "createdBy",
+		"updated_at": "2021-10-26",
+		"featured": false,
+		"curated": true,
+		"score": 99.9
+	}`
+
+	testJSONMarshal(t, u, want)
+}
