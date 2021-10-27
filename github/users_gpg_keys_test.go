@@ -189,3 +189,19 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 		return client.Users.DeleteGPGKey(ctx, 1)
 	})
 }
+
+func TestGPGEmail_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GPGEmail{}, "{}")
+
+	u := &GPGEmail{
+		Email:    String("email@abc.com"),
+		Verified: Bool(false),
+	}
+
+	want := `{
+		"email" : "email@abc.com",
+		"verified" : false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
