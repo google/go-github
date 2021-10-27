@@ -435,6 +435,34 @@ func TestLocation_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestRule_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Rule{}, "{}")
+
+	u := &Rule{
+		ID:                    String("1"),
+		Severity:              String("3"),
+		Description:           String("description"),
+		Name:                  String("first"),
+		SecuritySeverityLevel: String("2"),
+		FullDescription:       String("summary"),
+		Tags:                  []string{"tag1", "tag2"},
+		Help:                  String("Help Text"),
+	}
+
+	want := `{
+		"id":                      "1",
+		"severity":                "3",
+		"description":             "description",
+		"name":                    "first",
+		"security_severity_level": "2",
+		"full_description":        "summary",
+		"tags":                    ["tag1", "tag2"],
+		"help":                    "Help Text"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestTool_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Tool{}, "{}")
 
