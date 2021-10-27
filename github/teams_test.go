@@ -1586,6 +1586,34 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 	}
 }
 
+func TestNewTeam_Marshal(t *testing.T) {
+	testJSONMarshal(t, &NewTeam{}, "{}")
+
+	u := &NewTeam{
+		Name:         "n",
+		Description:  String("d"),
+		Maintainers:  []string{"m1", "m2"},
+		RepoNames:    []string{"repo1", "repo2"},
+		ParentTeamID: Int64(1),
+		Permission:   String("perm"),
+		Privacy:      String("p"),
+		LDAPDN:       String("l"),
+	}
+
+	want := `{
+		"name":           "n",
+		"description":    "d",
+		"maintainers":    ["m1", "m2"],
+		"repo_names":     ["repo1", "repo2"],
+		"parent_team_id": 1,
+		"permission":     "perm",
+		"privacy":        "p",
+		"ldap_dn":        "l"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestTeams_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Team{}, "{}")
 
