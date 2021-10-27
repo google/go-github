@@ -557,3 +557,21 @@ func TestTopicResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRepositoriesSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoriesSearchResult{}, "{}")
+
+	u := &RepositoriesSearchResult{
+		Total:             Int(0),
+		IncompleteResults: Bool(true),
+		Repositories:      []*Repository{{ID: Int64(1)}},
+	}
+
+	want := `{
+		"total_count" : 0,
+		"incomplete_results" : true,
+		"items" : [{"id":1}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
