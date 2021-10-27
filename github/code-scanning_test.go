@@ -413,6 +413,28 @@ func TestAlert_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestLocation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Location{}, "{}")
+
+	u := &Location{
+		Path:        String("path"),
+		StartLine:   Int(1),
+		EndLine:     Int(2),
+		StartColumn: Int(3),
+		EndColumn:   Int(4),
+	}
+
+	want := `{
+		"path": "path",
+		"start_line": 1,
+		"end_line": 2,
+		"start_column": 3,
+		"end_column": 4
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestTool_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Tool{}, "{}")
 
