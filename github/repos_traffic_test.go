@@ -200,3 +200,21 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestTrafficReferrer_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficReferrer{}, "{}")
+
+	u := &TrafficReferrer{
+		Referrer: String("referrer"),
+		Count:    Int(0),
+		Uniques:  Int(0),
+	}
+
+	want := `{
+		"referrer" : "referrer",
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
