@@ -367,3 +367,19 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 		return client.Users.DeclineInvitation(ctx, 1)
 	})
 }
+
+func TestUserContext_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserContext{}, "{}")
+
+	u := &UserContext{
+		Message: String("message"),
+		Octicon: String("message"),
+	}
+
+	want := `{
+		"message" : "message",
+		"octicon" : "message"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
