@@ -462,6 +462,10 @@ type Response struct {
 	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
 	Cursor string
 
+	// For APIs that support before/after pagniation, such as OrganizationsService.AuditLog.
+	Before string
+	After  string
+
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
@@ -517,7 +521,9 @@ func (r *Response) populatePageValues() {
 			}
 
 			page := q.Get("page")
-			if page == "" {
+			before := q.Get("before")
+			after := q.Get("after")
+			if page == "" && before == "" && after == "" {
 				continue
 			}
 
@@ -527,8 +533,10 @@ func (r *Response) populatePageValues() {
 					if r.NextPage, err = strconv.Atoi(page); err != nil {
 						r.NextPageToken = page
 					}
+					r.After = after
 				case `rel="prev"`:
 					r.PrevPage, _ = strconv.Atoi(page)
+					r.Before = before
 				case `rel="first"`:
 					r.FirstPage, _ = strconv.Atoi(page)
 				case `rel="last"`:
