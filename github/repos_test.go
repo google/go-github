@@ -2353,3 +2353,17 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestAdvancedSecurity_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tool{}, "{}")
+
+	u := &AdvancedSecurity{
+		Status: String("status"),
+	}
+
+	want := `{
+		"status": "status"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
