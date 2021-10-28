@@ -119,10 +119,14 @@ type AlertListOptions struct {
 	ListOptions
 }
 
-type SarifObject struct {
-	CommitSHA     *string `json:"commit_sha,omitempty"`
-	Ref			  *string `json:"ref,omitempty"`
-	Sarif         *string `json:"sarif,omitempty"`
+// AnalysisResults specifies the results of a code scanning job.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+
+type AnalysisResults struct {
+	CommitSHA *string `json:"commit_sha,omitempty"`
+	Ref       *string `json:"ref,omitempty"`
+	Sarif     *string `json:"sarif,omitempty"`
 }
 
 // ListAlertsForRepo lists code scanning alerts for a repository.
@@ -178,18 +182,25 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 	return a, resp, nil
 }
 
+// UploadSarif uploads the result of code scanning job to GitHub.
+//
+// For the parameter sarif, you must first compress your SARIF file using gzip and then translate the contents of the file into a Base64 encoding string
+// You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+// write permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, commitSHA string, ref string, sarif string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
-	sarifObj := &SarifObject{
+	sarifObj := &AnalysisResults{
 		CommitSHA: &commitSHA,
-		Ref: &ref,
-		Sarif: &sarif,
+		Ref:       &ref,
+		Sarif:     &sarif,
 	}
 	req, err := s.client.NewRequest("POST", u, sarifObj)
 	if err != nil {
 		return nil, err
 	}
-	sarifInterface := new(SarifObject)
+	sarifInterface := new(AnalysisResults)
 	resp, err := s.client.Do(ctx, req, sarifInterface)
 	if err != nil {
 		return resp, err
