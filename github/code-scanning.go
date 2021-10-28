@@ -191,17 +191,17 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, commitSHA string, ref string, sarif string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
-	sarifObj := &AnalysisResults{
+	results := &AnalysisResults{
 		CommitSHA: &commitSHA,
 		Ref:       &ref,
 		Sarif:     &sarif,
 	}
-	req, err := s.client.NewRequest("POST", u, sarifObj)
+	req, err := s.client.NewRequest("POST", u, results)
 	if err != nil {
 		return nil, err
 	}
-	sarifInterface := new(AnalysisResults)
-	resp, err := s.client.Do(ctx, req, sarifInterface)
+	analysis := new(AnalysisResults)
+	resp, err := s.client.Do(ctx, req, analysis)
 	if err != nil {
 		return resp, err
 	}
