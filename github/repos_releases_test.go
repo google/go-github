@@ -827,7 +827,7 @@ func TestGenerateNotesOptions_Marshal(t *testing.T) {
 	u := &GenerateNotesOptions{
 		TagName:         String("tag_name"),
 		PreviousTagName: String("previous_tag_name"),
-		TargetCommitish: String("target_commitish")
+		TargetCommitish: String("target_commitish"),
 	}
 
 	want := `{
