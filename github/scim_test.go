@@ -192,3 +192,51 @@ func TestSCIMService_DeleteSCIMUserFromOrg(t *testing.T) {
 		return client.SCIM.DeleteSCIMUserFromOrg(ctx, "o", "123")
 	})
 }
+
+func TestSCIMUserAttributes_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SCIMUserAttributes{}, `{
+		"userName":"","name":{"givenName":"","familyName":""},"emails":null
+	}`)
+
+	u := &SCIMUserAttributes{
+		UserName: "userName1",
+		Name: SCIMUserName{
+			GivenName:  "Name1",
+			FamilyName: "Fname",
+			Formatted:  String("formatted name"),
+		},
+		DisplayName: String("Name"),
+		Emails: []*SCIMUserEmail{
+			{
+				Value:   "value",
+				Primary: Bool(false),
+				Type:    String("type"),
+			},
+		},
+		Schemas:    []string{"schema1"},
+		ExternalID: String("id"),
+		Groups:     []string{"group1"},
+		Active:     Bool(true),
+	}
+
+	want := `{
+		"userName": "userName1",
+		"name": {
+			"givenName": "Name1",
+			"familyName": "Fname",
+			"formatted": "formatted name"
+		},
+		"displayName": "Name",
+		"emails": [{
+			"value": "value",
+			"primary": false,
+			"type": "type"
+		}],
+		"schemas": ["schema1"],
+		"externalId": "id",
+		"groups": ["group1"],
+		"active": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
