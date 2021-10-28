@@ -197,7 +197,6 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SCIMUserAttributes{}, `{
 		"userName":"","name":{"givenName":"","familyName":""},"emails":null
 	}`)
-
 	u := &SCIMUserAttributes{
 		UserName: "userName1",
 		Name: SCIMUserName{
