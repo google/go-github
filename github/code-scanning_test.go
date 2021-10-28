@@ -485,7 +485,7 @@ func TestMessage_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Tool{}, "{}")
 
 	u := &Message{
-		Text: String("text")
+		Text: String("text"),
 	}
 
 	want := `{
