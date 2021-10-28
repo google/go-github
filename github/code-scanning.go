@@ -119,6 +119,12 @@ type AlertListOptions struct {
 	ListOptions
 }
 
+type SarifObject struct {
+	CommitSHA     *string `json:"commit_sha,omitempty"`
+	Ref			  *string `json:"ref,omitempty"`
+	Sarif         *string `json:"sarif,omitempty"`
+}
+
 // ListAlertsForRepo lists code scanning alerts for a repository.
 //
 // Lists all open code scanning alerts for the default branch (usually master) and protected branches in a repository.
@@ -179,8 +185,8 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 	if err != nil {
 		return nil, err
 	}
-
-	resp, err := s.client.Do(ctx, req, "{}")
+	sarifObj := new(SarifObject)
+	resp, err := s.client.Do(ctx, req, sarifObj)
 	if err != nil {
 		return resp, err
 	}
