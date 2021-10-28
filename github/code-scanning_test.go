@@ -7,8 +7,10 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 	"time"
 
@@ -51,6 +53,38 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	if !cmp.Equal(id, want) {
 		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
 	}
+}
+
+func TestActionsService_UploadSarif(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
+		v := new(AnalysisResults)
+		json.NewDecoder(r.Body).Decode(v)
+		testMethod(t, r, "POST")
+		want := &AnalysisResults{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc")}
+		if !reflect.DeepEqual(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"commit_sha":"abc","ref":"ref/head/main","sarif":"abc"}`)
+	})
+
+	ctx := context.Background()
+	_, err := client.CodeScanning.UploadSarif(ctx, "o", "r", "abc", "ref/head/main", "abc")
+	if err != nil {
+		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
+	}
+	const methodName = "UploadSarif"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", "abc", "ref/head/main", "abc")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.CodeScanning.UploadSarif(ctx, "o", "r", "abc", "ref/head/main", "abc")
+	})
 }
 
 func TestActionsService_ListAlertsForRepo(t *testing.T) {
