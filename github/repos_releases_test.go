@@ -820,3 +820,21 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestGenerateNotesOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tool{}, "{}")
+
+	u := &GenerateNotesOptions{
+		TagName:         String("tag_name"),
+		PreviousTagName: String("previous_tag_name"),
+		TargetCommitish: String("target_commitish"),
+	}
+
+	want := `{
+		"tag_name":          "tag_name",
+		"previous_tag_name": "previous_tag_name",
+		"target_commitish":  "target_commitish"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
