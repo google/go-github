@@ -284,6 +284,30 @@ func (a *Alert) GetURL() string {
 	return *a.URL
 }
 
+// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+func (a *AnalysisResults) GetCommitSHA() string {
+	if a == nil || a.CommitSHA == nil {
+		return ""
+	}
+	return *a.CommitSHA
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *AnalysisResults) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSarif returns the Sarif field if it's non-nil, zero value otherwise.
+func (a *AnalysisResults) GetSarif() string {
+	if a == nil || a.Sarif == nil {
+		return ""
+	}
+	return *a.Sarif
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {

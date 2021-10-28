@@ -308,6 +308,36 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAnalysisResults_GetCommitSHA(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysisResults{CommitSHA: &zeroValue}
+	a.GetCommitSHA()
+	a = &AnalysisResults{}
+	a.GetCommitSHA()
+	a = nil
+	a.GetCommitSHA()
+}
+
+func TestAnalysisResults_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysisResults{Ref: &zeroValue}
+	a.GetRef()
+	a = &AnalysisResults{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAnalysisResults_GetSarif(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysisResults{Sarif: &zeroValue}
+	a.GetSarif()
+	a = &AnalysisResults{}
+	a.GetSarif()
+	a = nil
+	a.GetSarif()
+}
+
 func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	var zeroValue bool
 	a := &APIMeta{VerifiablePasswordAuthentication: &zeroValue}
