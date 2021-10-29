@@ -244,3 +244,29 @@ func TestTrafficViews_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTrafficClones_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficClones{}, "{}")
+
+	u := &TrafficClones{
+		Clones: []*TrafficData{{
+			Timestamp: &Timestamp{time.Date(2021, time.October, 29, 16, 0, 0, 0, time.UTC)},
+			Count:     Int(1),
+			Uniques:   Int(1),
+		}},
+		Count:   Int(0),
+		Uniques: Int(0),
+	}
+
+	want := `{
+		"clones": [{
+			"timestamp": "2021-10-29T16:00:00.000Z",
+			"count": 1,
+			"uniques": 1
+		}],
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
