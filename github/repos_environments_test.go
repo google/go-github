@@ -326,3 +326,19 @@ func TestRepoEnvironment_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, repoEnv, want)
 }
+
+func TestEnvReviewers_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EnvReviewers{}, "{}")
+
+	repoEnv := &EnvReviewers{
+		Type: String("main"),
+		ID:   Int64(1),
+	}
+
+	want := `{
+		"type":"main",
+		"id":1
+	}`
+
+	testJSONMarshal(t, repoEnv, want)
+}
