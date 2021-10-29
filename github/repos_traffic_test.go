@@ -218,3 +218,29 @@ func TestTrafficReferrer_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTrafficViews_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficViews{}, "{}")
+
+	u := &TrafficViews{
+		Views: []*TrafficData{{
+			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+			Count:     Int(7),
+			Uniques:   Int(6),
+		}},
+		Count:   Int(0),
+		Uniques: Int(0),
+	}
+
+	want := `{
+		"views": [{
+			"timestamp": "2016-05-31T16:00:00.000Z",
+			"count": 7,
+			"uniques": 6
+		}],
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
