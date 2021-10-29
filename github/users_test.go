@@ -391,7 +391,7 @@ func TestHovercard_Marshal(t *testing.T) {
 		Contexts: []*UserContext{
 			{
 				Message: String("someMessage"),
-				Octicon: String("SomeOcticon"),
+				Octicon: String("someOcticon"),
 			},
 		},
 	}
