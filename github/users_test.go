@@ -389,9 +389,9 @@ func TestHovercard_Marshal(t *testing.T) {
 
 	h := &Hovercard{
 		Contexts: []*UserContext{
-			&UserContext{
-				Message: String("MSD"),
-				Octicon: String("SOME"),
+			{
+				Message: String("someMessage"),
+				Octicon: String("SomeOcticon"),
 			},
 		},
 	}
@@ -399,8 +399,8 @@ func TestHovercard_Marshal(t *testing.T) {
 	want := `{
 		"contexts" : [
 			{
-				"message" : "MSD",
-				"octicon": "SOME"
+				"message" : "someMessage",
+				"octicon" : "someOcticon"
 			}
 		]
 	}`
