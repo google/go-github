@@ -383,3 +383,27 @@ func TestUserContext_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestHovercard_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Hovercard{}, "{}")
+
+	h := &Hovercard{
+		Contexts: []*UserContext{
+			&UserContext{
+				Message: String("MSD"),
+				Octicon: String("SOME"),
+			},
+		},
+	}
+
+	want := `{
+		"contexts" : [
+			{
+				"message" : "MSD",
+				"octicon": "SOME"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, h, want)
+}
