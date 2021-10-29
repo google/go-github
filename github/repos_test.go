@@ -2355,7 +2355,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 }
 
 func TestAdvancedSecurity_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Tool{}, "{}")
+	testJSONMarshal(t, &AdvancedSecurity{}, "{}")
 
 	u := &AdvancedSecurity{
 		Status: String("status"),
