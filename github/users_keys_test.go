@@ -185,7 +185,7 @@ func TestUsersService_DeleteKey(t *testing.T) {
 func TestKey_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Key{}, "{}")
 
-	Tstamp := &Timestamp{time.Time{}}
+	ts := &Timestamp{time.Time{}}
 	k := Key{
 		ID:        Int64(1),
 		Key:       String("someKey"),
@@ -193,7 +193,7 @@ func TestKey_Marshal(t *testing.T) {
 		Title:     String("someTitle"),
 		ReadOnly:  Bool(true),
 		Verified:  Bool(true),
-		CreatedAt: Tstamp,
+		CreatedAt: ts,
 	}
 
 	want := `{
