@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -179,4 +180,31 @@ func TestUsersService_DeleteKey(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeleteKey(ctx, 1)
 	})
+}
+
+func TestKey_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Key{}, "{}")
+
+	Tstamp := &Timestamp{time.Time{}}
+	k := Key{
+		ID:        Int64(1),
+		Key:       String("someKey"),
+		URL:       String("someURL"),
+		Title:     String("someTitle"),
+		ReadOnly:  Bool(true),
+		Verified:  Bool(true),
+		CreatedAt: Tstamp,
+	}
+
+	want := `{
+		"id": 1,
+		"key": "someKey",
+		"url": "someURL", 
+		"title": "someTitle",
+		"read_only": true,
+		"verified": true,
+		"created_at": "0001-01-01T00:00:00Z"
+	}`
+
+	testJSONMarshal(t, k, want)
 }
