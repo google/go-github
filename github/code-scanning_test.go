@@ -482,7 +482,7 @@ func TestTool_Marshal(t *testing.T) {
 }
 
 func TestMessage_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Tool{}, "{}")
+	testJSONMarshal(t, &Message{}, "{}")
 
 	u := &Message{
 		Text: String("text"),
