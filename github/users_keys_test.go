@@ -180,3 +180,29 @@ func TestUsersService_DeleteKey(t *testing.T) {
 		return client.Users.DeleteKey(ctx, 1)
 	})
 }
+
+func TestKey_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Key{}, "{}")
+
+	u := &Key{
+		ID:        Int64(1),
+		Key:       String("abc"),
+		URL:       String("url"),
+		Title:     String("title"),
+		ReadOnly:  Bool(true),
+		Verified:  Bool(true),
+		CreatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"key": "abc",
+		"url": "url",
+		"title": "title",
+		"read_only": true,
+		"verified": true,
+		"created_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
