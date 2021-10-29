@@ -575,3 +575,23 @@ func TestRepositoriesSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCommitsSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitsSearchResult{}, "{}")
+
+	c := &CommitsSearchResult{
+		Total:             Int(0),
+		IncompleteResults: Bool(true),
+		Commits: []*CommitResult{{
+			SHA: String("s"),
+		}},
+	}
+
+	want := `{
+		"total_count" : 0,
+		"incomplete_results" : true,
+		"items" : [{"sha" : "s"}]
+	}`
+
+	testJSONMarshal(t, c, want)
+}
