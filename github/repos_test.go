@@ -2367,3 +2367,17 @@ func TestAdvancedSecurity_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AuthorizedActorsOnly{}, "{}")
+
+	u := &AuthorizedActorsOnly{
+		From: Bool(true),
+	}
+
+	want := `{
+		"from" : true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
