@@ -219,13 +219,13 @@ func TestGPGKey_Marshal(t *testing.T) {
 		RawKey:       String("someRawKeyID"),
 		PublicKey:    String("somePublicKey"),
 		Emails: []*GPGEmail{
-			&GPGEmail{
+			{
 				Email:    String("someEmail"),
 				Verified: Bool(true),
 			},
 		},
 		Subkeys: []*GPGKey{
-			&GPGKey{},
+			{},
 		},
 		CanSign:           Bool(true),
 		CanEncryptComms:   Bool(true),
