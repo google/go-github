@@ -2369,7 +2369,7 @@ func TestAdvancedSecurity_Marshal(t *testing.T) {
 }
 
 func TestSecretScanning_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Tool{}, "{}")
+	testJSONMarshal(t, &SecretScanning{}, "{}")
 
 	u := &SecretScanning{
 		Status: String("status"),
