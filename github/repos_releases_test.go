@@ -822,7 +822,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 }
 
 func TestGenerateNotesOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Tool{}, "{}")
+	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
 
 	u := &GenerateNotesOptions{
 		TagName:         String("tag_name"),
