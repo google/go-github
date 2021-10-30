@@ -431,3 +431,63 @@ func TestTeamsService_DeleteComment(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestDiscussionComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DiscussionComment{}, "{}")
+
+	u := &DiscussionComment{
+		Author:        &User{},
+		Body:          String("body"),
+		BodyHTML:      String("body html"),
+		BodyVersion:   String("body version"),
+		CreatedAt:     &Timestamp{referenceTime},
+		LastEditedAt:  &Timestamp{referenceTime},
+		DiscussionURL: String("url"),
+		HTMLURL:       String("html url"),
+		NodeID:        String("node"),
+		Number:        Int(1),
+		UpdatedAt:     &Timestamp{referenceTime},
+		URL:           String("url"),
+		Reactions: &Reactions{
+			TotalCount: Int(10),
+			PlusOne:    Int(1),
+			MinusOne:   Int(1),
+			Laugh:      Int(1),
+			Confused:   Int(1),
+			Heart:      Int(2),
+			Hooray:     Int(5),
+			Rocket:     Int(3),
+			Eyes:       Int(9),
+			URL:        String("url"),
+		},
+	}
+
+	want := `{
+		"author":{},
+		"body":"body",
+		"body_html":"body html",
+		"body_version":"body version",
+		"created_at":` + referenceTimeStr + `,
+		"last_edited_at":` + referenceTimeStr + `,
+		"discussion_url":"url",
+		"html_url":"html url",
+		"node_id":"node",
+		"number":1,
+		"updated_at":` + referenceTimeStr + `,
+		"url":"url",
+		"reactions":{
+			"total_count": 10,
+			"+1": 1,
+			"-1": 1,
+			"laugh": 1,
+			"confused": 1,
+			"heart": 2,
+			"hooray": 5,
+			"rocket": 3,
+			"eyes": 9,
+			"url":"url"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
