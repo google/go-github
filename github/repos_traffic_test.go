@@ -295,7 +295,6 @@ func TestTrafficData_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TrafficData{}, "{}")
 
 	u := &TrafficData{
-
 		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
 		Count:     Int(7),
 		Uniques:   Int(6),
