@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
 
@@ -64,7 +63,7 @@ func TestActionsService_UploadSarif(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "POST")
 		want := &AnalysisResults{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
