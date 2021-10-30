@@ -270,3 +270,23 @@ func TestTrafficClones_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTrafficPath_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficPath{}, "{}")
+
+	u := &TrafficPath{
+		Path:    String("test/path"),
+		Title:   String("test"),
+		Count:   Int(2),
+		Uniques: Int(3),
+	}
+
+	want := `{
+		"path" : "test/path",
+		"title": "test",
+		"count": 2,
+		"uniques": 3
+	}`
+
+	testJSONMarshal(t, u, want)
+}
