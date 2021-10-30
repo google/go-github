@@ -270,3 +270,22 @@ func TestTrafficClones_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTrafficData_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficData{}, "{}")
+
+	u := &TrafficData{
+
+		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+		Count:     Int(7),
+		Uniques:   Int(6),
+	}
+
+	want := `{	
+			"timestamp": "2016-05-31T16:00:00.000Z",
+			"count": 7,
+			"uniques": 6
+	}`
+
+	testJSONMarshal(t, u, want)
+}
