@@ -1699,3 +1699,31 @@ func TestTeams_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestInvitation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Invitation{}, "{}")
+
+	u := &Invitation{
+		ID:                Int64(1),
+		NodeID:            String("test node"),
+		Login:             String("login123"),
+		Email:             String("go@github.com"),
+		Role:              String("developer"),
+		CreatedAt:         &referenceTime,
+		TeamCount:         Int(99),
+		InvitationTeamURL: String("url"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "test node",
+		"login":"login123",
+		"email":"go@github.com",
+		"role":"developer",
+		"created_at":` + referenceTimeStr + `,
+		"team_count":99,
+		"invitation_team_url":"url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
