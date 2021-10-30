@@ -595,3 +595,29 @@ func TestCommitsSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, c, want)
 }
+
+func TestLabelResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &LabelResult{}, "{}")
+
+	c := &LabelResult{
+		ID:          Int64(1),
+		URL:         String("https://www.google.com"),
+		Name:        String("Google"),
+		Color:       String("Rainbow"),
+		Default:     Bool(true),
+		Description: String("Most used search engine"),
+		Score:       Float64(10.0),
+	}
+
+	want := `{
+		"id" : 1,
+		"url" : "https://www.google.com",
+		"name": "Google",
+		"color": "Rainbow",
+		"default": true,
+		"description": "Most used search engine",
+		"score": 10.0
+	}`
+
+	testJSONMarshal(t, c, want)
+}
