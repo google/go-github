@@ -595,3 +595,47 @@ func TestCommitsSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, c, want)
 }
+
+func TestTopicsSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TopicsSearchResult{}, "{}")
+
+	u := &TopicsSearchResult{
+		Total:             Int(2),
+		IncompleteResults: Bool(false),
+		Topics: []*TopicResult{
+			{
+				Name:             String("t1"),
+				DisplayName:      String("tt"),
+				ShortDescription: String("t desc"),
+				Description:      String("desc"),
+				CreatedBy:        String("mi"),
+				CreatedAt:        &Timestamp{referenceTime},
+				UpdatedAt:        String("2006-01-02T15:04:05Z"),
+				Featured:         Bool(true),
+				Curated:          Bool(true),
+				Score:            Float64(123),
+			},
+		},
+	}
+
+	want := `{
+		"total_count" : 2,
+		"incomplete_results" : false,
+		"items" : [
+			{
+				"name" : "t1",
+				"display_name":"tt",
+				"short_description":"t desc",
+				"description":"desc",
+				"created_by":"mi",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":"2006-01-02T15:04:05Z",
+				"featured":true,
+				"curated":true,
+				"score":123
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
