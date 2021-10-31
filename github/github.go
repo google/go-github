@@ -52,7 +52,7 @@ const (
 	// and used to enable particular features on GitHub API that are still in preview.
 	// After some time, specific media types will be promoted (to a "stable" state).
 	// From then on, the preview headers are not required anymore to activate the additional
-	// feature on GitHub.com's API. However, this API header might still be needed for users to run a GitHub Enterprise Server
+	// feature on GitHub.com's API. However, this API header might still be needed for users
 	// to run a GitHub Enterprise Server on-premise.
 	// It's not uncommon for GitHub Enterprise Server customers to run older versions which
 	// would probably rely on the preview headers for some time.
