@@ -59,7 +59,7 @@ const (
 	// While the header promotion is going out for GitHub.com, it may be some time before it
 	// even arrives in GitHub Enterprise Server.
 	// We keep those preview headers around to avoid breaking older GitHub Enterprise Server
-	// versions. Additionally, an non-functional (preview) header doesn't create any side effects
+	// versions. Additionally, non-functional (preview) headers don't create any side effects
 	// on GitHub Cloud version.
 	//
 	// See https://github.com/google/go-github/pull/2125 for full context.
