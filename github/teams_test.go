@@ -1727,3 +1727,21 @@ func TestInvitation_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestIDPGroup_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IDPGroup{}, "{}")
+
+	u := &IDPGroup{
+		GroupID:          String("abc1"),
+		GroupName:        String("test group"),
+		GroupDescription: String("test group descripation"),
+	}
+
+	want := `{
+		"group_id": "abc1",
+		"group_name": "test group",
+		"group_description":"test group descripation"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
