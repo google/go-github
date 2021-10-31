@@ -639,3 +639,29 @@ func TestTopicsSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestLabelResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &LabelResult{}, "{}")
+
+	u := &LabelResult{
+		ID:          Int64(11),
+		URL:         String("url"),
+		Name:        String("label"),
+		Color:       String("green"),
+		Default:     Bool(true),
+		Description: String("desc"),
+		Score:       Float64(123),
+	}
+
+	want := `{
+		"id":11,
+		"url":"url",
+		"name":"label",
+		"color":"green",
+		"default":true,
+		"description":"desc",
+		"score":123
+	}`
+
+	testJSONMarshal(t, u, want)
+}
