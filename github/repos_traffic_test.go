@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"testing"
 	"time"
 
@@ -304,6 +305,21 @@ func TestTrafficData_Marshal(t *testing.T) {
 			"timestamp": "2016-05-31T16:00:00.000Z",
 			"count": 7,
 			"uniques": 6
+      }`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
+	v, _ := url.Parse("day")
+
+	u := &TrafficBreakdownOptions{
+		Per: v.String(),
+	}
+
+	want := `{	
+		"per": "day"
       }`
 
 	testJSONMarshal(t, u, want)
