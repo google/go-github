@@ -407,3 +407,23 @@ func TestHovercard_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, h, want)
 }
+
+func TestUserListOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserListOptions{}, "{}")
+
+	u := &UserListOptions{
+		Since: int64(1900),
+		ListOptions: ListOptions{
+			Page:    int(1),
+			PerPage: int(10),
+		},
+	}
+
+	want := `{
+		"since" : 1900,
+		"page": 1,
+		"perPage": 10
+	}`
+
+	testJSONMarshal(t, u, want)
+}
