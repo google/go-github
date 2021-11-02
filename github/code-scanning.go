@@ -123,9 +123,17 @@ type AlertListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 type SarifAnalysis struct {
-	CommitSHA *string `json:"commit_sha,omitempty"`
-	Ref       *string `json:"ref,omitempty"`
-	Sarif     *string `json:"sarif,omitempty"`
+	CommitSHA   *string `json:"commit_sha,omitempty"`
+	Ref         *string `json:"ref,omitempty"`
+	Sarif       *string `json:"sarif,omitempty"`
+	CheckoutURI *string `json:"checkout_uri,omitempty"`
+	StartedAt   *string `json:"started_at,omitempty"`
+	ToolName    *string `json:"tool_name,omitempty"`
+}
+
+type SarifID struct {
+	ID *string `json:"id,omitempty"`
+	URL *string `json:"url,omitempty"`
 }
 
 // ListAlertsForRepo lists code scanning alerts for a repository.
@@ -188,19 +196,19 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // write permission to use this endpoint.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
-func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*Response, error) {
+func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
 
 	req, err := s.client.NewRequest("POST", u, sarif)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	analysis := new(SarifAnalysis)
-	resp, err := s.client.Do(ctx, req, analysis)
+	sarifID := new(SarifID)
+	resp, err := s.client.Do(ctx, req, sarifID)
 	if err != nil {
-		return resp, err
+		return nil, resp, err
 	}
 
-	return resp, nil
+	return sarifID, resp, nil
 }

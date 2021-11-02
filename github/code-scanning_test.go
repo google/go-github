@@ -59,10 +59,10 @@ func TestActionsService_UploadSarif(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(AnalysisResults)
+		v := new(SarifAnalysis)
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "POST")
-		want := &AnalysisResults{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc")}
+		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: String("123"), ToolName: String("codeql-cli")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -71,18 +71,20 @@ func TestActionsService_UploadSarif(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.CodeScanning.UploadSarif(ctx, "o", "r", "abc", "ref/head/main", "abc")
+	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: String("123"), ToolName: String("codeql-cli")}
+	_, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
 	}
 	const methodName = "UploadSarif"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", "abc", "ref/head/main", "abc")
+		_, _, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", sarifAnalysis)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.CodeScanning.UploadSarif(ctx, "o", "r", "abc", "ref/head/main", "abc")
+		_, resp, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+		return resp, err
 	})
 }
 
