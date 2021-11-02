@@ -299,6 +299,25 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 	return i, resp, nil
 }
 
+// Remove a milestone from an issue
+func (s *IssuesService) RemoveMilestone(ctx context.Context, owner string, repo string, issueNumber int) (*Issue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%d", owner, repo, issueNumber)
+	req, err := s.client.NewRequest("PATCH", u, &struct {
+		Milestone interface{} `json:"milestone"`
+	}{})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	i := new(Issue)
+	resp, err := s.client.Do(ctx, req, i)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return i, resp, nil
+}
+
 // LockIssueOptions specifies the optional parameters to the
 // IssuesService.Lock method.
 type LockIssueOptions struct {
