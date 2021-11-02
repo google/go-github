@@ -377,7 +377,6 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }
 
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
