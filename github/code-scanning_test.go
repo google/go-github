@@ -62,7 +62,7 @@ func TestActionsService_UploadSarif(t *testing.T) {
 		v := new(SarifAnalysis)
 		json.NewDecoder(r.Body).Decode(v)
 		testMethod(t, r, "POST")
-		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: String("123"), ToolName: String("codeql-cli")}
+		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
@@ -71,12 +71,13 @@ func TestActionsService_UploadSarif(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: String("123"), ToolName: String("codeql-cli")}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
 	_, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
 	}
 	const methodName = "UploadSarif"
+	
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", sarifAnalysis)
 		return err
