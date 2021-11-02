@@ -123,19 +123,19 @@ type AlertListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 type SarifAnalysis struct {
-	CommitSHA   *string `json:"commit_sha,omitempty"`
-	Ref         *string `json:"ref,omitempty"`
-	Sarif       *string `json:"sarif,omitempty"`
-	CheckoutURI *string `json:"checkout_uri,omitempty"`
+	CommitSHA   *string    `json:"commit_sha,omitempty"`
+	Ref         *string    `json:"ref,omitempty"`
+	Sarif       *string    `json:"sarif,omitempty"`
+	CheckoutURI *string    `json:"checkout_uri,omitempty"`
 	StartedAt   *Timestamp `json:"started_at,omitempty"`
-	ToolName    *string `json:"tool_name,omitempty"`
+	ToolName    *string    `json:"tool_name,omitempty"`
 }
 
 // SarifID specifies the status of sarif upload.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 type SarifID struct {
-	ID *string `json:"id,omitempty"`
+	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
 }
 
