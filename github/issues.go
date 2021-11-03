@@ -307,7 +307,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 func (s *IssuesService) RemoveMilestone(ctx context.Context, owner string, repo string, issueNumber int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("PATCH", u, &struct {
-		Milestone interface{} `json:"milestone"`
+		Milestone *Milestone `json:"milestone"`
 	}{})
 	if err != nil {
 		return nil, nil, err
