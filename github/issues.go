@@ -304,7 +304,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner string, repo string, num
 // This is a helper method to explicitly update an issue with a `null` milestone, thereby removing it.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/issues/#update-an-issue
-func (s *IssuesService) RemoveMilestone(ctx context.Context, owner string, repo string, issueNumber int) (*Issue, *Response, error) {
+func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("PATCH", u, &struct {
 		Milestone *Milestone `json:"milestone"`
