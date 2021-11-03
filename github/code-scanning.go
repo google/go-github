@@ -131,7 +131,7 @@ type SarifAnalysis struct {
 	ToolName    *string    `json:"tool_name,omitempty"`
 }
 
-// SarifID specifies the status of sarif upload.
+// SarifID identifies a sarif analysis upload.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
 type SarifID struct {

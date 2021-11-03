@@ -76,8 +76,8 @@ func TestActionsService_UploadSarif(t *testing.T) {
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
 	}
-	const methodName = "UploadSarif"
 
+	const methodName = "UploadSarif"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", sarifAnalysis)
 		return err
