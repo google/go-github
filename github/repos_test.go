@@ -981,6 +981,51 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_RenameBranch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	renameBranchReq := "nn"
+
+	mux.HandleFunc("/repos/o/r/branches/b/rename", func(w http.ResponseWriter, r *http.Request) {
+		v := new(renameBranchRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		want := &renameBranchRequest{NewName: "nn"}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"protected":true,"name":"nn"}`)
+	})
+
+	ctx := context.Background()
+	got, _, err := client.Repositories.RenameBranch(ctx, "o", "r", "b", renameBranchReq)
+	if err != nil {
+		t.Errorf("Repositories.RenameBranch returned error: %v", err)
+	}
+
+	want := &Branch{Name: String("nn"), Protected: Bool(true)}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.RenameBranch returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "RenameBranch"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RenameBranch(ctx, "\n", "\n", "\n", renameBranchReq)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RenameBranch(ctx, "o", "r", "b", renameBranchReq)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
