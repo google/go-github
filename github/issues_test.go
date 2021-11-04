@@ -345,6 +345,40 @@ func TestIssuesService_Edit(t *testing.T) {
 	})
 }
 
+func TestIssuesService_RemoveMilestone(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	ctx := context.Background()
+	issue, _, err := client.Issues.RemoveMilestone(ctx, "o", "r", 1)
+	if err != nil {
+		t.Errorf("Issues.RemoveMilestone returned error: %v", err)
+	}
+
+	want := &Issue{Number: Int(1)}
+	if !cmp.Equal(issue, want) {
+		t.Errorf("Issues.RemoveMilestone returned %+v, want %+v", issue, want)
+	}
+
+	const methodName = "RemoveMilestone"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.RemoveMilestone(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.RemoveMilestone(ctx, "o", "r", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
