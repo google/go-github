@@ -16372,12 +16372,44 @@ func (t *Timeline) GetAssignee() *User {
 	return t.Assignee
 }
 
+// GetAssigner returns the Assigner field.
+func (t *Timeline) GetAssigner() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Assigner
+}
+
+// GetAuthor returns the Author field.
+func (t *Timeline) GetAuthor() *CommitAuthor {
+	if t == nil {
+		return nil
+	}
+	return t.Author
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetBody() string {
+	if t == nil || t.Body == nil {
+		return ""
+	}
+	return *t.Body
+}
+
 // GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
 func (t *Timeline) GetCommitID() string {
 	if t == nil || t.CommitID == nil {
 		return ""
 	}
 	return *t.CommitID
+}
+
+// GetCommitter returns the Committer field.
+func (t *Timeline) GetCommitter() *CommitAuthor {
+	if t == nil {
+		return nil
+	}
+	return t.Committer
 }
 
 // GetCommitURL returns the CommitURL field if it's non-nil, zero value otherwise.
@@ -16420,6 +16452,14 @@ func (t *Timeline) GetLabel() *Label {
 	return t.Label
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetMessage() string {
+	if t == nil || t.Message == nil {
+		return ""
+	}
+	return *t.Message
+}
+
 // GetMilestone returns the Milestone field.
 func (t *Timeline) GetMilestone() *Milestone {
 	if t == nil {
@@ -16444,6 +16484,30 @@ func (t *Timeline) GetRename() *Rename {
 	return t.Rename
 }
 
+// GetRequester returns the Requester field.
+func (t *Timeline) GetRequester() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Requester
+}
+
+// GetReviewer returns the Reviewer field.
+func (t *Timeline) GetReviewer() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Reviewer
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetSHA() string {
+	if t == nil || t.SHA == nil {
+		return ""
+	}
+	return *t.SHA
+}
+
 // GetSource returns the Source field.
 func (t *Timeline) GetSource() *Source {
 	if t == nil {
@@ -16460,12 +16524,28 @@ func (t *Timeline) GetState() string {
 	return *t.State
 }
 
+// GetSubmittedAt returns the SubmittedAt field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetSubmittedAt() time.Time {
+	if t == nil || t.SubmittedAt == nil {
+		return time.Time{}
+	}
+	return *t.SubmittedAt
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (t *Timeline) GetURL() string {
 	if t == nil || t.URL == nil {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetUser returns the User field.
+func (t *Timeline) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return t.User
 }
 
 // GetGUID returns the GUID field if it's non-nil, zero value otherwise.

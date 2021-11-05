@@ -19119,6 +19119,30 @@ func TestTimeline_GetAssignee(tt *testing.T) {
 	t.GetAssignee()
 }
 
+func TestTimeline_GetAssigner(tt *testing.T) {
+	t := &Timeline{}
+	t.GetAssigner()
+	t = nil
+	t.GetAssigner()
+}
+
+func TestTimeline_GetAuthor(tt *testing.T) {
+	t := &Timeline{}
+	t.GetAuthor()
+	t = nil
+	t.GetAuthor()
+}
+
+func TestTimeline_GetBody(tt *testing.T) {
+	var zeroValue string
+	t := &Timeline{Body: &zeroValue}
+	t.GetBody()
+	t = &Timeline{}
+	t.GetBody()
+	t = nil
+	t.GetBody()
+}
+
 func TestTimeline_GetCommitID(tt *testing.T) {
 	var zeroValue string
 	t := &Timeline{CommitID: &zeroValue}
@@ -19127,6 +19151,13 @@ func TestTimeline_GetCommitID(tt *testing.T) {
 	t.GetCommitID()
 	t = nil
 	t.GetCommitID()
+}
+
+func TestTimeline_GetCommitter(tt *testing.T) {
+	t := &Timeline{}
+	t.GetCommitter()
+	t = nil
+	t.GetCommitter()
 }
 
 func TestTimeline_GetCommitURL(tt *testing.T) {
@@ -19176,6 +19207,16 @@ func TestTimeline_GetLabel(tt *testing.T) {
 	t.GetLabel()
 }
 
+func TestTimeline_GetMessage(tt *testing.T) {
+	var zeroValue string
+	t := &Timeline{Message: &zeroValue}
+	t.GetMessage()
+	t = &Timeline{}
+	t.GetMessage()
+	t = nil
+	t.GetMessage()
+}
+
 func TestTimeline_GetMilestone(tt *testing.T) {
 	t := &Timeline{}
 	t.GetMilestone()
@@ -19197,6 +19238,30 @@ func TestTimeline_GetRename(tt *testing.T) {
 	t.GetRename()
 }
 
+func TestTimeline_GetRequester(tt *testing.T) {
+	t := &Timeline{}
+	t.GetRequester()
+	t = nil
+	t.GetRequester()
+}
+
+func TestTimeline_GetReviewer(tt *testing.T) {
+	t := &Timeline{}
+	t.GetReviewer()
+	t = nil
+	t.GetReviewer()
+}
+
+func TestTimeline_GetSHA(tt *testing.T) {
+	var zeroValue string
+	t := &Timeline{SHA: &zeroValue}
+	t.GetSHA()
+	t = &Timeline{}
+	t.GetSHA()
+	t = nil
+	t.GetSHA()
+}
+
 func TestTimeline_GetSource(tt *testing.T) {
 	t := &Timeline{}
 	t.GetSource()
@@ -19214,6 +19279,16 @@ func TestTimeline_GetState(tt *testing.T) {
 	t.GetState()
 }
 
+func TestTimeline_GetSubmittedAt(tt *testing.T) {
+	var zeroValue time.Time
+	t := &Timeline{SubmittedAt: &zeroValue}
+	t.GetSubmittedAt()
+	t = &Timeline{}
+	t.GetSubmittedAt()
+	t = nil
+	t.GetSubmittedAt()
+}
+
 func TestTimeline_GetURL(tt *testing.T) {
 	var zeroValue string
 	t := &Timeline{URL: &zeroValue}
@@ -19222,6 +19297,13 @@ func TestTimeline_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
+}
+
+func TestTimeline_GetUser(tt *testing.T) {
+	t := &Timeline{}
+	t.GetUser()
+	t = nil
+	t.GetUser()
 }
 
 func TestTool_GetGUID(tt *testing.T) {
