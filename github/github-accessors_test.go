@@ -17709,6 +17709,86 @@ func TestRunnerLabels_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestSarifAnalysis_GetCheckoutURI(tt *testing.T) {
+	var zeroValue string
+	s := &SarifAnalysis{CheckoutURI: &zeroValue}
+	s.GetCheckoutURI()
+	s = &SarifAnalysis{}
+	s.GetCheckoutURI()
+	s = nil
+	s.GetCheckoutURI()
+}
+
+func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
+	var zeroValue string
+	s := &SarifAnalysis{CommitSHA: &zeroValue}
+	s.GetCommitSHA()
+	s = &SarifAnalysis{}
+	s.GetCommitSHA()
+	s = nil
+	s.GetCommitSHA()
+}
+
+func TestSarifAnalysis_GetRef(tt *testing.T) {
+	var zeroValue string
+	s := &SarifAnalysis{Ref: &zeroValue}
+	s.GetRef()
+	s = &SarifAnalysis{}
+	s.GetRef()
+	s = nil
+	s.GetRef()
+}
+
+func TestSarifAnalysis_GetSarif(tt *testing.T) {
+	var zeroValue string
+	s := &SarifAnalysis{Sarif: &zeroValue}
+	s.GetSarif()
+	s = &SarifAnalysis{}
+	s.GetSarif()
+	s = nil
+	s.GetSarif()
+}
+
+func TestSarifAnalysis_GetStartedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SarifAnalysis{StartedAt: &zeroValue}
+	s.GetStartedAt()
+	s = &SarifAnalysis{}
+	s.GetStartedAt()
+	s = nil
+	s.GetStartedAt()
+}
+
+func TestSarifAnalysis_GetToolName(tt *testing.T) {
+	var zeroValue string
+	s := &SarifAnalysis{ToolName: &zeroValue}
+	s.GetToolName()
+	s = &SarifAnalysis{}
+	s.GetToolName()
+	s = nil
+	s.GetToolName()
+}
+
+func TestSarifID_GetID(tt *testing.T) {
+	var zeroValue string
+	s := &SarifID{ID: &zeroValue}
+	s.GetID()
+	s = &SarifID{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSarifID_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &SarifID{URL: &zeroValue}
+	s.GetURL()
+	s = &SarifID{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
+}
+
 func TestSCIMUserAttributes_GetActive(tt *testing.T) {
 	var zeroValue bool
 	s := &SCIMUserAttributes{Active: &zeroValue}
