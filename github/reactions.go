@@ -492,3 +492,29 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 
 	return s.client.Do(ctx, req, nil)
 }
+
+// Create a reaction to a release.
+// Note that a response with a Status: 200 OK means that you already
+// added the reaction type to this release.
+// The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/reactions/#create-reaction-for-a-release
+func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, repo string, releaseID int64, content string) (*Reaction, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
+
+	body := &Reaction{Content: String(content)}
+	req, err := s.client.NewRequest("POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	m := &Reaction{}
+	resp, err := s.client.Do(ctx, req, m)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return m, resp, nil
+}
