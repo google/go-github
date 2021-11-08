@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -51,6 +52,41 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	if !cmp.Equal(id, want) {
 		t.Errorf("Alert.ID error returned %+v, want %+v", id, want)
 	}
+}
+
+func TestActionsService_UploadSarif(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
+		v := new(SarifAnalysis)
+		json.NewDecoder(r.Body).Decode(v)
+		testMethod(t, r, "POST")
+		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"commit_sha":"abc","ref":"ref/head/main","sarif":"abc"}`)
+	})
+
+	ctx := context.Background()
+	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+	_, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+	if err != nil {
+		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
+	}
+
+	const methodName = "UploadSarif"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", sarifAnalysis)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+		return resp, err
+	})
 }
 
 func TestActionsService_ListAlertsForRepo(t *testing.T) {

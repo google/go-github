@@ -119,6 +119,26 @@ type AlertListOptions struct {
 	ListOptions
 }
 
+// SarifAnalysis specifies the results of a code scanning job.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+type SarifAnalysis struct {
+	CommitSHA   *string    `json:"commit_sha,omitempty"`
+	Ref         *string    `json:"ref,omitempty"`
+	Sarif       *string    `json:"sarif,omitempty"`
+	CheckoutURI *string    `json:"checkout_uri,omitempty"`
+	StartedAt   *Timestamp `json:"started_at,omitempty"`
+	ToolName    *string    `json:"tool_name,omitempty"`
+}
+
+// SarifID identifies a sarif analysis upload.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+type SarifID struct {
+	ID  *string `json:"id,omitempty"`
+	URL *string `json:"url,omitempty"`
+}
+
 // ListAlertsForRepo lists code scanning alerts for a repository.
 //
 // Lists all open code scanning alerts for the default branch (usually master) and protected branches in a repository.
@@ -170,4 +190,28 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 	}
 
 	return a, resp, nil
+}
+
+// UploadSarif uploads the result of code scanning job to GitHub.
+//
+// For the parameter sarif, you must first compress your SARIF file using gzip and then translate the contents of the file into a Base64 encoding string.
+// You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+// write permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
+
+	req, err := s.client.NewRequest("POST", u, sarif)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	sarifID := new(SarifID)
+	resp, err := s.client.Do(ctx, req, sarifID)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sarifID, resp, nil
 }
