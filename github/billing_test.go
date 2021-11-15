@@ -120,7 +120,7 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 				"days_left_in_billing_cycle": 20,
-				"estimated_paid_storage_for_month": 15,
+				"estimated_paid_storage_for_month": 15.25,
 				"estimated_storage_for_month": 40
 			}`)
 	})
@@ -133,7 +133,7 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 
 	want := &StorageBilling{
 		DaysLeftInBillingCycle:       20,
-		EstimatedPaidStorageForMonth: 15,
+		EstimatedPaidStorageForMonth: 15.25,
 		EstimatedStorageForMonth:     40,
 	}
 	if !cmp.Equal(hook, want) {
@@ -262,7 +262,7 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 				"days_left_in_billing_cycle": 20,
-				"estimated_paid_storage_for_month": 15,
+				"estimated_paid_storage_for_month": 15.25,
 				"estimated_storage_for_month": 40
 			}`)
 	})
@@ -275,7 +275,7 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 
 	want := &StorageBilling{
 		DaysLeftInBillingCycle:       20,
-		EstimatedPaidStorageForMonth: 15,
+		EstimatedPaidStorageForMonth: 15.25,
 		EstimatedStorageForMonth:     40,
 	}
 	if !cmp.Equal(hook, want) {
