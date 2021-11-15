@@ -462,7 +462,7 @@ type Response struct {
 	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
 	Cursor string
 
-	// For APIs that support before/after pagniation, such as OrganizationsService.AuditLog.
+	// For APIs that support before/after pagination, such as OrganizationsService.AuditLog.
 	Before string
 	After  string
 
