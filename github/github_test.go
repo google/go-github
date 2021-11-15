@@ -688,6 +688,40 @@ func TestResponse_cursorPagination(t *testing.T) {
 	}
 }
 
+func TestResponse_beforeAfterPagination(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
+				` <https://api.github.com/?after=&before=>; rel="first",` +
+				` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.Before, "d4e5f6"; got != want {
+		t.Errorf("response.Before: %v, want %v", got, want)
+	}
+	if got, want := response.After, "a1b2c3"; got != want {
+		t.Errorf("response.After: %v, want %v", got, want)
+	}
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
 func TestResponse_populatePageValues_invalid(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
