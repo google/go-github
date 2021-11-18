@@ -18668,6 +18668,22 @@ func (w *WorkflowRunEvent) GetWorkflowRun() *WorkflowRun {
 	return w.WorkflowRun
 }
 
+// GetDurationMS returns the DurationMS field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunJobRun) GetDurationMS() int64 {
+	if w == nil || w.DurationMS == nil {
+		return 0
+	}
+	return *w.DurationMS
+}
+
+// GetJobID returns the JobID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunJobRun) GetJobID() int {
+	if w == nil || w.JobID == nil {
+		return 0
+	}
+	return *w.JobID
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (w *WorkflowRuns) GetTotalCount() int {
 	if w == nil || w.TotalCount == nil {
