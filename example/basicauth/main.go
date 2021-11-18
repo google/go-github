@@ -22,7 +22,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v40/github"
 	"golang.org/x/crypto/ssh/terminal"
 )
 

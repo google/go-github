@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build ignore
 // +build ignore
 
 // gen-accessors generates accessor methods for structs with pointer fields.
@@ -115,8 +116,7 @@ func (t *templateData) processAST(f *ast.File) error {
 				continue
 			}
 			for _, field := range st.Fields.List {
-				se, ok := field.Type.(*ast.StarExpr)
-				if len(field.Names) == 0 || !ok {
+				if len(field.Names) == 0 {
 					continue
 				}
 
@@ -132,13 +132,25 @@ func (t *templateData) processAST(f *ast.File) error {
 					continue
 				}
 
+				se, ok := field.Type.(*ast.StarExpr)
+				if !ok {
+					switch x := field.Type.(type) {
+					case *ast.MapType:
+						t.addMapType(x, ts.Name.String(), fieldName.String(), false)
+						continue
+					}
+
+					logf("Skipping field type %T, fieldName=%v", field.Type, fieldName)
+					continue
+				}
+
 				switch x := se.X.(type) {
 				case *ast.ArrayType:
 					t.addArrayType(x, ts.Name.String(), fieldName.String())
 				case *ast.Ident:
 					t.addIdent(x, ts.Name.String(), fieldName.String())
 				case *ast.MapType:
-					t.addMapType(x, ts.Name.String(), fieldName.String())
+					t.addMapType(x, ts.Name.String(), fieldName.String(), true)
 				case *ast.SelectorExpr:
 					t.addSelectorExpr(x, ts.Name.String(), fieldName.String())
 				default:
@@ -232,7 +244,7 @@ func (t *templateData) addIdent(x *ast.Ident, receiverType, fieldName string) {
 	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, x.String(), zeroValue, namedStruct))
 }
 
-func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string) {
+func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string, isAPointer bool) {
 	var keyType string
 	switch key := x.Key.(type) {
 	case *ast.Ident:
@@ -253,7 +265,9 @@ func (t *templateData) addMapType(x *ast.MapType, receiverType, fieldName string
 
 	fieldType := fmt.Sprintf("map[%v]%v", keyType, valueType)
 	zeroValue := fmt.Sprintf("map[%v]%v{}", keyType, valueType)
-	t.Getters = append(t.Getters, newGetter(receiverType, fieldName, fieldType, zeroValue, false))
+	ng := newGetter(receiverType, fieldName, fieldType, zeroValue, false)
+	ng.MapType = !isAPointer
+	t.Getters = append(t.Getters, ng)
 }
 
 func (t *templateData) addSelectorExpr(x *ast.SelectorExpr, receiverType, fieldName string) {
@@ -300,6 +314,7 @@ type getter struct {
 	FieldType    string
 	ZeroValue    string
 	NamedStruct  bool // Getter for named struct.
+	MapType      bool
 }
 
 type byName []*getter
@@ -328,6 +343,14 @@ import (
 // Get{{.FieldName}} returns the {{.FieldName}} field.
 func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() *{{.FieldType}} {
   if {{.ReceiverVar}} == nil {
+    return {{.ZeroValue}}
+  }
+  return {{.ReceiverVar}}.{{.FieldName}}
+}
+{{else if .MapType}}
+// Get{{.FieldName}} returns the {{.FieldName}} map if it's non-nil, an empty map otherwise.
+func ({{.ReceiverVar}} *{{.ReceiverType}}) Get{{.FieldName}}() {{.FieldType}} {
+  if {{.ReceiverVar}} == nil || {{.ReceiverVar}}.{{.FieldName}} == nil {
     return {{.ZeroValue}}
   }
   return {{.ReceiverVar}}.{{.FieldName}}
@@ -364,6 +387,16 @@ import (
 {{if .NamedStruct}}
 func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
   {{.ReceiverVar}} := &{{.ReceiverType}}{}
+  {{.ReceiverVar}}.Get{{.FieldName}}()
+  {{.ReceiverVar}} = nil
+  {{.ReceiverVar}}.Get{{.FieldName}}()
+}
+{{else if .MapType}}
+func Test{{.ReceiverType}}_Get{{.FieldName}}(tt *testing.T) {
+  zeroValue := {{.FieldType}}{}
+  {{.ReceiverVar}} := &{{.ReceiverType}}{ {{.FieldName}}: zeroValue }
+  {{.ReceiverVar}}.Get{{.FieldName}}()
+  {{.ReceiverVar}} = &{{.ReceiverType}}{}
   {{.ReceiverVar}}.Get{{.FieldName}}()
   {{.ReceiverVar}} = nil
   {{.ReceiverVar}}.Get{{.FieldName}}()

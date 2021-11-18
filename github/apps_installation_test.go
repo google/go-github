@@ -9,16 +9,24 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
+	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAppsService_ListRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	wantAcceptHeaders := []string{
+		mediaTypeTopicsPreview,
+		mediaTypeRepositoryVisibilityPreview,
+		mediaTypeRepositoryTemplatePreview,
+	}
 	mux.HandleFunc("/installation/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
@@ -34,7 +42,7 @@ func TestAppsService_ListRepos(t *testing.T) {
 	}
 
 	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repositories, want) {
+	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListRepos returned %+v, want %+v", repositories, want)
 	}
 
@@ -52,8 +60,14 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
+	wantAcceptHeaders := []string{
+		mediaTypeTopicsPreview,
+		mediaTypeRepositoryVisibilityPreview,
+		mediaTypeRepositoryTemplatePreview,
+	}
 	mux.HandleFunc("/user/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testFormValues(t, r, values{
 			"page":     "1",
 			"per_page": "2",
@@ -69,7 +83,7 @@ func TestAppsService_ListUserRepos(t *testing.T) {
 	}
 
 	want := &ListRepositories{TotalCount: Int(1), Repositories: []*Repository{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repositories, want) {
+	if !cmp.Equal(repositories, want) {
 		t.Errorf("Apps.ListUserRepos returned %+v, want %+v", repositories, want)
 	}
 
@@ -104,7 +118,7 @@ func TestAppsService_AddRepository(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1), Name: String("n"), Description: String("d"), Owner: &User{Login: String("l")}, License: &License{Key: String("mit")}}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("AddRepository returned %+v, want %+v", repo, want)
 	}
 
@@ -158,4 +172,30 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Apps.RevokeInstallationToken(ctx)
 	})
+}
+
+func TestListRepositories_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListRepositories{}, "{}")
+
+	u := &ListRepositories{
+		TotalCount: Int(1),
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [{
+			"id":1,
+			"name":"n",
+			"url":"u"
+			}]
+	}`
+
+	testJSONMarshal(t, u, want)
 }

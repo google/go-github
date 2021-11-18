@@ -11,8 +11,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestGitService_GetBlob(t *testing.T) {
@@ -39,7 +40,7 @@ func TestGitService_GetBlob(t *testing.T) {
 		Content: String("blob content"),
 	}
 
-	if !reflect.DeepEqual(*blob, want) {
+	if !cmp.Equal(*blob, want) {
 		t.Errorf("Blob.Get returned %+v, want %+v", *blob, want)
 	}
 
@@ -114,7 +115,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 		testMethod(t, r, "POST")
 
 		want := input
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Git.CreateBlob request body: %+v, want %+v", v, want)
 		}
 
@@ -134,7 +135,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 
 	want := input
 
-	if !reflect.DeepEqual(*blob, *want) {
+	if !cmp.Equal(*blob, *want) {
 		t.Errorf("Git.CreateBlob returned %+v, want %+v", *blob, *want)
 	}
 
@@ -152,4 +153,28 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Git.CreateBlob(ctx, "%", "%", &Blob{})
 	testURLParseError(t, err)
+}
+
+func TestBlob_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Blob{}, "{}")
+
+	u := &Blob{
+		Content:  String("content"),
+		Encoding: String("encoding"),
+		SHA:      String("sha"),
+		Size:     Int(1),
+		URL:      String("url"),
+		NodeID:   String("nid"),
+	}
+
+	want := `{
+		"content": "content",
+		"encoding": "encoding",
+		"sha": "sha",
+		"size": 1,
+		"url": "url",
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

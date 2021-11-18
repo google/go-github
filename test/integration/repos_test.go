@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build integration
 // +build integration
 
 package integration
@@ -12,10 +13,10 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-github/v40/github"
 )
 
 func TestRepositories_CRUD(t *testing.T) {
@@ -69,7 +70,7 @@ func TestRepositories_BranchesTags(t *testing.T) {
 		t.Fatalf("Repositories.ListBranches('git', 'git') returned no branches")
 	}
 
-	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name)
+	_, _, err = client.Repositories.GetBranch(context.Background(), "git", "git", *branches[0].Name, false)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -101,7 +102,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
 
-	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master")
+	branch, _, err := client.Repositories.GetBranch(context.Background(), *repo.Owner.Login, *repo.Name, "master", false)
 	if err != nil {
 		t.Fatalf("Repositories.GetBranch() returned error: %v", err)
 	}
@@ -145,7 +146,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		},
 		Restrictions: nil,
 	}
-	if !reflect.DeepEqual(protection, want) {
+	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
 	}
 

@@ -10,12 +10,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestGist_marshall(t *testing.T) {
+func TestGist_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Gist{}, "{}")
 
 	createdAt := time.Date(2010, time.February, 10, 10, 10, 0, 0, time.UTC)
@@ -104,7 +105,7 @@ func TestGist_marshall(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestGistCommit_marshall(t *testing.T) {
+func TestGistCommit_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistCommit{}, "{}")
 
 	u := &GistCommit{
@@ -168,7 +169,7 @@ func TestGistCommit_marshall(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestGistFork_marshall(t *testing.T) {
+func TestGistFork_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistFork{}, "{}")
 
 	u := &GistFork{
@@ -246,7 +247,7 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Gist{{ID: String("1")}}
-	if !reflect.DeepEqual(gists, want) {
+	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
 
@@ -281,7 +282,7 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Gist{{ID: String("1")}}
-	if !reflect.DeepEqual(gists, want) {
+	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
 
@@ -331,7 +332,7 @@ func TestGistsService_ListAll(t *testing.T) {
 	}
 
 	want := []*Gist{{ID: String("1")}}
-	if !reflect.DeepEqual(gists, want) {
+	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
 
@@ -367,7 +368,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 	}
 
 	want := []*Gist{{ID: String("1")}}
-	if !reflect.DeepEqual(gists, want) {
+	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}
 
@@ -397,7 +398,7 @@ func TestGistsService_Get(t *testing.T) {
 	}
 
 	want := &Gist{ID: String("1")}
-	if !reflect.DeepEqual(gist, want) {
+	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
 
@@ -441,7 +442,7 @@ func TestGistsService_GetRevision(t *testing.T) {
 	}
 
 	want := &Gist{ID: String("1")}
-	if !reflect.DeepEqual(gist, want) {
+	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
 
@@ -486,7 +487,7 @@ func TestGistsService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -518,7 +519,7 @@ func TestGistsService_Create(t *testing.T) {
 			"test.txt": {Filename: String("test.txt")},
 		},
 	}
-	if !reflect.DeepEqual(gist, want) {
+	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Create returned %+v, want %+v", gist, want)
 	}
 
@@ -548,7 +549,7 @@ func TestGistsService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -584,7 +585,7 @@ func TestGistsService_Edit(t *testing.T) {
 			"new.txt":  {Filename: String("new.txt")},
 		},
 	}
-	if !reflect.DeepEqual(gist, want) {
+	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Edit returned %+v, want %+v", gist, want)
 	}
 
@@ -655,7 +656,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 			Total:     Int(180),
 		}}}
 
-	if !reflect.DeepEqual(gistCommits, want) {
+	if !cmp.Equal(gistCommits, want) {
 		t.Errorf("Gists.ListCommits returned %+v, want %+v", gistCommits, want)
 	}
 
@@ -909,7 +910,7 @@ func TestGistsService_Fork(t *testing.T) {
 	}
 
 	want := &Gist{ID: String("2")}
-	if !reflect.DeepEqual(gist, want) {
+	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}
 
@@ -960,7 +961,7 @@ func TestGistsService_ListForks(t *testing.T) {
 		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 00, 00, 00, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 00, 00, 00, 0, time.UTC)}}}
 
-	if !reflect.DeepEqual(gistForks, want) {
+	if !cmp.Equal(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
 
@@ -998,7 +999,7 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 	}
 
 	want := []*GistFork{}
-	if !reflect.DeepEqual(gistForks, want) {
+	if !cmp.Equal(gistForks, want) {
 		t.Errorf("Gists.ListForks returned %+v, want %+v", gistForks, want)
 	}
 
@@ -1015,4 +1016,28 @@ func TestGistsService_ListForks_withOptions(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestGistFile_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GistFile{}, "{}")
+
+	u := &GistFile{
+		Size:     Int(1),
+		Filename: String("fn"),
+		Language: String("lan"),
+		Type:     String("type"),
+		RawURL:   String("rurl"),
+		Content:  String("con"),
+	}
+
+	want := `{
+		"size": 1,
+		"filename": "fn",
+		"language": "lan",
+		"type": "type",
+		"raw_url": "rurl",
+		"content": "con"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

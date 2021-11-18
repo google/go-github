@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
@@ -31,7 +32,7 @@ func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
 	}
 
 	want := &InteractionRestriction{Origin: String("organization")}
-	if !reflect.DeepEqual(organizationInteractions, want) {
+	if !cmp.Equal(organizationInteractions, want) {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}
 
@@ -62,7 +63,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		fmt.Fprint(w, `{"origin":"organization"}`)
@@ -75,7 +76,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 	}
 
 	want := &InteractionRestriction{Origin: String("organization")}
-	if !reflect.DeepEqual(organizationInteractions, want) {
+	if !cmp.Equal(organizationInteractions, want) {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}
 

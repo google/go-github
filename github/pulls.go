@@ -18,53 +18,62 @@ import (
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/
 type PullRequestsService service
 
+// PullRequestAutoMerge represents the "auto_merge" response for a PullRequest.
+type PullRequestAutoMerge struct {
+	EnabledBy     *User   `json:"enabled_by,omitempty"`
+	MergeMethod   *string `json:"merge_method,omitempty"`
+	CommitTitle   *string `json:"commit_title,omitempty"`
+	CommitMessage *string `json:"commit_message,omitempty"`
+}
+
 // PullRequest represents a GitHub pull request on a repository.
 type PullRequest struct {
-	ID                  *int64     `json:"id,omitempty"`
-	Number              *int       `json:"number,omitempty"`
-	State               *string    `json:"state,omitempty"`
-	Locked              *bool      `json:"locked,omitempty"`
-	Title               *string    `json:"title,omitempty"`
-	Body                *string    `json:"body,omitempty"`
-	CreatedAt           *time.Time `json:"created_at,omitempty"`
-	UpdatedAt           *time.Time `json:"updated_at,omitempty"`
-	ClosedAt            *time.Time `json:"closed_at,omitempty"`
-	MergedAt            *time.Time `json:"merged_at,omitempty"`
-	Labels              []*Label   `json:"labels,omitempty"`
-	User                *User      `json:"user,omitempty"`
-	Draft               *bool      `json:"draft,omitempty"`
-	Merged              *bool      `json:"merged,omitempty"`
-	Mergeable           *bool      `json:"mergeable,omitempty"`
-	MergeableState      *string    `json:"mergeable_state,omitempty"`
-	MergedBy            *User      `json:"merged_by,omitempty"`
-	MergeCommitSHA      *string    `json:"merge_commit_sha,omitempty"`
-	Rebaseable          *bool      `json:"rebaseable,omitempty"`
-	Comments            *int       `json:"comments,omitempty"`
-	Commits             *int       `json:"commits,omitempty"`
-	Additions           *int       `json:"additions,omitempty"`
-	Deletions           *int       `json:"deletions,omitempty"`
-	ChangedFiles        *int       `json:"changed_files,omitempty"`
-	URL                 *string    `json:"url,omitempty"`
-	HTMLURL             *string    `json:"html_url,omitempty"`
-	IssueURL            *string    `json:"issue_url,omitempty"`
-	StatusesURL         *string    `json:"statuses_url,omitempty"`
-	DiffURL             *string    `json:"diff_url,omitempty"`
-	PatchURL            *string    `json:"patch_url,omitempty"`
-	CommitsURL          *string    `json:"commits_url,omitempty"`
-	CommentsURL         *string    `json:"comments_url,omitempty"`
-	ReviewCommentsURL   *string    `json:"review_comments_url,omitempty"`
-	ReviewCommentURL    *string    `json:"review_comment_url,omitempty"`
-	ReviewComments      *int       `json:"review_comments,omitempty"`
-	Assignee            *User      `json:"assignee,omitempty"`
-	Assignees           []*User    `json:"assignees,omitempty"`
-	Milestone           *Milestone `json:"milestone,omitempty"`
-	MaintainerCanModify *bool      `json:"maintainer_can_modify,omitempty"`
-	AuthorAssociation   *string    `json:"author_association,omitempty"`
-	NodeID              *string    `json:"node_id,omitempty"`
-	RequestedReviewers  []*User    `json:"requested_reviewers,omitempty"`
+	ID                  *int64                `json:"id,omitempty"`
+	Number              *int                  `json:"number,omitempty"`
+	State               *string               `json:"state,omitempty"`
+	Locked              *bool                 `json:"locked,omitempty"`
+	Title               *string               `json:"title,omitempty"`
+	Body                *string               `json:"body,omitempty"`
+	CreatedAt           *time.Time            `json:"created_at,omitempty"`
+	UpdatedAt           *time.Time            `json:"updated_at,omitempty"`
+	ClosedAt            *time.Time            `json:"closed_at,omitempty"`
+	MergedAt            *time.Time            `json:"merged_at,omitempty"`
+	Labels              []*Label              `json:"labels,omitempty"`
+	User                *User                 `json:"user,omitempty"`
+	Draft               *bool                 `json:"draft,omitempty"`
+	Merged              *bool                 `json:"merged,omitempty"`
+	Mergeable           *bool                 `json:"mergeable,omitempty"`
+	MergeableState      *string               `json:"mergeable_state,omitempty"`
+	MergedBy            *User                 `json:"merged_by,omitempty"`
+	MergeCommitSHA      *string               `json:"merge_commit_sha,omitempty"`
+	Rebaseable          *bool                 `json:"rebaseable,omitempty"`
+	Comments            *int                  `json:"comments,omitempty"`
+	Commits             *int                  `json:"commits,omitempty"`
+	Additions           *int                  `json:"additions,omitempty"`
+	Deletions           *int                  `json:"deletions,omitempty"`
+	ChangedFiles        *int                  `json:"changed_files,omitempty"`
+	URL                 *string               `json:"url,omitempty"`
+	HTMLURL             *string               `json:"html_url,omitempty"`
+	IssueURL            *string               `json:"issue_url,omitempty"`
+	StatusesURL         *string               `json:"statuses_url,omitempty"`
+	DiffURL             *string               `json:"diff_url,omitempty"`
+	PatchURL            *string               `json:"patch_url,omitempty"`
+	CommitsURL          *string               `json:"commits_url,omitempty"`
+	CommentsURL         *string               `json:"comments_url,omitempty"`
+	ReviewCommentsURL   *string               `json:"review_comments_url,omitempty"`
+	ReviewCommentURL    *string               `json:"review_comment_url,omitempty"`
+	ReviewComments      *int                  `json:"review_comments,omitempty"`
+	Assignee            *User                 `json:"assignee,omitempty"`
+	Assignees           []*User               `json:"assignees,omitempty"`
+	Milestone           *Milestone            `json:"milestone,omitempty"`
+	MaintainerCanModify *bool                 `json:"maintainer_can_modify,omitempty"`
+	AuthorAssociation   *string               `json:"author_association,omitempty"`
+	NodeID              *string               `json:"node_id,omitempty"`
+	RequestedReviewers  []*User               `json:"requested_reviewers,omitempty"`
+	AutoMerge           *PullRequestAutoMerge `json:"auto_merge,omitempty"`
 
 	// RequestedTeams is populated as part of the PullRequestEvent.
-	// See, https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/types/#pullrequestevent for an example.
+	// See, https://docs.github.com/en/developers/webhooks-and-events/github-event-types#pullrequestevent for an example.
 	RequestedTeams []*Team `json:"requested_teams,omitempty"`
 
 	Links *PRLinks           `json:"_links,omitempty"`
@@ -430,13 +439,16 @@ type PullRequestOptions struct {
 
 	// The merge method to use. Possible values include: "merge", "squash", and "rebase" with the default being merge. (Optional.)
 	MergeMethod string
+
+	// If false, an empty string commit message will use the default commit message. If true, an empty string commit message will be used.
+	DontDefaultIfBlank bool
 }
 
 type pullRequestMergeRequest struct {
-	CommitMessage string `json:"commit_message,omitempty"`
-	CommitTitle   string `json:"commit_title,omitempty"`
-	MergeMethod   string `json:"merge_method,omitempty"`
-	SHA           string `json:"sha,omitempty"`
+	CommitMessage *string `json:"commit_message,omitempty"`
+	CommitTitle   string  `json:"commit_title,omitempty"`
+	MergeMethod   string  `json:"merge_method,omitempty"`
+	SHA           string  `json:"sha,omitempty"`
 }
 
 // Merge a pull request.
@@ -446,11 +458,17 @@ type pullRequestMergeRequest struct {
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 
-	pullRequestBody := &pullRequestMergeRequest{CommitMessage: commitMessage}
+	pullRequestBody := &pullRequestMergeRequest{}
+	if commitMessage != "" {
+		pullRequestBody.CommitMessage = &commitMessage
+	}
 	if options != nil {
 		pullRequestBody.CommitTitle = options.CommitTitle
 		pullRequestBody.MergeMethod = options.MergeMethod
 		pullRequestBody.SHA = options.SHA
+		if options.DontDefaultIfBlank && commitMessage == "" {
+			pullRequestBody.CommitMessage = &commitMessage
+		}
 	}
 	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
 	if err != nil {

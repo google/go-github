@@ -10,13 +10,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestPullComments_marshall(t *testing.T) {
+func TestPullComments_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestComment{}, "{}")
 
 	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
@@ -162,7 +163,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(pulls, want) {
+	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
 
@@ -199,7 +200,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{{ID: Int64(1), PullRequestReviewID: Int64(42)}}
-	if !reflect.DeepEqual(pulls, want) {
+	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
 }
@@ -231,7 +232,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 	}
 
 	want := &PullRequestComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.GetComment returned %+v, want %+v", comment, want)
 	}
 
@@ -273,7 +274,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		// TODO: remove custom Accept header assertion when the API fully launches.
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -287,7 +288,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	}
 
 	want := &PullRequestComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.CreateComment returned %+v, want %+v", comment, want)
 	}
 
@@ -326,7 +327,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -340,7 +341,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 	}
 
 	want := &PullRequestComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.CreateCommentInReplyTo returned %+v, want %+v", comment, want)
 	}
 
@@ -370,7 +371,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -384,7 +385,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	}
 
 	want := &PullRequestComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.EditComment returned %+v, want %+v", comment, want)
 	}
 

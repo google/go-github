@@ -9,8 +9,9 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_PromoteSiteAdmin(t *testing.T) {
@@ -102,7 +103,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -140,4 +141,18 @@ func TestUsersService_Unsuspend(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.Unsuspend(ctx, "u")
 	})
+}
+
+func TestUserSuspendOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserSuspendOptions{}, "{}")
+
+	u := &UserSuspendOptions{
+		Reason: String("reason"),
+	}
+
+	want := `{
+		"reason": "reason"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

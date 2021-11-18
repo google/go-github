@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
@@ -32,7 +33,7 @@ func TestUsersService_ListKeys_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Key{{ID: Int64(1)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 
@@ -67,7 +68,7 @@ func TestUsersService_ListKeys_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Key{{ID: Int64(1)}}
-	if !reflect.DeepEqual(keys, want) {
+	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListKeys returned %+v, want %+v", keys, want)
 	}
 }
@@ -97,7 +98,7 @@ func TestUsersService_GetKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 
@@ -127,7 +128,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -141,7 +142,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 	}
 
 	want := &Key{ID: Int64(1)}
-	if !reflect.DeepEqual(key, want) {
+	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetKey returned %+v, want %+v", key, want)
 	}
 
@@ -178,4 +179,30 @@ func TestUsersService_DeleteKey(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeleteKey(ctx, 1)
 	})
+}
+
+func TestKey_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Key{}, "{}")
+
+	u := &Key{
+		ID:        Int64(1),
+		Key:       String("abc"),
+		URL:       String("url"),
+		Title:     String("title"),
+		ReadOnly:  Bool(true),
+		Verified:  Bool(true),
+		CreatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"key": "abc",
+		"url": "url",
+		"title": "title",
+		"read_only": true,
+		"verified": true,
+		"created_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
 }

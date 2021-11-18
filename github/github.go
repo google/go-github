@@ -37,6 +37,8 @@ const (
 	headerRateReset     = "X-RateLimit-Reset"
 	headerOTP           = "X-GitHub-OTP"
 
+	headerTokenExpiration = "GitHub-Authentication-Token-Expiration"
+
 	mediaTypeV3                = "application/vnd.github.v3+json"
 	defaultMediaType           = "application/octet-stream"
 	mediaTypeV3SHA             = "application/vnd.github.v3.sha"
@@ -46,6 +48,21 @@ const (
 	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
 
 	// Media Type values to access preview APIs
+	// These media types will be added to the API request as headers
+	// and used to enable particular features on GitHub API that are still in preview.
+	// After some time, specific media types will be promoted (to a "stable" state).
+	// From then on, the preview headers are not required anymore to activate the additional
+	// feature on GitHub.com's API. However, this API header might still be needed for users
+	// to run a GitHub Enterprise Server on-premise.
+	// It's not uncommon for GitHub Enterprise Server customers to run older versions which
+	// would probably rely on the preview headers for some time.
+	// While the header promotion is going out for GitHub.com, it may be some time before it
+	// even arrives in GitHub Enterprise Server.
+	// We keep those preview headers around to avoid breaking older GitHub Enterprise Server
+	// versions. Additionally, non-functional (preview) headers don't create any side effects
+	// on GitHub Cloud version.
+	//
+	// See https://github.com/google/go-github/pull/2125 for full context.
 
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
@@ -73,9 +90,6 @@ const (
 
 	// https://developer.github.com/changes/2017-02-28-user-blocking-apis-and-webhook/
 	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"
-
-	// https://developer.github.com/changes/2017-02-09-community-health/
-	mediaTypeRepositoryCommunityHealthMetricsPreview = "application/vnd.github.black-panther-preview+json"
 
 	// https://developer.github.com/changes/2017-05-23-coc-api/
 	mediaTypeCodesOfConductPreview = "application/vnd.github.scarlet-witch-preview+json"
@@ -132,6 +146,8 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
+var errNonNilContext = errors.New("context must be non-nil")
+
 // A Client manages communication with the GitHub API.
 type Client struct {
 	clientMu sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
@@ -177,6 +193,7 @@ type Client struct {
 	PullRequests   *PullRequestsService
 	Reactions      *ReactionsService
 	Repositories   *RepositoriesService
+	SCIM           *SCIMService
 	Search         *SearchService
 	Teams          *TeamsService
 	Users          *UsersService
@@ -184,6 +201,14 @@ type Client struct {
 
 type service struct {
 	client *Client
+}
+
+// Client returns the http.Client used by this GitHub client.
+func (c *Client) Client() *http.Client {
+	c.clientMu.Lock()
+	defer c.clientMu.Unlock()
+	clientCopy := *c.client
+	return &clientCopy
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -204,6 +229,15 @@ type ListCursorOptions struct {
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	After string `url:"after,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+	Before string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query continues the search using this cursor.
+	Cursor string `url:"cursor,omitempty"`
 }
 
 // UploadOptions specifies the parameters to methods that support uploads.
@@ -287,6 +321,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.PullRequests = (*PullRequestsService)(&c.common)
 	c.Reactions = (*ReactionsService)(&c.common)
 	c.Repositories = (*RepositoriesService)(&c.common)
+	c.SCIM = (*SCIMService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
@@ -437,9 +472,21 @@ type Response struct {
 	// calling the endpoint again.
 	NextPageToken string
 
+	// For APIs that support cursor pagination, such as RepositoriesService.ListHookDeliveries,
+	// the following field will be populated to point to the next page.
+	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
+	Cursor string
+
+	// For APIs that support before/after pagination, such as OrganizationsService.AuditLog.
+	Before string
+	After  string
+
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
+
+	// token's expiration date
+	TokenExpiration Timestamp
 }
 
 // newResponse creates a new Response for the provided http.Response.
@@ -448,6 +495,7 @@ func newResponse(r *http.Response) *Response {
 	response := &Response{Response: r}
 	response.populatePageValues()
 	response.Rate = parseRate(r)
+	response.TokenExpiration = parseTokenExpiration(r)
 	return response
 }
 
@@ -473,8 +521,24 @@ func (r *Response) populatePageValues() {
 			if err != nil {
 				continue
 			}
-			page := url.Query().Get("page")
-			if page == "" {
+
+			q := url.Query()
+
+			if cursor := q.Get("cursor"); cursor != "" {
+				for _, segment := range segments[1:] {
+					switch strings.TrimSpace(segment) {
+					case `rel="next"`:
+						r.Cursor = cursor
+					}
+				}
+
+				continue
+			}
+
+			page := q.Get("page")
+			before := q.Get("before")
+			after := q.Get("after")
+			if page == "" && before == "" && after == "" {
 				continue
 			}
 
@@ -484,14 +548,15 @@ func (r *Response) populatePageValues() {
 					if r.NextPage, err = strconv.Atoi(page); err != nil {
 						r.NextPageToken = page
 					}
+					r.After = after
 				case `rel="prev"`:
 					r.PrevPage, _ = strconv.Atoi(page)
+					r.Before = before
 				case `rel="first"`:
 					r.FirstPage, _ = strconv.Atoi(page)
 				case `rel="last"`:
 					r.LastPage, _ = strconv.Atoi(page)
 				}
-
 			}
 		}
 	}
@@ -514,6 +579,23 @@ func parseRate(r *http.Response) Rate {
 	return rate
 }
 
+// parseTokenExpiration parses the TokenExpiration related headers.
+func parseTokenExpiration(r *http.Response) Timestamp {
+	var exp Timestamp
+	if v := r.Header.Get(headerTokenExpiration); v != "" {
+		if t, err := time.Parse("2006-01-02 03:04:05 MST", v); err == nil {
+			exp = Timestamp{t.Local()}
+		}
+	}
+	return exp
+}
+
+type requestContext uint8
+
+const (
+	bypassRateLimitCheck requestContext = iota
+)
+
 // BareDo sends an API request and lets you handle the api response. If an error
 // or API Error occurs, the error will contain more information. Otherwise you
 // are supposed to read and close the response's Body. If rate limit is exceeded
@@ -524,18 +606,20 @@ func parseRate(r *http.Response) Rate {
 // canceled or times out, ctx.Err() will be returned.
 func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
 	if ctx == nil {
-		return nil, errors.New("context must be non-nil")
+		return nil, errNonNilContext
 	}
 	req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
 
-	// If we've hit rate limit, don't make further requests before Reset time.
-	if err := c.checkRateLimitBeforeDo(req, rateLimitCategory); err != nil {
-		return &Response{
-			Response: err.Response,
-			Rate:     err.Rate,
-		}, err
+	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
+		// If we've hit rate limit, don't make further requests before Reset time.
+		if err := c.checkRateLimitBeforeDo(req, rateLimitCategory); err != nil {
+			return &Response{
+				Response: err.Response,
+				Rate:     err.Rate,
+			}, err
+		}
 	}
 
 	resp, err := c.client.Do(req)
@@ -647,6 +731,20 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 	return nil
 }
 
+// compareHTTPResponse returns whether two http.Response objects are equal or not.
+// Currently, only StatusCode is checked. This function is used when implementing the
+// Is(error) bool interface for the custom error types in this package.
+func compareHTTPResponse(r1, r2 *http.Response) bool {
+	if r1 == nil && r2 == nil {
+		return true
+	}
+
+	if r1 != nil && r2 != nil {
+		return r1.StatusCode == r2.StatusCode
+	}
+	return false
+}
+
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
@@ -657,22 +755,69 @@ type ErrorResponse struct {
 	Message  string         `json:"message"` // error message
 	Errors   []Error        `json:"errors"`  // more detail on individual errors
 	// Block is only populated on certain types of errors such as code 451.
-	// See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
-	// for more information.
-	Block *struct {
-		Reason    string     `json:"reason,omitempty"`
-		CreatedAt *Timestamp `json:"created_at,omitempty"`
-	} `json:"block,omitempty"`
+	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
 	// https://docs.github.com/en/free-pro-team@latest/rest/reference/#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
+// ErrorBlock contains a further explanation for the reason of an error.
+// See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
+// for more information.
+type ErrorBlock struct {
+	Reason    string     `json:"reason,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+}
+
 func (r *ErrorResponse) Error() string {
 	return fmt.Sprintf("%v %v: %d %v %+v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message, r.Errors)
+}
+
+// Is returns whether the provided error equals this error.
+func (r *ErrorResponse) Is(target error) bool {
+	v, ok := target.(*ErrorResponse)
+	if !ok {
+		return false
+	}
+
+	if r.Message != v.Message || (r.DocumentationURL != v.DocumentationURL) ||
+		!compareHTTPResponse(r.Response, v.Response) {
+		return false
+	}
+
+	// Compare Errors.
+	if len(r.Errors) != len(v.Errors) {
+		return false
+	}
+	for idx := range r.Errors {
+		if r.Errors[idx] != v.Errors[idx] {
+			return false
+		}
+	}
+
+	// Compare Block.
+	if (r.Block != nil && v.Block == nil) || (r.Block == nil && v.Block != nil) {
+		return false
+	}
+	if r.Block != nil && v.Block != nil {
+		if r.Block.Reason != v.Block.Reason {
+			return false
+		}
+		if (r.Block.CreatedAt != nil && v.Block.CreatedAt == nil) || (r.Block.CreatedAt ==
+			nil && v.Block.CreatedAt != nil) {
+			return false
+		}
+		if r.Block.CreatedAt != nil && v.Block.CreatedAt != nil {
+			if *(r.Block.CreatedAt) != *(v.Block.CreatedAt) {
+				return false
+			}
+		}
+	}
+
+	return true
 }
 
 // TwoFactorAuthError occurs when using HTTP Basic Authentication for a user
@@ -696,6 +841,18 @@ func (r *RateLimitError) Error() string {
 		r.Response.StatusCode, r.Message, formatRateReset(time.Until(r.Rate.Reset.Time)))
 }
 
+// Is returns whether the provided error equals this error.
+func (r *RateLimitError) Is(target error) bool {
+	v, ok := target.(*RateLimitError)
+	if !ok {
+		return false
+	}
+
+	return r.Rate == v.Rate &&
+		r.Message == v.Message &&
+		compareHTTPResponse(r.Response, v.Response)
+}
+
 // AcceptedError occurs when GitHub returns 202 Accepted response with an
 // empty body, which means a job was scheduled on the GitHub side to process
 // the information needed and cache it.
@@ -709,6 +866,15 @@ type AcceptedError struct {
 
 func (*AcceptedError) Error() string {
 	return "job scheduled on GitHub side; try again later"
+}
+
+// Is returns whether the provided error equals this error.
+func (ae *AcceptedError) Is(target error) bool {
+	v, ok := target.(*AcceptedError)
+	if !ok {
+		return false
+	}
+	return bytes.Compare(ae.Raw, v.Raw) == 0
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
@@ -727,6 +893,18 @@ func (r *AbuseRateLimitError) Error() string {
 	return fmt.Sprintf("%v %v: %d %v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
 		r.Response.StatusCode, r.Message)
+}
+
+// Is returns whether the provided error equals this error.
+func (r *AbuseRateLimitError) Is(target error) bool {
+	v, ok := target.(*AbuseRateLimitError)
+	if !ok {
+		return false
+	}
+
+	return r.Message == v.Message &&
+		r.RetryAfter == v.RetryAfter &&
+		compareHTTPResponse(r.Response, v.Response)
 }
 
 // sanitizeURL redacts the client_secret parameter from the URL which may be
@@ -923,6 +1101,9 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 	response := new(struct {
 		Resources *RateLimits `json:"resources"`
 	})
+
+	// This resource is not subject to rate limits.
+	ctx = context.WithValue(ctx, bypassRateLimitCheck, true)
 	resp, err := c.Do(ctx, req, response)
 	if err != nil {
 		return nil, resp, err

@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMigrationService_StartUserMigration(t *testing.T) {
@@ -38,7 +39,7 @@ func TestMigrationService_StartUserMigration(t *testing.T) {
 	}
 
 	want := wantUserMigration
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("StartUserMigration = %v, want = %v", got, want)
 	}
 
@@ -71,7 +72,7 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 	}
 
 	want := []*UserMigration{wantUserMigration}
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("ListUserMigrations = %v, want = %v", got, want)
 	}
 
@@ -104,7 +105,7 @@ func TestMigrationService_UserMigrationStatus(t *testing.T) {
 	}
 
 	want := wantUserMigration
-	if !reflect.DeepEqual(want, got) {
+	if !cmp.Equal(want, got) {
 		t.Errorf("UserMigrationStatus = %v, want = %v", got, want)
 	}
 
@@ -247,4 +248,58 @@ var wantUserMigration = &UserMigration{
 			Description: String("This your first repo!"),
 		},
 	},
+}
+
+func TestUserMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserMigration{}, "{}")
+
+	u := &UserMigration{
+		ID:                 Int64(1),
+		GUID:               String("guid"),
+		State:              String("state"),
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+		URL:                String("url"),
+		CreatedAt:          String("ca"),
+		UpdatedAt:          String("ua"),
+		Repositories:       []*Repository{{ID: Int64(1)}},
+	}
+
+	want := `{
+		"id": 1,
+		"guid": "guid",
+		"state": "state",
+		"lock_repositories": false,
+		"exclude_attachments": false,
+		"url": "url",
+		"created_at": "ca",
+		"updated_at": "ua",
+		"repositories": [
+			{
+				"id": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStartUserMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &startUserMigration{}, "{}")
+
+	u := &startUserMigration{
+		Repositories:       []string{"r"},
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+	}
+
+	want := `{
+		"repositories": [
+			"r"
+		],
+		"lock_repositories": false,
+		"exclude_attachments": false
+	}`
+
+	testJSONMarshal(t, u, want)
 }

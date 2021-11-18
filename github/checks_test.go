@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestChecksService_GetCheckRun(t *testing.T) {
@@ -45,7 +46,7 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 		CompletedAt: &Timestamp{completeAt},
 		Name:        String("testCheckRun"),
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -94,7 +95,7 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 		Status:     String("completed"),
 		Conclusion: String("neutral"),
 	}
-	if !reflect.DeepEqual(checkSuite, want) {
+	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 
@@ -161,7 +162,7 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 			Text:    String(""),
 		},
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.CreateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -221,7 +222,7 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 		RawDetails:      String("Do you mean 'bananas' or 'banana'?"),
 	}}
 
-	if !reflect.DeepEqual(checkRunAnnotations, want) {
+	if !cmp.Equal(checkRunAnnotations, want) {
 		t.Errorf("Checks.ListCheckRunAnnotations returned %+v, want %+v", checkRunAnnotations, want)
 	}
 
@@ -287,7 +288,7 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 			Text:    String("You may have misspelled some words."),
 		},
 	}
-	if !reflect.DeepEqual(checkRun, want) {
+	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.UpdateCheckRun return %+v, want %+v", checkRun, want)
 	}
 
@@ -354,7 +355,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkRuns, want) {
+	if !cmp.Equal(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsForRef returned %+v, want %+v", checkRuns, want)
 	}
 
@@ -421,7 +422,7 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkRuns, want) {
+	if !cmp.Equal(checkRuns, want) {
 		t.Errorf("Checks.ListCheckRunsCheckSuite returned %+v, want %+v", checkRuns, want)
 	}
 
@@ -487,7 +488,7 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		}},
 	}
 
-	if !reflect.DeepEqual(checkSuites, want) {
+	if !cmp.Equal(checkSuites, want) {
 		t.Errorf("Checks.ListCheckSuitesForRef returned %+v, want %+v", checkSuites, want)
 	}
 
@@ -534,7 +535,7 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 		Preferences: p,
 	}
 
-	if !reflect.DeepEqual(prefResults, want) {
+	if !cmp.Equal(prefResults, want) {
 		t.Errorf("Checks.SetCheckSuitePreferences return %+v, want %+v", prefResults, want)
 	}
 
@@ -590,7 +591,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 		BeforeSHA:  String("deadbeefb"),
 		AfterSHA:   String("deadbeefa"),
 	}
-	if !reflect.DeepEqual(checkSuite, want) {
+	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)
 	}
 
@@ -947,4 +948,768 @@ func Test_CheckSuiteMarshal(t *testing.T) {
 		}`, ts, ts)
 
 	testJSONMarshal(t, &c, w)
+}
+
+func TestCheckRunAnnotation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunAnnotation{}, "{}")
+
+	u := &CheckRunAnnotation{
+		Path:            String("p"),
+		StartLine:       Int(1),
+		EndLine:         Int(1),
+		StartColumn:     Int(1),
+		EndColumn:       Int(1),
+		AnnotationLevel: String("al"),
+		Message:         String("m"),
+		Title:           String("t"),
+		RawDetails:      String("rd"),
+	}
+
+	want := `{
+		"path": "p",
+		"start_line": 1,
+		"end_line": 1,
+		"start_column": 1,
+		"end_column": 1,
+		"annotation_level": "al",
+		"message": "m",
+		"title": "t",
+		"raw_details": "rd"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCheckRunImage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunImage{}, "{}")
+
+	u := &CheckRunImage{
+		Alt:      String("a"),
+		ImageURL: String("i"),
+		Caption:  String("c"),
+	}
+
+	want := `{
+		"alt": "a",
+		"image_url": "i",
+		"caption": "c"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCheckRunAction_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunAction{}, "{}")
+
+	u := &CheckRunAction{
+		Label:       "l",
+		Description: "d",
+		Identifier:  "i",
+	}
+
+	want := `{
+		"label": "l",
+		"description": "d",
+		"identifier": "i"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestAutoTriggerCheck_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AutoTriggerCheck{}, "{}")
+
+	u := &AutoTriggerCheck{
+		AppID:   Int64(1),
+		Setting: Bool(false),
+	}
+
+	want := `{
+		"app_id": 1,
+		"setting": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateCheckSuiteOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateCheckSuiteOptions{}, "{}")
+
+	u := &CreateCheckSuiteOptions{
+		HeadSHA:    "hsha",
+		HeadBranch: String("hb"),
+	}
+
+	want := `{
+		"head_sha": "hsha",
+		"head_branch": "hb"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCheckRunOutput_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckRunOutput{}, "{}")
+
+	u := &CheckRunOutput{
+		Title:            String("ti"),
+		Summary:          String("s"),
+		Text:             String("t"),
+		AnnotationsCount: Int(1),
+		AnnotationsURL:   String("au"),
+		Annotations: []*CheckRunAnnotation{
+			{
+				Path:            String("p"),
+				StartLine:       Int(1),
+				EndLine:         Int(1),
+				StartColumn:     Int(1),
+				EndColumn:       Int(1),
+				AnnotationLevel: String("al"),
+				Message:         String("m"),
+				Title:           String("t"),
+				RawDetails:      String("rd"),
+			},
+		},
+		Images: []*CheckRunImage{
+			{
+				Alt:      String("a"),
+				ImageURL: String("i"),
+				Caption:  String("c"),
+			},
+		},
+	}
+
+	want := `{
+		"title": "ti",
+		"summary": "s",
+		"text": "t",
+		"annotations_count": 1,
+		"annotations_url": "au",
+		"annotations": [
+			{
+				"path": "p",
+				"start_line": 1,
+				"end_line": 1,
+				"start_column": 1,
+				"end_column": 1,
+				"annotation_level": "al",
+				"message": "m",
+				"title": "t",
+				"raw_details": "rd"
+			}
+		],
+		"images": [
+			{
+				"alt": "a",
+				"image_url": "i",
+				"caption": "c"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateCheckRunOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateCheckRunOptions{}, "{}")
+
+	u := &CreateCheckRunOptions{
+		Name:        "n",
+		HeadSHA:     "hsha",
+		DetailsURL:  String("durl"),
+		ExternalID:  String("eid"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		StartedAt:   &Timestamp{referenceTime},
+		CompletedAt: &Timestamp{referenceTime},
+		Output: &CheckRunOutput{
+			Title:            String("ti"),
+			Summary:          String("s"),
+			Text:             String("t"),
+			AnnotationsCount: Int(1),
+			AnnotationsURL:   String("au"),
+			Annotations: []*CheckRunAnnotation{
+				{
+					Path:            String("p"),
+					StartLine:       Int(1),
+					EndLine:         Int(1),
+					StartColumn:     Int(1),
+					EndColumn:       Int(1),
+					AnnotationLevel: String("al"),
+					Message:         String("m"),
+					Title:           String("t"),
+					RawDetails:      String("rd"),
+				},
+			},
+			Images: []*CheckRunImage{
+				{
+					Alt:      String("a"),
+					ImageURL: String("i"),
+					Caption:  String("c"),
+				},
+			},
+		},
+		Actions: []*CheckRunAction{
+			{
+				Label:       "l",
+				Description: "d",
+				Identifier:  "i",
+			},
+		},
+	}
+
+	want := `{
+		"name": "n",
+		"head_sha": "hsha",
+		"details_url": "durl",
+		"external_id": "eid",
+		"status": "s",
+		"conclusion": "c",
+		"started_at": ` + referenceTimeStr + `,
+		"completed_at": ` + referenceTimeStr + `,
+		"output": {
+			"title": "ti",
+			"summary": "s",
+			"text": "t",
+			"annotations_count": 1,
+			"annotations_url": "au",
+			"annotations": [
+				{
+					"path": "p",
+					"start_line": 1,
+					"end_line": 1,
+					"start_column": 1,
+					"end_column": 1,
+					"annotation_level": "al",
+					"message": "m",
+					"title": "t",
+					"raw_details": "rd"
+				}
+			],
+			"images": [
+				{
+					"alt": "a",
+					"image_url": "i",
+					"caption": "c"
+				}
+			]
+		},
+		"actions": [
+			{
+				"label": "l",
+				"description": "d",
+				"identifier": "i"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateCheckRunOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UpdateCheckRunOptions{}, "{}")
+
+	u := &UpdateCheckRunOptions{
+		Name:        "n",
+		DetailsURL:  String("durl"),
+		ExternalID:  String("eid"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		CompletedAt: &Timestamp{referenceTime},
+		Output: &CheckRunOutput{
+			Title:            String("ti"),
+			Summary:          String("s"),
+			Text:             String("t"),
+			AnnotationsCount: Int(1),
+			AnnotationsURL:   String("au"),
+			Annotations: []*CheckRunAnnotation{
+				{
+					Path:            String("p"),
+					StartLine:       Int(1),
+					EndLine:         Int(1),
+					StartColumn:     Int(1),
+					EndColumn:       Int(1),
+					AnnotationLevel: String("al"),
+					Message:         String("m"),
+					Title:           String("t"),
+					RawDetails:      String("rd"),
+				},
+			},
+			Images: []*CheckRunImage{
+				{
+					Alt:      String("a"),
+					ImageURL: String("i"),
+					Caption:  String("c"),
+				},
+			},
+		},
+		Actions: []*CheckRunAction{
+			{
+				Label:       "l",
+				Description: "d",
+				Identifier:  "i",
+			},
+		},
+	}
+
+	want := `{
+		"name": "n",
+		"details_url": "durl",
+		"external_id": "eid",
+		"status": "s",
+		"conclusion": "c",
+		"completed_at": ` + referenceTimeStr + `,
+		"output": {
+			"title": "ti",
+			"summary": "s",
+			"text": "t",
+			"annotations_count": 1,
+			"annotations_url": "au",
+			"annotations": [
+				{
+					"path": "p",
+					"start_line": 1,
+					"end_line": 1,
+					"start_column": 1,
+					"end_column": 1,
+					"annotation_level": "al",
+					"message": "m",
+					"title": "t",
+					"raw_details": "rd"
+				}
+			],
+			"images": [
+				{
+					"alt": "a",
+					"image_url": "i",
+					"caption": "c"
+				}
+			]
+		},
+		"actions": [
+			{
+				"label": "l",
+				"description": "d",
+				"identifier": "i"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestListCheckRunsResults_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListCheckRunsResults{}, "{}")
+
+	l := &ListCheckRunsResults{
+		Total: Int(1),
+		CheckRuns: []*CheckRun{
+			{
+				ID:          Int64(1),
+				NodeID:      String("n"),
+				HeadSHA:     String("h"),
+				ExternalID:  String("1"),
+				URL:         String("u"),
+				HTMLURL:     String("u"),
+				DetailsURL:  String("u"),
+				Status:      String("s"),
+				Conclusion:  String("c"),
+				StartedAt:   &Timestamp{referenceTime},
+				CompletedAt: &Timestamp{referenceTime},
+				Output: &CheckRunOutput{
+					Annotations: []*CheckRunAnnotation{
+						{
+							AnnotationLevel: String("a"),
+							EndLine:         Int(1),
+							Message:         String("m"),
+							Path:            String("p"),
+							RawDetails:      String("r"),
+							StartLine:       Int(1),
+							Title:           String("t"),
+						},
+					},
+					AnnotationsCount: Int(1),
+					AnnotationsURL:   String("a"),
+					Images: []*CheckRunImage{
+						{
+							Alt:      String("a"),
+							ImageURL: String("i"),
+							Caption:  String("c"),
+						},
+					},
+					Title:   String("t"),
+					Summary: String("s"),
+					Text:    String("t"),
+				},
+				Name: String("n"),
+				CheckSuite: &CheckSuite{
+					ID: Int64(1),
+				},
+				App: &App{
+					ID:     Int64(1),
+					NodeID: String("n"),
+					Owner: &User{
+						Login:     String("l"),
+						ID:        Int64(1),
+						NodeID:    String("n"),
+						URL:       String("u"),
+						ReposURL:  String("r"),
+						EventsURL: String("e"),
+						AvatarURL: String("a"),
+					},
+					Name:        String("n"),
+					Description: String("d"),
+					HTMLURL:     String("h"),
+					ExternalURL: String("u"),
+					CreatedAt:   &Timestamp{referenceTime},
+					UpdatedAt:   &Timestamp{referenceTime},
+				},
+				PullRequests: []*PullRequest{
+					{
+						URL:    String("u"),
+						ID:     Int64(1),
+						Number: Int(1),
+						Head: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("s"),
+								Name: String("n"),
+							},
+						},
+						Base: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("u"),
+								Name: String("n"),
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	w := `{
+		"total_count": 1,
+		"check_runs": [
+			{
+				"id": 1,
+				"node_id": "n",
+				"head_sha": "h",
+				"external_id": "1",
+				"url": "u",
+				"html_url": "u",
+				"details_url": "u",
+				"status": "s",
+				"conclusion": "c",
+				"started_at": ` + referenceTimeStr + `,
+				"completed_at": ` + referenceTimeStr + `,
+				"output": {
+					"title": "t",
+					"summary": "s",
+					"text": "t",
+					"annotations_count": 1,
+					"annotations_url": "a",
+					"annotations": [
+						{
+							"path": "p",
+							"start_line": 1,
+							"end_line": 1,
+							"annotation_level": "a",
+							"message": "m",
+							"title": "t",
+							"raw_details": "r"
+						}
+					],
+					"images": [
+						{
+							"alt": "a",
+							"image_url": "i",
+							"caption": "c"
+						}
+					]
+				},
+				"name": "n",
+				"check_suite": {
+					"id": 1
+				},
+				"app": {
+					"id": 1,
+					"node_id": "n",
+					"owner": {
+						"login": "l",
+						"id": 1,
+						"node_id": "n",
+						"avatar_url": "a",
+						"url": "u",
+						"events_url": "e",
+						"repos_url": "r"
+					},
+					"name": "n",
+					"description": "d",
+					"external_url": "u",
+					"html_url": "h",
+					"created_at": ` + referenceTimeStr + `,
+					"updated_at": ` + referenceTimeStr + `
+				},
+				"pull_requests": [
+					{
+						"id": 1,
+						"number": 1,
+						"url": "u",
+						"head": {
+							"ref": "r",
+							"sha": "s",
+							"repo": {
+								"id": 1,
+								"name": "n",
+								"url": "s"
+							}
+						},
+						"base": {
+							"ref": "r",
+							"sha": "s",
+							"repo": {
+								"id": 1,
+								"name": "n",
+								"url": "u"
+							}
+						}
+					}
+				]
+			}
+		]
+	}`
+
+	testJSONMarshal(t, &l, w)
+}
+
+func TestListCheckSuiteResults_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListCheckSuiteResults{}, "{}")
+
+	l := &ListCheckSuiteResults{
+		Total: Int(1),
+		CheckSuites: []*CheckSuite{
+			{
+				ID:         Int64(1),
+				NodeID:     String("n"),
+				HeadBranch: String("h"),
+				HeadSHA:    String("h"),
+				URL:        String("u"),
+				BeforeSHA:  String("b"),
+				AfterSHA:   String("a"),
+				Status:     String("s"),
+				Conclusion: String("c"),
+				App: &App{
+					ID:     Int64(1),
+					NodeID: String("n"),
+					Owner: &User{
+						Login:     String("l"),
+						ID:        Int64(1),
+						NodeID:    String("n"),
+						URL:       String("u"),
+						ReposURL:  String("r"),
+						EventsURL: String("e"),
+						AvatarURL: String("a"),
+					},
+					Name:        String("n"),
+					Description: String("d"),
+					HTMLURL:     String("h"),
+					ExternalURL: String("u"),
+					CreatedAt:   &Timestamp{referenceTime},
+					UpdatedAt:   &Timestamp{referenceTime},
+				},
+				Repository: &Repository{
+					ID: Int64(1),
+				},
+				PullRequests: []*PullRequest{
+					{
+						URL:    String("u"),
+						ID:     Int64(1),
+						Number: Int(1),
+						Head: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("s"),
+								Name: String("n"),
+							},
+						},
+						Base: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("u"),
+								Name: String("n"),
+							},
+						},
+					},
+				},
+				HeadCommit: &Commit{
+					SHA: String("s"),
+				},
+			},
+		},
+	}
+
+	w := `{
+		"total_count": 1,
+		"check_suites": [
+			{
+				"id": 1,
+				"node_id": "n",
+				"head_branch": "h",
+				"head_sha": "h",
+				"url": "u",
+				"before": "b",
+				"after": "a",
+				"status": "s",
+				"conclusion": "c",
+				"app": {
+					"id": 1,
+					"node_id": "n",
+					"owner": {
+						"login": "l",
+						"id": 1,
+						"node_id": "n",
+						"avatar_url": "a",
+						"url": "u",
+						"events_url": "e",
+						"repos_url": "r"
+					},
+					"name": "n",
+					"description": "d",
+					"external_url": "u",
+					"html_url": "h",
+					"created_at": ` + referenceTimeStr + `,
+					"updated_at": ` + referenceTimeStr + `
+				},
+				"repository": {
+					"id": 1
+				},
+				"pull_requests": [
+				{
+					"id": 1,
+					"number": 1,
+					"url": "u",
+					"head": {
+						"ref": "r",
+						"sha": "s",
+						"repo": {
+							"id": 1,
+							"name": "n",
+							"url": "s"
+						}
+					},
+					"base": {
+						"ref": "r",
+						"sha": "s",
+						"repo": {
+							"id": 1,
+							"name": "n",
+							"url": "u"
+						}
+					}
+				}
+			],
+			"head_commit": {
+				"sha": "s"
+			}
+			}
+		]
+	}`
+
+	testJSONMarshal(t, &l, w)
+}
+
+func TestCheckSuitePreferenceOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckSuitePreferenceOptions{}, "{}")
+
+	u := &CheckSuitePreferenceOptions{
+		AutoTriggerChecks: []*AutoTriggerCheck{
+			{
+				AppID:   Int64(1),
+				Setting: Bool(false),
+			},
+		},
+	}
+
+	want := `{
+		"auto_trigger_checks": [
+			{
+				"app_id": 1,
+				"setting": false
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPreferenceList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PreferenceList{}, "{}")
+
+	u := &PreferenceList{
+		AutoTriggerChecks: []*AutoTriggerCheck{
+			{
+				AppID:   Int64(1),
+				Setting: Bool(false),
+			},
+		},
+	}
+
+	want := `{
+		"auto_trigger_checks": [
+			{
+				"app_id": 1,
+				"setting": false
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CheckSuitePreferenceResults{}, "{}")
+
+	u := &CheckSuitePreferenceResults{
+		Preferences: &PreferenceList{
+			AutoTriggerChecks: []*AutoTriggerCheck{
+				{
+					AppID:   Int64(1),
+					Setting: Bool(false),
+				},
+			},
+		},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+	}
+
+	want := `{
+		"preferences": {
+			"auto_trigger_checks": [
+				{
+					"app_id": 1,
+					"setting": false
+				}
+			]
+		},
+		"repository": {
+			"id":1,
+			"name":"n",
+			"url":"u"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
 }

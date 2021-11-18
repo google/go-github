@@ -7,11 +7,13 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListArtifacts(t *testing.T) {
@@ -37,7 +39,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	}
 
 	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(artifacts, want) {
+	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
 	}
 
@@ -119,7 +121,7 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 	}
 
 	want := &ArtifactList{TotalCount: Int64(1), Artifacts: []*Artifact{{ID: Int64(1)}}}
-	if !reflect.DeepEqual(artifacts, want) {
+	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned %+v, want %+v", artifacts, want)
 	}
 
@@ -206,7 +208,7 @@ func TestActionsService_GetArtifact(t *testing.T) {
 		SizeInBytes:        Int64(5),
 		ArchiveDownloadURL: String("u"),
 	}
-	if !reflect.DeepEqual(artifact, want) {
+	if !cmp.Equal(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)
 	}
 
@@ -291,6 +293,15 @@ func TestActionsSerivice_DownloadArtifact(t *testing.T) {
 	const methodName = "DownloadArtifact"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Actions.DownloadArtifact(ctx, "\n", "\n", -1, true)
+		return err
+	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to download artifact")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, true)
 		return err
 	})
 }
@@ -417,4 +428,68 @@ func TestActionsService_DeleteArtifact_notFound(t *testing.T) {
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
 		t.Errorf("Actions.DeleteArtifact return status %d, want %d", got, want)
 	}
+}
+
+func TestArtifact_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Artifact{}, "{}")
+
+	u := &Artifact{
+		ID:                 Int64(1),
+		NodeID:             String("nid"),
+		Name:               String("n"),
+		SizeInBytes:        Int64(1),
+		ArchiveDownloadURL: String("a"),
+		Expired:            Bool(false),
+		CreatedAt:          &Timestamp{referenceTime},
+		ExpiresAt:          &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"name": "n",
+		"size_in_bytes": 1,
+		"archive_download_url": "a",
+		"expired": false,
+		"created_at": ` + referenceTimeStr + `,
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestArtifactList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ArtifactList{}, "{}")
+
+	u := &ArtifactList{
+		TotalCount: Int64(1),
+		Artifacts: []*Artifact{
+			{
+				ID:                 Int64(1),
+				NodeID:             String("nid"),
+				Name:               String("n"),
+				SizeInBytes:        Int64(1),
+				ArchiveDownloadURL: String("a"),
+				Expired:            Bool(false),
+				CreatedAt:          &Timestamp{referenceTime},
+				ExpiresAt:          &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"artifacts": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"size_in_bytes": 1,
+			"archive_download_url": "a",
+			"expired": false,
+			"created_at": ` + referenceTimeStr + `,
+			"expires_at": ` + referenceTimeStr + `
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
 }

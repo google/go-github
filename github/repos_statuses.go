@@ -31,6 +31,9 @@ type RepoStatus struct {
 	// A string label to differentiate this status from the statuses of other systems.
 	Context *string `json:"context,omitempty"`
 
+	// AvatarURL is the URL of the avatar of this status.
+	AvatarURL *string `json:"avatar_url,omitempty"`
+
 	Creator   *User      `json:"creator,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`

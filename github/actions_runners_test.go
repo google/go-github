@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
@@ -36,7 +37,7 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
 		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
-	if !reflect.DeepEqual(downloads, want) {
+	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
 
@@ -73,7 +74,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
 
@@ -116,7 +117,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
 
@@ -156,7 +157,7 @@ func TestActionsService_GetRunner(t *testing.T) {
 		OS:     String("macos"),
 		Status: String("online"),
 	}
-	if !reflect.DeepEqual(runner, want) {
+	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
 
@@ -191,7 +192,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 	}
 
 	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
 
@@ -257,7 +258,7 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 		{OS: String("win"), Architecture: String("x64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: String("actions-runner-win-x64-2.164.0.zip")},
 		{OS: String("linux"), Architecture: String("arm64"), DownloadURL: String("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: String("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
-	if !reflect.DeepEqual(downloads, want) {
+	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
 	}
 
@@ -294,7 +295,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
 
@@ -337,7 +338,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
 
@@ -381,7 +382,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		{ID: Int64(2)},
 		{ID: Int64(3)},
 	}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
 	}
 
@@ -397,6 +398,89 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
+	})
+}
+
+func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"selected_repository_ids":[123,1234]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	if err != nil {
+		t.Errorf("Actions.SetEnabledReposInOrg returned error: %v", err)
+	}
+
+	const methodName = "SetEnabledReposInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetEnabledReposInOrg(ctx, "\n", []int64{123, 1234})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetEnabledReposInOrg(ctx, "o", []int64{123, 1234})
+	})
+}
+
+func TestActionsService_AddEnabledReposInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.AddEnabledReposInOrg returned error: %v", err)
+	}
+
+	const methodName = "AddEnabledReposInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.AddEnabledReposInOrg(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.AddEnabledReposInOrg(ctx, "o", 123)
+	})
+}
+
+func TestActionsService_RemoveEnabledRepoInOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/actions/permissions/repositories/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Actions.RemoveEnabledRepoInOrg returned error: %v", err)
+	}
+
+	const methodName = "RemoveEnabledRepoInOrg"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RemoveEnabledRepoInOrg(ctx, "\n", 123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RemoveEnabledRepoInOrg(ctx, "o", 123)
 	})
 }
 
@@ -421,7 +505,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 		OS:     String("macos"),
 		Status: String("online"),
 	}
-	if !reflect.DeepEqual(runner, want) {
+	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
 	}
 
@@ -456,7 +540,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 	}
 
 	want := &RemoveToken{Token: String("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
 
@@ -498,4 +582,188 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	})
+}
+
+func TestRunnerApplicationDownload_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
+
+	u := &RunnerApplicationDownload{
+		OS:                String("o"),
+		Architecture:      String("a"),
+		DownloadURL:       String("d"),
+		Filename:          String("f"),
+		TempDownloadToken: String("t"),
+		SHA256Checksum:    String("s"),
+	}
+
+	want := `{
+		"os": "o",
+		"architecture": "a",
+		"download_url": "d",
+		"filename": "f",
+		"temp_download_token": "t",
+		"sha256_checksum": "s"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+
+	u := &ActionsEnabledOnOrgRepos{
+		TotalCount: 1,
+		Repositories: []*Repository{
+			{
+				ID:   Int64(1),
+				URL:  String("u"),
+				Name: String("n"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"repositories": [
+			{
+				"id": 1,
+				"url": "u",
+				"name": "n"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRegistrationToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RegistrationToken{}, "{}")
+
+	u := &RegistrationToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunnerLabels_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RunnerLabels{}, "{}")
+
+	u := &RunnerLabels{
+		ID:   Int64(1),
+		Name: String("n"),
+		Type: String("t"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunner_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runner{}, "{}")
+
+	u := &Runner{
+		ID:     Int64(1),
+		Name:   String("n"),
+		OS:     String("o"),
+		Status: String("s"),
+		Busy:   Bool(false),
+		Labels: []*RunnerLabels{
+			{
+				ID:   Int64(1),
+				Name: String("n"),
+				Type: String("t"),
+			},
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRunners_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Runners{}, "{}")
+
+	u := &Runners{
+		TotalCount: 1,
+		Runners: []*Runner{
+			{
+				ID:     Int64(1),
+				Name:   String("n"),
+				OS:     String("o"),
+				Status: String("s"),
+				Busy:   Bool(false),
+				Labels: []*RunnerLabels{
+					{
+						ID:   Int64(1),
+						Name: String("n"),
+						Type: String("t"),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"runners": [
+			{
+				"id": 1,
+		"name": "n",
+		"os": "o",
+		"status": "s",
+		"busy": false,
+		"labels": [
+			{
+				"id": 1,
+				"name": "n",
+				"type": "t"
+			}
+		]
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRemoveToken_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RemoveToken{}, "{}")
+
+	u := &RemoveToken{
+		Token:     String("t"),
+		ExpiresAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"token": "t",
+		"expires_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
 }

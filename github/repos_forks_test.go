@@ -9,8 +9,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListForks(t *testing.T) {
@@ -38,7 +39,7 @@ func TestRepositoriesService_ListForks(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.ListForks returned %+v, want %+v", repos, want)
 	}
 
@@ -84,7 +85,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}
 
@@ -123,7 +124,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	}
 
 	want := &Repository{ID: Int64(1)}
-	if !reflect.DeepEqual(repo, want) {
+	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.CreateFork returned %+v, want %+v", repo, want)
 	}
 }

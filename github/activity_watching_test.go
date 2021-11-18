@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_ListWatchers(t *testing.T) {
@@ -34,7 +35,7 @@ func TestActivityService_ListWatchers(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(watchers, want) {
+	if !cmp.Equal(watchers, want) {
 		t.Errorf("Activity.ListWatchers returned %+v, want %+v", watchers, want)
 	}
 
@@ -72,7 +73,7 @@ func TestActivityService_ListWatched_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(watched, want) {
+	if !cmp.Equal(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 
@@ -110,7 +111,7 @@ func TestActivityService_ListWatched_specifiedUser(t *testing.T) {
 	}
 
 	want := []*Repository{{ID: Int64(1)}}
-	if !reflect.DeepEqual(watched, want) {
+	if !cmp.Equal(watched, want) {
 		t.Errorf("Activity.ListWatched returned %+v, want %+v", watched, want)
 	}
 }
@@ -131,7 +132,7 @@ func TestActivityService_GetRepositorySubscription_true(t *testing.T) {
 	}
 
 	want := &Subscription{Subscribed: Bool(true)}
-	if !reflect.DeepEqual(sub, want) {
+	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 
@@ -166,7 +167,7 @@ func TestActivityService_GetRepositorySubscription_false(t *testing.T) {
 	}
 
 	var want *Subscription
-	if !reflect.DeepEqual(sub, want) {
+	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.GetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 }
@@ -198,7 +199,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -212,7 +213,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 	}
 
 	want := &Subscription{Ignored: Bool(true)}
-	if !reflect.DeepEqual(sub, want) {
+	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.SetRepositorySubscription returned %+v, want %+v", sub, want)
 	}
 
@@ -255,4 +256,30 @@ func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Activity.DeleteRepositorySubscription(ctx, "o", "r")
 	})
+}
+
+func TestSubscription_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Subscription{}, "{}")
+
+	u := &Subscription{
+		Subscribed:    Bool(true),
+		Ignored:       Bool(false),
+		Reason:        String("r"),
+		CreatedAt:     &Timestamp{referenceTime},
+		URL:           String("u"),
+		RepositoryURL: String("ru"),
+		ThreadURL:     String("tu"),
+	}
+
+	want := `{
+		"subscribed": true,
+		"ignored": false,
+		"reason": "r",
+		"created_at": ` + referenceTimeStr + `,
+		"url": "u",
+		"repository_url": "ru",
+		"thread_url": "tu"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

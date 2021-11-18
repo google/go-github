@@ -10,11 +10,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestUser_marshall(t *testing.T) {
+func TestUser_Marshal(t *testing.T) {
 	testJSONMarshal(t, &User{}, "{}")
 
 	u := &User{
@@ -76,7 +77,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
 
@@ -111,7 +112,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
 }
@@ -141,7 +142,7 @@ func TestUsersService_GetByID(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.GetByID returned %+v, want %+v", user, want)
 	}
 
@@ -171,7 +172,7 @@ func TestUsersService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -185,7 +186,7 @@ func TestUsersService_Edit(t *testing.T) {
 	}
 
 	want := &User{ID: Int64(1)}
-	if !reflect.DeepEqual(user, want) {
+	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
 	}
 
@@ -217,7 +218,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 	}
 
 	want := &Hovercard{Contexts: []*UserContext{{Message: String("Owns this repository"), Octicon: String("repo")}}}
-	if !reflect.DeepEqual(hovercard, want) {
+	if !cmp.Equal(hovercard, want) {
 		t.Errorf("Users.GetHovercard returned %+v, want %+v", hovercard, want)
 	}
 
@@ -254,7 +255,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(2)}}
-	if !reflect.DeepEqual(users, want) {
+	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
 
@@ -284,7 +285,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 	}
 
 	want := []*RepositoryInvitation{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
 	}
 
@@ -365,4 +366,64 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeclineInvitation(ctx, 1)
 	})
+}
+
+func TestUserContext_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserContext{}, "{}")
+
+	u := &UserContext{
+		Message: String("message"),
+		Octicon: String("message"),
+	}
+
+	want := `{
+		"message" : "message",
+		"octicon" : "message"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestHovercard_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Hovercard{}, "{}")
+
+	h := &Hovercard{
+		Contexts: []*UserContext{
+			{
+				Message: String("someMessage"),
+				Octicon: String("someOcticon"),
+			},
+		},
+	}
+
+	want := `{
+		"contexts" : [
+			{
+				"message" : "someMessage",
+				"octicon" : "someOcticon"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, h, want)
+}
+
+func TestUserListOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserListOptions{}, "{}")
+
+	u := &UserListOptions{
+		Since: int64(1900),
+		ListOptions: ListOptions{
+			Page:    int(1),
+			PerPage: int(10),
+		},
+	}
+
+	want := `{
+		"since" : 1900,
+		"page": 1,
+		"perPage": 10
+	}`
+
+	testJSONMarshal(t, u, want)
 }

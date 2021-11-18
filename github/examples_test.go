@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v40/github"
 )
 
 func ExampleClient_Markdown() {

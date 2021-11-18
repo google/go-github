@@ -7,12 +7,14 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListWorkflowJobs(t *testing.T) {
@@ -39,7 +41,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(jobs, want) {
+	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
 
@@ -82,7 +84,7 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 			{ID: Int64(399444497), RunID: Int64(29679449), StartedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(jobs, want) {
+	if !cmp.Equal(jobs, want) {
 		t.Errorf("Actions.ListWorkflowJobs returned %+v, want %+v", jobs, want)
 	}
 }
@@ -107,7 +109,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 		StartedAt:   &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		CompletedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(job, want) {
+	if !cmp.Equal(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
 	}
 
@@ -151,6 +153,15 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 	const methodName = "GetWorkflowJobLogs"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "\n", "\n", 399444496, true)
+		return err
+	})
+
+	// Add custom round tripper
+	client.client.Transport = roundTripperFunc(func(r *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed to get workflow logs")
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, true)
 		return err
 	})
 }
@@ -201,4 +212,148 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 	if url.String() != want {
 		t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url.String(), want)
 	}
+}
+
+func TestTaskStep_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TaskStep{}, "{}")
+
+	u := &TaskStep{
+		Name:        String("n"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		Number:      Int64(1),
+		StartedAt:   &Timestamp{referenceTime},
+		CompletedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"name": "n",
+		"status": "s",
+		"conclusion": "c",
+		"number": 1,
+		"started_at": ` + referenceTimeStr + `,
+		"completed_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowJob_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowJob{}, "{}")
+
+	u := &WorkflowJob{
+		ID:          Int64(1),
+		RunID:       Int64(1),
+		RunURL:      String("r"),
+		NodeID:      String("n"),
+		HeadSHA:     String("h"),
+		URL:         String("u"),
+		HTMLURL:     String("h"),
+		Status:      String("s"),
+		Conclusion:  String("c"),
+		StartedAt:   &Timestamp{referenceTime},
+		CompletedAt: &Timestamp{referenceTime},
+		Name:        String("n"),
+		Steps: []*TaskStep{
+			{
+				Name:        String("n"),
+				Status:      String("s"),
+				Conclusion:  String("c"),
+				Number:      Int64(1),
+				StartedAt:   &Timestamp{referenceTime},
+				CompletedAt: &Timestamp{referenceTime},
+			},
+		},
+		CheckRunURL: String("c"),
+	}
+
+	want := `{
+		"id": 1,
+		"run_id": 1,
+		"run_url": "r",
+		"node_id": "n",
+		"head_sha": "h",
+		"url": "u",
+		"html_url": "h",
+		"status": "s",
+		"conclusion": "c",
+		"started_at": ` + referenceTimeStr + `,
+		"completed_at": ` + referenceTimeStr + `,
+		"name": "n",
+		"steps": [{
+			"name": "n",
+			"status": "s",
+			"conclusion": "c",
+			"number": 1,
+			"started_at": ` + referenceTimeStr + `,
+			"completed_at": ` + referenceTimeStr + `
+		}],
+		"check_run_url": "c"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestJobs_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Jobs{}, "{}")
+
+	u := &Jobs{
+		TotalCount: Int(1),
+		Jobs: []*WorkflowJob{
+			{
+				ID:          Int64(1),
+				RunID:       Int64(1),
+				RunURL:      String("r"),
+				NodeID:      String("n"),
+				HeadSHA:     String("h"),
+				URL:         String("u"),
+				HTMLURL:     String("h"),
+				Status:      String("s"),
+				Conclusion:  String("c"),
+				StartedAt:   &Timestamp{referenceTime},
+				CompletedAt: &Timestamp{referenceTime},
+				Name:        String("n"),
+				Steps: []*TaskStep{
+					{
+						Name:        String("n"),
+						Status:      String("s"),
+						Conclusion:  String("c"),
+						Number:      Int64(1),
+						StartedAt:   &Timestamp{referenceTime},
+						CompletedAt: &Timestamp{referenceTime},
+					},
+				},
+				CheckRunURL: String("c"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"jobs": [{
+			"id": 1,
+			"run_id": 1,
+			"run_url": "r",
+			"node_id": "n",
+			"head_sha": "h",
+			"url": "u",
+			"html_url": "h",
+			"status": "s",
+			"conclusion": "c",
+			"started_at": ` + referenceTimeStr + `,
+			"completed_at": ` + referenceTimeStr + `,
+			"name": "n",
+			"steps": [{
+				"name": "n",
+				"status": "s",
+				"conclusion": "c",
+				"number": 1,
+				"started_at": ` + referenceTimeStr + `,
+				"completed_at": ` + referenceTimeStr + `
+			}],
+			"check_run_url": "c"
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
 }

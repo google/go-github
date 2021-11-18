@@ -12,8 +12,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_EnablePages(t *testing.T) {
@@ -35,7 +36,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{Source: &PagesSource{Branch: String("master"), Path: String("/")}}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -50,7 +51,7 @@ func TestRepositoriesService_EnablePages(t *testing.T) {
 
 	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h"), Source: &PagesSource{Branch: String("master"), Path: String("/")}}
 
-	if !reflect.DeepEqual(page, want) {
+	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
 	}
 
@@ -84,7 +85,7 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -179,7 +180,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 	}
 
 	want := &Pages{URL: String("u"), Status: String("s"), CNAME: String("c"), Custom404: Bool(false), HTMLURL: String("h")}
-	if !reflect.DeepEqual(page, want) {
+	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
 
@@ -214,7 +215,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 	}
 
 	want := []*PagesBuild{{URL: String("u"), Status: String("s"), Commit: String("c")}}
-	if !reflect.DeepEqual(pages, want) {
+	if !cmp.Equal(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
 	}
 
@@ -268,7 +269,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned %+v, want %+v", build, want)
 	}
 
@@ -303,7 +304,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s"), Commit: String("c")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetPageBuild returned %+v, want %+v", build, want)
 	}
 
@@ -338,7 +339,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 	}
 
 	want := &PagesBuild{URL: String("u"), Status: String("s")}
-	if !reflect.DeepEqual(build, want) {
+	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.RequestPageBuild returned %+v, want %+v", build, want)
 	}
 
@@ -355,4 +356,134 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestPagesSource_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesSource{}, "{}")
+
+	u := &PagesSource{
+		Branch: String("branch"),
+		Path:   String("path"),
+	}
+
+	want := `{
+		"branch": "branch",
+		"path": "path"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesError{}, "{}")
+
+	u := &PagesError{
+		Message: String("message"),
+	}
+
+	want := `{
+		"message": "message"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesUpdate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesUpdate{}, "{}")
+
+	u := &PagesUpdate{
+		CNAME:  String("cname"),
+		Source: String("src"),
+	}
+
+	want := `{
+		"cname": "cname",
+		"source": "src"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPages_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Pages{}, "{}")
+
+	u := &Pages{
+		URL:       String("url"),
+		Status:    String("status"),
+		CNAME:     String("cname"),
+		Custom404: Bool(false),
+		HTMLURL:   String("hurl"),
+		Source: &PagesSource{
+			Branch: String("branch"),
+			Path:   String("path"),
+		},
+	}
+
+	want := `{
+		"url": "url",
+		"status": "status",
+		"cname": "cname",
+		"custom_404": false,
+		"html_url": "hurl",
+		"source": {
+			"branch": "branch",
+			"path": "path"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPagesBuild_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PagesBuild{}, "{}")
+
+	u := &PagesBuild{
+		URL:    String("url"),
+		Status: String("status"),
+		Error: &PagesError{
+			Message: String("message"),
+		},
+		Pusher:    &User{ID: Int64(1)},
+		Commit:    String("commit"),
+		Duration:  Int(1),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"url": "url",
+		"status": "status",
+		"error": {
+			"message": "message"
+		},
+		"pusher": {
+			"id": 1
+		},
+		"commit": "commit",
+		"duration": 1,
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreatePagesRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createPagesRequest{}, "{}")
+
+	u := &createPagesRequest{
+		Source: &PagesSource{
+			Branch: String("branch"),
+			Path:   String("path"),
+		},
+	}
+
+	want := `{
+		"source": {
+			"branch": "branch",
+			"path": "path"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
 }

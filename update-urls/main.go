@@ -55,38 +55,39 @@ var (
 	// skipMethods holds methods which are skipped because they do not have GitHub v3
 	// API URLs or are otherwise problematic in parsing, discovering, and/or fixing.
 	skipMethods = map[string]bool{
-		"ActionsService.DownloadArtifact":            true,
-		"AdminService.CreateOrg":                     true,
-		"AdminService.CreateUser":                    true,
-		"AdminService.CreateUserImpersonation":       true,
-		"AdminService.DeleteUserImpersonation":       true,
-		"AdminService.GetAdminStats":                 true,
-		"AdminService.RenameOrg":                     true,
-		"AdminService.RenameOrgByName":               true,
-		"AdminService.UpdateTeamLDAPMapping":         true,
-		"AdminService.UpdateUserLDAPMapping":         true,
-		"AppsService.FindRepositoryInstallationByID": true,
-		"AuthorizationsService.CreateImpersonation":  true,
-		"AuthorizationsService.DeleteImpersonation":  true,
-		"IssueImportService.CheckStatus":             true,
-		"IssueImportService.CheckStatusSince":        true,
-		"IssueImportService.Create":                  true,
-		"MarketplaceService.marketplaceURI":          true,
-		"OrganizationsService.GetByID":               true,
-		"RepositoriesService.DeletePreReceiveHook":   true,
-		"RepositoriesService.DownloadContents":       true,
-		"RepositoriesService.GetArchiveLink":         true,
-		"RepositoriesService.GetByID":                true,
-		"RepositoriesService.GetPreReceiveHook":      true,
-		"RepositoriesService.ListPreReceiveHooks":    true,
-		"RepositoriesService.UpdatePreReceiveHook":   true,
-		"SearchService.search":                       true,
-		"TeamsService.ListTeamMembersByID":           true,
-		"UsersService.DemoteSiteAdmin":               true,
-		"UsersService.GetByID":                       true,
-		"UsersService.PromoteSiteAdmin":              true,
-		"UsersService.Suspend":                       true,
-		"UsersService.Unsuspend":                     true,
+		"ActionsService.DownloadArtifact":              true,
+		"AdminService.CreateOrg":                       true,
+		"AdminService.CreateUser":                      true,
+		"AdminService.CreateUserImpersonation":         true,
+		"AdminService.DeleteUserImpersonation":         true,
+		"AdminService.GetAdminStats":                   true,
+		"AdminService.RenameOrg":                       true,
+		"AdminService.RenameOrgByName":                 true,
+		"AdminService.UpdateTeamLDAPMapping":           true,
+		"AdminService.UpdateUserLDAPMapping":           true,
+		"AppsService.FindRepositoryInstallationByID":   true,
+		"AuthorizationsService.CreateImpersonation":    true,
+		"AuthorizationsService.DeleteImpersonation":    true,
+		"IssueImportService.CheckStatus":               true,
+		"IssueImportService.CheckStatusSince":          true,
+		"IssueImportService.Create":                    true,
+		"MarketplaceService.marketplaceURI":            true,
+		"OrganizationsService.GetByID":                 true,
+		"RepositoriesService.DeletePreReceiveHook":     true,
+		"RepositoriesService.DownloadContents":         true,
+		"RepositoriesService.DownloadContentsWithMeta": true,
+		"RepositoriesService.GetArchiveLink":           true,
+		"RepositoriesService.GetByID":                  true,
+		"RepositoriesService.GetPreReceiveHook":        true,
+		"RepositoriesService.ListPreReceiveHooks":      true,
+		"RepositoriesService.UpdatePreReceiveHook":     true,
+		"SearchService.search":                         true,
+		"TeamsService.ListTeamMembersByID":             true,
+		"UsersService.DemoteSiteAdmin":                 true,
+		"UsersService.GetByID":                         true,
+		"UsersService.PromoteSiteAdmin":                true,
+		"UsersService.Suspend":                         true,
+		"UsersService.Unsuspend":                       true,
 	}
 
 	helperOverrides = map[string]overrideFunc{
@@ -125,7 +126,9 @@ func main() {
 	}
 
 	if err := os.Chdir("./github"); err != nil {
-		log.Fatalf("Please run this from the go-github directory.")
+		if err := os.Chdir("../github"); err != nil {
+			log.Fatalf("Please run this from the go-github directory.")
+		}
 	}
 
 	pkgs, err := parser.ParseDir(fset, ".", sourceFilter, parser.ParseComments)
@@ -196,10 +199,10 @@ func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpoin
 				path = strings.ReplaceAll(path, "%s", "%v")
 
 				// Check the overrides.
-				endpoint.checkHttpMethodOverride(path)
+				endpoint.checkHTTPMethodOverride(path)
 
 				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
-				url, ok := docCache.UrlByMethodAndPath(methodAndPath)
+				url, ok := docCache.URLByMethodAndPath(methodAndPath)
 				if !ok {
 					if i := len(endpoint.endpointComments); i > 0 {
 						pos := fileRewriter.Position(endpoint.endpointComments[i-1].Pos())
@@ -426,7 +429,7 @@ func (rafi *realAstFileIterator) Reset() {
 		var count int
 		for _, pkg := range rafi.pkgs {
 			for filename, f := range pkg.Files {
-				logf("Sending file #%v: %v to channel", count, filename)
+				// logf("Sending file #%v: %v to channel", count, filename)
 				rafi.ch <- &filenameAstFilePair{filename: filename, astFile: f}
 				count++
 			}
@@ -442,7 +445,7 @@ func (rafi *realAstFileIterator) Reset() {
 
 func (rafi *realAstFileIterator) Next() *filenameAstFilePair {
 	for pair := range rafi.ch {
-		logf("Next: returning file %v", pair.filename)
+		// logf("Next: returning file %v", pair.filename)
 		return pair
 	}
 	return nil
@@ -526,7 +529,7 @@ func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWr
 }
 
 type documentCacheReader interface {
-	UrlByMethodAndPath(string) (string, bool)
+	URLByMethodAndPath(string) (string, bool)
 }
 
 type documentCacheWriter interface {
@@ -539,7 +542,7 @@ type documentCache struct {
 	urlByMethodAndPath map[string]string
 }
 
-func (dc *documentCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+func (dc *documentCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
 	url, ok := dc.urlByMethodAndPath[methodAndPath]
 	return url, ok
 }
@@ -654,12 +657,12 @@ func (e *Endpoint) String() string {
 	return b.String()
 }
 
-func (ep *Endpoint) checkHttpMethodOverride(path string) {
-	lookupOverride := fmt.Sprintf("%v.%v: %v %v", ep.serviceName, ep.endpointName, ep.httpMethod, path)
+func (e *Endpoint) checkHTTPMethodOverride(path string) {
+	lookupOverride := fmt.Sprintf("%v.%v: %v %v", e.serviceName, e.endpointName, e.httpMethod, path)
 	logf("Looking up override for %q", lookupOverride)
 	if v, ok := methodOverrides[lookupOverride]; ok {
 		logf("overriding method for %v to %q", lookupOverride, v)
-		ep.httpMethod = v
+		e.httpMethod = v
 		return
 	}
 }
@@ -703,7 +706,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 
 			receiverName := recv.Names[0].Name
 
-			logf("ast.FuncDecl: %#v", *decl)           // Doc, Recv, Name, Type, Body
+			logf("\n\nast.FuncDecl: %#v", *decl)       // Doc, Recv, Name, Type, Body
 			logf("ast.FuncDecl.Name: %#v", *decl.Name) // NamePos, Name, Obj(nil)
 			// logf("ast.FuncDecl.Recv: %#v", *decl.Recv)  // Opening, List, Closing
 			logf("ast.FuncDecl.Recv.List[0]: %#v", *recv) // Doc, Names, Type, Tag, Comment
@@ -744,7 +747,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 				stdRefLines:        stdRefLines,
 				endpointComments:   endpointComments,
 			}
-			// ep.checkHttpMethodOverride("")
+			// ep.checkHTTPMethodOverride("")
 			endpoints[fullName] = ep
 			logf("endpoints[%q] = %#v", fullName, endpoints[fullName])
 			if ep.httpMethod == "" && (ep.helperMethod == "" || len(ep.urlFormats) == 0) {
@@ -1054,8 +1057,10 @@ func processCallExpr(expr *ast.CallExpr) (recv, funcName string, args []string) 
 		case *ast.SelectorExpr: // X, Sel
 			logf("processCallExpr: X recv *ast.SelectorExpr: %#v", x.Sel)
 			recv = x.Sel.Name
+		case *ast.CallExpr: // Fun, LParen, Args, Ellipsis, RParen
+			logf("processCallExpr: X recv *ast.CallExpr: %#v", x)
 		default:
-			log.Fatalf("processCallExpr: unhandled X receiver type: %T", x)
+			log.Fatalf("processCallExpr: unhandled X receiver type: %T, funcName=%q", x, funcName)
 		}
 	default:
 		log.Fatalf("processCallExpr: unhandled Fun: %T", expr.Fun)
@@ -1190,9 +1195,7 @@ func parseEndpoint(s, method string) *Endpoint {
 	// 	eol = v
 	// }
 	path := strings.TrimSpace(s[len(method):eol])
-	if strings.HasPrefix(path, "{server}") { // Hack to remove {server}
-		path = strings.TrimPrefix(path, "{server}")
-	}
+	path = strings.TrimPrefix(path, "{server}")
 	path = paramLegacyRE.ReplaceAllString(path, "%v")
 	path = paramRE.ReplaceAllString(path, "%v")
 	// strip leading garbage

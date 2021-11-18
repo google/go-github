@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_ListNotification(t *testing.T) {
@@ -44,7 +45,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 	}
 
 	want := []*Notification{{ID: String("1"), Subject: &NotificationSubject{Title: String("t")}}}
-	if !reflect.DeepEqual(notifications, want) {
+	if !cmp.Equal(notifications, want) {
 		t.Errorf("Activity.ListNotifications returned %+v, want %+v", notifications, want)
 	}
 
@@ -74,7 +75,7 @@ func TestActivityService_ListRepositoryNotification(t *testing.T) {
 	}
 
 	want := []*Notification{{ID: String("1")}}
-	if !reflect.DeepEqual(notifications, want) {
+	if !cmp.Equal(notifications, want) {
 		t.Errorf("Activity.ListRepositoryNotifications returned %+v, want %+v", notifications, want)
 	}
 
@@ -162,7 +163,7 @@ func TestActivityService_GetThread(t *testing.T) {
 	}
 
 	want := &Notification{ID: String("1")}
-	if !reflect.DeepEqual(notification, want) {
+	if !cmp.Equal(notification, want) {
 		t.Errorf("Activity.GetThread returned %+v, want %+v", notification, want)
 	}
 
@@ -223,7 +224,7 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 	}
 
 	want := &Subscription{Subscribed: Bool(true)}
-	if !reflect.DeepEqual(sub, want) {
+	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.GetThreadSubscription returned %+v, want %+v", sub, want)
 	}
 
@@ -253,7 +254,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -267,7 +268,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 	}
 
 	want := &Subscription{Ignored: Bool(true)}
-	if !reflect.DeepEqual(sub, want) {
+	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.SetThreadSubscription returned %+v, want %+v", sub, want)
 	}
 
@@ -310,4 +311,84 @@ func TestActivityService_DeleteThreadSubscription(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Activity.DeleteThreadSubscription(ctx, "1")
 	})
+}
+
+func TestNotification_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Notification{}, "{}")
+
+	u := &Notification{
+		ID: String("id"),
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+		Subject: &NotificationSubject{
+			Title:            String("t"),
+			URL:              String("u"),
+			LatestCommentURL: String("l"),
+			Type:             String("t"),
+		},
+		Reason:     String("r"),
+		Unread:     Bool(true),
+		UpdatedAt:  &referenceTime,
+		LastReadAt: &referenceTime,
+		URL:        String("u"),
+	}
+
+	want := `{
+		"id": "id",
+		"repository": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		},
+		"subject": {
+			"title": "t",
+			"url": "u",
+			"latest_comment_url": "l",
+			"type": "t"
+		},
+		"reason": "r",
+		"unread": true,
+		"updated_at": ` + referenceTimeStr + `,
+		"last_read_at": ` + referenceTimeStr + `,
+		"url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestNotificationSubject_Marshal(t *testing.T) {
+	testJSONMarshal(t, &NotificationSubject{}, "{}")
+
+	u := &NotificationSubject{
+		Title:            String("t"),
+		URL:              String("u"),
+		LatestCommentURL: String("l"),
+		Type:             String("t"),
+	}
+
+	want := `{
+		"title": "t",
+		"url": "u",
+		"latest_comment_url": "l",
+		"type": "t"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestMarkReadOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &markReadOptions{}, "{}")
+
+	u := &markReadOptions{
+		LastReadAt: referenceTime,
+	}
+
+	want := `{
+		"last_read_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
 }

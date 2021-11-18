@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
@@ -34,7 +35,7 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 	}
 
 	want := []*PreReceiveHook{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(hooks, want) {
+	if !cmp.Equal(hooks, want) {
 		t.Errorf("Repositories.ListPreReceiveHooks returned %+v, want %+v", hooks, want)
 	}
 
@@ -79,7 +80,7 @@ func TestRepositoriesService_GetPreReceiveHook(t *testing.T) {
 	}
 
 	want := &PreReceiveHook{ID: Int64(1)}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetPreReceiveHook returned %+v, want %+v", hook, want)
 	}
 
@@ -118,7 +119,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -132,7 +133,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 	}
 
 	want := &PreReceiveHook{ID: Int64(1)}
-	if !reflect.DeepEqual(hook, want) {
+	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.UpdatePreReceiveHook returned %+v, want %+v", hook, want)
 	}
 
@@ -192,4 +193,24 @@ func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Repositories.DeletePreReceiveHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
+}
+
+func TestPreReceiveHook_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PreReceiveHook{}, "{}")
+
+	u := &PreReceiveHook{
+		ID:          Int64(1),
+		Name:        String("name"),
+		Enforcement: String("e"),
+		ConfigURL:   String("curl"),
+	}
+
+	want := `{
+		"id": 1,
+		"name": "name",
+		"enforcement": "e",
+		"configuration_url": "curl"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

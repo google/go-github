@@ -10,13 +10,10 @@ import (
 	"fmt"
 )
 
-const (
-	mediaTypeAppManifestPreview = "application/vnd.github.fury-preview+json"
-)
-
 // AppConfig describes the configuration of a GitHub App.
 type AppConfig struct {
 	ID            *int64     `json:"id,omitempty"`
+	Slug          *string    `json:"slug,omitempty"`
 	NodeID        *string    `json:"node_id,omitempty"`
 	Owner         *User      `json:"owner,omitempty"`
 	Name          *string    `json:"name,omitempty"`
@@ -41,7 +38,6 @@ func (s *AppsService) CompleteAppManifest(ctx context.Context, code string) (*Ap
 	if err != nil {
 		return nil, nil, err
 	}
-	req.Header.Set("Accept", mediaTypeAppManifestPreview)
 
 	cfg := new(AppConfig)
 	resp, err := s.client.Do(ctx, req, cfg)

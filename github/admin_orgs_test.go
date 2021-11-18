@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAdminOrgs_Create(t *testing.T) {
@@ -28,7 +29,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 
 		testMethod(t, r, "POST")
 		want := &createOrgRequest{Login: String("github"), Admin: String("ghAdmin")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -42,7 +43,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 	}
 
 	want := &Organization{ID: Int64(1), Login: String("github")}
-	if !reflect.DeepEqual(org, want) {
+	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateOrg returned %+v, want %+v", org, want)
 	}
 
@@ -70,7 +71,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		want := &renameOrgRequest{Login: String("the-new-octocats")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -84,7 +85,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 	}
 
 	want := &RenameOrgResponse{Message: String("Job queued to rename organization. It may take a few minutes to complete."), URL: String("https://<hostname>/api/v3/organizations/1")}
-	if !reflect.DeepEqual(resp, want) {
+	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrg returned %+v, want %+v", resp, want)
 	}
 
@@ -108,7 +109,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 
 		testMethod(t, r, "PATCH")
 		want := &renameOrgRequest{Login: String("the-new-octocats")}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
@@ -122,7 +123,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 	}
 
 	want := &RenameOrgResponse{Message: String("Job queued to rename organization. It may take a few minutes to complete."), URL: String("https://<hostname>/api/v3/organizations/1")}
-	if !reflect.DeepEqual(resp, want) {
+	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrg returned %+v, want %+v", resp, want)
 	}
 
@@ -139,4 +140,50 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestCreateOrgRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createOrgRequest{}, "{}")
+
+	u := &createOrgRequest{
+		Login: String("l"),
+		Admin: String("a"),
+	}
+
+	want := `{
+		"login": "l",
+		"admin": "a"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRenameOrgRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &renameOrgRequest{}, "{}")
+
+	u := &renameOrgRequest{
+		Login: String("l"),
+	}
+
+	want := `{
+		"login": "l"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRenameOrgResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &renameOrgRequest{}, "{}")
+
+	u := &RenameOrgResponse{
+		Message: String("m"),
+		URL:     String("u"),
+	}
+
+	want := `{
+		"message": "m",
+		"url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

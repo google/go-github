@@ -20,6 +20,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 const (
@@ -107,7 +109,7 @@ func testFormValues(t *testing.T, r *http.Request, values values) {
 	}
 
 	r.ParseForm()
-	if got := r.Form; !reflect.DeepEqual(got, want) {
+	if got := r.Form; !cmp.Equal(got, want) {
 		t.Errorf("Request parameters: %v, want %v", got, want)
 	}
 }
@@ -199,6 +201,9 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	client.BaseURL.Path = "/api-v3/"
 	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
+	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
+		return
+	}
 	if want := http.StatusForbidden; resp == nil || resp.Response.StatusCode != want {
 		if resp != nil {
 			t.Errorf("rate.Reset.Time > now %v resp = %#v, want StatusCode=%v", methodName, resp.Response, want)
@@ -208,6 +213,32 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 	if err == nil {
 		t.Errorf("rate.Reset.Time > now %v err = nil, want error", methodName)
+	}
+}
+
+// Test that all error response types contain the status code.
+func testErrorResponseForStatusCode(t *testing.T, code int) {
+	t.Helper()
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(code)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListHooks(ctx, "o", "r", nil)
+
+	switch e := err.(type) {
+	case *ErrorResponse:
+	case *RateLimitError:
+	case *AbuseRateLimitError:
+		if code != e.Response.StatusCode {
+			t.Error("Error response does not contain status code")
+		}
+	default:
+		t.Error("Unknown error response type")
 	}
 }
 
@@ -224,6 +255,14 @@ func TestNewClient(t *testing.T) {
 	c2 := NewClient(nil)
 	if c.client == c2.client {
 		t.Error("NewClient returned same http.Clients, but they should differ")
+	}
+}
+
+func TestClient(t *testing.T) {
+	c := NewClient(nil)
+	c2 := c.Client()
+	if c.client == c2 {
+		t.Error("Client returned same http.Client, but should be different")
 	}
 }
 
@@ -633,6 +672,54 @@ func TestResponse_cursorPagination(t *testing.T) {
 	if got, want := response.NextPageToken, "url-encoded-next-page-token"; want != got {
 		t.Errorf("response.NextPageToken: %v, want %v", got, want)
 	}
+
+	// cursor-based pagination with "cursor" param
+	r = http.Response{
+		Header: http.Header{
+			"Link": {
+				`<https://api.github.com/?cursor=v1_12345678>; rel="next"`,
+			},
+		},
+	}
+
+	response = newResponse(&r)
+	if got, want := response.Cursor, "v1_12345678"; got != want {
+		t.Errorf("response.Cursor: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_beforeAfterPagination(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
+				` <https://api.github.com/?after=&before=>; rel="first",` +
+				` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.Before, "d4e5f6"; got != want {
+		t.Errorf("response.Before: %v, want %v", got, want)
+	}
+	if got, want := response.After, "a1b2c3"; got != want {
+		t.Errorf("response.After: %v, want %v", got, want)
+	}
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
 }
 
 func TestResponse_populatePageValues_invalid(t *testing.T) {
@@ -693,7 +780,7 @@ func TestDo(t *testing.T) {
 	client.Do(ctx, req, body)
 
 	want := &foo{"a"}
-	if !reflect.DeepEqual(body, want) {
+	if !cmp.Equal(body, want) {
 		t.Errorf("Response body = %v, want %v", body, want)
 	}
 }
@@ -705,7 +792,7 @@ func TestDo_nilContext(t *testing.T) {
 	req, _ := client.NewRequest("GET", ".", nil)
 	_, err := client.Do(nil, req, nil)
 
-	if !reflect.DeepEqual(err, errors.New("context must be non-nil")) {
+	if !errors.Is(err, errNonNilContext) {
 		t.Errorf("Expected context must be non-nil error")
 	}
 }
@@ -1065,7 +1152,7 @@ func TestSanitizeURL(t *testing.T) {
 		inURL, _ := url.Parse(tt.in)
 		want, _ := url.Parse(tt.want)
 
-		if got := sanitizeURL(inURL); !reflect.DeepEqual(got, want) {
+		if got := sanitizeURL(inURL); !cmp.Equal(got, want) {
 			t.Errorf("sanitizeURL(%v) returned %v, want %v", tt.in, got, want)
 		}
 	}
@@ -1089,15 +1176,12 @@ func TestCheckResponse(t *testing.T) {
 		Response: res,
 		Message:  "m",
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
-		Block: &struct {
-			Reason    string     `json:"reason,omitempty"`
-			CreatedAt *Timestamp `json:"created_at,omitempty"`
-		}{
+		Block: &ErrorBlock{
 			Reason:    "dmca",
 			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
 		},
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1125,7 +1209,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 		Response: res,
 		Message:  "m",
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1147,8 +1231,378 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 		Response: res,
 		Message:  "m",
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func TestCompareHttpResponse(t *testing.T) {
+	testcases := map[string]struct {
+		h1       *http.Response
+		h2       *http.Response
+		expected bool
+	}{
+		"both are nil": {
+			expected: true,
+		},
+		"both are non nil - same StatusCode": {
+			expected: true,
+			h1:       &http.Response{StatusCode: 200},
+			h2:       &http.Response{StatusCode: 200},
+		},
+		"both are non nil - different StatusCode": {
+			expected: false,
+			h1:       &http.Response{StatusCode: 200},
+			h2:       &http.Response{StatusCode: 404},
+		},
+		"one is nil, other is not": {
+			expected: false,
+			h2:       &http.Response{},
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			v := compareHTTPResponse(tc.h1, tc.h2)
+			if tc.expected != v {
+				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
+			}
+		})
+	}
+}
+
+func TestErrorResponse_Is(t *testing.T) {
+	err := &ErrorResponse{
+		Response: &http.Response{},
+		Message:  "m",
+		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+		Block: &ErrorBlock{
+			Reason:    "r",
+			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+		},
+		DocumentationURL: "https://github.com",
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Message": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m1",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - DocumentationURL": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://google.com",
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Errors:  []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message: "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Errors": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r1", Field: "f1", Code: "c1"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Errors have different length": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - one is nil, other is not": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response:         &http.Response{},
+				Errors:           []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:          "m",
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different Reason": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r1",
+					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different CreatedAt #1": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: nil,
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different values - Block - different CreatedAt #2": {
+			wantSame: false,
+			otherError: &ErrorResponse{
+				Response: &http.Response{},
+				Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
+				Message:  "m",
+				Block: &ErrorBlock{
+					Reason:    "r",
+					CreatedAt: &Timestamp{time.Date(2017, time.March, 17, 15, 39, 46, 0, time.UTC)},
+				},
+				DocumentationURL: "https://github.com",
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestRateLimitError_Is(t *testing.T) {
+	err := &RateLimitError{
+		Response: &http.Response{},
+		Message:  "Github",
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		err        *RateLimitError
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			err:      err,
+			otherError: &RateLimitError{
+				Response: &http.Response{},
+				Message:  "Github",
+			},
+		},
+		"errors are same - Response is nil": {
+			wantSame: true,
+			err: &RateLimitError{
+				Message: "Github",
+			},
+			otherError: &RateLimitError{
+				Message: "Github",
+			},
+		},
+		"errors have different values - Rate": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Rate:     Rate{Limit: 10},
+				Response: &http.Response{},
+				Message:  "Gitlab",
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Message: "Github",
+			},
+		},
+		"errors have different values - StatusCode": {
+			wantSame: false,
+			err:      err,
+			otherError: &RateLimitError{
+				Response: &http.Response{StatusCode: 200},
+				Message:  "Github",
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			err:        err,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != tc.err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestAbuseRateLimitError_Is(t *testing.T) {
+	t1 := 1 * time.Second
+	t2 := 2 * time.Second
+	err := &AbuseRateLimitError{
+		Response:   &http.Response{},
+		Message:    "Github",
+		RetryAfter: &t1,
+	}
+	testcases := map[string]struct {
+		wantSame   bool
+		err        *AbuseRateLimitError
+		otherError error
+	}{
+		"errors are same": {
+			wantSame: true,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors are same - Response is nil": {
+			wantSame: true,
+			err: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+			otherError: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different values - Message": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Gitlab",
+				RetryAfter: nil,
+			},
+		},
+		"errors have different values - RetryAfter": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t2,
+			},
+		},
+		"errors have different values - Response is nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different values - StatusCode": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{StatusCode: 200},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			err:        err,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != tc.err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", tc.err, tc.otherError)
+			}
+		})
+	}
+}
+
+func TestAcceptedError_Is(t *testing.T) {
+	err := &AcceptedError{Raw: []byte("Github")}
+	testcases := map[string]struct {
+		wantSame   bool
+		otherError error
+	}{
+		"errors are same": {
+			wantSame:   true,
+			otherError: &AcceptedError{Raw: []byte("Github")},
+		},
+		"errors have different values": {
+			wantSame:   false,
+			otherError: &AcceptedError{Raw: []byte("Gitlab")},
+		},
+		"errors have different types": {
+			wantSame:   false,
+			otherError: errors.New("Github"),
+		},
+	}
+
+	for name, tc := range testcases {
+		t.Run(name, func(t *testing.T) {
+			if tc.wantSame != err.Is(tc.otherError) {
+				t.Errorf("Error = %#v, want %#v", err, tc.otherError)
+			}
+		})
 	}
 }
 
@@ -1168,7 +1622,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 	want := &ErrorResponse{
 		Response: res,
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 }
@@ -1191,7 +1645,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 		Message:  "m",
 		Errors:   []Error{{Message: "error 1"}},
 	}
-	if !reflect.DeepEqual(err, want) {
+	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
 	data, err2 := ioutil.ReadAll(err.Response.Body)
@@ -1284,7 +1738,7 @@ func TestRateLimits(t *testing.T) {
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
 	}
-	if !reflect.DeepEqual(rate, want) {
+	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
 	}
 
@@ -1307,6 +1761,52 @@ func TestRateLimits_coverage(t *testing.T) {
 		_, resp, err := client.RateLimits(ctx)
 		return resp, err
 	})
+}
+
+func TestRateLimits_overQuota(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	client.rateLimits[coreCategory] = Rate{
+		Limit:     1,
+		Remaining: 0,
+		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
+	}
+	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `{"resources":{
+			"core": {"limit":2,"remaining":1,"reset":1372700873},
+			"search": {"limit":3,"remaining":2,"reset":1372700874}
+		}}`)
+	})
+
+	ctx := context.Background()
+	rate, _, err := client.RateLimits(ctx)
+	if err != nil {
+		t.Errorf("RateLimits returned error: %v", err)
+	}
+
+	want := &RateLimits{
+		Core: &Rate{
+			Limit:     2,
+			Remaining: 1,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC).Local()},
+		},
+		Search: &Rate{
+			Limit:     3,
+			Remaining: 2,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
+		},
+	}
+	if !cmp.Equal(rate, want) {
+		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
+	}
+
+	if got, want := client.rateLimits[coreCategory], *want.Core; got != want {
+		t.Errorf("client.rateLimits[coreCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
+		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
+	}
 }
 
 func TestSetCredentialsAsHeaders(t *testing.T) {
@@ -1562,7 +2062,6 @@ func TestAddOptions_QueryValues(t *testing.T) {
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1593,5 +2092,209 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	}
 	if err := resp.Body.Close(); err != nil {
 		t.Fatalf("resp.Body.Close() returned error: %v", err)
+	}
+}
+
+// roundTripperFunc creates a mock RoundTripper (transport)
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
+
+func TestErrorResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ErrorResponse{}, "{}")
+
+	u := &ErrorResponse{
+		Message: "msg",
+		Errors: []Error{
+			{
+				Resource: "res",
+				Field:    "f",
+				Code:     "c",
+				Message:  "msg",
+			},
+		},
+		Block: &ErrorBlock{
+			Reason:    "reason",
+			CreatedAt: &Timestamp{referenceTime},
+		},
+		DocumentationURL: "doc",
+	}
+
+	want := `{
+		"message": "msg",
+		"errors": [
+			{
+				"resource": "res",
+				"field": "f",
+				"code": "c",
+				"message": "msg"
+			}
+		],
+		"block": {
+			"reason": "reason",
+			"created_at": ` + referenceTimeStr + `
+		},
+		"documentation_url": "doc"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestErrorBlock_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ErrorBlock{}, "{}")
+
+	u := &ErrorBlock{
+		Reason:    "reason",
+		CreatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"reason": "reason",
+		"created_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRateLimitError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RateLimitError{}, "{}")
+
+	u := &RateLimitError{
+		Rate: Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		Message: "msg",
+	}
+
+	want := `{
+		"Rate": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestAbuseRateLimitError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
+
+	u := &AbuseRateLimitError{
+		Message: "msg",
+	}
+
+	want := `{
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestError_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Error{}, "{}")
+
+	u := &Error{
+		Resource: "res",
+		Field:    "field",
+		Code:     "code",
+		Message:  "msg",
+	}
+
+	want := `{
+		"resource": "res",
+		"field": "field",
+		"code": "code",
+		"message": "msg"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Rate{}, "{}")
+
+	u := &Rate{
+		Limit:     1,
+		Remaining: 1,
+		Reset:     Timestamp{referenceTime},
+	}
+
+	want := `{
+		"limit": 1,
+		"remaining": 1,
+		"reset": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRateLimits_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RateLimits{}, "{}")
+
+	u := &RateLimits{
+		Core: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		Search: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"core": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"search": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestParseTokenExpiration(t *testing.T) {
+	tests := []struct {
+		header string
+		want   Timestamp
+	}{
+		{
+			header: "",
+			want:   Timestamp{},
+		},
+		{
+			header: "this is a garbage",
+			want:   Timestamp{},
+		},
+		{
+			header: "2021-09-03 02:34:04 UTC",
+			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
+		},
+	}
+
+	for _, tt := range tests {
+		res := &http.Response{
+			Request: &http.Request{},
+			Header:  http.Header{},
+		}
+
+		res.Header.Set(headerTokenExpiration, tt.header)
+		exp := parseTokenExpiration(res)
+		if !exp.Equal(tt.want) {
+			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
+		}
 	}
 }

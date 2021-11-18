@@ -38,6 +38,12 @@ type WorkflowJob struct {
 	Name        *string     `json:"name,omitempty"`
 	Steps       []*TaskStep `json:"steps,omitempty"`
 	CheckRunURL *string     `json:"check_run_url,omitempty"`
+	// Labels represents runner labels from the `runs-on:` key from a GitHub Actions workflow.
+	Labels          []string `json:"labels,omitempty"`
+	RunnerID        *int64   `json:"runner_id,omitempty"`
+	RunnerName      *string  `json:"runner_name,omitempty"`
+	RunnerGroupID   *int64   `json:"runner_group_id,omitempty"`
+	RunnerGroupName *string  `json:"runner_group_name,omitempty"`
 }
 
 // Jobs represents a slice of repository action workflow job.
@@ -145,5 +151,4 @@ func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, f
 		resp, err = s.getWorkflowLogsFromURL(ctx, u, false)
 	}
 	return resp, err
-
 }

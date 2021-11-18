@@ -19,12 +19,14 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	TagName         *string `json:"tag_name,omitempty"`
-	TargetCommitish *string `json:"target_commitish,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Body            *string `json:"body,omitempty"`
-	Draft           *bool   `json:"draft,omitempty"`
-	Prerelease      *bool   `json:"prerelease,omitempty"`
+	TagName                *string `json:"tag_name,omitempty"`
+	TargetCommitish        *string `json:"target_commitish,omitempty"`
+	Name                   *string `json:"name,omitempty"`
+	Body                   *string `json:"body,omitempty"`
+	Draft                  *bool   `json:"draft,omitempty"`
+	Prerelease             *bool   `json:"prerelease,omitempty"`
+	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
+	GenerateReleaseNotes   *bool   `json:"generate_release_notes,omitempty"`
 
 	// The following fields are not used in CreateRelease or EditRelease:
 	ID          *int64          `json:"id,omitempty"`
@@ -43,6 +45,19 @@ type RepositoryRelease struct {
 
 func (r RepositoryRelease) String() string {
 	return Stringify(r)
+}
+
+// RepositoryReleaseNotes represents a GitHub-generated release notes.
+type RepositoryReleaseNotes struct {
+	Name string `json:"name"`
+	Body string `json:"body"`
+}
+
+// GenerateNotesOptions represents the options to generate release notes.
+type GenerateNotesOptions struct {
+	TagName         string  `json:"tag_name"`
+	PreviousTagName *string `json:"previous_tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
 }
 
 // ReleaseAsset represents a GitHub release asset in a repository.
@@ -113,6 +128,25 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 	return s.getSingleRelease(ctx, u)
 }
 
+// GenerateReleaseNotes generates the release notes for the given tag.
+// TODO: api docs
+// GitHub API docs:
+func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, opts *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
+	u := fmt.Sprintf("repos/%s/%s/releases/generate-notes", owner, repo)
+	req, err := s.client.NewRequest("POST", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	r := new(RepositoryReleaseNotes)
+	resp, err := s.client.Do(ctx, req, r)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return r, resp, nil
+}
+
 func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) (*RepositoryRelease, *Response, error) {
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
@@ -134,12 +168,14 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 // See https://github.com/google/go-github/issues/992 for more
 // information.
 type repositoryReleaseRequest struct {
-	TagName         *string `json:"tag_name,omitempty"`
-	TargetCommitish *string `json:"target_commitish,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Body            *string `json:"body,omitempty"`
-	Draft           *bool   `json:"draft,omitempty"`
-	Prerelease      *bool   `json:"prerelease,omitempty"`
+	TagName                *string `json:"tag_name,omitempty"`
+	TargetCommitish        *string `json:"target_commitish,omitempty"`
+	Name                   *string `json:"name,omitempty"`
+	Body                   *string `json:"body,omitempty"`
+	Draft                  *bool   `json:"draft,omitempty"`
+	Prerelease             *bool   `json:"prerelease,omitempty"`
+	GenerateReleaseNotes   *bool   `json:"generate_release_notes,omitempty"`
+	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 }
 
 // CreateRelease adds a new release for a repository.
@@ -152,12 +188,14 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 	u := fmt.Sprintf("repos/%s/%s/releases", owner, repo)
 
 	releaseReq := &repositoryReleaseRequest{
-		TagName:         release.TagName,
-		TargetCommitish: release.TargetCommitish,
-		Name:            release.Name,
-		Body:            release.Body,
-		Draft:           release.Draft,
-		Prerelease:      release.Prerelease,
+		TagName:                release.TagName,
+		TargetCommitish:        release.TargetCommitish,
+		Name:                   release.Name,
+		Body:                   release.Body,
+		Draft:                  release.Draft,
+		Prerelease:             release.Prerelease,
+		DiscussionCategoryName: release.DiscussionCategoryName,
+		GenerateReleaseNotes:   release.GenerateReleaseNotes,
 	}
 
 	req, err := s.client.NewRequest("POST", u, releaseReq)
@@ -183,12 +221,14 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 	u := fmt.Sprintf("repos/%s/%s/releases/%d", owner, repo, id)
 
 	releaseReq := &repositoryReleaseRequest{
-		TagName:         release.TagName,
-		TargetCommitish: release.TargetCommitish,
-		Name:            release.Name,
-		Body:            release.Body,
-		Draft:           release.Draft,
-		Prerelease:      release.Prerelease,
+		TagName:                release.TagName,
+		TargetCommitish:        release.TargetCommitish,
+		Name:                   release.Name,
+		Body:                   release.Body,
+		Draft:                  release.Draft,
+		Prerelease:             release.Prerelease,
+		DiscussionCategoryName: release.DiscussionCategoryName,
+		GenerateReleaseNotes:   release.GenerateReleaseNotes,
 	}
 
 	req, err := s.client.NewRequest("PATCH", u, releaseReq)

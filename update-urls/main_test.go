@@ -10,11 +10,11 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
-	"reflect"
 	"regexp"
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -233,7 +233,7 @@ type fakeDocCache struct {
 	endpoints endpointsByFragmentID
 }
 
-func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
+func (f *fakeDocCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
 	f.t.Helper()
 	for fragmentID, endpoints := range f.endpoints {
 		for _, endpoint := range endpoints {
@@ -241,13 +241,13 @@ func (f *fakeDocCache) UrlByMethodAndPath(methodAndPath string) (string, bool) {
 				key := fmt.Sprintf("%v %v", endpoint.httpMethod, urlFormat)
 				if key == methodAndPath {
 					url := fmt.Sprintf("%v#%v", f.baseURL, fragmentID)
-					// log.Printf("UrlByMethodAndPath(%q) = (%q, true)", methodAndPath, url)
+					// log.Printf("URLByMethodAndPath(%q) = (%q, true)", methodAndPath, url)
 					return url, true
 				}
 			}
 		}
 	}
-	f.t.Fatalf("fakeDocCache.UrlByMethodAndPath: unable to find method %v", methodAndPath)
+	f.t.Fatalf("fakeDocCache.URLByMethodAndPath: unable to find method %v", methodAndPath)
 	return "", false
 }
 
@@ -433,6 +433,10 @@ func TestSortAndMergeFileEdits(t *testing.T) {
 		},
 	}
 
+	fileEditEqual := cmp.Comparer(func(a, b *FileEdit) bool {
+		return a.fromText == b.fromText && a.pos == b.pos && a.toText == b.toText
+	})
+
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
 			got := sortAndMergeFileEdits(tt.fileEdits)
@@ -445,7 +449,7 @@ func TestSortAndMergeFileEdits(t *testing.T) {
 				if i < len(tt.want) {
 					wantFileEdit = tt.want[i]
 				}
-				if !reflect.DeepEqual(got[i], wantFileEdit) {
+				if !cmp.Equal(got[i], wantFileEdit, fileEditEqual) {
 					t.Errorf("got[%v] =\n%#v\nwant[%v]:\n%#v", i, got[i], i, wantFileEdit)
 				}
 			}
@@ -538,6 +542,13 @@ func TestGitURL(t *testing.T) {
 	}
 }
 
+var endpointEqual = cmp.Comparer(func(a, b *Endpoint) bool {
+	if a.httpMethod != b.httpMethod {
+		return false
+	}
+	return cmp.Equal(a.urlFormats, b.urlFormats)
+})
+
 func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 	t.Helper()
 
@@ -551,7 +562,7 @@ func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 			if ok && i < len(w) {
 				wantEndpoint = w[i]
 			}
-			if !reflect.DeepEqual(got[k][i], wantEndpoint) {
+			if !cmp.Equal(got[k][i], wantEndpoint, endpointEqual) {
 				t.Errorf("got[%q][%v] =\n%#v\nwant[%q][%v]:\n%#v", k, i, got[k][i], k, i, wantEndpoint)
 			}
 		}
@@ -590,7 +601,7 @@ func TestParseEndpoint(t *testing.T) {
 		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
 			got := parseEndpoint(tt.s, tt.method)
 
-			if !reflect.DeepEqual(got, tt.want) {
+			if !cmp.Equal(got, tt.want, endpointEqual) {
 				t.Errorf("parseEndpoint = %#v, want %#v", got, tt.want)
 			}
 		})

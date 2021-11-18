@@ -1,4 +1,11 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
 name: tests
 env:
   GO111MODULE: on
@@ -7,33 +14,49 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.x, 1.14.x]
-        platform: [ubuntu-latest, windows-latest]
+        go-version: [1.x, 1.16.x]
+        platform: [ubuntu-latest]
+        include:
+          # include windows, but only with the latest Go version, since there
+          # is very little in the library that is platform specific
+          - go-version: 1.x
+            platform: windows-latest
+
+          # only update test coverage stats with the most recent go version on linux
+          - go-version: 1.x
+            platform: ubuntu-latest
+            update-coverage: true
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/setup-go@v1
+    - name: Cancel previous
+      uses: styfle/cancel-workflow-action@a40b8845c0683271d9f53dfcb887a7e181d3918b #0.9.1
+      with:
+        access_token: ${{ github.token }}
+
+    - uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v2
 
-    - name: Cache go modules
-      uses: actions/cache@v1
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
-        restore-keys: ${{ runner.os }}-go-
+    # Get values for cache paths to be used in later steps 
+    - id: cache-paths
+      run: |
+        echo "::set-output name=go-cache::$(go env GOCACHE)"
+        echo "::set-output name=go-mod-cache::$(go env GOMODCACHE)"
 
-    - name: Run go fmt
-      if: runner.os != 'Windows'
-      run: diff -u <(echo -n) <(gofmt -d -s .)
+    - name: Cache go modules
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ steps.cache-paths.outputs.go-cache }}
+          ${{ steps.cache-paths.outputs.go-mod-cache }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: ${{ runner.os }}-go-
 
     - name: Ensure go generate produces a zero diff
       shell: bash
-      run:  go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-
-    - name: Run go vet
-      run: go vet ./...
+      run: go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
 
     - name: Run go test
       run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
@@ -48,6 +71,12 @@ jobs:
         go test ./...
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+      if: ${{ matrix.update-coverage }}
+      uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b #v2.1.0
+
+    - name: Ensure go generate produces a zero diff for update-urls
+      shell: bash
+      run: cd update-urls && go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+
+    - name: Run go test for update-urls
+      run: cd update-urls && go test -v -race ./...

@@ -10,12 +10,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestGistComments_marshall(t *testing.T) {
+func TestGistComments_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GistComment{}, "{}")
 
 	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
@@ -88,7 +89,7 @@ func TestGistsService_ListComments(t *testing.T) {
 	}
 
 	want := []*GistComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -132,7 +133,7 @@ func TestGistsService_GetComment(t *testing.T) {
 	}
 
 	want := &GistComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
 	}
 
@@ -171,7 +172,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -185,7 +186,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 	}
 
 	want := &GistComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
 	}
 
@@ -224,7 +225,7 @@ func TestGistsService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -238,7 +239,7 @@ func TestGistsService_EditComment(t *testing.T) {
 	}
 
 	want := &GistComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
 	}
 

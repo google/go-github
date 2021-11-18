@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListDeployments(t *testing.T) {
@@ -33,7 +34,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 	}
 
 	want := []*Deployment{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(deployments, want) {
+	if !cmp.Equal(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
 
@@ -69,7 +70,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 
 	want := &Deployment{ID: Int64(3)}
 
-	if !reflect.DeepEqual(deployment, want) {
+	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
 	}
 
@@ -101,7 +102,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -115,7 +116,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	}
 
 	want := &Deployment{Ref: String("1111"), Task: String("deploy")}
-	if !reflect.DeepEqual(deployment, want) {
+	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
 
@@ -191,7 +192,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 	}
 
 	want := []*DeploymentStatus{{ID: Int64(1)}, {ID: Int64(2)}}
-	if !reflect.DeepEqual(statutses, want) {
+	if !cmp.Equal(statutses, want) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statutses, want)
 	}
 
@@ -228,7 +229,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 	}
 
 	want := &DeploymentStatus{ID: Int64(4)}
-	if !reflect.DeepEqual(deploymentStatus, want) {
+	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
 
@@ -260,7 +261,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -274,7 +275,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	}
 
 	want := &DeploymentStatus{State: String("inactive"), Description: String("deploy")}
-	if !reflect.DeepEqual(deploymentStatus, want) {
+	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
 
@@ -291,4 +292,217 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestDeploymentStatusRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DeploymentStatusRequest{}, "{}")
+
+	r := &DeploymentStatusRequest{
+		State:          String("state"),
+		LogURL:         String("logurl"),
+		Description:    String("desc"),
+		Environment:    String("env"),
+		EnvironmentURL: String("eurl"),
+		AutoInactive:   Bool(false),
+	}
+
+	want := `{
+		"state": "state",
+		"log_url": "logurl",
+		"description": "desc",
+		"environment": "env",
+		"environment_url": "eurl",
+		"auto_inactive": false
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestDeploymentStatus_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DeploymentStatus{}, "{}")
+
+	r := &DeploymentStatus{
+		ID:    Int64(1),
+		State: String("state"),
+		Creator: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		Description:    String("desc"),
+		Environment:    String("env"),
+		NodeID:         String("nid"),
+		CreatedAt:      &Timestamp{referenceTime},
+		UpdatedAt:      &Timestamp{referenceTime},
+		TargetURL:      String("turl"),
+		DeploymentURL:  String("durl"),
+		RepositoryURL:  String("rurl"),
+		EnvironmentURL: String("eurl"),
+		LogURL:         String("lurl"),
+		URL:            String("url"),
+	}
+
+	want := `{
+		"id": 1,
+		"state": "state",
+		"creator": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"description": "desc",
+		"environment": "env",
+		"node_id": "nid",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"target_url": "turl",
+		"deployment_url": "durl",
+		"repository_url": "rurl",
+		"environment_url": "eurl",
+		"log_url": "lurl",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestDeploymentRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DeploymentRequest{}, "{}")
+
+	r := &DeploymentRequest{
+		Ref:                   String("ref"),
+		Task:                  String("task"),
+		AutoMerge:             Bool(false),
+		RequiredContexts:      &[]string{"s"},
+		Payload:               "payload",
+		Environment:           String("environment"),
+		Description:           String("description"),
+		TransientEnvironment:  Bool(false),
+		ProductionEnvironment: Bool(false),
+	}
+
+	want := `{
+		"ref": "ref",
+		"task": "task",
+		"auto_merge": false,
+		"required_contexts": ["s"],
+		"payload": "payload",
+		"environment": "environment",
+		"description": "description",
+		"transient_environment": false,
+		"production_environment": false
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestDeployment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Deployment{}, "{}")
+
+	str := "s"
+	jsonMsg, _ := json.Marshal(str)
+
+	r := &Deployment{
+		URL:         String("url"),
+		ID:          Int64(1),
+		SHA:         String("sha"),
+		Ref:         String("ref"),
+		Task:        String("task"),
+		Payload:     jsonMsg,
+		Environment: String("env"),
+		Description: String("desc"),
+		Creator: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		CreatedAt:     &Timestamp{referenceTime},
+		UpdatedAt:     &Timestamp{referenceTime},
+		StatusesURL:   String("surl"),
+		RepositoryURL: String("rurl"),
+		NodeID:        String("nid"),
+	}
+
+	want := `{
+		"url": "url",
+		"id": 1,
+		"sha": "sha",
+		"ref": "ref",
+		"task": "task",
+		"payload": "s",
+		"environment": "env",
+		"description": "desc",
+		"creator": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"statuses_url": "surl",
+		"repository_url": "rurl",
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, r, want)
 }

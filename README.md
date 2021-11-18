@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v33/github)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v40/github)
 [![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -9,7 +9,7 @@
 
 go-github is a Go client library for accessing the [GitHub API v3][].
 
-Currently, **go-github requires Go version 1.9 or greater**.  go-github tracks
+Currently, **go-github requires Go version 1.13 or greater**.  go-github tracks
 [Go's version support policy][support-policy].  We do our best not to break
 older versions of Go if we don't have to, but due to tooling constraints, we
 don't always test older versions.
@@ -24,7 +24,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v33
+go get github.com/google/go-github/v40
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -32,21 +32,21 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v33/github"
+import "github.com/google/go-github/v40/github"
 ```
 
-and run `go get` without paramters.
+and run `go get` without parameters.
 
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v33@master
+go get github.com/google/go-github/v40@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v33/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v40/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -246,22 +246,17 @@ For complete usage of go-github, see the full [package docs][].
 [oauth2]: https://github.com/golang/oauth2
 [oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v33/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v40/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
+
+### Testing code that uses `go-github`
+
+The repo [migueleliasweb/go-github-mock](https://github.com/migueleliasweb/go-github-mock) provides a way to mock responses. Check the repo for more details.
 
 ### Integration Tests ###
 
 You can run integration tests from the `test` directory. See the integration tests [README](test/README.md).
-
-## Roadmap ##
-
-This library is being initially developed for an internal application at
-Google, so API methods will likely be implemented in the order that they are
-needed by that application. You can track the status of implementation in
-[this Google spreadsheet][roadmap].
-
-[roadmap]: https://docs.google.com/spreadsheet/ccc?key=0ApoVX4GOiXr-dGNKN1pObFh6ek1DR2FKUjBNZ1FmaEE&usp=sharing
 
 ## Contributing ##
 I would like to cover the entire GitHub API and contributions are of course always welcome. The

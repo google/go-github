@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestGitService_GetRef_singleRef(t *testing.T) {
@@ -48,7 +49,7 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
-	if !reflect.DeepEqual(ref, want) {
+	if !cmp.Equal(ref, want) {
 		t.Errorf("Git.GetRef returned %+v, want %+v", ref, want)
 	}
 
@@ -145,7 +146,7 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
-	if !reflect.DeepEqual(ref, want) {
+	if !cmp.Equal(ref, want) {
 		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", ref, want)
 	}
 
@@ -216,7 +217,7 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
-	if !reflect.DeepEqual(refs[0], want) {
+	if !cmp.Equal(refs[0], want) {
 		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", refs[0], want)
 	}
 
@@ -325,7 +326,7 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(refs, want) {
+	if !cmp.Equal(refs, want) {
 		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", refs, want)
 	}
 
@@ -362,7 +363,7 @@ func TestGitService_ListMatchingRefs_options(t *testing.T) {
 	}
 
 	want := []*Reference{{Ref: String("r")}}
-	if !reflect.DeepEqual(refs, want) {
+	if !cmp.Equal(refs, want) {
 		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", refs, want)
 	}
 
@@ -395,7 +396,7 @@ func TestGitService_CreateRef(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, args) {
+		if !cmp.Equal(v, args) {
 			t.Errorf("Request body = %+v, want %+v", v, args)
 		}
 		fmt.Fprint(w, `
@@ -430,7 +431,7 @@ func TestGitService_CreateRef(t *testing.T) {
 			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
-	if !reflect.DeepEqual(ref, want) {
+	if !cmp.Equal(ref, want) {
 		t.Errorf("Git.CreateRef returned %+v, want %+v", ref, want)
 	}
 
@@ -484,7 +485,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, args) {
+		if !cmp.Equal(v, args) {
 			t.Errorf("Request body = %+v, want %+v", v, args)
 		}
 		fmt.Fprint(w, `
@@ -517,7 +518,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
-	if !reflect.DeepEqual(ref, want) {
+	if !cmp.Equal(ref, want) {
 		t.Errorf("Git.UpdateRef returned %+v, want %+v", ref, want)
 	}
 
@@ -621,4 +622,82 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestReference_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Reference{}, "{}")
+
+	u := &Reference{
+		Ref: String("ref"),
+		URL: String("url"),
+		Object: &GitObject{
+			Type: String("type"),
+			SHA:  String("sha"),
+			URL:  String("url"),
+		},
+		NodeID: String("nid"),
+	}
+
+	want := `{
+		"ref": "ref",
+		"url": "url",
+		"object": {
+			"type": "type",
+			"sha": "sha",
+			"url": "url"
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestGitObject_Marshal(t *testing.T) {
+	testJSONMarshal(t, &GitObject{}, "{}")
+
+	u := &GitObject{
+		Type: String("type"),
+		SHA:  String("sha"),
+		URL:  String("url"),
+	}
+
+	want := `{
+		"type": "type",
+		"sha": "sha",
+		"url": "url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateRefRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createRefRequest{}, "{}")
+
+	u := &createRefRequest{
+		Ref: String("ref"),
+		SHA: String("sha"),
+	}
+
+	want := `{
+		"ref": "ref",
+		"sha": "sha"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateRefRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &updateRefRequest{}, "{}")
+
+	u := &updateRefRequest{
+		SHA:   String("sha"),
+		Force: Bool(true),
+	}
+
+	want := `{
+		"sha": "sha",
+		"force": true
+	}`
+
+	testJSONMarshal(t, u, want)
 }

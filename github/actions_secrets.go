@@ -7,13 +7,44 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // PublicKey represents the public key that should be used to encrypt secrets.
 type PublicKey struct {
 	KeyID *string `json:"key_id"`
 	Key   *string `json:"key"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+// This ensures GitHub Enterprise versions which return a numeric key id
+// do not error out when unmarshaling.
+func (p *PublicKey) UnmarshalJSON(data []byte) error {
+	var pk struct {
+		KeyID interface{} `json:"key_id,string"`
+		Key   *string     `json:"key"`
+	}
+
+	if err := json.Unmarshal(data, &pk); err != nil {
+		return err
+	}
+
+	p.Key = pk.Key
+
+	switch v := pk.KeyID.(type) {
+	case nil:
+		return nil
+	case string:
+		p.KeyID = &v
+	case float64:
+		p.KeyID = String(strconv.FormatFloat(v, 'f', -1, 64))
+	default:
+		return fmt.Errorf("unable to unmarshal %T as a string", v)
+	}
+
+	return nil
 }
 
 // GetRepoPublicKey gets a public key that should be used for secret encryption.
@@ -40,6 +71,25 @@ func (s *ActionsService) GetRepoPublicKey(ctx context.Context, owner, repo strin
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-an-organization-public-key
 func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/secrets/public-key", org)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	pubKey := new(PublicKey)
+	resp, err := s.client.Do(ctx, req, pubKey)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pubKey, resp, nil
+}
+
+// GetEnvPublicKey gets a public key that should be used for secret encryption.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-an-environment-public-key
+func (s *ActionsService) GetEnvPublicKey(ctx context.Context, repoID int, env string) (*PublicKey, *Response, error) {
+	u := fmt.Sprintf("repositories/%v/environments/%v/secrets/public-key", repoID, env)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -224,8 +274,13 @@ type SelectedReposList struct {
 // ListSelectedReposForOrgSecret lists all repositories that have access to a secret.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-selected-repositories-for-an-organization-secret
-func (s *ActionsService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string) (*SelectedReposList, *Response, error) {
+func (s *ActionsService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", org, name)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -247,7 +302,7 @@ func (s *ActionsService) SetSelectedReposForOrgSecret(ctx context.Context, org, 
 	u := fmt.Sprintf("orgs/%v/actions/secrets/%v/repositories", org, name)
 
 	type repoIDs struct {
-		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
 	req, err := s.client.NewRequest("PUT", u, repoIDs{SelectedIDs: ids})
@@ -289,6 +344,77 @@ func (s *ActionsService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-an-organization-secret
 func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, name)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// ListEnvSecrets lists all secrets available in an environment.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-environment-secrets
+func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error) {
+	u := fmt.Sprintf("repositories/%v/environments/%v/secrets", repoID, env)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	secrets := new(Secrets)
+	resp, err := s.client.Do(ctx, req, &secrets)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secrets, resp, nil
+}
+
+// GetEnvSecret gets a single environment secret without revealing its encrypted value.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-environment-secrets
+func (s *ActionsService) GetEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Secret, *Response, error) {
+	u := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	secret := new(Secret)
+	resp, err := s.client.Do(ctx, req, secret)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return secret, resp, nil
+}
+
+// CreateOrUpdateEnvSecret creates or updates a repository secret with an encrypted value.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#create-or-update-an-environment-secret
+func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, eSecret.Name)
+
+	req, err := s.client.NewRequest("PUT", u, eSecret)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// DeleteEnvSecret deletes a secret in an environment using the secret name.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#delete-an-environment-secret
+func (s *ActionsService) DeleteEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Response, error) {
+	u := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

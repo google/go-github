@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestGitService_GetTag(t *testing.T) {
@@ -30,7 +31,7 @@ func TestGitService_GetTag(t *testing.T) {
 	}
 
 	want := &Tag{Tag: String("t")}
-	if !reflect.DeepEqual(tag, want) {
+	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
 
@@ -52,7 +53,7 @@ func TestGitService_CreateTag(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -69,7 +70,7 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	want := &Tag{Tag: String("t")}
-	if !reflect.DeepEqual(tag, want) {
+	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
 
@@ -81,4 +82,92 @@ func TestGitService_CreateTag(t *testing.T) {
 		})
 		return err
 	})
+}
+
+func TestTag_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Tag{}, "{}")
+
+	u := &Tag{
+		Tag:     String("tag"),
+		SHA:     String("sha"),
+		URL:     String("url"),
+		Message: String("msg"),
+		Tagger: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Object: &GitObject{
+			Type: String("type"),
+			SHA:  String("sha"),
+			URL:  String("url"),
+		},
+		Verification: &SignatureVerification{
+			Verified:  Bool(true),
+			Reason:    String("reason"),
+			Signature: String("sign"),
+			Payload:   String("payload"),
+		},
+		NodeID: String("nid"),
+	}
+
+	want := `{
+		"tag": "tag",
+		"sha": "sha",
+		"url": "url",
+		"message": "msg",
+		"tagger": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"object": {
+			"type": "type",
+			"sha": "sha",
+			"url": "url"
+		},
+		"verification": {
+			"verified": true,
+			"reason": "reason",
+			"signature": "sign",
+			"payload": "payload"
+		},
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateTagRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createTagRequest{}, "{}")
+
+	u := &createTagRequest{
+		Tag:     String("tag"),
+		Message: String("msg"),
+		Object:  String("obj"),
+		Type:    String("type"),
+		Tagger: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+	}
+
+	want := `{
+		"tag": "tag",
+		"message": "msg",
+		"object": "obj",
+		"type": "type",
+		"tagger": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
 }

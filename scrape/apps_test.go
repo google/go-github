@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v32/github"
+	"github.com/google/go-github/v40/github"
 )
 
 func Test_AppRestrictionsEnabled(t *testing.T) {
@@ -43,7 +43,6 @@ func Test_AppRestrictionsEnabled(t *testing.T) {
 			if want := tt.want; got != want {
 				t.Errorf("AppRestrictionsEnabled returned %t, want %t", got, want)
 			}
-
 		})
 	}
 }
@@ -83,7 +82,6 @@ func Test_ListOAuthApps(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListOAuthApps(o) returned %v, want %v", got, want)
 	}
-
 }
 
 func Test_CreateApp(t *testing.T) {

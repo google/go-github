@@ -72,6 +72,9 @@ func stringifyValue(w io.Writer, val reflect.Value) {
 			if fv.Kind() == reflect.Slice && fv.IsNil() {
 				continue
 			}
+			if fv.Kind() == reflect.Map && fv.IsNil() {
+				continue
+			}
 
 			if sep {
 				w.Write([]byte(", "))

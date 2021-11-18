@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build integration
 // +build integration
 
 package integration
@@ -16,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v40/github"
 )
 
 const msgEnvMissing = "Skipping test because the required environment variable (%v) is not present."

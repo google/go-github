@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_List_all(t *testing.T) {
@@ -47,7 +48,7 @@ func TestIssuesService_List_all(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -78,7 +79,7 @@ func TestIssuesService_List_owned(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 }
@@ -100,7 +101,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -161,7 +162,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	}
 
 	want := []*Issue{{Number: Int(1)}}
-	if !reflect.DeepEqual(issues, want) {
+	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
 	}
 
@@ -214,7 +215,7 @@ func TestIssuesService_Get(t *testing.T) {
 			Color: String("c"),
 		}},
 	}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Get returned %+v, want %+v", issue, want)
 	}
 
@@ -258,7 +259,7 @@ func TestIssuesService_Create(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -272,7 +273,7 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1)}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Create returned %+v, want %+v", issue, want)
 	}
 
@@ -311,7 +312,7 @@ func TestIssuesService_Edit(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -325,7 +326,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	}
 
 	want := &Issue{Number: Int(1)}
-	if !reflect.DeepEqual(issue, want) {
+	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
 	}
 
@@ -337,6 +338,40 @@ func TestIssuesService_Edit(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Issues.Edit(ctx, "o", "r", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestIssuesService_RemoveMilestone(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"number":1}`)
+	})
+
+	ctx := context.Background()
+	issue, _, err := client.Issues.RemoveMilestone(ctx, "o", "r", 1)
+	if err != nil {
+		t.Errorf("Issues.RemoveMilestone returned error: %v", err)
+	}
+
+	want := &Issue{Number: Int(1)}
+	if !cmp.Equal(issue, want) {
+		t.Errorf("Issues.RemoveMilestone returned %+v, want %+v", issue, want)
+	}
+
+	const methodName = "RemoveMilestone"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Issues.RemoveMilestone(ctx, "\n", "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.RemoveMilestone(ctx, "o", "r", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -431,4 +466,164 @@ func TestIsPullRequest(t *testing.T) {
 	if i.IsPullRequest() == false {
 		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
 	}
+}
+
+func TestLockIssueOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &LockIssueOptions{}, "{}")
+
+	u := &LockIssueOptions{
+		LockReason: "lr",
+	}
+
+	want := `{
+		"lock_reason": "lr"
+		}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPullRequestLinks_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullRequestLinks{}, "{}")
+
+	u := &PullRequestLinks{
+		URL:      String("url"),
+		HTMLURL:  String("hurl"),
+		DiffURL:  String("durl"),
+		PatchURL: String("purl"),
+	}
+
+	want := `{
+		"url": "url",
+		"html_url": "hurl",
+		"diff_url": "durl",
+		"patch_url": "purl"
+		}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssueRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueRequest{}, "{}")
+
+	u := &IssueRequest{
+		Title:     String("url"),
+		Body:      String("url"),
+		Labels:    &[]string{"l"},
+		Assignee:  String("url"),
+		State:     String("url"),
+		Milestone: Int(1),
+		Assignees: &[]string{"a"},
+	}
+
+	want := `{
+		"title": "url",
+		"body": "url",
+		"labels": [
+			"l"
+		],
+		"assignee": "url",
+		"state": "url",
+		"milestone": 1,
+		"assignees": [
+			"a"
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssue_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Issue{}, "{}")
+
+	u := &Issue{
+		ID:                Int64(1),
+		Number:            Int(1),
+		State:             String("s"),
+		Locked:            Bool(false),
+		Title:             String("title"),
+		Body:              String("body"),
+		AuthorAssociation: String("aa"),
+		User:              &User{ID: Int64(1)},
+		Labels:            []*Label{{ID: Int64(1)}},
+		Assignee:          &User{ID: Int64(1)},
+		Comments:          Int(1),
+		ClosedAt:          &referenceTime,
+		CreatedAt:         &referenceTime,
+		UpdatedAt:         &referenceTime,
+		ClosedBy:          &User{ID: Int64(1)},
+		URL:               String("url"),
+		HTMLURL:           String("hurl"),
+		CommentsURL:       String("curl"),
+		EventsURL:         String("eurl"),
+		LabelsURL:         String("lurl"),
+		RepositoryURL:     String("rurl"),
+		Milestone:         &Milestone{ID: Int64(1)},
+		PullRequestLinks:  &PullRequestLinks{URL: String("url")},
+		Repository:        &Repository{ID: Int64(1)},
+		Reactions:         &Reactions{TotalCount: Int(1)},
+		Assignees:         []*User{{ID: Int64(1)}},
+		NodeID:            String("nid"),
+		TextMatches:       []*TextMatch{{ObjectURL: String("ourl")}},
+		ActiveLockReason:  String("alr"),
+	}
+
+	want := `{
+		"id": 1,
+		"number": 1,
+		"state": "s",
+		"locked": false,
+		"title": "title",
+		"body": "body",
+		"author_association": "aa",
+		"user": {
+			"id": 1
+		},
+		"labels": [
+			{
+				"id": 1
+			}
+		],
+		"assignee": {
+			"id": 1
+		},
+		"comments": 1,
+		"closed_at": ` + referenceTimeStr + `,
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"closed_by": {
+			"id": 1
+		},
+		"url": "url",
+		"html_url": "hurl",
+		"comments_url": "curl",
+		"events_url": "eurl",
+		"labels_url": "lurl",
+		"repository_url": "rurl",
+		"milestone": {
+			"id": 1
+		},
+		"pull_request": {
+			"url": "url"
+		},
+		"repository": {
+			"id": 1
+		},
+		"reactions": {
+			"total_count": 1
+		},
+		"assignees": [
+			{
+				"id": 1
+			}
+		],
+		"node_id": "nid",
+		"text_matches": [
+			{
+				"object_url": "ourl"
+			}
+		],
+		"active_lock_reason": "alr"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

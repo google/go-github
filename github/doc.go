@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v33/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+	import "github.com/google/go-github/v40/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 	import "github.com/google/go-github/github"     // with go modules disabled
 
 Construct a new GitHub client, then use the various services on the client to
@@ -73,6 +73,10 @@ BasicAuthTransport.
 
 GitHub Apps authentication can be provided by the
 https://github.com/bradleyfalzon/ghinstallation package.
+It supports both authentication as an installation, using an installation access token,
+and as an app, using a JWT.
+
+To authenticate as an installation:
 
 	import "github.com/bradleyfalzon/ghinstallation"
 
@@ -85,6 +89,23 @@ https://github.com/bradleyfalzon/ghinstallation package.
 
 		// Use installation transport with client
 		client := github.NewClient(&http.Client{Transport: itr})
+
+		// Use client...
+	}
+
+To authenticate as an app, using a JWT:
+
+	import "github.com/bradleyfalzon/ghinstallation"
+
+	func main() {
+		// Wrap the shared transport for use with the application ID 1.
+		atr, err := ghinstallation.NewAppsTransportKeyFromFile(http.DefaultTransport, 1, "2016-10-19.private-key.pem")
+		if err != nil {
+			// Handle error.
+		}
+
+		// Use app transport with client
+		client := github.NewClient(&http.Client{Transport: atr})
 
 		// Use client...
 	}
@@ -112,7 +133,7 @@ To detect an API rate limit error, you can check if its type is *github.RateLimi
 	}
 
 Learn more about GitHub rate limiting at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/#rate-limiting.
+https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#rate-limiting.
 
 Accepted Status
 
@@ -138,7 +159,7 @@ instead designed to work with a caching http.Transport. We recommend using
 https://github.com/gregjones/httpcache for that.
 
 Learn more about GitHub conditional requests at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/#conditional-requests.
+https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#conditional-requests.
 
 Creating and Updating Resources
 

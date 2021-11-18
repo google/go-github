@@ -9,10 +9,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActivityService_ListStargazers(t *testing.T) {
@@ -36,7 +37,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 	}
 
 	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Int64(1)}}}
-	if !reflect.DeepEqual(stargazers, want) {
+	if !cmp.Equal(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
 
@@ -72,7 +73,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	}
 
 	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(1)}}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
 
@@ -114,7 +115,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 	}
 
 	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Int64(2)}}}
-	if !reflect.DeepEqual(repos, want) {
+	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
 
@@ -283,4 +284,82 @@ func TestActivityService_Unstar_invalidID(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Activity.Unstar(ctx, "%", "%")
 	testURLParseError(t, err)
+}
+
+func TestStarredRepository_Marshal(t *testing.T) {
+	testJSONMarshal(t, &StarredRepository{}, "{}")
+
+	u := &StarredRepository{
+		StarredAt: &Timestamp{referenceTime},
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+	}
+
+	want := `{
+		"starred_at": ` + referenceTimeStr + `,
+		"repo": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStargazer_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Stargazer{}, "{}")
+
+	u := &Stargazer{
+		StarredAt: &Timestamp{referenceTime},
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+	}
+
+	want := `{
+		"starred_at": ` + referenceTimeStr + `,
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
 }

@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -20,47 +21,50 @@ type RepositoriesService service
 
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID                  *int64           `json:"id,omitempty"`
-	NodeID              *string          `json:"node_id,omitempty"`
-	Owner               *User            `json:"owner,omitempty"`
-	Name                *string          `json:"name,omitempty"`
-	FullName            *string          `json:"full_name,omitempty"`
-	Description         *string          `json:"description,omitempty"`
-	Homepage            *string          `json:"homepage,omitempty"`
-	CodeOfConduct       *CodeOfConduct   `json:"code_of_conduct,omitempty"`
-	DefaultBranch       *string          `json:"default_branch,omitempty"`
-	MasterBranch        *string          `json:"master_branch,omitempty"`
-	CreatedAt           *Timestamp       `json:"created_at,omitempty"`
-	PushedAt            *Timestamp       `json:"pushed_at,omitempty"`
-	UpdatedAt           *Timestamp       `json:"updated_at,omitempty"`
-	HTMLURL             *string          `json:"html_url,omitempty"`
-	CloneURL            *string          `json:"clone_url,omitempty"`
-	GitURL              *string          `json:"git_url,omitempty"`
-	MirrorURL           *string          `json:"mirror_url,omitempty"`
-	SSHURL              *string          `json:"ssh_url,omitempty"`
-	SVNURL              *string          `json:"svn_url,omitempty"`
-	Language            *string          `json:"language,omitempty"`
-	Fork                *bool            `json:"fork,omitempty"`
-	ForksCount          *int             `json:"forks_count,omitempty"`
-	NetworkCount        *int             `json:"network_count,omitempty"`
-	OpenIssuesCount     *int             `json:"open_issues_count,omitempty"`
-	StargazersCount     *int             `json:"stargazers_count,omitempty"`
-	SubscribersCount    *int             `json:"subscribers_count,omitempty"`
-	WatchersCount       *int             `json:"watchers_count,omitempty"`
-	Size                *int             `json:"size,omitempty"`
-	AutoInit            *bool            `json:"auto_init,omitempty"`
-	Parent              *Repository      `json:"parent,omitempty"`
-	Source              *Repository      `json:"source,omitempty"`
-	TemplateRepository  *Repository      `json:"template_repository,omitempty"`
-	Organization        *Organization    `json:"organization,omitempty"`
-	Permissions         *map[string]bool `json:"permissions,omitempty"`
-	AllowRebaseMerge    *bool            `json:"allow_rebase_merge,omitempty"`
-	AllowSquashMerge    *bool            `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit    *bool            `json:"allow_merge_commit,omitempty"`
-	DeleteBranchOnMerge *bool            `json:"delete_branch_on_merge,omitempty"`
-	Topics              []string         `json:"topics,omitempty"`
-	Archived            *bool            `json:"archived,omitempty"`
-	Disabled            *bool            `json:"disabled,omitempty"`
+	ID                  *int64          `json:"id,omitempty"`
+	NodeID              *string         `json:"node_id,omitempty"`
+	Owner               *User           `json:"owner,omitempty"`
+	Name                *string         `json:"name,omitempty"`
+	FullName            *string         `json:"full_name,omitempty"`
+	Description         *string         `json:"description,omitempty"`
+	Homepage            *string         `json:"homepage,omitempty"`
+	CodeOfConduct       *CodeOfConduct  `json:"code_of_conduct,omitempty"`
+	DefaultBranch       *string         `json:"default_branch,omitempty"`
+	MasterBranch        *string         `json:"master_branch,omitempty"`
+	CreatedAt           *Timestamp      `json:"created_at,omitempty"`
+	PushedAt            *Timestamp      `json:"pushed_at,omitempty"`
+	UpdatedAt           *Timestamp      `json:"updated_at,omitempty"`
+	HTMLURL             *string         `json:"html_url,omitempty"`
+	CloneURL            *string         `json:"clone_url,omitempty"`
+	GitURL              *string         `json:"git_url,omitempty"`
+	MirrorURL           *string         `json:"mirror_url,omitempty"`
+	SSHURL              *string         `json:"ssh_url,omitempty"`
+	SVNURL              *string         `json:"svn_url,omitempty"`
+	Language            *string         `json:"language,omitempty"`
+	Fork                *bool           `json:"fork,omitempty"`
+	ForksCount          *int            `json:"forks_count,omitempty"`
+	NetworkCount        *int            `json:"network_count,omitempty"`
+	OpenIssuesCount     *int            `json:"open_issues_count,omitempty"`
+	OpenIssues          *int            `json:"open_issues,omitempty"` // Deprecated: Replaced by OpenIssuesCount. For backward compatibility OpenIssues is still populated.
+	StargazersCount     *int            `json:"stargazers_count,omitempty"`
+	SubscribersCount    *int            `json:"subscribers_count,omitempty"`
+	WatchersCount       *int            `json:"watchers_count,omitempty"` // Deprecated: Replaced by StargazersCount. For backward compatibility WatchersCount is still populated.
+	Watchers            *int            `json:"watchers,omitempty"`       // Deprecated: Replaced by StargazersCount. For backward compatibility Watchers is still populated.
+	Size                *int            `json:"size,omitempty"`
+	AutoInit            *bool           `json:"auto_init,omitempty"`
+	Parent              *Repository     `json:"parent,omitempty"`
+	Source              *Repository     `json:"source,omitempty"`
+	TemplateRepository  *Repository     `json:"template_repository,omitempty"`
+	Organization        *Organization   `json:"organization,omitempty"`
+	Permissions         map[string]bool `json:"permissions,omitempty"`
+	AllowRebaseMerge    *bool           `json:"allow_rebase_merge,omitempty"`
+	AllowSquashMerge    *bool           `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit    *bool           `json:"allow_merge_commit,omitempty"`
+	AllowAutoMerge      *bool           `json:"allow_auto_merge,omitempty"`
+	DeleteBranchOnMerge *bool           `json:"delete_branch_on_merge,omitempty"`
+	Topics              []string        `json:"topics,omitempty"`
+	Archived            *bool           `json:"archived,omitempty"`
+	Disabled            *bool           `json:"disabled,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
@@ -75,6 +79,9 @@ type Repository struct {
 	IsTemplate        *bool   `json:"is_template,omitempty"`
 	LicenseTemplate   *string `json:"license_template,omitempty"`
 	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
+
+	// Options for configuring Advanced Security and Secret Scanning
+	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
@@ -177,6 +184,39 @@ type RepositoryListOptions struct {
 	Direction string `url:"direction,omitempty"`
 
 	ListOptions
+}
+
+// SecurityAndAnalysis specifies the optional advanced security features
+// that are enabled on a given repository.
+type SecurityAndAnalysis struct {
+	AdvancedSecurity *AdvancedSecurity `json:"advanced_security,omitempty"`
+	SecretScanning   *SecretScanning   `json:"secret_scanning,omitempty"`
+}
+
+func (s SecurityAndAnalysis) String() string {
+	return Stringify(s)
+}
+
+// AdvancedSecurity specifies the state of advanced security on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/github/getting-started-with-github/learning-about-github/about-github-advanced-security
+type AdvancedSecurity struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (a AdvancedSecurity) String() string {
+	return Stringify(a)
+}
+
+// SecretScanning specifies the state of secret scanning on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/secret-security/about-secret-scanning
+type SecretScanning struct {
+	Status *string `json:"status,omitempty"`
+}
+
+func (s SecretScanning) String() string {
+	return Stringify(s)
 }
 
 // List the repositories for a user. Passing the empty string will list
@@ -317,6 +357,7 @@ type createRepoRequest struct {
 	AllowSquashMerge    *bool   `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool   `json:"allow_merge_commit,omitempty"`
 	AllowRebaseMerge    *bool   `json:"allow_rebase_merge,omitempty"`
+	AllowAutoMerge      *bool   `json:"allow_auto_merge,omitempty"`
 	DeleteBranchOnMerge *bool   `json:"delete_branch_on_merge,omitempty"`
 }
 
@@ -359,6 +400,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowSquashMerge:    repo.AllowSquashMerge,
 		AllowMergeCommit:    repo.AllowMergeCommit,
 		AllowRebaseMerge:    repo.AllowRebaseMerge,
+		AllowAutoMerge:      repo.AllowAutoMerge,
 		DeleteBranchOnMerge: repo.DeleteBranchOnMerge,
 	}
 
@@ -385,7 +427,8 @@ type TemplateRepoRequest struct {
 	Owner       *string `json:"owner,omitempty"`
 	Description *string `json:"description,omitempty"`
 
-	Private *bool `json:"private,omitempty"`
+	IncludeAllBranches *bool `json:"include_all_branches,omitempty"`
+	Private            *bool `json:"private,omitempty"`
 }
 
 // CreateFromTemplate generates a repository from a template.
@@ -750,13 +793,58 @@ type Branch struct {
 
 // Protection represents a repository branch's protection.
 type Protection struct {
-	RequiredStatusChecks       *RequiredStatusChecks          `json:"required_status_checks"`
-	RequiredPullRequestReviews *PullRequestReviewsEnforcement `json:"required_pull_request_reviews"`
-	EnforceAdmins              *AdminEnforcement              `json:"enforce_admins"`
-	Restrictions               *BranchRestrictions            `json:"restrictions"`
-	RequireLinearHistory       *RequireLinearHistory          `json:"required_linear_history"`
-	AllowForcePushes           *AllowForcePushes              `json:"allow_force_pushes"`
-	AllowDeletions             *AllowDeletions                `json:"allow_deletions"`
+	RequiredStatusChecks           *RequiredStatusChecks           `json:"required_status_checks"`
+	RequiredPullRequestReviews     *PullRequestReviewsEnforcement  `json:"required_pull_request_reviews"`
+	EnforceAdmins                  *AdminEnforcement               `json:"enforce_admins"`
+	Restrictions                   *BranchRestrictions             `json:"restrictions"`
+	RequireLinearHistory           *RequireLinearHistory           `json:"required_linear_history"`
+	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
+	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
+	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
+}
+
+// BranchProtectionRule represents the rule applied to a repositories branch.
+type BranchProtectionRule struct {
+	ID                                       *int64     `json:"id,omitempty"`
+	RepositoryID                             *int64     `json:"repository_id,omitempty"`
+	Name                                     *string    `json:"name,omitempty"`
+	CreatedAt                                *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt                                *Timestamp `json:"updated_at,omitempty"`
+	PullRequestReviewsEnforcementLevel       *string    `json:"pull_request_reviews_enforcement_level,omitempty"`
+	RequiredApprovingReviewCount             *int       `json:"required_approving_review_count,omitempty"`
+	DismissStaleReviewsOnPush                *bool      `json:"dismiss_stale_reviews_on_push,omitempty"`
+	AuthorizedDismissalActorsOnly            *bool      `json:"authorized_dismissal_actors_only,omitempty"`
+	IgnoreApprovalsFromContributors          *bool      `json:"ignore_approvals_from_contributors,omitempty"`
+	RequireCodeOwnerReview                   *bool      `json:"require_code_owner_review,omitempty"`
+	RequiredStatusChecks                     []string   `json:"required_status_checks,omitempty"`
+	RequiredStatusChecksEnforcementLevel     *string    `json:"required_status_checks_enforcement_level,omitempty"`
+	StrictRequiredStatusChecksPolicy         *bool      `json:"strict_required_status_checks_policy,omitempty"`
+	SignatureRequirementEnforcementLevel     *string    `json:"signature_requirement_enforcement_level,omitempty"`
+	LinearHistoryRequirementEnforcementLevel *string    `json:"linear_history_requirement_enforcement_level,omitempty"`
+	AdminEnforced                            *bool      `json:"admin_enforced,omitempty"`
+	AllowForcePushesEnforcementLevel         *string    `json:"allow_force_pushes_enforcement_level,omitempty"`
+	AllowDeletionsEnforcementLevel           *string    `json:"allow_deletions_enforcement_level,omitempty"`
+	MergeQueueEnforcementLevel               *string    `json:"merge_queue_enforcement_level,omitempty"`
+	RequiredDeploymentsEnforcementLevel      *string    `json:"required_deployments_enforcement_level,omitempty"`
+	RequiredConversationResolutionLevel      *string    `json:"required_conversation_resolution_level,omitempty"`
+	AuthorizedActorsOnly                     *bool      `json:"authorized_actors_only,omitempty"`
+	AuthorizedActorNames                     []string   `json:"authorized_actor_names,omitempty"`
+}
+
+// ProtectionChanges represents the changes to the rule if the BranchProtection was edited.
+type ProtectionChanges struct {
+	AuthorizedActorsOnly *AuthorizedActorsOnly `json:"authorized_actors_only,omitempty"`
+	AuthorizedActorNames *AuthorizedActorNames `json:"authorized_actor_names,omitempty"`
+}
+
+// AuthorizedActorNames represents who are authorized to edit the branch protection rules.
+type AuthorizedActorNames struct {
+	From []string `json:"from,omitempty"`
+}
+
+// AuthorizedActorsOnly represents if the branche rule can be edited by authorized actors only.
+type AuthorizedActorsOnly struct {
+	From *bool `json:"from,omitempty"`
 }
 
 // ProtectionRequest represents a request to create/edit a branch's protection.
@@ -771,6 +859,9 @@ type ProtectionRequest struct {
 	AllowForcePushes *bool `json:"allow_force_pushes,omitempty"`
 	// Allows deletion of the protected branch by anyone with write access to the repository.
 	AllowDeletions *bool `json:"allow_deletions,omitempty"`
+	// RequiredConversationResolution, if set to true, requires all comments
+	// on the pull request to be resolved before it can be merged to a protected branch.
+	RequiredConversationResolution *bool `json:"required_conversation_resolution,omitempty"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.
@@ -833,7 +924,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
-// RequireLinearHistory represents the configuration to enfore branches with no merge commit.
+// RequireLinearHistory represents the configuration to enforce branches with no merge commit.
 type RequireLinearHistory struct {
 	Enabled bool `json:"enabled"`
 }
@@ -845,6 +936,11 @@ type AllowDeletions struct {
 
 // AllowForcePushes represents the configuration to accept forced pushes on protected branches.
 type AllowForcePushes struct {
+	Enabled bool `json:"enabled"`
+}
+
+// RequiredConversationResolution, if enabled, requires all comments on the pull request to be resolved before it can be merged to a protected branch.
+type RequiredConversationResolution struct {
 	Enabled bool `json:"enabled"`
 }
 
@@ -932,9 +1028,66 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 // GetBranch gets the specified branch for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-branch
-func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string) (*Branch, *Response, error) {
+func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
+
+	resp, err := s.getBranchFromURL(ctx, u, followRedirects)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+
+	b := new(Branch)
+	err = json.NewDecoder(resp.Body).Decode(b)
+	return b, newResponse(resp), err
+}
+
+func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	req = withContext(ctx, req)
+	if s.client.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = s.client.client.Transport.RoundTrip(req)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	// If redirect response is returned, follow it
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
+		u = resp.Header.Get("Location")
+		resp, err = s.getBranchFromURL(ctx, u, false)
+	}
+	return resp, err
+}
+
+// renameBranchRequest represents a request to rename a branch.
+type renameBranchRequest struct {
+	NewName string `json:"new_name"`
+}
+
+// RenameBranch renames a branch in a repository.
+//
+// To rename a non-default branch: Users must have push access. GitHub Apps must have the `contents:write` repository permission.
+// To rename the default branch: Users must have admin or owner permissions. GitHub Apps must have the `administration:write` repository permission.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/repos#rename-a-branch
+func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, branch, newName string) (*Branch, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/rename", owner, repo, branch)
+	r := &renameBranchRequest{NewName: newName}
+	req, err := s.client.NewRequest("POST", u, r)
 	if err != nil {
 		return nil, nil, err
 	}

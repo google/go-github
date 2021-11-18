@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestOrganizationsService_ListMembers(t *testing.T) {
@@ -42,7 +43,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
 
@@ -87,7 +88,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 	}
 
 	want := []*User{{ID: Int64(1)}}
-	if !reflect.DeepEqual(members, want) {
+	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
 }
@@ -366,7 +367,7 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 	}
 
 	want := []*Membership{{URL: String("u")}}
-	if !reflect.DeepEqual(memberships, want) {
+	if !cmp.Equal(memberships, want) {
 		t.Errorf("Organizations.ListOrgMemberships returned %+v, want %+v", memberships, want)
 	}
 
@@ -396,7 +397,7 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
 
@@ -431,7 +432,7 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
 }
@@ -447,7 +448,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -461,7 +462,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
 
@@ -491,7 +492,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -505,7 +506,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 	}
 
 	want := &Membership{URL: String("u")}
-	if !reflect.DeepEqual(membership, want) {
+	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
 }
@@ -613,7 +614,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
 		}}
 
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 
@@ -649,12 +650,11 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
 		fmt.Fprintln(w, `{"email": "octocat@github.com"}`)
-
 	})
 
 	ctx := context.Background()
@@ -664,7 +664,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	}
 
 	want := &Invitation{Email: String("octocat@github.com")}
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
 	}
 
@@ -726,7 +726,7 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(invitations, want) {
+	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.ListOrgInvitationTeams returned %+v, want %+v", invitations, want)
 	}
 
@@ -743,4 +743,213 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/failed_invitations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2", "per_page": "1"})
+		fmt.Fprint(w, `[
+			{
+			   "id":1,
+			   "login":"monalisa",
+			   "node_id":"MDQ6VXNlcjE=",
+			   "email":"octocat@github.com",
+			   "role":"direct_member",
+			   "created_at":"2016-11-30T06:46:10Z",
+			   "failed_at":"2017-01-02T01:10:00Z",
+			   "failed_reason":"the reason",
+			   "inviter":{
+				  "login":"other_user",
+				  "id":1,
+				  "node_id":"MDQ6VXNlcjE=",
+				  "avatar_url":"https://github.com/images/error/other_user_happy.gif",
+				  "gravatar_id":"",
+				  "url":"https://api.github.com/users/other_user",
+				  "html_url":"https://github.com/other_user",
+				  "followers_url":"https://api.github.com/users/other_user/followers",
+				  "following_url":"https://api.github.com/users/other_user/following{/other_user}",
+				  "gists_url":"https://api.github.com/users/other_user/gists{/gist_id}",
+				  "starred_url":"https://api.github.com/users/other_user/starred{/owner}{/repo}",
+				  "subscriptions_url":"https://api.github.com/users/other_user/subscriptions",
+				  "organizations_url":"https://api.github.com/users/other_user/orgs",
+				  "repos_url":"https://api.github.com/users/other_user/repos",
+				  "events_url":"https://api.github.com/users/other_user/events{/privacy}",
+				  "received_events_url":"https://api.github.com/users/other_user/received_events",
+				  "type":"User",
+				  "site_admin":false
+			   },
+			   "team_count":2,
+			   "invitation_team_url":"https://api.github.com/organizations/2/invitations/1/teams"
+			}
+		]`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 1}
+	ctx := context.Background()
+	failedInvitations, _, err := client.Organizations.ListFailedOrgInvitations(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFailedOrgInvitations returned error: %v", err)
+	}
+
+	createdAt := time.Date(2016, time.November, 30, 6, 46, 10, 0, time.UTC)
+	want := []*Invitation{
+		{
+			ID:           Int64(1),
+			Login:        String("monalisa"),
+			NodeID:       String("MDQ6VXNlcjE="),
+			Email:        String("octocat@github.com"),
+			Role:         String("direct_member"),
+			FailedAt:     &Timestamp{time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)},
+			FailedReason: String("the reason"),
+			CreatedAt:    &createdAt,
+			Inviter: &User{
+				Login:             String("other_user"),
+				ID:                Int64(1),
+				NodeID:            String("MDQ6VXNlcjE="),
+				AvatarURL:         String("https://github.com/images/error/other_user_happy.gif"),
+				GravatarID:        String(""),
+				URL:               String("https://api.github.com/users/other_user"),
+				HTMLURL:           String("https://github.com/other_user"),
+				FollowersURL:      String("https://api.github.com/users/other_user/followers"),
+				FollowingURL:      String("https://api.github.com/users/other_user/following{/other_user}"),
+				GistsURL:          String("https://api.github.com/users/other_user/gists{/gist_id}"),
+				StarredURL:        String("https://api.github.com/users/other_user/starred{/owner}{/repo}"),
+				SubscriptionsURL:  String("https://api.github.com/users/other_user/subscriptions"),
+				OrganizationsURL:  String("https://api.github.com/users/other_user/orgs"),
+				ReposURL:          String("https://api.github.com/users/other_user/repos"),
+				EventsURL:         String("https://api.github.com/users/other_user/events{/privacy}"),
+				ReceivedEventsURL: String("https://api.github.com/users/other_user/received_events"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+			},
+			TeamCount:         Int(2),
+			InvitationTeamURL: String("https://api.github.com/organizations/2/invitations/1/teams"),
+		},
+	}
+
+	if !cmp.Equal(failedInvitations, want) {
+		t.Errorf("Organizations.ListFailedOrgInvitations returned %+v, want %+v", failedInvitations, want)
+	}
+
+	const methodName = "ListFailedOrgInvitations"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Organizations.ListFailedOrgInvitations(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListFailedOrgInvitations(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestMembership_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Membership{}, "{}")
+
+	u := &Membership{
+		URL:             String("url"),
+		State:           String("state"),
+		Role:            String("email"),
+		OrganizationURL: String("orgurl"),
+		Organization: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		User: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+	}
+
+	want := `{
+		"url": "url",
+		"state": "state",
+		"role": "email",
+		"organization_url": "orgurl",
+		"organization": {
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "loc",
+			"email": "e",
+			"twitter_username": "tu",
+			"description": "d",
+			"billing_email": "be",
+			"is_verified": true,
+			"has_organization_projects": true,
+			"has_repository_projects": true,
+			"default_repository_permission": "drp",
+			"members_can_create_repositories": true,
+			"members_can_create_public_repositories": false,
+			"members_can_create_private_repositories": true,
+			"members_can_create_internal_repositories": true,
+			"members_allowed_repository_creation_type": "marct",
+			"members_can_create_pages": true,
+			"members_can_create_public_pages": false,
+			"members_can_create_private_pages": true
+		},
+		"user": {
+			"login": "l",
+			"id": 1,
+			"node_id": "n",
+			"avatar_url": "a",
+			"url": "u",
+			"events_url": "e",
+			"repos_url": "r"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateOrgInvitationOptions{}, "{}")
+
+	u := &CreateOrgInvitationOptions{
+		InviteeID: Int64(1),
+		Email:     String("email"),
+		Role:      String("role"),
+		TeamID:    []int64{1},
+	}
+
+	want := `{
+		"invitee_id": 1,
+		"email": "email",
+		"role": "role",
+		"team_ids": [
+			1
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
 }

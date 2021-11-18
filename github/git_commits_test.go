@@ -10,11 +10,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/google/go-cmp/cmp"
 	"golang.org/x/crypto/openpgp"
 )
 
@@ -134,7 +134,7 @@ func TestGitService_GetCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("s"), Message: String("Commit Message."), Author: &CommitAuthor{Name: String("n")}}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -183,7 +183,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 			Tree:    String("t"),
 			Parents: []string{"p"},
 		}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"s"}`)
@@ -196,7 +196,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("s")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -242,7 +242,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 			Parents:   []string{"p"},
 			Signature: String(signature),
 		}
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
@@ -255,7 +255,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	}
 
 	want := &Commit{SHA: String("commitSha")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 
@@ -342,7 +342,7 @@ Commit Message.`)
 		}
 		// Nullify Signature since we checked it above
 		v.Signature = nil
-		if !reflect.DeepEqual(v, want) {
+		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
@@ -355,7 +355,7 @@ Commit Message.`)
 	}
 
 	want := &Commit{SHA: String("commitSha")}
-	if !reflect.DeepEqual(commit, want) {
+	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
 }
@@ -583,3 +583,89 @@ BqTKXNkzAvV+CKOyaUILSBBWdef+cxVrDCJuuC3894x3G1FjJycOy0m9PArvGtSG
 g7/0Bp9oLXwiHzFoUMDvx+WlPnPHQNcufmQXUNdZvg+Ad4/unEU81EGDBDz3Eg==
 =VFSn
 -----END PGP PRIVATE KEY BLOCK-----`
+
+func TestSignatureVerification_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SignatureVerification{}, "{}")
+
+	u := &SignatureVerification{
+		Verified:  Bool(true),
+		Reason:    String("reason"),
+		Signature: String("sign"),
+		Payload:   String("payload"),
+	}
+
+	want := `{
+		"verified": true,
+		"reason": "reason",
+		"signature": "sign",
+		"payload": "payload"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCommitAuthor_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitAuthor{}, "{}")
+
+	u := &CommitAuthor{
+		Date:  &referenceTime,
+		Name:  String("name"),
+		Email: String("email"),
+		Login: String("login"),
+	}
+
+	want := `{
+		"date": ` + referenceTimeStr + `,
+		"name": "name",
+		"email": "email",
+		"username": "login"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateCommit_Marshal(t *testing.T) {
+	testJSONMarshal(t, &createCommit{}, "{}")
+
+	u := &createCommit{
+		Author: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Committer: &CommitAuthor{
+			Date:  &referenceTime,
+			Name:  String("name"),
+			Email: String("email"),
+			Login: String("login"),
+		},
+		Message:   String("message"),
+		Tree:      String("tree"),
+		Parents:   []string{"p"},
+		Signature: String("sign"),
+	}
+
+	want := `{
+		"author": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"committer": {
+			"date": ` + referenceTimeStr + `,
+			"name": "name",
+			"email": "email",
+			"username": "login"
+		},
+		"message": "message",
+		"tree": "tree",
+		"parents": [
+			"p"
+		],
+		"signature": "sign"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

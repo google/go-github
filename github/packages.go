@@ -16,6 +16,10 @@ type Package struct {
 	Owner          *User            `json:"owner,omitempty"`
 	PackageVersion *PackageVersion  `json:"package_version,omitempty"`
 	Registry       *PackageRegistry `json:"registry,omitempty"`
+	URL            *string          `json:"url,omitempty"`
+	VersionCount   *int64           `json:"version_count,omitempty"`
+	Visibility     *string          `json:"visibility,omitempty"`
+	Repository     *Repository      `json:"repository,omitempty"`
 }
 
 func (p Package) String() string {
@@ -24,24 +28,28 @@ func (p Package) String() string {
 
 // PackageVersion represents a GitHub package version.
 type PackageVersion struct {
-	ID                  *int64          `json:"id,omitempty"`
-	Version             *string         `json:"version,omitempty"`
-	Summary             *string         `json:"summary,omitempty"`
-	Body                *string         `json:"body,omitempty"`
-	BodyHTML            *string         `json:"body_html,omitempty"`
-	Release             *PackageRelease `json:"release,omitempty"`
-	Manifest            *string         `json:"manifest,omitempty"`
-	HTMLURL             *string         `json:"html_url,omitempty"`
-	TagName             *string         `json:"tag_name,omitempty"`
-	TargetCommitish     *string         `json:"target_commitish,omitempty"`
-	TargetOID           *string         `json:"target_oid,omitempty"`
-	Draft               *bool           `json:"draft,omitempty"`
-	Prerelease          *bool           `json:"prerelease,omitempty"`
-	CreatedAt           *Timestamp      `json:"created_at,omitempty"`
-	UpdatedAt           *Timestamp      `json:"updated_at,omitempty"`
-	PackageFiles        []*PackageFile  `json:"package_files,omitempty"`
-	Author              *User           `json:"author,omitempty"`
-	InstallationCommand *string         `json:"installation_command,omitempty"`
+	ID                  *int64           `json:"id,omitempty"`
+	Version             *string          `json:"version,omitempty"`
+	Summary             *string          `json:"summary,omitempty"`
+	Body                *string          `json:"body,omitempty"`
+	BodyHTML            *string          `json:"body_html,omitempty"`
+	Release             *PackageRelease  `json:"release,omitempty"`
+	Manifest            *string          `json:"manifest,omitempty"`
+	HTMLURL             *string          `json:"html_url,omitempty"`
+	TagName             *string          `json:"tag_name,omitempty"`
+	TargetCommitish     *string          `json:"target_commitish,omitempty"`
+	TargetOID           *string          `json:"target_oid,omitempty"`
+	Draft               *bool            `json:"draft,omitempty"`
+	Prerelease          *bool            `json:"prerelease,omitempty"`
+	CreatedAt           *Timestamp       `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp       `json:"updated_at,omitempty"`
+	PackageFiles        []*PackageFile   `json:"package_files,omitempty"`
+	Author              *User            `json:"author,omitempty"`
+	InstallationCommand *string          `json:"installation_command,omitempty"`
+	Metadata            *PackageMetadata `json:"metadata,omitempty"`
+	PackageHTMLURL      *string          `json:"package_html_url,omitempty"`
+	Name                *string          `json:"name,omitempty"`
+	URL                 *string          `json:"url,omitempty"`
 }
 
 func (pv PackageVersion) String() string {
@@ -97,5 +105,39 @@ type PackageRegistry struct {
 }
 
 func (r PackageRegistry) String() string {
+	return Stringify(r)
+}
+
+// PackageListOptions represents the optional list options for a package.
+type PackageListOptions struct {
+	// Visibility of packages "public", "internal" or "private".
+	Visibility *string `url:"visibility,omitempty"`
+
+	// PackageType represents the type of package.
+	// It can be one of "npm", "maven", "rubygems", "nuget", "docker", or "container".
+	PackageType *string `url:"package_type,omitempty"`
+
+	// State of package either "active" or "deleted".
+	State *string `url:"state,omitempty"`
+
+	ListOptions
+}
+
+// PackageMetadata represents metadata from a package.
+type PackageMetadata struct {
+	PackageType *string                   `json:"package_type,omitempty"`
+	Container   *PackageContainerMetadata `json:"container,omitempty"`
+}
+
+func (r PackageMetadata) String() string {
+	return Stringify(r)
+}
+
+// PackageContainerMetadata represents container metadata for docker container packages.
+type PackageContainerMetadata struct {
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (r PackageContainerMetadata) String() string {
 	return Stringify(r)
 }

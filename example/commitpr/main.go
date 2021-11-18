@@ -31,7 +31,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v40/github"
 	"golang.org/x/oauth2"
 )
 
@@ -67,11 +67,11 @@ func getRef() (ref *github.Reference, err error) {
 	// We consider that an error means the branch has not been found and needs to
 	// be created.
 	if *commitBranch == *baseBranch {
-		return nil, errors.New("The commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
+		return nil, errors.New("the commit branch does not exist but `-base-branch` is the same as `-commit-branch`")
 	}
 
 	if *baseBranch == "" {
-		return nil, errors.New("The `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
+		return nil, errors.New("the `-base-branch` should not be set to an empty string when the branch specified by `-commit-branch` does not exists")
 	}
 
 	var baseRef *github.Reference
@@ -125,7 +125,7 @@ func getFileContent(fileArg string) (targetName string, b []byte, err error) {
 // pushCommit creates the commit in the given reference using the given tree.
 func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	// Get the parent commit to attach the commit to.
-	parent, _, err := client.Repositories.GetCommit(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA)
+	parent, _, err := client.Repositories.GetCommit(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA, nil)
 	if err != nil {
 		return err
 	}

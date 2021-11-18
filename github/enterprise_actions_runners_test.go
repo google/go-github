@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
@@ -32,7 +33,7 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 	want := &RegistrationToken{Token: String("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
 			123000000, time.UTC)}}
-	if !reflect.DeepEqual(token, want) {
+	if !cmp.Equal(token, want) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned %+v, want %+v", token, want)
 	}
 
@@ -75,7 +76,7 @@ func TestEnterpriseService_ListRunners(t *testing.T) {
 			{ID: Int64(24), Name: String("iMac"), OS: String("macos"), Status: String("offline")},
 		},
 	}
-	if !reflect.DeepEqual(runners, want) {
+	if !cmp.Equal(runners, want) {
 		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
 	}
 

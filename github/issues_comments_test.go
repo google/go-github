@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListComments_allIssues(t *testing.T) {
@@ -23,14 +24,18 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{
-			"since": "2002-02-10T15:30:00Z",
-			"page":  "2",
+			"sort":      "updated",
+			"direction": "desc",
+			"since":     "2002-02-10T15:30:00Z",
+			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
 	since := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
 	opt := &IssueListCommentsOptions{
+		Sort:        String("updated"),
+		Direction:   String("desc"),
 		Since:       &since,
 		ListOptions: ListOptions{Page: 2},
 	}
@@ -41,7 +46,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 	}
 
 	want := []*IssueComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -77,7 +82,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 	}
 
 	want := []*IssueComment{{ID: Int64(1)}}
-	if !reflect.DeepEqual(comments, want) {
+	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
 
@@ -122,7 +127,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.GetComment returned %+v, want %+v", comment, want)
 	}
 
@@ -161,7 +166,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -175,7 +180,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.CreateComment returned %+v, want %+v", comment, want)
 	}
 
@@ -214,7 +219,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -228,7 +233,7 @@ func TestIssuesService_EditComment(t *testing.T) {
 	}
 
 	want := &IssueComment{ID: Int64(1)}
-	if !reflect.DeepEqual(comment, want) {
+	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.EditComment returned %+v, want %+v", comment, want)
 	}
 
@@ -288,4 +293,78 @@ func TestIssuesService_DeleteComment_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, err := client.Issues.DeleteComment(ctx, "%", "r", 1)
 	testURLParseError(t, err)
+}
+
+func TestIssueComment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssueComment{}, "{}")
+
+	u := &IssueComment{
+		ID:     Int64(1),
+		NodeID: String("nid"),
+		Body:   String("body"),
+		User: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			URL:             String("u"),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+		},
+		Reactions:         &Reactions{TotalCount: Int(1)},
+		CreatedAt:         &referenceTime,
+		UpdatedAt:         &referenceTime,
+		AuthorAssociation: String("aa"),
+		URL:               String("url"),
+		HTMLURL:           String("hurl"),
+		IssueURL:          String("iurl"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"body": "body",
+		"user": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
+		},
+		"reactions": {
+			"total_count": 1
+		},
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"author_association": "aa",
+		"url": "url",
+		"html_url": "hurl",
+		"issue_url": "iurl"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

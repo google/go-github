@@ -10,8 +10,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestIssuesService_ListLabels(t *testing.T) {
@@ -32,7 +33,7 @@ func TestIssuesService_ListLabels(t *testing.T) {
 	}
 
 	want := []*Label{{Name: String("a")}, {Name: String("b")}}
-	if !reflect.DeepEqual(labels, want) {
+	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabels returned %+v, want %+v", labels, want)
 	}
 
@@ -76,7 +77,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 	}
 
 	want := &Label{URL: String("u"), Name: String("n"), Color: String("c"), Description: String("d")}
-	if !reflect.DeepEqual(label, want) {
+	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}
 
@@ -115,7 +116,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -129,7 +130,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	}
 
 	want := &Label{URL: String("u")}
-	if !reflect.DeepEqual(label, want) {
+	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.CreateLabel returned %+v, want %+v", label, want)
 	}
 
@@ -168,7 +169,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PATCH")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -182,7 +183,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	}
 
 	want := &Label{URL: String("u")}
-	if !reflect.DeepEqual(label, want) {
+	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.EditLabel returned %+v, want %+v", label, want)
 	}
 
@@ -265,7 +266,7 @@ func TestIssuesService_ListLabelsByIssue(t *testing.T) {
 		{Name: String("a"), ID: Int64(1)},
 		{Name: String("b"), ID: Int64(2)},
 	}
-	if !reflect.DeepEqual(labels, want) {
+	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabelsByIssue returned %+v, want %+v", labels, want)
 	}
 
@@ -304,7 +305,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -318,7 +319,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 	}
 
 	want := []*Label{{URL: String("u")}}
-	if !reflect.DeepEqual(labels, want) {
+	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.AddLabelsToIssue returned %+v, want %+v", labels, want)
 	}
 
@@ -391,7 +392,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "PUT")
-		if !reflect.DeepEqual(v, input) {
+		if !cmp.Equal(v, input) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
@@ -405,7 +406,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 	}
 
 	want := []*Label{{URL: String("u")}}
-	if !reflect.DeepEqual(labels, want) {
+	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ReplaceLabelsForIssue returned %+v, want %+v", labels, want)
 	}
 
@@ -485,7 +486,7 @@ func TestIssuesService_ListLabelsForMilestone(t *testing.T) {
 	}
 
 	want := []*Label{{Name: String("a")}, {Name: String("b")}}
-	if !reflect.DeepEqual(labels, want) {
+	if !cmp.Equal(labels, want) {
 		t.Errorf("Issues.ListLabelsForMilestone returned %+v, want %+v", labels, want)
 	}
 
@@ -511,4 +512,30 @@ func TestIssuesService_ListLabelsForMilestone_invalidOwner(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Issues.ListLabelsForMilestone(ctx, "%", "%", 1, nil)
 	testURLParseError(t, err)
+}
+
+func TestLabel_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Label{}, "{}")
+
+	u := &Label{
+		ID:          Int64(1),
+		URL:         String("url"),
+		Name:        String("name"),
+		Color:       String("color"),
+		Description: String("desc"),
+		Default:     Bool(false),
+		NodeID:      String("nid"),
+	}
+
+	want := `{
+		"id": 1,
+		"url": "url",
+		"name": "name",
+		"color": "color",
+		"description": "desc",
+		"default": false,
+		"node_id": "nid"
+	}`
+
+	testJSONMarshal(t, u, want)
 }

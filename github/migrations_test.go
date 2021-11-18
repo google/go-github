@@ -9,9 +9,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestMigrationService_StartMigration(t *testing.T) {
@@ -35,7 +36,7 @@ func TestMigrationService_StartMigration(t *testing.T) {
 	if err != nil {
 		t.Errorf("StartMigration returned error: %v", err)
 	}
-	if want := wantMigration; !reflect.DeepEqual(got, want) {
+	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("StartMigration = %+v, want %+v", got, want)
 	}
 
@@ -71,7 +72,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListMigrations returned error: %v", err)
 	}
-	if want := []*Migration{wantMigration}; !reflect.DeepEqual(got, want) {
+	if want := []*Migration{wantMigration}; !cmp.Equal(got, want) {
 		t.Errorf("ListMigrations = %+v, want %+v", got, want)
 	}
 
@@ -107,7 +108,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	if err != nil {
 		t.Errorf("MigrationStatus returned error: %v", err)
 	}
-	if want := wantMigration; !reflect.DeepEqual(got, want) {
+	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("MigrationStatus = %+v, want %+v", got, want)
 	}
 
@@ -249,4 +250,58 @@ var wantMigration = &Migration{
 			Description: String("This your first repo!"),
 		},
 	},
+}
+
+func TestMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Migration{}, "{}")
+
+	u := &Migration{
+		ID:                 Int64(1),
+		GUID:               String("guid"),
+		State:              String("state"),
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+		URL:                String("url"),
+		CreatedAt:          String("ca"),
+		UpdatedAt:          String("ua"),
+		Repositories:       []*Repository{{ID: Int64(1)}},
+	}
+
+	want := `{
+		"id": 1,
+		"guid": "guid",
+		"state": "state",
+		"lock_repositories": false,
+		"exclude_attachments": false,
+		"url": "url",
+		"created_at": "ca",
+		"updated_at": "ua",
+		"repositories": [
+			{
+				"id": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestStartMigration_Marshal(t *testing.T) {
+	testJSONMarshal(t, &startMigration{}, "{}")
+
+	u := &startMigration{
+		Repositories:       []string{"r"},
+		LockRepositories:   Bool(false),
+		ExcludeAttachments: Bool(false),
+	}
+
+	want := `{
+		"repositories": [
+			"r"
+		],
+		"lock_repositories": false,
+		"exclude_attachments": false
+	}`
+
+	testJSONMarshal(t, u, want)
 }

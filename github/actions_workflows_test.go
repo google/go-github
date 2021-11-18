@@ -10,9 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListWorkflows(t *testing.T) {
@@ -39,7 +40,7 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 			{ID: Int64(72845), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(workflows, want) {
+	if !cmp.Equal(workflows, want) {
 		t.Errorf("Actions.ListWorkflows returned %+v, want %+v", workflows, want)
 	}
 
@@ -78,7 +79,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(workflow, want) {
+	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByID returned %+v, want %+v", workflow, want)
 	}
 
@@ -117,7 +118,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
-	if !reflect.DeepEqual(workflow, want) {
+	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)
 	}
 
@@ -164,7 +165,7 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(workflowUsage, want) {
+	if !cmp.Equal(workflowUsage, want) {
 		t.Errorf("Actions.GetWorkflowUsageByID returned %+v, want %+v", workflowUsage, want)
 	}
 
@@ -211,7 +212,7 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 			},
 		},
 	}
-	if !reflect.DeepEqual(workflowUsage, want) {
+	if !cmp.Equal(workflowUsage, want) {
 		t.Errorf("Actions.GetWorkflowUsageByFileName returned %+v, want %+v", workflowUsage, want)
 	}
 
@@ -245,7 +246,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, event) {
+		if !cmp.Equal(v, event) {
 			t.Errorf("Request body = %+v, want %+v", v, event)
 		}
 	})
@@ -289,7 +290,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(&v)
 
 		testMethod(t, r, "POST")
-		if !reflect.DeepEqual(v, event) {
+		if !cmp.Equal(v, event) {
 			t.Errorf("Request body = %+v, want %+v", v, event)
 		}
 	})
@@ -456,4 +457,175 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	})
+}
+
+func TestWorkflow_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Workflow{}, "{}")
+
+	u := &Workflow{
+		ID:        Int64(1),
+		NodeID:    String("nid"),
+		Name:      String("n"),
+		Path:      String("p"),
+		State:     String("s"),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		URL:       String("u"),
+		HTMLURL:   String("h"),
+		BadgeURL:  String("b"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "nid",
+		"name": "n",
+		"path": "p",
+		"state": "s",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"url": "u",
+		"html_url": "h",
+		"badge_url": "b"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflows_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Workflows{}, "{}")
+
+	u := &Workflows{
+		TotalCount: Int(1),
+		Workflows: []*Workflow{
+			{
+				ID:        Int64(1),
+				NodeID:    String("nid"),
+				Name:      String("n"),
+				Path:      String("p"),
+				State:     String("s"),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+				URL:       String("u"),
+				HTMLURL:   String("h"),
+				BadgeURL:  String("b"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"workflows": [{
+			"id": 1,
+			"node_id": "nid",
+			"name": "n",
+			"path": "p",
+			"state": "s",
+			"created_at": ` + referenceTimeStr + `,
+			"updated_at": ` + referenceTimeStr + `,
+			"url": "u",
+			"html_url": "h",
+			"badge_url": "b"
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowBill_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowBill{}, "{}")
+
+	u := &WorkflowBill{
+		TotalMS: Int64(1),
+	}
+
+	want := `{
+		"total_ms": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowEnvironment{}, "{}")
+
+	u := &WorkflowEnvironment{
+		Ubuntu: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		MacOS: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+		Windows: &WorkflowBill{
+			TotalMS: Int64(1),
+		},
+	}
+
+	want := `{
+		"UBUNTU": {
+			"total_ms": 1
+		},
+		"MACOS": {
+			"total_ms": 1
+		},
+		"WINDOWS": {
+			"total_ms": 1
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowUsage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowUsage{}, "{}")
+
+	u := &WorkflowUsage{
+		Billable: &WorkflowEnvironment{
+			Ubuntu: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+			MacOS: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+			Windows: &WorkflowBill{
+				TotalMS: Int64(1),
+			},
+		},
+	}
+
+	want := `{
+		"billable": {
+			"UBUNTU": {
+				"total_ms": 1
+			},
+			"MACOS": {
+				"total_ms": 1
+			},
+			"WINDOWS": {
+				"total_ms": 1
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
+
+	inputs := make(map[string]interface{}, 0)
+	inputs["key"] = "value"
+
+	u := &CreateWorkflowDispatchEventRequest{
+		Ref:    "r",
+		Inputs: inputs,
+	}
+
+	want := `{
+		"ref": "r",
+		"inputs": {
+			"key": "value"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
 }

@@ -10,9 +10,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
@@ -39,7 +40,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByID returned %+v, want %+v", runs, want)
 	}
 
@@ -82,7 +83,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 			{ID: Int64(399444497), RunNumber: Int(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.ListWorkflowRunsByFileName returned %+v, want %+v", runs, want)
 	}
 
@@ -123,7 +124,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 
-	if !reflect.DeepEqual(runs, want) {
+	if !cmp.Equal(runs, want) {
 		t.Errorf("Actions.GetWorkflowRunByID returned %+v, want %+v", runs, want)
 	}
 
@@ -294,7 +295,6 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 		"workflow_runs":[
 			{"id":298499444,"run_number":301,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"},
 			{"id":298499445,"run_number":302,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"}]}`)
-
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -313,7 +313,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(runs, expected) {
+	if !cmp.Equal(runs, expected) {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned %+v, want %+v", runs, expected)
 	}
 
@@ -409,7 +409,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 		RunDurationMS: Int64(500000),
 	}
 
-	if !reflect.DeepEqual(workflowRunUsage, want) {
+	if !cmp.Equal(workflowRunUsage, want) {
 		t.Errorf("Actions.GetWorkflowRunUsageByID returned %+v, want %+v", workflowRunUsage, want)
 	}
 
@@ -426,4 +426,432 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestWorkflowRun_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRun{}, "{}")
+
+	u := &WorkflowRun{
+		ID:         Int64(1),
+		Name:       String("n"),
+		NodeID:     String("nid"),
+		HeadBranch: String("hb"),
+		HeadSHA:    String("hs"),
+		RunNumber:  Int(1),
+		Event:      String("e"),
+		Status:     String("s"),
+		Conclusion: String("c"),
+		WorkflowID: Int64(1),
+		URL:        String("u"),
+		HTMLURL:    String("h"),
+		PullRequests: []*PullRequest{
+			{
+				URL:    String("u"),
+				ID:     Int64(1),
+				Number: Int(1),
+				Head: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("s"),
+						Name: String("n"),
+					},
+				},
+				Base: &PullRequestBranch{
+					Ref: String("r"),
+					SHA: String("s"),
+					Repo: &Repository{
+						ID:   Int64(1),
+						URL:  String("u"),
+						Name: String("n"),
+					},
+				},
+			},
+		},
+		CreatedAt:     &Timestamp{referenceTime},
+		UpdatedAt:     &Timestamp{referenceTime},
+		JobsURL:       String("j"),
+		LogsURL:       String("l"),
+		CheckSuiteURL: String("c"),
+		ArtifactsURL:  String("a"),
+		CancelURL:     String("c"),
+		RerunURL:      String("r"),
+		HeadCommit: &HeadCommit{
+			Message: String("m"),
+			Author: &CommitAuthor{
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("l"),
+			},
+			URL:       String("u"),
+			Distinct:  Bool(false),
+			SHA:       String("s"),
+			ID:        String("i"),
+			TreeID:    String("tid"),
+			Timestamp: &Timestamp{referenceTime},
+			Committer: &CommitAuthor{
+				Name:  String("n"),
+				Email: String("e"),
+				Login: String("l"),
+			},
+		},
+		WorkflowURL: String("w"),
+		Repository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+		HeadRepository: &Repository{
+			ID:   Int64(1),
+			URL:  String("u"),
+			Name: String("n"),
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"name": "n",
+		"node_id": "nid",
+		"head_branch": "hb",
+		"head_sha": "hs",
+		"run_number": 1,
+		"event": "e",
+		"status": "s",
+		"conclusion": "c",
+		"workflow_id": 1,
+		"url": "u",
+		"html_url": "h",
+		"pull_requests": [
+			{
+				"id":1,
+				"number":1,
+				"url":"u",
+				"head":{
+					"ref":"r",
+					"sha":"s",
+					"repo": {
+						"id":1,
+						"name":"n",
+						"url":"s"
+						}
+					},
+					"base": {
+						"ref":"r",
+						"sha":"s",
+						"repo": {
+							"id":1,
+							"name":"n",
+							"url":"u"
+						}
+					}
+			}
+		],
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"jobs_url": "j",
+		"logs_url": "l",
+		"check_suite_url": "c",
+		"artifacts_url": "a",
+		"cancel_url": "c",
+		"rerun_url": "r",
+		"head_commit": {
+			"message": "m",
+			"author": {
+				"name": "n",
+				"email": "e",
+				"username": "l"
+			},
+			"url": "u",
+			"distinct": false,
+			"sha": "s",
+			"id": "i",
+			"tree_id": "tid",
+			"timestamp": ` + referenceTimeStr + `,
+			"committer": {
+				"name": "n",
+				"email": "e",
+				"username": "l"
+			}
+		},
+		"workflow_url": "w",
+		"repository": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		},
+		"head_repository": {
+			"id": 1,
+			"url": "u",
+			"name": "n"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowRuns_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRuns{}, "{}")
+
+	u := &WorkflowRuns{
+		TotalCount: Int(1),
+		WorkflowRuns: []*WorkflowRun{
+			{
+				ID:         Int64(1),
+				Name:       String("n"),
+				NodeID:     String("nid"),
+				HeadBranch: String("hb"),
+				HeadSHA:    String("hs"),
+				RunNumber:  Int(1),
+				Event:      String("e"),
+				Status:     String("s"),
+				Conclusion: String("c"),
+				WorkflowID: Int64(1),
+				URL:        String("u"),
+				HTMLURL:    String("h"),
+				PullRequests: []*PullRequest{
+					{
+						URL:    String("u"),
+						ID:     Int64(1),
+						Number: Int(1),
+						Head: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("s"),
+								Name: String("n"),
+							},
+						},
+						Base: &PullRequestBranch{
+							Ref: String("r"),
+							SHA: String("s"),
+							Repo: &Repository{
+								ID:   Int64(1),
+								URL:  String("u"),
+								Name: String("n"),
+							},
+						},
+					},
+				},
+				CreatedAt:     &Timestamp{referenceTime},
+				UpdatedAt:     &Timestamp{referenceTime},
+				JobsURL:       String("j"),
+				LogsURL:       String("l"),
+				CheckSuiteURL: String("c"),
+				ArtifactsURL:  String("a"),
+				CancelURL:     String("c"),
+				RerunURL:      String("r"),
+				HeadCommit: &HeadCommit{
+					Message: String("m"),
+					Author: &CommitAuthor{
+						Name:  String("n"),
+						Email: String("e"),
+						Login: String("l"),
+					},
+					URL:       String("u"),
+					Distinct:  Bool(false),
+					SHA:       String("s"),
+					ID:        String("i"),
+					TreeID:    String("tid"),
+					Timestamp: &Timestamp{referenceTime},
+					Committer: &CommitAuthor{
+						Name:  String("n"),
+						Email: String("e"),
+						Login: String("l"),
+					},
+				},
+				WorkflowURL: String("w"),
+				Repository: &Repository{
+					ID:   Int64(1),
+					URL:  String("u"),
+					Name: String("n"),
+				},
+				HeadRepository: &Repository{
+					ID:   Int64(1),
+					URL:  String("u"),
+					Name: String("n"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 1,
+		"workflow_runs": [
+			{
+				"id": 1,
+				"name": "n",
+				"node_id": "nid",
+				"head_branch": "hb",
+				"head_sha": "hs",
+				"run_number": 1,
+				"event": "e",
+				"status": "s",
+				"conclusion": "c",
+				"workflow_id": 1,
+				"url": "u",
+				"html_url": "h",
+				"pull_requests": [
+					{
+						"id":1,
+						"number":1,
+						"url":"u",
+						"head":{
+							"ref":"r",
+							"sha":"s",
+							"repo": {
+								"id":1,
+								"name":"n",
+								"url":"s"
+								}
+							},
+							"base": {
+								"ref":"r",
+								"sha":"s",
+								"repo": {
+									"id":1,
+									"name":"n",
+									"url":"u"
+								}
+							}
+					}
+				],
+				"created_at": ` + referenceTimeStr + `,
+				"updated_at": ` + referenceTimeStr + `,
+				"jobs_url": "j",
+				"logs_url": "l",
+				"check_suite_url": "c",
+				"artifacts_url": "a",
+				"cancel_url": "c",
+				"rerun_url": "r",
+				"head_commit": {
+					"message": "m",
+					"author": {
+						"name": "n",
+						"email": "e",
+						"username": "l"
+					},
+					"url": "u",
+					"distinct": false,
+					"sha": "s",
+					"id": "i",
+					"tree_id": "tid",
+					"timestamp": ` + referenceTimeStr + `,
+					"committer": {
+						"name": "n",
+						"email": "e",
+						"username": "l"
+					}
+				},
+				"workflow_url": "w",
+				"repository": {
+					"id": 1,
+					"url": "u",
+					"name": "n"
+				},
+				"head_repository": {
+					"id": 1,
+					"url": "u",
+					"name": "n"
+				}
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowRunBill_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunBill{}, "{}")
+
+	u := &WorkflowRunBill{
+		TotalMS: Int64(1),
+		Jobs:    Int(1),
+	}
+
+	want := `{
+		"total_ms": 1,
+		"jobs": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowRunEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunEnvironment{}, "{}")
+
+	u := &WorkflowRunEnvironment{
+		Ubuntu: &WorkflowRunBill{
+			TotalMS: Int64(1),
+			Jobs:    Int(1),
+		},
+		MacOS: &WorkflowRunBill{
+			TotalMS: Int64(1),
+			Jobs:    Int(1),
+		},
+		Windows: &WorkflowRunBill{
+			TotalMS: Int64(1),
+			Jobs:    Int(1),
+		},
+	}
+
+	want := `{
+		"UBUNTU": {
+			"total_ms": 1,
+			"jobs": 1
+		},
+		"MACOS": {
+			"total_ms": 1,
+			"jobs": 1
+		},
+		"WINDOWS": {
+			"total_ms": 1,
+			"jobs": 1
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestWorkflowRunUsage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunUsage{}, "{}")
+
+	u := &WorkflowRunUsage{
+		Billable: &WorkflowRunEnvironment{
+			Ubuntu: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+			MacOS: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+			Windows: &WorkflowRunBill{
+				TotalMS: Int64(1),
+				Jobs:    Int(1),
+			},
+		},
+		RunDurationMS: Int64(1),
+	}
+
+	want := `{
+		"billable": {
+			"UBUNTU": {
+				"total_ms": 1,
+				"jobs": 1
+			},
+			"MACOS": {
+				"total_ms": 1,
+				"jobs": 1
+			},
+			"WINDOWS": {
+				"total_ms": 1,
+				"jobs": 1
+			}
+		},
+		"run_duration_ms": 1
+	}`
+
+	testJSONMarshal(t, u, want)
 }
