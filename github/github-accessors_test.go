@@ -18423,6 +18423,26 @@ func TestWorkflowRunEvent_GetSender(tt *testing.T) {
 	w.GetSender()
 }
 
+func TestWorkflowRunJobRun_GetDurationMS(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowRunJobRun{DurationMS: &zeroValue}
+	w.GetDurationMS()
+	w = &WorkflowRunJobRun{}
+	w.GetDurationMS()
+	w = nil
+	w.GetDurationMS()
+}
+
+func TestWorkflowRunJobRun_GetJobID(tt *testing.T) {
+	var zeroValue int
+	w := &WorkflowRunJobRun{JobID: &zeroValue}
+	w.GetJobID()
+	w = &WorkflowRunJobRun{}
+	w.GetJobID()
+	w = nil
+	w.GetJobID()
+}
+
 func TestWorkflowRuns_GetTotalCount(tt *testing.T) {
 	var zeroValue int
 	w := &WorkflowRuns{TotalCount: &zeroValue}

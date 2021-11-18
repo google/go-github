@@ -70,8 +70,15 @@ type WorkflowRunEnvironment struct {
 
 // WorkflowRunBill specifies billable time for a specific environment in a workflow run.
 type WorkflowRunBill struct {
-	TotalMS *int64 `json:"total_ms,omitempty"`
-	Jobs    *int   `json:"jobs,omitempty"`
+	TotalMS *int64               `json:"total_ms,omitempty"`
+	Jobs    *int                 `json:"jobs,omitempty"`
+	JobRuns []*WorkflowRunJobRun `json:"job_runs,omitempty"`
+}
+
+// WorkflowRunJobRun represents a usage of individual jobs of a specific workflow run.
+type WorkflowRunJobRun struct {
+	JobID      *int   `json:"job_id,omitempty"`
+	DurationMS *int64 `json:"duration_ms,omitempty"`
 }
 
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
