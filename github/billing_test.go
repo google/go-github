@@ -411,13 +411,15 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 
 	want := &ActiveCommitters{
 		TotalAdvancedSecurityCommitters: 2,
-		Repositories: Repositories{
-			Name:                       "octocat-org/Hello-World",
-			AdvancedSecurityCommitters: 2,
-			AdvancedSecurityCommittersBreakdown: []AdvancedSecurityCommittersBreakdown{
-				{
-					UserLogin:      "octokitten",
-					LastPushedDate: "2021-10-25",
+		Repositories: []Repositories{
+			{
+				Name:                       "octocat-org/Hello-World",
+				AdvancedSecurityCommitters: 2,
+				AdvancedSecurityCommittersBreakdown: []AdvancedSecurityCommittersBreakdown{
+					{
+						UserLogin:      "octokitten",
+						LastPushedDate: "2021-10-25",
+					},
 				},
 			},
 		},

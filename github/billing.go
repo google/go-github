@@ -45,8 +45,8 @@ type StorageBilling struct {
 }
 
 type ActiveCommitters struct {
-	TotalAdvancedSecurityCommitters int          `json:"total_advanced_security_committers"`
-	Repositories                    Repositories `json:"repositories"`
+	TotalAdvancedSecurityCommitters int            `json:"total_advanced_security_committers"`
+	Repositories                    []Repositories `json:"repositories"`
 }
 
 type Repositories struct {
