@@ -44,17 +44,20 @@ type StorageBilling struct {
 	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
 }
 
+// ActiveCommitters represents the total active committers across all repositories in an Organization.
 type ActiveCommitters struct {
 	TotalAdvancedSecurityCommitters int            `json:"total_advanced_security_committers"`
 	Repositories                    []Repositories `json:"repositories"`
 }
 
+// Repositories represents active committers on each repository
 type Repositories struct {
 	Name                                string                                `json:"name"`
 	AdvancedSecurityCommitters          int                                   `json:"advanced_security_committers"`
 	AdvancedSecurityCommittersBreakdown []AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown"`
 }
 
+// AdvancedSecurityCommittersBreakdown represents the user activity breakdown for ActiveCommitters
 type AdvancedSecurityCommittersBreakdown struct {
 	UserLogin      string `json:"user_login"`
 	LastPushedDate string `json:"last_pushed_date"`
