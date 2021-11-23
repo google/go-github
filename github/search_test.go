@@ -481,3 +481,318 @@ func TestSearchService_Labels_coverage(t *testing.T) {
 		return err
 	})
 }
+
+func TestMatch_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Match{}, "{}")
+
+	u := &Match{
+		Text:    String("txt"),
+		Indices: []int{1},
+	}
+
+	want := `{
+		"text": "txt",
+		"indices": [1]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTextMatch_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TextMatch{}, "{}")
+
+	u := &TextMatch{
+		ObjectURL:  String("ourl"),
+		ObjectType: String("otype"),
+		Property:   String("prop"),
+		Fragment:   String("fragment"),
+		Matches: []*Match{
+			{
+				Text:    String("txt"),
+				Indices: []int{1},
+			},
+		},
+	}
+
+	want := `{
+		"object_url": "ourl",
+		"object_type": "otype",
+		"property": "prop",
+		"fragment": "fragment",
+		"matches": [{
+			"text": "txt",
+			"indices": [1]
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTopicResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TopicResult{}, "{}")
+
+	u := &TopicResult{
+		Name:             String("name"),
+		DisplayName:      String("displayName"),
+		ShortDescription: String("shortDescription"),
+		Description:      String("description"),
+		CreatedBy:        String("createdBy"),
+		UpdatedAt:        String("2021-10-26"),
+		Featured:         Bool(false),
+		Curated:          Bool(true),
+		Score:            Float64(99.9),
+	}
+
+	want := `{
+		"name": "name",
+		"display_name": "displayName",
+		"short_description": "shortDescription",
+		"description": "description",
+		"created_by": "createdBy",
+		"updated_at": "2021-10-26",
+		"featured": false,
+		"curated": true,
+		"score": 99.9
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRepositoriesSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepositoriesSearchResult{}, "{}")
+
+	u := &RepositoriesSearchResult{
+		Total:             Int(0),
+		IncompleteResults: Bool(true),
+		Repositories:      []*Repository{{ID: Int64(1)}},
+	}
+
+	want := `{
+		"total_count" : 0,
+		"incomplete_results" : true,
+		"items" : [{"id":1}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCommitsSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitsSearchResult{}, "{}")
+
+	c := &CommitsSearchResult{
+		Total:             Int(0),
+		IncompleteResults: Bool(true),
+		Commits: []*CommitResult{{
+			SHA: String("s"),
+		}},
+	}
+
+	want := `{
+		"total_count" : 0,
+		"incomplete_results" : true,
+		"items" : [{"sha" : "s"}]
+	}`
+
+	testJSONMarshal(t, c, want)
+}
+
+func TestTopicsSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TopicsSearchResult{}, "{}")
+
+	u := &TopicsSearchResult{
+		Total:             Int(2),
+		IncompleteResults: Bool(false),
+		Topics: []*TopicResult{
+			{
+				Name:             String("t1"),
+				DisplayName:      String("tt"),
+				ShortDescription: String("t desc"),
+				Description:      String("desc"),
+				CreatedBy:        String("mi"),
+				CreatedAt:        &Timestamp{referenceTime},
+				UpdatedAt:        String("2006-01-02T15:04:05Z"),
+				Featured:         Bool(true),
+				Curated:          Bool(true),
+				Score:            Float64(123),
+			},
+		},
+	}
+
+	want := `{
+		"total_count" : 2,
+		"incomplete_results" : false,
+		"items" : [
+			{
+				"name" : "t1",
+				"display_name":"tt",
+				"short_description":"t desc",
+				"description":"desc",
+				"created_by":"mi",
+				"created_at":` + referenceTimeStr + `,
+				"updated_at":"2006-01-02T15:04:05Z",
+				"featured":true,
+				"curated":true,
+				"score":123
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestLabelResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &LabelResult{}, "{}")
+
+	u := &LabelResult{
+		ID:          Int64(11),
+		URL:         String("url"),
+		Name:        String("label"),
+		Color:       String("green"),
+		Default:     Bool(true),
+		Description: String("desc"),
+		Score:       Float64(123),
+	}
+
+	want := `{
+		"id":11,
+		"url":"url",
+		"name":"label",
+		"color":"green",
+		"default":true,
+		"description":"desc",
+		"score":123
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSearchOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SearchOptions{}, "{}")
+
+	u := &SearchOptions{
+		Sort:      "author-date",
+		Order:     "asc",
+		TextMatch: false,
+		ListOptions: ListOptions{
+			Page:    int(1),
+			PerPage: int(10),
+		},
+	}
+
+	want := `{	
+		"sort": "author-date",
+		"order": "asc",
+		"page": 1,
+		"perPage": 10
+      }`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIssuesSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IssuesSearchResult{}, "{}")
+
+	u := &IssuesSearchResult{
+		Total:             Int(48),
+		IncompleteResults: Bool(false),
+		Issues: []*Issue{
+			{
+				ID:                Int64(1),
+				Number:            Int(1),
+				State:             String("s"),
+				Locked:            Bool(false),
+				Title:             String("title"),
+				Body:              String("body"),
+				AuthorAssociation: String("aa"),
+				User:              &User{ID: Int64(1)},
+				Labels:            []*Label{{ID: Int64(1)}},
+				Assignee:          &User{ID: Int64(1)},
+				Comments:          Int(1),
+				ClosedAt:          &referenceTime,
+				CreatedAt:         &referenceTime,
+				UpdatedAt:         &referenceTime,
+				ClosedBy:          &User{ID: Int64(1)},
+				URL:               String("url"),
+				HTMLURL:           String("hurl"),
+				CommentsURL:       String("curl"),
+				EventsURL:         String("eurl"),
+				LabelsURL:         String("lurl"),
+				RepositoryURL:     String("rurl"),
+				Milestone:         &Milestone{ID: Int64(1)},
+				PullRequestLinks:  &PullRequestLinks{URL: String("url")},
+				Repository:        &Repository{ID: Int64(1)},
+				Reactions:         &Reactions{TotalCount: Int(1)},
+				Assignees:         []*User{{ID: Int64(1)}},
+				NodeID:            String("nid"),
+				TextMatches:       []*TextMatch{{ObjectURL: String("ourl")}},
+				ActiveLockReason:  String("alr"),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 48,
+		"incomplete_results": false,
+		"items": [
+			{
+				"id": 1,
+				"number": 1,
+				"state": "s",
+				"locked": false,
+				"title": "title",
+				"body": "body",
+				"author_association": "aa",
+				"user": {
+					"id": 1
+				},
+				"labels": [
+					{
+						"id": 1
+					}
+				],
+				"assignee": {
+					"id": 1
+				},
+				"comments": 1,
+				"closed_at": ` + referenceTimeStr + `,
+				"created_at": ` + referenceTimeStr + `,
+				"updated_at": ` + referenceTimeStr + `,
+				"closed_by": {
+					"id": 1
+				},
+				"url": "url",
+				"html_url": "hurl",
+				"comments_url": "curl",
+				"events_url": "eurl",
+				"labels_url": "lurl",
+				"repository_url": "rurl",
+				"milestone": {
+					"id": 1
+				},
+				"pull_request": {
+					"url": "url"
+				},
+				"repository": {
+					"id": 1
+				},
+				"reactions": {
+					"total_count": 1
+				},
+				"assignees": [
+					{
+						"id": 1
+					}
+				],
+				"node_id": "nid",
+				"text_matches": [
+					{
+						"object_url": "ourl"
+					}
+				],
+				"active_lock_reason": "alr"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}

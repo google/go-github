@@ -366,7 +366,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/timing", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000,"jobs":1},"MACOS":{"total_ms":240000,"jobs":4},"WINDOWS":{"total_ms":300000,"jobs":2}},"run_duration_ms":500000}`)
+		fmt.Fprint(w, `{"billable":{"UBUNTU":{"total_ms":180000,"jobs":1,"job_runs":[{"job_id":1,"duration_ms":60000}]},"MACOS":{"total_ms":240000,"jobs":2,"job_runs":[{"job_id":2,"duration_ms":30000},{"job_id":3,"duration_ms":10000}]},"WINDOWS":{"total_ms":300000,"jobs":2}},"run_duration_ms":500000}`)
 	})
 
 	ctx := context.Background()
@@ -380,10 +380,26 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 			Ubuntu: &WorkflowRunBill{
 				TotalMS: Int64(180000),
 				Jobs:    Int(1),
+				JobRuns: []*WorkflowRunJobRun{
+					{
+						JobID:      Int(1),
+						DurationMS: Int64(60000),
+					},
+				},
 			},
 			MacOS: &WorkflowRunBill{
 				TotalMS: Int64(240000),
-				Jobs:    Int(4),
+				Jobs:    Int(2),
+				JobRuns: []*WorkflowRunJobRun{
+					{
+						JobID:      Int(2),
+						DurationMS: Int64(30000),
+					},
+					{
+						JobID:      Int(3),
+						DurationMS: Int64(10000),
+					},
+				},
 			},
 			Windows: &WorkflowRunBill{
 				TotalMS: Int64(300000),

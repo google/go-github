@@ -1586,6 +1586,34 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 	}
 }
 
+func TestNewTeam_Marshal(t *testing.T) {
+	testJSONMarshal(t, &NewTeam{}, "{}")
+
+	u := &NewTeam{
+		Name:         "n",
+		Description:  String("d"),
+		Maintainers:  []string{"m1", "m2"},
+		RepoNames:    []string{"repo1", "repo2"},
+		ParentTeamID: Int64(1),
+		Permission:   String("perm"),
+		Privacy:      String("p"),
+		LDAPDN:       String("l"),
+	}
+
+	want := `{
+		"name":           "n",
+		"description":    "d",
+		"maintainers":    ["m1", "m2"],
+		"repo_names":     ["repo1", "repo2"],
+		"parent_team_id": 1,
+		"permission":     "perm",
+		"privacy":        "p",
+		"ldap_dn":        "l"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestTeams_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Team{}, "{}")
 
@@ -1667,6 +1695,52 @@ func TestTeams_Marshal(t *testing.T) {
 			"repos_count": 1
 		},
 		"ldap_dn": "l"	
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestInvitation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Invitation{}, "{}")
+
+	u := &Invitation{
+		ID:                Int64(1),
+		NodeID:            String("test node"),
+		Login:             String("login123"),
+		Email:             String("go@github.com"),
+		Role:              String("developer"),
+		CreatedAt:         &referenceTime,
+		TeamCount:         Int(99),
+		InvitationTeamURL: String("url"),
+	}
+
+	want := `{
+		"id": 1,
+		"node_id": "test node",
+		"login":"login123",
+		"email":"go@github.com",
+		"role":"developer",
+		"created_at":` + referenceTimeStr + `,
+		"team_count":99,
+		"invitation_team_url":"url"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestIDPGroup_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IDPGroup{}, "{}")
+
+	u := &IDPGroup{
+		GroupID:          String("abc1"),
+		GroupName:        String("test group"),
+		GroupDescription: String("test group descripation"),
+	}
+
+	want := `{
+		"group_id": "abc1",
+		"group_name": "test group",
+		"group_description":"test group descripation"
 	}`
 
 	testJSONMarshal(t, u, want)

@@ -200,3 +200,111 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestTrafficReferrer_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficReferrer{}, "{}")
+
+	u := &TrafficReferrer{
+		Referrer: String("referrer"),
+		Count:    Int(0),
+		Uniques:  Int(0),
+	}
+
+	want := `{
+		"referrer" : "referrer",
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTrafficViews_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficViews{}, "{}")
+
+	u := &TrafficViews{
+		Views: []*TrafficData{{
+			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+			Count:     Int(7),
+			Uniques:   Int(6),
+		}},
+		Count:   Int(0),
+		Uniques: Int(0),
+	}
+
+	want := `{
+		"views": [{
+			"timestamp": "2016-05-31T16:00:00.000Z",
+			"count": 7,
+			"uniques": 6
+		}],
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTrafficClones_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficClones{}, "{}")
+
+	u := &TrafficClones{
+		Clones: []*TrafficData{{
+			Timestamp: &Timestamp{time.Date(2021, time.October, 29, 16, 0, 0, 0, time.UTC)},
+			Count:     Int(1),
+			Uniques:   Int(1),
+		}},
+		Count:   Int(0),
+		Uniques: Int(0),
+	}
+
+	want := `{
+		"clones": [{
+			"timestamp": "2021-10-29T16:00:00.000Z",
+			"count": 1,
+			"uniques": 1
+		}],
+		"count" : 0,
+		"uniques" : 0
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTrafficPath_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficPath{}, "{}")
+
+	u := &TrafficPath{
+		Path:    String("test/path"),
+		Title:   String("test"),
+		Count:   Int(2),
+		Uniques: Int(3),
+	}
+
+	want := `{
+		"path" : "test/path",
+		"title": "test",
+		"count": 2,
+		"uniques": 3
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestTrafficData_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficData{}, "{}")
+
+	u := &TrafficData{
+		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+		Count:     Int(7),
+		Uniques:   Int(6),
+	}
+
+	want := `{	
+			"timestamp": "2016-05-31T16:00:00.000Z",
+			"count": 7,
+			"uniques": 6
+      }`
+
+	testJSONMarshal(t, u, want)
+}

@@ -15148,6 +15148,70 @@ func (r *RunnerLabels) GetType() string {
 	return *r.Type
 }
 
+// GetCheckoutURI returns the CheckoutURI field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetCheckoutURI() string {
+	if s == nil || s.CheckoutURI == nil {
+		return ""
+	}
+	return *s.CheckoutURI
+}
+
+// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetCommitSHA() string {
+	if s == nil || s.CommitSHA == nil {
+		return ""
+	}
+	return *s.CommitSHA
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetRef() string {
+	if s == nil || s.Ref == nil {
+		return ""
+	}
+	return *s.Ref
+}
+
+// GetSarif returns the Sarif field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetSarif() string {
+	if s == nil || s.Sarif == nil {
+		return ""
+	}
+	return *s.Sarif
+}
+
+// GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetStartedAt() Timestamp {
+	if s == nil || s.StartedAt == nil {
+		return Timestamp{}
+	}
+	return *s.StartedAt
+}
+
+// GetToolName returns the ToolName field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetToolName() string {
+	if s == nil || s.ToolName == nil {
+		return ""
+	}
+	return *s.ToolName
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *SarifID) GetID() string {
+	if s == nil || s.ID == nil {
+		return ""
+	}
+	return *s.ID
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (s *SarifID) GetURL() string {
+	if s == nil || s.URL == nil {
+		return ""
+	}
+	return *s.URL
+}
+
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
 func (s *SCIMUserAttributes) GetActive() bool {
 	if s == nil || s.Active == nil {
@@ -16372,12 +16436,44 @@ func (t *Timeline) GetAssignee() *User {
 	return t.Assignee
 }
 
+// GetAssigner returns the Assigner field.
+func (t *Timeline) GetAssigner() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Assigner
+}
+
+// GetAuthor returns the Author field.
+func (t *Timeline) GetAuthor() *CommitAuthor {
+	if t == nil {
+		return nil
+	}
+	return t.Author
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetBody() string {
+	if t == nil || t.Body == nil {
+		return ""
+	}
+	return *t.Body
+}
+
 // GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
 func (t *Timeline) GetCommitID() string {
 	if t == nil || t.CommitID == nil {
 		return ""
 	}
 	return *t.CommitID
+}
+
+// GetCommitter returns the Committer field.
+func (t *Timeline) GetCommitter() *CommitAuthor {
+	if t == nil {
+		return nil
+	}
+	return t.Committer
 }
 
 // GetCommitURL returns the CommitURL field if it's non-nil, zero value otherwise.
@@ -16420,6 +16516,14 @@ func (t *Timeline) GetLabel() *Label {
 	return t.Label
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetMessage() string {
+	if t == nil || t.Message == nil {
+		return ""
+	}
+	return *t.Message
+}
+
 // GetMilestone returns the Milestone field.
 func (t *Timeline) GetMilestone() *Milestone {
 	if t == nil {
@@ -16444,6 +16548,30 @@ func (t *Timeline) GetRename() *Rename {
 	return t.Rename
 }
 
+// GetRequester returns the Requester field.
+func (t *Timeline) GetRequester() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Requester
+}
+
+// GetReviewer returns the Reviewer field.
+func (t *Timeline) GetReviewer() *User {
+	if t == nil {
+		return nil
+	}
+	return t.Reviewer
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetSHA() string {
+	if t == nil || t.SHA == nil {
+		return ""
+	}
+	return *t.SHA
+}
+
 // GetSource returns the Source field.
 func (t *Timeline) GetSource() *Source {
 	if t == nil {
@@ -16460,12 +16588,28 @@ func (t *Timeline) GetState() string {
 	return *t.State
 }
 
+// GetSubmittedAt returns the SubmittedAt field if it's non-nil, zero value otherwise.
+func (t *Timeline) GetSubmittedAt() time.Time {
+	if t == nil || t.SubmittedAt == nil {
+		return time.Time{}
+	}
+	return *t.SubmittedAt
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (t *Timeline) GetURL() string {
 	if t == nil || t.URL == nil {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetUser returns the User field.
+func (t *Timeline) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return t.User
 }
 
 // GetGUID returns the GUID field if it's non-nil, zero value otherwise.
@@ -18522,6 +18666,22 @@ func (w *WorkflowRunEvent) GetWorkflowRun() *WorkflowRun {
 		return nil
 	}
 	return w.WorkflowRun
+}
+
+// GetDurationMS returns the DurationMS field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunJobRun) GetDurationMS() int64 {
+	if w == nil || w.DurationMS == nil {
+		return 0
+	}
+	return *w.DurationMS
+}
+
+// GetJobID returns the JobID field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunJobRun) GetJobID() int {
+	if w == nil || w.JobID == nil {
+		return 0
+	}
+	return *w.JobID
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

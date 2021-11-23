@@ -367,3 +367,63 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 		return client.Users.DeclineInvitation(ctx, 1)
 	})
 }
+
+func TestUserContext_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserContext{}, "{}")
+
+	u := &UserContext{
+		Message: String("message"),
+		Octicon: String("message"),
+	}
+
+	want := `{
+		"message" : "message",
+		"octicon" : "message"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestHovercard_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Hovercard{}, "{}")
+
+	h := &Hovercard{
+		Contexts: []*UserContext{
+			{
+				Message: String("someMessage"),
+				Octicon: String("someOcticon"),
+			},
+		},
+	}
+
+	want := `{
+		"contexts" : [
+			{
+				"message" : "someMessage",
+				"octicon" : "someOcticon"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, h, want)
+}
+
+func TestUserListOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserListOptions{}, "{}")
+
+	u := &UserListOptions{
+		Since: int64(1900),
+		ListOptions: ListOptions{
+			Page:    int(1),
+			PerPage: int(10),
+		},
+	}
+
+	want := `{
+		"since" : 1900,
+		"page": 1,
+		"perPage": 10
+	}`
+
+	testJSONMarshal(t, u, want)
+}

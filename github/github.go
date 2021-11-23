@@ -48,6 +48,21 @@ const (
 	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
 
 	// Media Type values to access preview APIs
+	// These media types will be added to the API request as headers
+	// and used to enable particular features on GitHub API that are still in preview.
+	// After some time, specific media types will be promoted (to a "stable" state).
+	// From then on, the preview headers are not required anymore to activate the additional
+	// feature on GitHub.com's API. However, this API header might still be needed for users
+	// to run a GitHub Enterprise Server on-premise.
+	// It's not uncommon for GitHub Enterprise Server customers to run older versions which
+	// would probably rely on the preview headers for some time.
+	// While the header promotion is going out for GitHub.com, it may be some time before it
+	// even arrives in GitHub Enterprise Server.
+	// We keep those preview headers around to avoid breaking older GitHub Enterprise Server
+	// versions. Additionally, non-functional (preview) headers don't create any side effects
+	// on GitHub Cloud version.
+	//
+	// See https://github.com/google/go-github/pull/2125 for full context.
 
 	// https://developer.github.com/changes/2014-12-09-new-attributes-for-stars-api/
 	mediaTypeStarringPreview = "application/vnd.github.v3.star+json"
@@ -462,6 +477,10 @@ type Response struct {
 	// Set ListCursorOptions.Cursor to this value when calling the endpoint again.
 	Cursor string
 
+	// For APIs that support before/after pagination, such as OrganizationsService.AuditLog.
+	Before string
+	After  string
+
 	// Explicitly specify the Rate type so Rate's String() receiver doesn't
 	// propagate to Response.
 	Rate Rate
@@ -517,9 +536,11 @@ func (r *Response) populatePageValues() {
 			}
 
 			page := q.Get("page")
-			since := q.Get("since")
+      since := q.Get("since")
+			before := q.Get("before")
+			after := q.Get("after")
 
-			if page == "" && since == "" {
+      if page == "" && before == "" && after == "" && since == "" {
 				continue
 			}
 
@@ -533,8 +554,10 @@ func (r *Response) populatePageValues() {
 					if r.NextPage, err = strconv.Atoi(page); err != nil {
 						r.NextPageToken = page
 					}
+					r.After = after
 				case `rel="prev"`:
 					r.PrevPage, _ = strconv.Atoi(page)
+					r.Before = before
 				case `rel="first"`:
 					r.FirstPage, _ = strconv.Atoi(page)
 				case `rel="last"`:

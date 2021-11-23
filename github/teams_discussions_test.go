@@ -541,3 +541,47 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 		return client.Teams.DeleteDiscussionBySlug(ctx, "o", "s", 3)
 	})
 }
+
+func TestTeamDiscussion_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TeamDiscussion{}, "{}")
+
+	u := &TeamDiscussion{
+		Author: &User{
+			Login:       String("author"),
+			ID:          Int64(0),
+			URL:         String("https://api.github.com/users/author"),
+			AvatarURL:   String("https://avatars1.githubusercontent.com/u/0?v=4"),
+			GravatarID:  String(""),
+			CreatedAt:   &Timestamp{referenceTime},
+			SuspendedAt: &Timestamp{referenceTime},
+		},
+		Body:          String("test"),
+		BodyHTML:      String("<p>test</p>"),
+		BodyVersion:   String("version"),
+		CommentsCount: Int(1),
+		CommentsURL:   String("https://api.github.com/teams/2/discussions/3/comments"),
+		CreatedAt:     &Timestamp{referenceTime},
+		LastEditedAt:  &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"author": {
+			"login": "author",
+			"id": 0,
+			"avatar_url": "https://avatars1.githubusercontent.com/u/0?v=4",
+			"gravatar_id": "",
+			"url": "https://api.github.com/users/author",
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `	
+		},
+		"body": "test",
+		"body_html": "<p>test</p>",
+		"body_version": "version",
+		"comments_count": 1,
+		"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
+		"created_at": ` + referenceTimeStr + `,
+		"last_edited_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
