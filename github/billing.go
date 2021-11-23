@@ -50,8 +50,8 @@ type ActiveCommitters struct {
 }
 
 type Repositories struct {
-	Name                                string                              `json:"name"`
-	AdvancedSecurityCommitters          int                                 `json:"advanced_security_committers"`
+	Name                                string                                `json:"name"`
+	AdvancedSecurityCommitters          int                                   `json:"advanced_security_committers"`
 	AdvancedSecurityCommittersBreakdown []AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown"`
 }
 
