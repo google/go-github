@@ -44,6 +44,22 @@ type StorageBilling struct {
 	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
 }
 
+type ActiveCommitters struct {
+	TotalAdvancedSecurityCommitters int          `json:"total_advanced_security_committers"`
+	Repositories                    Repositories `json:"repositories"`
+}
+
+type Repositories struct {
+	Name                                string                              `json:"name"`
+	AdvancedSecurityCommitters          int                                 `json:"advanced_security_committers"`
+	AdvancedSecurityCommittersBreakdown []AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown"`
+}
+
+type AdvancedSecurityCommittersBreakdown struct {
+	UserLogin      string `json:"user_login"`
+	LastPushedDate string `json:"last_pushed_date"`
+}
+
 // GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-actions-billing-for-an-organization
@@ -85,6 +101,20 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 	storageOrgBilling := new(StorageBilling)
 	resp, err := s.client.Do(ctx, req, storageOrgBilling)
 	return storageOrgBilling, resp, err
+}
+
+// GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-advanced-security-active-committers-for-an-organization
+func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string) (*ActiveCommitters, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/settings/billing/advanced-security", org)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	ActiveOrgCommitters := new(ActiveCommitters)
+	resp, err := s.client.Do(ctx, req, ActiveOrgCommitters)
+	return ActiveOrgCommitters, resp, err
 }
 
 // GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.

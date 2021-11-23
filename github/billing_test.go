@@ -379,3 +379,69 @@ func TestStorageBilling_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/settings/billing/advanced-security", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+  "total_advanced_security_committers": 2,
+  "repositories": [
+    {
+      "name": "octocat-org/Hello-World",
+      "advanced_security_committers": 2,
+      "advanced_security_committers_breakdown": [
+        {
+          "user_login": "octocat",
+          "last_pushed_date": "2021-11-03"
+        },
+        {
+          "user_login": "octokitten",
+          "last_pushed_date": "2021-10-25"
+        }
+      ]
+    }
+  ]
+}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o")
+	if err != nil {
+		t.Errorf("Billing.GetAdvancedSecurityActiveCommittersOrg	 returned error: %v", err)
+	}
+
+	want := &ActiveCommitters{
+		TotalAdvancedSecurityCommitters:     2,
+		Repositories: Repositories{
+			Name:  "octocat-org/Hello-World",
+			AdvancedSecurityCommitters:   2,
+			AdvancedSecurityCommittersBreakdown: []AdvancedSecurityCommittersBreakdown{
+				{
+				UserLogin: "octokitten",
+				LastPushedDate: "2021-10-25",
+				},
+			},
+		},
+	}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Billing.GetAdvancedSecurityActiveCommittersOrg returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "GetAdvancedSecurityActiveCommittersOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "\n")
+		return err
+	})
+}
+
+func TestBillingService_GetAdvancedSecurityActiveCommittersOrg_invalidOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+	_, _, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "%")
+	testURLParseError(t, err)
+}
