@@ -536,11 +536,11 @@ func (r *Response) populatePageValues() {
 			}
 
 			page := q.Get("page")
-      since := q.Get("since")
+			since := q.Get("since")
 			before := q.Get("before")
 			after := q.Get("after")
 
-      if page == "" && before == "" && after == "" && since == "" {
+			if page == "" && before == "" && after == "" && since == "" {
 				continue
 			}
 
