@@ -57,6 +57,14 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetActionsBillingOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_GetActionsBillingOrg_invalidOrg(t *testing.T) {
@@ -101,6 +109,14 @@ func TestBillingService_GetPackagesBillingOrg(t *testing.T) {
 		_, _, err = client.Billing.GetPackagesBillingOrg(ctx, "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetPackagesBillingOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_GetPackagesBillingOrg_invalidOrg(t *testing.T) {
@@ -144,6 +160,14 @@ func TestBillingService_GetStorageBillingOrg(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Billing.GetStorageBillingOrg(ctx, "\n")
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetStorageBillingOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -199,6 +223,14 @@ func TestBillingService_GetActionsBillingUser(t *testing.T) {
 		_, _, err = client.Billing.GetActionsBillingOrg(ctx, "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetActionsBillingUser(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_GetActionsBillingUser_invalidUser(t *testing.T) {
@@ -243,6 +275,14 @@ func TestBillingService_GetPackagesBillingUser(t *testing.T) {
 		_, _, err = client.Billing.GetPackagesBillingUser(ctx, "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetPackagesBillingUser(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_GetPackagesBillingUser_invalidUser(t *testing.T) {
@@ -286,6 +326,14 @@ func TestBillingService_GetStorageBillingUser(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Billing.GetStorageBillingUser(ctx, "\n")
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetStorageBillingUser(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -411,7 +459,7 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 
 	want := &ActiveCommitters{
 		TotalAdvancedSecurityCommitters: 2,
-		Repositories: []Repositories{
+		Repositories: []RepositoryActiveCommitters{
 			{
 				Name:                       "octocat-org/Hello-World",
 				AdvancedSecurityCommitters: 2,
@@ -432,6 +480,14 @@ func TestBillingService_GetAdvancedSecurityActiveCommittersOrg(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "\n")
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetAdvancedSecurityActiveCommittersOrg(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
