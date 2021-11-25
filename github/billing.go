@@ -46,7 +46,7 @@ type StorageBilling struct {
 
 // ActiveCommitters represents the total active committers across all repositories in an Organization.
 type ActiveCommitters struct {
-	TotalAdvancedSecurityCommitters int            `json:"total_advanced_security_committers,omitempty"`
+	TotalAdvancedSecurityCommitters int                          `json:"total_advanced_security_committers,omitempty"`
 	Repositories                    []RepositoryActiveCommitters `json:"repositories,omitempty"`
 }
 
