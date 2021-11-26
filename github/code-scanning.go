@@ -283,7 +283,7 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 //
 // The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#get-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#get-a-code-scanning-analysis-for-a-repository
 func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*Analysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
