@@ -308,6 +308,153 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAnalysis_GetAnalysisKey(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{AnalysisKey: &zeroValue}
+	a.GetAnalysisKey()
+	a = &Analysis{}
+	a.GetAnalysisKey()
+	a = nil
+	a.GetAnalysisKey()
+}
+
+func TestAnalysis_GetCategory(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{Category: &zeroValue}
+	a.GetCategory()
+	a = &Analysis{}
+	a.GetCategory()
+	a = nil
+	a.GetCategory()
+}
+
+func TestAnalysis_GetCommitSha(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{CommitSha: &zeroValue}
+	a.GetCommitSha()
+	a = &Analysis{}
+	a.GetCommitSha()
+	a = nil
+	a.GetCommitSha()
+}
+
+func TestAnalysis_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Analysis{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &Analysis{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAnalysis_GetDeletable(tt *testing.T) {
+	var zeroValue bool
+	a := &Analysis{Deletable: &zeroValue}
+	a.GetDeletable()
+	a = &Analysis{}
+	a.GetDeletable()
+	a = nil
+	a.GetDeletable()
+}
+
+func TestAnalysis_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{Environment: &zeroValue}
+	a.GetEnvironment()
+	a = &Analysis{}
+	a.GetEnvironment()
+	a = nil
+	a.GetEnvironment()
+}
+
+func TestAnalysis_GetError(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{Error: &zeroValue}
+	a.GetError()
+	a = &Analysis{}
+	a.GetError()
+	a = nil
+	a.GetError()
+}
+
+func TestAnalysis_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &Analysis{ID: &zeroValue}
+	a.GetID()
+	a = &Analysis{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAnalysis_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{Ref: &zeroValue}
+	a.GetRef()
+	a = &Analysis{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAnalysis_GetResultsCount(tt *testing.T) {
+	var zeroValue int
+	a := &Analysis{ResultsCount: &zeroValue}
+	a.GetResultsCount()
+	a = &Analysis{}
+	a.GetResultsCount()
+	a = nil
+	a.GetResultsCount()
+}
+
+func TestAnalysis_GetRulesCount(tt *testing.T) {
+	var zeroValue int
+	a := &Analysis{RulesCount: &zeroValue}
+	a.GetRulesCount()
+	a = &Analysis{}
+	a.GetRulesCount()
+	a = nil
+	a.GetRulesCount()
+}
+
+func TestAnalysis_GetSarifID(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{SarifID: &zeroValue}
+	a.GetSarifID()
+	a = &Analysis{}
+	a.GetSarifID()
+	a = nil
+	a.GetSarifID()
+}
+
+func TestAnalysis_GetTool(tt *testing.T) {
+	a := &Analysis{}
+	a.GetTool()
+	a = nil
+	a.GetTool()
+}
+
+func TestAnalysis_GetURL(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{URL: &zeroValue}
+	a.GetURL()
+	a = &Analysis{}
+	a.GetURL()
+	a = nil
+	a.GetURL()
+}
+
+func TestAnalysis_GetWarning(tt *testing.T) {
+	var zeroValue string
+	a := &Analysis{Warning: &zeroValue}
+	a.GetWarning()
+	a = &Analysis{}
+	a.GetWarning()
+	a = nil
+	a.GetWarning()
+}
+
 func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	var zeroValue bool
 	a := &APIMeta{VerifiablePasswordAuthentication: &zeroValue}

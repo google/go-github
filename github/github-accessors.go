@@ -284,6 +284,126 @@ func (a *Alert) GetURL() string {
 	return *a.URL
 }
 
+// GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetAnalysisKey() string {
+	if a == nil || a.AnalysisKey == nil {
+		return ""
+	}
+	return *a.AnalysisKey
+}
+
+// GetCategory returns the Category field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetCategory() string {
+	if a == nil || a.Category == nil {
+		return ""
+	}
+	return *a.Category
+}
+
+// GetCommitSha returns the CommitSha field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetCommitSha() string {
+	if a == nil || a.CommitSha == nil {
+		return ""
+	}
+	return *a.CommitSha
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetDeletable returns the Deletable field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetDeletable() bool {
+	if a == nil || a.Deletable == nil {
+		return false
+	}
+	return *a.Deletable
+}
+
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetEnvironment() string {
+	if a == nil || a.Environment == nil {
+		return ""
+	}
+	return *a.Environment
+}
+
+// GetError returns the Error field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetError() string {
+	if a == nil || a.Error == nil {
+		return ""
+	}
+	return *a.Error
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetResultsCount returns the ResultsCount field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetResultsCount() int {
+	if a == nil || a.ResultsCount == nil {
+		return 0
+	}
+	return *a.ResultsCount
+}
+
+// GetRulesCount returns the RulesCount field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetRulesCount() int {
+	if a == nil || a.RulesCount == nil {
+		return 0
+	}
+	return *a.RulesCount
+}
+
+// GetSarifID returns the SarifID field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetSarifID() string {
+	if a == nil || a.SarifID == nil {
+		return ""
+	}
+	return *a.SarifID
+}
+
+// GetTool returns the Tool field.
+func (a *Analysis) GetTool() *Tool {
+	if a == nil {
+		return nil
+	}
+	return a.Tool
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
+// GetWarning returns the Warning field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetWarning() string {
+	if a == nil || a.Warning == nil {
+		return ""
+	}
+	return *a.Warning
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {
