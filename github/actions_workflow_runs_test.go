@@ -334,6 +334,32 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	})
 }
 
+func TestActionService_DeleteWorkflowRun(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	if _, err := client.Actions.DeleteWorkflowRun(ctx, "o", "r", 399444496); err != nil {
+		t.Errorf("DeleteWorkflowRun returned error: %v", err)
+	}
+
+	const methodName = "DeleteWorkflowRun"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteWorkflowRun(ctx, "\n", "\n", 399444496)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteWorkflowRun(ctx, "o", "r", 399444496)
+	})
+}
+
 func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
