@@ -211,6 +211,20 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 	return parsedURL, newResponse(resp), err
 }
 
+// DeleteWorkflowRun deletes a workflow run by ID.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#delete-a-workflow-run
+func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-workflow-run-logs
