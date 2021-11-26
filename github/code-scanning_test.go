@@ -16,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestActionsService_Alert_ID(t *testing.T) {
+func TestCodeScanningService_Alert_ID(t *testing.T) {
 	// Test: nil Alert ID == 0
 	var a *Alert
 	id := a.ID()
@@ -54,7 +54,7 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	}
 }
 
-func TestActionsService_UploadSarif(t *testing.T) {
+func TestCodeScanningService_UploadSarif(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -89,7 +89,7 @@ func TestActionsService_UploadSarif(t *testing.T) {
 	})
 }
 
-func TestActionsService_ListAlertsForRepo(t *testing.T) {
+func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -283,7 +283,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetAlert(t *testing.T) {
+func TestCodeScanningService_GetAlert(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
