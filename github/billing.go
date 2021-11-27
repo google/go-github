@@ -18,49 +18,49 @@ type BillingService service
 
 // ActionBilling represents a GitHub Action billing.
 type ActionBilling struct {
-	TotalMinutesUsed     int                  `json:"total_minutes_used,omitempty"`
-	TotalPaidMinutesUsed int                  `json:"total_paid_minutes_used,omitempty"`
-	IncludedMinutes      int                  `json:"included_minutes,omitempty"`
-	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown,omitempty"`
+	TotalMinutesUsed     int                  `json:"total_minutes_used"`
+	TotalPaidMinutesUsed int                  `json:"total_paid_minutes_used"`
+	IncludedMinutes      int                  `json:"included_minutes"`
+	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown"`
 }
 
 type MinutesUsedBreakdown struct {
-	Ubuntu  int `json:"UBUNTU,omitempty"`
-	MacOS   int `json:"MACOS,omitempty"`
-	Windows int `json:"WINDOWS,omitempty"`
+	Ubuntu  int `json:"UBUNTU"`
+	MacOS   int `json:"MACOS"`
+	Windows int `json:"WINDOWS"`
 }
 
 // PackageBilling represents a GitHub Package billing.
 type PackageBilling struct {
-	TotalGigabytesBandwidthUsed     int `json:"total_gigabytes_bandwidth_used,omitempty"`
-	TotalPaidGigabytesBandwidthUsed int `json:"total_paid_gigabytes_bandwidth_used,omitempty"`
-	IncludedGigabytesBandwidth      int `json:"included_gigabytes_bandwidth,omitempty"`
+	TotalGigabytesBandwidthUsed     int `json:"total_gigabytes_bandwidth_used"`
+	TotalPaidGigabytesBandwidthUsed int `json:"total_paid_gigabytes_bandwidth_used"`
+	IncludedGigabytesBandwidth      int `json:"included_gigabytes_bandwidth"`
 }
 
 // StorageBilling represents a GitHub Storage billing.
 type StorageBilling struct {
-	DaysLeftInBillingCycle       int     `json:"days_left_in_billing_cycle,omitempty"`
-	EstimatedPaidStorageForMonth float64 `json:"estimated_paid_storage_for_month,omitempty"`
-	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month,omitempty"`
+	DaysLeftInBillingCycle       int     `json:"days_left_in_billing_cycle"`
+	EstimatedPaidStorageForMonth float64 `json:"estimated_paid_storage_for_month"`
+	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
 }
 
 // ActiveCommitters represents the total active committers across all repositories in an Organization.
 type ActiveCommitters struct {
-	TotalAdvancedSecurityCommitters int                          `json:"total_advanced_security_committers,omitempty"`
-	Repositories                    []RepositoryActiveCommitters `json:"repositories,omitempty"`
+	TotalAdvancedSecurityCommitters int                           `json:"total_advanced_security_committers"`
+	Repositories                    []*RepositoryActiveCommitters `json:"repositories,omitempty"`
 }
 
-// RepositoryActiveCommitters represents active committers on each repository
+// RepositoryActiveCommitters represents active committers on each repository.
 type RepositoryActiveCommitters struct {
-	Name                                string                                `json:"name,omitempty"`
-	AdvancedSecurityCommitters          int                                   `json:"advanced_security_committers,omitempty"`
-	AdvancedSecurityCommittersBreakdown []AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
+	Name                                *string                                `json:"name,omitempty"`
+	AdvancedSecurityCommitters          *int                                   `json:"advanced_security_committers,omitempty"`
+	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
 }
 
 // AdvancedSecurityCommittersBreakdown represents the user activity breakdown for ActiveCommitters.
 type AdvancedSecurityCommittersBreakdown struct {
-	UserLogin      string `json:"user_login,omitempty"`
-	LastPushedDate string `json:"last_pushed_date,omitempty"`
+	UserLogin      *string `json:"user_login,omitempty"`
+	LastPushedDate *string `json:"last_pushed_date,omitempty"`
 }
 
 // GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
@@ -131,13 +131,13 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 		return nil, nil, err
 	}
 
-	ActiveOrgCommitters := new(ActiveCommitters)
-	resp, err := s.client.Do(ctx, req, ActiveOrgCommitters)
+	activeOrgCommitters := new(ActiveCommitters)
+	resp, err := s.client.Do(ctx, req, activeOrgCommitters)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return ActiveOrgCommitters, resp, err
+	return activeOrgCommitters, resp, err
 }
 
 // GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
