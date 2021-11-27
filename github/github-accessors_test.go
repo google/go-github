@@ -163,6 +163,26 @@ func TestAdvancedSecurity_GetStatus(tt *testing.T) {
 	a.GetStatus()
 }
 
+func TestAdvancedSecurityCommittersBreakdown_GetLastPushedDate(tt *testing.T) {
+	var zeroValue string
+	a := &AdvancedSecurityCommittersBreakdown{LastPushedDate: &zeroValue}
+	a.GetLastPushedDate()
+	a = &AdvancedSecurityCommittersBreakdown{}
+	a.GetLastPushedDate()
+	a = nil
+	a.GetLastPushedDate()
+}
+
+func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
+	var zeroValue string
+	a := &AdvancedSecurityCommittersBreakdown{UserLogin: &zeroValue}
+	a.GetUserLogin()
+	a = &AdvancedSecurityCommittersBreakdown{}
+	a.GetUserLogin()
+	a = nil
+	a.GetUserLogin()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	a := &Alert{ClosedAt: &zeroValue}
@@ -16174,6 +16194,26 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 	r = nil
 	r.GetWatchersCount()
+}
+
+func TestRepositoryActiveCommitters_GetAdvancedSecurityCommitters(tt *testing.T) {
+	var zeroValue int
+	r := &RepositoryActiveCommitters{AdvancedSecurityCommitters: &zeroValue}
+	r.GetAdvancedSecurityCommitters()
+	r = &RepositoryActiveCommitters{}
+	r.GetAdvancedSecurityCommitters()
+	r = nil
+	r.GetAdvancedSecurityCommitters()
+}
+
+func TestRepositoryActiveCommitters_GetName(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryActiveCommitters{Name: &zeroValue}
+	r.GetName()
+	r = &RepositoryActiveCommitters{}
+	r.GetName()
+	r = nil
+	r.GetName()
 }
 
 func TestRepositoryComment_GetBody(tt *testing.T) {

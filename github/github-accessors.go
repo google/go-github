@@ -156,6 +156,22 @@ func (a *AdvancedSecurity) GetStatus() string {
 	return *a.Status
 }
 
+// GetLastPushedDate returns the LastPushedDate field if it's non-nil, zero value otherwise.
+func (a *AdvancedSecurityCommittersBreakdown) GetLastPushedDate() string {
+	if a == nil || a.LastPushedDate == nil {
+		return ""
+	}
+	return *a.LastPushedDate
+}
+
+// GetUserLogin returns the UserLogin field if it's non-nil, zero value otherwise.
+func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
+	if a == nil || a.UserLogin == nil {
+		return ""
+	}
+	return *a.UserLogin
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -13850,6 +13866,22 @@ func (r *Repository) GetWatchersCount() int {
 		return 0
 	}
 	return *r.WatchersCount
+}
+
+// GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
+func (r *RepositoryActiveCommitters) GetAdvancedSecurityCommitters() int {
+	if r == nil || r.AdvancedSecurityCommitters == nil {
+		return 0
+	}
+	return *r.AdvancedSecurityCommitters
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RepositoryActiveCommitters) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
