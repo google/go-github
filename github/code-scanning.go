@@ -130,10 +130,10 @@ type AnalysesListOptions struct {
 	ListOptions
 }
 
-// Analysis represents an individual GitHub Code Scanning Analysis on a single repository.
+// ScanningAnalysis represents an individual GitHub Code Scanning ScanningAnalysis on a single repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-analyses-for-a-repository
-type Analysis struct {
+type ScanningAnalysis struct {
 	ID           *int64     `json:"id,omitempty"`
 	Ref          *string    `json:"ref,omitempty"`
 	CommitSHA    *string    `json:"commit_sha,omitempty"`
@@ -255,7 +255,7 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-analyses-for-a-repository
-func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*Analysis, *Response, error) {
+func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -267,7 +267,7 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	var analyses []*Analysis
+	var analyses []*ScanningAnalysis
 	resp, err := s.client.Do(ctx, req, &analyses)
 	if err != nil {
 		return nil, resp, err
@@ -284,7 +284,7 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 // The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#get-a-code-scanning-analysis-for-a-repository
-func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*Analysis, *Response, error) {
+func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -292,7 +292,7 @@ func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	analysis := new(Analysis)
+	analysis := new(ScanningAnalysis)
 	resp, err := s.client.Do(ctx, req, analysis)
 	if err != nil {
 		return nil, resp, err

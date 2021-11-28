@@ -574,7 +574,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 				"url": "https://api.github.com/repos/o/r/code-scanning/analyses/200",
 				"sarif_id": "8981cd8e-b078-4ac3-a3be-1dad7dbd0b582",
 				"tool": {
-				  "name": "Python Security Analysis",
+				  "name": "Python Security ScanningAnalysis",
 				  "guid": null,
 				  "version": "1.2.0"
 				},
@@ -592,7 +592,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 	}
 
 	date := &Timestamp{time.Date(2020, time.August, 27, 15, 05, 21, 0, time.UTC)}
-	want := []*Analysis{
+	want := []*ScanningAnalysis{
 		{
 			ID:           Int64(201),
 			Ref:          String("refs/heads/main"),
@@ -628,7 +628,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 			URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/200"),
 			SarifID:      String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
 			Tool: &Tool{
-				Name:    String("Python Security Analysis"),
+				Name:    String("Python Security ScanningAnalysis"),
 				GUID:    nil,
 				Version: String("1.2.0"),
 			},
@@ -691,7 +691,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 	}
 
 	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
-	want := &Analysis{
+	want := &ScanningAnalysis{
 		ID:           Int64(3602840),
 		Ref:          String("refs/heads/main"),
 		CommitSHA:    String("c18c69115654ff0166991962832dc2bd7756e655"),
