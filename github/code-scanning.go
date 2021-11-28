@@ -122,10 +122,10 @@ type AlertListOptions struct {
 // AnalysesListOptions specifies optional parameters to the CodeScanningService.ListAnalysesForRepo method.
 type AnalysesListOptions struct {
 	// Return code scanning analyses belonging to the same SARIF upload.
-	SarifID string `url:"sarif_id,omitempty"`
+	SarifID *string `url:"sarif_id,omitempty"`
 
 	// Return code scanning analyses for a specific branch reference. The ref can be formatted as refs/heads/<branch name> or simply <branch name>.
-	Ref string `url:"ref,omitempty"`
+	Ref *string `url:"ref,omitempty"`
 
 	ListOptions
 }
@@ -136,7 +136,7 @@ type AnalysesListOptions struct {
 type Analysis struct {
 	ID           *int64     `json:"id,omitempty"`
 	Ref          *string    `json:"ref,omitempty"`
-	CommitSha    *string    `json:"commit_sha,omitempty"`
+	CommitSHA    *string    `json:"commit_sha,omitempty"`
 	AnalysisKey  *string    `json:"analysis_key,omitempty"`
 	Environment  *string    `json:"environment,omitempty"`
 	Error        *string    `json:"error,omitempty"`
@@ -251,8 +251,8 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 // ListAnalysesForRepo lists code scanning analyses for a repository.
 //
 // Lists the details of all code scanning analyses for a repository, starting with the most recent.
-// You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
-// read permission to use this endpoint.
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-analyses-for-a-repository
 func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*Analysis, *Response, error) {

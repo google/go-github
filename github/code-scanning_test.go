@@ -584,7 +584,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 			]`)
 	})
 
-	opts := &AnalysesListOptions{SarifID: "8981cd8e-b078-4ac3-a3be-1dad7dbd0b582", Ref: "heads/master"}
+	opts := &AnalysesListOptions{SarifID: String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"), Ref: String("heads/master")}
 	ctx := context.Background()
 	analyses, _, err := client.CodeScanning.ListAnalysesForRepo(ctx, "o", "r", opts)
 	if err != nil {
@@ -596,7 +596,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 		{
 			ID:           Int64(201),
 			Ref:          String("refs/heads/main"),
-			CommitSha:    String("d99612c3e1f2970085cfbaeadf8f010ef69bad83"),
+			CommitSHA:    String("d99612c3e1f2970085cfbaeadf8f010ef69bad83"),
 			AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
 			Environment:  String("{\"language\":\"python\"}"),
 			Error:        String(""),
@@ -617,7 +617,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 		{
 			ID:           Int64(200),
 			Ref:          String("refs/heads/my-branch"),
-			CommitSha:    String("c8cff6510d4d084fb1b4aa13b64b97ca12b07321"),
+			CommitSHA:    String("c8cff6510d4d084fb1b4aa13b64b97ca12b07321"),
 			AnalysisKey:  String(".github/workflows/shiftleft.yml:build"),
 			Environment:  String("{}"),
 			Error:        String(""),
@@ -694,7 +694,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 	want := &Analysis{
 		ID:           Int64(3602840),
 		Ref:          String("refs/heads/main"),
-		CommitSha:    String("c18c69115654ff0166991962832dc2bd7756e655"),
+		CommitSHA:    String("c18c69115654ff0166991962832dc2bd7756e655"),
 		AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
 		Environment:  String("{\"language\":\"javascript\"}"),
 		Error:        String(""),

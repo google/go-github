@@ -308,6 +308,26 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAnalysesListOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysesListOptions{Ref: &zeroValue}
+	a.GetRef()
+	a = &AnalysesListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysesListOptions{SarifID: &zeroValue}
+	a.GetSarifID()
+	a = &AnalysesListOptions{}
+	a.GetSarifID()
+	a = nil
+	a.GetSarifID()
+}
+
 func TestAnalysis_GetAnalysisKey(tt *testing.T) {
 	var zeroValue string
 	a := &Analysis{AnalysisKey: &zeroValue}
@@ -328,14 +348,14 @@ func TestAnalysis_GetCategory(tt *testing.T) {
 	a.GetCategory()
 }
 
-func TestAnalysis_GetCommitSha(tt *testing.T) {
+func TestAnalysis_GetCommitSHA(tt *testing.T) {
 	var zeroValue string
-	a := &Analysis{CommitSha: &zeroValue}
-	a.GetCommitSha()
+	a := &Analysis{CommitSHA: &zeroValue}
+	a.GetCommitSHA()
 	a = &Analysis{}
-	a.GetCommitSha()
+	a.GetCommitSHA()
 	a = nil
-	a.GetCommitSha()
+	a.GetCommitSHA()
 }
 
 func TestAnalysis_GetCreatedAt(tt *testing.T) {

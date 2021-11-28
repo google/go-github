@@ -284,6 +284,22 @@ func (a *Alert) GetURL() string {
 	return *a.URL
 }
 
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *AnalysesListOptions) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSarifID returns the SarifID field if it's non-nil, zero value otherwise.
+func (a *AnalysesListOptions) GetSarifID() string {
+	if a == nil || a.SarifID == nil {
+		return ""
+	}
+	return *a.SarifID
+}
+
 // GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.
 func (a *Analysis) GetAnalysisKey() string {
 	if a == nil || a.AnalysisKey == nil {
@@ -300,12 +316,12 @@ func (a *Analysis) GetCategory() string {
 	return *a.Category
 }
 
-// GetCommitSha returns the CommitSha field if it's non-nil, zero value otherwise.
-func (a *Analysis) GetCommitSha() string {
-	if a == nil || a.CommitSha == nil {
+// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+func (a *Analysis) GetCommitSHA() string {
+	if a == nil || a.CommitSHA == nil {
 		return ""
 	}
-	return *a.CommitSha
+	return *a.CommitSHA
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
