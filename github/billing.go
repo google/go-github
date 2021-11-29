@@ -44,6 +44,25 @@ type StorageBilling struct {
 	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
 }
 
+// ActiveCommitters represents the total active committers across all repositories in an Organization.
+type ActiveCommitters struct {
+	TotalAdvancedSecurityCommitters int                           `json:"total_advanced_security_committers"`
+	Repositories                    []*RepositoryActiveCommitters `json:"repositories,omitempty"`
+}
+
+// RepositoryActiveCommitters represents active committers on each repository.
+type RepositoryActiveCommitters struct {
+	Name                                *string                                `json:"name,omitempty"`
+	AdvancedSecurityCommitters          *int                                   `json:"advanced_security_committers,omitempty"`
+	AdvancedSecurityCommittersBreakdown []*AdvancedSecurityCommittersBreakdown `json:"advanced_security_committers_breakdown,omitempty"`
+}
+
+// AdvancedSecurityCommittersBreakdown represents the user activity breakdown for ActiveCommitters.
+type AdvancedSecurityCommittersBreakdown struct {
+	UserLogin      *string `json:"user_login,omitempty"`
+	LastPushedDate *string `json:"last_pushed_date,omitempty"`
+}
+
 // GetActionsBillingOrg returns the summary of the free and paid GitHub Actions minutes used for an Org.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-actions-billing-for-an-organization
@@ -53,8 +72,13 @@ func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (
 	if err != nil {
 		return nil, nil, err
 	}
+
 	actionsOrgBilling := new(ActionBilling)
 	resp, err := s.client.Do(ctx, req, actionsOrgBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return actionsOrgBilling, resp, err
 }
 
@@ -67,8 +91,13 @@ func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	packagesOrgBilling := new(PackageBilling)
 	resp, err := s.client.Do(ctx, req, packagesOrgBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return packagesOrgBilling, resp, err
 }
 
@@ -82,9 +111,33 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 	if err != nil {
 		return nil, nil, err
 	}
+
 	storageOrgBilling := new(StorageBilling)
 	resp, err := s.client.Do(ctx, req, storageOrgBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return storageOrgBilling, resp, err
+}
+
+// GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/billing#get-github-advanced-security-active-committers-for-an-organization
+func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Context, org string) (*ActiveCommitters, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/settings/billing/advanced-security", org)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	activeOrgCommitters := new(ActiveCommitters)
+	resp, err := s.client.Do(ctx, req, activeOrgCommitters)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return activeOrgCommitters, resp, err
 }
 
 // GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
@@ -96,8 +149,13 @@ func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	actionsUserBilling := new(ActionBilling)
 	resp, err := s.client.Do(ctx, req, actionsUserBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return actionsUserBilling, resp, err
 }
 
@@ -110,8 +168,13 @@ func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string
 	if err != nil {
 		return nil, nil, err
 	}
+
 	packagesUserBilling := new(PackageBilling)
 	resp, err := s.client.Do(ctx, req, packagesUserBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return packagesUserBilling, resp, err
 }
 
@@ -125,7 +188,12 @@ func (s *BillingService) GetStorageBillingUser(ctx context.Context, user string)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	storageUserBilling := new(StorageBilling)
 	resp, err := s.client.Do(ctx, req, storageUserBilling)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return storageUserBilling, resp, err
 }
