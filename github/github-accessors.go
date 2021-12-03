@@ -9916,6 +9916,30 @@ func (p *Pages) GetHTMLURL() string {
 	return *p.HTMLURL
 }
 
+// GetHTTPSCertificate returns the HTTPSCertificate field.
+func (p *Pages) GetHTTPSCertificate() *PagesHTTPSCertificate {
+	if p == nil {
+		return nil
+	}
+	return p.HTTPSCertificate
+}
+
+// GetHTTPSEnforced returns the HTTPSEnforced field if it's non-nil, zero value otherwise.
+func (p *Pages) GetHTTPSEnforced() bool {
+	if p == nil || p.HTTPSEnforced == nil {
+		return false
+	}
+	return *p.HTTPSEnforced
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (p *Pages) GetPublic() bool {
+	if p == nil || p.Public == nil {
+		return false
+	}
+	return *p.Public
+}
+
 // GetSource returns the Source field.
 func (p *Pages) GetSource() *PagesSource {
 	if p == nil {
@@ -10010,6 +10034,30 @@ func (p *PagesError) GetMessage() string {
 		return ""
 	}
 	return *p.Message
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (p *PagesHTTPSCertificate) GetDescription() string {
+	if p == nil || p.Description == nil {
+		return ""
+	}
+	return *p.Description
+}
+
+// GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
+func (p *PagesHTTPSCertificate) GetExpiresAt() string {
+	if p == nil || p.ExpiresAt == nil {
+		return ""
+	}
+	return *p.ExpiresAt
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (p *PagesHTTPSCertificate) GetState() string {
+	if p == nil || p.State == nil {
+		return ""
+	}
+	return *p.State
 }
 
 // GetBranch returns the Branch field if it's non-nil, zero value otherwise.

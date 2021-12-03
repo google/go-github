@@ -12,12 +12,15 @@ import (
 
 // Pages represents a GitHub Pages site configuration.
 type Pages struct {
-	URL       *string      `json:"url,omitempty"`
-	Status    *string      `json:"status,omitempty"`
-	CNAME     *string      `json:"cname,omitempty"`
-	Custom404 *bool        `json:"custom_404,omitempty"`
-	HTMLURL   *string      `json:"html_url,omitempty"`
-	Source    *PagesSource `json:"source,omitempty"`
+	URL              *string                `json:"url,omitempty"`
+	Status           *string                `json:"status,omitempty"`
+	CNAME            *string                `json:"cname,omitempty"`
+	Custom404        *bool                  `json:"custom_404,omitempty"`
+	HTMLURL          *string                `json:"html_url,omitempty"`
+	Source           *PagesSource           `json:"source,omitempty"`
+	Public           *bool                  `json:"public,omitempty"`
+	HTTPSCertificate *PagesHTTPSCertificate `json:"https_certificate,omitempty"`
+	HTTPSEnforced    *bool                  `json:"https_enforced,omitempty"`
 }
 
 // PagesSource represents a GitHub page's source.
@@ -41,6 +44,15 @@ type PagesBuild struct {
 	Duration  *int        `json:"duration,omitempty"`
 	CreatedAt *Timestamp  `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp  `json:"updated_at,omitempty"`
+}
+
+// PagesHTTPSCertificate represents the HTTPS Certificate information for a GitHub Pages site.
+type PagesHTTPSCertificate struct {
+	State       *string  `json:"state,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Domains     []string `json:"domains,omitempty"`
+	// GitHub's API doesn't return a standard Timestamp, rather it returns a YYYY-MM-DD string.
+	ExpiresAt *string `json:"expires_at,omitempty"`
 }
 
 // createPagesRequest is a subset of Pages and is used internally
