@@ -300,6 +300,22 @@ func (a *Alert) GetURL() string {
 	return *a.URL
 }
 
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *AnalysesListOptions) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSarifID returns the SarifID field if it's non-nil, zero value otherwise.
+func (a *AnalysesListOptions) GetSarifID() string {
+	if a == nil || a.SarifID == nil {
+		return ""
+	}
+	return *a.SarifID
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {
@@ -15258,6 +15274,126 @@ func (s *SarifID) GetURL() string {
 		return ""
 	}
 	return *s.URL
+}
+
+// GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetAnalysisKey() string {
+	if s == nil || s.AnalysisKey == nil {
+		return ""
+	}
+	return *s.AnalysisKey
+}
+
+// GetCategory returns the Category field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetCategory() string {
+	if s == nil || s.Category == nil {
+		return ""
+	}
+	return *s.Category
+}
+
+// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetCommitSHA() string {
+	if s == nil || s.CommitSHA == nil {
+		return ""
+	}
+	return *s.CommitSHA
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetCreatedAt() Timestamp {
+	if s == nil || s.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.CreatedAt
+}
+
+// GetDeletable returns the Deletable field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetDeletable() bool {
+	if s == nil || s.Deletable == nil {
+		return false
+	}
+	return *s.Deletable
+}
+
+// GetEnvironment returns the Environment field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetEnvironment() string {
+	if s == nil || s.Environment == nil {
+		return ""
+	}
+	return *s.Environment
+}
+
+// GetError returns the Error field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetError() string {
+	if s == nil || s.Error == nil {
+		return ""
+	}
+	return *s.Error
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetID() int64 {
+	if s == nil || s.ID == nil {
+		return 0
+	}
+	return *s.ID
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetRef() string {
+	if s == nil || s.Ref == nil {
+		return ""
+	}
+	return *s.Ref
+}
+
+// GetResultsCount returns the ResultsCount field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetResultsCount() int {
+	if s == nil || s.ResultsCount == nil {
+		return 0
+	}
+	return *s.ResultsCount
+}
+
+// GetRulesCount returns the RulesCount field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetRulesCount() int {
+	if s == nil || s.RulesCount == nil {
+		return 0
+	}
+	return *s.RulesCount
+}
+
+// GetSarifID returns the SarifID field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetSarifID() string {
+	if s == nil || s.SarifID == nil {
+		return ""
+	}
+	return *s.SarifID
+}
+
+// GetTool returns the Tool field.
+func (s *ScanningAnalysis) GetTool() *Tool {
+	if s == nil {
+		return nil
+	}
+	return s.Tool
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetURL() string {
+	if s == nil || s.URL == nil {
+		return ""
+	}
+	return *s.URL
+}
+
+// GetWarning returns the Warning field if it's non-nil, zero value otherwise.
+func (s *ScanningAnalysis) GetWarning() string {
+	if s == nil || s.Warning == nil {
+		return ""
+	}
+	return *s.Warning
 }
 
 // GetActive returns the Active field if it's non-nil, zero value otherwise.

@@ -328,6 +328,26 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAnalysesListOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysesListOptions{Ref: &zeroValue}
+	a.GetRef()
+	a = &AnalysesListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
+	var zeroValue string
+	a := &AnalysesListOptions{SarifID: &zeroValue}
+	a.GetSarifID()
+	a = &AnalysesListOptions{}
+	a.GetSarifID()
+	a = nil
+	a.GetSarifID()
+}
+
 func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	var zeroValue bool
 	a := &APIMeta{VerifiablePasswordAuthentication: &zeroValue}
@@ -17847,6 +17867,153 @@ func TestSarifID_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{AnalysisKey: &zeroValue}
+	s.GetAnalysisKey()
+	s = &ScanningAnalysis{}
+	s.GetAnalysisKey()
+	s = nil
+	s.GetAnalysisKey()
+}
+
+func TestScanningAnalysis_GetCategory(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{Category: &zeroValue}
+	s.GetCategory()
+	s = &ScanningAnalysis{}
+	s.GetCategory()
+	s = nil
+	s.GetCategory()
+}
+
+func TestScanningAnalysis_GetCommitSHA(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{CommitSHA: &zeroValue}
+	s.GetCommitSHA()
+	s = &ScanningAnalysis{}
+	s.GetCommitSHA()
+	s = nil
+	s.GetCommitSHA()
+}
+
+func TestScanningAnalysis_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &ScanningAnalysis{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &ScanningAnalysis{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestScanningAnalysis_GetDeletable(tt *testing.T) {
+	var zeroValue bool
+	s := &ScanningAnalysis{Deletable: &zeroValue}
+	s.GetDeletable()
+	s = &ScanningAnalysis{}
+	s.GetDeletable()
+	s = nil
+	s.GetDeletable()
+}
+
+func TestScanningAnalysis_GetEnvironment(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{Environment: &zeroValue}
+	s.GetEnvironment()
+	s = &ScanningAnalysis{}
+	s.GetEnvironment()
+	s = nil
+	s.GetEnvironment()
+}
+
+func TestScanningAnalysis_GetError(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{Error: &zeroValue}
+	s.GetError()
+	s = &ScanningAnalysis{}
+	s.GetError()
+	s = nil
+	s.GetError()
+}
+
+func TestScanningAnalysis_GetID(tt *testing.T) {
+	var zeroValue int64
+	s := &ScanningAnalysis{ID: &zeroValue}
+	s.GetID()
+	s = &ScanningAnalysis{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestScanningAnalysis_GetRef(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{Ref: &zeroValue}
+	s.GetRef()
+	s = &ScanningAnalysis{}
+	s.GetRef()
+	s = nil
+	s.GetRef()
+}
+
+func TestScanningAnalysis_GetResultsCount(tt *testing.T) {
+	var zeroValue int
+	s := &ScanningAnalysis{ResultsCount: &zeroValue}
+	s.GetResultsCount()
+	s = &ScanningAnalysis{}
+	s.GetResultsCount()
+	s = nil
+	s.GetResultsCount()
+}
+
+func TestScanningAnalysis_GetRulesCount(tt *testing.T) {
+	var zeroValue int
+	s := &ScanningAnalysis{RulesCount: &zeroValue}
+	s.GetRulesCount()
+	s = &ScanningAnalysis{}
+	s.GetRulesCount()
+	s = nil
+	s.GetRulesCount()
+}
+
+func TestScanningAnalysis_GetSarifID(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{SarifID: &zeroValue}
+	s.GetSarifID()
+	s = &ScanningAnalysis{}
+	s.GetSarifID()
+	s = nil
+	s.GetSarifID()
+}
+
+func TestScanningAnalysis_GetTool(tt *testing.T) {
+	s := &ScanningAnalysis{}
+	s.GetTool()
+	s = nil
+	s.GetTool()
+}
+
+func TestScanningAnalysis_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{URL: &zeroValue}
+	s.GetURL()
+	s = &ScanningAnalysis{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
+}
+
+func TestScanningAnalysis_GetWarning(tt *testing.T) {
+	var zeroValue string
+	s := &ScanningAnalysis{Warning: &zeroValue}
+	s.GetWarning()
+	s = &ScanningAnalysis{}
+	s.GetWarning()
+	s = nil
+	s.GetWarning()
 }
 
 func TestSCIMUserAttributes_GetActive(tt *testing.T) {
