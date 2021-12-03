@@ -12065,6 +12065,16 @@ func TestProject_GetNumber(tt *testing.T) {
 	p.GetNumber()
 }
 
+func TestProject_GetOrganizationPermission(tt *testing.T) {
+	var zeroValue string
+	p := &Project{OrganizationPermission: &zeroValue}
+	p.GetOrganizationPermission()
+	p = &Project{}
+	p.GetOrganizationPermission()
+	p = nil
+	p.GetOrganizationPermission()
+}
+
 func TestProject_GetOwnerURL(tt *testing.T) {
 	var zeroValue string
 	p := &Project{OwnerURL: &zeroValue}
@@ -12073,6 +12083,16 @@ func TestProject_GetOwnerURL(tt *testing.T) {
 	p.GetOwnerURL()
 	p = nil
 	p.GetOwnerURL()
+}
+
+func TestProject_GetPrivate(tt *testing.T) {
+	var zeroValue bool
+	p := &Project{Private: &zeroValue}
+	p.GetPrivate()
+	p = &Project{}
+	p.GetPrivate()
+	p = nil
+	p.GetPrivate()
 }
 
 func TestProject_GetState(tt *testing.T) {
@@ -12636,14 +12656,14 @@ func TestProjectOptions_GetOrganizationPermission(tt *testing.T) {
 	p.GetOrganizationPermission()
 }
 
-func TestProjectOptions_GetPublic(tt *testing.T) {
+func TestProjectOptions_GetPrivate(tt *testing.T) {
 	var zeroValue bool
-	p := &ProjectOptions{Public: &zeroValue}
-	p.GetPublic()
+	p := &ProjectOptions{Private: &zeroValue}
+	p.GetPrivate()
 	p = &ProjectOptions{}
-	p.GetPublic()
+	p.GetPrivate()
 	p = nil
-	p.GetPublic()
+	p.GetPrivate()
 }
 
 func TestProjectOptions_GetState(tt *testing.T) {

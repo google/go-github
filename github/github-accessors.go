@@ -10292,12 +10292,28 @@ func (p *Project) GetNumber() int {
 	return *p.Number
 }
 
+// GetOrganizationPermission returns the OrganizationPermission field if it's non-nil, zero value otherwise.
+func (p *Project) GetOrganizationPermission() string {
+	if p == nil || p.OrganizationPermission == nil {
+		return ""
+	}
+	return *p.OrganizationPermission
+}
+
 // GetOwnerURL returns the OwnerURL field if it's non-nil, zero value otherwise.
 func (p *Project) GetOwnerURL() string {
 	if p == nil || p.OwnerURL == nil {
 		return ""
 	}
 	return *p.OwnerURL
+}
+
+// GetPrivate returns the Private field if it's non-nil, zero value otherwise.
+func (p *Project) GetPrivate() bool {
+	if p == nil || p.Private == nil {
+		return false
+	}
+	return *p.Private
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
@@ -10804,12 +10820,12 @@ func (p *ProjectOptions) GetOrganizationPermission() string {
 	return *p.OrganizationPermission
 }
 
-// GetPublic returns the Public field if it's non-nil, zero value otherwise.
-func (p *ProjectOptions) GetPublic() bool {
-	if p == nil || p.Public == nil {
+// GetPrivate returns the Private field if it's non-nil, zero value otherwise.
+func (p *ProjectOptions) GetPrivate() bool {
+	if p == nil || p.Private == nil {
 		return false
 	}
-	return *p.Public
+	return *p.Private
 }
 
 // GetState returns the State field if it's non-nil, zero value otherwise.
