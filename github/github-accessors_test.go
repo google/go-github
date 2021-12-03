@@ -1956,6 +1956,13 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBranchProtectionRuleEvent_GetInstallation(tt *testing.T) {
+	b := &BranchProtectionRuleEvent{}
+	b.GetInstallation()
+	b = nil
+	b.GetInstallation()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()

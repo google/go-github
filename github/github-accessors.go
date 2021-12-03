@@ -1636,6 +1636,14 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetInstallation returns the Installation field.
+func (b *BranchProtectionRuleEvent) GetInstallation() *Installation {
+	if b == nil {
+		return nil
+	}
+	return b.Installation
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
