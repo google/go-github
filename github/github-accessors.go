@@ -1604,6 +1604,14 @@ func (b *BranchProtectionRuleEvent) GetChanges() *ProtectionChanges {
 	return b.Changes
 }
 
+// GetInstallation returns the Installation field.
+func (b *BranchProtectionRuleEvent) GetInstallation() *Installation {
+	if b == nil {
+		return nil
+	}
+	return b.Installation
+}
+
 // GetOrg returns the Org field.
 func (b *BranchProtectionRuleEvent) GetOrg() *Organization {
 	if b == nil {
