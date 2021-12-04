@@ -1928,6 +1928,13 @@ func TestBranchProtectionRuleEvent_GetChanges(tt *testing.T) {
 	b.GetChanges()
 }
 
+func TestBranchProtectionRuleEvent_GetInstallation(tt *testing.T) {
+	b := &BranchProtectionRuleEvent{}
+	b.GetInstallation()
+	b = nil
+	b.GetInstallation()
+}
+
 func TestBranchProtectionRuleEvent_GetOrg(tt *testing.T) {
 	b := &BranchProtectionRuleEvent{}
 	b.GetOrg()

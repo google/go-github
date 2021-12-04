@@ -20,12 +20,13 @@ type RequestedAction struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#branch_protection_rule
 type BranchProtectionRuleEvent struct {
-	Action  *string               `json:"action,omitempty"`
-	Rule    *BranchProtectionRule `json:"rule,omitempty"`
-	Changes *ProtectionChanges    `json:"changes,omitempty"`
-	Repo    *Repository           `json:"repository,omitempty"`
-	Org     *Organization         `json:"organization,omitempty"`
-	Sender  *User                 `json:"sender,omitempty"`
+	Action       *string               `json:"action,omitempty"`
+	Rule         *BranchProtectionRule `json:"rule,omitempty"`
+	Changes      *ProtectionChanges    `json:"changes,omitempty"`
+	Repo         *Repository           `json:"repository,omitempty"`
+	Org          *Organization         `json:"organization,omitempty"`
+	Sender       *User                 `json:"sender,omitempty"`
+	Installation *Installation         `json:"installation,omitempty"`
 }
 
 // CheckRunEvent is triggered when a check run is "created", "completed", or "rerequested".
