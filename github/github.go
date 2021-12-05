@@ -544,7 +544,7 @@ func (r *Response) populatePageValues() {
 				continue
 			}
 
-			if since != "" {
+			if since != "" && page == "" {
 				page = since
 			}
 
