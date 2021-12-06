@@ -873,7 +873,7 @@ type ExternalGroupTeam struct {
 type ExternalGroup struct {
 	GroupID   *int64                 `json:"group_id,omitempty"`
 	GroupName *string                `json:"group_name,omitempty"`
-	UpdatedAt *string                `json:"updated_at,omitempty"`
+	UpdatedAt *Timestamp                `json:"updated_at,omitempty"`
 	Teams     []*ExternalGroupTeam   `json:"teams,omitempty"`
 	Members   []*ExternalGroupMember `json:"members,omitempty"`
 }
@@ -905,7 +905,7 @@ func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID
 // ListExternalGroupsOptions specifies the optional parameters to the
 // TeamsService.ListExternalGroups method.
 type ListExternalGroupsOptions struct {
-	DisplayName string `url:"display_name,omitempty"`
+	DisplayName *string `url:"display_name,omitempty"`
 
 	ListOptions
 }
