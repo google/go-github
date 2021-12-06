@@ -14,7 +14,6 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -1756,7 +1755,7 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 		fmt.Fprint(w, `{
 			"group_id": 123,
 			"group_name": "Octocat admins",
-			"updated_at": "2021-01-24T11:31:04-06:00",
+			"updated_at": "2006-01-02T15:04:05Z",
 			"teams": [
 				{
 					"team_id": 1,
@@ -1790,11 +1789,10 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 		t.Errorf("Teams.GetExternalGroup returned error: %v", err)
 	}
 
-	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroup{
 		GroupID:   Int64(123),
 		GroupName: String("Octocat admins"),
-		UpdatedAt: &Timestamp{Time: updatedAt},
+		UpdatedAt: &Timestamp{Time: referenceTime},
 		Teams: []*ExternalGroupTeam{
 			{
 				TeamID:   Int64(1),
@@ -1872,7 +1870,7 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 				{
 					"group_id": 123,
 					"group_name": "Octocat admins",
-					"updated_at": "2021-01-24T11:31:04-06:00"
+					"updated_at": "2006-01-02T15:04:05Z"
 				}
 			]
 		}`)
@@ -1887,13 +1885,12 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 		t.Errorf("Teams.ListExternalGroups returned error: %v", err)
 	}
 
-	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroupList{
 		Groups: []*ExternalGroup{
 			{
 				GroupID:   Int64(123),
 				GroupName: String("Octocat admins"),
-				UpdatedAt: &Timestamp{Time: updatedAt},
+				UpdatedAt: &Timestamp{Time: referenceTime},
 			},
 		},
 	}
@@ -1947,7 +1944,7 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 		fmt.Fprint(w, `{
 			"group_id": 123,
 			"group_name": "Octocat admins",
-			"updated_at": "2021-01-24T11:31:04-06:00",
+			"updated_at": "2006-01-02T15:04:05Z",
 			"teams": [
 				{
 					"team_id": 1,
@@ -1984,11 +1981,10 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 		t.Errorf("Teams.UpdateConnectedExternalGroup returned error: %v", err)
 	}
 
-	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroup{
 		GroupID:   Int64(123),
 		GroupName: String("Octocat admins"),
-		UpdatedAt: &Timestamp{Time: updatedAt},
+		UpdatedAt: &Timestamp{Time: referenceTime},
 		Teams: []*ExternalGroupTeam{
 			{
 				TeamID:   Int64(1),
