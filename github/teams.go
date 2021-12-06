@@ -855,7 +855,7 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Conte
 	return groups, resp, nil
 }
 
-// ExternalGroupMember represents a member of external group.
+// ExternalGroupMember represents a member of an external group.
 type ExternalGroupMember struct {
 	ID    int64  `json:"member_id,omitempty"`
 	Login string `json:"member_login,omitempty"`
@@ -863,7 +863,7 @@ type ExternalGroupMember struct {
 	Email string `json:"member_email,omitempty"`
 }
 
-// ExternalGroupTeam represents a team connected to external group
+// ExternalGroupTeam represents a team connected to an external group.
 type ExternalGroupTeam struct {
 	ID   int64  `json:"team_id,omitempty"`
 	Name string `json:"team_name,omitempty"`
@@ -883,7 +883,7 @@ type ExternalGroupList struct {
 	Groups []*ExternalGroup `json:"groups"`
 }
 
-// GetExternalGroup fetches a external group
+// GetExternalGroup fetches an external group.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/reference/teams#get-an-external-group
 func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID int64) (*ExternalGroup, *Response, error) {
@@ -910,7 +910,7 @@ type ListExternalGroupsOptions struct {
 	ListOptions
 }
 
-// ListExternalGroups Lists external groups connected to a team on GitHub
+// ListExternalGroups lists external groups connected to a team on GitHub.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/reference/teams#list-external-groups-in-an-organization
 func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts *ListExternalGroupsOptions) (*ExternalGroupList, *Response, error) {
@@ -934,7 +934,7 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 	return externalGroups, resp, nil
 }
 
-// UpdateConnectedExternalGroup updates the connection between on external group and a team
+// UpdateConnectedExternalGroup updates the connection between an external group and a team.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/reference/teams#update-the-connection-between-an-external-group-and-a-team
 func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, eg *ExternalGroup) (*ExternalGroup, *Response, error) {
@@ -954,7 +954,7 @@ func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, sl
 	return externalGroup, resp, nil
 }
 
-// RemoveConnectedExternalGroup removes the connection between on external group and a team
+// RemoveConnectedExternalGroup removes the connection between an external group and a team.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/reference/teams#remove-the-connection-between-an-external-group-and-a-team
 func (s *TeamsService) RemoveConnectedExternalGroup(ctx context.Context, org, slug string) (*Response, error) {
