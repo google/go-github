@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -1789,32 +1790,33 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 		t.Errorf("Teams.GetExternalGroup returned error: %v", err)
 	}
 
+	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroup{
 		GroupID:   Int64(123),
 		GroupName: String("Octocat admins"),
-		UpdatedAt: String("2021-01-24T11:31:04-06:00"),
+		UpdatedAt: &Timestamp{Time: updatedAt},
 		Teams: []*ExternalGroupTeam{
 			{
-				ID:   1,
-				Name: "team-test",
+				TeamID:   Int64(1),
+				TeamName: String("team-test"),
 			},
 			{
-				ID:   2,
-				Name: "team-test2",
+				TeamID:   Int64(2),
+				TeamName: String("team-test2"),
 			},
 		},
 		Members: []*ExternalGroupMember{
 			{
-				ID:    1,
-				Login: "mona-lisa_eocsaxrs",
-				Name:  "Mona Lisa",
-				Email: "mona_lisa@github.com",
+				MemberID:    Int64(1),
+				MemberLogin: String("mona-lisa_eocsaxrs"),
+				MemberName:  String("Mona Lisa"),
+				MemberEmail: String("mona_lisa@github.com"),
 			},
 			{
-				ID:    2,
-				Login: "octo-lisa_eocsaxrs",
-				Name:  "Octo Lisa",
-				Email: "octo_lisa@github.com",
+				MemberID:    Int64(2),
+				MemberLogin: String("octo-lisa_eocsaxrs"),
+				MemberName:  String("Octo Lisa"),
+				MemberEmail: String("octo_lisa@github.com"),
 			},
 		},
 	}
@@ -1877,19 +1879,20 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 
 	ctx := context.Background()
 	opts := &ListExternalGroupsOptions{
-		DisplayName: "Octocat",
+		DisplayName: String("Octocat"),
 	}
 	list, _, err := client.Teams.ListExternalGroups(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Teams.ListExternalGroups returned error: %v", err)
 	}
 
+	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroupList{
 		Groups: []*ExternalGroup{
 			{
 				GroupID:   Int64(123),
 				GroupName: String("Octocat admins"),
-				UpdatedAt: String("2021-01-24T11:31:04-06:00"),
+				UpdatedAt: &Timestamp{Time: updatedAt},
 			},
 		},
 	}
@@ -1979,32 +1982,33 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 		t.Errorf("Teams.UpdateConnectedExternalGroup returned error: %v", err)
 	}
 
+	updatedAt, _ := time.Parse(time.RFC3339, "2021-01-24T11:31:04-06:00")
 	want := &ExternalGroup{
 		GroupID:   Int64(123),
 		GroupName: String("Octocat admins"),
-		UpdatedAt: String("2021-01-24T11:31:04-06:00"),
+		UpdatedAt: &Timestamp{Time: updatedAt},
 		Teams: []*ExternalGroupTeam{
 			{
-				ID:   1,
-				Name: "team-test",
+				TeamID:   Int64(1),
+				TeamName: String("team-test"),
 			},
 			{
-				ID:   2,
-				Name: "team-test2",
+				TeamID:   Int64(2),
+				TeamName: String("team-test2"),
 			},
 		},
 		Members: []*ExternalGroupMember{
 			{
-				ID:    1,
-				Login: "mona-lisa_eocsaxrs",
-				Name:  "Mona Lisa",
-				Email: "mona_lisa@github.com",
+				MemberID:    Int64(1),
+				MemberLogin: String("mona-lisa_eocsaxrs"),
+				MemberName:  String("Mona Lisa"),
+				MemberEmail: String("mona_lisa@github.com"),
 			},
 			{
-				ID:    2,
-				Login: "octo-lisa_eocsaxrs",
-				Name:  "Octo Lisa",
-				Email: "octo_lisa@github.com",
+				MemberID:    Int64(2),
+				MemberLogin: String("octo-lisa_eocsaxrs"),
+				MemberName:  String("Octo Lisa"),
+				MemberEmail: String("octo_lisa@github.com"),
 			},
 		},
 	}

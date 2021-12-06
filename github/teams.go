@@ -857,16 +857,16 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Conte
 
 // ExternalGroupMember represents a member of an external group.
 type ExternalGroupMember struct {
-	ID    int64  `json:"member_id,omitempty"`
-	Login string `json:"member_login,omitempty"`
-	Name  string `json:"member_name,omitempty"`
-	Email string `json:"member_email,omitempty"`
+	MemberID    *int64  `json:"member_id,omitempty"`
+	MemberLogin *string `json:"member_login,omitempty"`
+	MemberName  *string `json:"member_name,omitempty"`
+	MemberEmail *string `json:"member_email,omitempty"`
 }
 
 // ExternalGroupTeam represents a team connected to an external group.
 type ExternalGroupTeam struct {
-	ID   int64  `json:"team_id,omitempty"`
-	Name string `json:"team_name,omitempty"`
+	TeamID   *int64  `json:"team_id,omitempty"`
+	TeamName *string `json:"team_name,omitempty"`
 }
 
 // ExternalGroup represents an external group.
