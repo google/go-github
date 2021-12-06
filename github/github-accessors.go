@@ -4372,6 +4372,78 @@ func (e *Event) GetType() string {
 	return *e.Type
 }
 
+// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
+func (e *ExternalGroup) GetGroupID() int64 {
+	if e == nil || e.GroupID == nil {
+		return 0
+	}
+	return *e.GroupID
+}
+
+// GetGroupName returns the GroupName field if it's non-nil, zero value otherwise.
+func (e *ExternalGroup) GetGroupName() string {
+	if e == nil || e.GroupName == nil {
+		return ""
+	}
+	return *e.GroupName
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (e *ExternalGroup) GetUpdatedAt() Timestamp {
+	if e == nil || e.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *e.UpdatedAt
+}
+
+// GetMemberEmail returns the MemberEmail field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupMember) GetMemberEmail() string {
+	if e == nil || e.MemberEmail == nil {
+		return ""
+	}
+	return *e.MemberEmail
+}
+
+// GetMemberID returns the MemberID field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupMember) GetMemberID() int64 {
+	if e == nil || e.MemberID == nil {
+		return 0
+	}
+	return *e.MemberID
+}
+
+// GetMemberLogin returns the MemberLogin field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupMember) GetMemberLogin() string {
+	if e == nil || e.MemberLogin == nil {
+		return ""
+	}
+	return *e.MemberLogin
+}
+
+// GetMemberName returns the MemberName field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupMember) GetMemberName() string {
+	if e == nil || e.MemberName == nil {
+		return ""
+	}
+	return *e.MemberName
+}
+
+// GetTeamID returns the TeamID field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupTeam) GetTeamID() int64 {
+	if e == nil || e.TeamID == nil {
+		return 0
+	}
+	return *e.TeamID
+}
+
+// GetTeamName returns the TeamName field if it's non-nil, zero value otherwise.
+func (e *ExternalGroupTeam) GetTeamName() string {
+	if e == nil || e.TeamName == nil {
+		return ""
+	}
+	return *e.TeamName
+}
+
 // GetHRef returns the HRef field if it's non-nil, zero value otherwise.
 func (f *FeedLink) GetHRef() string {
 	if f == nil || f.HRef == nil {
@@ -7530,6 +7602,14 @@ func (l *ListCollaboratorOptions) GetAffiliation() string {
 		return ""
 	}
 	return *l.Affiliation
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (l *ListExternalGroupsOptions) GetDisplayName() string {
+	if l == nil || l.DisplayName == nil {
+		return ""
+	}
+	return *l.DisplayName
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

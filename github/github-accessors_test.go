@@ -5121,6 +5121,96 @@ func TestEvent_GetType(tt *testing.T) {
 	e.GetType()
 }
 
+func TestExternalGroup_GetGroupID(tt *testing.T) {
+	var zeroValue int64
+	e := &ExternalGroup{GroupID: &zeroValue}
+	e.GetGroupID()
+	e = &ExternalGroup{}
+	e.GetGroupID()
+	e = nil
+	e.GetGroupID()
+}
+
+func TestExternalGroup_GetGroupName(tt *testing.T) {
+	var zeroValue string
+	e := &ExternalGroup{GroupName: &zeroValue}
+	e.GetGroupName()
+	e = &ExternalGroup{}
+	e.GetGroupName()
+	e = nil
+	e.GetGroupName()
+}
+
+func TestExternalGroup_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	e := &ExternalGroup{UpdatedAt: &zeroValue}
+	e.GetUpdatedAt()
+	e = &ExternalGroup{}
+	e.GetUpdatedAt()
+	e = nil
+	e.GetUpdatedAt()
+}
+
+func TestExternalGroupMember_GetMemberEmail(tt *testing.T) {
+	var zeroValue string
+	e := &ExternalGroupMember{MemberEmail: &zeroValue}
+	e.GetMemberEmail()
+	e = &ExternalGroupMember{}
+	e.GetMemberEmail()
+	e = nil
+	e.GetMemberEmail()
+}
+
+func TestExternalGroupMember_GetMemberID(tt *testing.T) {
+	var zeroValue int64
+	e := &ExternalGroupMember{MemberID: &zeroValue}
+	e.GetMemberID()
+	e = &ExternalGroupMember{}
+	e.GetMemberID()
+	e = nil
+	e.GetMemberID()
+}
+
+func TestExternalGroupMember_GetMemberLogin(tt *testing.T) {
+	var zeroValue string
+	e := &ExternalGroupMember{MemberLogin: &zeroValue}
+	e.GetMemberLogin()
+	e = &ExternalGroupMember{}
+	e.GetMemberLogin()
+	e = nil
+	e.GetMemberLogin()
+}
+
+func TestExternalGroupMember_GetMemberName(tt *testing.T) {
+	var zeroValue string
+	e := &ExternalGroupMember{MemberName: &zeroValue}
+	e.GetMemberName()
+	e = &ExternalGroupMember{}
+	e.GetMemberName()
+	e = nil
+	e.GetMemberName()
+}
+
+func TestExternalGroupTeam_GetTeamID(tt *testing.T) {
+	var zeroValue int64
+	e := &ExternalGroupTeam{TeamID: &zeroValue}
+	e.GetTeamID()
+	e = &ExternalGroupTeam{}
+	e.GetTeamID()
+	e = nil
+	e.GetTeamID()
+}
+
+func TestExternalGroupTeam_GetTeamName(tt *testing.T) {
+	var zeroValue string
+	e := &ExternalGroupTeam{TeamName: &zeroValue}
+	e.GetTeamName()
+	e = &ExternalGroupTeam{}
+	e.GetTeamName()
+	e = nil
+	e.GetTeamName()
+}
+
 func TestFeedLink_GetHRef(tt *testing.T) {
 	var zeroValue string
 	f := &FeedLink{HRef: &zeroValue}
@@ -8838,6 +8928,16 @@ func TestListCollaboratorOptions_GetAffiliation(tt *testing.T) {
 	l.GetAffiliation()
 	l = nil
 	l.GetAffiliation()
+}
+
+func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
+	var zeroValue string
+	l := &ListExternalGroupsOptions{DisplayName: &zeroValue}
+	l.GetDisplayName()
+	l = &ListExternalGroupsOptions{}
+	l.GetDisplayName()
+	l = nil
+	l.GetDisplayName()
 }
 
 func TestListRepositories_GetTotalCount(tt *testing.T) {
