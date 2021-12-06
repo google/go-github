@@ -1829,6 +1829,7 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 		_, _, err = client.Teams.GetExternalGroup(ctx, "", -1)
 		return err
 	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Teams.GetExternalGroup(ctx, "o", 123)
 		if got != nil {
@@ -1905,6 +1906,7 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 		_, _, err = client.Teams.ListExternalGroups(ctx, "", nil)
 		return err
 	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Teams.ListExternalGroups(ctx, "o", nil)
 		if got != nil {
@@ -2021,6 +2023,7 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 		_, _, err = client.Teams.UpdateConnectedExternalGroup(ctx, "", "", body)
 		return err
 	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
 		if got != nil {
@@ -2075,6 +2078,7 @@ func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
 		_, err = client.Teams.RemoveConnectedExternalGroup(ctx, "", "")
 		return err
 	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
 	})
