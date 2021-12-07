@@ -1824,7 +1824,7 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 
 	const methodName = "GetExternalGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.GetExternalGroup(ctx, "", -1)
+		_, _, err = client.Teams.GetExternalGroup(ctx, "\n", -1)
 		return err
 	})
 
@@ -1900,12 +1900,12 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 
 	const methodName = "ListExternalGroups"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.ListExternalGroups(ctx, "", nil)
+		_, _, err = client.Teams.ListExternalGroups(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.ListExternalGroups(ctx, "o", nil)
+		got, resp, err := client.Teams.ListExternalGroups(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -2016,7 +2016,7 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 
 	const methodName = "UpdateConnectedExternalGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.UpdateConnectedExternalGroup(ctx, "", "", body)
+		_, _, err = client.Teams.UpdateConnectedExternalGroup(ctx, "\n", "\n", body)
 		return err
 	})
 
@@ -2071,7 +2071,7 @@ func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
 
 	const methodName = "RemoveConnectedExternalGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Teams.RemoveConnectedExternalGroup(ctx, "", "")
+		_, err = client.Teams.RemoveConnectedExternalGroup(ctx, "\n", "\n")
 		return err
 	})
 
