@@ -33,6 +33,25 @@ func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOp
 	return deliveries, resp, nil
 }
 
+// GetHookDelivery returns the App webhook delivery with the specified ID
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps#get-a-delivery-for-an-app-webhook
+func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
+	u := fmt.Sprintf("app/hook/deliveries/%v", deliveryID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	h := new(HookDelivery)
+	resp, err := s.client.Do(ctx, req, h)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return h, resp, nil
+}
+
 // RedeliverHookDelivery redelivers a delivery for an App webhook
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/apps#redeliver-a-delivery-for-an-app-webhook

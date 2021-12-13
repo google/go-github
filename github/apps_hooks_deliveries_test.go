@@ -43,6 +43,41 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 	})
 }
 
+func TestAppsService_GetHookDelivery(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/app/hook/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Apps.GetHookDelivery(ctx, 1)
+	if err != nil {
+		t.Errorf("Apps.GetHookDelivery returned error: %v", err)
+	}
+
+	want := &HookDelivery{ID: Int64(1)}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Apps.GetHookDelivery returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "GetHookDelivery"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Apps.GetHookDelivery(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.GetHookDelivery(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestAppsService_RedeliverHookDelivery(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
