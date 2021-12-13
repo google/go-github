@@ -52,7 +52,7 @@ func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*H
 	return h, resp, nil
 }
 
-// RedeliverHookDelivery redelivers a delivery for an App webhook
+// RedeliverHookDelivery redelivers a delivery for an App webhook.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/apps#redeliver-a-delivery-for-an-app-webhook
 func (s *AppsService) RedeliverHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
