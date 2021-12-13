@@ -35,7 +35,7 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 
 	const methodName = "ListHookDeliveries"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetHookDelivery(ctx, "o", 1, 1)
+		got, resp, err := client.Apps.ListHookDeliveries(ctx, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
