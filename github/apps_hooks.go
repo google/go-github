@@ -9,6 +9,9 @@ import (
 	"context"
 )
 
+type Delivery struct {
+}
+
 // GetHookConfig returns the webhook configuration for a GitHub App.
 // The underlying transport must be authenticated as an app.
 //
