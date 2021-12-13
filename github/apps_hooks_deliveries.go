@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ListHookDeliveries lists deliveries of an App webhook
+// ListHookDeliveries lists deliveries of an App webhook.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/apps#list-deliveries-for-an-app-webhook
 func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
