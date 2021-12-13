@@ -32,4 +32,48 @@ func TestAppsService_ListHookDeliveries(t *testing.T) {
 	if d := cmp.Diff(deliveries, want); d != "" {
 		t.Errorf("Apps.ListHooks want (-), got (+):\n%s", d)
 	}
+
+	const methodName = "ListHookDeliveries"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.GetHookDelivery(ctx, "o", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestAppsService_RedeliverHookDelivery(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/app/hook/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Apps.RedeliverHookDelivery(ctx, 1)
+	if err != nil {
+		t.Errorf("Apps.RedeliverHookDelivery returned error: %v", err)
+	}
+
+	want := &HookDelivery{ID: Int64(1)}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Apps.RedeliverHookDelivery returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "RedeliverHookDelivery"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Apps.RedeliverHookDelivery(ctx, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.RedeliverHookDelivery(ctx, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

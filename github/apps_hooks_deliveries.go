@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"fmt"
 )
 
 // ListHookDeliveries lists deliveries of an App webhook
@@ -30,4 +31,23 @@ func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOp
 	}
 
 	return deliveries, resp, nil
+}
+
+// RedeliverHookDelivery redelivers a delivery for an App webhook
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/apps#redeliver-a-delivery-for-an-app-webhook
+func (s *AppsService) RedeliverHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
+	u := fmt.Sprintf("app/hook/deliveries/%v/attempts", deliveryID)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	h := new(HookDelivery)
+	resp, err := s.client.Do(ctx, req, h)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return h, resp, nil
 }
