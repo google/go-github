@@ -33,7 +33,7 @@ func (s *AppsService) ListHookDeliveries(ctx context.Context, opts *ListCursorOp
 	return deliveries, resp, nil
 }
 
-// GetHookDelivery returns the App webhook delivery with the specified ID
+// GetHookDelivery returns the App webhook delivery with the specified ID.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/apps#get-a-delivery-for-an-app-webhook
 func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*HookDelivery, *Response, error) {
