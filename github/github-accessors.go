@@ -4100,6 +4100,14 @@ func (e *EditChange) GetBody() *EditBody {
 	return e.Body
 }
 
+// GetRepo returns the Repo field.
+func (e *EditChange) GetRepo() *EditRepo {
+	if e == nil {
+		return nil
+	}
+	return e.Repo
+}
+
 // GetTitle returns the Title field.
 func (e *EditChange) GetTitle() *EditTitle {
 	if e == nil {
@@ -4110,6 +4118,14 @@ func (e *EditChange) GetTitle() *EditTitle {
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (e *EditRef) GetFrom() string {
+	if e == nil || e.From == nil {
+		return ""
+	}
+	return *e.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (e *EditRepo) GetFrom() string {
 	if e == nil || e.From == nil {
 		return ""
 	}
@@ -14330,6 +14346,14 @@ func (r *RepositoryEvent) GetAction() string {
 		return ""
 	}
 	return *r.Action
+}
+
+// GetChanges returns the Changes field.
+func (r *RepositoryEvent) GetChanges() *EditChange {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
 }
 
 // GetInstallation returns the Installation field.

@@ -230,12 +230,13 @@ type GollumEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
-// EditChange represents the changes when an issue, pull request, or comment has
-// been edited.
+// EditChange represents the changes when an issue, pull request, comment,
+// or repository has been edited.
 type EditChange struct {
 	Title *EditTitle `json:"title,omitempty"`
 	Body  *EditBody  `json:"body,omitempty"`
 	Base  *EditBase  `json:"base,omitempty"`
+	Repo  *EditRepo  `json:"repository,omitempty"`
 }
 
 // EditTitle represents a pull-request title change.
@@ -256,6 +257,11 @@ type EditBase struct {
 
 // EditRef represents a ref change of a pull-request.
 type EditRef struct {
+	From *string `json:"from,omitempty"`
+}
+
+// EditRepository represents a change of repository name.
+type EditRepo struct {
 	From *string `json:"from,omitempty"`
 }
 
@@ -938,6 +944,7 @@ type RepositoryEvent struct {
 	Repo   *Repository `json:"repository,omitempty"`
 
 	// The following fields are only populated by Webhook events.
+	Changes      *EditChange   `json:"changes,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`

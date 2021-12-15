@@ -4796,6 +4796,13 @@ func TestEditChange_GetBody(tt *testing.T) {
 	e.GetBody()
 }
 
+func TestEditChange_GetRepo(tt *testing.T) {
+	e := &EditChange{}
+	e.GetRepo()
+	e = nil
+	e.GetRepo()
+}
+
 func TestEditChange_GetTitle(tt *testing.T) {
 	e := &EditChange{}
 	e.GetTitle()
@@ -4808,6 +4815,16 @@ func TestEditRef_GetFrom(tt *testing.T) {
 	e := &EditRef{From: &zeroValue}
 	e.GetFrom()
 	e = &EditRef{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEditRepo_GetFrom(tt *testing.T) {
+	var zeroValue string
+	e := &EditRepo{From: &zeroValue}
+	e.GetFrom()
+	e = &EditRepo{}
 	e.GetFrom()
 	e = nil
 	e.GetFrom()
@@ -16729,6 +16746,13 @@ func TestRepositoryEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestRepositoryEvent_GetChanges(tt *testing.T) {
+	r := &RepositoryEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
 }
 
 func TestRepositoryEvent_GetInstallation(tt *testing.T) {
