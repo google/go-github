@@ -297,7 +297,10 @@ func TestParseWebHook(t *testing.T) {
 			payload:     &DeploymentEvent{},
 			messageType: "deployment",
 		},
-
+		{
+			payload:     &DiscussionEvent{},
+			messageType: "discussion",
+		},
 		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",

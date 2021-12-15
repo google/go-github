@@ -3844,6 +3844,238 @@ func (d *DeploymentStatusRequest) GetState() string {
 	return *d.State
 }
 
+// GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetActiveLockReason() string {
+	if d == nil || d.ActiveLockReason == nil {
+		return ""
+	}
+	return *d.ActiveLockReason
+}
+
+// GetAnswerChosenAt returns the AnswerChosenAt field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetAnswerChosenAt() string {
+	if d == nil || d.AnswerChosenAt == nil {
+		return ""
+	}
+	return *d.AnswerChosenAt
+}
+
+// GetAnswerChosenBy returns the AnswerChosenBy field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetAnswerChosenBy() string {
+	if d == nil || d.AnswerChosenBy == nil {
+		return ""
+	}
+	return *d.AnswerChosenBy
+}
+
+// GetAnswerHtmlUrl returns the AnswerHtmlUrl field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetAnswerHtmlUrl() string {
+	if d == nil || d.AnswerHtmlUrl == nil {
+		return ""
+	}
+	return *d.AnswerHtmlUrl
+}
+
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetAuthorAssociation() string {
+	if d == nil || d.AuthorAssociation == nil {
+		return ""
+	}
+	return *d.AuthorAssociation
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetBody() string {
+	if d == nil || d.Body == nil {
+		return ""
+	}
+	return *d.Body
+}
+
+// GetComments returns the Comments field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetComments() int {
+	if d == nil || d.Comments == nil {
+		return 0
+	}
+	return *d.Comments
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetDiscussionCategory returns the DiscussionCategory field.
+func (d *Discussion) GetDiscussionCategory() *DiscussionCategory {
+	if d == nil {
+		return nil
+	}
+	return d.DiscussionCategory
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
+		return ""
+	}
+	return *d.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetLocked returns the Locked field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetLocked() bool {
+	if d == nil || d.Locked == nil {
+		return false
+	}
+	return *d.Locked
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetNumber() int64 {
+	if d == nil || d.Number == nil {
+		return 0
+	}
+	return *d.Number
+}
+
+// GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetRepositoryURL() string {
+	if d == nil || d.RepositoryURL == nil {
+		return ""
+	}
+	return *d.RepositoryURL
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetState() string {
+	if d == nil || d.State == nil {
+		return ""
+	}
+	return *d.State
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetTitle() string {
+	if d == nil || d.Title == nil {
+		return ""
+	}
+	return *d.Title
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
+}
+
+// GetUser returns the User field.
+func (d *Discussion) GetUser() *User {
+	if d == nil {
+		return nil
+	}
+	return d.User
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetDescription() string {
+	if d == nil || d.Description == nil {
+		return ""
+	}
+	return *d.Description
+}
+
+// GetEmoji returns the Emoji field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetEmoji() string {
+	if d == nil || d.Emoji == nil {
+		return ""
+	}
+	return *d.Emoji
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetIsAnswerable returns the IsAnswerable field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetIsAnswerable() bool {
+	if d == nil || d.IsAnswerable == nil {
+		return false
+	}
+	return *d.IsAnswerable
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetRepositoryID() int64 {
+	if d == nil || d.RepositoryID == nil {
+		return 0
+	}
+	return *d.RepositoryID
+}
+
+// GetSlug returns the Slug field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetSlug() string {
+	if d == nil || d.Slug == nil {
+		return ""
+	}
+	return *d.Slug
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DiscussionCategory) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
+}
+
 // GetAuthor returns the Author field.
 func (d *DiscussionComment) GetAuthor() *User {
 	if d == nil {
@@ -3946,6 +4178,54 @@ func (d *DiscussionComment) GetURL() string {
 		return ""
 	}
 	return *d.URL
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DiscussionEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetDiscussion returns the Discussion field.
+func (d *DiscussionEvent) GetDiscussion() *Discussion {
+	if d == nil {
+		return nil
+	}
+	return d.Discussion
+}
+
+// GetInstallation returns the Installation field.
+func (d *DiscussionEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrg returns the Org field.
+func (d *DiscussionEvent) GetOrg() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Org
+}
+
+// GetRepo returns the Repo field.
+func (d *DiscussionEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DiscussionEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
 }
 
 // GetTeams returns the Teams field if it's non-nil, zero value otherwise.

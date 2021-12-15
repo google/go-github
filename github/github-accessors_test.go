@@ -4494,6 +4494,290 @@ func TestDeploymentStatusRequest_GetState(tt *testing.T) {
 	d.GetState()
 }
 
+func TestDiscussion_GetActiveLockReason(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{ActiveLockReason: &zeroValue}
+	d.GetActiveLockReason()
+	d = &Discussion{}
+	d.GetActiveLockReason()
+	d = nil
+	d.GetActiveLockReason()
+}
+
+func TestDiscussion_GetAnswerChosenAt(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{AnswerChosenAt: &zeroValue}
+	d.GetAnswerChosenAt()
+	d = &Discussion{}
+	d.GetAnswerChosenAt()
+	d = nil
+	d.GetAnswerChosenAt()
+}
+
+func TestDiscussion_GetAnswerChosenBy(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{AnswerChosenBy: &zeroValue}
+	d.GetAnswerChosenBy()
+	d = &Discussion{}
+	d.GetAnswerChosenBy()
+	d = nil
+	d.GetAnswerChosenBy()
+}
+
+func TestDiscussion_GetAnswerHtmlUrl(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{AnswerHtmlUrl: &zeroValue}
+	d.GetAnswerHtmlUrl()
+	d = &Discussion{}
+	d.GetAnswerHtmlUrl()
+	d = nil
+	d.GetAnswerHtmlUrl()
+}
+
+func TestDiscussion_GetAuthorAssociation(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{AuthorAssociation: &zeroValue}
+	d.GetAuthorAssociation()
+	d = &Discussion{}
+	d.GetAuthorAssociation()
+	d = nil
+	d.GetAuthorAssociation()
+}
+
+func TestDiscussion_GetBody(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{Body: &zeroValue}
+	d.GetBody()
+	d = &Discussion{}
+	d.GetBody()
+	d = nil
+	d.GetBody()
+}
+
+func TestDiscussion_GetComments(tt *testing.T) {
+	var zeroValue int
+	d := &Discussion{Comments: &zeroValue}
+	d.GetComments()
+	d = &Discussion{}
+	d.GetComments()
+	d = nil
+	d.GetComments()
+}
+
+func TestDiscussion_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &Discussion{CreatedAt: &zeroValue}
+	d.GetCreatedAt()
+	d = &Discussion{}
+	d.GetCreatedAt()
+	d = nil
+	d.GetCreatedAt()
+}
+
+func TestDiscussion_GetDiscussionCategory(tt *testing.T) {
+	d := &Discussion{}
+	d.GetDiscussionCategory()
+	d = nil
+	d.GetDiscussionCategory()
+}
+
+func TestDiscussion_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{HTMLURL: &zeroValue}
+	d.GetHTMLURL()
+	d = &Discussion{}
+	d.GetHTMLURL()
+	d = nil
+	d.GetHTMLURL()
+}
+
+func TestDiscussion_GetID(tt *testing.T) {
+	var zeroValue int64
+	d := &Discussion{ID: &zeroValue}
+	d.GetID()
+	d = &Discussion{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDiscussion_GetLocked(tt *testing.T) {
+	var zeroValue bool
+	d := &Discussion{Locked: &zeroValue}
+	d.GetLocked()
+	d = &Discussion{}
+	d.GetLocked()
+	d = nil
+	d.GetLocked()
+}
+
+func TestDiscussion_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{NodeID: &zeroValue}
+	d.GetNodeID()
+	d = &Discussion{}
+	d.GetNodeID()
+	d = nil
+	d.GetNodeID()
+}
+
+func TestDiscussion_GetNumber(tt *testing.T) {
+	var zeroValue int64
+	d := &Discussion{Number: &zeroValue}
+	d.GetNumber()
+	d = &Discussion{}
+	d.GetNumber()
+	d = nil
+	d.GetNumber()
+}
+
+func TestDiscussion_GetRepositoryURL(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{RepositoryURL: &zeroValue}
+	d.GetRepositoryURL()
+	d = &Discussion{}
+	d.GetRepositoryURL()
+	d = nil
+	d.GetRepositoryURL()
+}
+
+func TestDiscussion_GetState(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{State: &zeroValue}
+	d.GetState()
+	d = &Discussion{}
+	d.GetState()
+	d = nil
+	d.GetState()
+}
+
+func TestDiscussion_GetTitle(tt *testing.T) {
+	var zeroValue string
+	d := &Discussion{Title: &zeroValue}
+	d.GetTitle()
+	d = &Discussion{}
+	d.GetTitle()
+	d = nil
+	d.GetTitle()
+}
+
+func TestDiscussion_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &Discussion{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &Discussion{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
+func TestDiscussion_GetUser(tt *testing.T) {
+	d := &Discussion{}
+	d.GetUser()
+	d = nil
+	d.GetUser()
+}
+
+func TestDiscussionCategory_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DiscussionCategory{CreatedAt: &zeroValue}
+	d.GetCreatedAt()
+	d = &DiscussionCategory{}
+	d.GetCreatedAt()
+	d = nil
+	d.GetCreatedAt()
+}
+
+func TestDiscussionCategory_GetDescription(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCategory{Description: &zeroValue}
+	d.GetDescription()
+	d = &DiscussionCategory{}
+	d.GetDescription()
+	d = nil
+	d.GetDescription()
+}
+
+func TestDiscussionCategory_GetEmoji(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCategory{Emoji: &zeroValue}
+	d.GetEmoji()
+	d = &DiscussionCategory{}
+	d.GetEmoji()
+	d = nil
+	d.GetEmoji()
+}
+
+func TestDiscussionCategory_GetID(tt *testing.T) {
+	var zeroValue int64
+	d := &DiscussionCategory{ID: &zeroValue}
+	d.GetID()
+	d = &DiscussionCategory{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDiscussionCategory_GetIsAnswerable(tt *testing.T) {
+	var zeroValue bool
+	d := &DiscussionCategory{IsAnswerable: &zeroValue}
+	d.GetIsAnswerable()
+	d = &DiscussionCategory{}
+	d.GetIsAnswerable()
+	d = nil
+	d.GetIsAnswerable()
+}
+
+func TestDiscussionCategory_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCategory{Name: &zeroValue}
+	d.GetName()
+	d = &DiscussionCategory{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDiscussionCategory_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCategory{NodeID: &zeroValue}
+	d.GetNodeID()
+	d = &DiscussionCategory{}
+	d.GetNodeID()
+	d = nil
+	d.GetNodeID()
+}
+
+func TestDiscussionCategory_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	d := &DiscussionCategory{RepositoryID: &zeroValue}
+	d.GetRepositoryID()
+	d = &DiscussionCategory{}
+	d.GetRepositoryID()
+	d = nil
+	d.GetRepositoryID()
+}
+
+func TestDiscussionCategory_GetSlug(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCategory{Slug: &zeroValue}
+	d.GetSlug()
+	d = &DiscussionCategory{}
+	d.GetSlug()
+	d = nil
+	d.GetSlug()
+}
+
+func TestDiscussionCategory_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DiscussionCategory{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &DiscussionCategory{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
 func TestDiscussionComment_GetAuthor(tt *testing.T) {
 	d := &DiscussionComment{}
 	d.GetAuthor()
@@ -4616,6 +4900,51 @@ func TestDiscussionComment_GetURL(tt *testing.T) {
 	d.GetURL()
 	d = nil
 	d.GetURL()
+}
+
+func TestDiscussionEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DiscussionEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDiscussionEvent_GetDiscussion(tt *testing.T) {
+	d := &DiscussionEvent{}
+	d.GetDiscussion()
+	d = nil
+	d.GetDiscussion()
+}
+
+func TestDiscussionEvent_GetInstallation(tt *testing.T) {
+	d := &DiscussionEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDiscussionEvent_GetOrg(tt *testing.T) {
+	d := &DiscussionEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
+func TestDiscussionEvent_GetRepo(tt *testing.T) {
+	d := &DiscussionEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDiscussionEvent_GetSender(tt *testing.T) {
+	d := &DiscussionEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
 }
 
 func TestDismissalRestrictionsRequest_GetTeams(tt *testing.T) {
