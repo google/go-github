@@ -260,8 +260,13 @@ type EditRef struct {
 	From *string `json:"from,omitempty"`
 }
 
-// EditRepository represents a change of repository name.
+// EditRepo represents a change of repository name.
 type EditRepo struct {
+	Name *RepoName `json:"name,omitempty"`
+}
+
+// RepoName represents a change of repository name.
+type RepoName struct {
 	From *string `json:"from,omitempty"`
 }
 

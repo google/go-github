@@ -4124,12 +4124,12 @@ func (e *EditRef) GetFrom() string {
 	return *e.From
 }
 
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (e *EditRepo) GetFrom() string {
-	if e == nil || e.From == nil {
-		return ""
+// GetName returns the Name field.
+func (e *EditRepo) GetName() *RepoName {
+	if e == nil {
+		return nil
 	}
-	return *e.From
+	return e.Name
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -13210,6 +13210,14 @@ func (r *RenameOrgResponse) GetURL() string {
 		return ""
 	}
 	return *r.URL
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RepoName) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
 }
 
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.

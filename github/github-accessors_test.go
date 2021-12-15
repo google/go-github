@@ -4820,14 +4820,11 @@ func TestEditRef_GetFrom(tt *testing.T) {
 	e.GetFrom()
 }
 
-func TestEditRepo_GetFrom(tt *testing.T) {
-	var zeroValue string
-	e := &EditRepo{From: &zeroValue}
-	e.GetFrom()
-	e = &EditRepo{}
-	e.GetFrom()
+func TestEditRepo_GetName(tt *testing.T) {
+	e := &EditRepo{}
+	e.GetName()
 	e = nil
-	e.GetFrom()
+	e.GetName()
 }
 
 func TestEditSHA_GetFrom(tt *testing.T) {
@@ -15389,6 +15386,16 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 	r = nil
 	r.GetURL()
+}
+
+func TestRepoName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RepoName{From: &zeroValue}
+	r.GetFrom()
+	r = &RepoName{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
 }
 
 func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
