@@ -6,3 +6,5 @@ coverage.out
 vendor/
 .DS_Store
 .vscode
+# vim temp files
+*.swp
