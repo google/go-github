@@ -26,7 +26,7 @@ type HookDelivery struct {
 	StatusCode     *int       `json:"status_code"`
 	Event          *string    `json:"event"`
 	Action         *string    `json:"action"`
-	InstallationID *string    `json:"installation_id"`
+	InstallationID *int64     `json:"installation_id"`
 	RepositoryID   *int64     `json:"repository_id"`
 
 	// Request is populated by GetHookDelivery.

@@ -6298,7 +6298,7 @@ func TestHookDelivery_GetID(tt *testing.T) {
 }
 
 func TestHookDelivery_GetInstallationID(tt *testing.T) {
-	var zeroValue string
+	var zeroValue int64
 	h := &HookDelivery{InstallationID: &zeroValue}
 	h.GetInstallationID()
 	h = &HookDelivery{}
