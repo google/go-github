@@ -4100,6 +4100,14 @@ func (e *EditChange) GetBody() *EditBody {
 	return e.Body
 }
 
+// GetRepo returns the Repo field.
+func (e *EditChange) GetRepo() *EditRepo {
+	if e == nil {
+		return nil
+	}
+	return e.Repo
+}
+
 // GetTitle returns the Title field.
 func (e *EditChange) GetTitle() *EditTitle {
 	if e == nil {
@@ -4114,6 +4122,14 @@ func (e *EditRef) GetFrom() string {
 		return ""
 	}
 	return *e.From
+}
+
+// GetName returns the Name field.
+func (e *EditRepo) GetName() *RepoName {
+	if e == nil {
+		return nil
+	}
+	return e.Name
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -13196,6 +13212,14 @@ func (r *RenameOrgResponse) GetURL() string {
 	return *r.URL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RepoName) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (r *RepositoriesSearchResult) GetIncompleteResults() bool {
 	if r == nil || r.IncompleteResults == nil {
@@ -14330,6 +14354,14 @@ func (r *RepositoryEvent) GetAction() string {
 		return ""
 	}
 	return *r.Action
+}
+
+// GetChanges returns the Changes field.
+func (r *RepositoryEvent) GetChanges() *EditChange {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
 }
 
 // GetInstallation returns the Installation field.

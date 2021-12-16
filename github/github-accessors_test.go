@@ -4796,6 +4796,13 @@ func TestEditChange_GetBody(tt *testing.T) {
 	e.GetBody()
 }
 
+func TestEditChange_GetRepo(tt *testing.T) {
+	e := &EditChange{}
+	e.GetRepo()
+	e = nil
+	e.GetRepo()
+}
+
 func TestEditChange_GetTitle(tt *testing.T) {
 	e := &EditChange{}
 	e.GetTitle()
@@ -4811,6 +4818,13 @@ func TestEditRef_GetFrom(tt *testing.T) {
 	e.GetFrom()
 	e = nil
 	e.GetFrom()
+}
+
+func TestEditRepo_GetName(tt *testing.T) {
+	e := &EditRepo{}
+	e.GetName()
+	e = nil
+	e.GetName()
 }
 
 func TestEditSHA_GetFrom(tt *testing.T) {
@@ -15374,6 +15388,16 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoName_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RepoName{From: &zeroValue}
+	r.GetFrom()
+	r = &RepoName{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
 func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
 	var zeroValue bool
 	r := &RepositoriesSearchResult{IncompleteResults: &zeroValue}
@@ -16729,6 +16753,13 @@ func TestRepositoryEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestRepositoryEvent_GetChanges(tt *testing.T) {
+	r := &RepositoryEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
 }
 
 func TestRepositoryEvent_GetInstallation(tt *testing.T) {
