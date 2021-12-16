@@ -125,11 +125,15 @@ from the most recent API call. If a recent enough response isn't
 available, you can use RateLimits to fetch the most up-to-date rate
 limit data for the client.
 
-To detect an API rate limit error, you can check if its type is *github.RateLimitError:
+To detect an API rate limit error, you can check if its type is *github.RateLimitError.
+For secondary rate limits, you can check if its type is *github.AbuseRateLimitError:
 
 	repos, _, err := client.Repositories.List(ctx, "", nil)
 	if _, ok := err.(*github.RateLimitError); ok {
 		log.Println("hit rate limit")
+	}
+	if _, ok := err.(*github.AbuseRateLimitError); ok {
+		log.Println("hit secondary rate limit")
 	}
 
 Learn more about GitHub rate limiting at
