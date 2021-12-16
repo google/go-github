@@ -82,6 +82,28 @@ func TestEditChange_Marshal_BaseChange(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestEditChange_Marshal_Repo(t *testing.T) {
+	testJSONMarshal(t, &EditChange{}, "{}")
+
+	u := &EditChange{
+		Repo: &EditRepo{
+			Name: &RepoName{
+				From: String("old-repo-name"),
+			},
+		},
+	}
+
+	want := `{
+		"repository": {
+			"name": {
+				"from": "old-repo-name"
+			}
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestProjectChange_Marshal_NameChange(t *testing.T) {
 	testJSONMarshal(t, &ProjectChange{}, "{}")
 
