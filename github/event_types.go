@@ -200,13 +200,13 @@ type DiscussionEvent struct {
 type Discussion struct {
 	RepositoryURL      *string             `json:"repository_url,omitempty"`
 	DiscussionCategory *DiscussionCategory `json:"category,omitempty"`
-	AnswerHtmlUrl      *string             `json:"answer_html_url,omitempty"`
-	AnswerChosenAt     *string             `json:"answer_chosen_at,omitempty"`
+	AnswerHTMLURL      *string             `json:"answer_html_url,omitempty"`
+	AnswerChosenAt     *Timestamp          `json:"answer_chosen_at,omitempty"`
 	AnswerChosenBy     *string             `json:"answer_chosen_by,omitempty"`
 	HTMLURL            *string             `json:"html_url,omitempty"`
 	ID                 *int64              `json:"id,omitempty"`
 	NodeID             *string             `json:"node_id,omitempty"`
-	Number             *int64              `json:"number,omitempty"`
+	Number             *int                `json:"number,omitempty"`
 	Title              *string             `json:"title,omitempty"`
 	User               *User               `json:"user,omitempty"`
 	State              *string             `json:"state,omitempty"`

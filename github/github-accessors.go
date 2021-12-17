@@ -3853,9 +3853,9 @@ func (d *Discussion) GetActiveLockReason() string {
 }
 
 // GetAnswerChosenAt returns the AnswerChosenAt field if it's non-nil, zero value otherwise.
-func (d *Discussion) GetAnswerChosenAt() string {
+func (d *Discussion) GetAnswerChosenAt() Timestamp {
 	if d == nil || d.AnswerChosenAt == nil {
-		return ""
+		return Timestamp{}
 	}
 	return *d.AnswerChosenAt
 }
@@ -3868,12 +3868,12 @@ func (d *Discussion) GetAnswerChosenBy() string {
 	return *d.AnswerChosenBy
 }
 
-// GetAnswerHtmlUrl returns the AnswerHtmlUrl field if it's non-nil, zero value otherwise.
-func (d *Discussion) GetAnswerHtmlUrl() string {
-	if d == nil || d.AnswerHtmlUrl == nil {
+// GetAnswerHTMLURL returns the AnswerHTMLURL field if it's non-nil, zero value otherwise.
+func (d *Discussion) GetAnswerHTMLURL() string {
+	if d == nil || d.AnswerHTMLURL == nil {
 		return ""
 	}
-	return *d.AnswerHtmlUrl
+	return *d.AnswerHTMLURL
 }
 
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
@@ -3949,7 +3949,7 @@ func (d *Discussion) GetNodeID() string {
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
-func (d *Discussion) GetNumber() int64 {
+func (d *Discussion) GetNumber() int {
 	if d == nil || d.Number == nil {
 		return 0
 	}

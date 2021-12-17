@@ -4505,7 +4505,7 @@ func TestDiscussion_GetActiveLockReason(tt *testing.T) {
 }
 
 func TestDiscussion_GetAnswerChosenAt(tt *testing.T) {
-	var zeroValue string
+	var zeroValue Timestamp
 	d := &Discussion{AnswerChosenAt: &zeroValue}
 	d.GetAnswerChosenAt()
 	d = &Discussion{}
@@ -4524,14 +4524,14 @@ func TestDiscussion_GetAnswerChosenBy(tt *testing.T) {
 	d.GetAnswerChosenBy()
 }
 
-func TestDiscussion_GetAnswerHtmlUrl(tt *testing.T) {
+func TestDiscussion_GetAnswerHTMLURL(tt *testing.T) {
 	var zeroValue string
-	d := &Discussion{AnswerHtmlUrl: &zeroValue}
-	d.GetAnswerHtmlUrl()
+	d := &Discussion{AnswerHTMLURL: &zeroValue}
+	d.GetAnswerHTMLURL()
 	d = &Discussion{}
-	d.GetAnswerHtmlUrl()
+	d.GetAnswerHTMLURL()
 	d = nil
-	d.GetAnswerHtmlUrl()
+	d.GetAnswerHTMLURL()
 }
 
 func TestDiscussion_GetAuthorAssociation(tt *testing.T) {
@@ -4622,7 +4622,7 @@ func TestDiscussion_GetNodeID(tt *testing.T) {
 }
 
 func TestDiscussion_GetNumber(tt *testing.T) {
-	var zeroValue int64
+	var zeroValue int
 	d := &Discussion{Number: &zeroValue}
 	d.GetNumber()
 	d = &Discussion{}

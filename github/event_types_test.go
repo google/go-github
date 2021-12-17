@@ -5739,7 +5739,7 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 			HTMLURL: String("hurl"),
 			ID:      Int64(1),
 			NodeID:  String("nurl"),
-			Number:  Int64(1),
+			Number:  Int(1),
 			Title:   String("title"),
 			User: &User{
 				Login:     String("l"),
