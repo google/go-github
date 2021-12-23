@@ -121,7 +121,10 @@ GitHub Apps authentication can be provided by the [ghinstallation](https://githu
 package.
 
 ```go
-import "github.com/bradleyfalzon/ghinstallation"
+import (
+	"github.com/bradleyfalzon/ghinstallation"
+	"github.com/google/go-github/v29/github"
+)
 
 func main() {
 	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
@@ -134,6 +137,61 @@ func main() {
 	client := github.NewClient(&http.Client{Transport: itr})
 
 	// Use client...
+}
+```
+*Note*: In order to interact with certain apis, for example writing a file to a repo. One must generate an installation token
+using the installation id of the github app and authenticate with the OAuth method mentioned above. See the examples
+for more details.
+
+```go
+import (
+	"github.com/bradleyfalzon/ghinstallation"
+	"github.com/google/go-github/v29/github"
+	"golang.org/x/oauth2"
+)
+
+func main() {
+	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
+	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
+	if err != nil {
+	// Handle error.
+	}
+
+	// Use installation transport with client.
+	client := github.NewClient(&http.Client{Transport: itr})
+
+	//list installations
+	installations, _, err := client.Apps.ListInstallations(
+		context.Background(),
+		&github.ListOptions{})
+	if err != nil {
+	//handle error
+	}
+
+	var installID int64
+	for _, install := range installations {
+		installID = install.GetID()
+	}
+
+	//get installation token
+	token, _, err := client.Apps.CreateInstallationToken(
+		context.Background(),
+		installID,
+		&github.InstallationTokenOptions{})
+	if err != nil {
+	// handle error
+	}
+
+	//create client with access token to interact with file
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token.GetToken()},)
+	oAuthClient := oauth2.NewClient(context.Background(), ts)
+
+	//create new git hub client with accessToken
+	apiClient, err := github.NewEnterpriseClient(gc.uri, gc.uri, oAuthClient)
+	if err != nil {
+	//handle error
+	}
+
 }
 ```
 
