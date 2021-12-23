@@ -7,14 +7,14 @@ license that can be found in the LICENSE file.
 newfilewithappauth demonstrates the functionality of github's app authentication
 methods by fetching an installation access token and reauthenticating to github
 with OAuth configurations
- */
+*/
 package main
 
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-github/v41/github"
 	"github.com/bradleyfalzon/ghinstallation"
+	"github.com/google/go-github/v41/github"
 	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
@@ -46,9 +46,9 @@ func main() {
 		gitHost,
 		gitHost,
 		&http.Client{
-		Transport: itr,
-		Timeout:   time.Second * 30,
-	})
+			Transport: itr,
+			Timeout:   time.Second * 30,
+		})
 	if err != nil {
 		fmt.Printf("faild to create git client for app: %v\n", err)
 	}
