@@ -1745,3 +1745,356 @@ func TestIDPGroup_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTeamsService_GetExternalGroup(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/external-group/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"group_id": 123,
+			"group_name": "Octocat admins",
+			"updated_at": "2006-01-02T15:04:05Z",
+			"teams": [
+				{
+					"team_id": 1,
+					"team_name": "team-test"
+				},
+				{
+					"team_id": 2,
+					"team_name": "team-test2"
+				}
+			],
+			"members": [
+				{
+					"member_id": 1,
+					"member_login": "mona-lisa_eocsaxrs",
+					"member_name": "Mona Lisa",
+					"member_email": "mona_lisa@github.com"
+				},
+				{
+					"member_id": 2,
+					"member_login": "octo-lisa_eocsaxrs",
+					"member_name": "Octo Lisa",
+					"member_email": "octo_lisa@github.com"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	externalGroup, _, err := client.Teams.GetExternalGroup(ctx, "o", 123)
+	if err != nil {
+		t.Errorf("Teams.GetExternalGroup returned error: %v", err)
+	}
+
+	want := &ExternalGroup{
+		GroupID:   Int64(123),
+		GroupName: String("Octocat admins"),
+		UpdatedAt: &Timestamp{Time: referenceTime},
+		Teams: []*ExternalGroupTeam{
+			{
+				TeamID:   Int64(1),
+				TeamName: String("team-test"),
+			},
+			{
+				TeamID:   Int64(2),
+				TeamName: String("team-test2"),
+			},
+		},
+		Members: []*ExternalGroupMember{
+			{
+				MemberID:    Int64(1),
+				MemberLogin: String("mona-lisa_eocsaxrs"),
+				MemberName:  String("Mona Lisa"),
+				MemberEmail: String("mona_lisa@github.com"),
+			},
+			{
+				MemberID:    Int64(2),
+				MemberLogin: String("octo-lisa_eocsaxrs"),
+				MemberName:  String("Octo Lisa"),
+				MemberEmail: String("octo_lisa@github.com"),
+			},
+		},
+	}
+	if !cmp.Equal(externalGroup, want) {
+		t.Errorf("Teams.GetExternalGroup returned %+v, want %+v", externalGroup, want)
+	}
+
+	const methodName = "GetExternalGroup"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.GetExternalGroup(ctx, "\n", -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.GetExternalGroup(ctx, "o", 123)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestTeamsService_GetExternalGroup_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/external-group/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := context.Background()
+	eg, resp, err := client.Teams.GetExternalGroup(ctx, "o", 123)
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Teams.GetExternalGroup returned status %d, want %d", got, want)
+	}
+	if eg != nil {
+		t.Errorf("Teams.GetExternalGroup returned %+v, want nil", eg)
+	}
+}
+
+func TestTeamsService_ListExternalGroups(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"groups": [
+				{
+					"group_id": 123,
+					"group_name": "Octocat admins",
+					"updated_at": "2006-01-02T15:04:05Z"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	opts := &ListExternalGroupsOptions{
+		DisplayName: String("Octocat"),
+	}
+	list, _, err := client.Teams.ListExternalGroups(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Teams.ListExternalGroups returned error: %v", err)
+	}
+
+	want := &ExternalGroupList{
+		Groups: []*ExternalGroup{
+			{
+				GroupID:   Int64(123),
+				GroupName: String("Octocat admins"),
+				UpdatedAt: &Timestamp{Time: referenceTime},
+			},
+		},
+	}
+	if !cmp.Equal(list, want) {
+		t.Errorf("Teams.ListExternalGroups returned %+v, want %+v", list, want)
+	}
+
+	const methodName = "ListExternalGroups"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.ListExternalGroups(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.ListExternalGroups(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestTeamsService_ListExternalGroups_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := context.Background()
+	eg, resp, err := client.Teams.ListExternalGroups(ctx, "o", nil)
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Teams.ListExternalGroups returned status %d, want %d", got, want)
+	}
+	if eg != nil {
+		t.Errorf("Teams.ListExternalGroups returned %+v, want nil", eg)
+	}
+}
+
+func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{
+			"group_id": 123,
+			"group_name": "Octocat admins",
+			"updated_at": "2006-01-02T15:04:05Z",
+			"teams": [
+				{
+					"team_id": 1,
+					"team_name": "team-test"
+				},
+				{
+					"team_id": 2,
+					"team_name": "team-test2"
+				}
+			],
+			"members": [
+				{
+					"member_id": 1,
+					"member_login": "mona-lisa_eocsaxrs",
+					"member_name": "Mona Lisa",
+					"member_email": "mona_lisa@github.com"
+				},
+				{
+					"member_id": 2,
+					"member_login": "octo-lisa_eocsaxrs",
+					"member_name": "Octo Lisa",
+					"member_email": "octo_lisa@github.com"
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	body := &ExternalGroup{
+		GroupID: Int64(123),
+	}
+	externalGroup, _, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
+	if err != nil {
+		t.Errorf("Teams.UpdateConnectedExternalGroup returned error: %v", err)
+	}
+
+	want := &ExternalGroup{
+		GroupID:   Int64(123),
+		GroupName: String("Octocat admins"),
+		UpdatedAt: &Timestamp{Time: referenceTime},
+		Teams: []*ExternalGroupTeam{
+			{
+				TeamID:   Int64(1),
+				TeamName: String("team-test"),
+			},
+			{
+				TeamID:   Int64(2),
+				TeamName: String("team-test2"),
+			},
+		},
+		Members: []*ExternalGroupMember{
+			{
+				MemberID:    Int64(1),
+				MemberLogin: String("mona-lisa_eocsaxrs"),
+				MemberName:  String("Mona Lisa"),
+				MemberEmail: String("mona_lisa@github.com"),
+			},
+			{
+				MemberID:    Int64(2),
+				MemberLogin: String("octo-lisa_eocsaxrs"),
+				MemberName:  String("Octo Lisa"),
+				MemberEmail: String("octo_lisa@github.com"),
+			},
+		},
+	}
+	if !cmp.Equal(externalGroup, want) {
+		t.Errorf("Teams.GetExternalGroup returned %+v, want %+v", externalGroup, want)
+	}
+
+	const methodName = "UpdateConnectedExternalGroup"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Teams.UpdateConnectedExternalGroup(ctx, "\n", "\n", body)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := context.Background()
+	body := &ExternalGroup{
+		GroupID: Int64(123),
+	}
+	eg, resp, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Teams.UpdateConnectedExternalGroup returned status %d, want %d", got, want)
+	}
+	if eg != nil {
+		t.Errorf("Teams.UpdateConnectedExternalGroup returned %+v, want nil", eg)
+	}
+}
+
+func TestTeamsService_RemoveConnectedExternalGroup(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := context.Background()
+	_, err := client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
+	if err != nil {
+		t.Errorf("Teams.RemoveConnectedExternalGroup returned error: %v", err)
+	}
+
+	const methodName = "RemoveConnectedExternalGroup"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Teams.RemoveConnectedExternalGroup(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
+	})
+}
+
+func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/teams/t/external-groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Teams.RemoveConnectedExternalGroup(ctx, "o", "t")
+	if err == nil {
+		t.Errorf("Expected HTTP 404 response")
+	}
+	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
+		t.Errorf("Teams.GetExternalGroup returned status %d, want %d", got, want)
+	}
+}
