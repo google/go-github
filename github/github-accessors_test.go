@@ -22079,6 +22079,16 @@ func TestWorkflowRun_GetNodeID(tt *testing.T) {
 	w.GetNodeID()
 }
 
+func TestWorkflowRun_GetPreviousAttemptURL(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowRun{PreviousAttemptURL: &zeroValue}
+	w.GetPreviousAttemptURL()
+	w = &WorkflowRun{}
+	w.GetPreviousAttemptURL()
+	w = nil
+	w.GetPreviousAttemptURL()
+}
+
 func TestWorkflowRun_GetRepository(tt *testing.T) {
 	w := &WorkflowRun{}
 	w.GetRepository()
@@ -22096,6 +22106,16 @@ func TestWorkflowRun_GetRerunURL(tt *testing.T) {
 	w.GetRerunURL()
 }
 
+func TestWorkflowRun_GetRunAttempt(tt *testing.T) {
+	var zeroValue int
+	w := &WorkflowRun{RunAttempt: &zeroValue}
+	w.GetRunAttempt()
+	w = &WorkflowRun{}
+	w.GetRunAttempt()
+	w = nil
+	w.GetRunAttempt()
+}
+
 func TestWorkflowRun_GetRunNumber(tt *testing.T) {
 	var zeroValue int
 	w := &WorkflowRun{RunNumber: &zeroValue}
@@ -22104,6 +22124,16 @@ func TestWorkflowRun_GetRunNumber(tt *testing.T) {
 	w.GetRunNumber()
 	w = nil
 	w.GetRunNumber()
+}
+
+func TestWorkflowRun_GetRunStartedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	w := &WorkflowRun{RunStartedAt: &zeroValue}
+	w.GetRunStartedAt()
+	w = &WorkflowRun{}
+	w.GetRunStartedAt()
+	w = nil
+	w.GetRunStartedAt()
 }
 
 func TestWorkflowRun_GetStatus(tt *testing.T) {

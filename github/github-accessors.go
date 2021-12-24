@@ -18860,6 +18860,14 @@ func (w *WorkflowRun) GetNodeID() string {
 	return *w.NodeID
 }
 
+// GetPreviousAttemptURL returns the PreviousAttemptURL field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetPreviousAttemptURL() string {
+	if w == nil || w.PreviousAttemptURL == nil {
+		return ""
+	}
+	return *w.PreviousAttemptURL
+}
+
 // GetRepository returns the Repository field.
 func (w *WorkflowRun) GetRepository() *Repository {
 	if w == nil {
@@ -18876,12 +18884,28 @@ func (w *WorkflowRun) GetRerunURL() string {
 	return *w.RerunURL
 }
 
+// GetRunAttempt returns the RunAttempt field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetRunAttempt() int {
+	if w == nil || w.RunAttempt == nil {
+		return 0
+	}
+	return *w.RunAttempt
+}
+
 // GetRunNumber returns the RunNumber field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetRunNumber() int {
 	if w == nil || w.RunNumber == nil {
 		return 0
 	}
 	return *w.RunNumber
+}
+
+// GetRunStartedAt returns the RunStartedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowRun) GetRunStartedAt() Timestamp {
+	if w == nil || w.RunStartedAt == nil {
+		return Timestamp{}
+	}
+	return *w.RunStartedAt
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
