@@ -1,13 +1,12 @@
-/*
-Copyright 2018 The go-github AUTHORS. All rights reserved.
+//Copyright 2021 The go-github AUTHORS. All rights reserved.
 
-Use of this source code is governed by a BSD-style
-license that can be found in the LICENSE file.
+//Use of this source code is governed by a BSD-style
+//license that can be found in the LICENSE file.
 
-newfilewithappauth demonstrates the functionality of github's app authentication
-methods by fetching an installation access token and reauthenticating to github
-with OAuth configurations
-*/
+//newfilewithappauth demonstrates the functionality of Github's app authentication
+//methods by fetching an installation access token and reauthenticating to Github
+//with OAuth configurations.
+
 package main
 
 import (
@@ -25,20 +24,15 @@ func main() {
 
 	const gitHost = "https://git.api.com"
 
-	//get private key data
-	//download pem from github app
 	privatePem, err := ioutil.ReadFile("path/to/pem")
 	if err != nil {
 		panic(err)
 	}
 
-	// Wrap the shared transport for use with the
-	// app ID and app API
 	itr, err := ghinstallation.NewAppsTransport(http.DefaultTransport, 10, privatePem)
 	if err != nil {
 		fmt.Printf("faild to create app transport: %v\n", err)
 	}
-	//your enterprise git URI
 	itr.BaseURL = gitHost
 
 	//create git client with app transport
@@ -53,7 +47,6 @@ func main() {
 		fmt.Printf("faild to create git client for app: %v\n", err)
 	}
 
-	//list installations
 	installations, _, err := client.Apps.ListInstallations(context.Background(), &github.ListOptions{})
 	if err != nil {
 		fmt.Printf("failed to list installations: %v\n", err)
@@ -62,11 +55,10 @@ func main() {
 	//capture our installationId for our app
 	//we need this for the access token
 	var installID int64
-	for _, install := range installations {
-		installID = install.GetID()
+	for _, val := range installations {
+		installID = val.GetID()
 	}
 
-	//get installation token
 	token, _, err := client.Apps.CreateInstallationToken(
 		context.Background(),
 		installID,
@@ -75,7 +67,6 @@ func main() {
 		fmt.Printf("failed to create installation token: %v\n", err)
 	}
 
-	//create OAuth client with access token to interact with files
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token.GetToken()},
 	)
@@ -87,7 +78,6 @@ func main() {
 		fmt.Printf("failed to create new git client with token: %v\n", err)
 	}
 
-	// create new file
 	_, resp, err := apiClient.Repositories.CreateFile(
 		context.Background(),
 		"repoOwner",
@@ -103,5 +93,4 @@ func main() {
 	}
 
 	fmt.Printf("file written: %v", resp.StatusCode)
-
 }
