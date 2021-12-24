@@ -121,7 +121,10 @@ GitHub Apps authentication can be provided by the [ghinstallation](https://githu
 package.
 
 ```go
-import "github.com/bradleyfalzon/ghinstallation"
+import (
+	"github.com/bradleyfalzon/ghinstallation"
+	"github.com/google/go-github/v41/github"
+)
 
 func main() {
 	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
@@ -136,6 +139,9 @@ func main() {
 	// Use client...
 }
 ```
+
+*Note*: In order to interact with certain APIs, for example writing a file to a repo, one must generate an installation token
+using the installation ID of the GitHub app and authenticate with the OAuth method mentioned above. See the examples.
 
 ### Rate Limiting ###
 
