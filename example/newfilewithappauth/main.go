@@ -1,12 +1,11 @@
 //Copyright 2021 The go-github AUTHORS. All rights reserved.
-
+//
 //Use of this source code is governed by a BSD-style
 //license that can be found in the LICENSE file.
 
-//newfilewithappauth demonstrates the functionality of Github's app authentication
-//methods by fetching an installation access token and reauthenticating to Github
+//newfilewithappauth demonstrates the functionality of GitHub's app authentication
+//methods by fetching an installation access token and reauthenticating to GitHub
 //with OAuth configurations.
-
 package main
 
 import (

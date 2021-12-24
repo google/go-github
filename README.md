@@ -141,8 +141,7 @@ func main() {
 ```
 
 *Note*: In order to interact with certain APIs, for example writing a file to a repo, one must generate an installation token
-using the installation ID of the Github app and authenticate with the OAuth method mentioned above. See the examples
-for more details.
+using the installation ID of the GitHub app and authenticate with the OAuth method mentioned above. See the examples.
 
 ### Rate Limiting ###
 
