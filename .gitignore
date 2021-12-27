@@ -8,3 +8,6 @@ vendor/
 .vscode
 # vim temp files
 *.swp
+
+# goenv local version
+.go-version
