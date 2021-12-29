@@ -10,17 +10,17 @@ package main
 
 import (
 	"context"
-	"github.com/bradleyfalzon/ghinstallation"
-	"github.com/google/go-github/v41/github"
-	"golang.org/x/oauth2"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/bradleyfalzon/ghinstallation"
+	"github.com/google/go-github/v41/github"
+	"golang.org/x/oauth2"
 )
 
 func main() {
-
 	const gitHost = "https://git.api.com"
 
 	privatePem, err := ioutil.ReadFile("path/to/pem")
