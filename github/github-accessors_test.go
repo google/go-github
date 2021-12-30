@@ -18900,6 +18900,16 @@ func TestTeam_GetDescription(tt *testing.T) {
 	t.GetDescription()
 }
 
+func TestTeam_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	t := &Team{HTMLURL: &zeroValue}
+	t.GetHTMLURL()
+	t = &Team{}
+	t.GetHTMLURL()
+	t = nil
+	t.GetHTMLURL()
+}
+
 func TestTeam_GetID(tt *testing.T) {
 	var zeroValue int64
 	t := &Team{ID: &zeroValue}

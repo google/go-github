@@ -16156,6 +16156,14 @@ func (t *Team) GetDescription() string {
 	return *t.Description
 }
 
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (t *Team) GetHTMLURL() string {
+	if t == nil || t.HTMLURL == nil {
+		return ""
+	}
+	return *t.HTMLURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (t *Team) GetID() int64 {
 	if t == nil || t.ID == nil {
