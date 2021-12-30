@@ -46,6 +46,7 @@ type Team struct {
 	MembersCount    *int          `json:"members_count,omitempty"`
 	ReposCount      *int          `json:"repos_count,omitempty"`
 	Organization    *Organization `json:"organization,omitempty"`
+	HTMLURL         *string       `json:"html_url,omitempty"`
 	MembersURL      *string       `json:"members_url,omitempty"`
 	RepositoriesURL *string       `json:"repositories_url,omitempty"`
 	Parent          *Team         `json:"parent,omitempty"`
