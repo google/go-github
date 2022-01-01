@@ -8822,7 +8822,7 @@ func TestLicense_GetURL(tt *testing.T) {
 }
 
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {
-	var zeroValue int
+	var zeroValue int64
 	l := &ListCheckRunsOptions{AppID: &zeroValue}
 	l.GetAppID()
 	l = &ListCheckRunsOptions{}

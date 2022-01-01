@@ -338,7 +338,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		CheckName:   String("testing"),
 		Status:      String("completed"),
 		Filter:      String("all"),
-		AppID:       Int(1),
+		AppID:       Int64(1),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
