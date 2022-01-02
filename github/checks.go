@@ -234,6 +234,7 @@ type ListCheckRunsOptions struct {
 	CheckName *string `url:"check_name,omitempty"` // Returns check runs with the specified name.
 	Status    *string `url:"status,omitempty"`     // Returns check runs with the specified status. Can be one of "queued", "in_progress", or "completed".
 	Filter    *string `url:"filter,omitempty"`     // Filters check runs by their completed_at timestamp. Can be one of "latest" (returning the most recent check runs) or "all". Default: "latest"
+	AppID     *int64  `url:"app_id,omitempty"`     // Filters check runs by GitHub App ID.
 
 	ListOptions
 }

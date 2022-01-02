@@ -7596,6 +7596,14 @@ func (l *License) GetURL() string {
 	return *l.URL
 }
 
+// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+func (l *ListCheckRunsOptions) GetAppID() int64 {
+	if l == nil || l.AppID == nil {
+		return 0
+	}
+	return *l.AppID
+}
+
 // GetCheckName returns the CheckName field if it's non-nil, zero value otherwise.
 func (l *ListCheckRunsOptions) GetCheckName() string {
 	if l == nil || l.CheckName == nil {
