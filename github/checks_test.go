@@ -319,6 +319,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 			"page":       "1",
 			"status":     "completed",
 			"filter":     "all",
+			"app_id":     "1",
 		})
 		fmt.Fprint(w, `{"total_count":1,
                                 "check_runs": [{
@@ -327,7 +328,9 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
                                     "status": "completed",
                                     "conclusion": "neutral",
                                     "started_at": "2018-05-04T01:14:52Z",
-                                    "completed_at": "2018-05-04T01:14:52Z"}]}`,
+                                    "completed_at": "2018-05-04T01:14:52Z",
+                                    "app": {
+                                      "id": 1}}]}`,
 		)
 	})
 
@@ -335,6 +338,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 		CheckName:   String("testing"),
 		Status:      String("completed"),
 		Filter:      String("all"),
+		AppID:       Int64(1),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := context.Background()
@@ -352,6 +356,7 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 			CompletedAt: &Timestamp{startedAt},
 			Conclusion:  String("neutral"),
 			HeadSHA:     String("deadbeef"),
+			App:         &App{ID: Int64(1)},
 		}},
 	}
 
