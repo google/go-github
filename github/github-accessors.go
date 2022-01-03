@@ -5453,9 +5453,9 @@ func (h *HookDelivery) GetID() int64 {
 }
 
 // GetInstallationID returns the InstallationID field if it's non-nil, zero value otherwise.
-func (h *HookDelivery) GetInstallationID() string {
+func (h *HookDelivery) GetInstallationID() int64 {
 	if h == nil || h.InstallationID == nil {
-		return ""
+		return 0
 	}
 	return *h.InstallationID
 }
