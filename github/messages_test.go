@@ -297,10 +297,13 @@ func TestParseWebHook(t *testing.T) {
 			payload:     &DeploymentEvent{},
 			messageType: "deployment",
 		},
-
 		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",
+		},
+		{
+			payload:     &DiscussionEvent{},
+			messageType: "discussion",
 		},
 		{
 			payload:     &ForkEvent{},
