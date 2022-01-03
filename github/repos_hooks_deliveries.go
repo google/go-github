@@ -17,17 +17,17 @@ import (
 // - https://docs.github.com/en/rest/reference/repos#list-deliveries-for-a-repository-webhook
 // - https://docs.github.com/en/rest/reference/repos#get-a-delivery-for-a-repository-webhook
 type HookDelivery struct {
-	ID             *int64     `json:"id"`
-	GUID           *string    `json:"guid"`
-	DeliveredAt    *Timestamp `json:"delivered_at"`
-	Redelivery     *bool      `json:"redelivery"`
-	Duration       *float64   `json:"duration"`
-	Status         *string    `json:"status"`
-	StatusCode     *int       `json:"status_code"`
-	Event          *string    `json:"event"`
-	Action         *string    `json:"action"`
-	InstallationID *string    `json:"installation_id"`
-	RepositoryID   *int64     `json:"repository_id"`
+	ID             *int64     `json:"id,omitempty"`
+	GUID           *string    `json:"guid,omitempty"`
+	DeliveredAt    *Timestamp `json:"delivered_at,omitempty"`
+	Redelivery     *bool      `json:"redelivery,omitempty"`
+	Duration       *float64   `json:"duration,omitempty"`
+	Status         *string    `json:"status,omitempty"`
+	StatusCode     *int       `json:"status_code,omitempty"`
+	Event          *string    `json:"event,omitempty"`
+	Action         *string    `json:"action,omitempty"`
+	InstallationID *int64     `json:"installation_id,omitempty"`
+	RepositoryID   *int64     `json:"repository_id,omitempty"`
 
 	// Request is populated by GetHookDelivery.
 	Request *HookRequest `json:"request,omitempty"`

@@ -288,7 +288,7 @@ func TestHookDelivery_Marshal(t *testing.T) {
 		StatusCode:     Int(1),
 		Event:          String("guid"),
 		Action:         String("guid"),
-		InstallationID: String("guid"),
+		InstallationID: Int64(1),
 		RepositoryID:   Int64(1),
 		Request: &HookRequest{
 			Headers:    header,
@@ -310,7 +310,7 @@ func TestHookDelivery_Marshal(t *testing.T) {
 		"status_code": 1,
 		"event": "guid",
 		"action": "guid",
-		"installation_id": "guid",
+		"installation_id": 1,
 		"repository_id": 1,
 		"request": {
 			"headers": {
