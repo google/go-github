@@ -115,12 +115,16 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/packages#get-all-package-versions-for-a-package-owned-by-the-authenticated-user
 // GitHub API docs: https://docs.github.com/en/rest/reference/users#delete-an-email-address-for-the-authenticated-user
-func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
+func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
 	var u string
 	if user != "" {
 		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 	} else {
 		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
+	}
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	req, err := s.client.NewRequest("GET", u, nil)

@@ -363,7 +363,10 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.PackageGetAllVersions(ctx, "", "container", "hello_docker")
+	opts := &PackageListOptions{
+		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+	}
+	packages, _, err := client.Users.PackageGetAllVersions(ctx, "", "container", "hello_docker", opts)
 	if err != nil {
 		t.Errorf("Users.Authenticated_PackageGetAllVersions returned error: %v", err)
 	}
@@ -389,12 +392,12 @@ func TestUsersService_Authenticated_ListPackagesVersions(t *testing.T) {
 
 	const methodName = "PackageGetAllVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.PackageGetAllVersions(ctx, "\n", "", "")
+		_, _, err = client.Users.PackageGetAllVersions(ctx, "\n", "", "", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.PackageGetAllVersions(ctx, "", "", "")
+		got, resp, err := client.Users.PackageGetAllVersions(ctx, "", "", "", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -429,7 +432,10 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	packages, _, err := client.Users.PackageGetAllVersions(ctx, "u", "container", "hello_docker")
+	opts := &PackageListOptions{
+		String("internal"), String("container"), String("deleted"), ListOptions{Page: 1, PerPage: 2},
+	}
+	packages, _, err := client.Users.PackageGetAllVersions(ctx, "u", "container", "hello_docker", opts)
 	if err != nil {
 		t.Errorf("Users.specifiedUser_PackageGetAllVersions returned error: %v", err)
 	}
@@ -455,12 +461,12 @@ func TestUsersService_specifiedUser_ListPackagesVersions(t *testing.T) {
 
 	const methodName = "PackageGetAllVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.PackageGetAllVersions(ctx, "\n", "", "")
+		_, _, err = client.Users.PackageGetAllVersions(ctx, "\n", "", "", &PackageListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.PackageGetAllVersions(ctx, "", "", "")
+		got, resp, err := client.Users.PackageGetAllVersions(ctx, "", "", "", &PackageListOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
