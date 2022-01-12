@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestDependabotSecrets_GetRepoDependabotPublicKey(t *testing.T) {
+func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -25,24 +25,24 @@ func TestDependabotSecrets_GetRepoDependabotPublicKey(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	key, _, err := client.Actions.GetRepoDependabotPublicKey(ctx, "o", "r")
+	key, _, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Actions.GetRepoDependabotPublicKey returned error: %v", err)
+		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
-		t.Errorf("Actions.GetRepoDependabotPublicKey returned %+v, want %+v", key, want)
+		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
 
-	const methodName = "GetRepoDependabotPublicKey"
+	const methodName = "GetRepoPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetRepoDependabotPublicKey(ctx, "\n", "\n")
+		_, _, err = client.Dependabot.GetRepoPublicKey(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetRepoDependabotPublicKey(ctx, "o", "r")
+		got, resp, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -50,7 +50,7 @@ func TestDependabotSecrets_GetRepoDependabotPublicKey(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_GetRepoDependabotPublicKeyNumeric(t *testing.T) {
+func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -60,24 +60,24 @@ func TestDependabotSecrets_GetRepoDependabotPublicKeyNumeric(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	key, _, err := client.Actions.GetRepoDependabotPublicKey(ctx, "o", "r")
+	key, _, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Actions.GetRepoDependabotPublicKey returned error: %v", err)
+		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
 	want := &PublicKey{KeyID: String("1234"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
-		t.Errorf("Actions.GetRepoDependabotPublicKey returned %+v, want %+v", key, want)
+		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
 
-	const methodName = "GetRepoDependabotPublicKey"
+	const methodName = "GetRepoPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetRepoDependabotPublicKey(ctx, "\n", "\n")
+		_, _, err = client.Dependabot.GetRepoPublicKey(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetRepoDependabotPublicKey(ctx, "o", "r")
+		got, resp, err := client.Dependabot.GetRepoPublicKey(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -85,7 +85,7 @@ func TestDependabotSecrets_GetRepoDependabotPublicKeyNumeric(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_ListRepoDependabotSecrets(t *testing.T) {
+func TestDependabotService_ListRepoSecrets(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -97,9 +97,9 @@ func TestDependabotSecrets_ListRepoDependabotSecrets(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	secrets, _, err := client.Actions.ListRepoDependabotSecrets(ctx, "o", "r", opts)
+	secrets, _, err := client.Dependabot.ListRepoSecrets(ctx, "o", "r", opts)
 	if err != nil {
-		t.Errorf("Actions.ListRepoDependabotSecrets returned error: %v", err)
+		t.Errorf("Dependabot.ListRepoSecrets returned error: %v", err)
 	}
 
 	want := &Secrets{
@@ -110,17 +110,17 @@ func TestDependabotSecrets_ListRepoDependabotSecrets(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(secrets, want) {
-		t.Errorf("Actions.ListRepoDependabotSecrets returned %+v, want %+v", secrets, want)
+		t.Errorf("Dependabot.ListRepoSecrets returned %+v, want %+v", secrets, want)
 	}
 
-	const methodName = "ListRepoDependabotSecrets"
+	const methodName = "ListRepoSecrets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListRepoDependabotSecrets(ctx, "\n", "\n", opts)
+		_, _, err = client.Dependabot.ListRepoSecrets(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListRepoDependabotSecrets(ctx, "o", "r", opts)
+		got, resp, err := client.Dependabot.ListRepoSecrets(ctx, "o", "r", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -128,7 +128,7 @@ func TestDependabotSecrets_ListRepoDependabotSecrets(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_GetRepoDependabotSecret(t *testing.T) {
+func TestDependabotService_GetRepoSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -138,9 +138,9 @@ func TestDependabotSecrets_GetRepoDependabotSecret(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	secret, _, err := client.Actions.GetRepoDependabotSecret(ctx, "o", "r", "NAME")
+	secret, _, err := client.Dependabot.GetRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.GetRepoDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.GetRepoSecret returned error: %v", err)
 	}
 
 	want := &Secret{
@@ -149,17 +149,17 @@ func TestDependabotSecrets_GetRepoDependabotSecret(t *testing.T) {
 		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !cmp.Equal(secret, want) {
-		t.Errorf("Actions.GetRepoDependabotSecret returned %+v, want %+v", secret, want)
+		t.Errorf("Dependabot.GetRepoSecret returned %+v, want %+v", secret, want)
 	}
 
-	const methodName = "GetRepoDependabotSecret"
+	const methodName = "GetRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetRepoDependabotSecret(ctx, "\n", "\n", "\n")
+		_, _, err = client.Dependabot.GetRepoSecret(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetRepoDependabotSecret(ctx, "o", "r", "NAME")
+		got, resp, err := client.Dependabot.GetRepoSecret(ctx, "o", "r", "NAME")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -167,7 +167,7 @@ func TestDependabotSecrets_GetRepoDependabotSecret(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_CreateOrUpdateRepoDependabotSecret(t *testing.T) {
+func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -184,23 +184,23 @@ func TestDependabotSecrets_CreateOrUpdateRepoDependabotSecret(t *testing.T) {
 		KeyID:          "1234",
 	}
 	ctx := context.Background()
-	_, err := client.Actions.CreateOrUpdateRepoDependabotSecret(ctx, "o", "r", input)
+	_, err := client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Actions.CreateOrUpdateRepoDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
-	const methodName = "CreateOrUpdateRepoDependabotSecret"
+	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateRepoDependabotSecret(ctx, "\n", "\n", input)
+		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateRepoDependabotSecret(ctx, "o", "r", input)
+		return client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	})
 }
 
-func TestDependabotSecrets_DeleteRepoDependabotSecret(t *testing.T) {
+func TestDependabotService_DeleteRepoSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -209,23 +209,23 @@ func TestDependabotSecrets_DeleteRepoDependabotSecret(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteRepoDependabotSecret(ctx, "o", "r", "NAME")
+	_, err := client.Dependabot.DeleteRepoSecret(ctx, "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.DeleteRepoDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.DeleteRepoSecret returned error: %v", err)
 	}
 
-	const methodName = "DeleteRepoDependabotSecret"
+	const methodName = "DeleteRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteRepoDependabotSecret(ctx, "\n", "\n", "\n")
+		_, err = client.Dependabot.DeleteRepoSecret(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteRepoDependabotSecret(ctx, "o", "r", "NAME")
+		return client.Dependabot.DeleteRepoSecret(ctx, "o", "r", "NAME")
 	})
 }
 
-func TestDependabotSecrets_GetOrgDependabotPublicKey(t *testing.T) {
+func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -235,24 +235,24 @@ func TestDependabotSecrets_GetOrgDependabotPublicKey(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	key, _, err := client.Actions.GetOrgDependabotPublicKey(ctx, "o")
+	key, _, err := client.Dependabot.GetOrgPublicKey(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetOrgDependabotPublicKey returned error: %v", err)
+		t.Errorf("Dependabot.GetOrgPublicKey returned error: %v", err)
 	}
 
 	want := &PublicKey{KeyID: String("012345678"), Key: String("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
-		t.Errorf("Actions.GetOrgDependabotPublicKey returned %+v, want %+v", key, want)
+		t.Errorf("Dependabot.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
 
-	const methodName = "GetOrgDependabotPublicKey"
+	const methodName = "GetOrgPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetOrgDependabotPublicKey(ctx, "\n")
+		_, _, err = client.Dependabot.GetOrgPublicKey(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetOrgDependabotPublicKey(ctx, "o")
+		got, resp, err := client.Dependabot.GetOrgPublicKey(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -260,7 +260,7 @@ func TestDependabotSecrets_GetOrgDependabotPublicKey(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_ListOrgDependabotSecrets(t *testing.T) {
+func TestDependabotService_ListOrgSecrets(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -272,9 +272,9 @@ func TestDependabotSecrets_ListOrgDependabotSecrets(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	secrets, _, err := client.Actions.ListOrgDependabotSecrets(ctx, "o", opts)
+	secrets, _, err := client.Dependabot.ListOrgSecrets(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Actions.ListOrgDependabotSecrets returned error: %v", err)
+		t.Errorf("Dependabot.ListOrgSecrets returned error: %v", err)
 	}
 
 	want := &Secrets{
@@ -286,17 +286,17 @@ func TestDependabotSecrets_ListOrgDependabotSecrets(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(secrets, want) {
-		t.Errorf("Actions.ListOrgDependabotSecrets returned %+v, want %+v", secrets, want)
+		t.Errorf("Dependabot.ListOrgSecrets returned %+v, want %+v", secrets, want)
 	}
 
-	const methodName = "ListOrgDependabotSecrets"
+	const methodName = "ListOrgSecrets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListOrgDependabotSecrets(ctx, "\n", opts)
+		_, _, err = client.Dependabot.ListOrgSecrets(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListOrgDependabotSecrets(ctx, "o", opts)
+		got, resp, err := client.Dependabot.ListOrgSecrets(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -304,7 +304,7 @@ func TestDependabotSecrets_ListOrgDependabotSecrets(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_GetOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_GetOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -314,9 +314,9 @@ func TestDependabotSecrets_GetOrgDependabotSecret(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	secret, _, err := client.Actions.GetOrgDependabotSecret(ctx, "o", "NAME")
+	secret, _, err := client.Dependabot.GetOrgSecret(ctx, "o", "NAME")
 	if err != nil {
-		t.Errorf("Actions.GetOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.GetOrgSecret returned error: %v", err)
 	}
 
 	want := &Secret{
@@ -327,17 +327,17 @@ func TestDependabotSecrets_GetOrgDependabotSecret(t *testing.T) {
 		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories",
 	}
 	if !cmp.Equal(secret, want) {
-		t.Errorf("Actions.GetOrgDependabotSecret returned %+v, want %+v", secret, want)
+		t.Errorf("Dependabot.GetOrgSecret returned %+v, want %+v", secret, want)
 	}
 
-	const methodName = "GetOrgDependabotSecret"
+	const methodName = "GetOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetOrgDependabotSecret(ctx, "\n", "\n")
+		_, _, err = client.Dependabot.GetOrgSecret(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetOrgDependabotSecret(ctx, "o", "NAME")
+		got, resp, err := client.Dependabot.GetOrgSecret(ctx, "o", "NAME")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -345,7 +345,7 @@ func TestDependabotSecrets_GetOrgDependabotSecret(t *testing.T) {
 	})
 }
 
-func TestDependabotSecrets_CreateOrUpdateOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -364,23 +364,23 @@ func TestDependabotSecrets_CreateOrUpdateOrgDependabotSecret(t *testing.T) {
 		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
-	_, err := client.Actions.CreateOrUpdateOrgDependabotSecret(ctx, "o", input)
+	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Actions.CreateOrUpdateOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.CreateOrUpdateOrgSecret returned error: %v", err)
 	}
 
-	const methodName = "CreateOrUpdateOrgDependabotSecret"
+	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateOrgDependabotSecret(ctx, "\n", input)
+		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateOrgDependabotSecret(ctx, "o", input)
+		return client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
 	})
 }
 
-func TestDependabotSecrets_ListSelectedReposForOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -391,9 +391,9 @@ func TestDependabotSecrets_ListSelectedReposForOrgDependabotSecret(t *testing.T)
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := context.Background()
-	repos, _, err := client.Actions.ListSelectedReposForOrgDependabotSecret(ctx, "o", "NAME", opts)
+	repos, _, err := client.Dependabot.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 	if err != nil {
-		t.Errorf("Actions.ListSelectedReposForOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.ListSelectedReposForOrgSecret returned error: %v", err)
 	}
 
 	want := &SelectedReposList{
@@ -403,17 +403,17 @@ func TestDependabotSecrets_ListSelectedReposForOrgDependabotSecret(t *testing.T)
 		},
 	}
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Actions.ListSelectedReposForOrgDependabotSecret returned %+v, want %+v", repos, want)
+		t.Errorf("Dependabot.ListSelectedReposForOrgSecret returned %+v, want %+v", repos, want)
 	}
 
-	const methodName = "ListSelectedReposForOrgDependabotSecret"
+	const methodName = "ListSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListSelectedReposForOrgDependabotSecret(ctx, "\n", "\n", opts)
+		_, _, err = client.Dependabot.ListSelectedReposForOrgSecret(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListSelectedReposForOrgDependabotSecret(ctx, "o", "NAME", opts)
+		got, resp, err := client.Dependabot.ListSelectedReposForOrgSecret(ctx, "o", "NAME", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -421,7 +421,7 @@ func TestDependabotSecrets_ListSelectedReposForOrgDependabotSecret(t *testing.T)
 	})
 }
 
-func TestDependabotSecrets_SetSelectedReposForOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -432,23 +432,23 @@ func TestDependabotSecrets_SetSelectedReposForOrgDependabotSecret(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.SetSelectedReposForOrgDependabotSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
 	if err != nil {
-		t.Errorf("Actions.SetSelectedReposForOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
 
-	const methodName = "SetSelectedReposForOrgDependabotSecret"
+	const methodName = "SetSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetSelectedReposForOrgDependabotSecret(ctx, "\n", "\n", SelectedRepoIDs{64780797})
+		_, err = client.Dependabot.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{64780797})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetSelectedReposForOrgDependabotSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+		return client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
 	})
 }
 
-func TestDependabotSecrets_AddSelectedRepoToOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -458,23 +458,23 @@ func TestDependabotSecrets_AddSelectedRepoToOrgDependabotSecret(t *testing.T) {
 
 	repo := &Repository{ID: Int64(1234)}
 	ctx := context.Background()
-	_, err := client.Actions.AddSelectedRepoToOrgDependabotSecret(ctx, "o", "NAME", repo)
+	_, err := client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
-		t.Errorf("Actions.AddSelectedRepoToOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.AddSelectedRepoToOrgSecret returned error: %v", err)
 	}
 
-	const methodName = "AddSelectedRepoToOrgDependabotSecret"
+	const methodName = "AddSelectedRepoToOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddSelectedRepoToOrgDependabotSecret(ctx, "\n", "\n", repo)
+		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddSelectedRepoToOrgDependabotSecret(ctx, "o", "NAME", repo)
+		return client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
 	})
 }
 
-func TestDependabotSecrets_RemoveSelectedRepoFromOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -484,23 +484,23 @@ func TestDependabotSecrets_RemoveSelectedRepoFromOrgDependabotSecret(t *testing.
 
 	repo := &Repository{ID: Int64(1234)}
 	ctx := context.Background()
-	_, err := client.Actions.RemoveSelectedRepoFromOrgDependabotSecret(ctx, "o", "NAME", repo)
+	_, err := client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	if err != nil {
-		t.Errorf("Actions.RemoveSelectedRepoFromOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
 	}
 
-	const methodName = "RemoveSelectedRepoFromOrgDependabotSecret"
+	const methodName = "RemoveSelectedRepoFromOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveSelectedRepoFromOrgDependabotSecret(ctx, "\n", "\n", repo)
+		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveSelectedRepoFromOrgDependabotSecret(ctx, "o", "NAME", repo)
+		return client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
 	})
 }
 
-func TestDependabotSecrets_DeleteOrgDependabotSecret(t *testing.T) {
+func TestDependabotService_DeleteOrgSecret(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -509,18 +509,18 @@ func TestDependabotSecrets_DeleteOrgDependabotSecret(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.DeleteOrgDependabotSecret(ctx, "o", "NAME")
+	_, err := client.Dependabot.DeleteOrgSecret(ctx, "o", "NAME")
 	if err != nil {
-		t.Errorf("Actions.DeleteOrgDependabotSecret returned error: %v", err)
+		t.Errorf("Dependabot.DeleteOrgSecret returned error: %v", err)
 	}
 
-	const methodName = "DeleteOrgDependabotSecret"
+	const methodName = "DeleteOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteOrgDependabotSecret(ctx, "\n", "\n")
+		_, err = client.Dependabot.DeleteOrgSecret(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteOrgDependabotSecret(ctx, "o", "NAME")
+		return client.Dependabot.DeleteOrgSecret(ctx, "o", "NAME")
 	})
 }
