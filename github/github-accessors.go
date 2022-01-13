@@ -13612,6 +13612,14 @@ func (r *Repository) GetAllowAutoMerge() bool {
 	return *r.AllowAutoMerge
 }
 
+// GetAllowForking returns the AllowForking field if it's non-nil, zero value otherwise.
+func (r *Repository) GetAllowForking() bool {
+	if r == nil || r.AllowForking == nil {
+		return false
+	}
+	return *r.AllowForking
+}
+
 // GetAllowMergeCommit returns the AllowMergeCommit field if it's non-nil, zero value otherwise.
 func (r *Repository) GetAllowMergeCommit() bool {
 	if r == nil || r.AllowMergeCommit == nil {
