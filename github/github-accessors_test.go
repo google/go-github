@@ -15867,6 +15867,16 @@ func TestRepository_GetAllowAutoMerge(tt *testing.T) {
 	r.GetAllowAutoMerge()
 }
 
+func TestRepository_GetAllowForking(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{AllowForking: &zeroValue}
+	r.GetAllowForking()
+	r = &Repository{}
+	r.GetAllowForking()
+	r = nil
+	r.GetAllowForking()
+}
+
 func TestRepository_GetAllowMergeCommit(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{AllowMergeCommit: &zeroValue}
