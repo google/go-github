@@ -178,6 +178,7 @@ type Client struct {
 	Billing        *BillingService
 	Checks         *ChecksService
 	CodeScanning   *CodeScanningService
+	Dependabot     *DependabotService
 	Enterprise     *EnterpriseService
 	Gists          *GistsService
 	Git            *GitService
@@ -306,6 +307,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Billing = (*BillingService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
+	c.Dependabot = (*DependabotService)(&c.common)
 	c.Enterprise = (*EnterpriseService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
