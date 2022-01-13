@@ -1,4 +1,4 @@
-module github.com/google/go-github/v41
+module github.com/google/go-github/v42
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.3
