@@ -22,7 +22,6 @@ import (
 )
 
 func main() {
-
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	repo := os.Getenv("GITHUB_REPOSITORY_NAME")
 	owner := os.Getenv("GITHUB_REPOSITORY_OWNER")
