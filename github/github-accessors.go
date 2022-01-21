@@ -10484,6 +10484,22 @@ func (p *PagesUpdate) GetCNAME() string {
 	return *p.CNAME
 }
 
+// GetHTTPSEnforced returns the HTTPSEnforced field if it's non-nil, zero value otherwise.
+func (p *PagesUpdate) GetHTTPSEnforced() bool {
+	if p == nil || p.HTTPSEnforced == nil {
+		return false
+	}
+	return *p.HTTPSEnforced
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (p *PagesUpdate) GetPublic() bool {
+	if p == nil || p.Public == nil {
+		return false
+	}
+	return *p.Public
+}
+
 // GetSource returns the Source field if it's non-nil, zero value otherwise.
 func (p *PagesUpdate) GetSource() string {
 	if p == nil || p.Source == nil {
