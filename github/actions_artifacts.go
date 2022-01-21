@@ -119,6 +119,9 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	if err != nil {
+		return nil, newResponse(resp), err
+	}
 	return parsedURL, newResponse(resp), nil
 }
 

@@ -887,6 +887,8 @@ func TestDo_nilContext(t *testing.T) {
 	defer teardown()
 
 	req, _ := client.NewRequest("GET", ".", nil)
+
+	//lint:ignore SA1012 we want to make sure that a nil context is handled correctly
 	_, err := client.Do(nil, req, nil)
 
 	if !errors.Is(err, errNonNilContext) {

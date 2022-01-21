@@ -18,10 +18,10 @@ linters:
   disable:
     - errcheck
     - gosimple
-    - staticcheck
     - ineffassign
+    - staticcheck
     - unused
-issues: 
+issues:
   exclude-rules:
   - linters:
     - dogsled
@@ -30,3 +30,15 @@ issues:
   - linters:
     - dupl
     path: _test\.go
+  - linters:
+    - staticcheck
+    path: github/github_test\.go
+    text: 'SA1012'
+  - linters:
+    - staticcheck
+    path: _test\.go
+    text: 'SA1019'
+  - linters:
+    - staticcheck
+    path: github/git_commits\.go
+    text: 'SA1019'

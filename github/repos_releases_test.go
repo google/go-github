@@ -499,9 +499,12 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 
 	ctx := context.Background()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
-	content, err := ioutil.ReadAll(reader)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
+	}
+	content, err := ioutil.ReadAll(reader)
+	if err != nil {
+		t.Errorf("Failed to read from Repositories.DownloadReleaseAsset result: %v", err)
 	}
 	reader.Close()
 	want := []byte("Hello World")
