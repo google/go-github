@@ -50,7 +50,7 @@ type WorkflowBill struct {
 // CreateWorkflowDispatchEventRequest represents a request to create a workflow dispatch event.
 type CreateWorkflowDispatchEventRequest struct {
 	// Ref represents the reference of the workflow run.
-	// The reference can be a branch, tag, or a commit SHA.
+	// The reference can be a branch or a tag.
 	// Ref is required when creating a workflow dispatch event.
 	Ref string `json:"ref"`
 	// Inputs represents input keys and values configured in the workflow file.
