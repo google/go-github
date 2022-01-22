@@ -97,7 +97,7 @@ type PagesUpdate struct {
 	Source *string `json:"source,omitempty"`
 	// Public configures access controls for the site.
 	// If "true", the site will be accessible to anyone on the internet. If "false",
-	// the site will be accessible to anyone with read access to the respository that
+	// the site will be accessible to anyone with read access to the repository that
 	// published the site.
 	Public *bool `json:"public,omitempty"`
 	// HTTPSEnforced specifies whether HTTPS should be enforced for the repository.
