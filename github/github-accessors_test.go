@@ -12305,6 +12305,26 @@ func TestPagesUpdate_GetCNAME(tt *testing.T) {
 	p.GetCNAME()
 }
 
+func TestPagesUpdate_GetHTTPSEnforced(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesUpdate{HTTPSEnforced: &zeroValue}
+	p.GetHTTPSEnforced()
+	p = &PagesUpdate{}
+	p.GetHTTPSEnforced()
+	p = nil
+	p.GetHTTPSEnforced()
+}
+
+func TestPagesUpdate_GetPublic(tt *testing.T) {
+	var zeroValue bool
+	p := &PagesUpdate{Public: &zeroValue}
+	p.GetPublic()
+	p = &PagesUpdate{}
+	p.GetPublic()
+	p = nil
+	p.GetPublic()
+}
+
 func TestPagesUpdate_GetSource(tt *testing.T) {
 	var zeroValue string
 	p := &PagesUpdate{Source: &zeroValue}
