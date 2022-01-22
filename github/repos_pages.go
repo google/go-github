@@ -95,6 +95,13 @@ type PagesUpdate struct {
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
 	// Possible values are: "gh-pages", "master", and "master /docs".
 	Source *string `json:"source,omitempty"`
+	// Public configures access controls for the site.
+	// If "true", the site will be accessible to anyone on the internet. If "false",
+	// the site will be accessible to anyone with read access to the repository that
+	// published the site.
+	Public *bool `json:"public,omitempty"`
+	// HTTPSEnforced specifies whether HTTPS should be enforced for the repository.
+	HTTPSEnforced *bool `json:"https_enforced,omitempty"`
 }
 
 // UpdatePages updates GitHub Pages for the named repo.
