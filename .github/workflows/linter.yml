@@ -15,5 +15,5 @@ jobs:
     - name: golangci-lint
       uses: golangci/golangci-lint-action@5c56cd6c9dc07901af25baab6f2b0d9f3b7c3018 #v2.5.2
       with:
-        version: v1.41
+        version: v1.44.0
         args: --verbose
