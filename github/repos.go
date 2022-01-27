@@ -877,14 +877,33 @@ type RequiredStatusChecks struct {
 	// Require branches to be up to date before merging. (Required.)
 	Strict bool `json:"strict"`
 	// The list of status checks to require in order to merge into this
-	// branch. (Required; use []string{} instead of nil for empty list.)
-	Contexts []string `json:"contexts"`
+	// branch. (Deprecated. Note: only one of Contexts/Checks can be populated,
+	// but at least one must be populated).
+	Contexts []string `json:"contexts,omitempty"`
+	// The list of status checks to require in order to merge into this
+	// branch.
+	Checks []*RequiredStatusCheck `json:"checks,omitempty"`
 }
 
 // RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
 type RequiredStatusChecksRequest struct {
-	Strict   *bool    `json:"strict,omitempty"`
-	Contexts []string `json:"contexts,omitempty"`
+	Strict *bool `json:"strict,omitempty"`
+	// Note: if both Contexts and Checks are populated,
+	// the Github API will only use Checks.
+	Contexts []string              `json:"contexts,omitempty"`
+	Checks   []RequiredStatusCheck `json:"checks,omitempty"`
+}
+
+// RequiredStatusCheck represents a status check of a protected branch.
+type RequiredStatusCheck struct {
+	// The name of the required check.
+	Context string `json:"context"`
+	// The ID of the GitHub App that must provide this check.
+	// Omit this field to automatically select the GitHub App
+	// that has recently provided this check,
+	// or any app if it was not set by a GitHub App.
+	// Pass -1 to explicitly allow any app to set the status.
+	AppID *int64 `json:"app_id,omitempty"`
 }
 
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
