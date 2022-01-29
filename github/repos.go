@@ -890,8 +890,8 @@ type RequiredStatusChecksRequest struct {
 	Strict *bool `json:"strict,omitempty"`
 	// Note: if both Contexts and Checks are populated,
 	// the GitHub API will only use Checks.
-	Contexts []string              `json:"contexts,omitempty"`
-	Checks   []RequiredStatusCheck `json:"checks,omitempty"`
+	Contexts []string               `json:"contexts,omitempty"`
+	Checks   []*RequiredStatusCheck `json:"checks,omitempty"`
 }
 
 // RequiredStatusCheck represents a status check of a protected branch.

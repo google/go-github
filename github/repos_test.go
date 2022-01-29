@@ -1732,7 +1732,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 	noAppID := int64(-1)
 	input := &RequiredStatusChecksRequest{
 		Strict: Bool(true),
-		Checks: []RequiredStatusCheck{
+		Checks: []*RequiredStatusCheck{
 			{
 				Context: "continuous-integration",
 			},
