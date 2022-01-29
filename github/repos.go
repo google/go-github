@@ -889,7 +889,7 @@ type RequiredStatusChecks struct {
 type RequiredStatusChecksRequest struct {
 	Strict *bool `json:"strict,omitempty"`
 	// Note: if both Contexts and Checks are populated,
-	// the Github API will only use Checks.
+	// the GitHub API will only use Checks.
 	Contexts []string              `json:"contexts,omitempty"`
 	Checks   []RequiredStatusCheck `json:"checks,omitempty"`
 }

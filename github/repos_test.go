@@ -1799,7 +1799,6 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(statusChecks, want) {
-
 		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
 	}
 }
