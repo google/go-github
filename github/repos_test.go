@@ -1040,7 +1040,13 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		fmt.Fprintf(w, `{
 				"required_status_checks":{
 					"strict":true,
-					"contexts":["continuous-integration"]
+					"contexts":["continuous-integration"],
+					"checks": [
+						{
+							"context": "continuous-integration",
+							"app_id": null
+						}
+					]
 				},
 				"required_pull_request_reviews":{
 					"dismissal_restrictions":{
@@ -1081,6 +1087,11 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		RequiredStatusChecks: &RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
+			Checks: []*RequiredStatusCheck{
+				{
+					Context: "continuous-integration",
+				},
+			},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
@@ -1141,7 +1152,13 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 		fmt.Fprintf(w, `{
 				"required_status_checks":{
 					"strict":true,
-					"contexts":["continuous-integration"]
+					"contexts":["continuous-integration"],
+					"checks": [
+						{
+							"context": "continuous-integration",
+							"app_id": null
+						}
+					]
 				},
 				"required_pull_request_reviews":{
 					"dismiss_stale_reviews":true,
@@ -1169,6 +1186,11 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 		RequiredStatusChecks: &RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
+			Checks: []*RequiredStatusCheck{
+				{
+					Context: "continuous-integration",
+				},
+			},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews:          true,
@@ -1220,7 +1242,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 	}
 }
 
-func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
+func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1257,7 +1279,13 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		fmt.Fprintf(w, `{
 			"required_status_checks":{
 				"strict":true,
-				"contexts":["continuous-integration"]
+				"contexts":["continuous-integration"],
+				"checks": [
+					{
+						"context": "continuous-integration",
+						"app_id": null
+					}
+				]
 			},
 			"required_pull_request_reviews":{
 				"dismissal_restrictions":{
@@ -1291,6 +1319,11 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		RequiredStatusChecks: &RequiredStatusChecks{
 			Strict:   true,
 			Contexts: []string{"continuous-integration"},
+			Checks: []*RequiredStatusCheck{
+				{
+					Context: "continuous-integration",
+				},
+			},
 		},
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
 			DismissStaleReviews: true,
@@ -1333,6 +1366,122 @@ func TestRepositoriesService_UpdateBranchProtection(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &ProtectionRequest{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			Strict: true,
+			Checks: []*RequiredStatusCheck{
+				{
+					Context: "continuous-integration",
+				},
+			},
+		},
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+			DismissStaleReviews: true,
+			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
+				Users: &[]string{"uu"},
+				Teams: &[]string{"tt"},
+			},
+		},
+		Restrictions: &BranchRestrictionsRequest{
+			Users: []string{"u"},
+			Teams: []string{"t"},
+			Apps:  []string{"a"},
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		// TODO: remove custom Accept header when this API fully launches
+		testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
+		fmt.Fprintf(w, `{
+			"required_status_checks":{
+				"strict":true,
+				"contexts":["continuous-integration"],
+				"checks": [
+					{
+						"context": "continuous-integration",
+						"app_id": null
+					}
+				]
+			},
+			"required_pull_request_reviews":{
+				"dismissal_restrictions":{
+					"users":[{
+						"id":3,
+						"login":"uu"
+					}],
+					"teams":[{
+						"id":4,
+						"slug":"tt"
+					}]
+				},
+				"dismiss_stale_reviews":true,
+				"require_code_owner_reviews":true
+			},
+			"restrictions":{
+				"users":[{"id":1,"login":"u"}],
+				"teams":[{"id":2,"slug":"t"}],
+				"apps":[{"id":3,"slug":"a"}]
+			}
+		}`)
+	})
+
+	ctx := context.Background()
+	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+	}
+
+	want := &Protection{
+		RequiredStatusChecks: &RequiredStatusChecks{
+			Strict:   true,
+			Contexts: []string{"continuous-integration"},
+			Checks: []*RequiredStatusCheck{
+				{
+					Context: "continuous-integration",
+				},
+			},
+		},
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+			DismissStaleReviews: true,
+			DismissalRestrictions: &DismissalRestrictions{
+				Users: []*User{
+					{Login: String("uu"), ID: Int64(3)},
+				},
+				Teams: []*Team{
+					{Slug: String("tt"), ID: Int64(4)},
+				},
+			},
+			RequireCodeOwnerReviews: true,
+		},
+		Restrictions: &BranchRestrictions{
+			Users: []*User{
+				{Login: String("u"), ID: Int64(1)},
+			},
+			Teams: []*Team{
+				{Slug: String("t"), ID: Int64(2)},
+			},
+			Apps: []*App{
+				{Slug: String("a"), ID: Int64(3)},
+			},
+		},
+	}
+	if !cmp.Equal(protection, want) {
+		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+	}
 }
 
 func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
@@ -1425,7 +1574,24 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"strict": true,"contexts": ["x","y","z"]}`)
+		fmt.Fprint(w, `{
+			"strict": true,
+			"contexts": ["x","y","z"],
+			"checks": [
+				{
+					"context": "x",
+					"app_id": null
+				},
+				{
+					"context": "y",
+					"app_id": null
+				},
+				{
+					"context": "z",
+					"app_id": null
+				}
+			]
+		}`)
 	})
 
 	ctx := context.Background()
@@ -1437,6 +1603,17 @@ func TestRepositoriesService_GetRequiredStatusChecks(t *testing.T) {
 	want := &RequiredStatusChecks{
 		Strict:   true,
 		Contexts: []string{"x", "y", "z"},
+		Checks: []*RequiredStatusCheck{
+			{
+				Context: "x",
+			},
+			{
+				Context: "y",
+			},
+			{
+				Context: "z",
+			},
+		},
 	}
 	if !cmp.Equal(checks, want) {
 		t.Errorf("Repositories.GetRequiredStatusChecks returned %+v, want %+v", checks, want)
@@ -1483,7 +1660,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 	}
 }
 
-func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
+func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -1501,7 +1678,16 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 		testHeader(t, r, "Accept", mediaTypeV3)
-		fmt.Fprintf(w, `{"strict":true,"contexts":["continuous-integration"]}`)
+		fmt.Fprintf(w, `{
+			"strict":true,
+			"contexts":["continuous-integration"],
+			"checks": [
+				{
+					"context": "continuous-integration",
+					"app_id": null
+				}
+			]
+		}`)
 	})
 
 	ctx := context.Background()
@@ -1513,6 +1699,11 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 	want := &RequiredStatusChecks{
 		Strict:   true,
 		Contexts: []string{"continuous-integration"},
+		Checks: []*RequiredStatusCheck{
+			{
+				Context: "continuous-integration",
+			},
+		},
 	}
 	if !cmp.Equal(statusChecks, want) {
 		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
@@ -1531,6 +1722,85 @@ func TestRepositoriesService_UpdateRequiredStatusChecks(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	appID := int64(123)
+	noAppID := int64(-1)
+	input := &RequiredStatusChecksRequest{
+		Strict: Bool(true),
+		Checks: []*RequiredStatusCheck{
+			{
+				Context: "continuous-integration",
+			},
+			{
+				Context: "continuous-integration2",
+				AppID:   &appID,
+			},
+			{
+				Context: "continuous-integration3",
+				AppID:   &noAppID,
+			},
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/required_status_checks", func(w http.ResponseWriter, r *http.Request) {
+		v := new(RequiredStatusChecksRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+		testHeader(t, r, "Accept", mediaTypeV3)
+		fmt.Fprintf(w, `{
+			"strict":true,
+			"contexts":["continuous-integration"],
+			"checks": [
+				{
+					"context": "continuous-integration",
+					"app_id": null
+				},
+				{
+					"context": "continuous-integration2",
+					"app_id": 123
+				},
+				{
+					"context": "continuous-integration3",
+					"app_id": null
+				}
+			]
+		}`)
+	})
+
+	ctx := context.Background()
+	statusChecks, _, err := client.Repositories.UpdateRequiredStatusChecks(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned error: %v", err)
+	}
+
+	want := &RequiredStatusChecks{
+		Strict:   true,
+		Contexts: []string{"continuous-integration"},
+		Checks: []*RequiredStatusCheck{
+			{
+				Context: "continuous-integration",
+			},
+			{
+				Context: "continuous-integration2",
+				AppID:   &appID,
+			},
+			{
+				Context: "continuous-integration3",
+			},
+		},
+	}
+	if !cmp.Equal(statusChecks, want) {
+		t.Errorf("Repositories.UpdateRequiredStatusChecks returned %+v, want %+v", statusChecks, want)
+	}
 }
 
 func TestRepositoriesService_RemoveRequiredStatusChecks(t *testing.T) {
