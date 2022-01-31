@@ -18043,6 +18043,16 @@ func TestRequiredReviewer_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
+	var zeroValue int64
+	r := &RequiredStatusCheck{AppID: &zeroValue}
+	r.GetAppID()
+	r = &RequiredStatusCheck{}
+	r.GetAppID()
+	r = nil
+	r.GetAppID()
+}
+
 func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
 	var zeroValue bool
 	r := &RequiredStatusChecksRequest{Strict: &zeroValue}

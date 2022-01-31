@@ -15444,6 +15444,14 @@ func (r *RequiredReviewer) GetType() string {
 	return *r.Type
 }
 
+// GetAppID returns the AppID field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusCheck) GetAppID() int64 {
+	if r == nil || r.AppID == nil {
+		return 0
+	}
+	return *r.AppID
+}
+
 // GetStrict returns the Strict field if it's non-nil, zero value otherwise.
 func (r *RequiredStatusChecksRequest) GetStrict() bool {
 	if r == nil || r.Strict == nil {
