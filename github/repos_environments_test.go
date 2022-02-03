@@ -108,8 +108,14 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":1, "environments":[{"id":1}, {"id": 2}]}`)
 	})
 
+	opt := &EnvironmentListOptions{
+		ListOptions: ListOptions{
+			Page:    2,
+			PerPage: 2,
+		},
+	}
 	ctx := context.Background()
-	environments, _, err := client.Repositories.ListEnvironments(ctx, "o", "r")
+	environments, _, err := client.Repositories.ListEnvironments(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
@@ -120,12 +126,12 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 
 	const methodName = "ListEnvironments"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListEnvironments(ctx, "\n", "\n")
+		_, _, err = client.Repositories.ListEnvironments(ctx, "\n", "\n", opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListEnvironments(ctx, "o", "r")
+		got, resp, err := client.Repositories.ListEnvironments(ctx, "o", "r", opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -63,6 +63,12 @@ type RequiredReviewer struct {
 	Reviewer interface{} `json:"reviewer,omitempty"`
 }
 
+// EnvironmentListOptions specifies the optional parameters to the
+// RepositoriesService.ListEnvironments method.
+type EnvironmentListOptions struct {
+	ListOptions
+}
+
 // UnmarshalJSON implements the json.Unmarshaler interface.
 // This helps us handle the fact that RequiredReviewer can have either a User or Team type reviewer field.
 func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
@@ -99,8 +105,12 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 // ListEnvironments lists all environments for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-all-environments
-func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string) (*EnvResponse, *Response, error) {
+func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/environments", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
