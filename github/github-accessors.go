@@ -3444,6 +3444,30 @@ func (d *DeployKeyEvent) GetKey() *Key {
 	return d.Key
 }
 
+// GetOrganization returns the Organization field.
+func (d *DeployKeyEvent) GetOrganization() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Organization
+}
+
+// GetRepo returns the Repo field.
+func (d *DeployKeyEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DeployKeyEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *Deployment) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
