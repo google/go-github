@@ -16,6 +16,7 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning
 type SecretScanningService service
 
+// SecretScanningAlert represents a GitHub secret scanning alert.
 type SecretScanningAlert struct {
 	Number       *int       `json:"number,omitempty"`
 	CreatedAt    *Timestamp `json:"created_at,omitempty"`
@@ -30,11 +31,13 @@ type SecretScanningAlert struct {
 	Secret       *string    `json:"secret,omitempty"`
 }
 
+// SecretScanningAlertLocation represents the location for a secret scanning alert.
 type SecretScanningAlertLocation struct {
 	Type    *string                             `json:"type,omitempty"`
 	Details *SecretScanningAlertLocationDetails `json:"details,omitempty"`
 }
 
+// SecretScanningAlertLocationDetails represents the location details for a secret scanning alert.
 type SecretScanningAlertLocationDetails struct {
 	Path        *string `json:"path,omitempty"`
 	Startline   *int    `json:"start_line,omitempty"`
