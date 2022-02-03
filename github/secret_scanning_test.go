@@ -50,7 +50,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int64(1),
+			Number:       Int(1),
 			CreatedAt:    &date,
 			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
@@ -115,7 +115,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int64(1),
+			Number:       Int(1),
 			CreatedAt:    &date,
 			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
@@ -180,7 +180,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
-			Number:       Int64(1),
+			Number:       Int(1),
 			CreatedAt:    &date,
 			URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
@@ -242,7 +242,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Int64(1),
+		Number:       Int(1),
 		CreatedAt:    &date,
 		URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
@@ -282,7 +282,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		v := new(SecretScanningAlertUpdateOptions)
 		json.NewDecoder(r.Body).Decode(v)
 
-		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: "used_in_tests"}
+		want := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
 
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -304,7 +304,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: "used_in_tests"}
+	opts := &SecretScanningAlertUpdateOptions{State: String("resolved"), Resolution: String("used_in_tests")}
 
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {
@@ -313,7 +313,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	date := Timestamp{time.Date(1996, time.June, 20, 00, 00, 00, 0, time.UTC)}
 	want := &SecretScanningAlert{
-		Number:       Int64(1),
+		Number:       Int(1),
 		CreatedAt:    &date,
 		URL:          String("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:      String("https://github.com/o/r/security/secret-scanning/1"),
@@ -380,10 +380,10 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 			Type: String("commit"),
 			Details: &SecretScanningAlertLocationDetails{
 				Path:        String("/example/secrets.txt"),
-				Startline:   Int64(1),
-				EndLine:     Int64(1),
-				StartColumn: Int64(1),
-				EndColumn:   Int64(64),
+				Startline:   Int(1),
+				EndLine:     Int(1),
+				StartColumn: Int(1),
+				EndColumn:   Int(64),
 				BlobSHA:     String("af5626b4a114abcb82d63db7c8082c3c4756e51b"),
 				BlobURL:     String("https://api.github.com/repos/o/r/git/blobs/af5626b4a114abcb82d63db7c8082c3c4756e51b"),
 				CommitSHA:   String("f14d7debf9775f957cf4f1e8176da0786431f72b"),
