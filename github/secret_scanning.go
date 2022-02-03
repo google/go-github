@@ -36,11 +36,15 @@ type SecretScanningAlertLocation struct {
 }
 
 type SecretScanningAlertLocationDetails struct {
-	Path      *string `json:"path,omitempty"`
-	BlobSHA   *string `json:"blob_sha,omitempty"`
-	BlobURL   *string `json:"blob_url,omitempty"`
-	CommitSHA *string `json:"commit_sha,omitempty"`
-	CommitURL *string `json:"commit_url,omitempty"`
+	Path        *string `json:"path,omitempty"`
+	Startline   *int64  `json:"start_line,omitempty"`
+	EndLine     *int64  `json:"end_line,omitempty"`
+	StartColumn *int64  `json:"start_column,omitempty"`
+	EndColumn   *int64  `json:"end_column,omitempty"`
+	BlobSHA     *string `json:"blob_sha,omitempty"`
+	BlobURL     *string `json:"blob_url,omitempty"`
+	CommitSHA   *string `json:"commit_sha,omitempty"`
+	CommitURL   *string `json:"commit_url,omitempty"`
 }
 
 // SecretScanningAlertListOptions specifies optional parameters to the SecretScanningService.ListAlertsForEnterprise method.

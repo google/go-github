@@ -379,11 +379,15 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 		{
 			Type: String("commit"),
 			Details: &SecretScanningAlertLocationDetails{
-				Path:      String("/example/secrets.txt"),
-				BlobSHA:   String("af5626b4a114abcb82d63db7c8082c3c4756e51b"),
-				BlobURL:   String("https://api.github.com/repos/o/r/git/blobs/af5626b4a114abcb82d63db7c8082c3c4756e51b"),
-				CommitSHA: String("f14d7debf9775f957cf4f1e8176da0786431f72b"),
-				CommitURL: String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
+				Path:        String("/example/secrets.txt"),
+				Startline:   Int64(1),
+				EndLine:     Int64(1),
+				StartColumn: Int64(1),
+				EndColumn:   Int64(64),
+				BlobSHA:     String("af5626b4a114abcb82d63db7c8082c3c4756e51b"),
+				BlobURL:     String("https://api.github.com/repos/o/r/git/blobs/af5626b4a114abcb82d63db7c8082c3c4756e51b"),
+				CommitSHA:   String("f14d7debf9775f957cf4f1e8176da0786431f72b"),
+				CommitURL:   String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
 			},
 		},
 	}
