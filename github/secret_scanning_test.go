@@ -368,7 +368,7 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	opts := &SecretScanningAlertLocationListOptions{ListOptions{Page: 1, PerPage: 100}}
+	opts := &ListOptions{Page: 1, PerPage: 100}
 
 	locations, _, err := client.SecretScanning.ListLocationsForAlert(ctx, "o", "r", 1, opts)
 	if err != nil {

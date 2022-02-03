@@ -62,11 +62,6 @@ type SecretScanningAlertListOptions struct {
 	ListCursorOptions
 }
 
-// SecretScanningAlertLocationListOptions specifies optional parameters to the SecretScanningService.ListLocationsForAlert method.
-type SecretScanningAlertLocationListOptions struct {
-	ListOptions
-}
-
 // SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
 type SecretScanningAlertUpdateOptions struct {
 	// Required. Sets the state of the secret scanning alert. Can be either open or resolved.
@@ -214,7 +209,7 @@ func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo str
 // the repo scope or security_events scope.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#list-locations-for-a-secret-scanning-alert
-func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertLocationListOptions) ([]*SecretScanningAlertLocation, *Response, error) {
+func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner, repo string, number int64, opts *ListOptions) ([]*SecretScanningAlertLocation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v/locations", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
