@@ -145,7 +145,15 @@ type DeployKeyEvent struct {
 	// The deploy key resource.
 	Key *Key `json:"key,omitempty"`
 
+	// The Repository where the event occurred
+	Repo *Repository `json:"repository,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an organization.
+	Organization *Organization `json:"organization,omitempty"`
+
 	// The following fields are only populated by Webhook events.
+	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 

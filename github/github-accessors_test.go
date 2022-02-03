@@ -4027,6 +4027,27 @@ func TestDeployKeyEvent_GetKey(tt *testing.T) {
 	d.GetKey()
 }
 
+func TestDeployKeyEvent_GetOrganization(tt *testing.T) {
+	d := &DeployKeyEvent{}
+	d.GetOrganization()
+	d = nil
+	d.GetOrganization()
+}
+
+func TestDeployKeyEvent_GetRepo(tt *testing.T) {
+	d := &DeployKeyEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDeployKeyEvent_GetSender(tt *testing.T) {
+	d := &DeployKeyEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
 func TestDeployment_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	d := &Deployment{CreatedAt: &zeroValue}
