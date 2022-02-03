@@ -84,7 +84,7 @@ type SecretScanningAlertUpdateOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
 func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
-	u := fmt.Sprintf("/enterprises/%v/secret-scanning/alerts", enterprise)
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/alerts", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -111,7 +111,7 @@ func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, ent
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#list-secret-scanning-alerts-for-an-organization
 func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
-	u := fmt.Sprintf("/orgs/%v/secret-scanning/alerts", org)
+	u := fmt.Sprintf("orgs/%v/secret-scanning/alerts", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -138,7 +138,7 @@ func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#list-secret-scanning-alerts-for-a-repository
 func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/secret-scanning/alerts", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -165,7 +165,7 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#get-a-secret-scanning-alert
 func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string, number int64) (*SecretScanningAlert, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -188,13 +188,9 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#update-a-secret-scanning-alert
 func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
-	req, err := s.client.NewRequest("PATCH", u, nil)
+	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -215,7 +211,7 @@ func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo str
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/secret-scanning#list-locations-for-a-secret-scanning-alert
 func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertLocationListOptions) ([]*SecretScanningAlertLocation, *Response, error) {
-	u := fmt.Sprintf("/repos/%v/%v/secret-scanning/alerts/%v/locations", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v/locations", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
