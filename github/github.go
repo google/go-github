@@ -196,6 +196,7 @@ type Client struct {
 	Repositories   *RepositoriesService
 	SCIM           *SCIMService
 	Search         *SearchService
+	SecretScanning *SecretScanningService
 	Teams          *TeamsService
 	Users          *UsersService
 }
@@ -325,6 +326,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Repositories = (*RepositoriesService)(&c.common)
 	c.SCIM = (*SCIMService)(&c.common)
 	c.Search = (*SearchService)(&c.common)
+	c.SecretScanning = (*SecretScanningService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
