@@ -149,6 +149,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"repository":                     &RepositoryEvent{},
 	"repository_dispatch":            &RepositoryDispatchEvent{},
 	"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
+	"secret_scanning_alert":          &SecretScanningAlertEvent{},
 	"star":                           &StarEvent{},
 	"status":                         &StatusEvent{},
 	"team":                           &TeamEvent{},
