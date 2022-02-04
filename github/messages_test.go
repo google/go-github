@@ -426,7 +426,7 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "repository_vulnerability_alert",
 		},
 		{
-			payload: &SecretScanningAlertEvent{},
+			payload:     &SecretScanningAlertEvent{},
 			messageType: "secret_scanning_alert",
 		},
 		{
