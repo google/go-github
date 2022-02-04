@@ -13491,7 +13491,7 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 	u := &SecretScanningAlertEvent{
 		Action: String("a"),
 		Alert: &SecretScanningAlert{
-			Number:     Int64(1),
+			Number:     Int(1),
 			SecretType: String("t"),
 			Resolution: String("r"),
 			ResolvedBy: &User{
