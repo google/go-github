@@ -18681,6 +18681,250 @@ func TestSecretScanning_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SecretScanningAlert{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecretScanningAlert_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{HTMLURL: &zeroValue}
+	s.GetHTMLURL()
+	s = &SecretScanningAlert{}
+	s.GetHTMLURL()
+	s = nil
+	s.GetHTMLURL()
+}
+
+func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{LocationsURL: &zeroValue}
+	s.GetLocationsURL()
+	s = &SecretScanningAlert{}
+	s.GetLocationsURL()
+	s = nil
+	s.GetLocationsURL()
+}
+
+func TestSecretScanningAlert_GetNumber(tt *testing.T) {
+	var zeroValue int
+	s := &SecretScanningAlert{Number: &zeroValue}
+	s.GetNumber()
+	s = &SecretScanningAlert{}
+	s.GetNumber()
+	s = nil
+	s.GetNumber()
+}
+
+func TestSecretScanningAlert_GetResolution(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{Resolution: &zeroValue}
+	s.GetResolution()
+	s = &SecretScanningAlert{}
+	s.GetResolution()
+	s = nil
+	s.GetResolution()
+}
+
+func TestSecretScanningAlert_GetResolvedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecretScanningAlert{ResolvedAt: &zeroValue}
+	s.GetResolvedAt()
+	s = &SecretScanningAlert{}
+	s.GetResolvedAt()
+	s = nil
+	s.GetResolvedAt()
+}
+
+func TestSecretScanningAlert_GetResolvedBy(tt *testing.T) {
+	s := &SecretScanningAlert{}
+	s.GetResolvedBy()
+	s = nil
+	s.GetResolvedBy()
+}
+
+func TestSecretScanningAlert_GetSecret(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{Secret: &zeroValue}
+	s.GetSecret()
+	s = &SecretScanningAlert{}
+	s.GetSecret()
+	s = nil
+	s.GetSecret()
+}
+
+func TestSecretScanningAlert_GetSecretType(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{SecretType: &zeroValue}
+	s.GetSecretType()
+	s = &SecretScanningAlert{}
+	s.GetSecretType()
+	s = nil
+	s.GetSecretType()
+}
+
+func TestSecretScanningAlert_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{State: &zeroValue}
+	s.GetState()
+	s = &SecretScanningAlert{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecretScanningAlert_GetURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlert{URL: &zeroValue}
+	s.GetURL()
+	s = &SecretScanningAlert{}
+	s.GetURL()
+	s = nil
+	s.GetURL()
+}
+
+func TestSecretScanningAlertLocation_GetDetails(tt *testing.T) {
+	s := &SecretScanningAlertLocation{}
+	s.GetDetails()
+	s = nil
+	s.GetDetails()
+}
+
+func TestSecretScanningAlertLocation_GetType(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocation{Type: &zeroValue}
+	s.GetType()
+	s = &SecretScanningAlertLocation{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSecretScanningAlertLocationDetails_GetBlobSHA(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{BlobSHA: &zeroValue}
+	s.GetBlobSHA()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetBlobSHA()
+	s = nil
+	s.GetBlobSHA()
+}
+
+func TestSecretScanningAlertLocationDetails_GetBlobURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{BlobURL: &zeroValue}
+	s.GetBlobURL()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetBlobURL()
+	s = nil
+	s.GetBlobURL()
+}
+
+func TestSecretScanningAlertLocationDetails_GetCommitSHA(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{CommitSHA: &zeroValue}
+	s.GetCommitSHA()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetCommitSHA()
+	s = nil
+	s.GetCommitSHA()
+}
+
+func TestSecretScanningAlertLocationDetails_GetCommitURL(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{CommitURL: &zeroValue}
+	s.GetCommitURL()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetCommitURL()
+	s = nil
+	s.GetCommitURL()
+}
+
+func TestSecretScanningAlertLocationDetails_GetEndColumn(tt *testing.T) {
+	var zeroValue int
+	s := &SecretScanningAlertLocationDetails{EndColumn: &zeroValue}
+	s.GetEndColumn()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetEndColumn()
+	s = nil
+	s.GetEndColumn()
+}
+
+func TestSecretScanningAlertLocationDetails_GetEndLine(tt *testing.T) {
+	var zeroValue int
+	s := &SecretScanningAlertLocationDetails{EndLine: &zeroValue}
+	s.GetEndLine()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetEndLine()
+	s = nil
+	s.GetEndLine()
+}
+
+func TestSecretScanningAlertLocationDetails_GetPath(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertLocationDetails{Path: &zeroValue}
+	s.GetPath()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetPath()
+	s = nil
+	s.GetPath()
+}
+
+func TestSecretScanningAlertLocationDetails_GetStartColumn(tt *testing.T) {
+	var zeroValue int
+	s := &SecretScanningAlertLocationDetails{StartColumn: &zeroValue}
+	s.GetStartColumn()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetStartColumn()
+	s = nil
+	s.GetStartColumn()
+}
+
+func TestSecretScanningAlertLocationDetails_GetStartline(tt *testing.T) {
+	var zeroValue int
+	s := &SecretScanningAlertLocationDetails{Startline: &zeroValue}
+	s.GetStartline()
+	s = &SecretScanningAlertLocationDetails{}
+	s.GetStartline()
+	s = nil
+	s.GetStartline()
+}
+
+func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{Resolution: &zeroValue}
+	s.GetResolution()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetResolution()
+	s = nil
+	s.GetResolution()
+}
+
+func TestSecretScanningAlertUpdateOptions_GetSecretType(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{SecretType: &zeroValue}
+	s.GetSecretType()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetSecretType()
+	s = nil
+	s.GetSecretType()
+}
+
+func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
+	s.GetState()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
 	s := &SecurityAndAnalysis{}
 	s.GetAdvancedSecurity()
