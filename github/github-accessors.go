@@ -16052,6 +16052,62 @@ func (s *SecretScanningAlert) GetURL() string {
 	return *s.URL
 }
 
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlertEvent) GetAction() string {
+	if s == nil || s.Action == nil {
+		return ""
+	}
+	return *s.Action
+}
+
+// GetAlert returns the Alert field.
+func (s *SecretScanningAlertEvent) GetAlert() *SecretScanningAlert {
+	if s == nil {
+		return nil
+	}
+	return s.Alert
+}
+
+// GetEnterprise returns the Enterprise field.
+func (s *SecretScanningAlertEvent) GetEnterprise() *Enterprise {
+	if s == nil {
+		return nil
+	}
+	return s.Enterprise
+}
+
+// GetInstallation returns the Installation field.
+func (s *SecretScanningAlertEvent) GetInstallation() *Installation {
+	if s == nil {
+		return nil
+	}
+	return s.Installation
+}
+
+// GetOrganization returns the Organization field.
+func (s *SecretScanningAlertEvent) GetOrganization() *Organization {
+	if s == nil {
+		return nil
+	}
+	return s.Organization
+}
+
+// GetRepo returns the Repo field.
+func (s *SecretScanningAlertEvent) GetRepo() *Repository {
+	if s == nil {
+		return nil
+	}
+	return s.Repo
+}
+
+// GetSender returns the Sender field.
+func (s *SecretScanningAlertEvent) GetSender() *User {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
+}
+
 // GetDetails returns the Details field.
 func (s *SecretScanningAlertLocation) GetDetails() *SecretScanningAlertLocationDetails {
 	if s == nil {

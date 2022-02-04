@@ -87,6 +87,7 @@ var (
 		"repository_dispatch":            "RepositoryDispatchEvent",
 		"repository_vulnerability_alert": "RepositoryVulnerabilityAlertEvent",
 		"release":                        "ReleaseEvent",
+		"secret_scanning_alert":          "SecretScanningAlertEvent",
 		"star":                           "StarEvent",
 		"status":                         "StatusEvent",
 		"team":                           "TeamEvent",
