@@ -19,7 +19,7 @@ type BillingService service
 // ActionBilling represents a GitHub Action billing.
 type ActionBilling struct {
 	TotalMinutesUsed     int                  `json:"total_minutes_used"`
-	TotalPaidMinutesUsed int                  `json:"total_paid_minutes_used"`
+	TotalPaidMinutesUsed float64              `json:"total_paid_minutes_used"`
 	IncludedMinutes      int                  `json:"included_minutes"`
 	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown"`
 }
