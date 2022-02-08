@@ -1065,8 +1065,8 @@ type RepositoryVulnerabilityAlert struct {
 	DismissedAt              *Timestamp `json:"dismissed_at,omitempty"`
 }
 
-// SecretScanningAlertEvent is triggered when a secret scanning alert occurs in a repository
-// The Webhook name is secret_scanning_alert
+// SecretScanningAlertEvent is triggered when a secret scanning alert occurs in a repository.
+// The Webhook name is secret_scanning_alert.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#secret_scanning_alert
 type SecretScanningAlertEvent struct {
