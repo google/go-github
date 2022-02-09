@@ -22,7 +22,7 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 				"total_minutes_used": 305,
-				"total_paid_minutes_used": 0,
+				"total_paid_minutes_used": 0.0,
 				"included_minutes": 3000,
 				"minutes_used_breakdown": {
 					"UBUNTU": 205,
