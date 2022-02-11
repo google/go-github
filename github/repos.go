@@ -945,7 +945,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
 	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
-	RequireCodeOwnerReviews bool `json:"require_code_owner_reviews,omitempty"`
+	RequireCodeOwnerReviews *bool `json:"require_code_owner_reviews,omitempty"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
 	// Valid values are 1 - 6.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
