@@ -944,10 +944,10 @@ type PullRequestReviewsEnforcementUpdate struct {
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
 	DismissStaleReviews *bool `json:"dismiss_stale_reviews,omitempty"`
-	// RequireCodeOwnerReviews specifies if an approved review is required in pull requests including files with a designated code owner.
+	// RequireCodeOwnerReviews specifies if merging pull requests is blocked until code owners have reviewed.
 	RequireCodeOwnerReviews *bool `json:"require_code_owner_reviews,omitempty"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
-	// Valid values are 1 - 6.
+	// Valid values are 1 - 6 or 0 to not require reviewers
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
