@@ -14716,6 +14716,16 @@ func TestPullRequestReviewsEnforcementUpdate_GetDismissStaleReviews(tt *testing.
 	p.GetDismissStaleReviews()
 }
 
+func TestPullRequestReviewsEnforcementUpdate_GetRequireCodeOwnerReviews(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestReviewsEnforcementUpdate{RequireCodeOwnerReviews: &zeroValue}
+	p.GetRequireCodeOwnerReviews()
+	p = &PullRequestReviewsEnforcementUpdate{}
+	p.GetRequireCodeOwnerReviews()
+	p = nil
+	p.GetRequireCodeOwnerReviews()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestTargetEvent{Action: &zeroValue}
