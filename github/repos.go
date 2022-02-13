@@ -947,7 +947,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	// RequireCodeOwnerReviews specifies if merging pull requests is blocked until code owners have reviewed.
 	RequireCodeOwnerReviews *bool `json:"require_code_owner_reviews,omitempty"`
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
-	// Valid values are 1 - 6 or 0 to not require reviewers
+	// Valid values are 1 - 6 or 0 to not require reviewers.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 }
 
