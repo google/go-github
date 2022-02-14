@@ -1065,6 +1065,26 @@ type RepositoryVulnerabilityAlert struct {
 	DismissedAt              *Timestamp `json:"dismissed_at,omitempty"`
 }
 
+// SecretScanningAlertEvent is triggered when a secret scanning alert occurs in a repository.
+// The Webhook name is secret_scanning_alert.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#secret_scanning_alert
+type SecretScanningAlertEvent struct {
+	// Action is the action that was performed. Possible values are: "created", "resolved", or "reopened".
+	Action *string `json:"action,omitempty"`
+
+	// Alert is the secret scanning alert involved in the event.
+	Alert *SecretScanningAlert `json:"alert,omitempty"`
+
+	// Only populated by the "resolved" and "reopen" actions
+	Sender *User `json:"sender,omitempty"`
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Organization *Organization `json:"organization,omitempty"`
+	Enterprise   *Enterprise   `json:"enterprise,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // StarEvent is triggered when a star is added or removed from a repository.
 // The Webhook event name is "star".
 //
