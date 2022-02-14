@@ -88,6 +88,11 @@ type WorkflowRunJobRun struct {
 	DurationMS *int64 `json:"duration_ms,omitempty"`
 }
 
+// WorkflowRunAttemptOptions specifies optional parameters to GetWorkflowRunAttempt.
+type WorkflowRunAttemptOptions struct {
+	ExcludePullRequests *bool `url:"exclude_pull_requests,omitempty"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -153,6 +158,30 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	run := new(WorkflowRun)
+	resp, err := s.client.Do(ctx, req, run)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return run, resp, nil
+}
+
+// GetWorkflowRunAttempt gets a specific workflow run attempt.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run-attempt
+func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo string, runID int64, attemptNumber int, opts *WorkflowRunAttemptOptions) (*WorkflowRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v", owner, repo, runID, attemptNumber)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

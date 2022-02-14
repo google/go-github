@@ -19564,6 +19564,14 @@ func (w *WorkflowRun) GetWorkflowURL() string {
 	return *w.WorkflowURL
 }
 
+// GetExcludePullRequests returns the ExcludePullRequests field if it's non-nil, zero value otherwise.
+func (w *WorkflowRunAttemptOptions) GetExcludePullRequests() bool {
+	if w == nil || w.ExcludePullRequests == nil {
+		return false
+	}
+	return *w.ExcludePullRequests
+}
+
 // GetJobs returns the Jobs field if it's non-nil, zero value otherwise.
 func (w *WorkflowRunBill) GetJobs() int {
 	if w == nil || w.Jobs == nil {
