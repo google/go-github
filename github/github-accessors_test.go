@@ -22840,6 +22840,16 @@ func TestWorkflowRun_GetWorkflowURL(tt *testing.T) {
 	w.GetWorkflowURL()
 }
 
+func TestWorkflowRunAttemptOptions_GetExcludePullRequests(tt *testing.T) {
+	var zeroValue bool
+	w := &WorkflowRunAttemptOptions{ExcludePullRequests: &zeroValue}
+	w.GetExcludePullRequests()
+	w = &WorkflowRunAttemptOptions{}
+	w.GetExcludePullRequests()
+	w = nil
+	w.GetExcludePullRequests()
+}
+
 func TestWorkflowRunBill_GetJobs(tt *testing.T) {
 	var zeroValue int
 	w := &WorkflowRunBill{Jobs: &zeroValue}
