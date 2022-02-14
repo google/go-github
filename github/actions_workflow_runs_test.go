@@ -143,6 +143,50 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	})
 }
 
+func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"exclude_pull_requests": "true"})
+		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}}`)
+	})
+
+	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: true}
+	ctx := context.Background()
+	runs, _, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
+	if err != nil {
+		t.Errorf("Actions.GetWorkflowRunAttempt returned error: %v", err)
+	}
+
+	want := &WorkflowRun{
+		ID:         Int64(399444496),
+		RunNumber:  Int(296),
+		RunAttempt: Int(3),
+		CreatedAt:  &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt:  &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+	}
+
+	if !cmp.Equal(runs, want) {
+		t.Errorf("Actions.GetWorkflowRunAttempt returned %+v, want %+v", runs, want)
+	}
+
+	const methodName = "GetWorkflowRunAttempt"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetWorkflowRunAttempt(ctx, "\n", "\n", 29679449, 3, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
