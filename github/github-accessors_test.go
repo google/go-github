@@ -18798,6 +18798,58 @@ func TestSecretScanningAlert_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSecretScanningAlertEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningAlertEvent{Action: &zeroValue}
+	s.GetAction()
+	s = &SecretScanningAlertEvent{}
+	s.GetAction()
+	s = nil
+	s.GetAction()
+}
+
+func TestSecretScanningAlertEvent_GetAlert(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetAlert()
+	s = nil
+	s.GetAlert()
+}
+
+func TestSecretScanningAlertEvent_GetEnterprise(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetEnterprise()
+	s = nil
+	s.GetEnterprise()
+}
+
+func TestSecretScanningAlertEvent_GetInstallation(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetInstallation()
+	s = nil
+	s.GetInstallation()
+}
+
+func TestSecretScanningAlertEvent_GetOrganization(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetOrganization()
+	s = nil
+	s.GetOrganization()
+}
+
+func TestSecretScanningAlertEvent_GetRepo(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetRepo()
+	s = nil
+	s.GetRepo()
+}
+
+func TestSecretScanningAlertEvent_GetSender(tt *testing.T) {
+	s := &SecretScanningAlertEvent{}
+	s.GetSender()
+	s = nil
+	s.GetSender()
+}
+
 func TestSecretScanningAlertLocation_GetDetails(tt *testing.T) {
 	s := &SecretScanningAlertLocation{}
 	s.GetDetails()
