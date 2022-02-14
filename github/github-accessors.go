@@ -12636,6 +12636,14 @@ func (p *PullRequestReviewsEnforcementUpdate) GetDismissStaleReviews() bool {
 	return *p.DismissStaleReviews
 }
 
+// GetRequireCodeOwnerReviews returns the RequireCodeOwnerReviews field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementUpdate) GetRequireCodeOwnerReviews() bool {
+	if p == nil || p.RequireCodeOwnerReviews == nil {
+		return false
+	}
+	return *p.RequireCodeOwnerReviews
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
