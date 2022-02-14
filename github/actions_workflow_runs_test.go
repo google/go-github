@@ -153,7 +153,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}}`)
 	})
 
-	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: true}
+	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Bool(true)}
 	ctx := context.Background()
 	runs, _, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
 	if err != nil {

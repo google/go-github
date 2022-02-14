@@ -90,7 +90,7 @@ type WorkflowRunJobRun struct {
 
 // WorkflowRunAttemptOptions specifies optional parameters to GetWorkflowRunAttempt.
 type WorkflowRunAttemptOptions struct {
-	ExcludePullRequests bool `url:"exclude_pull_requests,omitempty"`
+	ExcludePullRequests *bool `url:"exclude_pull_requests,omitempty"`
 }
 
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
