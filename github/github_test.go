@@ -1116,6 +1116,49 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	}
 }
 
+// Ignore rate limit headers if the response was served from cache.
+func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
+
+	// By adding the X-From-Cache header we pretend this is served from a cache.
+	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-From-Cache", "1")
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	madeNetworkCall := false
+	mux.HandleFunc("/second", func(w http.ResponseWriter, r *http.Request) {
+		madeNetworkCall = true
+	})
+
+	// First request is made so afterwards we can check the returned rate limit headers were ignored.
+	req, _ := client.NewRequest("GET", "first", nil)
+	ctx := context.Background()
+	client.Do(ctx, req, nil)
+
+	// Second request should not by hindered by rate limits.
+	req, _ = client.NewRequest("GET", "second", nil)
+	_, err := client.Do(ctx, req, nil)
+
+	if err != nil {
+		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
+	}
+	if !madeNetworkCall {
+		t.Fatal("Network call was not made, even though the rate limits from the cache should've been ignored")
+	}
+}
+
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
