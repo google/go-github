@@ -655,9 +655,13 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 	response := newResponse(resp)
 
-	c.rateMu.Lock()
-	c.rateLimits[rateLimitCategory] = response.Rate
-	c.rateMu.Unlock()
+	// Don't update the rate limits if this was a cached response.
+	// X-From-Cache is set by https://github.com/gregjones/httpcache
+	if response.Header.Get("X-From-Cache") == "" {
+		c.rateMu.Lock()
+		c.rateLimits[rateLimitCategory] = response.Rate
+		c.rateMu.Unlock()
+	}
 
 	err = CheckResponse(resp)
 	if err != nil {
