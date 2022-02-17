@@ -316,6 +316,14 @@ func (a *AnalysesListOptions) GetSarifID() string {
 	return *a.SarifID
 }
 
+// GetSSHKeyFingerprints returns the SSHKeyFingerprints map if it's non-nil, an empty map otherwise.
+func (a *APIMeta) GetSSHKeyFingerprints() map[string]string {
+	if a == nil || a.SSHKeyFingerprints == nil {
+		return map[string]string{}
+	}
+	return a.SSHKeyFingerprints
+}
+
 // GetVerifiablePasswordAuthentication returns the VerifiablePasswordAuthentication field if it's non-nil, zero value otherwise.
 func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	if a == nil || a.VerifiablePasswordAuthentication == nil {
