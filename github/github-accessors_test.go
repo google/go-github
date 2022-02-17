@@ -348,6 +348,16 @@ func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
 	a.GetSarifID()
 }
 
+func TestAPIMeta_GetSSHKeyFingerprints(tt *testing.T) {
+	zeroValue := map[string]string{}
+	a := &APIMeta{SSHKeyFingerprints: zeroValue}
+	a.GetSSHKeyFingerprints()
+	a = &APIMeta{}
+	a.GetSSHKeyFingerprints()
+	a = nil
+	a.GetSSHKeyFingerprints()
+}
+
 func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	var zeroValue bool
 	a := &APIMeta{VerifiablePasswordAuthentication: &zeroValue}

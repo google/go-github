@@ -170,6 +170,12 @@ type APIMeta struct {
 	// An array of IP addresses in CIDR format specifying the IP addresses
 	// Dependabot will originate from.
 	Dependabot []string `json:"dependabot,omitempty"`
+
+	// A map of algorithms to SSH key fingerprints.
+	SSHKeyFingerprints map[string]string `json:"ssh_key_fingerprints,omitempty"`
+
+	// An array of SSH keys.
+	SSHKeys []string `json:"ssh_keys,omitempty"`
 }
 
 // APIMeta returns information about GitHub.com, the service. Or, if you access
