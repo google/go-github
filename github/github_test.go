@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"testing/iotest"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
@@ -2235,6 +2236,62 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	}
 }
 
+func TestBareDo_BadDebugRequestString(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	expectedBody := "Hello from the other side !"
+
+	mux.HandleFunc("/test-url", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, expectedBody)
+	})
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, DebugRequest, "bogus")
+	req, err := client.NewRequest("GET", "test-url", nil)
+	if err != nil {
+		t.Fatalf("client.NewRequest returned error: %v", err)
+	}
+
+	if _, err = client.BareDo(ctx, req); err == nil {
+		t.Fatal("client.BareDo expected error but got nil")
+	}
+
+	got, want := err.Error(), "unknown DebugRequest"
+	if !strings.Contains(got, want) {
+		t.Errorf("error = %q, want %q", got, want)
+	}
+}
+
+func TestBareDo_BadDebugRequestValue(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	expectedBody := "Hello from the other side !"
+
+	mux.HandleFunc("/test-url", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, expectedBody)
+	})
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, DebugRequest, 42)
+	req, err := client.NewRequest("GET", "test-url", nil)
+	if err != nil {
+		t.Fatalf("client.NewRequest returned error: %v", err)
+	}
+
+	if _, err = client.BareDo(ctx, req); err == nil {
+		t.Fatal("client.BareDo expected error but got nil")
+	}
+
+	got, want := err.Error(), "unknown DebugRequest"
+	if !strings.Contains(got, want) {
+		t.Errorf("error = %q, want %q", got, want)
+	}
+}
+
 // roundTripperFunc creates a mock RoundTripper (transport)
 type roundTripperFunc func(*http.Request) (*http.Response, error)
 
@@ -2509,5 +2566,15 @@ func TestDumpRequestAsCurl(t *testing.T) {
 				t.Errorf("dumpRequestAsCurl =\n%v\nwant:\n%v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestDumpRequestAsCurl_BadBody(t *testing.T) {
+	c := NewClient(nil)
+	req, _ := c.NewRequest("GET", "/foo", "yo")
+	req.Body = ioutil.NopCloser(iotest.ErrReader(errors.New("custom error")))
+
+	if _, err := dumpRequestAsCurl(req); err == nil {
+		t.Fatal("dumpRequestAsCurl expected error, got nil")
 	}
 }
