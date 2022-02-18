@@ -1299,6 +1299,10 @@ func formatRateReset(d time.Duration) string {
 	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 
+func escapeSingleQuote(s string) string {
+	return strings.ReplaceAll(s, "'", `\'`)
+}
+
 // dumpRequestAsCurl dumps an outbound request as a curl command to a string
 // for debugging purposes. It redacts any "Authorization" string in the
 // header or client secret in the URL in order to prevent logging secrets.
@@ -1314,7 +1318,7 @@ func dumpRequestAsCurl(req *http.Request) (string, error) {
 			headers = append(headers, fmt.Sprintf("-H '%v: <redacted for security>'", k))
 			continue
 		}
-		headers = append(headers, fmt.Sprintf("-H '%v: %v'", k, strings.Join(v, ", ")))
+		headers = append(headers, fmt.Sprintf("-H '%v: %v'", k, escapeSingleQuote(strings.Join(v, ", "))))
 	}
 	sort.Strings(headers)
 	lines = append(lines, headers...)
@@ -1324,7 +1328,7 @@ func dumpRequestAsCurl(req *http.Request) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		lines = append(lines, fmt.Sprintf("-d '%s'", buf))
+		lines = append(lines, fmt.Sprintf("-d '%v'", escapeSingleQuote(string(buf))))
 		req.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 	}
 

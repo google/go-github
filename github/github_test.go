@@ -2580,25 +2580,25 @@ func TestDumpRequestAsCurl(t *testing.T) {
 		},
 		{
 			name: "POST request, no auth",
-			req:  mkReq("POST", "/foo", &User{Login: String("l")}),
+			req:  mkReq("POST", "/foo", &User{Login: String("l'a")}),
 			want: `curl -X POST \
   https://api.github.com/foo \
   -H 'Accept: application/vnd.github.v3+json' \
   -H 'Content-Type: application/json' \
   -H 'User-Agent: go-github' \
-  -d '{"login":"l"}
+  -d '{"login":"l\'a"}
 '`,
 		},
 		{
 			name: "GET request, multiple accept, with auth",
 			req:  mkReq("GET", "/foo", nil),
 			header: http.Header{
-				"Accept":        []string{"a1", "a2", "a3"},
+				"Accept":        []string{"a'1", "a2", "a3"},
 				"AuthoRizaTion": []string{"Bearer ABCD0123"},
 			},
 			want: `curl -X GET \
   https://api.github.com/foo \
-  -H 'Accept: a1, a2, a3' \
+  -H 'Accept: a\'1, a2, a3' \
   -H 'AuthoRizaTion: <redacted for security>' \
   -H 'User-Agent: go-github'`,
 		},
