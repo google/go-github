@@ -1324,9 +1324,7 @@ func dumpRequestAsCurl(req *http.Request) (string, error) {
 		if err != nil {
 			return "", err
 		}
-
 		lines = append(lines, fmt.Sprintf("-d '%s'", buf))
-
 		req.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
 	}
 
