@@ -16,9 +16,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -603,7 +605,11 @@ func parseTokenExpiration(r *http.Response) Timestamp {
 type requestContext uint8
 
 const (
-	bypassRateLimitCheck requestContext = iota
+	bypassRateLimitCheck requestContext = 1 << iota
+	// Adding `ctx = context.WithValue(ctx, github.DebugRequest, "curl")` will dump the
+	// curl equivalent call (minus authorization bearer token for security)
+	// to os.Stderr for debugging purposes.
+	DebugRequest
 )
 
 // BareDo sends an API request and lets you handle the api response. If an error
@@ -629,6 +635,23 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 				Response: err.Response,
 				Rate:     err.Rate,
 			}, err
+		}
+	}
+
+	if debugReq := ctx.Value(DebugRequest); debugReq != nil {
+		v, ok := debugReq.(string)
+		if !ok {
+			return nil, fmt.Errorf("unknown DebugRequest: %v", v)
+		}
+		switch v {
+		case "curl":
+			s, err := dumpRequestAsCurl(req)
+			if err != nil {
+				return nil, err
+			}
+			log.Println(s)
+		default:
+			return nil, fmt.Errorf("unknown DebugRequest: %v", v)
 		}
 	}
 
@@ -1274,6 +1297,40 @@ func formatRateReset(d time.Duration) string {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
 	return fmt.Sprintf("[rate reset in %v]", timeString)
+}
+
+// dumpRequestAsCurl dumps an outbound request as a curl command to a string
+// for debugging purposes. It redacts any "Authorization" string in the
+// header or client secret in the URL in order to prevent logging secrets.
+func dumpRequestAsCurl(req *http.Request) (string, error) {
+	lines := []string{
+		fmt.Sprintf("curl -X %v", req.Method),
+		sanitizeURL(req.URL).String(),
+	}
+
+	var headers []string
+	for k, v := range req.Header {
+		if strings.EqualFold(k, "authorization") {
+			headers = append(headers, fmt.Sprintf("-H '%v: <redacted for security>'", k))
+			continue
+		}
+		headers = append(headers, fmt.Sprintf("-H '%v: %v'", k, strings.Join(v, ", ")))
+	}
+	sort.Strings(headers)
+	lines = append(lines, headers...)
+
+	if req.Body != nil {
+		buf, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			return "", err
+		}
+
+		lines = append(lines, fmt.Sprintf("-d '%s'", buf))
+
+		req.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+	}
+
+	return strings.Join(lines, " \\\n  "), nil
 }
 
 // Bool is a helper routine that allocates a new bool value

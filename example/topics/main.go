@@ -6,6 +6,9 @@
 // The simple command demonstrates the functionality that
 // prompts the user for a GitHub topic and lists all the entities
 // that are related to the specified topic or subject.
+//
+// It also demonstrates how to debug a GitHub v3 API call
+// by dumping its `curl` equivalent.
 package main
 
 import (
@@ -18,7 +21,9 @@ import (
 // Fetch and lists all the public topics associated with the specified GitHub topic
 func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
 	client := github.NewClient(nil)
-	topics, _, err := client.Search.Topics(context.Background(), topic, nil)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, github.DebugRequest, "curl") // comment out this line to stop debug info.
+	topics, _, err := client.Search.Topics(ctx, topic, nil)
 	return topics, err
 }
 

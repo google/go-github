@@ -2438,3 +2438,76 @@ func TestParseTokenExpiration(t *testing.T) {
 		}
 	}
 }
+
+func TestDumpRequestAsCurl(t *testing.T) {
+	c := NewClient(nil)
+	mkReq := func(method, inURL string, inBody interface{}) *http.Request {
+		req, _ := c.NewRequest(method, inURL, inBody)
+		return req
+	}
+
+	tests := []struct {
+		name   string
+		req    *http.Request
+		header http.Header
+		want   string
+	}{
+		{
+			name: "GET request, no auth",
+			req:  mkReq("GET", "/foo", nil),
+			want: `curl -X GET \
+  https://api.github.com/foo \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'User-Agent: go-github'`,
+		},
+		{
+			name: "GET request, with client secret",
+			req:  mkReq("GET", "/foo?bar=5&client_secret=abc123", nil),
+			want: `curl -X GET \
+  https://api.github.com/foo?bar=5&client_secret=REDACTED \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'User-Agent: go-github'`,
+		},
+		{
+			name: "POST request, no auth",
+			req:  mkReq("POST", "/foo", &User{Login: String("l")}),
+			want: `curl -X POST \
+  https://api.github.com/foo \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: go-github' \
+  -d '{"login":"l"}
+'`,
+		},
+		{
+			name: "GET request, multiple accept, with auth",
+			req:  mkReq("GET", "/foo", nil),
+			header: http.Header{
+				"Accept":        []string{"a1", "a2", "a3"},
+				"AuthoRizaTion": []string{"Bearer ABCD0123"},
+			},
+			want: `curl -X GET \
+  https://api.github.com/foo \
+  -H 'Accept: a1, a2, a3' \
+  -H 'AuthoRizaTion: <redacted for security>' \
+  -H 'User-Agent: go-github'`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			for k, v := range tt.header {
+				tt.req.Header[k] = v
+			}
+
+			got, err := dumpRequestAsCurl(tt.req)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if got != tt.want {
+				t.Errorf("dumpRequestAsCurl =\n%v\nwant:\n%v", got, tt.want)
+			}
+		})
+	}
+}
