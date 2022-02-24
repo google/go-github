@@ -2257,8 +2257,20 @@ func TestBareDo_GoodDebugRequestString(t *testing.T) {
 		t.Fatalf("client.NewRequest returned error: %v", err)
 	}
 
-	if _, err = client.BareDo(ctx, req); err != nil {
+	resp, err := client.BareDo(ctx, req)
+	if err != nil {
 		t.Fatalf("client.BareDo = %v, want nil", err)
+	}
+
+	got, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("ioutil.ReadAll returned error: %v", err)
+	}
+	if string(got) != expectedBody {
+		t.Fatalf("Expected %q, got %q", expectedBody, string(got))
+	}
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("resp.Body.Close() returned error: %v", err)
 	}
 }
 
@@ -2319,8 +2331,20 @@ func TestBareDo_GoodDebugRequestWithCustomTransport(t *testing.T) {
 		t.Fatalf("client.NewRequest returned error: %v", err)
 	}
 
-	if _, err = client.BareDo(ctx, req); err != nil {
+	resp, err := client.BareDo(ctx, req)
+	if err != nil {
 		t.Fatalf("client.BareDo = %v, want nil", err)
+	}
+
+	got, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("ioutil.ReadAll returned error: %v", err)
+	}
+	if string(got) != expectedBody {
+		t.Fatalf("Expected %q, got %q", expectedBody, string(got))
+	}
+	if err := resp.Body.Close(); err != nil {
+		t.Fatalf("resp.Body.Close() returned error: %v", err)
 	}
 }
 
