@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -2317,11 +2318,11 @@ func TestBareDo_GoodDebugRequestWithCustomTransport(t *testing.T) {
 		fmt.Fprint(w, expectedBody)
 	})
 
-	utp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "ID",
-		ClientSecret: "Secret",
-	}
-	tp := &DebugCurlTransport{Transport: utp.Transport}
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: "SECRET"},
+	)
+	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	tp := &DebugCurlTransport{Transport: tc.Transport}
 	client := NewClient(tp.Client())
 	client.BaseURL = c.BaseURL
 
