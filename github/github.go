@@ -16,9 +16,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -1277,6 +1279,79 @@ func formatRateReset(d time.Duration) string {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
 	return fmt.Sprintf("[rate reset in %v]", timeString)
+}
+
+// DebugCurlTransport is a RoundTripper that logs the equivalent API call
+// as a curl command line for debug putposes.
+//
+// 	t := &github.DebugCurlTransport{}
+// 	client := github.NewClient(t.Client())
+//
+// DebugCurlTransport implements the RoundTripper interface.
+type DebugCurlTransport struct {
+	// Transport is the underlying HTTP transport to use when making requests.
+	// It will default to http.DefaultTransport if nil.
+	Transport http.RoundTripper
+}
+
+// RoundTrip implements the RoundTripper interface.
+func (t *DebugCurlTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	s, err := dumpRequestAsCurl(req)
+	if err != nil {
+		return nil, err
+	}
+	log.Println(s)
+
+	// Make the HTTP request.
+	return t.transport().RoundTrip(req)
+}
+
+// Client returns an *http.Client that makes requests.
+func (t *DebugCurlTransport) Client() *http.Client {
+	return &http.Client{Transport: t}
+}
+
+func (t *DebugCurlTransport) transport() http.RoundTripper {
+	if t.Transport != nil {
+		return t.Transport
+	}
+	return http.DefaultTransport
+}
+
+func escapeSingleQuote(s string) string {
+	return strings.ReplaceAll(s, "'", `\'`)
+}
+
+// dumpRequestAsCurl dumps an outbound request as a curl command to a string
+// for debugging purposes. It redacts any "Authorization" string in the
+// header or client secret in the URL in order to prevent logging secrets.
+func dumpRequestAsCurl(req *http.Request) (string, error) {
+	lines := []string{
+		fmt.Sprintf("curl -X %v", req.Method),
+		sanitizeURL(req.URL).String(),
+	}
+
+	var headers []string
+	for k, v := range req.Header {
+		if strings.EqualFold(k, "authorization") {
+			headers = append(headers, fmt.Sprintf("-H '%v: <redacted for security>'", k))
+			continue
+		}
+		headers = append(headers, fmt.Sprintf("-H '%v: %v'", k, escapeSingleQuote(strings.Join(v, ", "))))
+	}
+	sort.Strings(headers)
+	lines = append(lines, headers...)
+
+	if req.Body != nil {
+		buf, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			return "", err
+		}
+		lines = append(lines, fmt.Sprintf("-d '%v'", escapeSingleQuote(string(buf))))
+		req.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+	}
+
+	return strings.Join(lines, " \\\n  "), nil
 }
 
 // Bool is a helper routine that allocates a new bool value

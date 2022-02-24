@@ -6,6 +6,9 @@
 // The tokenauth command demonstrates using the oauth2.StaticTokenSource.
 // You can test out a GitHub Personal Access Token using this simple example.
 // You can generate them here: https://github.com/settings/tokens
+//
+// It also demonstrates how to debug a GitHub v3 API call by dumping
+// its `curl` equivalent using the DebugCurlTransport RoundTripper.
 package main
 
 import (
@@ -31,7 +34,10 @@ func main() {
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
-	client := github.NewClient(tc)
+	tp := &github.DebugCurlTransport{Transport: tc.Transport}
+	// To remove the debug curl transport, change the following line to:
+	// client := github.NewClient(tc)
+	client := github.NewClient(tp.Client())
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {

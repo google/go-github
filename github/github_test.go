@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"testing/iotest"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
@@ -2235,6 +2236,64 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	}
 }
 
+func TestBareDo_GoodDebugRequestString(t *testing.T) {
+	c, mux, _, teardown := setup()
+	defer teardown()
+
+	expectedBody := "Hello from the other side !"
+
+	mux.HandleFunc("/test-url", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, expectedBody)
+	})
+
+	tp := &DebugCurlTransport{}
+	client := NewClient(tp.Client())
+	client.BaseURL = c.BaseURL
+
+	ctx := context.Background()
+	req, err := client.NewRequest("GET", "test-url", nil)
+	if err != nil {
+		t.Fatalf("client.NewRequest returned error: %v", err)
+	}
+
+	if _, err = client.BareDo(ctx, req); err != nil {
+		t.Fatalf("client.BareDo = %v, want nil", err)
+	}
+}
+
+func TestBareDo_GoodDebugRequestStringButBodyError(t *testing.T) {
+	_, mux, _, teardown := setup()
+	defer teardown()
+
+	expectedBody := "Hello from the other side !"
+
+	mux.HandleFunc("/test-url", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, expectedBody)
+	})
+
+	tp := &DebugCurlTransport{}
+	client := NewClient(tp.Client())
+
+	ctx := context.Background()
+	req, err := client.NewRequest("GET", "test-url", nil)
+	if err != nil {
+		t.Fatalf("client.NewRequest returned error: %v", err)
+	}
+	want := "custom error"
+	req.Body = ioutil.NopCloser(iotest.ErrReader(errors.New(want)))
+
+	if _, err = client.BareDo(ctx, req); err == nil {
+		t.Fatal("client.BareDo expected error but got nil")
+	}
+
+	got := err.Error()
+	if !strings.Contains(got, want) {
+		t.Errorf("error = %q, want %q", got, want)
+	}
+}
+
 // roundTripperFunc creates a mock RoundTripper (transport)
 type roundTripperFunc func(*http.Request) (*http.Response, error)
 
@@ -2436,5 +2495,88 @@ func TestParseTokenExpiration(t *testing.T) {
 		if !exp.Equal(tt.want) {
 			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
 		}
+	}
+}
+
+func TestDumpRequestAsCurl(t *testing.T) {
+	c := NewClient(nil)
+	mkReq := func(method, inURL string, inBody interface{}) *http.Request {
+		req, _ := c.NewRequest(method, inURL, inBody)
+		return req
+	}
+
+	tests := []struct {
+		name   string
+		req    *http.Request
+		header http.Header
+		want   string
+	}{
+		{
+			name: "GET request, no auth",
+			req:  mkReq("GET", "/foo", nil),
+			want: `curl -X GET \
+  https://api.github.com/foo \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'User-Agent: go-github'`,
+		},
+		{
+			name: "GET request, with client secret",
+			req:  mkReq("GET", "/foo?bar=5&client_secret=abc123", nil),
+			want: `curl -X GET \
+  https://api.github.com/foo?bar=5&client_secret=REDACTED \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'User-Agent: go-github'`,
+		},
+		{
+			name: "POST request, no auth",
+			req:  mkReq("POST", "/foo", &User{Login: String("l'a")}),
+			want: `curl -X POST \
+  https://api.github.com/foo \
+  -H 'Accept: application/vnd.github.v3+json' \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: go-github' \
+  -d '{"login":"l\'a"}
+'`,
+		},
+		{
+			name: "GET request, multiple accept, with auth",
+			req:  mkReq("GET", "/foo", nil),
+			header: http.Header{
+				"Accept":        []string{"a'1", "a2", "a3"},
+				"AuthoRizaTion": []string{"Bearer ABCD0123"},
+			},
+			want: `curl -X GET \
+  https://api.github.com/foo \
+  -H 'Accept: a\'1, a2, a3' \
+  -H 'AuthoRizaTion: <redacted for security>' \
+  -H 'User-Agent: go-github'`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			for k, v := range tt.header {
+				tt.req.Header[k] = v
+			}
+
+			got, err := dumpRequestAsCurl(tt.req)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if got != tt.want {
+				t.Errorf("dumpRequestAsCurl =\n%v\nwant:\n%v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDumpRequestAsCurl_BadBody(t *testing.T) {
+	c := NewClient(nil)
+	req, _ := c.NewRequest("GET", "/foo", "yo")
+	req.Body = ioutil.NopCloser(iotest.ErrReader(errors.New("custom error")))
+
+	if _, err := dumpRequestAsCurl(req); err == nil {
+		t.Fatal("dumpRequestAsCurl expected error, got nil")
 	}
 }
