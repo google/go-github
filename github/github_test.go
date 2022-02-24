@@ -2295,7 +2295,7 @@ func TestBareDo_GoodDebugRequestStringButBodyError(t *testing.T) {
 }
 
 func TestBareDo_GoodDebugRequestWithCustomTransport(t *testing.T) {
-	_, mux, _, teardown := setup()
+	c, mux, _, teardown := setup()
 	defer teardown()
 
 	expectedBody := "Hello from the other side !"
@@ -2311,22 +2311,16 @@ func TestBareDo_GoodDebugRequestWithCustomTransport(t *testing.T) {
 	}
 	tp := &DebugCurlTransport{Transport: utp.Transport}
 	client := NewClient(tp.Client())
+	client.BaseURL = c.BaseURL
 
 	ctx := context.Background()
 	req, err := client.NewRequest("GET", "test-url", nil)
 	if err != nil {
 		t.Fatalf("client.NewRequest returned error: %v", err)
 	}
-	want := "custom error"
-	req.Body = ioutil.NopCloser(iotest.ErrReader(errors.New(want)))
 
-	if _, err = client.BareDo(ctx, req); err == nil {
-		t.Fatal("client.BareDo expected error but got nil")
-	}
-
-	got := err.Error()
-	if !strings.Contains(got, want) {
-		t.Errorf("error = %q, want %q", got, want)
+	if _, err = client.BareDo(ctx, req); err != nil {
+		t.Fatalf("client.BareDo = %v, want nil", err)
 	}
 }
 
