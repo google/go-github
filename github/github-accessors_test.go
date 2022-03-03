@@ -19239,11 +19239,11 @@ func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
 	s.GetAction()
 }
 
-func TestSecurityAdvisoryEvent_GetAdvisory(tt *testing.T) {
+func TestSecurityAdvisoryEvent_GetSecurityAdvisory(tt *testing.T) {
 	s := &SecurityAdvisoryEvent{}
-	s.GetAdvisory()
+	s.GetSecurityAdvisory()
 	s = nil
-	s.GetAdvisory()
+	s.GetSecurityAdvisory()
 }
 
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {

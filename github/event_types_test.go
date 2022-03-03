@@ -13819,7 +13819,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SecurityAdvisoryEvent{}, "{}")
 	u := &SecurityAdvisoryEvent{
 		Action: String("published"),
-		Advisory: &SecurityAdvisory{
+		SecurityAdvisory: &SecurityAdvisory{
 			GHSAID:      String("GHSA-rf4j-j272-some"),
 			Summary:     String("Siuuuuuuuuu"),
 			Description: String("desc"),

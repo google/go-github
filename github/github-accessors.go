@@ -16444,12 +16444,12 @@ func (s *SecurityAdvisoryEvent) GetAction() string {
 	return *s.Action
 }
 
-// GetAdvisory returns the Advisory field.
-func (s *SecurityAdvisoryEvent) GetAdvisory() *SecurityAdvisory {
+// GetSecurityAdvisory returns the SecurityAdvisory field.
+func (s *SecurityAdvisoryEvent) GetSecurityAdvisory() *SecurityAdvisory {
 	if s == nil {
 		return nil
 	}
-	return s.Advisory
+	return s.SecurityAdvisory
 }
 
 // GetAdvancedSecurity returns the AdvancedSecurity field.

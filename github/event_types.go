@@ -1249,6 +1249,7 @@ type WorkflowRunEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// SecurityAdvisory represents the advisory object in SecurityAdvisoryEvent payload.
 type SecurityAdvisory struct {
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`
@@ -1262,15 +1263,20 @@ type SecurityAdvisory struct {
 	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
 }
 
+// AdvisoryIdentifier represent the identifier for advisory,
+//
+// it includes Advisory unique identifier and it's type.
 type AdvisoryIdentifier struct {
 	Value *string `json:"value,omitempty"`
 	Type  *string `json:"type,omitempty"`
 }
 
+// AdvisoryReference represents the reference url for the security advisory.
 type AdvisoryReference struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// AdvisoryVulnerability represents the vulnerability object for Security Advisory.
 type AdvisoryVulnerability struct {
 	Package                *VulnerabilityPackage `json:"package,omitempty"`
 	Severity               *string               `json:"severity,omitempty"`
@@ -1278,21 +1284,25 @@ type AdvisoryVulnerability struct {
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
 }
 
+// VulnerabilityPackage represents the package object for Advisory Vulnerability,
+//
+// it includes package ecosystem and package name.
 type VulnerabilityPackage struct {
 	Ecosystem *string `json:"ecosystem,omitempty"`
 	Name      *string `json:"name,omitempty"`
 }
 
+// FirstPatchedVersion represents the identifier for the first patched version of that vulnerability.
 type FirstPatchedVersion struct {
 	Identifier *string `json:"identifier,omitempty"`
 }
 
-// SecurityAdvisoryEvent is triggered when a security-related vulnerabilities is found in software on GitHub.
+// SecurityAdvisoryEvent is triggered when a security-related vulnerability is found in software on GitHub.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisoryEvent struct {
-	Action   *string           `json:"action,omitempty"`
-	Advisory *SecurityAdvisory `json:"security_advisory,omitempty"`
+	Action           *string           `json:"action,omitempty"`
+	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
 }
 
 // CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.
