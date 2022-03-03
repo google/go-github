@@ -107,6 +107,41 @@ func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Repositories.RedeliverHookDelivery(ctx, "o", "r", 1, 1)
+	if err != nil {
+		t.Errorf("Repositories.RedeliverHookDelivery returned error: %v", err)
+	}
+
+	want := &HookDelivery{ID: Int64(1)}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Repositories.RedeliverHookDelivery returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "RedeliverHookDelivery"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RedeliverHookDelivery(ctx, "\n", "\n", -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RedeliverHookDelivery(ctx, "o", "r", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"check_run":                      &CheckRunEvent{},
 	"check_suite":                    &CheckSuiteEvent{},

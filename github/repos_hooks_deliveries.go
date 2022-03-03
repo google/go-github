@@ -104,6 +104,25 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 	return h, resp, nil
 }
 
+// RedeliverHookDelivery redelivers a delivery for a webhook configured in a repository.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/webhooks#redeliver-a-delivery-for-a-repository-webhook
+func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v/attempts", owner, repo, hookID, deliveryID)
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	h := new(HookDelivery)
+	resp, err := s.client.Do(ctx, req, h)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return h, resp, nil
+}
+
 // ParseRequestPayload parses the request payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
 func (d *HookDelivery) ParseRequestPayload() (interface{}, error) {
