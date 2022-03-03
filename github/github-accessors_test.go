@@ -203,11 +203,11 @@ func TestAdvisoryIdentifier_GetValue(tt *testing.T) {
 	a.GetValue()
 }
 
-func TestAdvisoryReferenceURL_GetURL(tt *testing.T) {
+func TestAdvisoryReference_GetURL(tt *testing.T) {
 	var zeroValue string
-	a := &AdvisoryReferenceURL{URL: &zeroValue}
+	a := &AdvisoryReference{URL: &zeroValue}
 	a.GetURL()
-	a = &AdvisoryReferenceURL{}
+	a = &AdvisoryReference{}
 	a.GetURL()
 	a = nil
 	a.GetURL()
@@ -19169,14 +19169,14 @@ func TestSecurityAdvisory_GetDescription(tt *testing.T) {
 	s.GetDescription()
 }
 
-func TestSecurityAdvisory_GetGhsaID(tt *testing.T) {
+func TestSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	var zeroValue string
-	s := &SecurityAdvisory{GhsaID: &zeroValue}
-	s.GetGhsaID()
+	s := &SecurityAdvisory{GHSAID: &zeroValue}
+	s.GetGHSAID()
 	s = &SecurityAdvisory{}
-	s.GetGhsaID()
+	s.GetGHSAID()
 	s = nil
-	s.GetGhsaID()
+	s.GetGHSAID()
 }
 
 func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {

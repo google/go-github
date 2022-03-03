@@ -13820,7 +13820,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 	u := &SecurityAdvisoryEvent{
 		Action: String("published"),
 		Advisory: &SecurityAdvisory{
-			GhsaID:      String("GHSA-rf4j-j272-some"),
+			GHSAID:      String("GHSA-rf4j-j272-some"),
 			Summary:     String("Siuuuuuuuuu"),
 			Description: String("desc"),
 			Severity:    String("moderate"),
@@ -13830,7 +13830,7 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 					Type:  String("GHSA"),
 				},
 			},
-			ReferenceURLs: []*AdvisoryReferenceURL{
+			References: []*AdvisoryReference{
 				{
 					URL: String("https://some-url"),
 				},

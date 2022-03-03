@@ -1250,12 +1250,12 @@ type WorkflowRunEvent struct {
 }
 
 type SecurityAdvisory struct {
-	GhsaID          *string                  `json:"ghsa_id,omitempty"`
+	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`
 	Description     *string                  `json:"description,omitempty"`
 	Severity        *string                  `json:"severity,omitempty"`
 	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
-	ReferenceURLs   []*AdvisoryReferenceURL  `json:"references,omitempty"`
+	References      []*AdvisoryReference     `json:"references,omitempty"`
 	PublishedAt     *Timestamp               `json:"published_at,omitempty"`
 	UpdatedAt       *Timestamp               `json:"updated_at,omitempty"`
 	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
@@ -1267,7 +1267,7 @@ type AdvisoryIdentifier struct {
 	Type  *string `json:"type,omitempty"`
 }
 
-type AdvisoryReferenceURL struct {
+type AdvisoryReference struct {
 	URL *string `json:"url,omitempty"`
 }
 

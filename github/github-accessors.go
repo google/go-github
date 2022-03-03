@@ -189,7 +189,7 @@ func (a *AdvisoryIdentifier) GetValue() string {
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (a *AdvisoryReferenceURL) GetURL() string {
+func (a *AdvisoryReference) GetURL() string {
 	if a == nil || a.URL == nil {
 		return ""
 	}
@@ -16388,12 +16388,12 @@ func (s *SecurityAdvisory) GetDescription() string {
 	return *s.Description
 }
 
-// GetGhsaID returns the GhsaID field if it's non-nil, zero value otherwise.
-func (s *SecurityAdvisory) GetGhsaID() string {
-	if s == nil || s.GhsaID == nil {
+// GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetGHSAID() string {
+	if s == nil || s.GHSAID == nil {
 		return ""
 	}
-	return *s.GhsaID
+	return *s.GHSAID
 }
 
 // GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
