@@ -1263,9 +1263,7 @@ type SecurityAdvisory struct {
 	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
 }
 
-// AdvisoryIdentifier represent the identifier for advisory,
-//
-// it includes Advisory unique identifier and it's type.
+// AdvisoryIdentifier represents the identifier for a Security Advisory.
 type AdvisoryIdentifier struct {
 	Value *string `json:"value,omitempty"`
 	Type  *string `json:"type,omitempty"`
@@ -1276,7 +1274,7 @@ type AdvisoryReference struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// AdvisoryVulnerability represents the vulnerability object for Security Advisory.
+// AdvisoryVulnerability represents the vulnerability object for a Security Advisory.
 type AdvisoryVulnerability struct {
 	Package                *VulnerabilityPackage `json:"package,omitempty"`
 	Severity               *string               `json:"severity,omitempty"`
@@ -1284,9 +1282,7 @@ type AdvisoryVulnerability struct {
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
 }
 
-// VulnerabilityPackage represents the package object for Advisory Vulnerability,
-//
-// it includes package ecosystem and package name.
+// VulnerabilityPackage represents the package object for an Advisory Vulnerability.
 type VulnerabilityPackage struct {
 	Ecosystem *string `json:"ecosystem,omitempty"`
 	Name      *string `json:"name,omitempty"`
