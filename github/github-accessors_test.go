@@ -183,6 +183,70 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
+func TestAdvisoryIdentifier_GetType(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryIdentifier{Type: &zeroValue}
+	a.GetType()
+	a = &AdvisoryIdentifier{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestAdvisoryIdentifier_GetValue(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryIdentifier{Value: &zeroValue}
+	a.GetValue()
+	a = &AdvisoryIdentifier{}
+	a.GetValue()
+	a = nil
+	a.GetValue()
+}
+
+func TestAdvisoryReferenceURL_GetURL(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryReferenceURL{URL: &zeroValue}
+	a.GetURL()
+	a = &AdvisoryReferenceURL{}
+	a.GetURL()
+	a = nil
+	a.GetURL()
+}
+
+func TestAdvisoryVulnerability_GetFirstPatchedVersion(tt *testing.T) {
+	a := &AdvisoryVulnerability{}
+	a.GetFirstPatchedVersion()
+	a = nil
+	a.GetFirstPatchedVersion()
+}
+
+func TestAdvisoryVulnerability_GetPackage(tt *testing.T) {
+	a := &AdvisoryVulnerability{}
+	a.GetPackage()
+	a = nil
+	a.GetPackage()
+}
+
+func TestAdvisoryVulnerability_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryVulnerability{Severity: &zeroValue}
+	a.GetSeverity()
+	a = &AdvisoryVulnerability{}
+	a.GetSeverity()
+	a = nil
+	a.GetSeverity()
+}
+
+func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryVulnerability{VulnerableVersionRange: &zeroValue}
+	a.GetVulnerableVersionRange()
+	a = &AdvisoryVulnerability{}
+	a.GetVulnerableVersionRange()
+	a = nil
+	a.GetVulnerableVersionRange()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	a := &Alert{ClosedAt: &zeroValue}
@@ -237,6 +301,16 @@ func TestAlert_GetDismissedReason(tt *testing.T) {
 	a.GetDismissedReason()
 }
 
+func TestAlert_GetFixedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Alert{FixedAt: &zeroValue}
+	a.GetFixedAt()
+	a = &Alert{}
+	a.GetFixedAt()
+	a = nil
+	a.GetFixedAt()
+}
+
 func TestAlert_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	a := &Alert{HTMLURL: &zeroValue}
@@ -262,6 +336,16 @@ func TestAlert_GetMostRecentInstance(tt *testing.T) {
 	a.GetMostRecentInstance()
 	a = nil
 	a.GetMostRecentInstance()
+}
+
+func TestAlert_GetNumber(tt *testing.T) {
+	var zeroValue int
+	a := &Alert{Number: &zeroValue}
+	a.GetNumber()
+	a = &Alert{}
+	a.GetNumber()
+	a = nil
+	a.GetNumber()
 }
 
 func TestAlert_GetRule(tt *testing.T) {
@@ -316,6 +400,16 @@ func TestAlert_GetTool(tt *testing.T) {
 	a.GetTool()
 	a = nil
 	a.GetTool()
+}
+
+func TestAlert_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Alert{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &Alert{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
 }
 
 func TestAlert_GetURL(tt *testing.T) {
@@ -2611,6 +2705,64 @@ func TestCodeResult_GetSHA(tt *testing.T) {
 	c.GetSHA()
 	c = nil
 	c.GetSHA()
+}
+
+func TestCodeScanningAlertEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertEvent{Action: &zeroValue}
+	c.GetAction()
+	c = &CodeScanningAlertEvent{}
+	c.GetAction()
+	c = nil
+	c.GetAction()
+}
+
+func TestCodeScanningAlertEvent_GetAlert(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetAlert()
+	c = nil
+	c.GetAlert()
+}
+
+func TestCodeScanningAlertEvent_GetCommitOID(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertEvent{CommitOID: &zeroValue}
+	c.GetCommitOID()
+	c = &CodeScanningAlertEvent{}
+	c.GetCommitOID()
+	c = nil
+	c.GetCommitOID()
+}
+
+func TestCodeScanningAlertEvent_GetOrg(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetOrg()
+	c = nil
+	c.GetOrg()
+}
+
+func TestCodeScanningAlertEvent_GetRef(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertEvent{Ref: &zeroValue}
+	c.GetRef()
+	c = &CodeScanningAlertEvent{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCodeScanningAlertEvent_GetRepo(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetRepo()
+	c = nil
+	c.GetRepo()
+}
+
+func TestCodeScanningAlertEvent_GetSender(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetSender()
+	c = nil
+	c.GetSender()
 }
 
 func TestCodeSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -5759,6 +5911,16 @@ func TestFeeds_GetUserURL(tt *testing.T) {
 	f.GetUserURL()
 	f = nil
 	f.GetUserURL()
+}
+
+func TestFirstPatchedVersion_GetIdentifier(tt *testing.T) {
+	var zeroValue string
+	f := &FirstPatchedVersion{Identifier: &zeroValue}
+	f.GetIdentifier()
+	f = &FirstPatchedVersion{}
+	f.GetIdentifier()
+	f = nil
+	f.GetIdentifier()
 }
 
 func TestForkEvent_GetForkee(tt *testing.T) {
@@ -18997,6 +19159,93 @@ func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
 	s.GetState()
 }
 
+func TestSecurityAdvisory_GetDescription(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{Description: &zeroValue}
+	s.GetDescription()
+	s = &SecurityAdvisory{}
+	s.GetDescription()
+	s = nil
+	s.GetDescription()
+}
+
+func TestSecurityAdvisory_GetGhsaID(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{GhsaID: &zeroValue}
+	s.GetGhsaID()
+	s = &SecurityAdvisory{}
+	s.GetGhsaID()
+	s = nil
+	s.GetGhsaID()
+}
+
+func TestSecurityAdvisory_GetPublishedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{PublishedAt: &zeroValue}
+	s.GetPublishedAt()
+	s = &SecurityAdvisory{}
+	s.GetPublishedAt()
+	s = nil
+	s.GetPublishedAt()
+}
+
+func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{Severity: &zeroValue}
+	s.GetSeverity()
+	s = &SecurityAdvisory{}
+	s.GetSeverity()
+	s = nil
+	s.GetSeverity()
+}
+
+func TestSecurityAdvisory_GetSummary(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisory{Summary: &zeroValue}
+	s.GetSummary()
+	s = &SecurityAdvisory{}
+	s.GetSummary()
+	s = nil
+	s.GetSummary()
+}
+
+func TestSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{UpdatedAt: &zeroValue}
+	s.GetUpdatedAt()
+	s = &SecurityAdvisory{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
+}
+
+func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SecurityAdvisory{WithdrawnAt: &zeroValue}
+	s.GetWithdrawnAt()
+	s = &SecurityAdvisory{}
+	s.GetWithdrawnAt()
+	s = nil
+	s.GetWithdrawnAt()
+}
+
+func TestSecurityAdvisoryEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	s := &SecurityAdvisoryEvent{Action: &zeroValue}
+	s.GetAction()
+	s = &SecurityAdvisoryEvent{}
+	s.GetAction()
+	s = nil
+	s.GetAction()
+}
+
+func TestSecurityAdvisoryEvent_GetAdvisory(tt *testing.T) {
+	s := &SecurityAdvisoryEvent{}
+	s.GetAdvisory()
+	s = nil
+	s.GetAdvisory()
+}
+
 func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
 	s := &SecurityAndAnalysis{}
 	s.GetAdvancedSecurity()
@@ -21938,6 +22187,26 @@ func TestUserSuspendOptions_GetReason(tt *testing.T) {
 	u.GetReason()
 	u = nil
 	u.GetReason()
+}
+
+func TestVulnerabilityPackage_GetEcosystem(tt *testing.T) {
+	var zeroValue string
+	v := &VulnerabilityPackage{Ecosystem: &zeroValue}
+	v.GetEcosystem()
+	v = &VulnerabilityPackage{}
+	v.GetEcosystem()
+	v = nil
+	v.GetEcosystem()
+}
+
+func TestVulnerabilityPackage_GetName(tt *testing.T) {
+	var zeroValue string
+	v := &VulnerabilityPackage{Name: &zeroValue}
+	v.GetName()
+	v = &VulnerabilityPackage{}
+	v.GetName()
+	v = nil
+	v.GetName()
 }
 
 func TestWatchEvent_GetAction(tt *testing.T) {

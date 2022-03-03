@@ -13814,3 +13814,421 @@ func TestSecretScanningAlertEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SecurityAdvisoryEvent{}, "{}")
+	u := &SecurityAdvisoryEvent{
+		Action: String("published"),
+		Advisory: &SecurityAdvisory{
+			GhsaID:      String("GHSA-rf4j-j272-some"),
+			Summary:     String("Siuuuuuuuuu"),
+			Description: String("desc"),
+			Severity:    String("moderate"),
+			Identifiers: []*AdvisoryIdentifier{
+				{
+					Value: String("GHSA-rf4j-j272-some"),
+					Type:  String("GHSA"),
+				},
+			},
+			ReferenceURLs: []*AdvisoryReferenceURL{
+				{
+					URL: String("https://some-url"),
+				},
+			},
+			PublishedAt: &Timestamp{referenceTime},
+			UpdatedAt:   &Timestamp{referenceTime},
+			WithdrawnAt: nil,
+			Vulnerabilities: []*AdvisoryVulnerability{
+				{
+					Package: &VulnerabilityPackage{
+						Ecosystem: String("ucl"),
+						Name:      String("penaldo"),
+					},
+					Severity:               String("moderate"),
+					VulnerableVersionRange: String(">= 2.0.0, < 2.0.2"),
+					FirstPatchedVersion: &FirstPatchedVersion{
+						Identifier: String("2.0.2"),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"action": "published",
+		"security_advisory": {
+		  "ghsa_id": "GHSA-rf4j-j272-some",
+		  "summary": "Siuuuuuuuuu",
+		  "description": "desc",
+		  "severity": "moderate",
+		  "identifiers": [
+			{
+			  "value": "GHSA-rf4j-j272-some",
+			  "type": "GHSA"
+			}
+		  ],
+		  "references": [
+			{
+			  "url": "https://some-url"
+			}
+		  ],
+		  "published_at": ` + referenceTimeStr + `,
+		  "updated_at": ` + referenceTimeStr + `,
+		  "withdrawn_at": null,
+		  "vulnerabilities": [
+			{
+			  "package": {
+				"ecosystem": "ucl",
+				"name": "penaldo"
+			  },
+			  "severity": "moderate",
+			  "vulnerable_version_range": ">= 2.0.0, < 2.0.2",
+			  "first_patched_version": {
+				"identifier": "2.0.2"
+			  }
+			}
+		  ]
+		}
+	  }`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CodeScanningAlertEvent{}, "{}")
+
+	u := &CodeScanningAlertEvent{
+		Action: String("reopened"),
+		Alert: &Alert{
+			Number: Int(10),
+			Rule: &Rule{
+				ID:              String("Style/FrozenStringLiteralComment"),
+				Severity:        String("note"),
+				Description:     String("desc"),
+				FullDescription: String("full desc"),
+				Tags:            []string{"style"},
+				Help:            String("help"),
+			},
+			Tool: &Tool{
+				Name:    String("Rubocop"),
+				Version: nil,
+			},
+			CreatedAt: &Timestamp{referenceTime},
+			UpdatedAt: &Timestamp{referenceTime},
+			FixedAt:   nil,
+			State:     String("open"),
+			URL:       String("a"),
+			HTMLURL:   String("a"),
+			Instances: []*MostRecentInstance{
+				{
+					Ref:         String("refs/heads/main"),
+					AnalysisKey: String(".github/workflows/workflow.yml:upload"),
+					Environment: String("{}"),
+					State:       String("open"),
+				},
+			},
+			DismissedBy:     nil,
+			DismissedAt:     nil,
+			DismissedReason: nil,
+		},
+		Ref:       String("refs/heads/main"),
+		CommitOID: String("d6e4c75c141dbacecc279b721b8bsomeSHA"),
+		Repo: &Repository{
+			ID:     Int64(1234234535),
+			NodeID: String("MDEwOlJlcG9zaXRvcnkxODY4NT=="),
+			Owner: &User{
+				Login:             String("Codertocat"),
+				ID:                Int64(21031067),
+				NodeID:            String("MDQ6VXNlcjIxMDMxMDY3"),
+				AvatarURL:         String("a"),
+				GravatarID:        String(""),
+				URL:               String("a"),
+				HTMLURL:           String("a"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+				FollowersURL:      String("a"),
+				FollowingURL:      String("a"),
+				EventsURL:         String("a"),
+				GistsURL:          String("a"),
+				OrganizationsURL:  String("a"),
+				ReceivedEventsURL: String("a"),
+				ReposURL:          String("a"),
+				StarredURL:        String("a"),
+				SubscriptionsURL:  String("a"),
+			},
+			HTMLURL:          String("a"),
+			Name:             String("Hello-World"),
+			FullName:         String("Codertocat/Hello-World"),
+			Description:      nil,
+			Fork:             Bool(false),
+			Homepage:         nil,
+			DefaultBranch:    String("main"),
+			CreatedAt:        &Timestamp{referenceTime},
+			PushedAt:         &Timestamp{referenceTime},
+			UpdatedAt:        &Timestamp{referenceTime},
+			CloneURL:         String("a"),
+			GitURL:           String("a"),
+			MirrorURL:        nil,
+			SSHURL:           String("a"),
+			SVNURL:           String("a"),
+			Language:         nil,
+			ForksCount:       Int(0),
+			OpenIssuesCount:  Int(2),
+			OpenIssues:       Int(2),
+			StargazersCount:  Int(0),
+			WatchersCount:    Int(0),
+			Watchers:         Int(0),
+			Size:             Int(0),
+			Archived:         Bool(false),
+			Disabled:         Bool(false),
+			License:          nil,
+			Private:          Bool(false),
+			HasIssues:        Bool(true),
+			HasWiki:          Bool(true),
+			HasPages:         Bool(true),
+			HasProjects:      Bool(true),
+			HasDownloads:     Bool(true),
+			URL:              String("a"),
+			ArchiveURL:       String("a"),
+			AssigneesURL:     String("a"),
+			BlobsURL:         String("a"),
+			BranchesURL:      String("a"),
+			CollaboratorsURL: String("a"),
+			CommentsURL:      String("a"),
+			CommitsURL:       String("a"),
+			CompareURL:       String("a"),
+			ContentsURL:      String("a"),
+			ContributorsURL:  String("a"),
+			DeploymentsURL:   String("a"),
+			DownloadsURL:     String("a"),
+			EventsURL:        String("a"),
+			ForksURL:         String("a"),
+			GitCommitsURL:    String("a"),
+			GitRefsURL:       String("a"),
+			GitTagsURL:       String("a"),
+			HooksURL:         String("a"),
+			IssueCommentURL:  String("a"),
+			IssueEventsURL:   String("a"),
+			IssuesURL:        String("a"),
+			KeysURL:          String("a"),
+			LabelsURL:        String("a"),
+			LanguagesURL:     String("a"),
+			MergesURL:        String("a"),
+			MilestonesURL:    String("a"),
+			NotificationsURL: String("a"),
+			PullsURL:         String("a"),
+			ReleasesURL:      String("a"),
+			StargazersURL:    String("a"),
+			StatusesURL:      String("a"),
+			SubscribersURL:   String("a"),
+			SubscriptionURL:  String("a"),
+			TagsURL:          String("a"),
+			TreesURL:         String("a"),
+			TeamsURL:         String("a"),
+		},
+		Org: &Organization{
+			Login:            String("Octocoders"),
+			ID:               Int64(6),
+			NodeID:           String("MDEyOk9yZ2FuaXphdGlvbjY="),
+			AvatarURL:        String("a"),
+			Description:      String(""),
+			URL:              String("a"),
+			EventsURL:        String("a"),
+			HooksURL:         String("a"),
+			IssuesURL:        String("a"),
+			MembersURL:       String("a"),
+			PublicMembersURL: String("a"),
+			ReposURL:         String("a"),
+		},
+		Sender: &User{
+			Login:             String("github"),
+			ID:                Int64(9919),
+			NodeID:            String("MDEyOk9yZ2FuaXphdGlvbjk5MTk="),
+			AvatarURL:         String("a"),
+			HTMLURL:           String("a"),
+			GravatarID:        String(""),
+			Type:              String("Organization"),
+			SiteAdmin:         Bool(false),
+			URL:               String("a"),
+			EventsURL:         String("a"),
+			FollowingURL:      String("a"),
+			FollowersURL:      String("a"),
+			GistsURL:          String("a"),
+			OrganizationsURL:  String("a"),
+			ReceivedEventsURL: String("a"),
+			ReposURL:          String("a"),
+			StarredURL:        String("a"),
+			SubscriptionsURL:  String("a"),
+		},
+	}
+
+	want := `{
+		"action": "reopened",
+		"alert": {
+		  "number": 10,
+		  "created_at": ` + referenceTimeStr + `,
+		  "updated_at": ` + referenceTimeStr + `,
+		  "url": "a",
+		  "html_url": "a",
+		  "instances": [
+			{
+			  "ref": "refs/heads/main",
+			  "analysis_key": ".github/workflows/workflow.yml:upload",
+			  "environment": "{}",
+			  "state": "open"
+			}
+		  ],
+		  "state": "open",
+		  "fixed_at": null,
+		  "dismissed_by": null,
+		  "dismissed_at": null,
+		  "dismissed_reason": null,
+		  "rule": {
+			"id": "Style/FrozenStringLiteralComment",
+			"severity": "note",
+			"description": "desc",
+			"full_description": "full desc",
+			"tags": [
+			  "style"
+			],
+			"help": "help"
+		  },
+		  "tool": {
+			"name": "Rubocop",
+			"version": null
+		  }
+		},
+		"ref": "refs/heads/main",
+		"commit_oid": "d6e4c75c141dbacecc279b721b8bsomeSHA",
+		"repository": {
+		  "id": 1234234535,
+		  "node_id": "MDEwOlJlcG9zaXRvcnkxODY4NT==",
+		  "name": "Hello-World",
+		  "full_name": "Codertocat/Hello-World",
+		  "private": false,
+		  "owner": {
+			"login": "Codertocat",
+			"id": 21031067,
+			"node_id": "MDQ6VXNlcjIxMDMxMDY3",
+			"avatar_url": "a",
+			"gravatar_id": "",
+			"url": "a",
+			"html_url": "a",
+			"followers_url": "a",
+			"following_url": "a",
+			"gists_url": "a",
+			"starred_url": "a",
+			"subscriptions_url": "a",
+			"organizations_url": "a",
+			"repos_url": "a",
+			"events_url": "a",
+			"received_events_url": "a",
+			"type": "User",
+			"site_admin": false
+		  },
+		  "html_url": "a",
+		  "description": null,
+		  "fork": false,
+		  "url": "a",
+		  "forks_url": "a",
+		  "keys_url": "a",
+		  "collaborators_url": "a",
+		  "teams_url": "a",
+		  "hooks_url": "a",
+		  "issue_events_url": "a",
+		  "events_url": "a",
+		  "assignees_url": "a",
+		  "branches_url": "a",
+		  "tags_url": "a",
+		  "blobs_url": "a",
+		  "git_tags_url": "a",
+		  "git_refs_url": "a",
+		  "trees_url": "a",
+		  "statuses_url": "a",
+		  "languages_url": "a",
+		  "stargazers_url": "a",
+		  "contributors_url": "a",
+		  "subscribers_url": "a",
+		  "subscription_url": "a",
+		  "commits_url": "a",
+		  "git_commits_url": "a",
+		  "comments_url": "a",
+		  "issue_comment_url": "a",
+		  "contents_url": "a",
+		  "compare_url": "a",
+		  "merges_url": "a",
+		  "archive_url": "a",
+		  "downloads_url": "a",
+		  "issues_url": "a",
+		  "pulls_url": "a",
+		  "milestones_url": "a",
+		  "notifications_url": "a",
+		  "labels_url": "a",
+		  "releases_url": "a",
+		  "deployments_url": "a",
+		  "created_at": ` + referenceTimeStr + `,
+		  "updated_at": ` + referenceTimeStr + `,
+		  "pushed_at": ` + referenceTimeStr + `,
+		  "git_url": "a",
+		  "ssh_url": "a",
+		  "clone_url": "a",
+		  "svn_url": "a",
+		  "homepage": null,
+		  "size": 0,
+		  "stargazers_count": 0,
+		  "watchers_count": 0,
+		  "language": null,
+		  "has_issues": true,
+		  "has_projects": true,
+		  "has_downloads": true,
+		  "has_wiki": true,
+		  "has_pages": true,
+		  "forks_count": 0,
+		  "mirror_url": null,
+		  "archived": false,
+		  "disabled": false,
+		  "open_issues_count": 2,
+		  "license": null,
+		  "forks": 0,
+		  "open_issues": 2,
+		  "watchers": 0,
+		  "default_branch": "main"
+		},
+		"organization": {
+		  "login": "Octocoders",
+		  "id": 6,
+		  "node_id": "MDEyOk9yZ2FuaXphdGlvbjY=",
+		  "url": "a",
+		  "repos_url": "a",
+		  "events_url": "a",
+		  "hooks_url": "a",
+		  "issues_url": "a",
+		  "members_url": "a",
+		  "public_members_url": "a",
+		  "avatar_url": "a",
+		  "description": ""
+		},
+		"sender": {
+		  "login": "github",
+		  "id": 9919,
+		  "node_id": "MDEyOk9yZ2FuaXphdGlvbjk5MTk=",
+		  "avatar_url": "a",
+		  "gravatar_id": "",
+		  "url": "a",
+		  "html_url": "a",
+		  "followers_url": "a",
+		  "following_url": "a",
+		  "gists_url": "a",
+		  "starred_url": "a",
+		  "subscriptions_url": "a",
+		  "organizations_url": "a",
+		  "repos_url": "a",
+		  "events_url": "a",
+		  "received_events_url": "a",
+		  "type": "Organization",
+		  "site_admin": false
+		}
+	  }`
+
+	testJSONMarshal(t, u, want)
+}
