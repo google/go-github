@@ -172,6 +172,62 @@ func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
 	return *a.UserLogin
 }
 
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (a *AdvisoryIdentifier) GetType() string {
+	if a == nil || a.Type == nil {
+		return ""
+	}
+	return *a.Type
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (a *AdvisoryIdentifier) GetValue() string {
+	if a == nil || a.Value == nil {
+		return ""
+	}
+	return *a.Value
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *AdvisoryReference) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
+// GetFirstPatchedVersion returns the FirstPatchedVersion field.
+func (a *AdvisoryVulnerability) GetFirstPatchedVersion() *FirstPatchedVersion {
+	if a == nil {
+		return nil
+	}
+	return a.FirstPatchedVersion
+}
+
+// GetPackage returns the Package field.
+func (a *AdvisoryVulnerability) GetPackage() *VulnerabilityPackage {
+	if a == nil {
+		return nil
+	}
+	return a.Package
+}
+
+// GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
+func (a *AdvisoryVulnerability) GetSeverity() string {
+	if a == nil || a.Severity == nil {
+		return ""
+	}
+	return *a.Severity
+}
+
+// GetVulnerableVersionRange returns the VulnerableVersionRange field if it's non-nil, zero value otherwise.
+func (a *AdvisoryVulnerability) GetVulnerableVersionRange() string {
+	if a == nil || a.VulnerableVersionRange == nil {
+		return ""
+	}
+	return *a.VulnerableVersionRange
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -220,6 +276,14 @@ func (a *Alert) GetDismissedReason() string {
 	return *a.DismissedReason
 }
 
+// GetFixedAt returns the FixedAt field if it's non-nil, zero value otherwise.
+func (a *Alert) GetFixedAt() Timestamp {
+	if a == nil || a.FixedAt == nil {
+		return Timestamp{}
+	}
+	return *a.FixedAt
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (a *Alert) GetHTMLURL() string {
 	if a == nil || a.HTMLURL == nil {
@@ -242,6 +306,14 @@ func (a *Alert) GetMostRecentInstance() *MostRecentInstance {
 		return nil
 	}
 	return a.MostRecentInstance
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (a *Alert) GetNumber() int {
+	if a == nil || a.Number == nil {
+		return 0
+	}
+	return *a.Number
 }
 
 // GetRule returns the Rule field.
@@ -290,6 +362,14 @@ func (a *Alert) GetTool() *Tool {
 		return nil
 	}
 	return a.Tool
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *Alert) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
@@ -2210,6 +2290,62 @@ func (c *CodeResult) GetSHA() string {
 		return ""
 	}
 	return *c.SHA
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertEvent) GetAction() string {
+	if c == nil || c.Action == nil {
+		return ""
+	}
+	return *c.Action
+}
+
+// GetAlert returns the Alert field.
+func (c *CodeScanningAlertEvent) GetAlert() *Alert {
+	if c == nil {
+		return nil
+	}
+	return c.Alert
+}
+
+// GetCommitOID returns the CommitOID field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertEvent) GetCommitOID() string {
+	if c == nil || c.CommitOID == nil {
+		return ""
+	}
+	return *c.CommitOID
+}
+
+// GetOrg returns the Org field.
+func (c *CodeScanningAlertEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertEvent) GetRef() string {
+	if c == nil || c.Ref == nil {
+		return ""
+	}
+	return *c.Ref
+}
+
+// GetRepo returns the Repo field.
+func (c *CodeScanningAlertEvent) GetRepo() *Repository {
+	if c == nil {
+		return nil
+	}
+	return c.Repo
+}
+
+// GetSender returns the Sender field.
+func (c *CodeScanningAlertEvent) GetSender() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Sender
 }
 
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
@@ -4930,6 +5066,14 @@ func (f *Feeds) GetUserURL() string {
 		return ""
 	}
 	return *f.UserURL
+}
+
+// GetIdentifier returns the Identifier field if it's non-nil, zero value otherwise.
+func (f *FirstPatchedVersion) GetIdentifier() string {
+	if f == nil || f.Identifier == nil {
+		return ""
+	}
+	return *f.Identifier
 }
 
 // GetForkee returns the Forkee field.
@@ -16236,6 +16380,78 @@ func (s *SecretScanningAlertUpdateOptions) GetState() string {
 	return *s.State
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetDescription() string {
+	if s == nil || s.Description == nil {
+		return ""
+	}
+	return *s.Description
+}
+
+// GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetGHSAID() string {
+	if s == nil || s.GHSAID == nil {
+		return ""
+	}
+	return *s.GHSAID
+}
+
+// GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetPublishedAt() Timestamp {
+	if s == nil || s.PublishedAt == nil {
+		return Timestamp{}
+	}
+	return *s.PublishedAt
+}
+
+// GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetSeverity() string {
+	if s == nil || s.Severity == nil {
+		return ""
+	}
+	return *s.Severity
+}
+
+// GetSummary returns the Summary field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetSummary() string {
+	if s == nil || s.Summary == nil {
+		return ""
+	}
+	return *s.Summary
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetUpdatedAt() Timestamp {
+	if s == nil || s.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.UpdatedAt
+}
+
+// GetWithdrawnAt returns the WithdrawnAt field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisory) GetWithdrawnAt() Timestamp {
+	if s == nil || s.WithdrawnAt == nil {
+		return Timestamp{}
+	}
+	return *s.WithdrawnAt
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (s *SecurityAdvisoryEvent) GetAction() string {
+	if s == nil || s.Action == nil {
+		return ""
+	}
+	return *s.Action
+}
+
+// GetSecurityAdvisory returns the SecurityAdvisory field.
+func (s *SecurityAdvisoryEvent) GetSecurityAdvisory() *SecurityAdvisory {
+	if s == nil {
+		return nil
+	}
+	return s.SecurityAdvisory
+}
+
 // GetAdvancedSecurity returns the AdvancedSecurity field.
 func (s *SecurityAndAnalysis) GetAdvancedSecurity() *AdvancedSecurity {
 	if s == nil {
@@ -18730,6 +18946,22 @@ func (u *UserSuspendOptions) GetReason() string {
 		return ""
 	}
 	return *u.Reason
+}
+
+// GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
+func (v *VulnerabilityPackage) GetEcosystem() string {
+	if v == nil || v.Ecosystem == nil {
+		return ""
+	}
+	return *v.Ecosystem
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (v *VulnerabilityPackage) GetName() string {
+	if v == nil || v.Name == nil {
+		return ""
+	}
+	return *v.Name
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
