@@ -1250,6 +1250,8 @@ type WorkflowRunEvent struct {
 }
 
 // SecurityAdvisory represents the advisory object in SecurityAdvisoryEvent payload.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	Summary         *string                  `json:"summary,omitempty"`
