@@ -1248,3 +1248,71 @@ type WorkflowRunEvent struct {
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
+
+// SecurityAdvisory represents the advisory object in SecurityAdvisoryEvent payload.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
+type SecurityAdvisory struct {
+	GHSAID          *string                  `json:"ghsa_id,omitempty"`
+	Summary         *string                  `json:"summary,omitempty"`
+	Description     *string                  `json:"description,omitempty"`
+	Severity        *string                  `json:"severity,omitempty"`
+	Identifiers     []*AdvisoryIdentifier    `json:"identifiers,omitempty"`
+	References      []*AdvisoryReference     `json:"references,omitempty"`
+	PublishedAt     *Timestamp               `json:"published_at,omitempty"`
+	UpdatedAt       *Timestamp               `json:"updated_at,omitempty"`
+	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
+	Vulnerabilities []*AdvisoryVulnerability `json:"vulnerabilities,omitempty"`
+}
+
+// AdvisoryIdentifier represents the identifier for a Security Advisory.
+type AdvisoryIdentifier struct {
+	Value *string `json:"value,omitempty"`
+	Type  *string `json:"type,omitempty"`
+}
+
+// AdvisoryReference represents the reference url for the security advisory.
+type AdvisoryReference struct {
+	URL *string `json:"url,omitempty"`
+}
+
+// AdvisoryVulnerability represents the vulnerability object for a Security Advisory.
+type AdvisoryVulnerability struct {
+	Package                *VulnerabilityPackage `json:"package,omitempty"`
+	Severity               *string               `json:"severity,omitempty"`
+	VulnerableVersionRange *string               `json:"vulnerable_version_range,omitempty"`
+	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
+}
+
+// VulnerabilityPackage represents the package object for an Advisory Vulnerability.
+type VulnerabilityPackage struct {
+	Ecosystem *string `json:"ecosystem,omitempty"`
+	Name      *string `json:"name,omitempty"`
+}
+
+// FirstPatchedVersion represents the identifier for the first patched version of that vulnerability.
+type FirstPatchedVersion struct {
+	Identifier *string `json:"identifier,omitempty"`
+}
+
+// SecurityAdvisoryEvent is triggered when a security-related vulnerability is found in software on GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
+type SecurityAdvisoryEvent struct {
+	Action           *string           `json:"action,omitempty"`
+	SecurityAdvisory *SecurityAdvisory `json:"security_advisory,omitempty"`
+}
+
+// CodeScanningAlertEvent is triggered when a code scanning finds a potential vulnerability or error in your code.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#code_scanning_alert
+type CodeScanningAlertEvent struct {
+	Action *string `json:"action,omitempty"`
+	Alert  *Alert  `json:"alert,omitempty"`
+	Ref    *string `json:"ref,omitempty"`
+	// CommitOID is the commit SHA of the code scanning alert
+	CommitOID *string       `json:"commit_oid,omitempty"`
+	Repo      *Repository   `json:"repository,omitempty"`
+	Org       *Organization `json:"organization,omitempty"`
+	Sender    *User         `json:"sender,omitempty"`
+}
