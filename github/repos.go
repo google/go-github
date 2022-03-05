@@ -363,6 +363,7 @@ type createRepoRequest struct {
 	AllowSquashMerge    *bool   `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool   `json:"allow_merge_commit,omitempty"`
 	AllowRebaseMerge    *bool   `json:"allow_rebase_merge,omitempty"`
+	AllowUpdateBranch   *bool   `json:"allow_update_branch,omitempty"`
 	AllowAutoMerge      *bool   `json:"allow_auto_merge,omitempty"`
 	AllowForking        *bool   `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge *bool   `json:"delete_branch_on_merge,omitempty"`
