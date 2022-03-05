@@ -63,6 +63,7 @@ type Repository struct {
 	Organization        *Organization   `json:"organization,omitempty"`
 	Permissions         map[string]bool `json:"permissions,omitempty"`
 	AllowRebaseMerge    *bool           `json:"allow_rebase_merge,omitempty"`
+	AllowUpdateBranch   *bool           `json:"allow_update_branch,omitempty"`
 	AllowSquashMerge    *bool           `json:"allow_squash_merge,omitempty"`
 	AllowMergeCommit    *bool           `json:"allow_merge_commit,omitempty"`
 	AllowAutoMerge      *bool           `json:"allow_auto_merge,omitempty"`
@@ -408,6 +409,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowSquashMerge:    repo.AllowSquashMerge,
 		AllowMergeCommit:    repo.AllowMergeCommit,
 		AllowRebaseMerge:    repo.AllowRebaseMerge,
+		AllowUpdateBranch:   repo.AllowUpdateBranch,
 		AllowAutoMerge:      repo.AllowAutoMerge,
 		AllowForking:        repo.AllowForking,
 		DeleteBranchOnMerge: repo.DeleteBranchOnMerge,
