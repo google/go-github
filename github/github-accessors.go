@@ -13836,6 +13836,14 @@ func (r *Repository) GetAllowRebaseMerge() bool {
 	return *r.AllowRebaseMerge
 }
 
+// GetAllowUpdateBranch returns the AllowUpdateBranch field if it's non-nil, zero value otherwise.
+func (r *Repository) GetAllowUpdateBranch() bool {
+	if r == nil || r.AllowUpdateBranch == nil {
+		return false
+	}
+	return *r.AllowUpdateBranch
+}
+
 // GetAllowSquashMerge returns the AllowSquashMerge field if it's non-nil, zero value otherwise.
 func (r *Repository) GetAllowSquashMerge() bool {
 	if r == nil || r.AllowSquashMerge == nil {
