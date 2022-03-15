@@ -13844,6 +13844,14 @@ func (r *Repository) GetAllowSquashMerge() bool {
 	return *r.AllowSquashMerge
 }
 
+// GetAllowUpdateBranch returns the AllowUpdateBranch field if it's non-nil, zero value otherwise.
+func (r *Repository) GetAllowUpdateBranch() bool {
+	if r == nil || r.AllowUpdateBranch == nil {
+		return false
+	}
+	return *r.AllowUpdateBranch
+}
+
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
 func (r *Repository) GetArchived() bool {
 	if r == nil || r.Archived == nil {

@@ -16130,6 +16130,16 @@ func TestRepository_GetAllowSquashMerge(tt *testing.T) {
 	r.GetAllowSquashMerge()
 }
 
+func TestRepository_GetAllowUpdateBranch(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{AllowUpdateBranch: &zeroValue}
+	r.GetAllowUpdateBranch()
+	r = &Repository{}
+	r.GetAllowUpdateBranch()
+	r = nil
+	r.GetAllowUpdateBranch()
+}
+
 func TestRepository_GetArchived(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{Archived: &zeroValue}
