@@ -10,9 +10,9 @@ import (
 	"fmt"
 )
 
-// ActionsAllowed represents selected actions that are allowed in an organization.
+// ActionsAllowed represents selected actions that are allowed.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-allowed-actions-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-allowed-actions-and-workflows-for-an-organization--parameters
 type ActionsAllowed struct {
 	GithubOwnedAllowed *bool    `json:"github_owned_allowed,omitempty"`
 	VerifiedAllowed    *bool    `json:"verified_allowed,omitempty"`
