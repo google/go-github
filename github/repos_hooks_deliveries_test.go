@@ -107,6 +107,41 @@ func TestRepositoriesService_GetHookDelivery_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1/attempts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	ctx := context.Background()
+	hook, _, err := client.Repositories.RedeliverHookDelivery(ctx, "o", "r", 1, 1)
+	if err != nil {
+		t.Errorf("Repositories.RedeliverHookDelivery returned error: %v", err)
+	}
+
+	want := &HookDelivery{ID: Int64(1)}
+	if !cmp.Equal(hook, want) {
+		t.Errorf("Repositories.RedeliverHookDelivery returned %+v, want %+v", hook, want)
+	}
+
+	const methodName = "RedeliverHookDelivery"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RedeliverHookDelivery(ctx, "\n", "\n", -1, -1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RedeliverHookDelivery(ctx, "o", "r", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"check_run":                      &CheckRunEvent{},
 	"check_suite":                    &CheckSuiteEvent{},
@@ -117,6 +152,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"deploy_key":                     &DeployKeyEvent{},
 	"deployment":                     &DeploymentEvent{},
 	"deployment_status":              &DeploymentStatusEvent{},
+	"discussion":                     &DiscussionEvent{},
 	"fork":                           &ForkEvent{},
 	"github_app_authorization":       &GitHubAppAuthorizationEvent{},
 	"gollum":                         &GollumEvent{},
@@ -148,6 +184,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"repository":                     &RepositoryEvent{},
 	"repository_dispatch":            &RepositoryDispatchEvent{},
 	"repository_vulnerability_alert": &RepositoryVulnerabilityAlertEvent{},
+	"secret_scanning_alert":          &SecretScanningAlertEvent{},
 	"star":                           &StarEvent{},
 	"status":                         &StatusEvent{},
 	"team":                           &TeamEvent{},
@@ -155,6 +192,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"user":                           &UserEvent{},
 	"watch":                          &WatchEvent{},
 	"workflow_dispatch":              &WorkflowDispatchEvent{},
+	"workflow_job":                   &WorkflowJobEvent{},
 	"workflow_run":                   &WorkflowRunEvent{},
 }
 
@@ -217,4 +255,117 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 	if err == nil || err.Error() != "json: cannot unmarshal string into Go struct field CheckRun.check_run.id of type int64" {
 		t.Errorf("unexpected error: %v", err)
 	}
+}
+
+func TestHookRequest_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HookRequest{}, "{}")
+
+	header := make(map[string]string)
+	header["key"] = "value"
+
+	jsonMsg, _ := json.Marshal(&header)
+
+	r := &HookRequest{
+		Headers:    header,
+		RawPayload: (*json.RawMessage)(&jsonMsg),
+	}
+
+	want := `{
+		"headers": {
+			"key": "value"
+		},
+		"payload": {
+			"key": "value"
+		}
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestHookResponse_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HookResponse{}, "{}")
+
+	header := make(map[string]string)
+	header["key"] = "value"
+
+	jsonMsg, _ := json.Marshal(&header)
+
+	r := &HookResponse{
+		Headers:    header,
+		RawPayload: (*json.RawMessage)(&jsonMsg),
+	}
+
+	want := `{
+		"headers": {
+			"key": "value"
+		},
+		"payload": {
+			"key": "value"
+		}
+	}`
+
+	testJSONMarshal(t, r, want)
+}
+
+func TestHookDelivery_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HookDelivery{}, "{}")
+
+	header := make(map[string]string)
+	header["key"] = "value"
+
+	jsonMsg, _ := json.Marshal(&header)
+
+	r := &HookDelivery{
+		ID:             Int64(1),
+		GUID:           String("guid"),
+		DeliveredAt:    &Timestamp{referenceTime},
+		Redelivery:     Bool(true),
+		Duration:       Float64(1),
+		Status:         String("guid"),
+		StatusCode:     Int(1),
+		Event:          String("guid"),
+		Action:         String("guid"),
+		InstallationID: Int64(1),
+		RepositoryID:   Int64(1),
+		Request: &HookRequest{
+			Headers:    header,
+			RawPayload: (*json.RawMessage)(&jsonMsg),
+		},
+		Response: &HookResponse{
+			Headers:    header,
+			RawPayload: (*json.RawMessage)(&jsonMsg),
+		},
+	}
+
+	want := `{
+		"id": 1,
+		"guid": "guid",
+		"delivered_at": ` + referenceTimeStr + `,
+		"redelivery": true,
+		"duration": 1,
+		"status": "guid",
+		"status_code": 1,
+		"event": "guid",
+		"action": "guid",
+		"installation_id": 1,
+		"repository_id": 1,
+		"request": {
+			"headers": {
+				"key": "value"
+			},
+			"payload": {
+				"key": "value"
+			}
+		},
+		"response": {
+			"headers": {
+				"key": "value"
+			},
+			"payload": {
+				"key": "value"
+			}
+		}
+	}`
+
+	testJSONMarshal(t, r, want)
 }

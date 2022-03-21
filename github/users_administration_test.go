@@ -142,3 +142,17 @@ func TestUsersService_Unsuspend(t *testing.T) {
 		return client.Users.Unsuspend(ctx, "u")
 	})
 }
+
+func TestUserSuspendOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UserSuspendOptions{}, "{}")
+
+	u := &UserSuspendOptions{
+		Reason: String("reason"),
+	}
+
+	want := `{
+		"reason": "reason"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

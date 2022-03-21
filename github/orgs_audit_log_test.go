@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -57,7 +58,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		Order:   String("asc"),
 	}
 
-	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
+	auditEntries, resp, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
 	if err != nil {
 		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
@@ -97,6 +98,12 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		t.Errorf("Organizations.GetAuditLog return \ngot: %+v,\nwant:%+v", auditEntries, want)
 	}
 
+	// assert query string has lower case params
+	requestedQuery := resp.Request.URL.RawQuery
+	if !strings.Contains(requestedQuery, "phrase") {
+		t.Errorf("Organizations.GetAuditLog query string \ngot: %+v,\nwant:%+v", requestedQuery, "phrase")
+	}
+
 	const methodName = "GetAuditLog"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.GetAuditLog(ctx, "\n", &getOpts)
@@ -110,7 +117,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		}
 		return resp, err
 	})
-
 }
 
 func TestGetAuditLogOptions_Marshal(t *testing.T) {
@@ -201,9 +207,9 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		Repo:                  String("r"),
 		Repository:            String("repo"),
 		RepositoryPublic:      Bool(false),
-		RunnerGroupID:         String("rgid"),
+		RunnerGroupID:         Int64(1),
 		RunnerGroupName:       String("rgn"),
-		RunnerID:              String("rid"),
+		RunnerID:              Int64(1),
 		RunnerLabels:          []string{"s"},
 		RunnerName:            String("rn"),
 		SecretsPassed:         []string{"s"},
@@ -269,9 +275,9 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		"repo": "r",
 		"repository": "repo",
 		"repository_public": false,
-		"runner_group_id": "rgid",
+		"runner_group_id": 1,
 		"runner_group_name": "rgn",
-		"runner_id": "rid",
+		"runner_id": 1,
 		"runner_labels": [
 			"s"
 		],

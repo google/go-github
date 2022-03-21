@@ -216,6 +216,32 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 }
 
+// Test that all error response types contain the status code.
+func testErrorResponseForStatusCode(t *testing.T, code int) {
+	t.Helper()
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(code)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListHooks(ctx, "o", "r", nil)
+
+	switch e := err.(type) {
+	case *ErrorResponse:
+	case *RateLimitError:
+	case *AbuseRateLimitError:
+		if code != e.Response.StatusCode {
+			t.Error("Error response does not contain status code")
+		}
+	default:
+		t.Error("Unknown error response type")
+	}
+}
+
 func TestNewClient(t *testing.T) {
 	c := NewClient(nil)
 
@@ -622,6 +648,64 @@ func TestResponse_populatePageValues(t *testing.T) {
 	}
 }
 
+func TestResponse_populateSinceValues(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?since=1>; rel="first",` +
+				` <https://api.github.com/?since=2>; rel="prev",` +
+				` <https://api.github.com/?since=4>; rel="next",` +
+				` <https://api.github.com/?since=5>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 1; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 2; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 4; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 5; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_SinceWithPage(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=1>; rel="first",` +
+				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=2>; rel="prev",` +
+				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=4>; rel="next",` +
+				` <https://api.github.com/?since=2021-12-04T10%3A43%3A42Z&page=5>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 1; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 2; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 4; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 5; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
 func TestResponse_cursorPagination(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
@@ -662,6 +746,40 @@ func TestResponse_cursorPagination(t *testing.T) {
 	}
 }
 
+func TestResponse_beforeAfterPagination(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?after=a1b2c3&before=>; rel="next",` +
+				` <https://api.github.com/?after=&before=>; rel="first",` +
+				` <https://api.github.com/?after=&before=d4e5f6>; rel="prev",`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.Before, "d4e5f6"; got != want {
+		t.Errorf("response.Before: %v, want %v", got, want)
+	}
+	if got, want := response.After, "a1b2c3"; got != want {
+		t.Errorf("response.After: %v, want %v", got, want)
+	}
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; want != got {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; want != got {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; want != got {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPageToken, ""; want != got {
+		t.Errorf("response.NextPageToken: %v, want %v", got, want)
+	}
+}
+
 func TestResponse_populatePageValues_invalid(t *testing.T) {
 	r := http.Response{
 		Header: http.Header{
@@ -692,6 +810,45 @@ func TestResponse_populatePageValues_invalid(t *testing.T) {
 	r = http.Response{
 		Header: http.Header{
 			"Link": {`<https://api.github.com/%?page=2>; rel="first"`},
+		},
+	}
+
+	response = newResponse(&r)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+}
+
+func TestResponse_populateSinceValues_invalid(t *testing.T) {
+	r := http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/?since=1>,` +
+				`<https://api.github.com/?since=abc>; rel="first",` +
+				`https://api.github.com/?since=2; rel="prev",` +
+				`<https://api.github.com/>; rel="next",` +
+				`<https://api.github.com/?since=>; rel="last"`,
+			},
+		},
+	}
+
+	response := newResponse(&r)
+	if got, want := response.FirstPage, 0; got != want {
+		t.Errorf("response.FirstPage: %v, want %v", got, want)
+	}
+	if got, want := response.PrevPage, 0; got != want {
+		t.Errorf("response.PrevPage: %v, want %v", got, want)
+	}
+	if got, want := response.NextPage, 0; got != want {
+		t.Errorf("response.NextPage: %v, want %v", got, want)
+	}
+	if got, want := response.LastPage, 0; got != want {
+		t.Errorf("response.LastPage: %v, want %v", got, want)
+	}
+
+	// more invalid URLs
+	r = http.Response{
+		Header: http.Header{
+			"Link": {`<https://api.github.com/%?since=2>; rel="first"`},
 		},
 	}
 
@@ -959,6 +1116,49 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	}
 }
 
+// Ignore rate limit headers if the response was served from cache.
+func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
+
+	// By adding the X-From-Cache header we pretend this is served from a cache.
+	mux.HandleFunc("/first", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-From-Cache", "1")
+		w.Header().Set(headerRateLimit, "60")
+		w.Header().Set(headerRateRemaining, "0")
+		w.Header().Set(headerRateReset, fmt.Sprint(reset.Unix()))
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprintln(w, `{
+   "message": "API rate limit exceeded for xxx.xxx.xxx.xxx. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+   "documentation_url": "https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+}`)
+	})
+
+	madeNetworkCall := false
+	mux.HandleFunc("/second", func(w http.ResponseWriter, r *http.Request) {
+		madeNetworkCall = true
+	})
+
+	// First request is made so afterwards we can check the returned rate limit headers were ignored.
+	req, _ := client.NewRequest("GET", "first", nil)
+	ctx := context.Background()
+	client.Do(ctx, req, nil)
+
+	// Second request should not by hindered by rate limits.
+	req, _ = client.NewRequest("GET", "second", nil)
+	_, err := client.Do(ctx, req, nil)
+
+	if err != nil {
+		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
+	}
+	if !madeNetworkCall {
+		t.Fatal("Network call was not made, even though the rate limits from the cache should've been ignored")
+	}
+}
+
 // Ensure *AbuseRateLimitError is returned when the response indicates that
 // the client has triggered an abuse detection mechanism.
 func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
@@ -1203,7 +1403,7 @@ func TestCompareHttpResponse(t *testing.T) {
 
 	for name, tc := range testcases {
 		t.Run(name, func(t *testing.T) {
-			v := compareHttpResponse(tc.h1, tc.h2)
+			v := compareHTTPResponse(tc.h1, tc.h2)
 			if tc.expected != v {
 				t.Errorf("Expected %t, got %t for (%#v, %#v)", tc.expected, v, tc.h1, tc.h2)
 			}
@@ -2002,7 +2202,6 @@ func TestAddOptions_QueryValues(t *testing.T) {
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
-
 	client, mux, _, teardown := setup()
 	defer teardown()
 

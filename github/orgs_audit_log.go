@@ -12,9 +12,9 @@ import (
 
 // GetAuditLogOptions sets up optional parameters to query audit-log endpoint.
 type GetAuditLogOptions struct {
-	Phrase  *string `json:"phrase,omitempty"`  // A search phrase. (Optional.)
-	Include *string `json:"include,omitempty"` // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
-	Order   *string `json:"order,omitempty"`   // The order of audit log events. Can be one of "asc" or "desc". Default: "desc". (Optional.)
+	Phrase  *string `url:"phrase,omitempty"`  // A search phrase. (Optional.)
+	Include *string `url:"include,omitempty"` // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
+	Order   *string `url:"order,omitempty"`   // The order of audit log events. Can be one of "asc" or "desc". Default: "desc". (Optional.)
 
 	ListCursorOptions
 }
@@ -24,6 +24,9 @@ type HookConfig struct {
 	ContentType *string `json:"content_type,omitempty"`
 	InsecureSSL *string `json:"insecure_ssl,omitempty"`
 	URL         *string `json:"url,omitempty"`
+
+	// Secret is returned obfuscated by GitHub, but it can be set for outgoing requests.
+	Secret *string `json:"secret,omitempty"`
 }
 
 // AuditEntry describes the fields that may be represented by various audit-log "action" entries.
@@ -67,9 +70,9 @@ type AuditEntry struct {
 	Repo                  *string     `json:"repo,omitempty"`
 	Repository            *string     `json:"repository,omitempty"`
 	RepositoryPublic      *bool       `json:"repository_public,omitempty"`
-	RunnerGroupID         *string     `json:"runner_group_id,omitempty"`
+	RunnerGroupID         *int64      `json:"runner_group_id,omitempty"`
 	RunnerGroupName       *string     `json:"runner_group_name,omitempty"`
-	RunnerID              *string     `json:"runner_id,omitempty"`
+	RunnerID              *int64      `json:"runner_id,omitempty"`
 	RunnerLabels          []string    `json:"runner_labels,omitempty"`
 	RunnerName            *string     `json:"runner_name,omitempty"`
 	SecretsPassed         []string    `json:"secrets_passed,omitempty"`

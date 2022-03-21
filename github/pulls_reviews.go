@@ -125,10 +125,6 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 
 // GetReview fetches the specified pull request review.
 //
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
-//
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-review-for-a-pull-request
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
@@ -149,10 +145,6 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 
 // DeletePendingReview deletes the specified pull request pending review.
 //
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
-//
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#delete-a-pending-review-for-a-pull-request
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
@@ -172,10 +164,6 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 }
 
 // ListReviewComments lists all the comments for the specified review.
-//
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-comments-for-a-pull-request-review
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
@@ -200,10 +188,6 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 }
 
 // CreateReview creates a new review on the specified pull request.
-//
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-review-for-a-pull-request
 //
@@ -289,10 +273,6 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 
 // SubmitReview submits a specified review on the specified pull request.
 //
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
-//
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#submit-a-review-for-a-pull-request
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
@@ -312,10 +292,6 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 }
 
 // DismissReview dismisses a specified review on the specified pull request.
-//
-// TODO: Follow up with GitHub support about an issue with this method's
-// returned error format and remove this comment once it's fixed.
-// Read more about it here - https://github.com/google/go-github/issues/540
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#dismiss-a-review-for-a-pull-request
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {

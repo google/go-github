@@ -655,7 +655,6 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		}
 
 		fmt.Fprintln(w, `{"email": "octocat@github.com"}`)
-
 	})
 
 	ctx := context.Background()

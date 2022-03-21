@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -15,7 +16,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestActionsService_Alert_ID(t *testing.T) {
+func TestCodeScanningService_Alert_ID(t *testing.T) {
 	// Test: nil Alert ID == 0
 	var a *Alert
 	id := a.ID()
@@ -53,7 +54,42 @@ func TestActionsService_Alert_ID(t *testing.T) {
 	}
 }
 
-func TestActionsService_ListAlertsForRepo(t *testing.T) {
+func TestCodeScanningService_UploadSarif(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
+		v := new(SarifAnalysis)
+		json.NewDecoder(r.Body).Decode(v)
+		testMethod(t, r, "POST")
+		want := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+
+		fmt.Fprint(w, `{"commit_sha":"abc","ref":"ref/head/main","sarif":"abc"}`)
+	})
+
+	ctx := context.Background()
+	sarifAnalysis := &SarifAnalysis{CommitSHA: String("abc"), Ref: String("ref/head/main"), Sarif: String("abc"), CheckoutURI: String("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)}, ToolName: String("codeql-cli")}
+	_, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+	if err != nil {
+		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
+	}
+
+	const methodName = "UploadSarif"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.UploadSarif(ctx, "\n", "\n", sarifAnalysis)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, resp, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -247,7 +283,7 @@ func TestActionsService_ListAlertsForRepo(t *testing.T) {
 	})
 }
 
-func TestActionsService_GetAlert(t *testing.T) {
+func TestCodeScanningService_GetAlert(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -413,6 +449,56 @@ func TestAlert_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestLocation_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Location{}, "{}")
+
+	u := &Location{
+		Path:        String("path"),
+		StartLine:   Int(1),
+		EndLine:     Int(2),
+		StartColumn: Int(3),
+		EndColumn:   Int(4),
+	}
+
+	want := `{
+		"path": "path",
+		"start_line": 1,
+		"end_line": 2,
+		"start_column": 3,
+		"end_column": 4
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestRule_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Rule{}, "{}")
+
+	u := &Rule{
+		ID:                    String("1"),
+		Severity:              String("3"),
+		Description:           String("description"),
+		Name:                  String("first"),
+		SecuritySeverityLevel: String("2"),
+		FullDescription:       String("summary"),
+		Tags:                  []string{"tag1", "tag2"},
+		Help:                  String("Help Text"),
+	}
+
+	want := `{
+		"id":                      "1",
+		"severity":                "3",
+		"description":             "description",
+		"name":                    "first",
+		"security_severity_level": "2",
+		"full_description":        "summary",
+		"tags":                    ["tag1", "tag2"],
+		"help":                    "Help Text"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestTool_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Tool{}, "{}")
 
@@ -429,4 +515,218 @@ func TestTool_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestMessage_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Message{}, "{}")
+
+	u := &Message{
+		Text: String("text"),
+	}
+
+	want := `{
+		"text": "text"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/analyses", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"sarif_id": "8981cd8e-b078-4ac3-a3be-1dad7dbd0b582", "ref": "heads/master"})
+		fmt.Fprint(w, `[
+			  {
+				"ref": "refs/heads/main",
+				"commit_sha": "d99612c3e1f2970085cfbaeadf8f010ef69bad83",
+				"analysis_key": ".github/workflows/codeql-analysis.yml:analyze",
+				"environment": "{\"language\":\"python\"}",
+				"error": "",
+				"category": ".github/workflows/codeql-analysis.yml:analyze/language:python",
+				"created_at": "2020-08-27T15:05:21Z",
+				"results_count": 17,
+				"rules_count": 49,
+				"id": 201,
+				"url": "https://api.github.com/repos/o/r/code-scanning/analyses/201",
+				"sarif_id": "8981cd8e-b078-4ac3-a3be-1dad7dbd0b582",
+				"tool": {
+				  "name": "CodeQL",
+				  "guid": null,
+				  "version": "2.4.0"
+				},
+				"deletable": true,
+				"warning": ""
+			  },
+			  {
+				"ref": "refs/heads/my-branch",
+				"commit_sha": "c8cff6510d4d084fb1b4aa13b64b97ca12b07321",
+				"analysis_key": ".github/workflows/shiftleft.yml:build",
+				"environment": "{}",
+				"error": "",
+				"category": ".github/workflows/shiftleft.yml:build/",
+				"created_at": "2020-08-27T15:05:21Z",
+				"results_count": 17,
+				"rules_count": 32,
+				"id": 200,
+				"url": "https://api.github.com/repos/o/r/code-scanning/analyses/200",
+				"sarif_id": "8981cd8e-b078-4ac3-a3be-1dad7dbd0b582",
+				"tool": {
+				  "name": "Python Security ScanningAnalysis",
+				  "guid": null,
+				  "version": "1.2.0"
+				},
+				"deletable": true,
+				"warning": ""
+			  }
+			]`)
+	})
+
+	opts := &AnalysesListOptions{SarifID: String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"), Ref: String("heads/master")}
+	ctx := context.Background()
+	analyses, _, err := client.CodeScanning.ListAnalysesForRepo(ctx, "o", "r", opts)
+	if err != nil {
+		t.Errorf("CodeScanning.ListAnalysesForRepo returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2020, time.August, 27, 15, 05, 21, 0, time.UTC)}
+	want := []*ScanningAnalysis{
+		{
+			ID:           Int64(201),
+			Ref:          String("refs/heads/main"),
+			CommitSHA:    String("d99612c3e1f2970085cfbaeadf8f010ef69bad83"),
+			AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
+			Environment:  String("{\"language\":\"python\"}"),
+			Error:        String(""),
+			Category:     String(".github/workflows/codeql-analysis.yml:analyze/language:python"),
+			CreatedAt:    date,
+			ResultsCount: Int(17),
+			RulesCount:   Int(49),
+			URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
+			SarifID:      String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
+			Tool: &Tool{
+				Name:    String("CodeQL"),
+				GUID:    nil,
+				Version: String("2.4.0"),
+			},
+			Deletable: Bool(true),
+			Warning:   String(""),
+		},
+		{
+			ID:           Int64(200),
+			Ref:          String("refs/heads/my-branch"),
+			CommitSHA:    String("c8cff6510d4d084fb1b4aa13b64b97ca12b07321"),
+			AnalysisKey:  String(".github/workflows/shiftleft.yml:build"),
+			Environment:  String("{}"),
+			Error:        String(""),
+			Category:     String(".github/workflows/shiftleft.yml:build/"),
+			CreatedAt:    date,
+			ResultsCount: Int(17),
+			RulesCount:   Int(32),
+			URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/200"),
+			SarifID:      String("8981cd8e-b078-4ac3-a3be-1dad7dbd0b582"),
+			Tool: &Tool{
+				Name:    String("Python Security ScanningAnalysis"),
+				GUID:    nil,
+				Version: String("1.2.0"),
+			},
+			Deletable: Bool(true),
+			Warning:   String(""),
+		},
+	}
+	if !cmp.Equal(analyses, want) {
+		t.Errorf("CodeScanning.ListAnalysesForRepo returned %+v, want %+v", analyses, want)
+	}
+
+	const methodName = "ListAnalysesForRepo"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.ListAnalysesForRepo(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.ListAnalysesForRepo(ctx, "o", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodeScanningService_GetAnalysis(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/code-scanning/analyses/3602840", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			  "ref": "refs/heads/main",
+			  "commit_sha": "c18c69115654ff0166991962832dc2bd7756e655",
+			  "analysis_key": ".github/workflows/codeql-analysis.yml:analyze",
+			  "environment": "{\"language\":\"javascript\"}",
+			  "error": "",
+			  "category": ".github/workflows/codeql-analysis.yml:analyze/language:javascript",
+			  "created_at": "2021-01-13T11:55:49Z",
+			  "results_count": 3,
+			  "rules_count": 67,
+			  "id": 3602840,
+			  "url": "https://api.github.com/repos/o/r/code-scanning/analyses/201",
+			  "sarif_id": "47177e22-5596-11eb-80a1-c1e54ef945c6",
+			  "tool": {
+				"name": "CodeQL",
+				"guid": null,
+				"version": "2.4.0"
+			  },
+			  "deletable": true,
+			  "warning": ""
+			}`)
+	})
+
+	ctx := context.Background()
+	analysis, _, err := client.CodeScanning.GetAnalysis(ctx, "o", "r", 3602840)
+	if err != nil {
+		t.Errorf("CodeScanning.GetAnalysis returned error: %v", err)
+	}
+
+	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	want := &ScanningAnalysis{
+		ID:           Int64(3602840),
+		Ref:          String("refs/heads/main"),
+		CommitSHA:    String("c18c69115654ff0166991962832dc2bd7756e655"),
+		AnalysisKey:  String(".github/workflows/codeql-analysis.yml:analyze"),
+		Environment:  String("{\"language\":\"javascript\"}"),
+		Error:        String(""),
+		Category:     String(".github/workflows/codeql-analysis.yml:analyze/language:javascript"),
+		CreatedAt:    date,
+		ResultsCount: Int(3),
+		RulesCount:   Int(67),
+		URL:          String("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
+		SarifID:      String("47177e22-5596-11eb-80a1-c1e54ef945c6"),
+		Tool: &Tool{
+			Name:    String("CodeQL"),
+			GUID:    nil,
+			Version: String("2.4.0"),
+		},
+		Deletable: Bool(true),
+		Warning:   String(""),
+	}
+	if !cmp.Equal(analysis, want) {
+		t.Errorf("CodeScanning.GetAnalysis returned %+v, want %+v", analysis, want)
+	}
+
+	const methodName = "GetAnalysis"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.GetAnalysis(ctx, "\n", "\n", -123)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.GetAnalysis(ctx, "o", "r", 3602840)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

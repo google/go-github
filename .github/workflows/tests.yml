@@ -14,7 +14,7 @@ jobs:
   test:
     strategy:
       matrix:
-        go-version: [1.x, 1.15.x]
+        go-version: [1.x, 1.16.x]
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
@@ -30,32 +30,33 @@ jobs:
 
     steps:
     - name: Cancel previous
-      uses: styfle/cancel-workflow-action@89f242ee29e10c53a841bfe71cc0ce7b2f065abc #0.9.0
+      uses: styfle/cancel-workflow-action@a40b8845c0683271d9f53dfcb887a7e181d3918b #0.9.1
       with:
         access_token: ${{ github.token }}
 
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ matrix.go-version }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
+    # Get values for cache paths to be used in later steps 
+    - id: cache-paths
+      run: |
+        echo "::set-output name=go-cache::$(go env GOCACHE)"
+        echo "::set-output name=go-mod-cache::$(go env GOMODCACHE)"
 
     - name: Cache go modules
       uses: actions/cache@v2
       with:
-        path: ~/go/pkg/mod
+        path: |
+          ${{ steps.cache-paths.outputs.go-cache }}
+          ${{ steps.cache-paths.outputs.go-mod-cache }}
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
-    - name: Run go fmt
-      if: runner.os != 'Windows'
-      run: diff -u <(echo -n) <(gofmt -d -s .)
-
     - name: Ensure go generate produces a zero diff
       shell: bash
-      run:  go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-
-    - name: Run go vet
-      run: go vet ./...
+      run: go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
 
     - name: Run go test
       run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
@@ -71,4 +72,11 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: ${{ matrix.update-coverage }}
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@f32b3a3741e1053eb607407145bc9619351dc93b #v2.1.0
+
+    - name: Ensure go generate produces a zero diff for update-urls
+      shell: bash
+      run: cd update-urls && go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+
+    - name: Run go test for update-urls
+      run: cd update-urls && go test -v -race ./...

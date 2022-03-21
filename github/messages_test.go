@@ -262,6 +262,10 @@ func TestParseWebHook(t *testing.T) {
 		messageType string
 	}{
 		{
+			payload:     &BranchProtectionRuleEvent{},
+			messageType: "branch_protection_rule",
+		},
+		{
 			payload:     &CheckRunEvent{},
 			messageType: "check_run",
 		},
@@ -293,10 +297,13 @@ func TestParseWebHook(t *testing.T) {
 			payload:     &DeploymentEvent{},
 			messageType: "deployment",
 		},
-
 		{
 			payload:     &DeploymentStatusEvent{},
 			messageType: "deployment_status",
+		},
+		{
+			payload:     &DiscussionEvent{},
+			messageType: "discussion",
 		},
 		{
 			payload:     &ForkEvent{},
@@ -419,6 +426,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "repository_vulnerability_alert",
 		},
 		{
+			payload:     &SecretScanningAlertEvent{},
+			messageType: "secret_scanning_alert",
+		},
+		{
 			payload:     &StarEvent{},
 			messageType: "star",
 		},
@@ -449,6 +460,10 @@ func TestParseWebHook(t *testing.T) {
 		{
 			payload:     &WorkflowDispatchEvent{},
 			messageType: "workflow_dispatch",
+		},
+		{
+			payload:     &WorkflowJobEvent{},
+			messageType: "workflow_job",
 		},
 		{
 			payload:     &WorkflowRunEvent{},

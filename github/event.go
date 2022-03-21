@@ -30,6 +30,8 @@ func (e Event) String() string {
 // a value of the corresponding struct type will be returned.
 func (e *Event) ParsePayload() (payload interface{}, err error) {
 	switch *e.Type {
+	case "BranchProtectionRuleEvent":
+		payload = &BranchProtectionRuleEvent{}
 	case "CheckRunEvent":
 		payload = &CheckRunEvent{}
 	case "CheckSuiteEvent":
@@ -48,6 +50,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &DeploymentEvent{}
 	case "DeploymentStatusEvent":
 		payload = &DeploymentStatusEvent{}
+	case "DiscussionEvent":
+		payload = &DiscussionEvent{}
 	case "ForkEvent":
 		payload = &ForkEvent{}
 	case "GitHubAppAuthorizationEvent":
@@ -110,6 +114,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &RepositoryDispatchEvent{}
 	case "RepositoryVulnerabilityAlertEvent":
 		payload = &RepositoryVulnerabilityAlertEvent{}
+	case "SecretScanningAlertEvent":
+		payload = &SecretScanningAlertEvent{}
 	case "StarEvent":
 		payload = &StarEvent{}
 	case "StatusEvent":
@@ -124,6 +130,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &WatchEvent{}
 	case "WorkflowDispatchEvent":
 		payload = &WorkflowDispatchEvent{}
+	case "WorkflowJobEvent":
+		payload = &WorkflowJobEvent{}
 	case "WorkflowRunEvent":
 		payload = &WorkflowRunEvent{}
 	}

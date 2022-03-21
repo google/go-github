@@ -1,0 +1,32 @@
+linters:
+  # TODO: fix errors so that all of the linters below pass.
+  # The linters that are commented out, as well as those explicitly disabled,
+  # are currently failing.  We should fix those failures or define exclusion
+  # rules, and then enable those linters.
+  enable:
+    - dogsled
+    - dupl
+    - gofmt
+    - goimports
+  # - gosec
+    - misspell
+    - nakedret
+    - stylecheck
+  # - unconvert
+  # - unparam
+    - whitespace
+  disable:
+    - errcheck
+    - gosimple
+    - staticcheck
+    - ineffassign
+    - unused
+issues: 
+  exclude-rules:
+  - linters:
+    - dogsled
+    text:  "declaration has 3 blank identifiers"
+    path: _test\.go
+  - linters:
+    - dupl
+    path: _test\.go

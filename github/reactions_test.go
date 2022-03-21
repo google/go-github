@@ -868,3 +868,41 @@ func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t 
 		return client.Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx, 1, 2, 3, 4, 5)
 	})
 }
+
+func TestReactionService_CreateReleaseReaction(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/releases/1/reactions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"id":1,"user":{"login":"l","id":2},"content":"rocket"}`))
+	})
+
+	const methodName = "CreateReleaseReaction"
+	ctx := context.Background()
+	got, _, err := client.Reactions.CreateReleaseReaction(ctx, "o", "r", 1, "rocket")
+	if err != nil {
+		t.Errorf("%v returned error: %v", methodName, err)
+	}
+
+	want := &Reaction{ID: Int64(1), User: &User{Login: String("l"), ID: Int64(2)}, Content: String("rocket")}
+	if !cmp.Equal(got, want) {
+		t.Errorf("%v = %+v, want %+v", methodName, got, want)
+	}
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Reactions.CreateReleaseReaction(ctx, "\n", "\n", -1, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Reactions.CreateReleaseReaction(ctx, "o", "r", 1, "rocket")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}

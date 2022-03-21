@@ -14,31 +14,36 @@ import (
 
 // WorkflowRun represents a repository action workflow run.
 type WorkflowRun struct {
-	ID             *int64         `json:"id,omitempty"`
-	Name           *string        `json:"name,omitempty"`
-	NodeID         *string        `json:"node_id,omitempty"`
-	HeadBranch     *string        `json:"head_branch,omitempty"`
-	HeadSHA        *string        `json:"head_sha,omitempty"`
-	RunNumber      *int           `json:"run_number,omitempty"`
-	Event          *string        `json:"event,omitempty"`
-	Status         *string        `json:"status,omitempty"`
-	Conclusion     *string        `json:"conclusion,omitempty"`
-	WorkflowID     *int64         `json:"workflow_id,omitempty"`
-	URL            *string        `json:"url,omitempty"`
-	HTMLURL        *string        `json:"html_url,omitempty"`
-	PullRequests   []*PullRequest `json:"pull_requests,omitempty"`
-	CreatedAt      *Timestamp     `json:"created_at,omitempty"`
-	UpdatedAt      *Timestamp     `json:"updated_at,omitempty"`
-	JobsURL        *string        `json:"jobs_url,omitempty"`
-	LogsURL        *string        `json:"logs_url,omitempty"`
-	CheckSuiteURL  *string        `json:"check_suite_url,omitempty"`
-	ArtifactsURL   *string        `json:"artifacts_url,omitempty"`
-	CancelURL      *string        `json:"cancel_url,omitempty"`
-	RerunURL       *string        `json:"rerun_url,omitempty"`
-	HeadCommit     *HeadCommit    `json:"head_commit,omitempty"`
-	WorkflowURL    *string        `json:"workflow_url,omitempty"`
-	Repository     *Repository    `json:"repository,omitempty"`
-	HeadRepository *Repository    `json:"head_repository,omitempty"`
+	ID                 *int64         `json:"id,omitempty"`
+	Name               *string        `json:"name,omitempty"`
+	NodeID             *string        `json:"node_id,omitempty"`
+	HeadBranch         *string        `json:"head_branch,omitempty"`
+	HeadSHA            *string        `json:"head_sha,omitempty"`
+	RunNumber          *int           `json:"run_number,omitempty"`
+	RunAttempt         *int           `json:"run_attempt,omitempty"`
+	Event              *string        `json:"event,omitempty"`
+	Status             *string        `json:"status,omitempty"`
+	Conclusion         *string        `json:"conclusion,omitempty"`
+	WorkflowID         *int64         `json:"workflow_id,omitempty"`
+	CheckSuiteID       *int64         `json:"check_suite_id,omitempty"`
+	CheckSuiteNodeID   *string        `json:"check_suite_node_id,omitempty"`
+	URL                *string        `json:"url,omitempty"`
+	HTMLURL            *string        `json:"html_url,omitempty"`
+	PullRequests       []*PullRequest `json:"pull_requests,omitempty"`
+	CreatedAt          *Timestamp     `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp     `json:"updated_at,omitempty"`
+	RunStartedAt       *Timestamp     `json:"run_started_at,omitempty"`
+	JobsURL            *string        `json:"jobs_url,omitempty"`
+	LogsURL            *string        `json:"logs_url,omitempty"`
+	CheckSuiteURL      *string        `json:"check_suite_url,omitempty"`
+	ArtifactsURL       *string        `json:"artifacts_url,omitempty"`
+	CancelURL          *string        `json:"cancel_url,omitempty"`
+	RerunURL           *string        `json:"rerun_url,omitempty"`
+	PreviousAttemptURL *string        `json:"previous_attempt_url,omitempty"`
+	HeadCommit         *HeadCommit    `json:"head_commit,omitempty"`
+	WorkflowURL        *string        `json:"workflow_url,omitempty"`
+	Repository         *Repository    `json:"repository,omitempty"`
+	HeadRepository     *Repository    `json:"head_repository,omitempty"`
 }
 
 // WorkflowRuns represents a slice of repository action workflow run.
@@ -49,10 +54,11 @@ type WorkflowRuns struct {
 
 // ListWorkflowRunsOptions specifies optional parameters to ListWorkflowRuns.
 type ListWorkflowRunsOptions struct {
-	Actor  string `url:"actor,omitempty"`
-	Branch string `url:"branch,omitempty"`
-	Event  string `url:"event,omitempty"`
-	Status string `url:"status,omitempty"`
+	Actor   string `url:"actor,omitempty"`
+	Branch  string `url:"branch,omitempty"`
+	Event   string `url:"event,omitempty"`
+	Status  string `url:"status,omitempty"`
+	Created string `url:"created,omitempty"`
 	ListOptions
 }
 
@@ -71,8 +77,20 @@ type WorkflowRunEnvironment struct {
 
 // WorkflowRunBill specifies billable time for a specific environment in a workflow run.
 type WorkflowRunBill struct {
-	TotalMS *int64 `json:"total_ms,omitempty"`
-	Jobs    *int   `json:"jobs,omitempty"`
+	TotalMS *int64               `json:"total_ms,omitempty"`
+	Jobs    *int                 `json:"jobs,omitempty"`
+	JobRuns []*WorkflowRunJobRun `json:"job_runs,omitempty"`
+}
+
+// WorkflowRunJobRun represents a usage of individual jobs of a specific workflow run.
+type WorkflowRunJobRun struct {
+	JobID      *int   `json:"job_id,omitempty"`
+	DurationMS *int64 `json:"duration_ms,omitempty"`
+}
+
+// WorkflowRunAttemptOptions specifies optional parameters to GetWorkflowRunAttempt.
+type WorkflowRunAttemptOptions struct {
+	ExcludePullRequests *bool `url:"exclude_pull_requests,omitempty"`
 }
 
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
@@ -155,6 +173,30 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 	return run, resp, nil
 }
 
+// GetWorkflowRunAttempt gets a specific workflow run attempt.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run-attempt
+func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo string, runID int64, attemptNumber int, opts *WorkflowRunAttemptOptions) (*WorkflowRun, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v", owner, repo, runID, attemptNumber)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	run := new(WorkflowRun)
+	resp, err := s.client.Do(ctx, req, run)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return run, resp, nil
+}
+
 // RerunWorkflowByID re-runs a workflow by ID.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#re-run-a-workflow
@@ -199,6 +241,20 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 	}
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
+}
+
+// DeleteWorkflowRun deletes a workflow run by ID.
+//
+// GitHub API docs: https://docs.github.com/en/rest/reference/actions#delete-a-workflow-run
+func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
 
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.

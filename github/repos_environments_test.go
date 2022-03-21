@@ -108,8 +108,14 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":1, "environments":[{"id":1}, {"id": 2}]}`)
 	})
 
+	opt := &EnvironmentListOptions{
+		ListOptions: ListOptions{
+			Page:    2,
+			PerPage: 2,
+		},
+	}
 	ctx := context.Background()
-	environments, _, err := client.Repositories.ListEnvironments(ctx, "o", "r")
+	environments, _, err := client.Repositories.ListEnvironments(ctx, "o", "r", opt)
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
@@ -120,12 +126,12 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 
 	const methodName = "ListEnvironments"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListEnvironments(ctx, "\n", "\n")
+		_, _, err = client.Repositories.ListEnvironments(ctx, "\n", "\n", opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListEnvironments(ctx, "o", "r")
+		got, resp, err := client.Repositories.ListEnvironments(ctx, "o", "r", opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -237,4 +243,186 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
 	})
+}
+
+func TestRepoEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EnvResponse{}, "{}")
+
+	repoEnv := &EnvResponse{
+		TotalCount: Int(1),
+		Environments: []*Environment{
+			{
+				Owner:           String("me"),
+				Repo:            String("se"),
+				EnvironmentName: String("dev"),
+				WaitTimer:       Int(123),
+				Reviewers: []*EnvReviewers{
+					{
+						Type: String("main"),
+						ID:   Int64(1),
+					},
+					{
+						Type: String("rev"),
+						ID:   Int64(2),
+					},
+				},
+				DeploymentBranchPolicy: &BranchPolicy{
+					ProtectedBranches:    Bool(false),
+					CustomBranchPolicies: Bool(false),
+				},
+				ID:        Int64(2),
+				NodeID:    String("star"),
+				Name:      String("eg"),
+				URL:       String("https://hey.in"),
+				HTMLURL:   String("htmlurl"),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+				ProtectionRules: []*ProtectionRule{
+					{
+						ID:        Int64(21),
+						NodeID:    String("mnb"),
+						Type:      String("ewq"),
+						WaitTimer: Int(9090),
+					},
+				},
+			},
+		},
+	}
+
+	want := `{
+		"total_count":1,
+		"environments":[
+		   {
+			  "owner":"me",
+			  "repo":"se",
+			  "environment_name":"dev",
+			  "wait_timer":123,
+			  "reviewers":[
+				 {
+					"type":"main",
+					"id":1
+				 },
+				 {
+					"type":"rev",
+					"id":2
+				 }
+			  ],
+			  "deployment_branch_policy":{
+				 "protected_branches":false,
+				 "custom_branch_policies":false
+			  },
+			  "id":2,
+			  "node_id":"star",
+			  "name":"eg",
+			  "url":"https://hey.in",
+			  "html_url":"htmlurl",
+			  "created_at":` + referenceTimeStr + `,
+			  "updated_at":` + referenceTimeStr + `,
+			  "protection_rules":[
+				 {
+					"id":21,
+					"node_id":"mnb",
+					"type":"ewq",
+					"wait_timer":9090
+				 }
+			  ]
+		   }
+		]
+	 }`
+
+	testJSONMarshal(t, repoEnv, want)
+}
+
+func TestEnvReviewers_Marshal(t *testing.T) {
+	testJSONMarshal(t, &EnvReviewers{}, "{}")
+
+	repoEnv := &EnvReviewers{
+		Type: String("main"),
+		ID:   Int64(1),
+	}
+
+	want := `{
+		"type":"main",
+		"id":1
+	}`
+
+	testJSONMarshal(t, repoEnv, want)
+}
+
+func TestEnvironment_Marshal(t *testing.T) {
+	testJSONMarshal(t, &Environment{}, "{}")
+
+	repoEnv := &Environment{
+		Owner:           String("o"),
+		Repo:            String("r"),
+		EnvironmentName: String("e"),
+		WaitTimer:       Int(123),
+		Reviewers: []*EnvReviewers{
+			{
+				Type: String("main"),
+				ID:   Int64(1),
+			},
+			{
+				Type: String("rev"),
+				ID:   Int64(2),
+			},
+		},
+		DeploymentBranchPolicy: &BranchPolicy{
+			ProtectedBranches:    Bool(false),
+			CustomBranchPolicies: Bool(false),
+		},
+		ID:        Int64(2),
+		NodeID:    String("star"),
+		Name:      String("eg"),
+		URL:       String("https://hey.in"),
+		HTMLURL:   String("htmlurl"),
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+		ProtectionRules: []*ProtectionRule{
+			{
+				ID:        Int64(21),
+				NodeID:    String("mnb"),
+				Type:      String("ewq"),
+				WaitTimer: Int(9090),
+			},
+		},
+	}
+
+	want := `{
+		"owner":"o",
+		"repo":"r",
+		"environment_name":"e",
+		"wait_timer":123,
+		"reviewers":[
+			{
+				"type":"main",
+				"id":1
+			},
+			{
+				"type":"rev",
+				"id":2
+			}
+		],
+		"deployment_branch_policy":{
+			"protected_branches":false,
+			"custom_branch_policies":false
+		},
+		"id":2,
+		"node_id":"star",
+		"name":"eg",
+		"url":"https://hey.in",
+		"html_url":"htmlurl",
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"protection_rules":[
+			{
+				"id":21,
+				"node_id":"mnb",
+				"type":"ewq",
+				"wait_timer":9090
+			}
+		]
+	}`
+
+	testJSONMarshal(t, repoEnv, want)
 }

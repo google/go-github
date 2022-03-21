@@ -3,11 +3,11 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// newreposecret creates a new secret in GitHub for a given owner/repo.
-// newreposecret depends on sodium being installed. Installation instructions for Sodium can be found at this url:
+// newreposecretwithlibsodium creates a new secret in GitHub for a given owner/repo.
+// newreposecretwithlibsodium depends on sodium being installed. Installation instructions for Sodium can be found at this url:
 // https://github.com/jedisct1/libsodium
 //
-// newreposecret has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
+// nnewreposecretwithlibsodium has two required flags for owner and repo, and takes in one argument for the name of the secret to add.
 // The secret value is pulled from an environment variable based on the secret name.
 // To authenticate with GitHub, provide your token via an environment variable GITHUB_AUTH_TOKEN.
 //
@@ -34,7 +34,7 @@ import (
 	"os"
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
-	"github.com/google/go-github/v37/github"
+	"github.com/google/go-github/v43/github"
 	"golang.org/x/oauth2"
 )
 
@@ -114,7 +114,7 @@ func githubAuth(token string) (context.Context, *github.Client, error) {
 // Finally, the secretName and secretValue will determine the name of the secret added and it's corresponding value.
 //
 // The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
-// using the public key of the target repo. This encryption must be done using sodium.
+// using the public key of the target repo. This encryption is done using sodium.
 //
 // First, the public key of the repo is retrieved. The public key comes base64
 // encoded, so it must be decoded prior to use in sodiumlib.
