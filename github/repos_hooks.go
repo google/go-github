@@ -29,6 +29,8 @@ type WebHookCommit = HeadCommit
 // Deprecated: Please use CommitAuthor instead.
 // WebHookAuthor represents the author or committer of a commit, as specified
 // in a WebHookCommit. The commit author may not correspond to a GitHub User.
+//
+// NOTE Breaking API change: the `Username` field is now called `Login`.
 type WebHookAuthor = CommitAuthor
 
 // Hook represents a GitHub (web and service) hook for a repository.
