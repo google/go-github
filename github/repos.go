@@ -616,9 +616,16 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	resp, err := s.client.Do(ctx, req, nil)
-	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
+	if err != nil {
+		return false, resp, err
+	}
 
-	return vulnerabilityAlertsEnabled, resp, err
+	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
+	if err != nil {
+		return false, resp, err
+	}
+
+	return vulnerabilityAlertsEnabled, resp, nil
 }
 
 // EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
@@ -1073,7 +1080,11 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 
 	b := new(Branch)
 	err = json.NewDecoder(resp.Body).Decode(b)
-	return b, newResponse(resp), err
+	if err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	return b, newResponse(resp), nil
 }
 
 func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
@@ -1099,8 +1110,12 @@ func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, fo
 		resp.Body.Close()
 		u = resp.Header.Get("Location")
 		resp, err = s.getBranchFromURL(ctx, u, false)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return resp, err
+
+	return resp, nil
 }
 
 // renameBranchRequest represents a request to rename a branch.
@@ -1276,7 +1291,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
@@ -1388,7 +1403,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
@@ -1416,7 +1431,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
@@ -1468,7 +1483,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemoveAdminEnforcement removes admin enforcement from a protected branch.

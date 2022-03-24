@@ -423,7 +423,11 @@ func (s *PullRequestsService) IsMerged(ctx context.Context, owner string, repo s
 
 	resp, err := s.client.Do(ctx, req, nil)
 	merged, err := parseBoolResponse(err)
-	return merged, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return merged, resp, nil
 }
 
 // PullRequestMergeResult represents the result of merging a pull request.

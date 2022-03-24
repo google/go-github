@@ -92,7 +92,11 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 
 	resp, err := s.client.Do(ctx, req, nil)
 	following, err := parseBoolResponse(err)
-	return following, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return following, resp, nil
 }
 
 // Follow will cause the authenticated user to follow the specified user.

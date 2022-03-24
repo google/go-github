@@ -108,9 +108,14 @@ func (s *ActivityService) IsStarred(ctx context.Context, owner, repo string) (bo
 	if err != nil {
 		return false, nil, err
 	}
+
 	resp, err := s.client.Do(ctx, req, nil)
 	starred, err := parseBoolResponse(err)
-	return starred, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return starred, resp, nil
 }
 
 // Star a repository as the authenticated user.
@@ -122,6 +127,7 @@ func (s *ActivityService) Star(ctx context.Context, owner, repo string) (*Respon
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -134,5 +140,6 @@ func (s *ActivityService) Unstar(ctx context.Context, owner, repo string) (*Resp
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

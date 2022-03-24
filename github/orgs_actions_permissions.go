@@ -52,7 +52,12 @@ func (s *OrganizationsService) EditActionsPermissions(ctx context.Context, org s
 	if err != nil {
 		return nil, nil, err
 	}
+
 	p := new(ActionsPermissions)
 	resp, err := s.client.Do(ctx, req, p)
-	return p, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
 }

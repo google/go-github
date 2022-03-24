@@ -118,7 +118,12 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
+
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
+	if err != nil {
+		return nil, newResponse(resp), err
+	}
+
 	return parsedURL, newResponse(resp), nil
 }
 
@@ -145,8 +150,12 @@ func (s *ActionsService) getDownloadArtifactFromURL(ctx context.Context, u strin
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
 		resp, err = s.getDownloadArtifactFromURL(ctx, u, false)
+		if err != nil {
+			return resp, err
+		}
 	}
-	return resp, err
+
+	return resp, nil
 }
 
 // DeleteArtifact deletes a workflow run artifact.

@@ -111,7 +111,11 @@ func (s *OrganizationsService) IsMember(ctx context.Context, org, user string) (
 
 	resp, err := s.client.Do(ctx, req, nil)
 	member, err := parseBoolResponse(err)
-	return member, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return member, resp, nil
 }
 
 // IsPublicMember checks if a user is a public member of an organization.
@@ -126,7 +130,11 @@ func (s *OrganizationsService) IsPublicMember(ctx context.Context, org, user str
 
 	resp, err := s.client.Do(ctx, req, nil)
 	member, err := parseBoolResponse(err)
-	return member, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return member, resp, nil
 }
 
 // RemoveMember removes a user from all teams of an organization.
@@ -295,6 +303,7 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return pendingInvitations, resp, nil
 }
 
@@ -336,6 +345,7 @@ func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org stri
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return invitation, resp, nil
 }
 
@@ -360,6 +370,7 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return orgInvitationTeams, resp, nil
 }
 

@@ -122,8 +122,13 @@ func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo str
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
+
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
-	return parsedURL, newResponse(resp), err
+	if err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	return parsedURL, newResponse(resp), nil
 }
 
 func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
@@ -149,6 +154,10 @@ func (s *ActionsService) getWorkflowLogsFromURL(ctx context.Context, u string, f
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		u = resp.Header.Get("Location")
 		resp, err = s.getWorkflowLogsFromURL(ctx, u, false)
+		if err != nil {
+			return resp, err
+		}
 	}
-	return resp, err
+
+	return resp, nil
 }

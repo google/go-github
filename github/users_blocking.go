@@ -53,7 +53,11 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 
 	resp, err := s.client.Do(ctx, req, nil)
 	isBlocked, err := parseBoolResponse(err)
-	return isBlocked, resp, err
+	if err != nil {
+		return false, resp, err
+	}
+
+	return isBlocked, resp, nil
 }
 
 // BlockUser blocks specified user for the authenticated user.
