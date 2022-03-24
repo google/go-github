@@ -46,7 +46,7 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner s
 // EditActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-github-actions-permissions-for-a-repository
-func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner string, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
+func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, actionsPermissionsRepository)
 	if err != nil {
