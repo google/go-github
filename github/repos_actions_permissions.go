@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ActionsPermissions represents a policy for repositories and allowed actions in a repository.
+// ActionsPermissionsRepository represents a policy for repositories and allowed actions in a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-github-actions-permissions-for-a-repository--parameters
 type ActionsPermissionsRepository struct {
