@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // The actionpermissions command utilizes go-github as a cli tool for
-// changing GitHub Actions related permission settings for a repository
+// changing GitHub Actions related permission settings for a repository.
 package main
 
 import (
