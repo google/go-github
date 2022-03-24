@@ -47,7 +47,7 @@ func main() {
 
 	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
 
-	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("selected")}
+	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Bool(true), AllowedActions: github.String("selected")}
 	_, _, err = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +62,7 @@ func main() {
 
 	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
 
-	actionsAllowed = &github.ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
+	actionsAllowed = &github.ActionsAllowed{GithubOwnedAllowed: github.Bool(true), VerifiedAllowed: github.Bool(false), PatternsAllowed: []string{"a/b"}}
 	_, _, err = client.Repositories.EditActionsAllowed(ctx, *owner, *name, *actionsAllowed)
 	if err != nil {
 		log.Fatal(err)
@@ -70,7 +70,7 @@ func main() {
 
 	fmt.Printf("Current ActionsAllowed %s\n", actionsAllowed.String())
 
-	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: Bool(true), AllowedActions: String("all")}
+	actionsPermissionsRepository = &github.ActionsPermissionsRepository{Enabled: github.Bool(true), AllowedActions: github.String("all")}
 	_, _, err = client.Repositories.EditActionsPermissions(ctx, *owner, *name, *actionsPermissionsRepository)
 	if err != nil {
 		log.Fatal(err)
@@ -78,11 +78,3 @@ func main() {
 
 	fmt.Printf("Current ActionsPermissions %s\n", actionsPermissionsRepository.String())
 }
-
-// Bool is a helper routine that allocates a new bool value
-// to store v and returns a pointer to it.
-func Bool(v bool) *bool { return &v }
-
-// String is a helper routine that allocates a new string value
-// to store v and returns a pointer to it.
-func String(v string) *string { return &v }
