@@ -28,7 +28,6 @@ func (a ActionsPermissionsRepository) String() string {
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-github-actions-permissions-for-a-repository
 func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, repo string) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -52,7 +51,12 @@ func (s *RepositoriesService) EditActionsPermissions(ctx context.Context, owner,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	permissions := new(ActionsPermissionsRepository)
 	resp, err := s.client.Do(ctx, req, permissions)
-	return permissions, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
 }

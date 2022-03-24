@@ -15,7 +15,6 @@ import (
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-allowed-actions-and-workflows-for-a-repository
 func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/selected-actions", org, repo)
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -39,7 +38,12 @@ func (s *RepositoriesService) EditActionsAllowed(ctx context.Context, org, repo 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	p := new(ActionsAllowed)
 	resp, err := s.client.Do(ctx, req, p)
-	return p, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return p, resp, nil
 }
