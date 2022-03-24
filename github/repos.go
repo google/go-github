@@ -616,10 +616,6 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return false, resp, err
-	}
-
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
 	if err != nil {
 		return false, resp, err
