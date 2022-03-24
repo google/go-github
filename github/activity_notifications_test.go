@@ -59,7 +59,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 	})
 }
 
-func TestActivityService_ListRepositoryNotification(t *testing.T) {
+func TestActivityService_ListRepositoryNotifications(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -81,7 +81,7 @@ func TestActivityService_ListRepositoryNotification(t *testing.T) {
 
 	const methodName = "ListRepositoryNotifications"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Activity.ListRepositoryNotifications(ctx, "\n", "\n", nil)
+		_, _, err = client.Activity.ListRepositoryNotifications(ctx, "\n", "\n", &NotificationListOptions{})
 		return err
 	})
 

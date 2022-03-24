@@ -717,20 +717,6 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 	}
 }
 
-func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_missingLocation(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		http.Redirect(w, r, "", http.StatusMovedPermanently)
-	})
-	ctx := context.Background()
-	_, resp, _ := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
-	if resp.StatusCode != http.StatusMovedPermanently {
-		t.Errorf("Repositories.GetArchiveLink returned status: %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
-	}
-}
-
 func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirects(t *testing.T) {
 	client, mux, serverURL, teardown := setup()
 	defer teardown()

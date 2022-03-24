@@ -120,11 +120,7 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
-	if err != nil {
-		return nil, newResponse(resp), err
-	}
-
-	return parsedURL, newResponse(resp), nil
+	return parsedURL, newResponse(resp), err
 }
 
 // DeleteArtifact deletes a workflow run artifact.

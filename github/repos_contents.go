@@ -318,9 +318,5 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
-	if err != nil {
-		return nil, newResponse(resp), err
-	}
-
-	return parsedURL, newResponse(resp), nil
+	return parsedURL, newResponse(resp), err
 }

@@ -240,6 +240,7 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
+
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
 	return parsedURL, newResponse(resp), err
 }
