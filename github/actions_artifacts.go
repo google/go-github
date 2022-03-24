@@ -110,7 +110,7 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
-	resp, err := s.getDownloadArtifactFromURL(ctx, u, followRedirects)
+	resp, err := s.client.getDownloadArtifactFromURL(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -125,37 +125,6 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 	}
 
 	return parsedURL, newResponse(resp), nil
-}
-
-func (s *ActionsService) getDownloadArtifactFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp *http.Response
-	// Use http.DefaultTransport if no custom Transport is configured
-	req = withContext(ctx, req)
-	if s.client.client.Transport == nil {
-		resp, err = http.DefaultTransport.RoundTrip(req)
-	} else {
-		resp, err = s.client.client.Transport.RoundTrip(req)
-	}
-	if err != nil {
-		return nil, err
-	}
-	resp.Body.Close()
-
-	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
-		u = resp.Header.Get("Location")
-		resp, err = s.getDownloadArtifactFromURL(ctx, u, false)
-		if err != nil {
-			return resp, err
-		}
-	}
-
-	return resp, nil
 }
 
 // DeleteArtifact deletes a workflow run artifact.
