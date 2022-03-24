@@ -1302,10 +1302,10 @@ func (c *Client) getDownloadArtifactFromURL(ctx context.Context, u string, follo
 	if err != nil {
 		return nil, err
 	}
-	resp.Body.Close()
 
 	// If redirect response is returned, follow it
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
 		u = resp.Header.Get("Location")
 		resp, err = c.getDownloadArtifactFromURL(ctx, u, false)
 		if err != nil {
