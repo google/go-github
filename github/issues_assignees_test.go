@@ -202,6 +202,14 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 		_, _, err = client.Issues.AddAssignees(ctx, "\n", "\n", -1, []string{"\n", "\n"})
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.AddAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_RemoveAssignees(t *testing.T) {
@@ -237,5 +245,13 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Issues.RemoveAssignees(ctx, "\n", "\n", -1, []string{"\n", "\n"})
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.RemoveAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }

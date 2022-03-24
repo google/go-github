@@ -82,6 +82,14 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 		_, _, err = client.Organizations.EditActionsAllowed(ctx, "\n", *input)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.EditActionsAllowed(ctx, "o", *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsAllowed_Marshal(t *testing.T) {

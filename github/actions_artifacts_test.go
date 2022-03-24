@@ -340,6 +340,22 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 	}
 }
 
+func TestActionsService_DownloadArtifact_StatusMovedPermanently_missingLocation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		http.Redirect(w, r, "", http.StatusMovedPermanently)
+	})
+
+	ctx := context.Background()
+	_, resp, _ := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
+	if resp.StatusCode != http.StatusMovedPermanently {
+		t.Errorf("Actions.DownloadArtifact return status %d, want %d", resp.StatusCode, http.StatusMovedPermanently)
+	}
+}
+
 func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(t *testing.T) {
 	client, mux, serverURL, teardown := setup()
 	defer teardown()
