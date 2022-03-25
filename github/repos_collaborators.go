@@ -78,11 +78,7 @@ func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, u
 
 	resp, err := s.client.Do(ctx, req, nil)
 	isCollab, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return isCollab, resp, nil
+	return isCollab, resp, err
 }
 
 // RepositoryPermissionLevel represents the permission level an organization
