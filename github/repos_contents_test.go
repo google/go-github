@@ -670,12 +670,12 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		http.Redirect(w, r, "http://github.com/a", http.StatusFound)
 	})
 	ctx := context.Background()
-	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, true)
+	url, resp, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{Ref: "yo"}, true)
 	if err != nil {
 		t.Errorf("Repositories.GetArchiveLink returned error: %v", err)
 	}
