@@ -11,7 +11,6 @@ import (
 	"time"
 )
 
-// Deprecated: Please use PushEvent instead.
 // WebHookPayload represents the data that is received from GitHub when a push
 // event hook is triggered. The format of these payloads pre-date most of the
 // GitHub v3 API, so there are lots of minor incompatibilities with the types
@@ -19,17 +18,20 @@ import (
 // here to account for these differences.
 //
 // GitHub API docs: https://help.github.com/articles/post-receive-hooks
+//
+// Deprecated: Please use PushEvent instead.
 type WebHookPayload = PushEvent
 
-// Deprecated: Please use HeadCommit instead.
 // WebHookCommit represents the commit variant we receive from GitHub in a
 // WebHookPayload.
+//
+// Deprecated: Please use HeadCommit instead.
 type WebHookCommit = HeadCommit
 
-// Deprecated: Please use CommitAuthor instead.
 // WebHookAuthor represents the author or committer of a commit, as specified
 // in a WebHookCommit. The commit author may not correspond to a GitHub User.
 //
+// Deprecated: Please use CommitAuthor instead.
 // NOTE Breaking API change: the `Username` field is now called `Login`.
 type WebHookAuthor = CommitAuthor
 
