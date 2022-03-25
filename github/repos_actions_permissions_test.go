@@ -83,6 +83,14 @@ func TestRepositoriesService_EditActionsPermissions(t *testing.T) {
 		_, _, err = client.Repositories.EditActionsPermissions(ctx, "\n", "\n", *input)
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.EditActionsPermissions(ctx, "o", "r", *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestActionsPermissionsRepository_Marshal(t *testing.T) {
