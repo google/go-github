@@ -73,6 +73,36 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissionsRepository_GetAllowedActions(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsRepository{AllowedActions: &zeroValue}
+	a.GetAllowedActions()
+	a = &ActionsPermissionsRepository{}
+	a.GetAllowedActions()
+	a = nil
+	a.GetAllowedActions()
+}
+
+func TestActionsPermissionsRepository_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	a := &ActionsPermissionsRepository{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &ActionsPermissionsRepository{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestActionsPermissionsRepository_GetSelectedActionsURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsPermissionsRepository{SelectedActionsURL: &zeroValue}
+	a.GetSelectedActionsURL()
+	a = &ActionsPermissionsRepository{}
+	a.GetSelectedActionsURL()
+	a = nil
+	a.GetSelectedActionsURL()
+}
+
 func TestAdminEnforcement_GetURL(tt *testing.T) {
 	var zeroValue string
 	a := &AdminEnforcement{URL: &zeroValue}
