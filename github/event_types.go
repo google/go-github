@@ -885,6 +885,7 @@ type PushEvent struct {
 	DistinctSize *int          `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
+	Action       *string              `json:"action,omitempty"`
 	After        *string              `json:"after,omitempty"`
 	Created      *bool                `json:"created,omitempty"`
 	Deleted      *bool                `json:"deleted,omitempty"`

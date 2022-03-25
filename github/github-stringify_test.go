@@ -1341,6 +1341,7 @@ func TestPushEvent_String(t *testing.T) {
 		Size:         Int(0),
 		Before:       String(""),
 		DistinctSize: Int(0),
+		Action:       String(""),
 		After:        String(""),
 		Created:      Bool(false),
 		Deleted:      Bool(false),
@@ -1354,7 +1355,7 @@ func TestPushEvent_String(t *testing.T) {
 		Installation: &Installation{},
 		Organization: &Organization{},
 	}
-	want := `github.PushEvent{PushID:0, Head:"", Ref:"", Size:0, Before:"", DistinctSize:0, After:"", Created:false, Deleted:false, Forced:false, BaseRef:"", Compare:"", Repo:github.PushEventRepository{}, HeadCommit:github.HeadCommit{}, Pusher:github.User{}, Sender:github.User{}, Installation:github.Installation{}, Organization:github.Organization{}}`
+	want := `github.PushEvent{PushID:0, Head:"", Ref:"", Size:0, Before:"", DistinctSize:0, Action:"", After:"", Created:false, Deleted:false, Forced:false, BaseRef:"", Compare:"", Repo:github.PushEventRepository{}, HeadCommit:github.HeadCommit{}, Pusher:github.User{}, Sender:github.User{}, Installation:github.Installation{}, Organization:github.Organization{}}`
 	if got := v.String(); got != want {
 		t.Errorf("PushEvent.String = %v, want %v", got, want)
 	}
@@ -1948,58 +1949,6 @@ func TestUserStats_String(t *testing.T) {
 	want := `github.UserStats{TotalUsers:0, AdminUsers:0, SuspendedUsers:0}`
 	if got := v.String(); got != want {
 		t.Errorf("UserStats.String = %v, want %v", got, want)
-	}
-}
-
-func TestWebHookAuthor_String(t *testing.T) {
-	v := WebHookAuthor{
-		Email:    String(""),
-		Name:     String(""),
-		Username: String(""),
-	}
-	want := `github.WebHookAuthor{Email:"", Name:"", Username:""}`
-	if got := v.String(); got != want {
-		t.Errorf("WebHookAuthor.String = %v, want %v", got, want)
-	}
-}
-
-func TestWebHookCommit_String(t *testing.T) {
-	v := WebHookCommit{
-		Added:     []string{""},
-		Author:    &WebHookAuthor{},
-		Committer: &WebHookAuthor{},
-		Distinct:  Bool(false),
-		ID:        String(""),
-		Message:   String(""),
-		Modified:  []string{""},
-		Removed:   []string{""},
-	}
-	want := `github.WebHookCommit{Added:[""], Author:github.WebHookAuthor{}, Committer:github.WebHookAuthor{}, Distinct:false, ID:"", Message:"", Modified:[""], Removed:[""]}`
-	if got := v.String(); got != want {
-		t.Errorf("WebHookCommit.String = %v, want %v", got, want)
-	}
-}
-
-func TestWebHookPayload_String(t *testing.T) {
-	v := WebHookPayload{
-		Action:       String(""),
-		After:        String(""),
-		Before:       String(""),
-		Compare:      String(""),
-		Created:      Bool(false),
-		Deleted:      Bool(false),
-		Forced:       Bool(false),
-		HeadCommit:   &WebHookCommit{},
-		Installation: &Installation{},
-		Organization: &Organization{},
-		Pusher:       &User{},
-		Ref:          String(""),
-		Repo:         &Repository{},
-		Sender:       &User{},
-	}
-	want := `github.WebHookPayload{Action:"", After:"", Before:"", Compare:"", Created:false, Deleted:false, Forced:false, HeadCommit:github.WebHookCommit{}, Installation:github.Installation{}, Organization:github.Organization{}, Pusher:github.User{}, Ref:"", Repo:github.Repository{}, Sender:github.User{}}`
-	if got := v.String(); got != want {
-		t.Errorf("WebHookPayload.String = %v, want %v", got, want)
 	}
 }
 
