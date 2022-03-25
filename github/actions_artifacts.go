@@ -114,6 +114,7 @@ func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo strin
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)

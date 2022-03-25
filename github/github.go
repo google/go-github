@@ -1279,6 +1279,8 @@ func formatRateReset(d time.Duration) string {
 	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 
+// When using roundTripWithOptionalFollowRedirect, note that it
+// is the responsibility of the caller to close the response body.
 func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
 	req, err := c.NewRequest("GET", u, nil)
 	if err != nil {

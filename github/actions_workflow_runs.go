@@ -235,6 +235,7 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
