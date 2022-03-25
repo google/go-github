@@ -1285,37 +1285,6 @@ func formatRateReset(d time.Duration) string {
 	return fmt.Sprintf("[rate reset in %v]", timeString)
 }
 
-func (c *Client) getDownloadArtifactFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
-	req, err := c.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp *http.Response
-	// Use http.DefaultTransport if no custom Transport is configured
-	req = withContext(ctx, req)
-	if c.client.Transport == nil {
-		resp, err = http.DefaultTransport.RoundTrip(req)
-	} else {
-		resp, err = c.client.Transport.RoundTrip(req)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
-		resp.Body.Close()
-		u = resp.Header.Get("Location")
-		resp, err = c.getDownloadArtifactFromURL(ctx, u, false)
-		if err != nil {
-			return resp, err
-		}
-	}
-
-	return resp, nil
-}
-
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
 func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
