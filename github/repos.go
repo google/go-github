@@ -1064,8 +1064,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
 
-	// the DownloadArtifact in this case is the branch.
-	resp, err := s.client.getDownloadArtifactFromURL(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1077,11 +1076,7 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 
 	b := new(Branch)
 	err = json.NewDecoder(resp.Body).Decode(b)
-	if err != nil {
-		return nil, newResponse(resp), err
-	}
-
-	return b, newResponse(resp), nil
+	return b, newResponse(resp), err
 }
 
 // renameBranchRequest represents a request to rename a branch.

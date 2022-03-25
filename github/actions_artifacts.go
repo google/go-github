@@ -110,17 +110,18 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
-	resp, err := s.client.getDownloadArtifactFromURL(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
 	}
 
 	parsedURL, err := url.Parse(resp.Header.Get("Location"))
-	return parsedURL, newResponse(resp), err
+	return parsedURL, newResponse(resp), nil
 }
 
 // DeleteArtifact deletes a workflow run artifact.

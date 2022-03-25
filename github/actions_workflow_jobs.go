@@ -114,11 +114,11 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
-	// The DownloadArtifact in this case are the workflow logs URL.
-	resp, err := s.client.getDownloadArtifactFromURL(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)

@@ -306,12 +306,11 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	if opts != nil && opts.Ref != "" {
 		u += fmt.Sprintf("/%s", opts.Ref)
 	}
-
-	// the DownloadArtifact in this case is the archive link.
-	resp, err := s.client.getDownloadArtifactFromURL(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusFound {
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %s", resp.Status)
