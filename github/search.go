@@ -73,7 +73,11 @@ type RepositoriesSearchResult struct {
 func (s *SearchService) Repositories(ctx context.Context, query string, opts *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
 	result := new(RepositoriesSearchResult)
 	resp, err := s.search(ctx, "repositories", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // TopicsSearchResult represents the result of a topics search.
@@ -104,7 +108,11 @@ type TopicResult struct {
 func (s *SearchService) Topics(ctx context.Context, query string, opts *SearchOptions) (*TopicsSearchResult, *Response, error) {
 	result := new(TopicsSearchResult)
 	resp, err := s.search(ctx, "topics", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // CommitsSearchResult represents the result of a commits search.
@@ -135,7 +143,11 @@ type CommitResult struct {
 func (s *SearchService) Commits(ctx context.Context, query string, opts *SearchOptions) (*CommitsSearchResult, *Response, error) {
 	result := new(CommitsSearchResult)
 	resp, err := s.search(ctx, "commits", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // IssuesSearchResult represents the result of an issues search.
@@ -151,7 +163,11 @@ type IssuesSearchResult struct {
 func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error) {
 	result := new(IssuesSearchResult)
 	resp, err := s.search(ctx, "issues", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // UsersSearchResult represents the result of a users search.
@@ -167,7 +183,11 @@ type UsersSearchResult struct {
 func (s *SearchService) Users(ctx context.Context, query string, opts *SearchOptions) (*UsersSearchResult, *Response, error) {
 	result := new(UsersSearchResult)
 	resp, err := s.search(ctx, "users", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // Match represents a single text match.
@@ -216,7 +236,11 @@ func (c CodeResult) String() string {
 func (s *SearchService) Code(ctx context.Context, query string, opts *SearchOptions) (*CodeSearchResult, *Response, error) {
 	result := new(CodeSearchResult)
 	resp, err := s.search(ctx, "code", &searchParameters{Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // LabelsSearchResult represents the result of a code search.
@@ -247,7 +271,11 @@ func (l LabelResult) String() string {
 func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opts *SearchOptions) (*LabelsSearchResult, *Response, error) {
 	result := new(LabelsSearchResult)
 	resp, err := s.search(ctx, "labels", &searchParameters{RepositoryID: &repoID, Query: query}, opts, result)
-	return result, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
 
 // Helper function that executes search queries against different
@@ -260,6 +288,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	if err != nil {
 		return nil, err
 	}
+
 	if parameters.RepositoryID != nil {
 		params.Set("repository_id", strconv.FormatInt(*parameters.RepositoryID, 10))
 	}

@@ -617,7 +617,6 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
-
 	return vulnerabilityAlertsEnabled, resp, err
 }
 
@@ -1061,7 +1060,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner string, re
 func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, followRedirects bool) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v", owner, repo, branch)
 
-	resp, err := s.getBranchFromURL(ctx, u, followRedirects)
+	resp, err := s.client.roundTripWithOptionalFollowRedirect(ctx, u, followRedirects)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1074,33 +1073,6 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 	b := new(Branch)
 	err = json.NewDecoder(resp.Body).Decode(b)
 	return b, newResponse(resp), err
-}
-
-func (s *RepositoriesService) getBranchFromURL(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp *http.Response
-	// Use http.DefaultTransport if no custom Transport is configured
-	req = withContext(ctx, req)
-	if s.client.client.Transport == nil {
-		resp, err = http.DefaultTransport.RoundTrip(req)
-	} else {
-		resp, err = s.client.client.Transport.RoundTrip(req)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	// If redirect response is returned, follow it
-	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
-		resp.Body.Close()
-		u = resp.Header.Get("Location")
-		resp, err = s.getBranchFromURL(ctx, u, false)
-	}
-	return resp, err
 }
 
 // renameBranchRequest represents a request to rename a branch.
@@ -1276,7 +1248,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
@@ -1388,7 +1360,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
@@ -1416,7 +1388,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
@@ -1468,7 +1440,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemoveAdminEnforcement removes admin enforcement from a protected branch.

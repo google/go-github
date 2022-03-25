@@ -1,4 +1,4 @@
-// Copyright 2021 The go-github AUTHORS. All rights reserved.
+// Copyright 2022 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -15,33 +15,33 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
+func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Organizations.GetActionsAllowed(ctx, "o")
+	org, _, err := client.Repositories.GetActionsAllowed(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Organizations.GetActionsAllowed returned error: %v", err)
+		t.Errorf("Repositories.GetActionsAllowed returned error: %v", err)
 	}
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Organizations.GetActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
 
 	const methodName = "GetActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetActionsAllowed(ctx, "\n")
+		_, _, err = client.Repositories.GetActionsAllowed(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetActionsAllowed(ctx, "o")
+		got, resp, err := client.Repositories.GetActionsAllowed(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -49,12 +49,12 @@ func TestOrganizationsService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
+func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	input := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 
-	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsAllowed)
 		json.NewDecoder(r.Body).Decode(v)
 
@@ -67,65 +67,27 @@ func TestOrganizationsService_EditActionsAllowed(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	org, _, err := client.Organizations.EditActionsAllowed(ctx, "o", *input)
+	org, _, err := client.Repositories.EditActionsAllowed(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Organizations.EditActionsAllowed returned error: %v", err)
+		t.Errorf("Repositories.EditActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Bool(true), VerifiedAllowed: Bool(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Organizations.EditActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.EditActionsAllowed returned %+v, want %+v", org, want)
 	}
 
 	const methodName = "EditActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditActionsAllowed(ctx, "\n", *input)
+		_, _, err = client.Repositories.EditActionsAllowed(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.EditActionsAllowed(ctx, "o", *input)
+		got, resp, err := client.Repositories.EditActionsAllowed(ctx, "o", "r", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
-}
-
-func TestActionsAllowed_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ActionsAllowed{}, "{}")
-
-	u := &ActionsAllowed{
-		GithubOwnedAllowed: Bool(false),
-		VerifiedAllowed:    Bool(false),
-		PatternsAllowed:    []string{"s"},
-	}
-
-	want := `{
-		"github_owned_allowed": false,
-		"verified_allowed": false,
-		"patterns_allowed": [
-			"s"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestActionsPermissions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ActionsPermissions{}, "{}")
-
-	u := &ActionsPermissions{
-		EnabledRepositories: String("e"),
-		AllowedActions:      String("a"),
-		SelectedActionsURL:  String("sau"),
-	}
-
-	want := `{
-		"enabled_repositories": "e",
-		"allowed_actions": "a",
-		"selected_actions_url": "sau"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

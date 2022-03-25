@@ -60,6 +60,30 @@ func (a *ActionsPermissions) GetSelectedActionsURL() string {
 	return *a.SelectedActionsURL
 }
 
+// GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsRepository) GetAllowedActions() string {
+	if a == nil || a.AllowedActions == nil {
+		return ""
+	}
+	return *a.AllowedActions
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsRepository) GetEnabled() bool {
+	if a == nil || a.Enabled == nil {
+		return false
+	}
+	return *a.Enabled
+}
+
+// GetSelectedActionsURL returns the SelectedActionsURL field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsRepository) GetSelectedActionsURL() string {
+	if a == nil || a.SelectedActionsURL == nil {
+		return ""
+	}
+	return *a.SelectedActionsURL
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcement) GetURL() string {
 	if a == nil || a.URL == nil {

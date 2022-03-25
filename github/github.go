@@ -353,6 +353,7 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	if err != nil {
 		return nil, err
 	}
+
 	if !strings.HasSuffix(baseEndpoint.Path, "/") {
 		baseEndpoint.Path += "/"
 	}
@@ -366,6 +367,7 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	if err != nil {
 		return nil, err
 	}
+
 	if !strings.HasSuffix(uploadEndpoint.Path, "/") {
 		uploadEndpoint.Path += "/"
 	}
@@ -390,6 +392,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -437,6 +440,7 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	if err != nil {
 		return nil, err
 	}
+
 	req.ContentLength = size
 
 	if mediaType == "" {
@@ -621,6 +625,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 	if ctx == nil {
 		return nil, errNonNilContext
 	}
+
 	req = withContext(ctx, req)
 
 	rateLimitCategory := category(req.URL.Path)
@@ -996,6 +1001,7 @@ func CheckResponse(r *http.Response) error {
 	if c := r.StatusCode; 200 <= c && c <= 299 {
 		return nil
 	}
+
 	errorResponse := &ErrorResponse{Response: r}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
@@ -1277,6 +1283,35 @@ func formatRateReset(d time.Duration) string {
 		return fmt.Sprintf("[rate limit was reset %v ago]", timeString)
 	}
 	return fmt.Sprintf("[rate reset in %v]", timeString)
+}
+
+// When using roundTripWithOptionalFollowRedirect, note that it
+// is the responsibility of the caller to close the response body.
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
+	req, err := c.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp *http.Response
+	// Use http.DefaultTransport if no custom Transport is configured
+	req = withContext(ctx, req)
+	if c.client.Transport == nil {
+		resp, err = http.DefaultTransport.RoundTrip(req)
+	} else {
+		resp, err = c.client.Transport.RoundTrip(req)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	// If redirect response is returned, follow it
+	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
+		resp.Body.Close()
+		u = resp.Header.Get("Location")
+		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false)
+	}
+	return resp, err
 }
 
 // Bool is a helper routine that allocates a new bool value
