@@ -111,11 +111,7 @@ func (s *OrganizationsService) IsMember(ctx context.Context, org, user string) (
 
 	resp, err := s.client.Do(ctx, req, nil)
 	member, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return member, resp, nil
+	return member, resp, err
 }
 
 // IsPublicMember checks if a user is a public member of an organization.
@@ -130,11 +126,7 @@ func (s *OrganizationsService) IsPublicMember(ctx context.Context, org, user str
 
 	resp, err := s.client.Do(ctx, req, nil)
 	member, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return member, resp, nil
+	return member, resp, err
 }
 
 // RemoveMember removes a user from all teams of an organization.

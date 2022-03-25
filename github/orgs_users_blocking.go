@@ -53,11 +53,7 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org string, user s
 
 	resp, err := s.client.Do(ctx, req, nil)
 	isBlocked, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return isBlocked, resp, nil
+	return isBlocked, resp, err
 }
 
 // BlockUser blocks specified user from an organization.

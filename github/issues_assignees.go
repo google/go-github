@@ -47,11 +47,7 @@ func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string
 
 	resp, err := s.client.Do(ctx, req, nil)
 	assignee, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return assignee, resp, nil
+	return assignee, resp, err
 }
 
 // AddAssignees adds the provided GitHub users as assignees to the issue.

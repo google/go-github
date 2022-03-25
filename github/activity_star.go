@@ -111,11 +111,7 @@ func (s *ActivityService) IsStarred(ctx context.Context, owner, repo string) (bo
 
 	resp, err := s.client.Do(ctx, req, nil)
 	starred, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return starred, resp, nil
+	return starred, resp, err
 }
 
 // Star a repository as the authenticated user.

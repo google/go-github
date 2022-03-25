@@ -321,11 +321,7 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 
 	resp, err := s.client.Do(ctx, req, nil)
 	starred, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return starred, resp, nil
+	return starred, resp, err
 }
 
 // Fork a gist.

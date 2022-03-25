@@ -617,11 +617,7 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
-	if err != nil {
-		return false, resp, err
-	}
-
-	return vulnerabilityAlertsEnabled, resp, nil
+	return vulnerabilityAlertsEnabled, resp, err
 }
 
 // EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
