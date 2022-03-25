@@ -617,7 +617,6 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 
 	resp, err := s.client.Do(ctx, req, nil)
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
-
 	return vulnerabilityAlertsEnabled, resp, err
 }
 
@@ -1249,7 +1248,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // OptionalSignaturesOnProtectedBranch removes required signed commits on a given branch.
@@ -1361,7 +1360,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // DisableDismissalRestrictions disables dismissal restrictions of a protected branch.
@@ -1389,7 +1388,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemovePullRequestReviewEnforcement removes pull request enforcement of a protected branch.
@@ -1441,7 +1440,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 		return nil, resp, err
 	}
 
-	return r, resp, err
+	return r, resp, nil
 }
 
 // RemoveAdminEnforcement removes admin enforcement from a protected branch.

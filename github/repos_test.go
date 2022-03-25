@@ -915,6 +915,21 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetBranch_BadJSONResponse(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"name":"n", "commit":{"sha":...truncated`)
+	})
+
+	ctx := context.Background()
+	if _, _, err := client.Repositories.GetBranch(ctx, "o", "r", "b", false); err == nil {
+		t.Error("Repositories.GetBranch returned no error; wanted JSON error")
+	}
+}
+
 func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t *testing.T) {
 	client, mux, serverURL, teardown := setup()
 	defer teardown()
@@ -976,7 +991,7 @@ func TestRepositoriesService_GetBranch_notFound(t *testing.T) {
 
 	const methodName = "GetBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetBranch(ctx, "o", "r", "b", true)
+		_, _, err = client.Repositories.GetBranch(ctx, "\n", "\n", "\n", true)
 		return err
 	})
 }

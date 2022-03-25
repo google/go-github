@@ -49,6 +49,14 @@ func TestGitService_GetBlob(t *testing.T) {
 		_, _, err = client.Git.GetBlob(ctx, "\n", "\n", "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.GetBlob(ctx, "o", "r", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_GetBlob_invalidOwner(t *testing.T) {
@@ -143,6 +151,14 @@ func TestGitService_CreateBlob(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.CreateBlob(ctx, "\n", "\n", input)
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.CreateBlob(ctx, "o", "r", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 

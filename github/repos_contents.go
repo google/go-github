@@ -102,15 +102,18 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	readme := new(RepositoryContent)
 	resp, err := s.client.Do(ctx, req, readme)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return readme, resp, nil
 }
 
@@ -129,18 +132,22 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	if err != nil {
 		return nil, resp, err
 	}
+
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
+
 			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
 				return nil, &Response{Response: dlResp}, err
 			}
+
 			return dlResp.Body, &Response{Response: dlResp}, nil
 		}
 	}
+
 	return nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
 }
 
@@ -159,18 +166,22 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	if err != nil {
 		return nil, nil, resp, err
 	}
+
 	for _, contents := range dirContents {
 		if *contents.Name == filename {
 			if contents.DownloadURL == nil || *contents.DownloadURL == "" {
 				return nil, contents, resp, fmt.Errorf("no download link found for %s", filepath)
 			}
+
 			dlResp, err := s.client.client.Get(*contents.DownloadURL)
 			if err != nil {
 				return nil, contents, &Response{Response: dlResp}, err
 			}
+
 			return dlResp.Body, contents, &Response{Response: dlResp}, nil
 		}
 	}
+
 	return nil, nil, resp, fmt.Errorf("no file named %s found in %s", filename, dir)
 }
 
@@ -189,23 +200,28 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 	if err != nil {
 		return nil, nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, nil, err
 	}
+
 	var rawJSON json.RawMessage
 	resp, err = s.client.Do(ctx, req, &rawJSON)
 	if err != nil {
 		return nil, nil, resp, err
 	}
+
 	fileUnmarshalError := json.Unmarshal(rawJSON, &fileContent)
 	if fileUnmarshalError == nil {
 		return fileContent, nil, resp, nil
 	}
+
 	directoryUnmarshalError := json.Unmarshal(rawJSON, &directoryContent)
 	if directoryUnmarshalError == nil {
 		return nil, directoryContent, resp, nil
 	}
+
 	return nil, nil, resp, fmt.Errorf("unmarshalling failed for both file and directory content: %s and %s", fileUnmarshalError, directoryUnmarshalError)
 }
 
@@ -219,11 +235,13 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	createResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(ctx, req, createResponse)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return createResponse, resp, nil
 }
 
@@ -237,11 +255,13 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	updateResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(ctx, req, updateResponse)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return updateResponse, resp, nil
 }
 
@@ -255,11 +275,13 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path 
 	if err != nil {
 		return nil, nil, err
 	}
+
 	deleteResponse := new(RepositoryContentResponse)
 	resp, err := s.client.Do(ctx, req, deleteResponse)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return deleteResponse, resp, nil
 }
 

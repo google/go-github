@@ -180,5 +180,9 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 
 	var events []*Timeline
 	resp, err := s.client.Do(ctx, req, &events)
-	return events, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return events, resp, nil
 }

@@ -121,6 +121,9 @@ func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo
 
 	var weeks [][]int
 	resp, err := s.client.Do(ctx, req, &weeks)
+	if err != nil {
+		return nil, resp, err
+	}
 
 	// convert int slices into WeeklyStats
 	var stats []*WeeklyStats
@@ -136,7 +139,7 @@ func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo
 		stats = append(stats, stat)
 	}
 
-	return stats, resp, err
+	return stats, resp, nil
 }
 
 // RepositoryParticipation is the number of commits by everyone
@@ -207,6 +210,9 @@ func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo str
 
 	var results [][]int
 	resp, err := s.client.Do(ctx, req, &results)
+	if err != nil {
+		return nil, resp, err
+	}
 
 	// convert int slices into Punchcards
 	var cards []*PunchCard
@@ -222,5 +228,5 @@ func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo str
 		cards = append(cards, card)
 	}
 
-	return cards, resp, err
+	return cards, resp, nil
 }

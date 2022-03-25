@@ -45,7 +45,11 @@ func (s *GitService) GetTag(ctx context.Context, owner string, repo string, sha 
 
 	tag := new(Tag)
 	resp, err := s.client.Do(ctx, req, tag)
-	return tag, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return tag, resp, nil
 }
 
 // CreateTag creates a tag object.
@@ -72,5 +76,9 @@ func (s *GitService) CreateTag(ctx context.Context, owner string, repo string, t
 
 	t := new(Tag)
 	resp, err := s.client.Do(ctx, req, t)
-	return t, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
 }

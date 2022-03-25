@@ -25,6 +25,7 @@ func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, o
 	if err != nil {
 		return nil, nil, err
 	}
+
 	var assignees []*User
 	resp, err := s.client.Do(ctx, req, &assignees)
 	if err != nil {
@@ -43,6 +44,7 @@ func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string
 	if err != nil {
 		return false, nil, err
 	}
+
 	resp, err := s.client.Do(ctx, req, nil)
 	assignee, err := parseBoolResponse(err)
 	return assignee, resp, err
@@ -63,7 +65,11 @@ func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, nu
 
 	issue := &Issue{}
 	resp, err := s.client.Do(ctx, req, issue)
-	return issue, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issue, resp, nil
 }
 
 // RemoveAssignees removes the provided GitHub users as assignees from the issue.
@@ -81,5 +87,9 @@ func (s *IssuesService) RemoveAssignees(ctx context.Context, owner, repo string,
 
 	issue := &Issue{}
 	resp, err := s.client.Do(ctx, req, issue)
-	return issue, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issue, resp, nil
 }
