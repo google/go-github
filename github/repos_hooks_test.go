@@ -316,14 +316,14 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			{
 				Added: []string{"1", "2", "3"},
 				Author: &WebHookAuthor{
-					Email:    String("abc@gmail.com"),
-					Name:     String("abc"),
-					Username: String("abc_12"),
+					Email: String("abc@gmail.com"),
+					Name:  String("abc"),
+					Login: String("abc_12"),
 				},
 				Committer: &WebHookAuthor{
-					Email:    String("abc@gmail.com"),
-					Name:     String("abc"),
-					Username: String("abc_12"),
+					Email: String("abc@gmail.com"),
+					Name:  String("abc"),
+					Login: String("abc_12"),
 				},
 				ID:       String("1"),
 				Message:  String("WebHookCommit"),
@@ -337,14 +337,14 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 		HeadCommit: &WebHookCommit{
 			Added: []string{"1", "2", "3"},
 			Author: &WebHookAuthor{
-				Email:    String("abc@gmail.com"),
-				Name:     String("abc"),
-				Username: String("abc_12"),
+				Email: String("abc@gmail.com"),
+				Name:  String("abc"),
+				Login: String("abc_12"),
 			},
 			Committer: &WebHookAuthor{
-				Email:    String("abc@gmail.com"),
-				Name:     String("abc"),
-				Username: String("abc_12"),
+				Email: String("abc@gmail.com"),
+				Name:  String("abc"),
+				Login: String("abc_12"),
 			},
 			ID:       String("1"),
 			Message:  String("WebHookCommit"),
@@ -361,7 +361,7 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			Login: String("rd@yahoo.com"),
 			ID:    Int64(112),
 		},
-		Repo: &Repository{
+		Repo: &PushEventRepository{
 			ID:     Int64(321),
 			NodeID: String("node_321"),
 		},
@@ -441,9 +441,9 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WebHookAuthor{}, "{}")
 
 	v := &WebHookAuthor{
-		Email:    String("abc@gmail.com"),
-		Name:     String("abc"),
-		Username: String("abc_12"),
+		Email: String("abc@gmail.com"),
+		Name:  String("abc"),
+		Login: String("abc_12"),
 	}
 
 	want := `{
@@ -461,14 +461,14 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 	v := &WebHookCommit{
 		Added: []string{"1", "2", "3"},
 		Author: &WebHookAuthor{
-			Email:    String("abc@gmail.com"),
-			Name:     String("abc"),
-			Username: String("abc_12"),
+			Email: String("abc@gmail.com"),
+			Name:  String("abc"),
+			Login: String("abc_12"),
 		},
 		Committer: &WebHookAuthor{
-			Email:    String("abc@gmail.com"),
-			Name:     String("abc"),
-			Username: String("abc_12"),
+			Email: String("abc@gmail.com"),
+			Name:  String("abc"),
+			Login: String("abc_12"),
 		},
 		ID:       String("1"),
 		Message:  String("WebHookCommit"),

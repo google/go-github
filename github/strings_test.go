@@ -127,9 +127,9 @@ func TestString(t *testing.T) {
 		{TreeEntry{SHA: String("s")}, `github.TreeEntry{SHA:"s"}`},
 		{Tree{SHA: String("s")}, `github.Tree{SHA:"s"}`},
 		{User{ID: Int64(1)}, `github.User{ID:1}`},
-		{WebHookAuthor{Name: String("n")}, `github.WebHookAuthor{Name:"n"}`},
-		{WebHookCommit{ID: String("1")}, `github.WebHookCommit{ID:"1"}`},
-		{WebHookPayload{Ref: String("r")}, `github.WebHookPayload{Ref:"r"}`},
+		{WebHookAuthor{Name: String("n")}, `github.CommitAuthor{Name:"n"}`},
+		{WebHookCommit{ID: String("1")}, `github.HeadCommit{ID:"1"}`},
+		{WebHookPayload{Ref: String("r")}, `github.PushEvent{Ref:"r"}`},
 	}
 
 	for i, tt := range tests {

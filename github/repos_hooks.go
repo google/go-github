@@ -18,57 +18,22 @@ import (
 // here to account for these differences.
 //
 // GitHub API docs: https://help.github.com/articles/post-receive-hooks
-type WebHookPayload struct {
-	Action       *string          `json:"action,omitempty"`
-	After        *string          `json:"after,omitempty"`
-	Before       *string          `json:"before,omitempty"`
-	Commits      []*WebHookCommit `json:"commits,omitempty"`
-	Compare      *string          `json:"compare,omitempty"`
-	Created      *bool            `json:"created,omitempty"`
-	Deleted      *bool            `json:"deleted,omitempty"`
-	Forced       *bool            `json:"forced,omitempty"`
-	HeadCommit   *WebHookCommit   `json:"head_commit,omitempty"`
-	Installation *Installation    `json:"installation,omitempty"`
-	Organization *Organization    `json:"organization,omitempty"`
-	Pusher       *User            `json:"pusher,omitempty"`
-	Ref          *string          `json:"ref,omitempty"`
-	Repo         *Repository      `json:"repository,omitempty"`
-	Sender       *User            `json:"sender,omitempty"`
-}
-
-func (w WebHookPayload) String() string {
-	return Stringify(w)
-}
+//
+// Deprecated: Please use PushEvent instead.
+type WebHookPayload = PushEvent
 
 // WebHookCommit represents the commit variant we receive from GitHub in a
 // WebHookPayload.
-type WebHookCommit struct {
-	Added     []string       `json:"added,omitempty"`
-	Author    *WebHookAuthor `json:"author,omitempty"`
-	Committer *WebHookAuthor `json:"committer,omitempty"`
-	Distinct  *bool          `json:"distinct,omitempty"`
-	ID        *string        `json:"id,omitempty"`
-	Message   *string        `json:"message,omitempty"`
-	Modified  []string       `json:"modified,omitempty"`
-	Removed   []string       `json:"removed,omitempty"`
-	Timestamp *time.Time     `json:"timestamp,omitempty"`
-}
-
-func (w WebHookCommit) String() string {
-	return Stringify(w)
-}
+//
+// Deprecated: Please use HeadCommit instead.
+type WebHookCommit = HeadCommit
 
 // WebHookAuthor represents the author or committer of a commit, as specified
 // in a WebHookCommit. The commit author may not correspond to a GitHub User.
-type WebHookAuthor struct {
-	Email    *string `json:"email,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Username *string `json:"username,omitempty"`
-}
-
-func (w WebHookAuthor) String() string {
-	return Stringify(w)
-}
+//
+// Deprecated: Please use CommitAuthor instead.
+// NOTE Breaking API change: the `Username` field is now called `Login`.
+type WebHookAuthor = CommitAuthor
 
 // Hook represents a GitHub (web and service) hook for a repository.
 type Hook struct {
