@@ -68,6 +68,12 @@ var (
 				return "github.Timestamp{0001-01-01 00:00:00 +0000 UTC}"
 			case "nil":
 				return "map[]"
+			case `[]int{0}`:
+				return `[0]`
+			case `[]string{""}`:
+				return `[""]`
+			case "[]Scope{ScopeNone}":
+				return `["(no scope)"]`
 			}
 			log.Fatalf("Unhandled zero value: %q", v)
 			return ""
@@ -144,7 +150,18 @@ func (t *templateData) processAST(f *ast.File) error {
 					logf("Got FuncDecl: Name=%q, id.Name=%#v", fn.Name.Name, id.Name)
 					t.StringFuncs[id.Name] = true
 				} else {
-					logf("Ignoring FuncDecl: Name=%q, Type=%T", fn.Name.Name, fn.Recv.List[0].Type)
+					star, ok := fn.Recv.List[0].Type.(*ast.StarExpr)
+					if ok && fn.Name.Name == "String" {
+						id, ok := star.X.(*ast.Ident)
+						if ok {
+							logf("Got FuncDecl: Name=%q, id.Name=%#v", fn.Name.Name, id.Name)
+							t.StringFuncs[id.Name] = true
+						} else {
+							logf("Ignoring FuncDecl: Name=%q, Type=%T", fn.Name.Name, fn.Recv.List[0].Type)
+						}
+					} else {
+						logf("Ignoring FuncDecl: Name=%q, Type=%T", fn.Name.Name, fn.Recv.List[0].Type)
+					}
 				}
 			} else {
 				logf("Ignoring FuncDecl: Name=%q, fn=%#v", fn.Name.Name, fn)
@@ -157,6 +174,7 @@ func (t *templateData) processAST(f *ast.File) error {
 			logf("Ignoring AST decl type %T", decl)
 			continue
 		}
+
 		for _, spec := range gd.Specs {
 			ts, ok := spec.(*ast.TypeSpec)
 			if !ok {
@@ -186,6 +204,13 @@ func (t *templateData) processAST(f *ast.File) error {
 				if id, ok := field.Type.(*ast.Ident); ok {
 					t.addIdent(id, ts.Name.String(), fieldName.String())
 					continue
+				}
+
+				if at, ok := field.Type.(*ast.ArrayType); ok {
+					if id, ok := at.Elt.(*ast.Ident); ok {
+						t.addIdentSlice(id, ts.Name.String(), fieldName.String())
+						continue
+					}
 				}
 
 				se, ok := field.Type.(*ast.StarExpr)
@@ -264,6 +289,32 @@ func (t *templateData) addIdentPtr(x *ast.Ident, receiverType, fieldName string)
 		zeroValue = "Bool(false)"
 	case "Timestamp":
 		zeroValue = "&Timestamp{}"
+	default:
+		zeroValue = "nil"
+		namedStruct = true
+	}
+
+	t.StructFields[receiverType] = append(t.StructFields[receiverType], newStructField(receiverType, fieldName, x.String(), zeroValue, namedStruct))
+}
+
+func (t *templateData) addIdentSlice(x *ast.Ident, receiverType, fieldName string) {
+	var zeroValue string
+	var namedStruct = false
+	switch x.String() {
+	case "int":
+		zeroValue = "[]int{0}"
+	case "int64":
+		zeroValue = "[]int64{0}"
+	case "float64":
+		zeroValue = "[]float64{0}"
+	case "string":
+		zeroValue = `[]string{""}`
+	case "bool":
+		zeroValue = "[]bool{false}"
+	case "Scope":
+		zeroValue = "[]Scope{ScopeNone}"
+	// case "Timestamp":
+	// 	zeroValue = "&Timestamp{}"
 	default:
 		zeroValue = "nil"
 		namedStruct = true

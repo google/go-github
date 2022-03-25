@@ -17,8 +17,9 @@ func TestActionsAllowed_String(t *testing.T) {
 	v := ActionsAllowed{
 		GithubOwnedAllowed: Bool(false),
 		VerifiedAllowed:    Bool(false),
+		PatternsAllowed:    []string{""},
 	}
-	want := `github.ActionsAllowed{GithubOwnedAllowed:false, VerifiedAllowed:false}`
+	want := `github.ActionsAllowed{GithubOwnedAllowed:false, VerifiedAllowed:false, PatternsAllowed:[""]}`
 	if got := v.String(); got != want {
 		t.Errorf("ActionsAllowed.String = %v, want %v", got, want)
 	}
@@ -81,6 +82,7 @@ func TestAuthorization_String(t *testing.T) {
 	v := Authorization{
 		ID:             Int64(0),
 		URL:            String(""),
+		Scopes:         []Scope{ScopeNone},
 		Token:          String(""),
 		TokenLastEight: String(""),
 		HashedToken:    String(""),
@@ -92,7 +94,7 @@ func TestAuthorization_String(t *testing.T) {
 		Fingerprint:    String(""),
 		User:           &User{},
 	}
-	want := `github.Authorization{ID:0, URL:"", Token:"", TokenLastEight:"", HashedToken:"", App:github.AuthorizationApp{}, Note:"", NoteURL:"", UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Fingerprint:"", User:github.User{}}`
+	want := `github.Authorization{ID:0, URL:"", Scopes:["(no scope)"], Token:"", TokenLastEight:"", HashedToken:"", App:github.AuthorizationApp{}, Note:"", NoteURL:"", UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Fingerprint:"", User:github.User{}}`
 	if got := v.String(); got != want {
 		t.Errorf("Authorization.String = %v, want %v", got, want)
 	}
@@ -112,13 +114,14 @@ func TestAuthorizationApp_String(t *testing.T) {
 
 func TestAuthorizationRequest_String(t *testing.T) {
 	v := AuthorizationRequest{
+		Scopes:       []Scope{ScopeNone},
 		Note:         String(""),
 		NoteURL:      String(""),
 		ClientID:     String(""),
 		ClientSecret: String(""),
 		Fingerprint:  String(""),
 	}
-	want := `github.AuthorizationRequest{Note:"", NoteURL:"", ClientID:"", ClientSecret:"", Fingerprint:""}`
+	want := `github.AuthorizationRequest{Scopes:["(no scope)"], Note:"", NoteURL:"", ClientID:"", ClientSecret:"", Fingerprint:""}`
 	if got := v.String(); got != want {
 		t.Errorf("AuthorizationRequest.String = %v, want %v", got, want)
 	}
@@ -126,11 +129,14 @@ func TestAuthorizationRequest_String(t *testing.T) {
 
 func TestAuthorizationUpdateRequest_String(t *testing.T) {
 	v := AuthorizationUpdateRequest{
-		Note:        String(""),
-		NoteURL:     String(""),
-		Fingerprint: String(""),
+		Scopes:       []string{""},
+		AddScopes:    []string{""},
+		RemoveScopes: []string{""},
+		Note:         String(""),
+		NoteURL:      String(""),
+		Fingerprint:  String(""),
 	}
-	want := `github.AuthorizationUpdateRequest{Note:"", NoteURL:"", Fingerprint:""}`
+	want := `github.AuthorizationUpdateRequest{Scopes:[""], AddScopes:[""], RemoveScopes:[""], Note:"", NoteURL:"", Fingerprint:""}`
 	if got := v.String(); got != want {
 		t.Errorf("AuthorizationUpdateRequest.String = %v, want %v", got, want)
 	}
@@ -180,6 +186,19 @@ func TestCheckSuite_String(t *testing.T) {
 	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}}`
 	if got := v.String(); got != want {
 		t.Errorf("CheckSuite.String = %v, want %v", got, want)
+	}
+}
+
+func TestCodeOfConduct_String(t *testing.T) {
+	v := CodeOfConduct{
+		Name: String(""),
+		Key:  String(""),
+		URL:  String(""),
+		Body: String(""),
+	}
+	want := `github.CodeOfConduct{Name:"", Key:"", URL:"", Body:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CodeOfConduct.String = %v, want %v", got, want)
 	}
 }
 
@@ -528,8 +547,9 @@ func TestGrant_String(t *testing.T) {
 		App:       &AuthorizationApp{},
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
+		Scopes:    []string{""},
 	}
-	want := `github.Grant{ID:0, URL:"", App:github.AuthorizationApp{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Grant{ID:0, URL:"", App:github.AuthorizationApp{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Scopes:[""]}`
 	if got := v.String(); got != want {
 		t.Errorf("Grant.String = %v, want %v", got, want)
 	}
@@ -546,8 +566,11 @@ func TestHeadCommit_String(t *testing.T) {
 		TreeID:    String(""),
 		Timestamp: &Timestamp{},
 		Committer: &CommitAuthor{},
+		Added:     []string{""},
+		Removed:   []string{""},
+		Modified:  []string{""},
 	}
-	want := `github.HeadCommit{Message:"", Author:github.CommitAuthor{}, URL:"", Distinct:false, SHA:"", ID:"", TreeID:"", Timestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Committer:github.CommitAuthor{}}`
+	want := `github.HeadCommit{Message:"", Author:github.CommitAuthor{}, URL:"", Distinct:false, SHA:"", ID:"", TreeID:"", Timestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Committer:github.CommitAuthor{}, Added:[""], Removed:[""], Modified:[""]}`
 	if got := v.String(); got != want {
 		t.Errorf("HeadCommit.String = %v, want %v", got, want)
 	}
@@ -561,9 +584,10 @@ func TestHook_String(t *testing.T) {
 		Name:    String(""),
 		TestURL: String(""),
 		PingURL: String(""),
+		Events:  []string{""},
 		Active:  Bool(false),
 	}
-	want := `github.Hook{URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Active:false}`
+	want := `github.Hook{URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Events:[""], Active:false}`
 	if got := v.String(); got != want {
 		t.Errorf("Hook.String = %v, want %v", got, want)
 	}
@@ -648,6 +672,8 @@ func TestInstallation_String(t *testing.T) {
 		TargetType:             String(""),
 		SingleFileName:         String(""),
 		RepositorySelection:    String(""),
+		Events:                 []string{""},
+		SingleFilePaths:        []string{""},
 		Permissions:            &InstallationPermissions{},
 		CreatedAt:              &Timestamp{},
 		UpdatedAt:              &Timestamp{},
@@ -655,7 +681,7 @@ func TestInstallation_String(t *testing.T) {
 		SuspendedBy:            &User{},
 		SuspendedAt:            &Timestamp{},
 	}
-	want := `github.Installation{ID:0, NodeID:"", AppID:0, AppSlug:"", TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HasMultipleSingleFiles:false, SuspendedBy:github.User{}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Installation{ID:0, NodeID:"", AppID:0, AppSlug:"", TargetID:0, Account:github.User{}, AccessTokensURL:"", RepositoriesURL:"", HTMLURL:"", TargetType:"", SingleFileName:"", RepositorySelection:"", Events:[""], SingleFilePaths:[""], Permissions:github.InstallationPermissions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HasMultipleSingleFiles:false, SuspendedBy:github.User{}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Installation.String = %v, want %v", got, want)
 	}
@@ -890,12 +916,14 @@ func TestNewTeam_String(t *testing.T) {
 	v := NewTeam{
 		Name:         "",
 		Description:  String(""),
+		Maintainers:  []string{""},
+		RepoNames:    []string{""},
 		ParentTeamID: Int64(0),
 		Permission:   String(""),
 		Privacy:      String(""),
 		LDAPDN:       String(""),
 	}
-	want := `github.NewTeam{Name:"", Description:"", ParentTeamID:0, Permission:"", Privacy:"", LDAPDN:""}`
+	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, Permission:"", Privacy:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("NewTeam.String = %v, want %v", got, want)
 	}
@@ -999,6 +1027,16 @@ func TestPackage_String(t *testing.T) {
 	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Owner:github.User{}, PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0, Visibility:"", Repository:github.Repository{}}`
 	if got := v.String(); got != want {
 		t.Errorf("Package.String = %v, want %v", got, want)
+	}
+}
+
+func TestPackageContainerMetadata_String(t *testing.T) {
+	v := PackageContainerMetadata{
+		Tags: []string{""},
+	}
+	want := `github.PackageContainerMetadata{Tags:[""]}`
+	if got := v.String(); got != want {
+		t.Errorf("PackageContainerMetadata.String = %v, want %v", got, want)
 	}
 }
 
@@ -1470,6 +1508,7 @@ func TestRepository_String(t *testing.T) {
 		AllowAutoMerge:      Bool(false),
 		AllowForking:        Bool(false),
 		DeleteBranchOnMerge: Bool(false),
+		Topics:              []string{""},
 		Archived:            Bool(false),
 		Disabled:            Bool(false),
 		License:             &License{},
@@ -1523,7 +1562,7 @@ func TestRepository_String(t *testing.T) {
 		TeamsURL:            String(""),
 		Visibility:          String(""),
 	}
-	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowSquashMerge:false, AllowMergeCommit:false, AllowAutoMerge:false, AllowForking:false, DeleteBranchOnMerge:false, Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", SecurityAndAnalysis:github.SecurityAndAnalysis{}, TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:""}`
+	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowSquashMerge:false, AllowMergeCommit:false, AllowAutoMerge:false, AllowForking:false, DeleteBranchOnMerge:false, Topics:[""], Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", SecurityAndAnalysis:github.SecurityAndAnalysis{}, TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Repository.String = %v, want %v", got, want)
 	}
@@ -1608,6 +1647,17 @@ func TestRepositoryLicense_String(t *testing.T) {
 	}
 }
 
+func TestRepositoryParticipation_String(t *testing.T) {
+	v := RepositoryParticipation{
+		All:   []int{0},
+		Owner: []int{0},
+	}
+	want := `github.RepositoryParticipation{All:[0], Owner:[0]}`
+	if got := v.String(); got != want {
+		t.Errorf("RepositoryParticipation.String = %v, want %v", got, want)
+	}
+}
+
 func TestRepositoryRelease_String(t *testing.T) {
 	v := RepositoryRelease{
 		TagName:                String(""),
@@ -1654,6 +1704,18 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
+	}
+}
+
+func TestServiceHook_String(t *testing.T) {
+	v := ServiceHook{
+		Name:            String(""),
+		Events:          []string{""},
+		SupportedEvents: []string{""},
+	}
+	want := `github.ServiceHook{Name:"", Events:[""], SupportedEvents:[""]}`
+	if got := v.String(); got != want {
+		t.Errorf("ServiceHook.String = %v, want %v", got, want)
 	}
 }
 
@@ -1903,13 +1965,16 @@ func TestWebHookAuthor_String(t *testing.T) {
 
 func TestWebHookCommit_String(t *testing.T) {
 	v := WebHookCommit{
+		Added:     []string{""},
 		Author:    &WebHookAuthor{},
 		Committer: &WebHookAuthor{},
 		Distinct:  Bool(false),
 		ID:        String(""),
 		Message:   String(""),
+		Modified:  []string{""},
+		Removed:   []string{""},
 	}
-	want := `github.WebHookCommit{Author:github.WebHookAuthor{}, Committer:github.WebHookAuthor{}, Distinct:false, ID:"", Message:""}`
+	want := `github.WebHookCommit{Added:[""], Author:github.WebHookAuthor{}, Committer:github.WebHookAuthor{}, Distinct:false, ID:"", Message:"", Modified:[""], Removed:[""]}`
 	if got := v.String(); got != want {
 		t.Errorf("WebHookCommit.String = %v, want %v", got, want)
 	}
@@ -1940,10 +2005,11 @@ func TestWebHookPayload_String(t *testing.T) {
 
 func TestWeeklyCommitActivity_String(t *testing.T) {
 	v := WeeklyCommitActivity{
+		Days:  []int{0},
 		Total: Int(0),
 		Week:  &Timestamp{},
 	}
-	want := `github.WeeklyCommitActivity{Total:0, Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.WeeklyCommitActivity{Days:[0], Total:0, Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("WeeklyCommitActivity.String = %v, want %v", got, want)
 	}
