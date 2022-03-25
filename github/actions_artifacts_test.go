@@ -25,7 +25,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w,
 			`{
-				"total_count":1, 
+				"total_count":1,
 				"artifacts":[{"id":1}]
 			}`,
 		)
@@ -107,7 +107,7 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w,
 			`{
-				"total_count":1, 
+				"total_count":1,
 				"artifacts":[{"id":1}]
 			}`,
 		)

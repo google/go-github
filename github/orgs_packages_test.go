@@ -181,7 +181,7 @@ func TestOrganizationsService_DeletePackage(t *testing.T) {
 
 	const methodName = "DeletePackage"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetPackage(ctx, "\n", "", "")
+		_, _, err = client.Organizations.GetPackage(ctx, "\n", "\n", "\n")
 		return err
 	})
 

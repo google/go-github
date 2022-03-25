@@ -33,7 +33,11 @@ func (s *GitService) GetBlob(ctx context.Context, owner string, repo string, sha
 
 	blob := new(Blob)
 	resp, err := s.client.Do(ctx, req, blob)
-	return blob, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return blob, resp, nil
 }
 
 // GetBlobRaw fetches a blob's contents from a repo.
@@ -46,11 +50,16 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req.Header.Set("Accept", "application/vnd.github.v3.raw")
 
 	var buf bytes.Buffer
 	resp, err := s.client.Do(ctx, req, &buf)
-	return buf.Bytes(), resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return buf.Bytes(), resp, nil
 }
 
 // CreateBlob creates a blob object.
@@ -65,5 +74,9 @@ func (s *GitService) CreateBlob(ctx context.Context, owner string, repo string, 
 
 	t := new(Blob)
 	resp, err := s.client.Do(ctx, req, t)
-	return t, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
 }

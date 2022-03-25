@@ -285,7 +285,18 @@ func TestGitService_CreateSignedCommitWithInvalidParams(t *testing.T) {
 	ctx := context.Background()
 	_, _, err := client.Git.CreateCommit(ctx, "o", "r", input)
 	if err == nil {
-		t.Errorf("Expected error to be returned because invalid params was passed")
+		t.Errorf("Expected error to be returned because invalid params were passed")
+	}
+}
+
+func TestGitService_CreateSignedCommitWithNilCommit(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+	_, _, err := client.Git.CreateCommit(ctx, "o", "r", nil)
+	if err == nil {
+		t.Errorf("Expected error to be returned because commit=nil")
 	}
 }
 

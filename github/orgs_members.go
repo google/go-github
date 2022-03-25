@@ -295,6 +295,7 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return pendingInvitations, resp, nil
 }
 
@@ -336,6 +337,7 @@ func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org stri
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return invitation, resp, nil
 }
 
@@ -360,6 +362,7 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return orgInvitationTeams, resp, nil
 }
 

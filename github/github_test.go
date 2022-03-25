@@ -594,6 +594,12 @@ func TestNewUploadRequest_badURL(t *testing.T) {
 	c := NewClient(nil)
 	_, err := c.NewUploadRequest(":", nil, 0, "")
 	testURLParseError(t, err)
+
+	const methodName = "NewUploadRequest"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = c.NewUploadRequest("\n", nil, -1, "\n")
+		return err
+	})
 }
 
 func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {

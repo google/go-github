@@ -279,6 +279,7 @@ func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -291,6 +292,7 @@ func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -303,6 +305,7 @@ func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -315,6 +318,7 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 	if err != nil {
 		return false, nil, err
 	}
+
 	resp, err := s.client.Do(ctx, req, nil)
 	starred, err := parseBoolResponse(err)
 	return starred, resp, err

@@ -43,9 +43,14 @@ func (s *OrganizationsService) GetHook(ctx context.Context, org string, id int64
 	if err != nil {
 		return nil, nil, err
 	}
+
 	hook := new(Hook)
 	resp, err := s.client.Do(ctx, req, hook)
-	return hook, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return hook, resp, nil
 }
 
 // CreateHook creates a Hook for the specified org.
@@ -88,9 +93,14 @@ func (s *OrganizationsService) EditHook(ctx context.Context, org string, id int6
 	if err != nil {
 		return nil, nil, err
 	}
+
 	h := new(Hook)
 	resp, err := s.client.Do(ctx, req, h)
-	return h, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return h, resp, nil
 }
 
 // PingHook triggers a 'ping' event to be sent to the Hook.
@@ -102,6 +112,7 @@ func (s *OrganizationsService) PingHook(ctx context.Context, org string, id int6
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -114,5 +125,6 @@ func (s *OrganizationsService) DeleteHook(ctx context.Context, org string, id in
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

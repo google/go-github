@@ -40,6 +40,14 @@ func TestGitService_GetTag(t *testing.T) {
 		_, _, err = client.Git.GetTag(ctx, "\n", "\n", "\n")
 		return err
 	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.GetTag(ctx, "o", "r", "s")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestGitService_CreateTag(t *testing.T) {
@@ -61,10 +69,11 @@ func TestGitService_CreateTag(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	tag, _, err := client.Git.CreateTag(ctx, "o", "r", &Tag{
+	inputTag := &Tag{
 		Tag:    input.Tag,
 		Object: &GitObject{SHA: input.Object},
-	})
+	}
+	tag, _, err := client.Git.CreateTag(ctx, "o", "r", inputTag)
 	if err != nil {
 		t.Errorf("Git.CreateTag returned error: %v", err)
 	}
@@ -76,11 +85,16 @@ func TestGitService_CreateTag(t *testing.T) {
 
 	const methodName = "CreateTag"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.CreateTag(ctx, "\n", "\n", &Tag{
-			Tag:    input.Tag,
-			Object: &GitObject{SHA: input.Object},
-		})
+		_, _, err = client.Git.CreateTag(ctx, "\n", "\n", inputTag)
 		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Git.CreateTag(ctx, "o", "r", inputTag)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 

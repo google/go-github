@@ -167,6 +167,23 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	})
 }
 
+func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("{badly-formed JSON"))
+	})
+
+	ctx := context.Background()
+	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now()); err == nil {
+		t.Errorf("CheckStatusSince returned no error, want JSON err")
+	}
+}
+
 func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()

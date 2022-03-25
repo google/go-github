@@ -129,6 +129,15 @@ func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
+	client, _, _, teardown := setup()
+	defer teardown()
+
+	ctx := context.Background()
+	_, _, err := client.Issues.ListByOrg(ctx, "\n", nil)
+	testURLParseError(t, err)
+}
+
 func TestIssuesService_ListByRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

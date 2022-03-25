@@ -79,7 +79,7 @@ func (s *BillingService) GetActionsBillingOrg(ctx context.Context, org string) (
 		return nil, resp, err
 	}
 
-	return actionsOrgBilling, resp, err
+	return actionsOrgBilling, resp, nil
 }
 
 // GetPackagesBillingOrg returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
@@ -98,7 +98,7 @@ func (s *BillingService) GetPackagesBillingOrg(ctx context.Context, org string) 
 		return nil, resp, err
 	}
 
-	return packagesOrgBilling, resp, err
+	return packagesOrgBilling, resp, nil
 }
 
 // GetStorageBillingOrg returns the estimated paid and estimated total storage used for GitHub Actions
@@ -118,7 +118,7 @@ func (s *BillingService) GetStorageBillingOrg(ctx context.Context, org string) (
 		return nil, resp, err
 	}
 
-	return storageOrgBilling, resp, err
+	return storageOrgBilling, resp, nil
 }
 
 // GetAdvancedSecurityActiveCommittersOrg returns the GitHub Advanced Security active committers for an organization per repository.
@@ -137,7 +137,7 @@ func (s *BillingService) GetAdvancedSecurityActiveCommittersOrg(ctx context.Cont
 		return nil, resp, err
 	}
 
-	return activeOrgCommitters, resp, err
+	return activeOrgCommitters, resp, nil
 }
 
 // GetActionsBillingUser returns the summary of the free and paid GitHub Actions minutes used for a user.
@@ -156,7 +156,7 @@ func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string)
 		return nil, resp, err
 	}
 
-	return actionsUserBilling, resp, err
+	return actionsUserBilling, resp, nil
 }
 
 // GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
@@ -175,7 +175,7 @@ func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string
 		return nil, resp, err
 	}
 
-	return packagesUserBilling, resp, err
+	return packagesUserBilling, resp, nil
 }
 
 // GetStorageBillingUser returns the estimated paid and estimated total storage used for GitHub Actions
@@ -195,5 +195,5 @@ func (s *BillingService) GetStorageBillingUser(ctx context.Context, user string)
 		return nil, resp, err
 	}
 
-	return storageUserBilling, resp, err
+	return storageUserBilling, resp, nil
 }

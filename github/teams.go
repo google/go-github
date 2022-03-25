@@ -771,6 +771,7 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return groups, resp, nil
 }
 
@@ -791,7 +792,8 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 	if err != nil {
 		return nil, resp, err
 	}
-	return groups, resp, err
+
+	return groups, resp, nil
 }
 
 // ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
@@ -811,7 +813,8 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 	if err != nil {
 		return nil, resp, err
 	}
-	return groups, resp, err
+
+	return groups, resp, nil
 }
 
 // CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
