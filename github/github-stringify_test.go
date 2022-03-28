@@ -1320,6 +1320,17 @@ func TestPullRequestReviewRequest_String(t *testing.T) {
 	}
 }
 
+func TestPullRequestThread_String(t *testing.T) {
+	v := PullRequestThread{
+		ID:     Int64(0),
+		NodeID: String(""),
+	}
+	want := `github.PullRequestThread{ID:0, NodeID:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PullRequestThread.String = %v, want %v", got, want)
+	}
+}
+
 func TestPullStats_String(t *testing.T) {
 	v := PullStats{
 		TotalPulls:      Int(0),

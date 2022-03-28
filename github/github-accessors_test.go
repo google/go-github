@@ -14928,6 +14928,51 @@ func TestPullRequestReviewsEnforcementUpdate_GetRequireCodeOwnerReviews(tt *test
 	p.GetRequireCodeOwnerReviews()
 }
 
+func TestPullRequestReviewThreadEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestReviewThreadEvent{Action: &zeroValue}
+	p.GetAction()
+	p = &PullRequestReviewThreadEvent{}
+	p.GetAction()
+	p = nil
+	p.GetAction()
+}
+
+func TestPullRequestReviewThreadEvent_GetInstallation(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetInstallation()
+	p = nil
+	p.GetInstallation()
+}
+
+func TestPullRequestReviewThreadEvent_GetPullRequest(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
+func TestPullRequestReviewThreadEvent_GetRepo(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPullRequestReviewThreadEvent_GetSender(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetSender()
+	p = nil
+	p.GetSender()
+}
+
+func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
+	p := &PullRequestReviewThreadEvent{}
+	p.GetThread()
+	p = nil
+	p.GetThread()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestTargetEvent{Action: &zeroValue}
@@ -15036,6 +15081,26 @@ func TestPullRequestTargetEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestPullRequestThread_GetID(tt *testing.T) {
+	var zeroValue int64
+	p := &PullRequestThread{ID: &zeroValue}
+	p.GetID()
+	p = &PullRequestThread{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestThread_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestThread{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &PullRequestThread{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
 }
 
 func TestPullStats_GetMergablePulls(tt *testing.T) {

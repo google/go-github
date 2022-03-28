@@ -12821,6 +12821,54 @@ func (p *PullRequestReviewsEnforcementUpdate) GetRequireCodeOwnerReviews() bool 
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewThreadEvent) GetAction() string {
+	if p == nil || p.Action == nil {
+		return ""
+	}
+	return *p.Action
+}
+
+// GetInstallation returns the Installation field.
+func (p *PullRequestReviewThreadEvent) GetInstallation() *Installation {
+	if p == nil {
+		return nil
+	}
+	return p.Installation
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestReviewThreadEvent) GetPullRequest() *PullRequest {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequest
+}
+
+// GetRepo returns the Repo field.
+func (p *PullRequestReviewThreadEvent) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSender returns the Sender field.
+func (p *PullRequestReviewThreadEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
+}
+
+// GetThread returns the Thread field.
+func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
+	if p == nil {
+		return nil
+	}
+	return p.Thread
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
 		return ""
@@ -12930,6 +12978,22 @@ func (p *PullRequestTargetEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PullRequestThread) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequestThread) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
 }
 
 // GetMergablePulls returns the MergablePulls field if it's non-nil, zero value otherwise.
