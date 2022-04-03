@@ -830,6 +830,24 @@ type PullRequestReviewCommentEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// PullRequestReviewThreadEvent is triggered when a comment made as part of a
+// review of a pull request is marked resolved or unresolved.
+// The Webhook event name is "pull_request_review_thread".
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request_review_thread
+type PullRequestReviewThreadEvent struct {
+	// Action is the action that was performed on the comment.
+	// Possible values are: "resolved", "unresolved".
+	Action      *string            `json:"action,omitempty"`
+	Thread      *PullRequestThread `json:"thread,omitempty"`
+	PullRequest *PullRequest       `json:"pull_request,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+}
+
 // PullRequestTargetEvent is triggered when a pull request is assigned, unassigned, labeled,
 // unlabeled, opened, edited, closed, reopened, synchronize, ready_for_review,
 // locked, unlocked, a pull request review is requested, or a review request is removed.
