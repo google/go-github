@@ -102,6 +102,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &PullRequestReviewEvent{}
 	case "PullRequestReviewCommentEvent":
 		payload = &PullRequestReviewCommentEvent{}
+	case "PullRequestReviewThreadEvent":
+		payload = &PullRequestReviewThreadEvent{}
 	case "PullRequestTargetEvent":
 		payload = &PullRequestTargetEvent{}
 	case "PushEvent":
