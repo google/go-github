@@ -71,8 +71,9 @@ type ListOrgRunnerGroupOptions struct {
 
 // ListOrganizationRunnerGroups is a wrapper around ListOrganizationRunnerGroupsWithOptions to avoid breaking existing client's code.
 func (s *ActionsService) ListOrganizationRunnerGroups(ctx context.Context, org string, opts *ListOptions) (*RunnerGroups, *Response, error) {
-	listOpts := &ListOrgRunnerGroupOptions{
-		ListOptions: *opts,
+	listOpts := &ListOrgRunnerGroupOptions{}
+	if opts != nil {
+		listOpts.ListOptions = *opts
 	}
 	return s.ListOrganizationRunnerGroupsWithOptions(ctx, org, listOpts)
 }
