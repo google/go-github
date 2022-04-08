@@ -61,10 +61,26 @@ type SetRunnerGroupRunnersRequest struct {
 	Runners []int64 `json:"runners"`
 }
 
-// ListOrganizationRunnerGroups lists all self-hosted runner groups configured in an organization.
+// ListOrgRunnerGroupOptions extend ListOptions to have the optional parameters VisibleToRepository
+type ListOrgRunnerGroupOptions struct {
+	ListOptions
+
+	// Only return runner groups that are allowed to be used by this repository.
+	VisibleToRepository string `url:"visible_to_repository,omitempty"`
+}
+
+// ListOrganizationRunnerGroups is a wrapper around ListOrganizationRunnerGroupsWithOptions to avoid breaking existing client's code.
+func (s *ActionsService) ListOrganizationRunnerGroups(ctx context.Context, org string, opts *ListOptions) (*RunnerGroups, *Response, error) {
+	listOpts := &ListOrgRunnerGroupOptions{
+		ListOptions: *opts,
+	}
+	return s.ListOrganizationRunnerGroupsWithOptions(ctx, org, listOpts)
+}
+
+// ListOrganizationRunnerGroupsWithOptions lists all self-hosted runner groups configured in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/actions#list-self-hosted-runner-groups-for-an-organization
-func (s *ActionsService) ListOrganizationRunnerGroups(ctx context.Context, org string, opts *ListOptions) (*RunnerGroups, *Response, error) {
+func (s *ActionsService) ListOrganizationRunnerGroupsWithOptions(ctx context.Context, org string, opts *ListOrgRunnerGroupOptions) (*RunnerGroups, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runner-groups", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
