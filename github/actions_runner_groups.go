@@ -61,7 +61,7 @@ type SetRunnerGroupRunnersRequest struct {
 	Runners []int64 `json:"runners"`
 }
 
-// ListOrgRunnerGroupOptions extend ListOptions to have the optional parameters VisibleToRepository
+// ListOrgRunnerGroupOptions extend ListOptions to have the optional parameters VisibleToRepository.
 type ListOrgRunnerGroupOptions struct {
 	ListOptions
 
