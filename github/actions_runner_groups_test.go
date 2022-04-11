@@ -24,7 +24,7 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":3,"runner_groups":[{"id":1,"name":"Default","visibility":"all","default":true,"runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/1/runners","inherited":false,"allows_public_repositories":true},{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":true,"allows_public_repositories":true},{"id":3,"name":"expensive-hardware","visibility":"private","default":false,"runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/3/runners","inherited":false,"allows_public_repositories":true}]}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 2}
+	opts := &ListOrgRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	ctx := context.Background()
 	groups, _, err := client.Actions.ListOrganizationRunnerGroups(ctx, "o", opts)
 	if err != nil {
@@ -58,7 +58,7 @@ func TestActionsService_ListOrganizationRunnerGroups(t *testing.T) {
 	})
 }
 
-func TestActionsService_ListOrganizationRunnerGroupsWithOptions(t *testing.T) {
+func TestActionsService_ListOrganizationRunnerGroupsVisibleToRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -70,9 +70,9 @@ func TestActionsService_ListOrganizationRunnerGroupsWithOptions(t *testing.T) {
 
 	opts := &ListOrgRunnerGroupOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}, VisibleToRepository: "github"}
 	ctx := context.Background()
-	groups, _, err := client.Actions.ListOrganizationRunnerGroupsWithOptions(ctx, "o", opts)
+	groups, _, err := client.Actions.ListOrganizationRunnerGroups(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Actions.ListOrganizationRunnerGroupsWithOptions returned error: %v", err)
+		t.Errorf("Actions.ListOrganizationRunnerGroups returned error: %v", err)
 	}
 
 	want := &RunnerGroups{
@@ -84,17 +84,17 @@ func TestActionsService_ListOrganizationRunnerGroupsWithOptions(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(groups, want) {
-		t.Errorf("Actions.ListOrganizationRunnerGroupsWithOptions returned %+v, want %+v", groups, want)
+		t.Errorf("Actions.ListOrganizationRunnerGroups returned %+v, want %+v", groups, want)
 	}
 
-	const methodName = "ListOrganizationRunnerGroupsWithOptions"
+	const methodName = "ListOrganizationRunnerGroups"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListOrganizationRunnerGroupsWithOptions(ctx, "\n", opts)
+		_, _, err = client.Actions.ListOrganizationRunnerGroups(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListOrganizationRunnerGroupsWithOptions(ctx, "o", opts)
+		got, resp, err := client.Actions.ListOrganizationRunnerGroups(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
