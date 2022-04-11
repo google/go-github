@@ -24,6 +24,7 @@ var (
 	name        = flag.String("name", "", "Name of repo to create in authenticated user's GitHub account.")
 	description = flag.String("description", "", "Description of created repo.")
 	private     = flag.Bool("private", false, "Will created repo be private.")
+	autoInit    = flag.Bool("auto-init", false, "Pass true to create an initial commit with empty README.")
 )
 
 func main() {
@@ -40,7 +41,7 @@ func main() {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	r := &github.Repository{Name: name, Private: private, Description: description}
+	r := &github.Repository{Name: name, Private: private, Description: description, AutoInit: autoInit}
 	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
 		log.Fatal(err)
