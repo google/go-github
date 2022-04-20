@@ -10158,36 +10158,6 @@ func TestMembershipEvent_GetTeam(tt *testing.T) {
 	m.GetTeam()
 }
 
-func TestMergeUpstreamResult_GetBaseBranch(tt *testing.T) {
-	var zeroValue string
-	m := &MergeUpstreamResult{BaseBranch: &zeroValue}
-	m.GetBaseBranch()
-	m = &MergeUpstreamResult{}
-	m.GetBaseBranch()
-	m = nil
-	m.GetBaseBranch()
-}
-
-func TestMergeUpstreamResult_GetMergeType(tt *testing.T) {
-	var zeroValue string
-	m := &MergeUpstreamResult{MergeType: &zeroValue}
-	m.GetMergeType()
-	m = &MergeUpstreamResult{}
-	m.GetMergeType()
-	m = nil
-	m.GetMergeType()
-}
-
-func TestMergeUpstreamResult_GetMessage(tt *testing.T) {
-	var zeroValue string
-	m := &MergeUpstreamResult{Message: &zeroValue}
-	m.GetMessage()
-	m = &MergeUpstreamResult{}
-	m.GetMessage()
-	m = nil
-	m.GetMessage()
-}
-
 func TestMessage_GetText(tt *testing.T) {
 	var zeroValue string
 	m := &Message{Text: &zeroValue}
@@ -16187,6 +16157,46 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
+	r.GetBranch()
+	r = &RepoMergeUpstreamRequest{}
+	r.GetBranch()
+	r = nil
+	r.GetBranch()
+}
+
+func TestRepoMergeUpstreamResult_GetBaseBranch(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{BaseBranch: &zeroValue}
+	r.GetBaseBranch()
+	r = &RepoMergeUpstreamResult{}
+	r.GetBaseBranch()
+	r = nil
+	r.GetBaseBranch()
+}
+
+func TestRepoMergeUpstreamResult_GetMergeType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{MergeType: &zeroValue}
+	r.GetMergeType()
+	r = &RepoMergeUpstreamResult{}
+	r.GetMergeType()
+	r = nil
+	r.GetMergeType()
+}
+
+func TestRepoMergeUpstreamResult_GetMessage(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{Message: &zeroValue}
+	r.GetMessage()
+	r = &RepoMergeUpstreamResult{}
+	r.GetMessage()
+	r = nil
+	r.GetMessage()
+}
+
 func TestRepoName_GetFrom(tt *testing.T) {
 	var zeroValue string
 	r := &RepoName{From: &zeroValue}
@@ -17825,16 +17835,6 @@ func TestRepositoryMergeRequest_GetHead(tt *testing.T) {
 	r.GetHead()
 	r = nil
 	r.GetHead()
-}
-
-func TestRepositoryMergeUpstreamRequest_GetBranch(tt *testing.T) {
-	var zeroValue string
-	r := &RepositoryMergeUpstreamRequest{Branch: &zeroValue}
-	r.GetBranch()
-	r = &RepositoryMergeUpstreamRequest{}
-	r.GetBranch()
-	r = nil
-	r.GetBranch()
 }
 
 func TestRepositoryPermissionLevel_GetPermission(tt *testing.T) {

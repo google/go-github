@@ -18,15 +18,15 @@ type RepositoryMergeRequest struct {
 	CommitMessage *string `json:"commit_message,omitempty"`
 }
 
-// RepositoryMergeUpstreamRequest represents a request to sync a branch of
+// RepoMergeUpstreamRequest represents a request to sync a branch of
 // a forked repository to keep it up-to-date with the upstream repository.
-type RepositoryMergeUpstreamRequest struct {
+type RepoMergeUpstreamRequest struct {
 	Branch *string `json:"branch,omitempty"`
 }
 
-// MergeUpstreamResult represents the result of syncing a branch of
+// RepoMergeUpstreamResult represents the result of syncing a branch of
 // a forked repository with the upstream repository.
-type MergeUpstreamResult struct {
+type RepoMergeUpstreamResult struct {
 	Message    *string `json:"message,omitempty"`
 	MergeType  *string `json:"merge_type,omitempty"`
 	BaseBranch *string `json:"base_branch,omitempty"`
@@ -55,14 +55,14 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 // with the upstream repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/branches#sync-a-fork-branch-with-the-upstream-repository
-func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo string, request *RepositoryMergeUpstreamRequest) (*MergeUpstreamResult, *Response, error) {
+func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo string, request *RepoMergeUpstreamRequest) (*RepoMergeUpstreamResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merge-upstream", owner, repo)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	result := new(MergeUpstreamResult)
+	result := new(RepoMergeUpstreamResult)
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err

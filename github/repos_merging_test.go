@@ -85,12 +85,12 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &RepositoryMergeUpstreamRequest{
+	input := &RepoMergeUpstreamRequest{
 		Branch: String("b"),
 	}
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryMergeUpstreamRequest)
+		v := new(RepoMergeUpstreamRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
@@ -107,7 +107,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 		t.Errorf("Repositories.MergeUpstream returned error: %v", err)
 	}
 
-	want := &MergeUpstreamResult{MergeType: String("m")}
+	want := &RepoMergeUpstreamResult{MergeType: String("m")}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Repositories.MergeUpstream returned %+v, want %+v", result, want)
 	}
