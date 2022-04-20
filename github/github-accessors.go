@@ -8678,6 +8678,30 @@ func (m *MembershipEvent) GetTeam() *Team {
 	return m.Team
 }
 
+// GetBaseBranch returns the BaseBranch field if it's non-nil, zero value otherwise.
+func (m *MergeUpstreamResult) GetBaseBranch() string {
+	if m == nil || m.BaseBranch == nil {
+		return ""
+	}
+	return *m.BaseBranch
+}
+
+// GetMergeType returns the MergeType field if it's non-nil, zero value otherwise.
+func (m *MergeUpstreamResult) GetMergeType() string {
+	if m == nil || m.MergeType == nil {
+		return ""
+	}
+	return *m.MergeType
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (m *MergeUpstreamResult) GetMessage() string {
+	if m == nil || m.Message == nil {
+		return ""
+	}
+	return *m.Message
+}
+
 // GetText returns the Text field if it's non-nil, zero value otherwise.
 func (m *Message) GetText() string {
 	if m == nil || m.Text == nil {
@@ -15260,6 +15284,14 @@ func (r *RepositoryMergeRequest) GetHead() string {
 		return ""
 	}
 	return *r.Head
+}
+
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (r *RepositoryMergeUpstreamRequest) GetBranch() string {
+	if r == nil || r.Branch == nil {
+		return ""
+	}
+	return *r.Branch
 }
 
 // GetPermission returns the Permission field if it's non-nil, zero value otherwise.
