@@ -59,20 +59,46 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 	Filter *string `json:"filter,omitempty"`
 }
 
+// SCIMUser - GitHub refers to the SCIM schema here: https://datatracker.ietf.org/doc/html/rfc7643#section-4.1
+// it's possible that the exact schema (and applicable extensions) to be used should be determined by reading the
+// schemas field and that this should therefore not be hard coded to use only the currently used schema?
+type SCIMUser struct {
+	Id   *string  `json:"id,omitempty"`
+	Meta SCIMMeta `json:"meta,omitempty"`
+	SCIMUserAttributes
+}
+
+type SCIMMeta struct {
+	ResourceType *string    `json:"resourceType,omitempty"`
+	Created      *Timestamp `json:"created,omitempty"`
+	LastModified *Timestamp `json:"lastModified,omitempty"`
+	Location     *string    `json:"location,omitempty"`
+}
+
+type ListSCIMProvisionedIdentitiesResult struct {
+	Schemas      []string    `json:"schemas,omitempty"`
+	TotalResults *int        `json:"totalResults,omitempty"`
+	ItemsPerPage *int        `json:"itemsPerPage,omitempty"`
+	StartIndex   *int        `json:"startIndex,omitempty"`
+	Resources    []*SCIMUser `json:"Resources,omitempty"`
+}
+
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities
-func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*Response, error) {
+func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*ListSCIMProvisionedIdentitiesResult, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	identities := new(ListSCIMProvisionedIdentitiesResult)
+	resp, err := s.client.Do(ctx, req, &identities)
+	return identities, resp, err
 }
 
 // ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
@@ -94,13 +120,15 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#get-scim-provisioning-information-for-a-user
-func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*Response, error) {
+func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUser, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	user := new(SCIMUser)
+	r, err := s.client.Do(ctx, req, &user)
+	return user, r, err
 }
 
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.

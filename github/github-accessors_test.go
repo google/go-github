@@ -9605,6 +9605,36 @@ func TestListSCIMProvisionedIdentitiesOptions_GetStartIndex(tt *testing.T) {
 	l.GetStartIndex()
 }
 
+func TestListSCIMProvisionedIdentitiesResult_GetItemsPerPage(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesResult{ItemsPerPage: &zeroValue}
+	l.GetItemsPerPage()
+	l = &ListSCIMProvisionedIdentitiesResult{}
+	l.GetItemsPerPage()
+	l = nil
+	l.GetItemsPerPage()
+}
+
+func TestListSCIMProvisionedIdentitiesResult_GetStartIndex(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesResult{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListSCIMProvisionedIdentitiesResult{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
+func TestListSCIMProvisionedIdentitiesResult_GetTotalResults(tt *testing.T) {
+	var zeroValue int
+	l := &ListSCIMProvisionedIdentitiesResult{TotalResults: &zeroValue}
+	l.GetTotalResults()
+	l = &ListSCIMProvisionedIdentitiesResult{}
+	l.GetTotalResults()
+	l = nil
+	l.GetTotalResults()
+}
+
 func TestLocation_GetEndColumn(tt *testing.T) {
 	var zeroValue int
 	l := &Location{EndColumn: &zeroValue}
@@ -18908,6 +18938,56 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 	s = nil
 	s.GetWarning()
+}
+
+func TestSCIMMeta_GetCreated(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SCIMMeta{Created: &zeroValue}
+	s.GetCreated()
+	s = &SCIMMeta{}
+	s.GetCreated()
+	s = nil
+	s.GetCreated()
+}
+
+func TestSCIMMeta_GetLastModified(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SCIMMeta{LastModified: &zeroValue}
+	s.GetLastModified()
+	s = &SCIMMeta{}
+	s.GetLastModified()
+	s = nil
+	s.GetLastModified()
+}
+
+func TestSCIMMeta_GetLocation(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMMeta{Location: &zeroValue}
+	s.GetLocation()
+	s = &SCIMMeta{}
+	s.GetLocation()
+	s = nil
+	s.GetLocation()
+}
+
+func TestSCIMMeta_GetResourceType(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMMeta{ResourceType: &zeroValue}
+	s.GetResourceType()
+	s = &SCIMMeta{}
+	s.GetResourceType()
+	s = nil
+	s.GetResourceType()
+}
+
+func TestSCIMUser_GetId(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUser{Id: &zeroValue}
+	s.GetId()
+	s = &SCIMUser{}
+	s.GetId()
+	s = nil
+	s.GetId()
 }
 
 func TestSCIMUserAttributes_GetActive(tt *testing.T) {
