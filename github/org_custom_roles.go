@@ -10,8 +10,8 @@ import (
 	"fmt"
 )
 
-// OrgainizationCustomRepoRoles represents custom repository roles available in specified organization.
-type OrgainizationCustomRepoRoles struct {
+// OrganizationCustomRepoRoles represents custom repository roles available in specified organization.
+type OrganizationCustomRepoRoles struct {
 	TotalCount      *int               `json:"total_count,omitempty"`
 	CustomRepoRoles []*CustomRepoRoles `json:"custom_roles,omitempty"`
 }
@@ -28,7 +28,7 @@ type CustomRepoRoles struct {
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles
-func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrgainizationCustomRepoRoles, *Response, error) {
+func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/custom_roles", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -36,7 +36,7 @@ func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	customRepoRoles := new(OrgainizationCustomRepoRoles)
+	customRepoRoles := new(OrganizationCustomRepoRoles)
 	resp, err := s.client.Do(ctx, req, customRepoRoles)
 	if err != nil {
 		return nil, resp, err

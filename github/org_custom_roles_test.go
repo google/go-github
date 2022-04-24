@@ -29,7 +29,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned error: %v", err)
 	}
 
-	want := &OrgainizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer")}}}
+	want := &OrganizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer")}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned %+v, want %+v", apps, want)
 	}

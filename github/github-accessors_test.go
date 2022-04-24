@@ -10929,16 +10929,6 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
-func TestOrgainizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
-	var zeroValue int
-	o := &OrgainizationCustomRepoRoles{TotalCount: &zeroValue}
-	o.GetTotalCount()
-	o = &OrgainizationCustomRepoRoles{}
-	o.GetTotalCount()
-	o = nil
-	o.GetTotalCount()
-}
-
 func TestOrganization_GetAvatarURL(tt *testing.T) {
 	var zeroValue string
 	o := &Organization{AvatarURL: &zeroValue}
@@ -11404,6 +11394,16 @@ func TestOrganization_GetURL(tt *testing.T) {
 	o.GetURL()
 	o = nil
 	o.GetURL()
+}
+
+func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	o := &OrganizationCustomRepoRoles{TotalCount: &zeroValue}
+	o.GetTotalCount()
+	o = &OrganizationCustomRepoRoles{}
+	o.GetTotalCount()
+	o = nil
+	o.GetTotalCount()
 }
 
 func TestOrganizationEvent_GetAction(tt *testing.T) {

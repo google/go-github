@@ -9326,14 +9326,6 @@ func (o *OAuthAPP) GetURL() string {
 	return *o.URL
 }
 
-// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (o *OrgainizationCustomRepoRoles) GetTotalCount() int {
-	if o == nil || o.TotalCount == nil {
-		return 0
-	}
-	return *o.TotalCount
-}
-
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAvatarURL() string {
 	if o == nil || o.AvatarURL == nil {
@@ -9708,6 +9700,14 @@ func (o *Organization) GetURL() string {
 		return ""
 	}
 	return *o.URL
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (o *OrganizationCustomRepoRoles) GetTotalCount() int {
+	if o == nil || o.TotalCount == nil {
+		return 0
+	}
+	return *o.TotalCount
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
