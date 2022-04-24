@@ -1093,7 +1093,7 @@ type RateLimits struct {
 	Search *Rate `json:"search"`
 
 	// GitHub API docs: https://docs.github.com/en/graphql/overview/resource-limitations#rate-limit
-	Graphql *Rate `json:"graphql"`
+	GraphQL *Rate `json:"graphql"`
 
 	// GitHub API dos: https://docs.github.com/en/rest/rate-limit
 	IntegrationManifest *Rate `json:"integration_manifest"`
@@ -1101,7 +1101,7 @@ type RateLimits struct {
 	SourceImport              *Rate `json:"source_import"`
 	CodeScanningUpload        *Rate `json:"code_scanning_upload"`
 	ActionsRunnerRegistration *Rate `json:"actions_runner_registration"`
-	Scim                      *Rate `json:"scim"`
+	SCIM                      *Rate `json:"scim"`
 }
 
 func (r RateLimits) String() string {
