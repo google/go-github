@@ -13510,6 +13510,22 @@ func (p *PushEventRepository) GetWatchersCount() int {
 	return *p.WatchersCount
 }
 
+// GetActionsRunnerRegistration returns the ActionsRunnerRegistration field.
+func (r *RateLimits) GetActionsRunnerRegistration() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.ActionsRunnerRegistration
+}
+
+// GetCodeScanningUpload returns the CodeScanningUpload field.
+func (r *RateLimits) GetCodeScanningUpload() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.CodeScanningUpload
+}
+
 // GetCore returns the Core field.
 func (r *RateLimits) GetCore() *Rate {
 	if r == nil {
@@ -13518,12 +13534,44 @@ func (r *RateLimits) GetCore() *Rate {
 	return r.Core
 }
 
+// GetGraphQL returns the GraphQL field.
+func (r *RateLimits) GetGraphQL() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.GraphQL
+}
+
+// GetIntegrationManifest returns the IntegrationManifest field.
+func (r *RateLimits) GetIntegrationManifest() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.IntegrationManifest
+}
+
+// GetSCIM returns the SCIM field.
+func (r *RateLimits) GetSCIM() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.SCIM
+}
+
 // GetSearch returns the Search field.
 func (r *RateLimits) GetSearch() *Rate {
 	if r == nil {
 		return nil
 	}
 	return r.Search
+}
+
+// GetSourceImport returns the SourceImport field.
+func (r *RateLimits) GetSourceImport() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.SourceImport
 }
 
 // GetContent returns the Content field if it's non-nil, zero value otherwise.

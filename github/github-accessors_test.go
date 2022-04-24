@@ -15724,6 +15724,20 @@ func TestPushEventRepository_GetWatchersCount(tt *testing.T) {
 	p.GetWatchersCount()
 }
 
+func TestRateLimits_GetActionsRunnerRegistration(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetActionsRunnerRegistration()
+	r = nil
+	r.GetActionsRunnerRegistration()
+}
+
+func TestRateLimits_GetCodeScanningUpload(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetCodeScanningUpload()
+	r = nil
+	r.GetCodeScanningUpload()
+}
+
 func TestRateLimits_GetCore(tt *testing.T) {
 	r := &RateLimits{}
 	r.GetCore()
@@ -15731,11 +15745,39 @@ func TestRateLimits_GetCore(tt *testing.T) {
 	r.GetCore()
 }
 
+func TestRateLimits_GetGraphQL(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetGraphQL()
+	r = nil
+	r.GetGraphQL()
+}
+
+func TestRateLimits_GetIntegrationManifest(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetIntegrationManifest()
+	r = nil
+	r.GetIntegrationManifest()
+}
+
+func TestRateLimits_GetSCIM(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetSCIM()
+	r = nil
+	r.GetSCIM()
+}
+
 func TestRateLimits_GetSearch(tt *testing.T) {
 	r := &RateLimits{}
 	r.GetSearch()
 	r = nil
 	r.GetSearch()
+}
+
+func TestRateLimits_GetSourceImport(tt *testing.T) {
+	r := &RateLimits{}
+	r.GetSourceImport()
+	r = nil
+	r.GetSourceImport()
 }
 
 func TestReaction_GetContent(tt *testing.T) {
