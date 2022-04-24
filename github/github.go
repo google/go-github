@@ -1113,12 +1113,12 @@ type rateLimitCategory uint8
 const (
 	coreCategory rateLimitCategory = iota
 	searchCategory
-	graphqlCategory
-	integrationManifestCategory
-	sourceImportCategory
-	codeScanningUploadCategory
-	actionsRunnerRegistrationCategory
-	scimCategory
+	graphqlCategory                   //nolint:deadcode,varcheck
+	integrationManifestCategory       //nolint:deadcode,varcheck
+	sourceImportCategory              //nolint:deadcode,varcheck
+	codeScanningUploadCategory        //nolint:deadcode,varcheck
+	actionsRunnerRegistrationCategory //nolint:deadcode,varcheck
+	scimCategory                      //nolint:deadcode,varcheck
 
 	categories // An array of this length will be able to contain all rate limit categories.
 )
