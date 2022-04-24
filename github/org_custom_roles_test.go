@@ -1,3 +1,8 @@
+// Copyright 2022 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -9,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_ListCustomRoles(t *testing.T) {
+func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -19,24 +24,24 @@ func TestOrganizationsService_ListCustomRoles(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	apps, _, err := client.Organizations.ListCustomRoles(ctx, "o")
+	apps, _, err := client.Organizations.ListCustomRepoRoles(ctx, "o")
 	if err != nil {
-		t.Errorf("Organizations.ListCustomRoles returned error: %v", err)
+		t.Errorf("Organizations.ListCustomRepoRoles returned error: %v", err)
 	}
 
-	want := &OrginizationCustomRoles{TotalCount: Int(1), CustomRoles: []*CustomRoles{{ID: Int64(1), Name: String("Developer")}}}
+	want := &OrgainizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer")}}}
 	if !cmp.Equal(apps, want) {
-		t.Errorf("Organizations.ListCustomRoles returned %+v, want %+v", apps, want)
+		t.Errorf("Organizations.ListCustomRepoRoles returned %+v, want %+v", apps, want)
 	}
 
-	const methodName = "ListCustomRoles"
+	const methodName = "ListCustomRepoRoles"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListCustomRoles(ctx, "\no")
+		_, _, err = client.Organizations.ListCustomRepoRoles(ctx, "\no")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListCustomRoles(ctx, "o")
+		got, resp, err := client.Organizations.ListCustomRepoRoles(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

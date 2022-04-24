@@ -1,3 +1,8 @@
+// Copyright 2022 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -5,34 +10,37 @@ import (
 	"fmt"
 )
 
-// OrginizationCustomRoles represents custom repository roles available in specified organization
-type OrginizationCustomRoles struct {
-	TotalCount  *int           `json:"total_count,omitempty"`
-	CustomRoles []*CustomRoles `json:"custom_roles,omitempty"`
+// OrgainizationCustomRepoRoles represents custom repository roles available in specified organization.
+type OrgainizationCustomRepoRoles struct {
+	TotalCount      *int               `json:"total_count,omitempty"`
+	CustomRepoRoles []*CustomRepoRoles `json:"custom_roles,omitempty"`
 }
 
-// CustomRoles represents information of custom roles
-type CustomRoles struct {
+// CustomRepoRoles represents custom repository roles for an organization.
+// See https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization
+// for more information.
+type CustomRepoRoles struct {
 	ID   *int64  `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
-// List Custome Roles in Org
+// ListCustomRepoRoles lists the custom repository roles available in this organization.
+// In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/orgs#custom-repository-roles
-func (s *OrganizationsService) ListCustomRoles(ctx context.Context, organization_id string) (*OrginizationCustomRoles, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/custom_roles", organization_id)
+func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrgainizationCustomRepoRoles, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/custom_roles", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	custom_roles := new(OrginizationCustomRoles)
-	resp, err := s.client.Do(ctx, req, custom_roles)
+	customRepoRoles := new(OrgainizationCustomRepoRoles)
+	resp, err := s.client.Do(ctx, req, customRepoRoles)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return custom_roles, resp, nil
+	return customRepoRoles, resp, nil
 }
