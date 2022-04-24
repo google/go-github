@@ -8190,6 +8190,30 @@ func (l *ListSCIMProvisionedIdentitiesOptions) GetStartIndex() int {
 	return *l.StartIndex
 }
 
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedIdentitiesResult) GetItemsPerPage() int {
+	if l == nil || l.ItemsPerPage == nil {
+		return 0
+	}
+	return *l.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedIdentitiesResult) GetStartIndex() int {
+	if l == nil || l.StartIndex == nil {
+		return 0
+	}
+	return *l.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (l *ListSCIMProvisionedIdentitiesResult) GetTotalResults() int {
+	if l == nil || l.TotalResults == nil {
+		return 0
+	}
+	return *l.TotalResults
+}
+
 // GetEndColumn returns the EndColumn field if it's non-nil, zero value otherwise.
 func (l *Location) GetEndColumn() int {
 	if l == nil || l.EndColumn == nil {
@@ -16172,6 +16196,46 @@ func (s *ScanningAnalysis) GetWarning() string {
 		return ""
 	}
 	return *s.Warning
+}
+
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetCreated() Timestamp {
+	if s == nil || s.Created == nil {
+		return Timestamp{}
+	}
+	return *s.Created
+}
+
+// GetLastModified returns the LastModified field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetLastModified() Timestamp {
+	if s == nil || s.LastModified == nil {
+		return Timestamp{}
+	}
+	return *s.LastModified
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetLocation() string {
+	if s == nil || s.Location == nil {
+		return ""
+	}
+	return *s.Location
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetResourceType() string {
+	if s == nil || s.ResourceType == nil {
+		return ""
+	}
+	return *s.ResourceType
+}
+
+// GetId returns the Id field if it's non-nil, zero value otherwise.
+func (s *SCIMUser) GetId() string {
+	if s == nil || s.Id == nil {
+		return ""
+	}
+	return *s.Id
 }
 
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
