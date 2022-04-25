@@ -8190,30 +8190,6 @@ func (l *ListSCIMProvisionedIdentitiesOptions) GetStartIndex() int {
 	return *l.StartIndex
 }
 
-// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedIdentitiesResult) GetItemsPerPage() int {
-	if l == nil || l.ItemsPerPage == nil {
-		return 0
-	}
-	return *l.ItemsPerPage
-}
-
-// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedIdentitiesResult) GetStartIndex() int {
-	if l == nil || l.StartIndex == nil {
-		return 0
-	}
-	return *l.StartIndex
-}
-
-// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedIdentitiesResult) GetTotalResults() int {
-	if l == nil || l.TotalResults == nil {
-		return 0
-	}
-	return *l.TotalResults
-}
-
 // GetEndColumn returns the EndColumn field if it's non-nil, zero value otherwise.
 func (l *Location) GetEndColumn() int {
 	if l == nil || l.EndColumn == nil {
@@ -16230,12 +16206,28 @@ func (s *SCIMMeta) GetResourceType() string {
 	return *s.ResourceType
 }
 
-// GetId returns the Id field if it's non-nil, zero value otherwise.
-func (s *SCIMUser) GetId() string {
-	if s == nil || s.Id == nil {
-		return ""
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetItemsPerPage() int {
+	if s == nil || s.ItemsPerPage == nil {
+		return 0
 	}
-	return *s.Id
+	return *s.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetStartIndex() int {
+	if s == nil || s.StartIndex == nil {
+		return 0
+	}
+	return *s.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetTotalResults() int {
+	if s == nil || s.TotalResults == nil {
+		return 0
+	}
+	return *s.TotalResults
 }
 
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
@@ -16260,6 +16252,22 @@ func (s *SCIMUserAttributes) GetExternalID() string {
 		return ""
 	}
 	return *s.ExternalID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetID() string {
+	if s == nil || s.ID == nil {
+		return ""
+	}
+	return *s.ID
+}
+
+// GetMeta returns the Meta field.
+func (s *SCIMUserAttributes) GetMeta() *SCIMMeta {
+	if s == nil {
+		return nil
+	}
+	return s.Meta
 }
 
 // GetPrimary returns the Primary field if it's non-nil, zero value otherwise.

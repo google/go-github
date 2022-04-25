@@ -9605,36 +9605,6 @@ func TestListSCIMProvisionedIdentitiesOptions_GetStartIndex(tt *testing.T) {
 	l.GetStartIndex()
 }
 
-func TestListSCIMProvisionedIdentitiesResult_GetItemsPerPage(tt *testing.T) {
-	var zeroValue int
-	l := &ListSCIMProvisionedIdentitiesResult{ItemsPerPage: &zeroValue}
-	l.GetItemsPerPage()
-	l = &ListSCIMProvisionedIdentitiesResult{}
-	l.GetItemsPerPage()
-	l = nil
-	l.GetItemsPerPage()
-}
-
-func TestListSCIMProvisionedIdentitiesResult_GetStartIndex(tt *testing.T) {
-	var zeroValue int
-	l := &ListSCIMProvisionedIdentitiesResult{StartIndex: &zeroValue}
-	l.GetStartIndex()
-	l = &ListSCIMProvisionedIdentitiesResult{}
-	l.GetStartIndex()
-	l = nil
-	l.GetStartIndex()
-}
-
-func TestListSCIMProvisionedIdentitiesResult_GetTotalResults(tt *testing.T) {
-	var zeroValue int
-	l := &ListSCIMProvisionedIdentitiesResult{TotalResults: &zeroValue}
-	l.GetTotalResults()
-	l = &ListSCIMProvisionedIdentitiesResult{}
-	l.GetTotalResults()
-	l = nil
-	l.GetTotalResults()
-}
-
 func TestLocation_GetEndColumn(tt *testing.T) {
 	var zeroValue int
 	l := &Location{EndColumn: &zeroValue}
@@ -18980,14 +18950,34 @@ func TestSCIMMeta_GetResourceType(tt *testing.T) {
 	s.GetResourceType()
 }
 
-func TestSCIMUser_GetId(tt *testing.T) {
-	var zeroValue string
-	s := &SCIMUser{Id: &zeroValue}
-	s.GetId()
-	s = &SCIMUser{}
-	s.GetId()
+func TestSCIMProvisionedIdentities_GetItemsPerPage(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{ItemsPerPage: &zeroValue}
+	s.GetItemsPerPage()
+	s = &SCIMProvisionedIdentities{}
+	s.GetItemsPerPage()
 	s = nil
-	s.GetId()
+	s.GetItemsPerPage()
+}
+
+func TestSCIMProvisionedIdentities_GetStartIndex(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{StartIndex: &zeroValue}
+	s.GetStartIndex()
+	s = &SCIMProvisionedIdentities{}
+	s.GetStartIndex()
+	s = nil
+	s.GetStartIndex()
+}
+
+func TestSCIMProvisionedIdentities_GetTotalResults(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{TotalResults: &zeroValue}
+	s.GetTotalResults()
+	s = &SCIMProvisionedIdentities{}
+	s.GetTotalResults()
+	s = nil
+	s.GetTotalResults()
 }
 
 func TestSCIMUserAttributes_GetActive(tt *testing.T) {
@@ -19018,6 +19008,23 @@ func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
+}
+
+func TestSCIMUserAttributes_GetID(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{ID: &zeroValue}
+	s.GetID()
+	s = &SCIMUserAttributes{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSCIMUserAttributes_GetMeta(tt *testing.T) {
+	s := &SCIMUserAttributes{}
+	s.GetMeta()
+	s = nil
+	s.GetMeta()
 }
 
 func TestSCIMUserEmail_GetPrimary(tt *testing.T) {

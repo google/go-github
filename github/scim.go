@@ -20,6 +20,10 @@ type SCIMService service
 // SCIMUserAttributes represents supported SCIM User attributes.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#supported-scim-user-attributes
+//
+// N.B. GitHub refers to the SCIM schema here: https://datatracker.ietf.org/doc/html/rfc7643#section-4.1
+// it's possible that the exact schema (and applicable extensions) to be used should be determined by reading the
+// schemas field and this struct may need to be changed in the future
 type SCIMUserAttributes struct {
 	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
 	Name        SCIMUserName     `json:"name"`                  // (Required.)
@@ -29,6 +33,8 @@ type SCIMUserAttributes struct {
 	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
 	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
+	ID          *string          `json:"id,omitempty"`          // Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser
+	Meta        *SCIMMeta        `json:"meta,omitempty"`        // Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser
 }
 
 // SCIMUserName represents SCIM user information.
@@ -38,11 +44,19 @@ type SCIMUserName struct {
 	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
 }
 
-//SCIMUserEmail represents SCIM user email.
+// SCIMUserEmail represents SCIM user email.
 type SCIMUserEmail struct {
 	Value   string  `json:"value"`             // (Required.)
 	Primary *bool   `json:"primary,omitempty"` // (Optional.)
 	Type    *string `json:"type,omitempty"`    // (Optional.)
+}
+
+// SCIMMeta represents metadata about the SCIM resource
+type SCIMMeta struct {
+	ResourceType *string    `json:"resourceType,omitempty"`
+	Created      *Timestamp `json:"created,omitempty"`
+	LastModified *Timestamp `json:"lastModified,omitempty"`
+	Location     *string    `json:"location,omitempty"`
 }
 
 // ListSCIMProvisionedIdentitiesOptions represents options for ListSCIMProvisionedIdentities.
@@ -59,45 +73,36 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 	Filter *string `json:"filter,omitempty"`
 }
 
-// SCIMUser - GitHub refers to the SCIM schema here: https://datatracker.ietf.org/doc/html/rfc7643#section-4.1
-// it's possible that the exact schema (and applicable extensions) to be used should be determined by reading the
-// schemas field and that this should therefore not be hard coded to use only the currently used schema?
-type SCIMUser struct {
-	Id   *string  `json:"id,omitempty"`
-	Meta SCIMMeta `json:"meta,omitempty"`
-	SCIMUserAttributes
-}
-
-type SCIMMeta struct {
-	ResourceType *string    `json:"resourceType,omitempty"`
-	Created      *Timestamp `json:"created,omitempty"`
-	LastModified *Timestamp `json:"lastModified,omitempty"`
-	Location     *string    `json:"location,omitempty"`
-}
-
-type ListSCIMProvisionedIdentitiesResult struct {
-	Schemas      []string    `json:"schemas,omitempty"`
-	TotalResults *int        `json:"totalResults,omitempty"`
-	ItemsPerPage *int        `json:"itemsPerPage,omitempty"`
-	StartIndex   *int        `json:"startIndex,omitempty"`
-	Resources    []*SCIMUser `json:"Resources,omitempty"`
+// SCIMProvisionedIdentities represents the result of calling ListSCIMProvisionedIdentities
+type SCIMProvisionedIdentities struct {
+	Schemas      []string              `json:"schemas,omitempty"`
+	TotalResults *int                  `json:"totalResults,omitempty"`
+	ItemsPerPage *int                  `json:"itemsPerPage,omitempty"`
+	StartIndex   *int                  `json:"startIndex,omitempty"`
+	Resources    []*SCIMUserAttributes `json:"Resources,omitempty"`
 }
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#list-scim-provisioned-identities
-func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*ListSCIMProvisionedIdentitiesResult, *Response, error) {
+func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedIdentities, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	identities := new(ListSCIMProvisionedIdentitiesResult)
-	resp, err := s.client.Do(ctx, req, &identities)
+
+	identities := new(SCIMProvisionedIdentities)
+	resp, err := s.client.Do(ctx, req, identities)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return identities, resp, err
 }
 
@@ -110,25 +115,32 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/reference/scim#get-scim-provisioning-information-for-a-user
-func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUser, *Response, error) {
+func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	user := new(SCIMUser)
-	r, err := s.client.Do(ctx, req, &user)
-	return user, r, err
+
+	user := new(SCIMUserAttributes)
+	resp, err := s.client.Do(ctx, req, &user)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return user, resp, err
 }
 
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.
@@ -140,10 +152,12 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -171,10 +185,12 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -187,5 +203,6 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

@@ -71,39 +71,37 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 		t.Errorf("Failed to load Pacific Standard Time zone")
 	}
 	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, tz)}
-	want := ListSCIMProvisionedIdentitiesResult{
+	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
 		TotalResults: Int(1),
 		ItemsPerPage: Int(1),
 		StartIndex:   Int(1),
-		Resources: []*SCIMUser{
-			&SCIMUser{
-				Id: String("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
-				Meta: SCIMMeta{
+		Resources: []*SCIMUserAttributes{
+			&SCIMUserAttributes{
+				ID: String("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				Meta: &SCIMMeta{
 					ResourceType: String("User"),
 					Created:      &date,
 					LastModified: &date,
 					Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
-				SCIMUserAttributes: SCIMUserAttributes{
-					UserName: "octocat@github.com",
-					Name: SCIMUserName{
-						GivenName:  "Mona",
-						FamilyName: "Octocat",
-						Formatted:  String("Mona Octocat"),
-					},
-					DisplayName: String("Mona Octocat"),
-					Emails: []*SCIMUserEmail{
-						&SCIMUserEmail{
-							Value:   "octocat@github.com",
-							Primary: Bool(true),
-						},
-					},
-					Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-					ExternalID: String("00u1dhhb1fkIGP7RL1d8"),
-					Groups:     nil,
-					Active:     Bool(true),
+				UserName: "octocat@github.com",
+				Name: SCIMUserName{
+					GivenName:  "Mona",
+					FamilyName: "Octocat",
+					Formatted:  String("Mona Octocat"),
 				},
+				DisplayName: String("Mona Octocat"),
+				Emails: []*SCIMUserEmail{
+					&SCIMUserEmail{
+						Value:   "octocat@github.com",
+						Primary: Bool(true),
+					},
+				},
+				Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+				ExternalID: String("00u1dhhb1fkIGP7RL1d8"),
+				Groups:     nil,
+				Active:     Bool(true),
 			},
 		},
 	}
@@ -213,36 +211,34 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		t.Errorf("Failed to load Eastern Standard Time zone")
 	}
 	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, tz)}
-	want := SCIMUser{
-		Id: String("edefdfedf-050c-11e7-8d32"),
-		Meta: SCIMMeta{
+	want := SCIMUserAttributes{
+		ID: String("edefdfedf-050c-11e7-8d32"),
+		Meta: &SCIMMeta{
 			ResourceType: String("User"),
 			Created:      &date,
 			LastModified: &date,
 			Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
-		SCIMUserAttributes: SCIMUserAttributes{
-			UserName: "mona.octocat@okta.example.com",
-			Name: SCIMUserName{
-				GivenName:  "Monalisa",
-				FamilyName: "Octocat",
-				Formatted:  String("Monalisa Octocat"),
-			},
-			DisplayName: String("Monalisa Octocat"),
-			Emails: []*SCIMUserEmail{
-				&SCIMUserEmail{
-					Value:   "mona.octocat@okta.example.com",
-					Primary: Bool(true),
-				},
-				&SCIMUserEmail{
-					Value: "monalisa@octocat.github.com",
-				},
-			},
-			Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-			ExternalID: String("a7d0f98382"),
-			Groups:     nil,
-			Active:     Bool(true),
+		UserName: "mona.octocat@okta.example.com",
+		Name: SCIMUserName{
+			GivenName:  "Monalisa",
+			FamilyName: "Octocat",
+			Formatted:  String("Monalisa Octocat"),
 		},
+		DisplayName: String("Monalisa Octocat"),
+		Emails: []*SCIMUserEmail{
+			&SCIMUserEmail{
+				Value:   "mona.octocat@okta.example.com",
+				Primary: Bool(true),
+			},
+			&SCIMUserEmail{
+				Value: "monalisa@octocat.github.com",
+			},
+		},
+		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+		ExternalID: String("a7d0f98382"),
+		Groups:     nil,
+		Active:     Bool(true),
 	}
 
 	if !cmp.Equal(user, &want) {
