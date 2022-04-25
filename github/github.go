@@ -1113,12 +1113,12 @@ type rateLimitCategory uint8
 const (
 	coreCategory rateLimitCategory = iota
 	searchCategory
-	graphqlCategory                   //nolint:deadcode,varcheck
-	integrationManifestCategory       //nolint:deadcode,varcheck
-	sourceImportCategory              //nolint:deadcode,varcheck
-	codeScanningUploadCategory        //nolint:deadcode,varcheck
-	actionsRunnerRegistrationCategory //nolint:deadcode,varcheck
-	scimCategory                      //nolint:deadcode,varcheck
+	graphqlCategory
+	integrationManifestCategory
+	sourceImportCategory
+	codeScanningUploadCategory
+	actionsRunnerRegistrationCategory
+	scimCategory
 
 	categories // An array of this length will be able to contain all rate limit categories.
 )
@@ -1158,6 +1158,24 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 		}
 		if response.Resources.Search != nil {
 			c.rateLimits[searchCategory] = *response.Resources.Search
+		}
+		if response.Resources.GraphQL != nil {
+			c.rateLimits[graphqlCategory] = *response.Resources.GraphQL
+		}
+		if response.Resources.IntegrationManifest != nil {
+			c.rateLimits[integrationManifestCategory] = *response.Resources.IntegrationManifest
+		}
+		if response.Resources.SourceImport != nil {
+			c.rateLimits[sourceImportCategory] = *response.Resources.SourceImport
+		}
+		if response.Resources.CodeScanningUpload != nil {
+			c.rateLimits[codeScanningUploadCategory] = *response.Resources.CodeScanningUpload
+		}
+		if response.Resources.ActionsRunnerRegistration != nil {
+			c.rateLimits[actionsRunnerRegistrationCategory] = *response.Resources.ActionsRunnerRegistration
+		}
+		if response.Resources.SCIM != nil {
+			c.rateLimits[scimCategory] = *response.Resources.SCIM
 		}
 		c.rateMu.Unlock()
 	}
