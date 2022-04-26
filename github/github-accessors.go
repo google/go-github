@@ -3542,6 +3542,22 @@ func (c *CreateUserProjectOptions) GetBody() string {
 	return *c.Body
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CustomRepoRoles) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CustomRepoRoles) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {
@@ -9684,6 +9700,14 @@ func (o *Organization) GetURL() string {
 		return ""
 	}
 	return *o.URL
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (o *OrganizationCustomRepoRoles) GetTotalCount() int {
+	if o == nil || o.TotalCount == nil {
+		return 0
+	}
+	return *o.TotalCount
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
