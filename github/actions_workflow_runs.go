@@ -211,6 +211,34 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 	return s.client.Do(ctx, req, nil)
 }
 
+// RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
+func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun-failed-jobs", owner, repo, runID)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
+//
+// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
+func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, jobID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/rerun", owner, repo, jobID)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // CancelWorkflowRunByID cancels a workflow run by ID.
 //
 // GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#cancel-a-workflow-run
