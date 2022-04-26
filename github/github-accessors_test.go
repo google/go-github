@@ -4146,6 +4146,26 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 }
 
+func TestCustomRepoRoles_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CustomRepoRoles{ID: &zeroValue}
+	c.GetID()
+	c = &CustomRepoRoles{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCustomRepoRoles_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CustomRepoRoles{Name: &zeroValue}
+	c.GetName()
+	c = &CustomRepoRoles{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	d := &DeleteEvent{}
 	d.GetInstallation()
@@ -11374,6 +11394,16 @@ func TestOrganization_GetURL(tt *testing.T) {
 	o.GetURL()
 	o = nil
 	o.GetURL()
+}
+
+func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	o := &OrganizationCustomRepoRoles{TotalCount: &zeroValue}
+	o.GetTotalCount()
+	o = &OrganizationCustomRepoRoles{}
+	o.GetTotalCount()
+	o = nil
+	o.GetTotalCount()
 }
 
 func TestOrganizationEvent_GetAction(tt *testing.T) {
