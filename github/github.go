@@ -9,9 +9,9 @@
 package github
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
+"bytes"
+"context"
+		"encoding/json"
 	"errors"
 	"fmt"
 	"io"
