@@ -342,6 +342,14 @@ func (a *Alert) GetNumber() int {
 	return *a.Number
 }
 
+// GetRepository returns the Repository field.
+func (a *Alert) GetRepository() *Repository {
+	if a == nil {
+		return nil
+	}
+	return a.Repository
+}
+
 // GetRule returns the Rule field.
 func (a *Alert) GetRule() *Rule {
 	if a == nil {
