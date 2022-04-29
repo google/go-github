@@ -97,6 +97,11 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
 		fmt.Fprint(w, `[{
+				"repository": {
+					"id": 1,
+					"name": "n",
+					"url": "url"
+				},
 				"rule_id":"js/trivial-conditional",
 				"rule_severity":"warning",
 				"rule_description":"Useless conditional",
@@ -146,11 +151,6 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 					"name": "CodeQL",
 					"guid": null,
 					"version": "1.4.0"
-				},
-				"repository": {
-					"id": 1,
-					"name": "n",
-					"url": "url"
 				},
 				"rule": {
 					"id": "js/useless-expression",
@@ -275,7 +275,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alerts, want) {
-		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", alerts, want)
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
 	}
 
 	const methodName = "ListAlertsForOrg"
