@@ -246,6 +246,28 @@ for {
 }
 ```
 
+### Webhooks ###
+
+`go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and unmarshal JSON payloads from `http.Request` structs.
+
+```go
+func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	payload, err := github.ValidatePayload(r, s.webhookSecretKey)
+	if err != nil { ... }
+	event, err := github.ParseWebHook(github.WebHookType(r), payload)
+	if err != nil { ... }
+	switch event := event.(type) {
+	case *github.CommitCommentEvent:
+		processCommitCommentEvent(event)
+	case *github.CreateEvent:
+		processCreateEvent(event)
+	...
+	}
+}
+```
+
+Furthermore, there are libraries like [cbrgm/githubevents][] that build upon the example above and provide functions to subscribe callbacks to specific events.
+
 For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
@@ -255,6 +277,8 @@ For complete usage of go-github, see the full [package docs][].
 [package docs]: https://pkg.go.dev/github.com/google/go-github/v44/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
+[GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
+[cbrgm/githubevents]: https://github.com/cbrgm/githubevents
 
 ### Testing code that uses `go-github`
 
