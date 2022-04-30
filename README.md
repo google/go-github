@@ -248,7 +248,7 @@ for {
 
 ### Webhooks ###
 
-`go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and umarshall payloads from `http.Request` structs.
+`go-github` provides structs for almost all [GitHub webhook events][] as well as functions to validate them and unmarshal JSON payloads from `http.Request` structs.
 
 ```go
 func (s *GitHubEventMonitor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
