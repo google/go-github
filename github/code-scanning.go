@@ -68,6 +68,7 @@ type Tool struct {
 // GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
 type Alert struct {
 	Number             *int                  `json:"number,omitempty"`
+	Repository         *Repository           `json:"repository,omitempty"`
 	RuleID             *string               `json:"rule_id,omitempty"`
 	RuleSeverity       *string               `json:"rule_severity,omitempty"`
 	RuleDescription    *string               `json:"rule_description,omitempty"`
@@ -173,6 +174,33 @@ type SarifAnalysis struct {
 type SarifID struct {
 	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
+}
+
+// ListAlertsForOrg lists code scanning alerts for an org.
+//
+// You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
+// read permission to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-an-organization
+func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *AlertListOptions) ([]*Alert, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/code-scanning/alerts", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var alerts []*Alert
+	resp, err := s.client.Do(ctx, req, &alerts)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return alerts, resp, nil
 }
 
 // ListAlertsForRepo lists code scanning alerts for a repository.

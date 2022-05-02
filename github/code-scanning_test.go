@@ -89,6 +89,210 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	})
 }
 
+func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/orgs/o/code-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"state": "open", "ref": "heads/master"})
+		fmt.Fprint(w, `[{
+				"repository": {
+					"id": 1,
+					"name": "n",
+					"url": "url"
+				},
+				"rule_id":"js/trivial-conditional",
+				"rule_severity":"warning",
+				"rule_description":"Useless conditional",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
+				"rule": {
+					"id": "js/trivial-conditional",
+					"severity": "warning",
+					"description": "Useless conditional",
+					"name": "js/trivial-conditional",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "open",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},
+				"created_at":"2020-05-06T12:00:00Z",
+				"state":"open",
+				"closed_by":null,
+				"closed_at":null,
+				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/25",
+				"html_url":"https://github.com/o/r/security/code-scanning/25"
+				},
+				{
+				"rule_id":"js/useless-expression",
+				"rule_severity":"warning",
+				"rule_description":"Expression has no effect",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
+				"rule": {
+					"id": "js/useless-expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "js/useless-expression",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "open",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},
+				"created_at":"2020-05-06T12:00:00Z",
+				"state":"open",
+				"closed_by":null,
+				"closed_at":null,
+				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
+				"html_url":"https://github.com/o/r/security/code-scanning/88"
+				}]`)
+	})
+
+	opts := &AlertListOptions{State: "open", Ref: "heads/master"}
+	ctx := context.Background()
+	alerts, _, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(2020, time.May, 06, 12, 00, 00, 0, time.UTC)}
+	want := []*Alert{
+		{
+			Repository: &Repository{
+				ID:   Int64(1),
+				URL:  String("url"),
+				Name: String("n"),
+			},
+			RuleID:          String("js/trivial-conditional"),
+			RuleSeverity:    String("warning"),
+			RuleDescription: String("Useless conditional"),
+			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			Rule: &Rule{
+				ID:              String("js/trivial-conditional"),
+				Severity:        String("warning"),
+				Description:     String("Useless conditional"),
+				Name:            String("js/trivial-conditional"),
+				FullDescription: String("Expression has no effect"),
+				Help:            String("Expression has no effect"),
+			},
+			CreatedAt: &date,
+			State:     String("open"),
+			ClosedBy:  nil,
+			ClosedAt:  nil,
+			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/25"),
+			HTMLURL:   String("https://github.com/o/r/security/code-scanning/25"),
+			MostRecentInstance: &MostRecentInstance{
+				Ref:       String("refs/heads/main"),
+				State:     String("open"),
+				CommitSHA: String("abcdefg12345"),
+				Message: &Message{
+					Text: String("This path depends on a user-provided value."),
+				},
+				Location: &Location{
+					Path:        String("spec-main/api-session-spec.ts"),
+					StartLine:   Int(917),
+					EndLine:     Int(917),
+					StartColumn: Int(7),
+					EndColumn:   Int(18),
+				},
+				Classifications: []string{"test"},
+			},
+		},
+		{
+			RuleID:          String("js/useless-expression"),
+			RuleSeverity:    String("warning"),
+			RuleDescription: String("Expression has no effect"),
+			Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+			Rule: &Rule{
+				ID:              String("js/useless-expression"),
+				Severity:        String("warning"),
+				Description:     String("Expression has no effect"),
+				Name:            String("js/useless-expression"),
+				FullDescription: String("Expression has no effect"),
+				Help:            String("Expression has no effect"),
+			},
+			CreatedAt: &date,
+			State:     String("open"),
+			ClosedBy:  nil,
+			ClosedAt:  nil,
+			URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+			HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+			MostRecentInstance: &MostRecentInstance{
+				Ref:       String("refs/heads/main"),
+				State:     String("open"),
+				CommitSHA: String("abcdefg12345"),
+				Message: &Message{
+					Text: String("This path depends on a user-provided value."),
+				},
+				Location: &Location{
+					Path:        String("spec-main/api-session-spec.ts"),
+					StartLine:   Int(917),
+					EndLine:     Int(917),
+					StartColumn: Int(7),
+					EndColumn:   Int(18),
+				},
+				Classifications: []string{"test"},
+			},
+		},
+	}
+	if !cmp.Equal(alerts, want) {
+		t.Errorf("CodeScanning.ListAlertsForOrg returned %+v, want %+v", *&alerts, *&want)
+	}
+
+	const methodName = "ListAlertsForOrg"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.ListAlertsForOrg(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.ListAlertsForOrg(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
@@ -322,7 +526,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 					"classifications": [
 						"test"
 					]
-				},      
+				},
 				"created_at":"2019-01-02T15:04:05Z",
 				"state":"open",
 				"closed_by":null,

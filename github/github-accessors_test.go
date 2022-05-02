@@ -380,6 +380,13 @@ func TestAlert_GetNumber(tt *testing.T) {
 	a.GetNumber()
 }
 
+func TestAlert_GetRepository(tt *testing.T) {
+	a := &Alert{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
 func TestAlert_GetRule(tt *testing.T) {
 	a := &Alert{}
 	a.GetRule()
