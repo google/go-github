@@ -320,7 +320,6 @@ func (s *ChecksService) ReRequestCheckRun(ctx context.Context, owner, repo strin
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
 	return s.client.Do(ctx, req, nil)
 }
 
