@@ -321,7 +321,7 @@ func (s *ChecksService) ReRequestCheckRun(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	resp, err := s.client.Do(ctx, req, nil)
-	return resp, err
+	return s.client.Do(ctx, req, nil)
 }
 
 // ListCheckSuiteOptions represents parameters to list check suites.
