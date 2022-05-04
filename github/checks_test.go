@@ -1731,7 +1731,7 @@ func TestChecksService_ReRequestCheckRun(t *testing.T) {
 	ctx := context.Background()
 	resp, err := client.Checks.ReRequestCheckRun(ctx, "o", "r", 1)
 	if err != nil {
-		t.Errorf("Checks.ReRequestCheckSuite return error: %v", err)
+		t.Errorf("Checks.ReRequestCheckRun return error: %v", err)
 	}
 	if got, want := resp.StatusCode, http.StatusCreated; got != want {
 		t.Errorf("Checks.ReRequestCheckRun = %v, want %v", got, want)
