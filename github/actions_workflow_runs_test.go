@@ -216,6 +216,64 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 	})
 }
 
+func TestActionsService_RerunFailedJobsByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/runs/3434/rerun-failed-jobs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.RerunFailedJobsByID(ctx, "o", "r", 3434)
+	if err != nil {
+		t.Errorf("Actions.RerunFailedJobsByID returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusCreated {
+		t.Errorf("Actions.RerunFailedJobsByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
+	}
+
+	const methodName = "RerunFailedJobsByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RerunFailedJobsByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RerunFailedJobsByID(ctx, "o", "r", 3434)
+	})
+}
+
+func TestActionsService_RerunJobByID(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/jobs/3434/rerun", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	ctx := context.Background()
+	resp, err := client.Actions.RerunJobByID(ctx, "o", "r", 3434)
+	if err != nil {
+		t.Errorf("Actions.RerunJobByID returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusCreated {
+		t.Errorf("Actions.RerunJobByID returned status: %d, want %d", resp.StatusCode, http.StatusCreated)
+	}
+
+	const methodName = "RerunJobByID"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.RerunJobByID(ctx, "\n", "\n", 3434)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.RerunJobByID(ctx, "o", "r", 3434)
+	})
+}
+
 func TestActionsService_CancelWorkflowRunByID(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
