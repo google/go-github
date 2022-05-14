@@ -945,8 +945,8 @@ type HeadCommit struct {
 	Modified  []string      `json:"modified,omitempty"`
 }
 
-func (p HeadCommit) String() string {
-	return Stringify(p)
+func (h HeadCommit) String() string {
+	return Stringify(h)
 }
 
 // PushEventRepository represents the repo object in a PushEvent payload.
@@ -1051,6 +1051,16 @@ type RepositoryDispatchEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// RepositoryImportEvent represents the activity related to a repository being imported to GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#repository_import
+type RepositoryImportEvent struct {
+	Status *string       `json:"status,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Org    *Organization `json:"organization,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
+}
+
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#repository_vulnerability_alert
@@ -1058,10 +1068,10 @@ type RepositoryVulnerabilityAlertEvent struct {
 	// Action is the action that was performed. Possible values are: "create", "dismiss", "resolve".
 	Action *string `json:"action,omitempty"`
 
-	//The security alert of the vulnerable dependency.
+	// The security alert of the vulnerable dependency.
 	Alert *RepositoryVulnerabilityAlert `json:"alert,omitempty"`
 
-	//The repository of the vulnerable dependency.
+	// The repository of the vulnerable dependency.
 	Repository *Repository `json:"repository,omitempty"`
 
 	// The following fields are only populated by Webhook events.
