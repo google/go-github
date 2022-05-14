@@ -1055,6 +1055,7 @@ type RepositoryDispatchEvent struct {
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#repository_import
 type RepositoryImportEvent struct {
+	// Status represents the final state of the import. This can be one of "success", "cancelled", or "failure".
 	Status *string       `json:"status,omitempty"`
 	Repo   *Repository   `json:"repository,omitempty"`
 	Org    *Organization `json:"organization,omitempty"`
