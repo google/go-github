@@ -18223,6 +18223,13 @@ func TestRepositoryVulnerabilityAlertEvent_GetRepository(tt *testing.T) {
 	r.GetRepository()
 }
 
+func TestRepositoryVulnerabilityAlertEvent_GetSender(tt *testing.T) {
+	r := &RepositoryVulnerabilityAlertEvent{}
+	r.GetSender()
+	r = nil
+	r.GetSender()
+}
+
 func TestRepoStats_GetForkRepos(tt *testing.T) {
 	var zeroValue int
 	r := &RepoStats{ForkRepos: &zeroValue}

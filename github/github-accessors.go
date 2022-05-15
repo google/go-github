@@ -15622,6 +15622,14 @@ func (r *RepositoryVulnerabilityAlertEvent) GetRepository() *Repository {
 	return r.Repository
 }
 
+// GetSender returns the Sender field.
+func (r *RepositoryVulnerabilityAlertEvent) GetSender() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Sender
+}
+
 // GetForkRepos returns the ForkRepos field if it's non-nil, zero value otherwise.
 func (r *RepoStats) GetForkRepos() int {
 	if r == nil || r.ForkRepos == nil {
