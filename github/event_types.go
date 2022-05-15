@@ -1058,14 +1058,17 @@ type RepositoryVulnerabilityAlertEvent struct {
 	// Action is the action that was performed. Possible values are: "create", "dismiss", "resolve".
 	Action *string `json:"action,omitempty"`
 
-	//The security alert of the vulnerable dependency.
+	// The security alert of the vulnerable dependency.
 	Alert *RepositoryVulnerabilityAlert `json:"alert,omitempty"`
 
-	//The repository of the vulnerable dependency.
+	// The repository of the vulnerable dependency.
 	Repository *Repository `json:"repository,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Installation *Installation `json:"installation,omitempty"`
+
+	// The user that triggered the event.
+	Sender *User `json:"sender,omitempty"`
 }
 
 // RepositoryVulnerabilityAlert represents a repository security alert.
