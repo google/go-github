@@ -16194,6 +16194,46 @@ func TestRenameOrgResponse_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
+	r.GetBranch()
+	r = &RepoMergeUpstreamRequest{}
+	r.GetBranch()
+	r = nil
+	r.GetBranch()
+}
+
+func TestRepoMergeUpstreamResult_GetBaseBranch(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{BaseBranch: &zeroValue}
+	r.GetBaseBranch()
+	r = &RepoMergeUpstreamResult{}
+	r.GetBaseBranch()
+	r = nil
+	r.GetBaseBranch()
+}
+
+func TestRepoMergeUpstreamResult_GetMergeType(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{MergeType: &zeroValue}
+	r.GetMergeType()
+	r = &RepoMergeUpstreamResult{}
+	r.GetMergeType()
+	r = nil
+	r.GetMergeType()
+}
+
+func TestRepoMergeUpstreamResult_GetMessage(tt *testing.T) {
+	var zeroValue string
+	r := &RepoMergeUpstreamResult{Message: &zeroValue}
+	r.GetMessage()
+	r = &RepoMergeUpstreamResult{}
+	r.GetMessage()
+	r = nil
+	r.GetMessage()
+}
+
 func TestRepoName_GetFrom(tt *testing.T) {
 	var zeroValue string
 	r := &RepoName{From: &zeroValue}
