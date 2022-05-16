@@ -13910,6 +13910,38 @@ func (r *RenameOrgResponse) GetURL() string {
 	return *r.URL
 }
 
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (r *RepoMergeUpstreamRequest) GetBranch() string {
+	if r == nil || r.Branch == nil {
+		return ""
+	}
+	return *r.Branch
+}
+
+// GetBaseBranch returns the BaseBranch field if it's non-nil, zero value otherwise.
+func (r *RepoMergeUpstreamResult) GetBaseBranch() string {
+	if r == nil || r.BaseBranch == nil {
+		return ""
+	}
+	return *r.BaseBranch
+}
+
+// GetMergeType returns the MergeType field if it's non-nil, zero value otherwise.
+func (r *RepoMergeUpstreamResult) GetMergeType() string {
+	if r == nil || r.MergeType == nil {
+		return ""
+	}
+	return *r.MergeType
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (r *RepoMergeUpstreamResult) GetMessage() string {
+	if r == nil || r.Message == nil {
+		return ""
+	}
+	return *r.Message
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (r *RepoName) GetFrom() string {
 	if r == nil || r.From == nil {
