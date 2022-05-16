@@ -1082,15 +1082,26 @@ type RateLimits struct {
 	// requests are limited to 60 per hour. Authenticated requests are
 	// limited to 5,000 per hour.
 	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/#rate-limiting
+	// GitHub API docs: https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting
 	Core *Rate `json:"core"`
 
 	// The rate limit for search API requests. Unauthenticated requests
 	// are limited to 10 requests per minutes. Authenticated requests are
 	// limited to 30 per minute.
 	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/search/#rate-limit
+	// GitHub API docs: https://docs.github.com/en/rest/search#rate-limit
 	Search *Rate `json:"search"`
+
+	// GitHub API docs: https://docs.github.com/en/graphql/overview/resource-limitations#rate-limit
+	GraphQL *Rate `json:"graphql"`
+
+	// GitHub API dos: https://docs.github.com/en/rest/rate-limit
+	IntegrationManifest *Rate `json:"integration_manifest"`
+
+	SourceImport              *Rate `json:"source_import"`
+	CodeScanningUpload        *Rate `json:"code_scanning_upload"`
+	ActionsRunnerRegistration *Rate `json:"actions_runner_registration"`
+	SCIM                      *Rate `json:"scim"`
 }
 
 func (r RateLimits) String() string {
@@ -1102,6 +1113,12 @@ type rateLimitCategory uint8
 const (
 	coreCategory rateLimitCategory = iota
 	searchCategory
+	graphqlCategory
+	integrationManifestCategory
+	sourceImportCategory
+	codeScanningUploadCategory
+	actionsRunnerRegistrationCategory
+	scimCategory
 
 	categories // An array of this length will be able to contain all rate limit categories.
 )
@@ -1141,6 +1158,24 @@ func (c *Client) RateLimits(ctx context.Context) (*RateLimits, *Response, error)
 		}
 		if response.Resources.Search != nil {
 			c.rateLimits[searchCategory] = *response.Resources.Search
+		}
+		if response.Resources.GraphQL != nil {
+			c.rateLimits[graphqlCategory] = *response.Resources.GraphQL
+		}
+		if response.Resources.IntegrationManifest != nil {
+			c.rateLimits[integrationManifestCategory] = *response.Resources.IntegrationManifest
+		}
+		if response.Resources.SourceImport != nil {
+			c.rateLimits[sourceImportCategory] = *response.Resources.SourceImport
+		}
+		if response.Resources.CodeScanningUpload != nil {
+			c.rateLimits[codeScanningUploadCategory] = *response.Resources.CodeScanningUpload
+		}
+		if response.Resources.ActionsRunnerRegistration != nil {
+			c.rateLimits[actionsRunnerRegistrationCategory] = *response.Resources.ActionsRunnerRegistration
+		}
+		if response.Resources.SCIM != nil {
+			c.rateLimits[scimCategory] = *response.Resources.SCIM
 		}
 		c.rateMu.Unlock()
 	}
