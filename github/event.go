@@ -114,6 +114,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &RepositoryEvent{}
 	case "RepositoryDispatchEvent":
 		payload = &RepositoryDispatchEvent{}
+	case "RepositoryImportEvent":
+		payload = &RepositoryImportEvent{}
 	case "RepositoryVulnerabilityAlertEvent":
 		payload = &RepositoryVulnerabilityAlertEvent{}
 	case "SecretScanningAlertEvent":

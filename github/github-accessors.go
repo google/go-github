@@ -15190,6 +15190,38 @@ func (r *RepositoryEvent) GetSender() *User {
 	return r.Sender
 }
 
+// GetOrg returns the Org field.
+func (r *RepositoryImportEvent) GetOrg() *Organization {
+	if r == nil {
+		return nil
+	}
+	return r.Org
+}
+
+// GetRepo returns the Repo field.
+func (r *RepositoryImportEvent) GetRepo() *Repository {
+	if r == nil {
+		return nil
+	}
+	return r.Repo
+}
+
+// GetSender returns the Sender field.
+func (r *RepositoryImportEvent) GetSender() *User {
+	if r == nil {
+		return nil
+	}
+	return r.Sender
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (r *RepositoryImportEvent) GetStatus() string {
+	if r == nil || r.Status == nil {
+		return ""
+	}
+	return *r.Status
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (r *RepositoryInvitation) GetCreatedAt() Timestamp {
 	if r == nil || r.CreatedAt == nil {
