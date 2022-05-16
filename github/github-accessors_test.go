@@ -17698,6 +17698,37 @@ func TestRepositoryEvent_GetSender(tt *testing.T) {
 	r.GetSender()
 }
 
+func TestRepositoryImportEvent_GetOrg(tt *testing.T) {
+	r := &RepositoryImportEvent{}
+	r.GetOrg()
+	r = nil
+	r.GetOrg()
+}
+
+func TestRepositoryImportEvent_GetRepo(tt *testing.T) {
+	r := &RepositoryImportEvent{}
+	r.GetRepo()
+	r = nil
+	r.GetRepo()
+}
+
+func TestRepositoryImportEvent_GetSender(tt *testing.T) {
+	r := &RepositoryImportEvent{}
+	r.GetSender()
+	r = nil
+	r.GetSender()
+}
+
+func TestRepositoryImportEvent_GetStatus(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryImportEvent{Status: &zeroValue}
+	r.GetStatus()
+	r = &RepositoryImportEvent{}
+	r.GetStatus()
+	r = nil
+	r.GetStatus()
+}
+
 func TestRepositoryInvitation_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	r := &RepositoryInvitation{CreatedAt: &zeroValue}

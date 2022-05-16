@@ -945,8 +945,8 @@ type HeadCommit struct {
 	Modified  []string      `json:"modified,omitempty"`
 }
 
-func (p HeadCommit) String() string {
-	return Stringify(p)
+func (h HeadCommit) String() string {
+	return Stringify(h)
 }
 
 // PushEventRepository represents the repo object in a PushEvent payload.
@@ -1049,6 +1049,17 @@ type RepositoryDispatchEvent struct {
 	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+}
+
+// RepositoryImportEvent represents the activity related to a repository being imported to GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#repository_import
+type RepositoryImportEvent struct {
+	// Status represents the final state of the import. This can be one of "success", "cancelled", or "failure".
+	Status *string       `json:"status,omitempty"`
+	Repo   *Repository   `json:"repository,omitempty"`
+	Org    *Organization `json:"organization,omitempty"`
+	Sender *User         `json:"sender,omitempty"`
 }
 
 // RepositoryVulnerabilityAlertEvent is triggered when a security alert is created, dismissed, or resolved.

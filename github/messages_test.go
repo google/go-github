@@ -458,6 +458,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "watch",
 		},
 		{
+			payload:     &RepositoryImportEvent{},
+			messageType: "repository_import",
+		},
+		{
 			payload:     &RepositoryDispatchEvent{},
 			messageType: "repository_dispatch",
 		},
