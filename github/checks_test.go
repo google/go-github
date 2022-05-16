@@ -1718,3 +1718,28 @@ func TestCheckSuitePreferenceResults_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestChecksService_ReRequestCheckRun(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/check-runs/1/rerequest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		w.WriteHeader(http.StatusCreated)
+	})
+	ctx := context.Background()
+	resp, err := client.Checks.ReRequestCheckRun(ctx, "o", "r", 1)
+	if err != nil {
+		t.Errorf("Checks.ReRequestCheckRun return error: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusCreated; got != want {
+		t.Errorf("Checks.ReRequestCheckRun = %v, want %v", got, want)
+	}
+
+	const methodName = "ReRequestCheckRun"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Checks.ReRequestCheckRun(ctx, "\n", "\n", 1)
+		return err
+	})
+}

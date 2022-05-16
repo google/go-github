@@ -307,6 +307,22 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 	return checkRunResults, resp, nil
 }
 
+// ReRequestCheckRun triggers GitHub to rerequest an existing check run.
+//
+// GitHub API docs: https://docs.github.com/en/rest/checks/runs#rerequest-a-check-run
+func (s *ChecksService) ReRequestCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/rerequest", owner, repo, checkRunID)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
+
+	return s.client.Do(ctx, req, nil)
+}
+
 // ListCheckSuiteOptions represents parameters to list check suites.
 type ListCheckSuiteOptions struct {
 	CheckName *string `url:"check_name,omitempty"` // Filters checks suites by the name of the check run.
