@@ -474,10 +474,16 @@ func TestClient_rateLimits(t *testing.T) {
 
 func TestRateLimits_String(t *testing.T) {
 	v := RateLimits{
-		Core:   &Rate{},
-		Search: &Rate{},
+		Core:                      &Rate{},
+		Search:                    &Rate{},
+		GraphQL:                   &Rate{},
+		IntegrationManifest:       &Rate{},
+		SourceImport:              &Rate{},
+		CodeScanningUpload:        &Rate{},
+		ActionsRunnerRegistration: &Rate{},
+		SCIM:                      &Rate{},
 	}
-	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
+	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, Search:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, GraphQL:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, IntegrationManifest:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SourceImport:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, CodeScanningUpload:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, ActionsRunnerRegistration:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}, SCIM:github.Rate{Limit:0, Remaining:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}}`
 	if got := v.String(); got != want {
 		t.Errorf("RateLimits.String = %v, want %v", got, want)
 	}
@@ -1862,7 +1868,13 @@ func TestRateLimits(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"resources":{
 			"core": {"limit":2,"remaining":1,"reset":1372700873},
-			"search": {"limit":3,"remaining":2,"reset":1372700874}
+			"search": {"limit":3,"remaining":2,"reset":1372700874},
+			"graphql": {"limit":4,"remaining":3,"reset":1372700875},
+			"integration_manifest": {"limit":5,"remaining":4,"reset":1372700876},
+			"source_import": {"limit":6,"remaining":5,"reset":1372700877},
+			"code_scanning_upload": {"limit":7,"remaining":6,"reset":1372700878},
+			"actions_runner_registration": {"limit":8,"remaining":7,"reset":1372700879},
+			"scim": {"limit":9,"remaining":8,"reset":1372700880}
 		}}`)
 	})
 
@@ -1883,6 +1895,36 @@ func TestRateLimits(t *testing.T) {
 			Remaining: 2,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
+		GraphQL: &Rate{
+			Limit:     4,
+			Remaining: 3,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 55, 0, time.UTC).Local()},
+		},
+		IntegrationManifest: &Rate{
+			Limit:     5,
+			Remaining: 4,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 56, 0, time.UTC).Local()},
+		},
+		SourceImport: &Rate{
+			Limit:     6,
+			Remaining: 5,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 57, 0, time.UTC).Local()},
+		},
+		CodeScanningUpload: &Rate{
+			Limit:     7,
+			Remaining: 6,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 58, 0, time.UTC).Local()},
+		},
+		ActionsRunnerRegistration: &Rate{
+			Limit:     8,
+			Remaining: 7,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 59, 0, time.UTC).Local()},
+		},
+		SCIM: &Rate{
+			Limit:     9,
+			Remaining: 8,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 00, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
@@ -1893,6 +1935,24 @@ func TestRateLimits(t *testing.T) {
 	}
 	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
 		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[graphqlCategory], *want.GraphQL; got != want {
+		t.Errorf("client.rateLimits[graphqlCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[integrationManifestCategory], *want.IntegrationManifest; got != want {
+		t.Errorf("client.rateLimits[integrationManifestCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[sourceImportCategory], *want.SourceImport; got != want {
+		t.Errorf("client.rateLimits[sourceImportCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[codeScanningUploadCategory], *want.CodeScanningUpload; got != want {
+		t.Errorf("client.rateLimits[codeScanningUploadCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[actionsRunnerRegistrationCategory], *want.ActionsRunnerRegistration; got != want {
+		t.Errorf("client.rateLimits[actionsRunnerRegistrationCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[scimCategory], *want.SCIM; got != want {
+		t.Errorf("client.rateLimits[scimCategory] is %+v, want %+v", got, want)
 	}
 }
 
@@ -2394,6 +2454,36 @@ func TestRateLimits_Marshal(t *testing.T) {
 			Remaining: 1,
 			Reset:     Timestamp{referenceTime},
 		},
+		GraphQL: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		IntegrationManifest: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		SourceImport: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		CodeScanningUpload: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		ActionsRunnerRegistration: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
+		SCIM: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Reset:     Timestamp{referenceTime},
+		},
 	}
 
 	want := `{
@@ -2403,6 +2493,36 @@ func TestRateLimits_Marshal(t *testing.T) {
 			"reset": ` + referenceTimeStr + `
 		},
 		"search": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"graphql": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"integration_manifest": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"source_import": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"code_scanning_upload": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"actions_runner_registration": {
+			"limit": 1,
+			"remaining": 1,
+			"reset": ` + referenceTimeStr + `
+		},
+		"scim": {
 			"limit": 1,
 			"remaining": 1,
 			"reset": ` + referenceTimeStr + `
