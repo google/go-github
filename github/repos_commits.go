@@ -148,7 +148,7 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 
 // GetCommit fetches the specified commit, including all details about it.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/#get-a-single-commit
+// GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-single-commit
 // GitHub API docs: https://docs.github.com/en/rest/commits/commits#get-a-commit
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
@@ -227,7 +227,7 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 
 // CompareCommits compares a range of commits with each other.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/#compare-two-commits
+// GitHub API docs: https://docs.github.com/en/rest/commits/commits#compare-two-commits
 func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo string, base, head string, opts *ListOptions) (*CommitsComparison, *Response, error) {
 	escapedBase := url.QueryEscape(base)
 	escapedHead := url.QueryEscape(head)
@@ -258,7 +258,7 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo st
 // To compare branches across other repositories in the same network as "repo",
 // use the format "<USERNAME>:branch".
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/#compare-two-commits
+// GitHub API docs: https://docs.github.com/en/rest/commits/commits#compare-two-commits
 func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo, base, head string, opts RawOptions) (string, *Response, error) {
 	escapedBase := url.QueryEscape(base)
 	escapedHead := url.QueryEscape(head)

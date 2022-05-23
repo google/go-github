@@ -145,8 +145,8 @@ func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accou
 
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/#list-subscriptions-for-the-authenticated-user-stubbed
-// GitHub API docs: https://docs.github.com/en/rest/apps/#list-subscriptions-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user-stubbed
+// GitHub API docs: https://docs.github.com/en/rest/apps/marketplace#list-subscriptions-for-the-authenticated-user
 func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error) {
 	uri := "user/marketplace_purchases"
 	if s.Stubbed {
