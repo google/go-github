@@ -340,152 +340,152 @@ var activityEventsTestWebPage = `
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/actions" class="pl-4 pr-5 py-1">Actions</a>
+          <a href="/en/free-pro-team@latest/rest/actions" class="pl-4 pr-5 py-1">Actions</a>
         </li>
         
         
         <li class="sidebar-article active is-current-page">
-          <a href="/en/free-pro-team@latest/rest/reference/activity" class="pl-4 pr-5 py-1">Activity</a>
+          <a href="/en/free-pro-team@latest/rest/activity" class="pl-4 pr-5 py-1">Activity</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/apps" class="pl-4 pr-5 py-1">Apps</a>
+          <a href="/en/free-pro-team@latest/rest/apps/apps" class="pl-4 pr-5 py-1">Apps</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/billing" class="pl-4 pr-5 py-1">Billing</a>
+          <a href="/en/free-pro-team@latest/rest/billing" class="pl-4 pr-5 py-1">Billing</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/checks" class="pl-4 pr-5 py-1">Checks</a>
+          <a href="/en/free-pro-team@latest/rest/checks" class="pl-4 pr-5 py-1">Checks</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
+          <a href="/en/free-pro-team@latest/rest/code-scanning" class="pl-4 pr-5 py-1">Code Scanning</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
+          <a href="/en/free-pro-team@latest/rest/codes-of-conduct" class="pl-4 pr-5 py-1">Codes of conduct</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/emojis" class="pl-4 pr-5 py-1">Emojis</a>
+          <a href="/en/free-pro-team@latest/rest/emojis" class="pl-4 pr-5 py-1">Emojis</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
+          <a href="/en/free-pro-team@latest/rest/enterprise-admin" class="pl-4 pr-5 py-1">GitHub Enterprise administration</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/gists" class="pl-4 pr-5 py-1">Gists</a>
+          <a href="/en/free-pro-team@latest/rest/gists" class="pl-4 pr-5 py-1">Gists</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/git" class="pl-4 pr-5 py-1">Git database</a>
+          <a href="/en/free-pro-team@latest/rest/git" class="pl-4 pr-5 py-1">Git database</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
+          <a href="/en/free-pro-team@latest/rest/gitignore" class="pl-4 pr-5 py-1">Gitignore</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/interactions" class="pl-4 pr-5 py-1">Interactions</a>
+          <a href="/en/free-pro-team@latest/rest/interactions" class="pl-4 pr-5 py-1">Interactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/issues" class="pl-4 pr-5 py-1">Issues</a>
+          <a href="/en/free-pro-team@latest/rest/issues" class="pl-4 pr-5 py-1">Issues</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/licenses" class="pl-4 pr-5 py-1">Licenses</a>
+          <a href="/en/free-pro-team@latest/rest/licenses" class="pl-4 pr-5 py-1">Licenses</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/markdown" class="pl-4 pr-5 py-1">Markdown</a>
+          <a href="/en/free-pro-team@latest/rest/markdown" class="pl-4 pr-5 py-1">Markdown</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/meta" class="pl-4 pr-5 py-1">Meta</a>
+          <a href="/en/free-pro-team@latest/rest/meta" class="pl-4 pr-5 py-1">Meta</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/migrations" class="pl-4 pr-5 py-1">Migrations</a>
+          <a href="/en/free-pro-team@latest/rest/migrations" class="pl-4 pr-5 py-1">Migrations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
+          <a href="/en/free-pro-team@latest/rest/oauth-authorizations" class="pl-4 pr-5 py-1">OAuth Authorizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/orgs" class="pl-4 pr-5 py-1">Organizations</a>
+          <a href="/en/free-pro-team@latest/rest/orgs" class="pl-4 pr-5 py-1">Organizations</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/projects" class="pl-4 pr-5 py-1">Projects</a>
+          <a href="/en/free-pro-team@latest/rest/projects" class="pl-4 pr-5 py-1">Projects</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/pulls" class="pl-4 pr-5 py-1">Pulls</a>
+          <a href="/en/free-pro-team@latest/rest/pulls" class="pl-4 pr-5 py-1">Pulls</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
+          <a href="/en/free-pro-team@latest/rest/rate-limit" class="pl-4 pr-5 py-1">Rate limit</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/reactions" class="pl-4 pr-5 py-1">Reactions</a>
+          <a href="/en/free-pro-team@latest/rest/reactions" class="pl-4 pr-5 py-1">Reactions</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/repos" class="pl-4 pr-5 py-1">Repositories</a>
+          <a href="/en/free-pro-team@latest/rest/repos" class="pl-4 pr-5 py-1">Repositories</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/scim" class="pl-4 pr-5 py-1">SCIM</a>
+          <a href="/en/free-pro-team@latest/rest/scim" class="pl-4 pr-5 py-1">SCIM</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/search" class="pl-4 pr-5 py-1">Search</a>
+          <a href="/en/free-pro-team@latest/rest/search" class="pl-4 pr-5 py-1">Search</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/teams" class="pl-4 pr-5 py-1">Teams</a>
+          <a href="/en/free-pro-team@latest/rest/teams" class="pl-4 pr-5 py-1">Teams</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/users" class="pl-4 pr-5 py-1">Users</a>
+          <a href="/en/free-pro-team@latest/rest/users" class="pl-4 pr-5 py-1">Users</a>
         </li>
         
         
         <li class="sidebar-article ">
-          <a href="/en/free-pro-team@latest/rest/reference/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
+          <a href="/en/free-pro-team@latest/rest/permissions-required-for-github-apps" class="pl-4 pr-5 py-1 pb-2">Permissions required for GitHub Apps</a>
         </li>
         
       </ul>
@@ -701,7 +701,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/en/free-pro-team@latest/rest/reference/activity"
+                            href="/en/free-pro-team@latest/rest/activity"
                             class="d-block py-2 no-underline active link-gray"
                             style="white-space: nowrap"
                           >
@@ -713,7 +713,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/cn/rest/reference/activity"
+                            href="/cn/rest/activity"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
@@ -725,7 +725,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/ja/rest/reference/activity"
+                            href="/ja/rest/activity"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
@@ -737,7 +737,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/es/rest/reference/activity"
+                            href="/es/rest/activity"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
@@ -749,7 +749,7 @@ var activityEventsTestWebPage = `
                       
                         
                           <a
-                            href="/pt/rest/reference/activity"
+                            href="/pt/rest/activity"
                             class="d-block py-2 no-underline link-gray-dark"
                             style="white-space: nowrap"
                           >
