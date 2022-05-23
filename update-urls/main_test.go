@@ -251,7 +251,8 @@ func (f *fakeDocCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
 	return "", false
 }
 
-func (f *fakeDocCache) CacheDocFromInternet(url, filename string) {} // no-op
+func (f *fakeDocCache) CacheDocFromInternet(url, filename string, pos token.Position) {}                          // no-op
+func (f *fakeDocCache) Position(pos token.Pos) token.Position                         { return token.Position{} } // no-op
 
 // fakeFileRewriter implements FileRewriter.
 type fakeFileRewriter struct {
@@ -517,18 +518,18 @@ func TestGitURL(t *testing.T) {
 		{name: "non-http", s: "howdy"},
 		{
 			name: "normal URL, no slash",
-			s:    "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events",
-			want: "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/",
+			s:    "https://docs.github.com/en/free-pro-team@latest/rest/activity/events",
+			want: "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/",
 		},
 		{
 			name: "normal URL, with slash",
-			s:    "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/",
-			want: "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/",
+			s:    "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/",
+			want: "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/",
 		},
 		{
 			name: "normal URL, with fragment identifier",
-			s:    "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/#list-public-events",
-			want: "https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/events/",
+			s:    "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/#list-public-events",
+			want: "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/",
 		},
 	}
 
@@ -542,12 +543,7 @@ func TestGitURL(t *testing.T) {
 	}
 }
 
-var endpointEqual = cmp.Comparer(func(a, b *Endpoint) bool {
-	if a.httpMethod != b.httpMethod {
-		return false
-	}
-	return cmp.Equal(a.urlFormats, b.urlFormats)
-})
+var endpointsEqualCmp = cmp.Comparer(endpointsEqual)
 
 func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 	t.Helper()
@@ -557,16 +553,19 @@ func testWebPageHelper(t *testing.T, got, want map[string][]*Endpoint) {
 		if len(got[k]) != len(w) {
 			t.Errorf("len(got[%q]) = %v, len(want[%q]) = %v", k, len(got[k]), k, len(w))
 		}
+
 		for i := 0; i < len(got[k]); i++ {
 			var wantEndpoint *Endpoint
 			if ok && i < len(w) {
 				wantEndpoint = w[i]
 			}
-			if !cmp.Equal(got[k][i], wantEndpoint, endpointEqual) {
-				t.Errorf("got[%q][%v] =\n%#v\nwant[%q][%v]:\n%#v", k, i, got[k][i], k, i, wantEndpoint)
+
+			if diff := cmp.Diff(wantEndpoint, got[k][i], endpointsEqualCmp); diff != "" {
+				t.Errorf("endpoint %q i=%v mismatch (-want +got):\n%v", k, i, diff)
 			}
 		}
 	}
+
 	for k := range want {
 		if _, ok := got[k]; !ok {
 			t.Errorf("got[%q] = nil\nwant[%q]:\n%#v", k, k, want[k])
@@ -601,7 +600,7 @@ func TestParseEndpoint(t *testing.T) {
 		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
 			got := parseEndpoint(tt.s, tt.method)
 
-			if !cmp.Equal(got, tt.want, endpointEqual) {
+			if !cmp.Equal(got, tt.want, endpointsEqualCmp) {
 				t.Errorf("parseEndpoint = %#v, want %#v", got, tt.want)
 			}
 		})

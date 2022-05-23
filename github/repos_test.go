@@ -1241,7 +1241,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 
@@ -1659,7 +1659,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 
@@ -1893,7 +1893,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 

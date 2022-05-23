@@ -72,7 +72,7 @@ repos, _, err := client.Repositories.ListByOrg(context.Background(), "github", o
 
 The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/.
+https://docs.github.com/en/rest .
 
 NOTE: Using the [context](https://godoc.org/context) package, one can easily
 pass cancelation signals and deadlines to various services of the client for
@@ -168,7 +168,7 @@ if _, ok := err.(*github.RateLimitError); ok {
 ```
 
 Learn more about GitHub rate limiting at
-https://docs.github.com/en/free-pro-team@latest/rest/reference/rate-limit.
+https://docs.github.com/en/rest/rate-limit .
 
 ### Accepted Status ###
 
