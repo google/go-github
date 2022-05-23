@@ -44,4 +44,3 @@ func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org stri
 
 	return customRepoRoles, resp, nil
 }
-diff --git a/github/org_custom_roles.go b/github/org_custom_roles.go

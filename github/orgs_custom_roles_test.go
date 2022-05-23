@@ -48,4 +48,3 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 		return resp, err
 	})
 }
-diff --git a/github/org_custom_roles_test.go b/github/org_custom_roles_test.go
