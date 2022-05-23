@@ -34,7 +34,7 @@ type RepoMergeUpstreamResult struct {
 
 // Merge a branch in the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/repos/#merge-a-branch
+// GitHub API docs: https://docs.github.com/en/rest/repos/#merge-a-branch
 func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merges", owner, repo)
 	req, err := s.client.NewRequest("POST", u, request)

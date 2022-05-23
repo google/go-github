@@ -13,7 +13,7 @@ import (
 // MarketplaceService handles communication with the marketplace related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/apps#marketplace
+// GitHub API docs: https://docs.github.com/en/rest/apps#marketplace
 type MarketplaceService struct {
 	client *Client
 	// Stubbed controls whether endpoints that return stubbed data are used
@@ -21,7 +21,7 @@ type MarketplaceService struct {
 	// for testing your GitHub Apps. Stubbed data is hard-coded and will not
 	// change based on actual subscriptions.
 	//
-	// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/apps#testing-with-stubbed-endpoints
+	// GitHub API docs: https://docs.github.com/en/rest/apps#testing-with-stubbed-endpoints
 	Stubbed bool
 }
 
@@ -77,7 +77,7 @@ type MarketplacePlanAccount struct {
 
 // ListPlans lists all plans for your Marketplace listing.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/apps#list-plans
+// GitHub API docs: https://docs.github.com/en/rest/apps#list-plans
 func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) ([]*MarketplacePlan, *Response, error) {
 	uri := s.marketplaceURI("plans")
 	u, err := addOptions(uri, opts)
@@ -145,8 +145,8 @@ func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accou
 
 // ListMarketplacePurchasesForUser lists all GitHub marketplace purchases made by a user.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/apps/#list-subscriptions-for-the-authenticated-user-stubbed
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/apps/#list-subscriptions-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/en/rest/apps/#list-subscriptions-for-the-authenticated-user-stubbed
+// GitHub API docs: https://docs.github.com/en/rest/apps/#list-subscriptions-for-the-authenticated-user
 func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context, opts *ListOptions) ([]*MarketplacePurchase, *Response, error) {
 	uri := "user/marketplace_purchases"
 	if s.Stubbed {

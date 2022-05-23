@@ -12,7 +12,7 @@ import (
 
 func newActivitiesEventsPipeline() *pipelineSetup {
 	return &pipelineSetup{
-		baseURL:              "https://docs.github.com/en/free-pro-team@latest/rest/activity/events/",
+		baseURL:              "https://docs.github.com/en/rest/activity/events/",
 		endpointsFromWebsite: activityEventsWant,
 		filename:             "activity_events.go",
 		serviceName:          "ActivityService",

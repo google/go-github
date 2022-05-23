@@ -12,7 +12,7 @@ import (
 
 func newReactionsPipeline() *pipelineSetup {
 	return &pipelineSetup{
-		baseURL:              "https://docs.github.com/en/free-pro-team@latest/rest/reactions/",
+		baseURL:              "https://docs.github.com/en/rest/reactions/",
 		endpointsFromWebsite: reactionsWant,
 		filename:             "reactions.go",
 		serviceName:          "ReactionsService",

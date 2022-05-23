@@ -196,7 +196,7 @@ instead designed to work with a caching `http.Transport`. We recommend using
 https://github.com/gregjones/httpcache for that.
 
 Learn more about GitHub conditional requests at
-https://docs.github.com/en/free-pro-team@latest/rest/overview/resources-in-the-rest-api#conditional-requests.
+https://docs.github.com/en/rest/overview/resources-in-the-rest-api#conditional-requests.
 
 ### Creating and Updating Resources ###
 

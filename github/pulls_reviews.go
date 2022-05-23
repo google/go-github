@@ -101,7 +101,7 @@ func (r PullRequestReviewDismissalRequest) String() string {
 
 // ListReviews lists all reviews on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#list-reviews-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#list-reviews-for-a-pull-request
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -125,7 +125,7 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 
 // GetReview fetches the specified pull request review.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#get-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#get-a-review-for-a-pull-request
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
@@ -145,7 +145,7 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 
 // DeletePendingReview deletes the specified pull request pending review.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#delete-a-pending-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#delete-a-pending-review-for-a-pull-request
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d", owner, repo, number, reviewID)
 
@@ -165,7 +165,7 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 
 // ListReviewComments lists all the comments for the specified review.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#list-comments-for-a-pull-request-review
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#list-comments-for-a-pull-request-review
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/comments", owner, repo, number, reviewID)
 	u, err := addOptions(u, opts)
@@ -189,7 +189,7 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 
 // CreateReview creates a new review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#create-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#create-a-review-for-a-pull-request
 //
 // In order to use multi-line comments, you must use the "comfort fade" preview.
 // This replaces the use of the "Position" field in comments with 4 new fields:
@@ -250,7 +250,7 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 
 // UpdateReview updates the review summary on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#update-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#update-a-review-for-a-pull-request
 func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo string, number int, reviewID int64, body string) (*PullRequestReview, *Response, error) {
 	opts := &struct {
 		Body string `json:"body"`
@@ -273,7 +273,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 
 // SubmitReview submits a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#submit-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#submit-a-review-for-a-pull-request
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/events", owner, repo, number, reviewID)
 
@@ -293,7 +293,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 
 // DismissReview dismisses a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/pulls/#dismiss-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/#dismiss-a-review-for-a-pull-request
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews/%d/dismissals", owner, repo, number, reviewID)
 

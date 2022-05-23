@@ -33,6 +33,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -47,6 +48,8 @@ const (
 
 	enterpriseRefFmt = "// GitHub Enterprise API docs: %v"
 	stdRefFmt        = "// GitHub API docs: %v"
+
+	httpGetDelay = 1 * time.Second
 )
 
 var (
@@ -570,6 +573,7 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 	}
 
 	logf("GET %q ...", url)
+	time.Sleep(httpGetDelay)
 	resp, err := http.Get(url)
 	check("Unable to get URL: %v: %v", url, err)
 	if resp.StatusCode != http.StatusOK {

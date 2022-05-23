@@ -12,8 +12,6 @@ import (
 
 // SecretScanningService handles communication with the secret scanning related
 // methods of the GitHub API.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning
 type SecretScanningService service
 
 // SecretScanningAlert represents a GitHub secret scanning alert.
@@ -84,7 +82,7 @@ type SecretScanningAlertUpdateOptions struct {
 // To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
 // security_events scope. Alerts are only returned for organizations in the enterprise for which you are an organization owner or a security manager.
 //
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
+// GitHub API docs: https://docs.github.com/en/enterprise-server@latest/rest/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
 func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/secret-scanning/alerts", enterprise)
 	u, err := addOptions(u, opts)
@@ -110,8 +108,6 @@ func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, ent
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
 func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/secret-scanning/alerts", org)
 	u, err := addOptions(u, opts)
@@ -137,8 +133,6 @@ func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#list-secret-scanning-alerts-for-a-repository
 func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -164,8 +158,6 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#get-a-secret-scanning-alert
 func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string, number int64) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
@@ -187,8 +179,6 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#update-a-secret-scanning-alert
 func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
@@ -210,8 +200,6 @@ func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo str
 //
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
-//
-// GitHub API docs: https://docs.github.com/en/rest/secret-scanning#list-locations-for-a-secret-scanning-alert
 func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner, repo string, number int64, opts *ListOptions) ([]*SecretScanningAlertLocation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v/locations", owner, repo, number)
 	u, err := addOptions(u, opts)

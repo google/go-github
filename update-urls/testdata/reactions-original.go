@@ -56,7 +56,7 @@ type ListCommentReactionOptions struct {
 
 // ListCommentReactions lists the reactions for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-a-commit-comment
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListCommentReactionOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -86,7 +86,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-a-commit-comment
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 
@@ -110,7 +110,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReaction deletes the reaction for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -119,7 +119,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -128,7 +128,7 @@ func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID
 
 // ListIssueReactions lists the reactions for an issue.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-an-issue
 func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -158,7 +158,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-an-issue
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 
@@ -182,7 +182,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReaction deletes the reaction to an issue.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/%v/reactions/%v", owner, repo, issueNumber, reactionID)
 
@@ -191,7 +191,7 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
 
@@ -200,7 +200,7 @@ func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, 
 
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -230,7 +230,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 
@@ -254,7 +254,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReaction deletes the reaction to an issue comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -263,7 +263,7 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -272,7 +272,7 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-an-issue-comment
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 	u, err := addOptions(u, opts)
@@ -302,7 +302,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-an-issue-comment
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
@@ -326,7 +326,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions/%v", owner, repo, commentID, reactionID)
 
@@ -335,7 +335,7 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -344,7 +344,7 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-a-team-discussion
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-a-team-discussion
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 	u, err := addOptions(u, opts)
@@ -371,7 +371,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-a-team-discussion
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-a-team-discussion
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
@@ -394,7 +394,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 // DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/reactions/%v", org, teamSlug, discussionNumber, reactionID)
 
@@ -403,7 +403,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 
 // DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-team-discussion-reaction
 func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/reactions/%v", orgID, teamID, discussionNumber, reactionID)
 
@@ -412,7 +412,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#list-reactions-for-a-team-discussion-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#list-reactions-for-a-team-discussion-comment
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListOptions) ([]*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 	u, err := addOptions(u, opts)
@@ -438,7 +438,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#create-reaction-for-a-team-discussion-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#create-reaction-for-a-team-discussion-comment
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
@@ -461,7 +461,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v/reactions/%v", org, teamSlug, discussionNumber, commentNumber, reactionID)
 
@@ -470,7 +470,7 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reactions/#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/en/rest/reactions/#delete-team-discussion-comment-reaction
 func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v/reactions/%v", orgID, teamID, discussionNumber, commentNumber, reactionID)
 
