@@ -18,7 +18,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/organizations/o/custom_roles", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/custom_roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"total_count": 1, "custom_roles": [{ "id": 1, "name": "Developer"}]}`)
 	})

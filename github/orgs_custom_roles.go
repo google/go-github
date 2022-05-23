@@ -29,7 +29,7 @@ type CustomRepoRoles struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/custom_roles", org)
+	u := fmt.Sprintf("orgs/%v/custom_roles", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
