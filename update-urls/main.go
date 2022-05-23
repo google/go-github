@@ -504,6 +504,7 @@ func findAllServiceEndpoints(iter astFileIterator, services servicesMap) (endpoi
 }
 
 func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWriter) (usedHelpers usedHelpersMap, endpointsByFilename endpointsByFilenameMap) {
+	logf("Step 3 - resolving helpers and cache docs ...")
 	usedHelpers = usedHelpersMap{}
 	endpointsByFilename = endpointsByFilenameMap{}
 	for k, v := range endpoints {
@@ -567,22 +568,30 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 		dc.urlByMethodAndPath = map[string]string{}
 	}
 
-	url := getURL(urlWithID)
-	if _, ok := dc.apiDocs[url]; ok {
+	baseURL, fullURL := getURL(urlWithID)
+	if _, ok := dc.apiDocs[baseURL]; ok {
 		return // already cached
 	}
 
-	logf("GET %q ...", url)
+	logf("GET %q ...", fullURL)
 	time.Sleep(httpGetDelay)
-	resp, err := http.Get(url)
-	check("Unable to get URL: %v: %v", url, err)
+	resp, err := http.Get(fullURL)
+	check("Unable to get URL: %v: %v", fullURL, err)
+	if resp.StatusCode == http.StatusServiceUnavailable {
+		logf("Sleeping 10 seconds and trying again...")
+		time.Sleep(10 * time.Second)
+		resp, err = http.Get(fullURL)
+		check("Unable to get URL: %v: %v", fullURL, err)
+	}
+
 	if resp.StatusCode != http.StatusOK {
-		log.Fatalf("url %v - StatusCode=%v\ngithub/%v:%v:%v %v", url, resp.StatusCode, filename, pos.Line, pos.Column, urlWithID)
+		log.Fatalf("url %v - StatusCode=%v\ngithub/%v:%v:%v %v", fullURL, resp.StatusCode, filename, pos.Line, pos.Column, urlWithID)
 	}
 
 	finalURL := resp.Request.URL.String()
-	url = getURL(finalURL)
-	logf("The final URL is: %v; url=%v\n", finalURL, url)
+	baseURL, fullURL = getURL(finalURL)
+	url := baseURL
+	logf("urlWithID: %v ; finalURL: %v ; baseURL: %v, fullURL: %v", urlWithID, finalURL, baseURL, fullURL)
 
 	b, err := ioutil.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
@@ -619,21 +628,26 @@ type FileEdit struct {
 	toText   string
 }
 
-func getURL(s string) string {
+func getURL(s string) (baseURL, fullURL string) {
 	i := strings.Index(s, "http")
 	if i < 0 {
-		return ""
+		return "", ""
 	}
 	j := strings.Index(s, "#")
 	if j < i {
-		s = s[i:]
+		if !strings.HasSuffix(s, "/") { // Prevent unnecessary redirects if possible.
+			s += "/"
+		}
+		baseURL = s[i:]
+		fullURL = s[i:]
 	} else {
-		s = s[i:j]
+		fullURL = s[i:]
+		baseURL = s[i:j]
+		if !strings.HasSuffix(baseURL, "/") { // Prevent unnecessary redirects if possible.
+			baseURL += "/"
+		}
 	}
-	if !strings.HasSuffix(s, "/") { // Prevent unnecessary redirects if possible.
-		s += "/"
-	}
-	return s
+	return baseURL, fullURL
 }
 
 // Service represents a go-github service.

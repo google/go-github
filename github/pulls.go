@@ -170,7 +170,7 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 // The results may include open and closed pull requests.
 // By default, the PullRequestListOptions State filters for "open".
 //
-// GitHub API docs: https://docs.github.com/en/rest/commits/#list-pull-requests-associated-with-a-commit
+// GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-pull-requests-associated-with-a-commit
 func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/pulls", owner, repo, sha)
 	u, err := addOptions(u, opts)

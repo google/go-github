@@ -1301,7 +1301,7 @@ func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, ow
 
 // License gets the contents of a repository's license if one is detected.
 //
-// GitHub API docs: https://docs.github.com/en/rest/licenses/#get-the-license-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/licenses#get-the-license-for-a-repository
 func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/license", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

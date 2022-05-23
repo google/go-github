@@ -161,7 +161,7 @@ func (s *BillingService) GetActionsBillingUser(ctx context.Context, user string)
 
 // GetPackagesBillingUser returns the free and paid storage used for GitHub Packages in gigabytes for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/billing#get-github-packages-billing-for-a-user
 func (s *BillingService) GetPackagesBillingUser(ctx context.Context, user string) (*PackageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
 	req, err := s.client.NewRequest("GET", u, nil)

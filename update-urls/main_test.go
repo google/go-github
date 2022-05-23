@@ -510,34 +510,43 @@ func TestPerformBufferEdits(t *testing.T) {
 
 func TestGitURL(t *testing.T) {
 	tests := []struct {
-		name string
-		s    string
-		want string
+		name     string
+		s        string
+		wantBase string
+		wantFull string
 	}{
 		{name: "empty string"},
 		{name: "non-http", s: "howdy"},
 		{
-			name: "normal URL, no slash",
-			s:    "https://docs.github.com/en/rest/activity/events",
-			want: "https://docs.github.com/en/rest/activity/events/",
+			name:     "normal URL, no slash",
+			s:        "https://docs.github.com/en/rest/activity/events",
+			wantBase: "https://docs.github.com/en/rest/activity/events/",
+			wantFull: "https://docs.github.com/en/rest/activity/events/",
 		},
 		{
-			name: "normal URL, with slash",
-			s:    "https://docs.github.com/en/rest/activity/events/",
-			want: "https://docs.github.com/en/rest/activity/events/",
+			name:     "normal URL, with slash",
+			s:        "https://docs.github.com/en/rest/activity/events/",
+			wantBase: "https://docs.github.com/en/rest/activity/events/",
+			wantFull: "https://docs.github.com/en/rest/activity/events/",
 		},
 		{
-			name: "normal URL, with fragment identifier",
-			s:    "https://docs.github.com/en/rest/activity/events/#list-public-events",
-			want: "https://docs.github.com/en/rest/activity/events/",
+			name:     "normal URL, with fragment identifier",
+			s:        "https://docs.github.com/en/rest/activity/events/#list-public-events",
+			wantBase: "https://docs.github.com/en/rest/activity/events/",
+			wantFull: "https://docs.github.com/en/rest/activity/events/#list-public-events",
 		},
 	}
 
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("test #%v: %v", i, tt.name), func(t *testing.T) {
-			got := getURL(tt.s)
-			if got != tt.want {
-				t.Errorf("getURL = %v ; want %v", got, tt.want)
+			gotBase, gotFull := getURL(tt.s)
+
+			if gotBase != tt.wantBase {
+				t.Errorf("getURL base = %v ; want %v", gotBase, tt.wantBase)
+			}
+
+			if gotFull != tt.wantFull {
+				t.Errorf("getURL full = %v ; want %v", gotFull, tt.wantFull)
 			}
 		})
 	}

@@ -27,7 +27,7 @@ type CustomRepoRoles struct {
 // ListCustomRepoRoles lists the custom repository roles available in this organization.
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles
+// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/custom_roles", org)
 

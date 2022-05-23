@@ -209,7 +209,7 @@ func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, 
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/#list-code-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-instances-of-a-code-scanning-alert
 func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -238,7 +238,7 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning/#get-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-alert
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
@@ -286,7 +286,7 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-analyses-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#delete-a-code-scanning-analysis-from-a-repository
 func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses", owner, repo)
 	u, err := addOptions(u, opts)
