@@ -1222,22 +1222,6 @@ func parseWebPageEndpoints(buf string) (map[string][]*Endpoint, error) {
 
 	for i, part := range parts {
 		noHTML := stripHTML(part)
-		for _, method := range httpMethods {
-			if strings.HasPrefix(part, method) {
-				if lastFragmentID == "" {
-					logf("WARNING: ignoring empty lastFragmentID: part #%v: noHTML=\n%v", i+1, noHTML)
-					continue
-				}
-				endpoint := parseEndpoint(part, method)
-				addDedup(endpoint)
-				continue
-			}
-
-			if endpoint := parseNewfangledEndpoint(noHTML, method); endpoint != nil && lastFragmentID != "" {
-				logf("part #%v: adding newfangled endpoint: %#v", i+1, endpoint)
-				addDedup(endpoint)
-			}
-		}
 
 		m := fragmentIDStringRE.FindAllStringSubmatch(part, -1)
 		if len(m) > 0 {
@@ -1252,6 +1236,23 @@ func parseWebPageEndpoints(buf string) (map[string][]*Endpoint, error) {
 					}
 					logf("Found lastFragmentID: %v", lastFragmentID)
 				}
+			}
+		}
+
+		for _, method := range httpMethods {
+			if strings.HasPrefix(part, method) {
+				if lastFragmentID == "" {
+					logf("WARNING: ignoring empty lastFragmentID: part #%v: noHTML=\n%v", i+1, noHTML)
+					continue
+				}
+				endpoint := parseEndpoint(part, method)
+				addDedup(endpoint)
+				continue
+			}
+
+			if endpoint := parseNewfangledEndpoint(noHTML, method); endpoint != nil && lastFragmentID != "" {
+				logf("part #%v: adding newfangled endpoint: %#v", i+1, endpoint)
+				addDedup(endpoint)
 			}
 		}
 	}
