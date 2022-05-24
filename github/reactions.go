@@ -123,7 +123,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-commit-comment-reaction
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	u := fmt.Sprintf("repositories/%v/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -195,7 +195,7 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue
+// GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-reaction
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/%v/reactions/%v", repoID, issueNumber, reactionID)
 
@@ -267,7 +267,7 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions#delete-an-issue-comment-reaction
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/issues/comments/%v/reactions/%v", repoID, commentID, reactionID)
 
@@ -339,7 +339,7 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reactions#create-reaction-for-a-pull-request-review-comment
+// GitHub API docs: https://docs.github.com/en/rest/reactions#delete-a-pull-request-comment-reaction
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/pulls/comments/%v/reactions/%v", repoID, commentID, reactionID)
 

@@ -465,7 +465,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 
 // Get fetches a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -496,7 +496,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 // Note that https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
 // says to use the GET /repos/{owner}/{repo} endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

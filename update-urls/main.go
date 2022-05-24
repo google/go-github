@@ -581,14 +581,14 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 	time.Sleep(httpGetDelay)
 	resp, err := http.Get(fullURL)
 	check("Unable to get URL: %v: %v", fullURL, err)
-	if resp.StatusCode == http.StatusServiceUnavailable {
-		logf("Sleeping 10 seconds and trying again...")
-		time.Sleep(10 * time.Second)
+	switch resp.StatusCode {
+	case http.StatusTooManyRequests, http.StatusServiceUnavailable:
+		logf("Sleeping 60 seconds and trying again...")
+		time.Sleep(60 * time.Second)
 		resp, err = http.Get(fullURL)
 		check("Unable to get URL: %v: %v", fullURL, err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
+	case http.StatusOK:
+	default:
 		log.Fatalf("url %v - StatusCode=%v\ngithub/%v:%v:%v %v", fullURL, resp.StatusCode, filename, pos.Line, pos.Column, urlWithID)
 	}
 
