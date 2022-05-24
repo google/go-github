@@ -36,7 +36,7 @@ func (r RepositoryComment) String() string {
 
 // ListComments lists all the comments for the repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commit-comments-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments-for-a-repository
 func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments", owner, repo)
 	u, err := addOptions(u, opts)
@@ -63,7 +63,7 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 
 // ListCommitComments lists all the comments for a given commit SHA.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-commit-comments
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#list-commit-comments
 func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, repo, sha string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
 	u, err := addOptions(u, opts)
@@ -91,7 +91,7 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 // CreateComment creates a comment for the given commit.
 // Note: GitHub allows for comments to be created for non-existing files and positions.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#create-a-commit-comment
 func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
 	req, err := s.client.NewRequest("POST", u, comment)
@@ -110,7 +110,7 @@ func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sh
 
 // GetComment gets a single comment from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#get-a-commit-comment
 func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -132,7 +132,7 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 
 // UpdateComment updates the body of a single comment.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#update-a-commit-comment
 func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo string, id int64, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, comment)
@@ -151,7 +151,7 @@ func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo str
 
 // DeleteComment deletes a single comment from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-commit-comment
+// GitHub API docs: https://docs.github.com/en/rest/commits/comments#delete-a-commit-comment
 func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)

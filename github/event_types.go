@@ -853,7 +853,7 @@ type PullRequestReviewThreadEvent struct {
 // locked, unlocked, a pull request review is requested, or a review request is removed.
 // The Webhook event name is "pull_request_target".
 //
-// GitHub API docs: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request_target
+// GitHub API docs: https://docs.github.com/en/actions/events-that-trigger-workflows#pull_request_target
 type PullRequestTargetEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "assigned", "unassigned", "labeled", "unlabeled", "opened", "edited", "closed", "reopened",

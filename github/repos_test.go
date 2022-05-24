@@ -393,14 +393,16 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/community/code_of_conduct", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
 		fmt.Fprint(w, `{
-						"key": "key",
-						"name": "name",
-						"url": "url",
-						"body": "body"}`,
+            "code_of_conduct": {
+  						"key": "key",
+  						"name": "name",
+  						"url": "url",
+  						"body": "body"
+            }}`,
 		)
 	})
 
@@ -1241,7 +1243,7 @@ func TestRepositoriesService_GetBranchProtection_branchNotProtected(t *testing.T
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 
@@ -1659,7 +1661,7 @@ func TestRepositoriesService_GetRequiredStatusChecks_branchNotProtected(t *testi
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 
@@ -1893,7 +1895,7 @@ func TestRepositoriesService_ListRequiredStatusChecksContexts_branchNotProtected
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `{
 			"message": %q,
-			"documentation_url": "https://docs.github.com/rest/reference/repos#get-branch-protection"
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
 			}`, githubBranchNotProtected)
 	})
 

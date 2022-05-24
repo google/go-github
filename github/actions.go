@@ -8,5 +8,5 @@ package github
 // ActionsService handles communication with the actions related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/
+// GitHub API docs: https://docs.github.com/en/rest/actions/
 type ActionsService service

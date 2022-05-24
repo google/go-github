@@ -10,7 +10,7 @@ import "context"
 // ActivityService handles communication with the activity related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/activity/
+// GitHub API docs: https://docs.github.com/en/rest/activity/
 type ActivityService service
 
 // FeedLink represents a link to a related resource.

@@ -15,7 +15,7 @@ import (
 // CodeScanningService handles communication with the code scanning related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type CodeScanningService service
 
 // Rule represents the complete details of GitHub Code Scanning alert type.
@@ -65,7 +65,7 @@ type Tool struct {
 
 // Alert represents an individual GitHub Code Scanning Alert on a single repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type Alert struct {
 	Number             *int                  `json:"number,omitempty"`
 	Repository         *Repository           `json:"repository,omitempty"`
@@ -137,7 +137,7 @@ type AnalysesListOptions struct {
 
 // ScanningAnalysis represents an individual GitHub Code Scanning ScanningAnalysis on a single repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-analyses-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type ScanningAnalysis struct {
 	ID           *int64     `json:"id,omitempty"`
 	Ref          *string    `json:"ref,omitempty"`
@@ -158,7 +158,7 @@ type ScanningAnalysis struct {
 
 // SarifAnalysis specifies the results of a code scanning job.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type SarifAnalysis struct {
 	CommitSHA   *string    `json:"commit_sha,omitempty"`
 	Ref         *string    `json:"ref,omitempty"`
@@ -170,7 +170,7 @@ type SarifAnalysis struct {
 
 // SarifID identifies a sarif analysis upload.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type SarifID struct {
 	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
@@ -209,7 +209,7 @@ func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, 
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#list-code-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-alerts-for-a-repository
 func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *AlertListOptions) ([]*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts", owner, repo)
 	u, err := addOptions(u, opts)
@@ -238,7 +238,7 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 //
 // The security alert_id is the number at the end of the security alert's URL.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/code-scanning/#get-a-code-scanning-alert
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-alert
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
@@ -262,7 +262,7 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // You must use an access token with the security_events scope to use this endpoint. GitHub Apps must have the security_events
 // write permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
 func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
 
@@ -286,7 +286,7 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 // You must use an access token with the security_events scope to use this endpoint.
 // GitHub Apps must have the security_events read permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#list-code-scanning-analyses-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#list-code-scanning-analyses-for-a-repository
 func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, repo string, opts *AnalysesListOptions) ([]*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses", owner, repo)
 	u, err := addOptions(u, opts)
@@ -315,7 +315,7 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 //
 // The security analysis_id is the ID of the analysis, as returned from the ListAnalysesForRepo operation.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/code-scanning#get-a-code-scanning-analysis-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning#get-a-code-scanning-analysis-for-a-repository
 func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 

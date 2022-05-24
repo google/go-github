@@ -115,7 +115,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 
 // ListWorkflowRunsByID lists all workflow runs by workflow ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowID)
 	return s.listWorkflowRuns(ctx, u, opts)
@@ -123,7 +123,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 
 // ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/workflows/%v/runs", owner, repo, workflowFileName)
 	return s.listWorkflowRuns(ctx, u, opts)
@@ -131,7 +131,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 
 // ListRepositoryWorkflowRuns lists all workflow runs for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-workflow-runs-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository
 func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u := fmt.Sprintf("repos/%s/%s/actions/runs", owner, repo)
 	u, err := addOptions(u, opts)
@@ -155,7 +155,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 
 // GetWorkflowRunByID gets a specific workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
 
@@ -175,7 +175,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 
 // GetWorkflowRunAttempt gets a specific workflow run attempt.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-workflow-run-attempt
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run-attempt
 func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo string, runID int64, attemptNumber int, opts *WorkflowRunAttemptOptions) (*WorkflowRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v", owner, repo, runID, attemptNumber)
 	u, err := addOptions(u, opts)
@@ -199,7 +199,7 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 
 // RerunWorkflowByID re-runs a workflow by ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#re-run-a-workflow
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-workflow
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun", owner, repo, runID)
 
@@ -213,7 +213,7 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 
 // RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
 func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun-failed-jobs", owner, repo, runID)
 
@@ -227,7 +227,7 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 
 // RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
 func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, jobID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/rerun", owner, repo, jobID)
 
@@ -241,7 +241,7 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 
 // CancelWorkflowRunByID cancels a workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#cancel-a-workflow-run
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#cancel-a-workflow-run
 func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/cancel", owner, repo, runID)
 
@@ -255,7 +255,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#download-workflow-run-logs
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#download-workflow-run-logs
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, followRedirects bool) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
@@ -275,7 +275,7 @@ func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo str
 
 // DeleteWorkflowRun deletes a workflow run by ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#delete-a-workflow-run
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-a-workflow-run
 func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
 
@@ -289,7 +289,7 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-workflow-run-logs
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#delete-workflow-run-logs
 func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
@@ -303,7 +303,7 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 
 // GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-workflow-run-usage
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#get-workflow-run-usage
 func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/timing", owner, repo, runID)
 

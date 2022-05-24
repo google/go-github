@@ -33,12 +33,14 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 const (
 	codeLegacySplitString = `<code>`
 	codeSplitString       = `<code class="hljs language-javascript"><span class="hljs-keyword">await</span> octokit.request(<span class="hljs-string">&apos;`
-	fragmentIDString      = `<h3 id="`
 	skipPrefix            = "gen-"
 
 	// enterpriseURL = "docs.github.com"
@@ -46,11 +48,17 @@ const (
 
 	enterpriseRefFmt = "// GitHub Enterprise API docs: %v"
 	stdRefFmt        = "// GitHub API docs: %v"
+
+	httpGetDelay = 1 * time.Second
 )
 
 var (
 	verbose   = flag.Bool("v", false, "Print verbose log messages")
 	debugFile = flag.String("d", "", "Debug named file only")
+
+	fragmentIDStringRE   = regexp.MustCompile(`<h3 [^>]*id="`)
+	stripHTMLRE          = regexp.MustCompile(`<\/?[^>]+\/?>`)
+	condenseWhitespaceRE = regexp.MustCompile(`\s+`)
 
 	// skipMethods holds methods which are skipped because they do not have GitHub v3
 	// API URLs or are otherwise problematic in parsing, discovering, and/or fixing.
@@ -65,6 +73,7 @@ var (
 		"AdminService.RenameOrgByName":                 true,
 		"AdminService.UpdateTeamLDAPMapping":           true,
 		"AdminService.UpdateUserLDAPMapping":           true,
+		"AppsService.CreateAttachment":                 true,
 		"AppsService.FindRepositoryInstallationByID":   true,
 		"AuthorizationsService.CreateImpersonation":    true,
 		"AuthorizationsService.DeleteImpersonation":    true,
@@ -72,7 +81,10 @@ var (
 		"IssueImportService.CheckStatusSince":          true,
 		"IssueImportService.Create":                    true,
 		"MarketplaceService.marketplaceURI":            true,
+		"MigrationService.UserMigrationArchiveURL":     true,
 		"OrganizationsService.GetByID":                 true,
+		"RepositoriesService.CompareCommits":           true,
+		"RepositoriesService.CompareCommitsRaw":        true,
 		"RepositoriesService.DeletePreReceiveHook":     true,
 		"RepositoriesService.DownloadContents":         true,
 		"RepositoriesService.DownloadContentsWithMeta": true,
@@ -148,7 +160,7 @@ func main() {
 
 	// Step 3 - resolve all missing httpMethods from helperMethods.
 	// Additionally, use existing URLs as hints to pre-cache all apiDocs.
-	docCache := &documentCache{}
+	docCache := &documentCache{positioner: iter}
 	usedHelpers, endpointsByFilename := resolveHelpersAndCacheDocs(endpoints, docCache)
 
 	// Step 4 - validate and rewrite all URLs, skipping used helper methods.
@@ -496,6 +508,7 @@ func findAllServiceEndpoints(iter astFileIterator, services servicesMap) (endpoi
 }
 
 func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWriter) (usedHelpers usedHelpersMap, endpointsByFilename endpointsByFilenameMap) {
+	logf("Step 3 - resolving helpers and cache docs ...")
 	usedHelpers = usedHelpersMap{}
 	endpointsByFilename = endpointsByFilenameMap{}
 	for k, v := range endpoints {
@@ -505,10 +518,10 @@ func resolveHelpersAndCacheDocs(endpoints endpointsMap, docCache documentCacheWr
 		endpointsByFilename[v.filename] = append(endpointsByFilename[v.filename], v)
 
 		for _, cmt := range v.enterpriseRefLines {
-			docCache.CacheDocFromInternet(cmt.Text, v.filename)
+			docCache.CacheDocFromInternet(cmt.Text, v.filename, docCache.Position(cmt.Pos()))
 		}
 		for _, cmt := range v.stdRefLines {
-			docCache.CacheDocFromInternet(cmt.Text, v.filename)
+			docCache.CacheDocFromInternet(cmt.Text, v.filename, docCache.Position(cmt.Pos()))
 		}
 
 		if v.httpMethod == "" && v.helperMethod != "" {
@@ -533,13 +546,19 @@ type documentCacheReader interface {
 }
 
 type documentCacheWriter interface {
-	CacheDocFromInternet(urlWithFragmentID, filename string)
+	CacheDocFromInternet(urlWithFragmentID, filename string, pos token.Position)
+	Position(token.Pos) token.Position
+}
+
+type positioner interface {
+	Position(token.Pos) token.Position
 }
 
 // documentCache implements documentCacheReader and documentCachWriter.
 type documentCache struct {
 	apiDocs            map[string]map[string][]*Endpoint // cached by URL, then mapped by web fragment identifier.
 	urlByMethodAndPath map[string]string
+	positioner         positioner
 }
 
 func (dc *documentCache) URLByMethodAndPath(methodAndPath string) (string, bool) {
@@ -547,32 +566,42 @@ func (dc *documentCache) URLByMethodAndPath(methodAndPath string) (string, bool)
 	return url, ok
 }
 
-func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string) {
+func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos token.Position) {
 	if dc.apiDocs == nil {
 		dc.apiDocs = map[string]map[string][]*Endpoint{} // cached by URL, then mapped by web fragment identifier.
 		dc.urlByMethodAndPath = map[string]string{}
 	}
 
-	url := getURL(urlWithID)
-	if _, ok := dc.apiDocs[url]; ok {
+	baseURL, fullURL := getURL(urlWithID)
+	if _, ok := dc.apiDocs[baseURL]; ok {
 		return // already cached
 	}
 
-	logf("GET %q ...", url)
-	resp, err := http.Get(url)
-	check("Unable to get URL: %v: %v", url, err)
-	if resp.StatusCode != http.StatusOK {
-		log.Fatalf("filename: %v - url %v - StatusCode=%v", filename, url, resp.StatusCode)
+	logf("GET %q ...", fullURL)
+	time.Sleep(httpGetDelay)
+	resp, err := http.Get(fullURL)
+	check("Unable to get URL: %v: %v", fullURL, err)
+	switch resp.StatusCode {
+	case http.StatusTooManyRequests, http.StatusServiceUnavailable:
+		logf("Sleeping 60 seconds and trying again...")
+		time.Sleep(60 * time.Second)
+		resp, err = http.Get(fullURL)
+		check("Unable to get URL: %v: %v", fullURL, err)
+	case http.StatusOK:
+	default:
+		log.Fatalf("url %v - StatusCode=%v\ngithub/%v:%v:%v %v", fullURL, resp.StatusCode, filename, pos.Line, pos.Column, urlWithID)
 	}
 
 	finalURL := resp.Request.URL.String()
-	url = getURL(finalURL)
-	logf("The final URL is: %v; url=%v\n", finalURL, url)
+	baseURL, fullURL = getURL(finalURL)
+	url := baseURL
+	logf("urlWithID: %v ; finalURL: %v ; baseURL: %v, fullURL: %v", urlWithID, finalURL, baseURL, fullURL)
 
 	b, err := ioutil.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
 	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
-	dc.apiDocs[url] = parseWebPageEndpoints(string(b))
+	dc.apiDocs[url], err = parseWebPageEndpoints(string(b))
+	check("Unable to parse web page endpoints: url: %v, filename: %v, err: %v", url, filename, err)
 	logf("Found %v web page fragment identifiers.", len(dc.apiDocs[url]))
 	if len(dc.apiDocs[url]) == 0 {
 		logf("webage text: %s", b)
@@ -585,11 +614,15 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string) {
 			logf("For fragID=%q, endpoint=%q, found %v paths.", fragID, endpoint, len(endpoint.urlFormats))
 			for _, path := range endpoint.urlFormats {
 				methodAndPath := fmt.Sprintf("%v %v", endpoint.httpMethod, path)
-				dc.urlByMethodAndPath[methodAndPath] = fmt.Sprintf("%v#%v", url, fragID)
+				dc.urlByMethodAndPath[methodAndPath] = fmt.Sprintf("%v#%v", strings.TrimRight(url, "/"), fragID)
 				logf("urlByMethodAndPath[%q] = %q", methodAndPath, dc.urlByMethodAndPath[methodAndPath])
 			}
 		}
 	}
+}
+
+func (dc *documentCache) Position(pos token.Pos) token.Position {
+	return dc.positioner.Position(pos)
 }
 
 // FileEdit represents an edit that needs to be performed on a file.
@@ -599,21 +632,26 @@ type FileEdit struct {
 	toText   string
 }
 
-func getURL(s string) string {
+func getURL(s string) (baseURL, fullURL string) {
 	i := strings.Index(s, "http")
 	if i < 0 {
-		return ""
+		return "", ""
 	}
 	j := strings.Index(s, "#")
 	if j < i {
-		s = s[i:]
+		if !strings.HasSuffix(s, "/") { // Prevent unnecessary redirects if possible.
+			s += "/"
+		}
+		baseURL = s[i:]
+		fullURL = s[i:]
 	} else {
-		s = s[i:j]
+		fullURL = s[i:]
+		baseURL = s[i:j]
+		if !strings.HasSuffix(baseURL, "/") { // Prevent unnecessary redirects if possible.
+			baseURL += "/"
+		}
 	}
-	if !strings.HasSuffix(s, "/") { // Prevent unnecessary redirects if possible.
-		s += "/"
-	}
-	return s
+	return baseURL, fullURL
 }
 
 // Service represents a go-github service.
@@ -637,10 +675,19 @@ type Endpoint struct {
 
 // String helps with debugging by providing an easy-to-read summary of the endpoint.
 func (e *Endpoint) String() string {
+	if e == nil {
+		return "Endpoint{nil}"
+	}
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("  filename: %v\n", e.filename))
-	b.WriteString(fmt.Sprintf("  serviceName: %v\n", e.serviceName))
-	b.WriteString(fmt.Sprintf("  endpointName: %v\n", e.endpointName))
+	if e.filename != "" {
+		b.WriteString(fmt.Sprintf("  filename: %v\n", e.filename))
+	}
+	if e.serviceName != "" {
+		b.WriteString(fmt.Sprintf("  serviceName: %v\n", e.serviceName))
+	}
+	if e.endpointName != "" {
+		b.WriteString(fmt.Sprintf("  endpointName: %v\n", e.endpointName))
+	}
 	b.WriteString(fmt.Sprintf("  httpMethod: %v\n", e.httpMethod))
 	if e.helperMethod != "" {
 		b.WriteString(fmt.Sprintf("  helperMethod: %v\n", e.helperMethod))
@@ -751,7 +798,7 @@ func processAST(filename string, f *ast.File, services servicesMap, endpoints en
 			endpoints[fullName] = ep
 			logf("endpoints[%q] = %#v", fullName, endpoints[fullName])
 			if ep.httpMethod == "" && (ep.helperMethod == "" || len(ep.urlFormats) == 0) {
-				return fmt.Errorf("could not find body info: %#v", *ep)
+				return fmt.Errorf("filename=%q, endpoint=%q: could not find body info: %#v", filename, fullName, *ep)
 			}
 		case *ast.GenDecl:
 		default:
@@ -825,9 +872,9 @@ func (b *bodyData) parseBody(body *ast.BlockStmt) error {
 		case *ast.ReturnStmt: // Return Results
 			logf("*ast.ReturnStmt: %#v", *stmt)
 			if len(stmt.Results) > 0 {
-				ce, ok := stmt.Results[0].(*ast.CallExpr)
-				if ok {
-					recv, funcName, args := processCallExpr(ce)
+				switch rslt0 := stmt.Results[0].(type) {
+				case *ast.CallExpr:
+					recv, funcName, args := processCallExpr(rslt0)
 					logf("return CallExpr: recv=%q, funcName=%q, args=%#v", recv, funcName, args)
 					// If the httpMethod has not been found at this point, but
 					// this method is calling a helper function, then see if
@@ -840,18 +887,32 @@ func (b *bodyData) parseBody(body *ast.BlockStmt) error {
 						if len(b.assignments) == 0 && len(b.urlFormats) == 0 {
 							b.urlFormats = append(b.urlFormats, strings.Trim(args[1], `"`))
 							b.helperMethod = funcName
-							logf("found urlFormat: %v and helper method: %v", b.urlFormats[0], b.helperMethod)
+							switch b.helperMethod {
+							case "deleteReaction":
+								b.httpMethod = "DELETE"
+							default:
+								logf("WARNING: helper method %q not found", b.helperMethod)
+							}
+							logf("found urlFormat: %v and helper method: %v, httpMethod: %v", b.urlFormats[0], b.helperMethod, b.httpMethod)
 						} else {
 							for _, lr := range b.assignments {
 								if lr.lhs == args[1] { // Multiple matches are possible. Loop over all assignments.
 									b.urlVarName = args[1]
 									b.urlFormats = append(b.urlFormats, lr.rhs)
 									b.helperMethod = funcName
-									logf("found urlFormat: %v and helper method: %v", lr.rhs, b.helperMethod)
+									switch b.helperMethod {
+									case "deleteReaction":
+										b.httpMethod = "DELETE"
+									default:
+										logf("WARNING: helper method %q not found", b.helperMethod)
+									}
+									logf("found urlFormat: %v and helper method: %v, httpMethod: %v", lr.rhs, b.helperMethod, b.httpMethod)
 								}
 							}
 						}
 					}
+				default:
+					logf("WARNING: stmt.Results[0] unhandled type = %T = %#v", stmt.Results[0], stmt.Results[0])
 				}
 			}
 		case *ast.SwitchStmt:
@@ -866,18 +927,18 @@ func (b *bodyData) parseBody(body *ast.BlockStmt) error {
 }
 
 func (b *bodyData) parseIf(stmt *ast.IfStmt) error {
-	logf("*ast.IfStmt: %#v", *stmt)
+	logf("parseIf: *ast.IfStmt: %#v", *stmt)
 	if err := b.parseBody(stmt.Body); err != nil {
 		return err
 	}
-	logf("if body: b=%#v", *b)
+	logf("parseIf: if body: b=%#v", *b)
 	if stmt.Else != nil {
 		switch els := stmt.Else.(type) {
 		case *ast.BlockStmt:
 			if err := b.parseBody(els); err != nil {
 				return err
 			}
-			logf("if else: b=%#v", *b)
+			logf("parseIf: if else: b=%#v", *b)
 		case *ast.IfStmt:
 			if err := b.parseIf(els); err != nil {
 				return err
@@ -940,6 +1001,11 @@ func processAssignStmt(receiverName string, stmt *ast.AssignStmt) (httpMethod, u
 			case "NewUploadRequest":
 				httpMethod = "POST"
 				urlVarName = args[0]
+			case "roundTripWithOptionalFollowRedirect":
+				httpMethod = "GET"
+				urlVarName = args[1]
+			default:
+				logf("WARNING: processAssignStmt: unhandled CallExpr: recv=%q, funcName=%q, args=%#v", recv, funcName, args)
 			}
 			if recv == receiverName && len(args) > 1 && args[0] == "ctx" { // This might be a helper method.
 				fullName := fmt.Sprintf("%v.%v", recv, funcName)
@@ -1116,9 +1182,19 @@ func check(fmtStr string, args ...interface{}) {
 	}
 }
 
+func endpointsEqual(a, b *Endpoint) bool {
+	if a == nil || b == nil {
+		return false
+	}
+	if a.httpMethod != b.httpMethod {
+		return false
+	}
+	return cmp.Equal(a.urlFormats, b.urlFormats)
+}
+
 // parseWebPageEndpoints returns endpoint information, mapped by
 // web page fragment identifier.
-func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
+func parseWebPageEndpoints(buf string) (map[string][]*Endpoint, error) {
 	result := map[string][]*Endpoint{}
 
 	// The GitHub v3 API web pages do not appear to be auto-generated
@@ -1134,28 +1210,61 @@ func parseWebPageEndpoints(buf string) map[string][]*Endpoint {
 
 	parts := splitHTML(buf)
 	var lastFragmentID string
-	for _, part := range parts {
-		for _, method := range httpMethods {
-			if strings.HasPrefix(part, method) {
-				endpoint := parseEndpoint(part, method)
-				if lastFragmentID == "" {
-					log.Fatalf("parseWebPageEndpoints: empty lastFragmentID")
+
+	addDedup := func(endpoint *Endpoint) {
+		for _, v := range result[lastFragmentID] {
+			if endpointsEqual(v, endpoint) {
+				return
+			}
+		}
+		result[lastFragmentID] = append(result[lastFragmentID], endpoint)
+	}
+
+	for i, part := range parts {
+		noHTML := stripHTML(part)
+
+		m := fragmentIDStringRE.FindAllStringSubmatch(part, -1)
+		if len(m) > 0 {
+			fragmentIDString := m[len(m)-1][0]
+			if i := strings.LastIndex(part, fragmentIDString); i >= 0 {
+				b := part[i+len(fragmentIDString):]
+				i = strings.Index(b, `"`)
+				if i >= 0 {
+					lastFragmentID = b[:i]
+					if j := strings.Index(lastFragmentID, "--"); j > 0 {
+						lastFragmentID = lastFragmentID[:j] // chop off trailing "--code-samples" for example.
+					}
+					logf("Found lastFragmentID: %v", lastFragmentID)
 				}
-				result[lastFragmentID] = append(result[lastFragmentID], endpoint)
 			}
 		}
 
-		if i := strings.LastIndex(part, fragmentIDString); i >= 0 {
-			b := part[i+len(fragmentIDString):]
-			i = strings.Index(b, `"`)
-			if i >= 0 {
-				lastFragmentID = b[:i]
-				logf("Found lastFragmentID: %v", lastFragmentID)
+		for _, method := range httpMethods {
+			if strings.HasPrefix(part, method) {
+				if lastFragmentID == "" {
+					logf("WARNING: ignoring empty lastFragmentID: part #%v: noHTML=\n%v", i+1, noHTML)
+					continue
+				}
+				endpoint := parseEndpoint(part, method)
+				addDedup(endpoint)
+				continue
+			}
+
+			if endpoint := parseNewfangledEndpoint(noHTML, method); endpoint != nil && lastFragmentID != "" {
+				logf("part #%v: adding newfangled endpoint: %#v", i+1, endpoint)
+				addDedup(endpoint)
 			}
 		}
 	}
 
-	return result
+	return result, nil
+}
+
+func stripHTML(s string) string {
+	s = strings.ReplaceAll(s, "<wbr/>", "")
+	s = strings.ReplaceAll(s, "<wbr>", "")
+	s = stripHTMLRE.ReplaceAllString(s, " ")
+	return condenseWhitespaceRE.ReplaceAllString(s, " ")
 }
 
 func splitHTML(buf string) []string {
@@ -1167,17 +1276,33 @@ func splitHTML(buf string) []string {
 		case i < 0 && j < 0:
 			result = append(result, buf)
 			buf = ""
+			logf("splitHTML region #%v (%v bytes): case 1: i=%v, j=%v", len(result), len(result[len(result)-1]), i, j)
 		case j < 0, i >= 0 && j >= 0 && i < j:
 			result = append(result, buf[:i])
 			buf = buf[i+len(codeLegacySplitString):]
+			logf("splitHTML region #%v (%v bytes): case 2: i=%v, j=%v", len(result), len(result[len(result)-1]), i, j)
 		case i < 0, i >= 0 && j >= 0 && j < i:
 			result = append(result, buf[:j])
 			buf = buf[j+len(codeSplitString):]
+			logf("splitHTML region #%v (%v bytes): case 3: i=%v, j=%v", len(result), len(result[len(result)-1]), i, j)
 		default:
 			log.Fatalf("splitHTML: i=%v, j=%v", i, j)
 		}
 	}
 	return result
+}
+
+func parseNewfangledEndpoint(s, method string) *Endpoint {
+	parts := strings.Split(s, " ")
+	if len(parts) < 2 {
+		return nil
+	}
+	for i, part := range parts[:len(parts)-1] {
+		if strings.EqualFold(part, method) && strings.HasPrefix(parts[i+1], "/") {
+			return parseEndpoint(method+" "+parts[i+1], method)
+		}
+	}
+	return nil
 }
 
 func parseEndpoint(s, method string) *Endpoint {

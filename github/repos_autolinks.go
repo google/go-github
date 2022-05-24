@@ -26,7 +26,7 @@ type Autolink struct {
 // ListAutolinks returns a list of autolinks configured for the given repository.
 // Information about autolinks are only available to repository administrators.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos#list-all-autolinks-of-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#list-all-autolinks-of-a-repository
 func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
 	u, err := addOptions(u, opts)
@@ -51,7 +51,7 @@ func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo str
 // AddAutolink creates an autolink reference for a repository.
 // Users with admin access to the repository can create an autolink.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos#create-an-autolink-reference-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#create-an-autolink-reference-for-a-repository
 func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, opts *AutolinkOptions) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -70,7 +70,7 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 // GetAutolink returns a single autolink reference by ID that was configured for the given repository.
 // Information about autolinks are only available to repository administrators.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos#get-an-autolink-reference-of-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#get-an-autolink-reference-of-a-repository
 func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo string, id int64) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
 
@@ -91,7 +91,7 @@ func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo strin
 // DeleteAutolink deletes a single autolink reference by ID that was configured for the given repository.
 // Information about autolinks are only available to repository administrators.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/repos#delete-an-autolink-reference-from-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/autolinks#delete-an-autolink-reference-from-a-repository
 func (s *RepositoriesService) DeleteAutolink(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)

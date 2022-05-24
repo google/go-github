@@ -10,9 +10,9 @@ import (
 	"fmt"
 )
 
-// GetActionsAllowed gets the actions that are allowed in a repository.
+// GetActionsAllowed gets the allowed actions and reusable workflows for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#get-allowed-actions-and-workflows-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-a-repository
 func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/selected-actions", org, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -29,9 +29,9 @@ func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo s
 	return actionsAllowed, resp, nil
 }
 
-// EditActionsAllowed sets the actions that are allowed in a repository.
+// EditActionsAllowed sets the allowed actions and reusable workflows for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-allowed-actions-and-workflows-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-a-repository
 func (s *RepositoriesService) EditActionsAllowed(ctx context.Context, org, repo string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/selected-actions", org, repo)
 	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
