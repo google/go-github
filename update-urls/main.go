@@ -1278,9 +1278,6 @@ func splitHTML(buf string) []string {
 			buf = ""
 			logf("splitHTML region #%v (%v bytes): case 1: i=%v, j=%v", len(result), len(result[len(result)-1]), i, j)
 		case j < 0, i >= 0 && j >= 0 && i < j:
-			if len(result) > 0 && strings.Contains(buf[:i], `href="#list-jobs-for-a-workflow-run`) { // GML: DEBUG ONLY
-				logf("splitHTML region #%v: case 2: found key phrase:\n%s", len(result)+1, buf[:i])
-			}
 			result = append(result, buf[:i])
 			buf = buf[i+len(codeLegacySplitString):]
 			logf("splitHTML region #%v (%v bytes): case 2: i=%v, j=%v", len(result), len(result[len(result)-1]), i, j)
