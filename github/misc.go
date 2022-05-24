@@ -39,7 +39,7 @@ type markdownRequest struct {
 
 // Markdown renders an arbitrary Markdown document.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/markdown/
+// GitHub API docs: https://docs.github.com/en/rest/markdown/
 func (c *Client) Markdown(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {
 	request := &markdownRequest{Text: String(text)}
 	if opts != nil {
@@ -67,7 +67,7 @@ func (c *Client) Markdown(ctx context.Context, text string, opts *MarkdownOption
 
 // ListEmojis returns the emojis available to use on GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/emojis/
+// GitHub API docs: https://docs.github.com/en/rest/emojis/
 func (c *Client) ListEmojis(ctx context.Context) (map[string]string, *Response, error) {
 	req, err := c.NewRequest("GET", "emojis", nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func (c *CodeOfConduct) String() string {
 
 // ListCodesOfConduct returns all codes of conduct.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/codes_of_conduct/#list-all-codes-of-conduct
+// GitHub API docs: https://docs.github.com/en/rest/codes_of_conduct/#list-all-codes-of-conduct
 func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
 	req, err := c.NewRequest("GET", "codes_of_conduct", nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 
 // GetCodeOfConduct returns an individual code of conduct.
 //
-// https://docs.github.com/en/free-pro-team@latest/rest/reference/codes_of_conduct/#get-an-individual-code-of-conduct
+// https://docs.github.com/en/rest/codes_of_conduct/#get-an-individual-code-of-conduct
 func (c *Client) GetCodeOfConduct(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%s", key)
 	req, err := c.NewRequest("GET", u, nil)
@@ -182,7 +182,7 @@ type APIMeta struct {
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/meta#get-github-meta-information
+// GitHub API docs: https://docs.github.com/en/rest/meta#get-github-meta-information
 func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 	req, err := c.NewRequest("GET", "meta", nil)
 	if err != nil {

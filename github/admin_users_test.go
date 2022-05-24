@@ -90,7 +90,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"url": "https://git.company.com/api/v3/authorizations/1234",
 		"app": {
 		  "name": "GitHub Site Administrator",
-		  "url": "https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise/users/",
+		  "url": "https://docs.github.com/en/rest/enterprise/users/",
 		  "client_id": "1234"
 		},
 		"token": "1234",
@@ -119,7 +119,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		URL: String("https://git.company.com/api/v3/authorizations/1234"),
 		App: &OAuthAPP{
 			Name:     String("GitHub Site Administrator"),
-			URL:      String("https://docs.github.com/en/free-pro-team@latest/rest/reference/enterprise/users/"),
+			URL:      String("https://docs.github.com/en/rest/enterprise/users/"),
 			ClientID: String("1234"),
 		},
 		Token:          String("1234"),

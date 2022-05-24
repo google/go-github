@@ -15,7 +15,7 @@ import (
 // PullRequestsService handles communication with the pull request related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/
+// GitHub API docs: https://docs.github.com/en/rest/pulls/
 type PullRequestsService service
 
 // PullRequestAutoMerge represents the "auto_merge" response for a PullRequest.
@@ -143,7 +143,7 @@ type PullRequestListOptions struct {
 
 // List the pull requests for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-pull-requests
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests
 func (s *PullRequestsService) List(ctx context.Context, owner string, repo string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	u, err := addOptions(u, opts)
@@ -170,7 +170,7 @@ func (s *PullRequestsService) List(ctx context.Context, owner string, repo strin
 // The results may include open and closed pull requests.
 // By default, the PullRequestListOptions State filters for "open".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/commits/#list-pull-requests-associated-with-a-commit
+// GitHub API docs: https://docs.github.com/en/rest/commits/commits#list-pull-requests-associated-with-a-commit
 func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/pulls", owner, repo, sha)
 	u, err := addOptions(u, opts)
@@ -196,7 +196,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 
 // Get a single pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#get-a-pull-request
 func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string, number int) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -215,7 +215,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner string, repo string
 
 // GetRaw gets a single pull request in raw (diff or patch) format.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#get-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#get-a-pull-request
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo string, number int, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -254,7 +254,7 @@ type NewPullRequest struct {
 
 // Create a new pull request on the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#create-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#create-a-pull-request
 func (s *PullRequestsService) Create(ctx context.Context, owner string, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	req, err := s.client.NewRequest("POST", u, pull)
@@ -293,7 +293,7 @@ type PullRequestBranchUpdateResponse struct {
 // A follow up request, after a delay of a second or so, should result
 // in a successful request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-pull-request-branch
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#update-a-pull-request-branch
 func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/update-branch", owner, repo, number)
 
@@ -328,7 +328,7 @@ type pullRequestUpdate struct {
 // The following fields are editable: Title, Body, State, Base.Ref and MaintainerCanModify.
 // Base.Ref updates the base branch of the pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#update-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#update-a-pull-request
 func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
 	if pull == nil {
 		return nil, nil, fmt.Errorf("pull must be provided")
@@ -365,7 +365,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner string, repo strin
 
 // ListCommits lists the commits in a pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-commits-on-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request
 func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/commits", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -389,7 +389,7 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner string, rep
 
 // ListFiles lists the files in a pull request.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#list-pull-requests-files
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files
 func (s *PullRequestsService) ListFiles(ctx context.Context, owner string, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/files", owner, repo, number)
 	u, err := addOptions(u, opts)
@@ -413,7 +413,7 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner string, repo 
 
 // IsMerged checks if a pull request has been merged.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#check-if-a-pull-request-has-been-merged
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#check-if-a-pull-request-has-been-merged
 func (s *PullRequestsService) IsMerged(ctx context.Context, owner string, repo string, number int) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -455,7 +455,7 @@ type pullRequestMergeRequest struct {
 // Merge a pull request.
 // commitMessage is an extra detail to append to automatic commit message.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/pulls/#merge-a-pull-request
+// GitHub API docs: https://docs.github.com/en/rest/pulls/pulls#merge-a-pull-request
 func (s *PullRequestsService) Merge(ctx context.Context, owner string, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/merge", owner, repo, number)
 

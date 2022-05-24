@@ -87,10 +87,10 @@ where to put new methods.
 
 Code is organized in files also based pretty closely on the GitHub API
 documentation, following the format `{service}_{api}.go`. For example, methods
-defined at <https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#webhooks> live in
+defined at <https://docs.github.com/en/rest/webhooks/repos> live in
 [repos_hooks.go][].
 
-[GitHub API documentation]: https://docs.github.com/en/free-pro-team@latest/rest/reference/
+[GitHub API documentation]: https://docs.github.com/en/rest
 [repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
 
 

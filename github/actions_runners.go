@@ -28,7 +28,7 @@ type ActionsEnabledOnOrgRepos struct {
 
 // ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-runner-applications-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-a-repository
 func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/downloads", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -53,7 +53,7 @@ type RegistrationToken struct {
 
 // CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-registration-token-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/registration-token", owner, repo)
 
@@ -96,7 +96,7 @@ type Runners struct {
 
 // ListRunners lists all the self-hosted runners for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-self-hosted-runners-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-a-repository
 func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners", owner, repo)
 	u, err := addOptions(u, opts)
@@ -120,7 +120,7 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 
 // GetRunner gets a specific self-hosted runner for a repository using its runner ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-self-hosted-runner-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-a-repository
 func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -145,7 +145,7 @@ type RemoveToken struct {
 
 // CreateRemoveToken creates a token that can be used to remove a self-hosted runner from a repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-remove-token-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-a-repository
 func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/remove-token", owner, repo)
 
@@ -165,7 +165,7 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 
 // RemoveRunner forces the removal of a self-hosted runner in a repository using the runner id.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-a-self-hosted-runner-from-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-a-repository
 func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
 
@@ -179,7 +179,7 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 
 // ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-runner-applications-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
 func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, owner string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", owner)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -198,7 +198,7 @@ func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.
 
 // CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-registration-token-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-organization
 func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, owner string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", owner)
 
@@ -218,7 +218,7 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 
 // ListOrganizationRunners lists all the self-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-self-hosted-runners-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
 func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner string, opts *ListOptions) (*Runners, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners", owner)
 	u, err := addOptions(u, opts)
@@ -242,7 +242,7 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 
 // ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#list-selected-repositories-enabled-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#list-selected-repositories-enabled-for-github-actions-in-an-organization
 func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnOrgRepos, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 	u, err := addOptions(u, opts)
@@ -266,7 +266,7 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 
 // SetEnabledReposInOrg replaces the list of selected repositories that are enabled for GitHub Actions in an organization..
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#set-selected-repositories-enabled-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-selected-repositories-enabled-for-github-actions-in-an-organization
 func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 
@@ -287,7 +287,7 @@ func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string,
 
 // AddEnabledReposInOrg adds a repository to the list of selected repositories that are enabled for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#enable-a-selected-repository-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#enable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
@@ -306,7 +306,7 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 
 // RemoveEnabledRepoInOrg removes a single repository from the list of enabled repos for GitHub Actions in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/reference/actions#disable-a-selected-repository-for-github-actions-in-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-repository-for-github-actions-in-an-organization
 func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
@@ -325,7 +325,7 @@ func (s *ActionsService) RemoveEnabledRepoInOrg(ctx context.Context, owner strin
 
 // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#get-a-self-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-organization
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -344,7 +344,7 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, owner string
 
 // CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#create-a-remove-token-for-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-remove-token-for-an-organization
 func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owner string) (*RemoveToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", owner)
 
@@ -364,7 +364,7 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, owne
 
 // RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/actions/#delete-a-self-hosted-runner-from-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-organization
 func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, owner string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", owner, runnerID)
 

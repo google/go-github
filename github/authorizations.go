@@ -12,7 +12,7 @@ import (
 
 // Scope models a GitHub authorization scope.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth/#scopes
+// GitHub API docs: https://docs.github.com/en/rest/oauth/#scopes
 type Scope string
 
 // This is the set of scopes for GitHub API V3
@@ -50,7 +50,7 @@ const (
 // This service requires HTTP Basic Authentication; it cannot be accessed using
 // an OAuth token.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth_authorizations/
+// GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations
 type AuthorizationsService service
 
 // Authorization represents an individual GitHub authorization.
@@ -121,7 +121,7 @@ func (a AuthorizationRequest) String() string {
 // fields. That is, you may provide only one of "Scopes", or "AddScopes", or
 // "RemoveScopes".
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/oauth_authorizations/#update-an-existing-authorization
+// GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations#update-an-existing-authorization
 type AuthorizationUpdateRequest struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	AddScopes    []string `json:"add_scopes,omitempty"`
@@ -143,7 +143,7 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#check-a-token
+// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#check-a-token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -176,7 +176,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#reset-a-token
+// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#reset-a-token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -205,7 +205,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 // username is the OAuth application clientID, and the password is its
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#delete-an-app-token
+// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-token
 func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/token", clientID)
 
@@ -226,7 +226,7 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 // grant will also delete all OAuth tokens associated with the application for
 // the user.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/apps/#delete-an-app-authorization
+// GitHub API docs: https://docs.github.com/en/rest/apps/oauth-applications#delete-an-app-authorization
 func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error) {
 	u := fmt.Sprintf("applications/%v/grant", clientID)
 

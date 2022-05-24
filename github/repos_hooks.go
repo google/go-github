@@ -77,7 +77,7 @@ type createHookRequest struct {
 // Note that only a subset of the hook fields are used and hook must
 // not be nil.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#create-a-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#create-a-repository-webhook
 func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 
@@ -104,7 +104,7 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 
 // ListHooks lists all Hooks for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#list-repository-webhooks
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#list-repository-webhooks
 func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks", owner, repo)
 	u, err := addOptions(u, opts)
@@ -128,7 +128,7 @@ func (s *RepositoriesService) ListHooks(ctx context.Context, owner, repo string,
 
 // GetHook returns a single specified Hook.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#get-a-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#get-a-repository-webhook
 func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, id int64) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -146,7 +146,7 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 
 // EditHook updates a specified Hook.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#update-a-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#update-a-repository-webhook
 func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("PATCH", u, hook)
@@ -164,7 +164,7 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 
 // DeleteHook deletes a specified Hook.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#delete-a-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#delete-a-repository-webhook
 func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d", owner, repo, id)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -176,7 +176,7 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 
 // PingHook triggers a 'ping' event to be sent to the Hook.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#ping-a-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#ping-a-repository-webhook
 func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d/pings", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)
@@ -188,7 +188,7 @@ func (s *RepositoriesService) PingHook(ctx context.Context, owner, repo string, 
 
 // TestHook triggers a test Hook by github.
 //
-// GitHub API docs: https://docs.github.com/en/free-pro-team@latest/rest/reference/repos/#test-the-push-repository-webhook
+// GitHub API docs: https://docs.github.com/en/rest/webhooks/repos#test-the-push-repository-webhook
 func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%d/tests", owner, repo, id)
 	req, err := s.client.NewRequest("POST", u, nil)
