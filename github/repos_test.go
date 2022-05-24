@@ -393,14 +393,16 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/repos/o/r/community/code_of_conduct", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeCodesOfConductPreview)
 		fmt.Fprint(w, `{
-						"key": "key",
-						"name": "name",
-						"url": "url",
-						"body": "body"}`,
+            "code_of_conduct": {
+  						"key": "key",
+  						"name": "name",
+  						"url": "url",
+  						"body": "body"
+            }}`,
 		)
 	})
 

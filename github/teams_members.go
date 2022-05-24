@@ -73,7 +73,7 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 // GetTeamMembershipByID returns the membership status for a user in a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/members#get-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/teams/members#list-team-members
 func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -127,7 +127,7 @@ type TeamAddTeamMembershipOptions struct {
 // AddTeamMembershipByID adds or invites a user to a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/teams/members#get-team-membership-for-a-user
 func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest("PUT", u, opts)
@@ -167,7 +167,7 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 // RemoveTeamMembershipByID removes a user from a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/members#remove-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/teams/members#add-or-update-team-membership-for-a-user
 func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -197,7 +197,7 @@ func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/members#list-pending-team-invitations
 func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Invitation, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/team/%v/invitations", orgID, teamID)
+	u := fmt.Sprintf("orgs/%v/team/%v/invitations", orgID, teamID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

@@ -93,7 +93,7 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/scim#get-scim-provisioning-information-for-a-user
+// GitHub API docs: https://docs.github.com/en/rest/scim#supported-scim-user-attributes
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)

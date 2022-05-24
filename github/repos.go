@@ -465,7 +465,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 
 // Get fetches a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -494,9 +494,9 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 // GetCodeOfConduct gets the contents of a repository's code of conduct.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codes-of-conduct#get-the-code-of-conduct-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/community/code_of_conduct", owner, repo)
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -505,13 +505,13 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	coc := new(CodeOfConduct)
-	resp, err := s.client.Do(ctx, req, coc)
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return coc, resp, nil
+	return r.GetCodeOfConduct(), resp, nil
 }
 
 // GetByID fetches a repository.

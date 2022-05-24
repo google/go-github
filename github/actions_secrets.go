@@ -80,7 +80,7 @@ func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*Publ
 
 // GetEnvPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions#get-an-environment-public-key
+// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-public-key
 func (s *ActionsService) GetEnvPublicKey(ctx context.Context, repoID int, env string) (*PublicKey, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/public-key", repoID, env)
 	return s.getPublicKey(ctx, url)
@@ -141,7 +141,7 @@ func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *L
 
 // ListEnvSecrets lists all secrets available in an environment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions#list-environment-secrets
+// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#list-environment-secrets
 func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env string, opts *ListOptions) (*Secrets, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets", repoID, env)
 	return s.listSecrets(ctx, url, opts)
@@ -180,7 +180,7 @@ func (s *ActionsService) GetOrgSecret(ctx context.Context, org, name string) (*S
 
 // GetEnvSecret gets a single environment secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions#list-environment-secrets
+// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#get-an-environment-secret
 func (s *ActionsService) GetEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Secret, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
 	return s.getSecret(ctx, url)
@@ -229,7 +229,7 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string
 
 // CreateOrUpdateEnvSecret creates or updates a single environment secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions#create-or-update-an-environment-secret
+// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#create-or-update-an-environment-secret
 func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
@@ -262,7 +262,7 @@ func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) 
 
 // DeleteEnvSecret deletes a secret in an environment using the secret name.
 //
-// GitHub API docs: https://docs.github.com/en/rest/actions#delete-an-environment-secret
+// GitHub API docs: https://docs.github.com/en/rest/actions/secrets#delete-an-environment-secret
 func (s *ActionsService) DeleteEnvSecret(ctx context.Context, repoID int, env, secretName string) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, secretName)
 	return s.deleteSecret(ctx, url)

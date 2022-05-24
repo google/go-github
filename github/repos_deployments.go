@@ -175,7 +175,7 @@ type DeploymentStatusRequest struct {
 
 // ListDeploymentStatuses lists the statuses of a given deployment of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#list-deployment-statuses
+// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#list-deployment-statuses
 func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner, repo string, deployment int64, opts *ListOptions) ([]*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 	u, err := addOptions(u, opts)
@@ -203,7 +203,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 
 // GetDeploymentStatus returns a single deployment status of a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#get-a-deployment-status
+// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#get-a-deployment-status
 func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
 
@@ -227,7 +227,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 
 // CreateDeploymentStatus creates a new status for a deployment.
 //
-// GitHub API docs: https://docs.github.com/en/rest/deployments/deployments#create-a-deployment-status
+// GitHub API docs: https://docs.github.com/en/rest/deployments/statuses#create-a-deployment-status
 func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 

@@ -59,7 +59,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListIssueEventsForRepository lists issue events for a repository.
 //
-// GitHub API docs: https://docs.github.com/en/rest/issues/#list-issue-events-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/issues/events#list-issue-events-for-a-repository
 func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events", owner, repo)
 	u, err := addOptions(u, opts)

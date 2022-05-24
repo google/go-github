@@ -204,7 +204,7 @@ func (s *AppsService) GetInstallation(ctx context.Context, id int64) (*Installat
 
 // ListUserInstallations lists installations that are accessible to the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/apps#list-app-installations-accessible-to-the-user-access-token
+// GitHub API docs: https://docs.github.com/en/rest/apps/installations#list-app-installations-accessible-to-the-user-access-token
 func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptions) ([]*Installation, *Response, error) {
 	u, err := addOptions("user/installations", opts)
 	if err != nil {
@@ -291,7 +291,7 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 
 // CreateAttachment creates a new attachment on user comment containing a url.
 //
-// GitHub API docs: https://docs.github.com/en/rest/apps/apps#create-a-content-attachment
+// TODO: Find GitHub API docs.
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
 	payload := &Attachment{Title: String(title), Body: String(body)}
