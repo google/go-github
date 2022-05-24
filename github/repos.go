@@ -494,7 +494,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 
 // GetCodeOfConduct gets the contents of a repository's code of conduct.
 //
-// GitHub API docs: https://docs.github.com/en/rest/codes-of-conduct#about-the-codes-of-conduct-api
+// GitHub API docs: https://docs.github.com/en/rest/repos/repos#update-a-repository
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest("GET", u, nil)

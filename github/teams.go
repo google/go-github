@@ -778,7 +778,7 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 // ListIDPGroupsForTeamByID lists IDP groups connected to a team on GitHub
 // given organization and team IDs.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
+// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-an-organization
 func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
@@ -820,7 +820,7 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 // CreateOrUpdateIDPGroupConnectionsByID creates, updates, or removes a connection
 // between a team and an IDP group given organization and team IDs.
 //
-// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#create-or-update-idp-group-connections
+// GitHub API docs: https://docs.github.com/en/rest/teams/team-sync#list-idp-groups-for-a-team
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 

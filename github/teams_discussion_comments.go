@@ -45,7 +45,7 @@ type DiscussionCommentListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussion-comments#list-discussion-comments
 func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
 	u, err := addOptions(u, options)
 	if err != nil {
 		return nil, nil, err

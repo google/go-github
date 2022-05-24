@@ -51,7 +51,7 @@ type DiscussionListOptions struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/teams/discussions#list-discussions
 func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID int64, opts *DiscussionListOptions) ([]*TeamDiscussion, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/team/%v/discussions", orgID, teamID)
+	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

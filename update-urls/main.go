@@ -73,6 +73,7 @@ var (
 		"AdminService.RenameOrgByName":                 true,
 		"AdminService.UpdateTeamLDAPMapping":           true,
 		"AdminService.UpdateUserLDAPMapping":           true,
+		"AppsService.CreateAttachment":                 true,
 		"AppsService.FindRepositoryInstallationByID":   true,
 		"AuthorizationsService.CreateImpersonation":    true,
 		"AuthorizationsService.DeleteImpersonation":    true,
