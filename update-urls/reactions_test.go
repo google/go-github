@@ -7,6 +7,7 @@ package main
 
 import (
 	_ "embed"
+	"strings"
 	"testing"
 )
 
@@ -16,8 +17,8 @@ func newReactionsPipeline() *pipelineSetup {
 		endpointsFromWebsite: reactionsWant,
 		filename:             "reactions.go",
 		serviceName:          "ReactionsService",
-		originalGoSource:     reactionsGoFileOriginal,
-		wantGoSource:         reactionsGoFileWant,
+		originalGoSource:     strings.ReplaceAll(reactionsGoFileOriginal, "\r", ""),
+		wantGoSource:         strings.ReplaceAll(reactionsGoFileWant, "\r", ""),
 		wantNumEndpoints:     25,
 	}
 }

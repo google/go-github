@@ -7,6 +7,7 @@ package main
 
 import (
 	_ "embed"
+	"strings"
 	"testing"
 )
 
@@ -16,8 +17,8 @@ func newActivitiesEventsPipeline() *pipelineSetup {
 		endpointsFromWebsite: activityEventsWant,
 		filename:             "activity_events.go",
 		serviceName:          "ActivityService",
-		originalGoSource:     activityEventsGoFileOriginal,
-		wantGoSource:         activityEventsGoFileWant,
+		originalGoSource:     strings.ReplaceAll(activityEventsGoFileOriginal, "\r", ""),
+		wantGoSource:         strings.ReplaceAll(activityEventsGoFileWant, "\r", ""),
 		wantNumEndpoints:     7,
 	}
 }
