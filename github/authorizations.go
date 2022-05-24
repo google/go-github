@@ -50,7 +50,7 @@ const (
 // This service requires HTTP Basic Authentication; it cannot be accessed using
 // an OAuth token.
 //
-// GitHub API docs: https://docs.github.com/en/rest/oauth_authorizations/
+// GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations
 type AuthorizationsService service
 
 // Authorization represents an individual GitHub authorization.
@@ -121,7 +121,7 @@ func (a AuthorizationRequest) String() string {
 // fields. That is, you may provide only one of "Scopes", or "AddScopes", or
 // "RemoveScopes".
 //
-// GitHub API docs: https://docs.github.com/en/rest/oauth_authorizations/#update-an-existing-authorization
+// GitHub API docs: https://docs.github.com/en/rest/oauth-authorizations#update-an-existing-authorization
 type AuthorizationUpdateRequest struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	AddScopes    []string `json:"add_scopes,omitempty"`
