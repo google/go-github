@@ -140,6 +140,10 @@ type Repository struct {
 	// overrides the field parameter when both are used.
 	// Can be one of public, private or internal.
 	Visibility *string `json:"visibility,omitempty"`
+
+	// RoleName is only returned by the API 'check team permissions for a repository'.
+	// See: teams.go (IsTeamRepoByID) https://docs.github.com/en/rest/teams/teams#check-team-permissions-for-a-repository
+	RoleName *string `json:"role_name,omitempty"`
 }
 
 func (r Repository) String() string {
