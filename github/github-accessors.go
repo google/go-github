@@ -14606,6 +14606,14 @@ func (r *Repository) GetReleasesURL() string {
 	return *r.ReleasesURL
 }
 
+// GetRoleName returns the RoleName field if it's non-nil, zero value otherwise.
+func (r *Repository) GetRoleName() string {
+	if r == nil || r.RoleName == nil {
+		return ""
+	}
+	return *r.RoleName
+}
+
 // GetSecurityAndAnalysis returns the SecurityAndAnalysis field.
 func (r *Repository) GetSecurityAndAnalysis() *SecurityAndAnalysis {
 	if r == nil {
