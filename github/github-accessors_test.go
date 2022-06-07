@@ -17031,6 +17031,16 @@ func TestRepository_GetReleasesURL(tt *testing.T) {
 	r.GetReleasesURL()
 }
 
+func TestRepository_GetRoleName(tt *testing.T) {
+	var zeroValue string
+	r := &Repository{RoleName: &zeroValue}
+	r.GetRoleName()
+	r = &Repository{}
+	r.GetRoleName()
+	r = nil
+	r.GetRoleName()
+}
+
 func TestRepository_GetSecurityAndAnalysis(tt *testing.T) {
 	r := &Repository{}
 	r.GetSecurityAndAnalysis()
