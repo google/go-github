@@ -452,7 +452,7 @@ func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, r
 }
 
 // TeamAddTeamRepoOptions specifies the optional parameters to the
-// TeamsService.AddTeamRepo method.
+// TeamsService.AddTeamRepoByID and TeamsService.AddTeamRepoBySlug methods.
 type TeamAddTeamRepoOptions struct {
 	// Permission specifies the permission to grant the team on this repository.
 	// Possible values are:
