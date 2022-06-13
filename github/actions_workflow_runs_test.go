@@ -638,6 +638,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			URL:  String("u"),
 			Name: String("n"),
 		},
+		Actor: &User{
+			Login:           String("l"),
+			ID:              Int64(1),
+			AvatarURL:       String("a"),
+			GravatarID:      String("g"),
+			Name:            String("n"),
+			Company:         String("c"),
+			Blog:            String("b"),
+			Location:        String("l"),
+			Email:           String("e"),
+			Hireable:        Bool(true),
+			Bio:             String("b"),
+			TwitterUsername: String("t"),
+			PublicRepos:     Int(1),
+			Followers:       Int(1),
+			Following:       Int(1),
+			CreatedAt:       &Timestamp{referenceTime},
+			SuspendedAt:     &Timestamp{referenceTime},
+			URL:             String("u"),
+		},
 	}
 
 	want := `{
@@ -718,6 +738,26 @@ func TestWorkflowRun_Marshal(t *testing.T) {
 			"id": 1,
 			"url": "u",
 			"name": "n"
+		},
+		"actor": {
+			"login": "l",
+			"id": 1,
+			"avatar_url": "a",
+			"gravatar_id": "g",
+			"name": "n",
+			"company": "c",
+			"blog": "b",
+			"location": "l",
+			"email": "e",
+			"hireable": true,
+			"bio": "b",
+			"twitter_username": "t",
+			"public_repos": 1,
+			"followers": 1,
+			"following": 1,
+			"created_at": ` + referenceTimeStr + `,
+			"suspended_at": ` + referenceTimeStr + `,
+			"url": "u"
 		}
 	}`
 
@@ -809,6 +849,26 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					URL:  String("u"),
 					Name: String("n"),
 				},
+				Actor: &User{
+					Login:           String("l"),
+					ID:              Int64(1),
+					AvatarURL:       String("a"),
+					GravatarID:      String("g"),
+					Name:            String("n"),
+					Company:         String("c"),
+					Blog:            String("b"),
+					Location:        String("l"),
+					Email:           String("e"),
+					Hireable:        Bool(true),
+					Bio:             String("b"),
+					TwitterUsername: String("t"),
+					PublicRepos:     Int(1),
+					Followers:       Int(1),
+					Following:       Int(1),
+					CreatedAt:       &Timestamp{referenceTime},
+					SuspendedAt:     &Timestamp{referenceTime},
+					URL:             String("u"),
+				},
 			},
 		},
 	}
@@ -894,7 +954,27 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					"id": 1,
 					"url": "u",
 					"name": "n"
-				}
+				},
+				"actor": {
+					"login": "l",
+					"id": 1,
+					"avatar_url": "a",
+					"gravatar_id": "g",
+					"name": "n",
+					"company": "c",
+					"blog": "b",
+					"location": "l",
+					"email": "e",
+					"hireable": true,
+					"bio": "b",
+					"twitter_username": "t",
+					"public_repos": 1,
+					"followers": 1,
+					"following": 1,
+					"created_at": ` + referenceTimeStr + `,
+					"suspended_at": ` + referenceTimeStr + `,
+					"url": "u"
+				}		
 			}
 		]
 	}`

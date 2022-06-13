@@ -19654,6 +19654,14 @@ func (w *WorkflowJobEvent) GetWorkflowJob() *WorkflowJob {
 	return w.WorkflowJob
 }
 
+// GetActor returns the Actor field.
+func (w *WorkflowRun) GetActor() *User {
+	if w == nil {
+		return nil
+	}
+	return w.Actor
+}
+
 // GetArtifactsURL returns the ArtifactsURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowRun) GetArtifactsURL() string {
 	if w == nil || w.ArtifactsURL == nil {

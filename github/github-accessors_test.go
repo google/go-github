@@ -22978,6 +22978,13 @@ func TestWorkflowJobEvent_GetWorkflowJob(tt *testing.T) {
 	w.GetWorkflowJob()
 }
 
+func TestWorkflowRun_GetActor(tt *testing.T) {
+	w := &WorkflowRun{}
+	w.GetActor()
+	w = nil
+	w.GetActor()
+}
+
 func TestWorkflowRun_GetArtifactsURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowRun{ArtifactsURL: &zeroValue}
