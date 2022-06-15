@@ -106,10 +106,11 @@ type CreateEvent struct {
 	RefType      *string `json:"ref_type,omitempty"`
 	MasterBranch *string `json:"master_branch,omitempty"`
 	Description  *string `json:"description,omitempty"`
+	PusherType   *string `json:"pusher_type,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	PusherType   *string       `json:"pusher_type,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
@@ -493,13 +494,14 @@ type IssuesEvent struct {
 type LabelEvent struct {
 	// Action is the action that was performed. Possible values are:
 	// "created", "edited", "deleted"
-	Action *string `json:"action,omitempty"`
-	Label  *Label  `json:"label,omitempty"`
+	Action  *string     `json:"action,omitempty"`
+	Label   *Label      `json:"label,omitempty"`
+	Changes *EditChange `json:"changes,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Changes      *EditChange   `json:"changes,omitempty"`
 	Repo         *Repository   `json:"repository,omitempty"`
 	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 
@@ -574,6 +576,9 @@ type MetaEvent struct {
 	Hook *Hook `json:"hook,omitempty"`
 
 	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 
@@ -682,7 +687,12 @@ type PingEvent struct {
 	// The ID of the webhook that triggered the ping.
 	HookID *int64 `json:"hook_id,omitempty"`
 	// The webhook configuration.
-	Hook         *Hook         `json:"hook,omitempty"`
+	Hook *Hook `json:"hook,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
 }
 
