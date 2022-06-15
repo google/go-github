@@ -3438,6 +3438,14 @@ func (c *CreateEvent) GetMasterBranch() string {
 	return *c.MasterBranch
 }
 
+// GetOrg returns the Org field.
+func (c *CreateEvent) GetOrg() *Organization {
+	if c == nil {
+		return nil
+	}
+	return c.Org
+}
+
 // GetPusherType returns the PusherType field if it's non-nil, zero value otherwise.
 func (c *CreateEvent) GetPusherType() string {
 	if c == nil || c.PusherType == nil {
@@ -7902,6 +7910,14 @@ func (l *LabelEvent) GetRepo() *Repository {
 	return l.Repo
 }
 
+// GetSender returns the Sender field.
+func (l *LabelEvent) GetSender() *User {
+	if l == nil {
+		return nil
+	}
+	return l.Sender
+}
+
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
 func (l *LabelResult) GetColor() string {
 	if l == nil || l.Color == nil {
@@ -8740,6 +8756,30 @@ func (m *MetaEvent) GetInstallation() *Installation {
 		return nil
 	}
 	return m.Installation
+}
+
+// GetOrg returns the Org field.
+func (m *MetaEvent) GetOrg() *Organization {
+	if m == nil {
+		return nil
+	}
+	return m.Org
+}
+
+// GetRepo returns the Repo field.
+func (m *MetaEvent) GetRepo() *Repository {
+	if m == nil {
+		return nil
+	}
+	return m.Repo
+}
+
+// GetSender returns the Sender field.
+func (m *MetaEvent) GetSender() *User {
+	if m == nil {
+		return nil
+	}
+	return m.Sender
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -10764,6 +10804,30 @@ func (p *PingEvent) GetInstallation() *Installation {
 		return nil
 	}
 	return p.Installation
+}
+
+// GetOrg returns the Org field.
+func (p *PingEvent) GetOrg() *Organization {
+	if p == nil {
+		return nil
+	}
+	return p.Org
+}
+
+// GetRepo returns the Repo field.
+func (p *PingEvent) GetRepo() *Repository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSender returns the Sender field.
+func (p *PingEvent) GetSender() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Sender
 }
 
 // GetZen returns the Zen field if it's non-nil, zero value otherwise.
