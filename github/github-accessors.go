@@ -18774,6 +18774,14 @@ func (u *User) GetReposURL() string {
 	return *u.ReposURL
 }
 
+// GetRoleName returns the RoleName field if it's non-nil, zero value otherwise.
+func (u *User) GetRoleName() string {
+	if u == nil || u.RoleName == nil {
+		return ""
+	}
+	return *u.RoleName
+}
+
 // GetSiteAdmin returns the SiteAdmin field if it's non-nil, zero value otherwise.
 func (u *User) GetSiteAdmin() bool {
 	if u == nil || u.SiteAdmin == nil {

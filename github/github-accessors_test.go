@@ -21914,6 +21914,16 @@ func TestUser_GetReposURL(tt *testing.T) {
 	u.GetReposURL()
 }
 
+func TestUser_GetRoleName(tt *testing.T) {
+	var zeroValue string
+	u := &User{RoleName: &zeroValue}
+	u.GetRoleName()
+	u = &User{}
+	u.GetRoleName()
+	u = nil
+	u.GetRoleName()
+}
+
 func TestUser_GetSiteAdmin(tt *testing.T) {
 	var zeroValue bool
 	u := &User{SiteAdmin: &zeroValue}
