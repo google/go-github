@@ -66,9 +66,10 @@ type User struct {
 	// See: search.go and https://docs.github.com/en/rest/search/#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
-	// Permissions identifies the permissions that a user has on a given
-	// repository. This is only populated when calling Repositories.ListCollaborators.
+	// Permissions and RoleName identify the permissions and role that a user has on a given
+	// repository. These are only populated when calling Repositories.ListCollaborators.
 	Permissions map[string]bool `json:"permissions,omitempty"`
+	RoleName    *string         `json:"role_name,omitempty"`
 }
 
 func (u User) String() string {
