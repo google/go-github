@@ -61,6 +61,84 @@ func TestSearchService_Repositories_coverage(t *testing.T) {
 	})
 }
 
+func TestSearchService_RepositoriesTextMatch(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		textMatchResponse := ""
+		switch r.Header.Get("Accept") {
+			case "application/vnd.github.v3.text-match+json":
+				textMatchResponse = `
+					{
+						"total_count": 1,
+						"incomplete_results": false,
+						"items": [
+							{
+								"name":"gopher1",
+								"text_matches": [
+									{
+										"fragment": "I'm afraid my friend what you have found\nIs a gopher who lives to feed",
+										"matches": [
+											{
+												"text": "gopher",
+												"indices": [
+													14,
+													21
+											]
+											}
+									  ]
+								  }
+							  ]
+							}
+						]
+					}
+				`
+			default:
+				textMatchResponse = `
+					{
+						"total_count": 1,
+						"incomplete_results": false,
+						"items": [
+							{
+								"name":"gopher1"
+							}
+						]
+					}
+				`
+		}
+
+		fmt.Fprint(w, textMatchResponse)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, TextMatch: true}
+	ctx := context.Background()
+	result, _, err := client.Search.Repositories(ctx, "blah", opts)
+	if err != nil {
+		t.Errorf("Search.Code returned error: %v", err)
+	}
+
+	wantedRepoResult := &Repository{
+		Name: String("gopher1"),
+		TextMatches: []*TextMatch{{
+			Fragment: String("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+			Matches:  []*Match{{Text: String("gopher"), Indices: []int{14, 21}}},
+		},
+		},
+	}
+
+
+	want := &RepositoriesSearchResult{
+		Total:             Int(1),
+		IncompleteResults: Bool(false),
+		Repositories:       []*Repository{wantedRepoResult},
+	}
+	if !cmp.Equal(result, want) {
+		t.Errorf("Search.Repo returned %+v, want %+v", result, want)
+	}
+}
+
 func TestSearchService_Topics(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
