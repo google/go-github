@@ -65,6 +65,9 @@ type Organization struct {
 	MembersCanCreatePrivateRepos  *bool `json:"members_can_create_private_repositories,omitempty"`
 	MembersCanCreateInternalRepos *bool `json:"members_can_create_internal_repositories,omitempty"`
 
+	// MembersCanForkPrivateRepositories  toggles whether organization members can fork private organization repositories.
+	MembersCanForkPrivateRepositories *bool `json:"members_can_fork_private_repositories,omitempty"`
+
 	// MembersAllowedRepositoryCreationType denotes if organization members can create repositories
 	// and the type of repositories they can create. Possible values are: "all", "private", or "none".
 	//
