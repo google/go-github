@@ -69,7 +69,7 @@ type Repository struct {
 	AllowAutoMerge            *bool           `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool           `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool           `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPrTitleAsDefault *bool           `json:"use_squash_pr_title_as_default"`
+	UseSquashPRTitleAsDefault *bool           `json:"use_squash_pr_title_as_default,omitempty"`
 	Topics                    []string        `json:"topics,omitempty"`
 	Archived                  *bool           `json:"archived,omitempty"`
 	Disabled                  *bool           `json:"disabled,omitempty"`
@@ -373,7 +373,7 @@ type createRepoRequest struct {
 	AllowAutoMerge            *bool   `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool   `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool   `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPrTitleAsDefault *bool   `json:"use_squash_pr_title_as_default"`
+	UseSquashPRTitleAsDefault *bool   `json:"use_squash_pr_title_as_default,omitempty"`
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -419,7 +419,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowAutoMerge:            repo.AllowAutoMerge,
 		AllowForking:              repo.AllowForking,
 		DeleteBranchOnMerge:       repo.DeleteBranchOnMerge,
-		UseSquashPrTitleAsDefault: repo.UseSquashPrTitleAsDefault,
+		UseSquashPRTitleAsDefault: repo.UseSquashPRTitleAsDefault,
 	}
 
 	req, err := s.client.NewRequest("POST", u, repoReq)
