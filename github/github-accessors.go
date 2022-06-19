@@ -14822,6 +14822,14 @@ func (r *Repository) GetURL() string {
 	return *r.URL
 }
 
+// GetUseSquashPrTitleAsDefault returns the UseSquashPrTitleAsDefault field if it's non-nil, zero value otherwise.
+func (r *Repository) GetUseSquashPrTitleAsDefault() bool {
+	if r == nil || r.UseSquashPrTitleAsDefault == nil {
+		return false
+	}
+	return *r.UseSquashPrTitleAsDefault
+}
+
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
 func (r *Repository) GetVisibility() string {
 	if r == nil || r.Visibility == nil {

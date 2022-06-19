@@ -17268,6 +17268,16 @@ func TestRepository_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepository_GetUseSquashPrTitleAsDefault(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{UseSquashPrTitleAsDefault: &zeroValue}
+	r.GetUseSquashPrTitleAsDefault()
+	r = &Repository{}
+	r.GetUseSquashPrTitleAsDefault()
+	r = nil
+	r.GetUseSquashPrTitleAsDefault()
+}
+
 func TestRepository_GetVisibility(tt *testing.T) {
 	var zeroValue string
 	r := &Repository{Visibility: &zeroValue}
