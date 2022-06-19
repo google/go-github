@@ -26,52 +26,53 @@ type RepositoriesService service
 
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID                  *int64          `json:"id,omitempty"`
-	NodeID              *string         `json:"node_id,omitempty"`
-	Owner               *User           `json:"owner,omitempty"`
-	Name                *string         `json:"name,omitempty"`
-	FullName            *string         `json:"full_name,omitempty"`
-	Description         *string         `json:"description,omitempty"`
-	Homepage            *string         `json:"homepage,omitempty"`
-	CodeOfConduct       *CodeOfConduct  `json:"code_of_conduct,omitempty"`
-	DefaultBranch       *string         `json:"default_branch,omitempty"`
-	MasterBranch        *string         `json:"master_branch,omitempty"`
-	CreatedAt           *Timestamp      `json:"created_at,omitempty"`
-	PushedAt            *Timestamp      `json:"pushed_at,omitempty"`
-	UpdatedAt           *Timestamp      `json:"updated_at,omitempty"`
-	HTMLURL             *string         `json:"html_url,omitempty"`
-	CloneURL            *string         `json:"clone_url,omitempty"`
-	GitURL              *string         `json:"git_url,omitempty"`
-	MirrorURL           *string         `json:"mirror_url,omitempty"`
-	SSHURL              *string         `json:"ssh_url,omitempty"`
-	SVNURL              *string         `json:"svn_url,omitempty"`
-	Language            *string         `json:"language,omitempty"`
-	Fork                *bool           `json:"fork,omitempty"`
-	ForksCount          *int            `json:"forks_count,omitempty"`
-	NetworkCount        *int            `json:"network_count,omitempty"`
-	OpenIssuesCount     *int            `json:"open_issues_count,omitempty"`
-	OpenIssues          *int            `json:"open_issues,omitempty"` // Deprecated: Replaced by OpenIssuesCount. For backward compatibility OpenIssues is still populated.
-	StargazersCount     *int            `json:"stargazers_count,omitempty"`
-	SubscribersCount    *int            `json:"subscribers_count,omitempty"`
-	WatchersCount       *int            `json:"watchers_count,omitempty"` // Deprecated: Replaced by StargazersCount. For backward compatibility WatchersCount is still populated.
-	Watchers            *int            `json:"watchers,omitempty"`       // Deprecated: Replaced by StargazersCount. For backward compatibility Watchers is still populated.
-	Size                *int            `json:"size,omitempty"`
-	AutoInit            *bool           `json:"auto_init,omitempty"`
-	Parent              *Repository     `json:"parent,omitempty"`
-	Source              *Repository     `json:"source,omitempty"`
-	TemplateRepository  *Repository     `json:"template_repository,omitempty"`
-	Organization        *Organization   `json:"organization,omitempty"`
-	Permissions         map[string]bool `json:"permissions,omitempty"`
-	AllowRebaseMerge    *bool           `json:"allow_rebase_merge,omitempty"`
-	AllowUpdateBranch   *bool           `json:"allow_update_branch,omitempty"`
-	AllowSquashMerge    *bool           `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit    *bool           `json:"allow_merge_commit,omitempty"`
-	AllowAutoMerge      *bool           `json:"allow_auto_merge,omitempty"`
-	AllowForking        *bool           `json:"allow_forking,omitempty"`
-	DeleteBranchOnMerge *bool           `json:"delete_branch_on_merge,omitempty"`
-	Topics              []string        `json:"topics,omitempty"`
-	Archived            *bool           `json:"archived,omitempty"`
-	Disabled            *bool           `json:"disabled,omitempty"`
+	ID                        *int64          `json:"id,omitempty"`
+	NodeID                    *string         `json:"node_id,omitempty"`
+	Owner                     *User           `json:"owner,omitempty"`
+	Name                      *string         `json:"name,omitempty"`
+	FullName                  *string         `json:"full_name,omitempty"`
+	Description               *string         `json:"description,omitempty"`
+	Homepage                  *string         `json:"homepage,omitempty"`
+	CodeOfConduct             *CodeOfConduct  `json:"code_of_conduct,omitempty"`
+	DefaultBranch             *string         `json:"default_branch,omitempty"`
+	MasterBranch              *string         `json:"master_branch,omitempty"`
+	CreatedAt                 *Timestamp      `json:"created_at,omitempty"`
+	PushedAt                  *Timestamp      `json:"pushed_at,omitempty"`
+	UpdatedAt                 *Timestamp      `json:"updated_at,omitempty"`
+	HTMLURL                   *string         `json:"html_url,omitempty"`
+	CloneURL                  *string         `json:"clone_url,omitempty"`
+	GitURL                    *string         `json:"git_url,omitempty"`
+	MirrorURL                 *string         `json:"mirror_url,omitempty"`
+	SSHURL                    *string         `json:"ssh_url,omitempty"`
+	SVNURL                    *string         `json:"svn_url,omitempty"`
+	Language                  *string         `json:"language,omitempty"`
+	Fork                      *bool           `json:"fork,omitempty"`
+	ForksCount                *int            `json:"forks_count,omitempty"`
+	NetworkCount              *int            `json:"network_count,omitempty"`
+	OpenIssuesCount           *int            `json:"open_issues_count,omitempty"`
+	OpenIssues                *int            `json:"open_issues,omitempty"` // Deprecated: Replaced by OpenIssuesCount. For backward compatibility OpenIssues is still populated.
+	StargazersCount           *int            `json:"stargazers_count,omitempty"`
+	SubscribersCount          *int            `json:"subscribers_count,omitempty"`
+	WatchersCount             *int            `json:"watchers_count,omitempty"` // Deprecated: Replaced by StargazersCount. For backward compatibility WatchersCount is still populated.
+	Watchers                  *int            `json:"watchers,omitempty"`       // Deprecated: Replaced by StargazersCount. For backward compatibility Watchers is still populated.
+	Size                      *int            `json:"size,omitempty"`
+	AutoInit                  *bool           `json:"auto_init,omitempty"`
+	Parent                    *Repository     `json:"parent,omitempty"`
+	Source                    *Repository     `json:"source,omitempty"`
+	TemplateRepository        *Repository     `json:"template_repository,omitempty"`
+	Organization              *Organization   `json:"organization,omitempty"`
+	Permissions               map[string]bool `json:"permissions,omitempty"`
+	AllowRebaseMerge          *bool           `json:"allow_rebase_merge,omitempty"`
+	AllowUpdateBranch         *bool           `json:"allow_update_branch,omitempty"`
+	AllowSquashMerge          *bool           `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit          *bool           `json:"allow_merge_commit,omitempty"`
+	AllowAutoMerge            *bool           `json:"allow_auto_merge,omitempty"`
+	AllowForking              *bool           `json:"allow_forking,omitempty"`
+	DeleteBranchOnMerge       *bool           `json:"delete_branch_on_merge,omitempty"`
+	UseSquashPRTitleAsDefault *bool           `json:"use_squash_pr_title_as_default,omitempty"`
+	Topics                    []string        `json:"topics,omitempty"`
+	Archived                  *bool           `json:"archived,omitempty"`
+	Disabled                  *bool           `json:"disabled,omitempty"`
 
 	// Only provided when using RepositoriesService.Get while in preview
 	License *License `json:"license,omitempty"`
@@ -362,16 +363,17 @@ type createRepoRequest struct {
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
 
-	AutoInit            *bool   `json:"auto_init,omitempty"`
-	GitignoreTemplate   *string `json:"gitignore_template,omitempty"`
-	LicenseTemplate     *string `json:"license_template,omitempty"`
-	AllowSquashMerge    *bool   `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit    *bool   `json:"allow_merge_commit,omitempty"`
-	AllowRebaseMerge    *bool   `json:"allow_rebase_merge,omitempty"`
-	AllowUpdateBranch   *bool   `json:"allow_update_branch,omitempty"`
-	AllowAutoMerge      *bool   `json:"allow_auto_merge,omitempty"`
-	AllowForking        *bool   `json:"allow_forking,omitempty"`
-	DeleteBranchOnMerge *bool   `json:"delete_branch_on_merge,omitempty"`
+	AutoInit                  *bool   `json:"auto_init,omitempty"`
+	GitignoreTemplate         *string `json:"gitignore_template,omitempty"`
+	LicenseTemplate           *string `json:"license_template,omitempty"`
+	AllowSquashMerge          *bool   `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit          *bool   `json:"allow_merge_commit,omitempty"`
+	AllowRebaseMerge          *bool   `json:"allow_rebase_merge,omitempty"`
+	AllowUpdateBranch         *bool   `json:"allow_update_branch,omitempty"`
+	AllowAutoMerge            *bool   `json:"allow_auto_merge,omitempty"`
+	AllowForking              *bool   `json:"allow_forking,omitempty"`
+	DeleteBranchOnMerge       *bool   `json:"delete_branch_on_merge,omitempty"`
+	UseSquashPRTitleAsDefault *bool   `json:"use_squash_pr_title_as_default,omitempty"`
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -397,26 +399,27 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 	}
 
 	repoReq := &createRepoRequest{
-		Name:                repo.Name,
-		Description:         repo.Description,
-		Homepage:            repo.Homepage,
-		Private:             repo.Private,
-		Visibility:          repo.Visibility,
-		HasIssues:           repo.HasIssues,
-		HasProjects:         repo.HasProjects,
-		HasWiki:             repo.HasWiki,
-		IsTemplate:          repo.IsTemplate,
-		TeamID:              repo.TeamID,
-		AutoInit:            repo.AutoInit,
-		GitignoreTemplate:   repo.GitignoreTemplate,
-		LicenseTemplate:     repo.LicenseTemplate,
-		AllowSquashMerge:    repo.AllowSquashMerge,
-		AllowMergeCommit:    repo.AllowMergeCommit,
-		AllowRebaseMerge:    repo.AllowRebaseMerge,
-		AllowUpdateBranch:   repo.AllowUpdateBranch,
-		AllowAutoMerge:      repo.AllowAutoMerge,
-		AllowForking:        repo.AllowForking,
-		DeleteBranchOnMerge: repo.DeleteBranchOnMerge,
+		Name:                      repo.Name,
+		Description:               repo.Description,
+		Homepage:                  repo.Homepage,
+		Private:                   repo.Private,
+		Visibility:                repo.Visibility,
+		HasIssues:                 repo.HasIssues,
+		HasProjects:               repo.HasProjects,
+		HasWiki:                   repo.HasWiki,
+		IsTemplate:                repo.IsTemplate,
+		TeamID:                    repo.TeamID,
+		AutoInit:                  repo.AutoInit,
+		GitignoreTemplate:         repo.GitignoreTemplate,
+		LicenseTemplate:           repo.LicenseTemplate,
+		AllowSquashMerge:          repo.AllowSquashMerge,
+		AllowMergeCommit:          repo.AllowMergeCommit,
+		AllowRebaseMerge:          repo.AllowRebaseMerge,
+		AllowUpdateBranch:         repo.AllowUpdateBranch,
+		AllowAutoMerge:            repo.AllowAutoMerge,
+		AllowForking:              repo.AllowForking,
+		DeleteBranchOnMerge:       repo.DeleteBranchOnMerge,
+		UseSquashPRTitleAsDefault: repo.UseSquashPRTitleAsDefault,
 	}
 
 	req, err := s.client.NewRequest("POST", u, repoReq)
