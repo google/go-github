@@ -9622,6 +9622,14 @@ func (o *Organization) GetMembersCanCreateRepos() bool {
 	return *o.MembersCanCreateRepos
 }
 
+// GetMembersCanForkPrivateRepos returns the MembersCanForkPrivateRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetMembersCanForkPrivateRepos() bool {
+	if o == nil || o.MembersCanForkPrivateRepos == nil {
+		return false
+	}
+	return *o.MembersCanForkPrivateRepos
+}
+
 // GetMembersURL returns the MembersURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetMembersURL() string {
 	if o == nil || o.MembersURL == nil {

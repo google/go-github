@@ -11281,6 +11281,16 @@ func TestOrganization_GetMembersCanCreateRepos(tt *testing.T) {
 	o.GetMembersCanCreateRepos()
 }
 
+func TestOrganization_GetMembersCanForkPrivateRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{MembersCanForkPrivateRepos: &zeroValue}
+	o.GetMembersCanForkPrivateRepos()
+	o = &Organization{}
+	o.GetMembersCanForkPrivateRepos()
+	o = nil
+	o.GetMembersCanForkPrivateRepos()
+}
+
 func TestOrganization_GetMembersURL(tt *testing.T) {
 	var zeroValue string
 	o := &Organization{MembersURL: &zeroValue}
