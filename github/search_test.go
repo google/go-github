@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -67,10 +68,24 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 
 	mux.HandleFunc("/search/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		textMatchResponse := ""
-		switch r.Header.Get("Accept") {
-			case "application/vnd.github.v3.text-match+json":
-				textMatchResponse = `
+		textMatchResponse := `
+			{
+				"total_count": 1,
+				"incomplete_results": false,
+				"items": [
+					{
+						"name":"gopher1"
+					}
+				]
+			}
+		`
+		list := strings.Split(r.Header.Get("Accept"), ",")
+		aMap := make(map[string]struct{})
+		for _, s := range list {
+			aMap[strings.TrimSpace(s)] = struct{}{}
+		}
+		if _, ok := aMap["application/vnd.github.v3.text-match+json"]; ok {
+			textMatchResponse = `
 					{
 						"total_count": 1,
 						"incomplete_results": false,
@@ -91,18 +106,6 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 									  ]
 								  }
 							  ]
-							}
-						]
-					}
-				`
-			default:
-				textMatchResponse = `
-					{
-						"total_count": 1,
-						"incomplete_results": false,
-						"items": [
-							{
-								"name":"gopher1"
 							}
 						]
 					}
@@ -128,11 +131,10 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 		},
 	}
 
-
 	want := &RepositoriesSearchResult{
 		Total:             Int(1),
 		IncompleteResults: Bool(false),
-		Repositories:       []*Repository{wantedRepoResult},
+		Repositories:      []*Repository{wantedRepoResult},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Repo returned %+v, want %+v", result, want)
