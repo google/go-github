@@ -225,7 +225,7 @@ func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, even
 	return s.client.Do(ctx, req, nil)
 }
 
-// createWebSubRequest returns subscribe/unsubscribe request that implements
+// createWebSubRequest returns a subscribe/unsubscribe request that implements
 // the WebSub (formerly PubSubHubbub) protocol.
 //
 // See: https://www.w3.org/TR/websub/#subscriber-sends-subscription-request
