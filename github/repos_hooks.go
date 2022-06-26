@@ -213,7 +213,7 @@ func (s *RepositoriesService) Subscribe(ctx context.Context, owner, repo, event,
 	return s.client.Do(ctx, req, nil)
 }
 
-// Unsubscribe lets servers unregister to don't receive updates when a topic is updated.
+// Unsubscribe lets servers unregister to no longer receive updates when a topic is updated.
 //
 // GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
 func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, event, callback string, secret []byte) (*Response, error) {
