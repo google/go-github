@@ -187,7 +187,7 @@ func (s *ActionsService) GetEnvSecret(ctx context.Context, repoID int, env, secr
 }
 
 // SelectedRepoIDs are the repository IDs that have access to the secret.
-type SelectedRepoIDs []int64
+type SelectedRepoIDs []string
 
 // EncryptedSecret represents a secret that is encrypted using a public key.
 //

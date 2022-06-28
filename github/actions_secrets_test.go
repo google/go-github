@@ -429,7 +429,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":["1296269","1269280"]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -438,7 +438,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 		EncryptedValue:        "QIv=",
 		KeyID:                 "1234",
 		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		SelectedRepositoryIDs: SelectedRepoIDs{"1296269", "1269280"},
 	}
 	ctx := context.Background()
 	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
@@ -505,23 +505,23 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testBody(t, r, `{"selected_repository_ids":["64780797"]}`+"\n")
 	})
 
 	ctx := context.Background()
-	_, err := client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+	_, err := client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{"64780797"})
 	if err != nil {
 		t.Errorf("Actions.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{64780797})
+		_, err = client.Actions.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{"64780797"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+		return client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{"64780797"})
 	})
 }
 
@@ -888,14 +888,14 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		KeyID:                 "kid",
 		EncryptedValue:        "e",
 		Visibility:            "v",
-		SelectedRepositoryIDs: []int64{1},
+		SelectedRepositoryIDs: []string{"1"},
 	}
 
 	want := `{
 		"key_id": "kid",
 		"encrypted_value": "e",
 		"visibility": "v",
-		"selected_repository_ids": [1]
+		"selected_repository_ids": ["1"]
 	}`
 
 	testJSONMarshal(t, u, want)
