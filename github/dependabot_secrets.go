@@ -110,7 +110,20 @@ func (s *DependabotService) GetOrgSecret(ctx context.Context, org, name string) 
 	return s.getSecret(ctx, url)
 }
 
-func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
+// DependabotEncryptedSecret represents a secret that is encrypted using a public key for Dependabot.
+//
+// The value of EncryptedValue must be your secret, encrypted with
+// LibSodium (see documentation here: https://libsodium.gitbook.io/doc/bindings_for_other_languages)
+// using the public key retrieved using the GetPublicKey method.
+type DependabotEncryptedSecret struct {
+	Name                  string                           `json:"-"`
+	KeyID                 string                           `json:"key_id"`
+	EncryptedValue        string                           `json:"encrypted_value"`
+	Visibility            string                           `json:"visibility,omitempty"`
+	SelectedRepositoryIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+}
+
+func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	req, err := s.client.NewRequest("PUT", url, eSecret)
 	if err != nil {
 		return nil, err
@@ -122,7 +135,7 @@ func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *
 // CreateOrUpdateRepoSecret creates or updates a repository Dependabot secret with an encrypted value.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-a-repository-secret
-func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
+func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/secrets/%v", owner, repo, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -130,7 +143,7 @@ func (s *DependabotService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 // CreateOrUpdateOrgSecret creates or updates an organization Dependabot secret with an encrypted value.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#create-or-update-an-organization-secret
-func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
+func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *DependabotEncryptedSecret) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, eSecret.Name)
 	return s.putSecret(ctx, url, eSecret)
 }
@@ -184,13 +197,16 @@ func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, o
 	return result, resp, nil
 }
 
+// DependabotSecretsSelectedRepoIDs are the repository IDs that have access to the dependabot secrets.
+type DependabotSecretsSelectedRepoIDs []string
+
 // SetSelectedReposForOrgSecret sets the repositories that have access to a Dependabot secret.
 //
 // GitHub API docs: https://docs.github.com/en/rest/dependabot/secrets#set-selected-repositories-for-an-organization-secret
-func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
+func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids DependabotSecretsSelectedRepoIDs) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories", org, name)
 	type repoIDs struct {
-		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
+		SelectedIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
 	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})

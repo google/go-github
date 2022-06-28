@@ -178,7 +178,7 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	input := &EncryptedSecret{
+	input := &DependabotEncryptedSecret{
 		Name:           "NAME",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
@@ -356,12 +356,12 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	input := &EncryptedSecret{
+	input := &DependabotEncryptedSecret{
 		Name:                  "NAME",
 		EncryptedValue:        "QIv=",
 		KeyID:                 "1234",
 		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{"1296269", "1269280"},
+		SelectedRepositoryIDs: DependabotSecretsSelectedRepoIDs{"1296269", "1269280"},
 	}
 	ctx := context.Background()
 	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
@@ -432,19 +432,19 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{"64780797"})
+	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", DependabotSecretsSelectedRepoIDs{"64780797"})
 	if err != nil {
 		t.Errorf("Dependabot.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{"64780797"})
+		_, err = client.Dependabot.SetSelectedReposForOrgSecret(ctx, "\n", "\n", DependabotSecretsSelectedRepoIDs{"64780797"})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{"64780797"})
+		return client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", DependabotSecretsSelectedRepoIDs{"64780797"})
 	})
 }
 
