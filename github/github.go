@@ -28,6 +28,8 @@ import (
 )
 
 const (
+	packageVersion = "45.2.0"
+
 	defaultBaseURL = "https://api.github.com/"
 	uploadBaseURL  = "https://uploads.github.com/"
 	userAgent      = "go-github"
@@ -167,6 +169,8 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
+	PackageVersion string
+
 	rateMu     sync.Mutex
 	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
 
@@ -301,7 +305,7 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
+	c := &Client{client: httpClient, BaseURL: baseURL, PackageVersion: packageVersion, UserAgent: userAgent, UploadURL: uploadURL}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
