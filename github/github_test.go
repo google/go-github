@@ -507,9 +507,15 @@ func TestNewRequest(t *testing.T) {
 		t.Errorf("NewRequest(%q) Body is %v, want %v", inBody, got, want)
 	}
 
+	userAgent := req.Header.Get("User-Agent")
+
 	// test that default user-agent is attached to the request
-	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
+	if got, want := userAgent, c.UserAgent; got != want {
 		t.Errorf("NewRequest() User-Agent is %v, want %v", got, want)
+	}
+
+	if !strings.Contains(userAgent, c.PackageVersion) {
+		t.Errorf("NewRequest() User-Agent should contain %v, found %v", c.PackageVersion, userAgent)
 	}
 }
 
