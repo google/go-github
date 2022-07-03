@@ -168,8 +168,6 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
-	PackageVersion string
-
 	rateMu     sync.Mutex
 	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
 
@@ -304,7 +302,7 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
 
-	c := &Client{client: httpClient, BaseURL: baseURL, PackageVersion: CurrentVersion, UserAgent: defaultUserAgent, UploadURL: uploadURL}
+	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: defaultUserAgent, UploadURL: uploadURL}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
