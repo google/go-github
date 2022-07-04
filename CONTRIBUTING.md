@@ -127,3 +127,5 @@ this][modified-comment].
 [git-aliases]: https://github.com/willnorris/dotfiles/blob/d640d010c23b1116bdb3d4dc12088ed26120d87d/git/.gitconfig#L13-L15
 [rebase-comment]: https://github.com/google/go-github/pull/277#issuecomment-183035491
 [modified-comment]: https://github.com/google/go-github/pull/280#issuecomment-184859046
+
+**When creating a release, don't forget to update the `Version` constant in `github.go`.** This is used to send the version in the `User-Agent` header to identify clients to the GitHub API.
