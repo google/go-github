@@ -514,8 +514,8 @@ func TestNewRequest(t *testing.T) {
 		t.Errorf("NewRequest() User-Agent is %v, want %v", got, want)
 	}
 
-	if !strings.Contains(userAgent, CurrentVersion) {
-		t.Errorf("NewRequest() User-Agent should contain %v, found %v", CurrentVersion, userAgent)
+	if !strings.Contains(userAgent, Version) {
+		t.Errorf("NewRequest() User-Agent should contain %v, found %v", Version, userAgent)
 	}
 }
 

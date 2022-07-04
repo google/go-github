@@ -28,9 +28,10 @@ import (
 )
 
 const (
-	CurrentVersion   = "45.2.0"
+	Version = "45.2.0"
+
 	defaultBaseURL   = "https://api.github.com/"
-	defaultUserAgent = "go-github" + "/" + CurrentVersion
+	defaultUserAgent = "go-github" + "/" + Version
 	uploadBaseURL    = "https://uploads.github.com/"
 
 	headerRateLimit     = "X-RateLimit-Limit"
