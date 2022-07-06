@@ -12643,8 +12643,7 @@ func TestPagesUpdate_GetPublic(tt *testing.T) {
 }
 
 func TestPagesUpdate_GetSource(tt *testing.T) {
-	var zeroValue string
-	p := &PagesUpdate{Source: &zeroValue}
+	p := &PagesUpdate{Source: &PagesSource{}}
 	p.GetSource()
 	p = &PagesUpdate{}
 	p.GetSource()

@@ -10791,9 +10791,9 @@ func (p *PagesUpdate) GetPublic() bool {
 }
 
 // GetSource returns the Source field if it's non-nil, zero value otherwise.
-func (p *PagesUpdate) GetSource() string {
+func (p *PagesUpdate) GetSource() PagesSource {
 	if p == nil || p.Source == nil {
-		return ""
+		return PagesSource{}
 	}
 	return *p.Source
 }
