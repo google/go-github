@@ -2699,6 +2699,76 @@ func TestCodeOfConduct_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeownersError_GetColumn(tt *testing.T) {
+	var zeroValue int
+	c := &CodeownersError{Column: &zeroValue}
+	c.GetColumn()
+	c = &CodeownersError{}
+	c.GetColumn()
+	c = nil
+	c.GetColumn()
+}
+
+func TestCodeownersError_GetKind(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Kind: &zeroValue}
+	c.GetKind()
+	c = &CodeownersError{}
+	c.GetKind()
+	c = nil
+	c.GetKind()
+}
+
+func TestCodeownersError_GetLine(tt *testing.T) {
+	var zeroValue int
+	c := &CodeownersError{Line: &zeroValue}
+	c.GetLine()
+	c = &CodeownersError{}
+	c.GetLine()
+	c = nil
+	c.GetLine()
+}
+
+func TestCodeownersError_GetMessage(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Message: &zeroValue}
+	c.GetMessage()
+	c = &CodeownersError{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCodeownersError_GetPath(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Path: &zeroValue}
+	c.GetPath()
+	c = &CodeownersError{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCodeownersError_GetSource(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Source: &zeroValue}
+	c.GetSource()
+	c = &CodeownersError{}
+	c.GetSource()
+	c = nil
+	c.GetSource()
+}
+
+func TestCodeownersError_GetSuggestion(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Suggestion: &zeroValue}
+	c.GetSuggestion()
+	c = &CodeownersError{}
+	c.GetSuggestion()
+	c = nil
+	c.GetSuggestion()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
