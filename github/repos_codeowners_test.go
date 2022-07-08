@@ -3,9 +3,10 @@ package github
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-cmp/cmp"
 	"net/http"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
