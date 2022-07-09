@@ -46,13 +46,13 @@ func TestRepositoriesService_GetCodeownersErrors(t *testing.T) {
 	want := &CodeownersErrors{
 		Errors: []*CodeownersError{
 			{
-				Line:       Int(1),
-				Column:     Int(1),
-				Kind:       String("Invalid pattern"),
-				Source:     String("***/*.rb @monalisa"),
+				Line:       1,
+				Column:     1,
+				Kind:       "Invalid pattern",
+				Source:     "***/*.rb @monalisa",
 				Suggestion: String("Did you mean **/*.rb?"),
-				Message:    String("Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^"),
-				Path:       String(".github/CODEOWNERS"),
+				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
+				Path:       ".github/CODEOWNERS",
 			},
 		},
 	}
@@ -81,13 +81,13 @@ func TestCodeownersErrors_Marshal(t *testing.T) {
 	u := &CodeownersErrors{
 		Errors: []*CodeownersError{
 			{
-				Line:       Int(1),
-				Column:     Int(1),
-				Kind:       String("Invalid pattern"),
-				Source:     String("***/*.rb @monalisa"),
+				Line:       1,
+				Column:     1,
+				Kind:       "Invalid pattern",
+				Source:     "***/*.rb @monalisa",
 				Suggestion: String("Did you mean **/*.rb?"),
-				Message:    String("Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^"),
-				Path:       String(".github/CODEOWNERS"),
+				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
+				Path:       ".github/CODEOWNERS",
 			},
 		},
 	}

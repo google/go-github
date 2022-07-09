@@ -17,13 +17,13 @@ type CodeownersErrors struct {
 
 // CodeownersError represents a syntax error detected in the CODEOWNERS file.
 type CodeownersError struct {
-	Line       *int    `json:"line"`
-	Column     *int    `json:"column"`
-	Kind       *string `json:"kind"`
-	Source     *string `json:"source"`
-	Suggestion *string `json:"suggestion"`
-	Message    *string `json:"message"`
-	Path       *string `json:"path"`
+	Line       int     `json:"line"`
+	Column     int     `json:"column"`
+	Kind       string  `json:"kind"`
+	Source     string  `json:"source"`
+	Suggestion *string `json:"suggestion,omitempty"`
+	Message    string  `json:"message"`
+	Path       string  `json:"path"`
 }
 
 // GetCodeownersErrors lists any syntax errors that are detected in the CODEOWNERS file.
