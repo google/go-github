@@ -2286,54 +2286,6 @@ func (c *CodeOfConduct) GetURL() string {
 	return *c.URL
 }
 
-// GetColumn returns the Column field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetColumn() int {
-	if c == nil || c.Column == nil {
-		return 0
-	}
-	return *c.Column
-}
-
-// GetKind returns the Kind field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetKind() string {
-	if c == nil || c.Kind == nil {
-		return ""
-	}
-	return *c.Kind
-}
-
-// GetLine returns the Line field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetLine() int {
-	if c == nil || c.Line == nil {
-		return 0
-	}
-	return *c.Line
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetPath returns the Path field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetPath() string {
-	if c == nil || c.Path == nil {
-		return ""
-	}
-	return *c.Path
-}
-
-// GetSource returns the Source field if it's non-nil, zero value otherwise.
-func (c *CodeownersError) GetSource() string {
-	if c == nil || c.Source == nil {
-		return ""
-	}
-	return *c.Source
-}
-
 // GetSuggestion returns the Suggestion field if it's non-nil, zero value otherwise.
 func (c *CodeownersError) GetSuggestion() string {
 	if c == nil || c.Suggestion == nil {
