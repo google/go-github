@@ -93,8 +93,10 @@ type PagesUpdate struct {
 	// Leaving CNAME empty will remove the custom domain.
 	CNAME *string `json:"cname"`
 	// Source must include the branch name, and may optionally specify the subdirectory "/docs".
-	// Possible values are: "gh-pages", "master", and "master /docs".
-	Source *string `json:"source,omitempty"`
+	// Possible values for Source.Branch are usually "gh-pages", "main", and "master",
+	// or any other existing branch name.
+	// Possible values for Source.Path are: "/", and "/docs".
+	Source *PagesSource `json:"source,omitempty"`
 	// Public configures access controls for the site.
 	// If "true", the site will be accessible to anyone on the internet. If "false",
 	// the site will be accessible to anyone with read access to the repository that

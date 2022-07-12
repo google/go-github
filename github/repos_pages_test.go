@@ -76,7 +76,7 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 
 	input := &PagesUpdate{
 		CNAME:  String("www.my-domain.com"),
-		Source: String("gh-pages"),
+		Source: &PagesSource{Branch: String("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -84,12 +84,12 @@ func TestRepositoriesService_UpdatePages(t *testing.T) {
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: String("gh-pages")}
+		want := &PagesUpdate{CNAME: String("www.my-domain.com"), Source: &PagesSource{Branch: String("gh-pages")}}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
-		fmt.Fprint(w, `{"cname":"www.my-domain.com","source":"gh-pages"}`)
+		fmt.Fprint(w, `{"cname":"www.my-domain.com","source":{"branch":"gh-pages"}}`)
 	})
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	defer teardown()
 
 	input := &PagesUpdate{
-		Source: String("gh-pages"),
+		Source: &PagesSource{Branch: String("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -123,12 +123,12 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 			t.Fatalf("unable to read body: %v", err)
 		}
 
-		want := []byte(`{"cname":null,"source":"gh-pages"}` + "\n")
+		want := []byte(`{"cname":null,"source":{"branch":"gh-pages"}}` + "\n")
 		if !bytes.Equal(got, want) {
 			t.Errorf("Request body = %+v, want %+v", got, want)
 		}
 
-		fmt.Fprint(w, `{"cname":null,"source":"gh-pages"}`)
+		fmt.Fprint(w, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 	})
 
 	ctx := context.Background()
@@ -393,12 +393,12 @@ func TestPagesUpdate_Marshal(t *testing.T) {
 
 	u := &PagesUpdate{
 		CNAME:  String("cname"),
-		Source: String("src"),
+		Source: &PagesSource{Path: String("src")},
 	}
 
 	want := `{
 		"cname": "cname",
-		"source": "src"
+		"source": { "path": "src" }
 	}`
 
 	testJSONMarshal(t, u, want)
