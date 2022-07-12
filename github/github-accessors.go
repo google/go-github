@@ -10790,12 +10790,12 @@ func (p *PagesUpdate) GetPublic() bool {
 	return *p.Public
 }
 
-// GetSource returns the Source field if it's non-nil, zero value otherwise.
-func (p *PagesUpdate) GetSource() string {
-	if p == nil || p.Source == nil {
-		return ""
+// GetSource returns the Source field.
+func (p *PagesUpdate) GetSource() *PagesSource {
+	if p == nil {
+		return nil
 	}
-	return *p.Source
+	return p.Source
 }
 
 // GetHook returns the Hook field.
