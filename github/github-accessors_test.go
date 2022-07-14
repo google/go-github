@@ -1216,6 +1216,16 @@ func TestAuditEntry_GetRepositoryPublic(tt *testing.T) {
 	a.GetRepositoryPublic()
 }
 
+func TestAuditEntry_GetRunAttempt(tt *testing.T) {
+	var zeroValue int64
+	a := &AuditEntry{RunAttempt: &zeroValue}
+	a.GetRunAttempt()
+	a = &AuditEntry{}
+	a.GetRunAttempt()
+	a = nil
+	a.GetRunAttempt()
+}
+
 func TestAuditEntry_GetRunnerGroupID(tt *testing.T) {
 	var zeroValue int64
 	a := &AuditEntry{RunnerGroupID: &zeroValue}
