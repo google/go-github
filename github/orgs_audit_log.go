@@ -70,6 +70,7 @@ type AuditEntry struct {
 	Repo                  *string     `json:"repo,omitempty"`
 	Repository            *string     `json:"repository,omitempty"`
 	RepositoryPublic      *bool       `json:"repository_public,omitempty"`
+	RunAttempt            *int64      `json:"run_attempt,omitempty"`
 	RunnerGroupID         *int64      `json:"runner_group_id,omitempty"`
 	RunnerGroupName       *string     `json:"runner_group_name,omitempty"`
 	RunnerID              *int64      `json:"runner_id,omitempty"`

@@ -1030,6 +1030,14 @@ func (a *AuditEntry) GetRepositoryPublic() bool {
 	return *a.RepositoryPublic
 }
 
+// GetRunAttempt returns the RunAttempt field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetRunAttempt() int64 {
+	if a == nil || a.RunAttempt == nil {
+		return 0
+	}
+	return *a.RunAttempt
+}
+
 // GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetRunnerGroupID() int64 {
 	if a == nil || a.RunnerGroupID == nil {
