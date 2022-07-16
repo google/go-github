@@ -2709,6 +2709,16 @@ func TestCodeOfConduct_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeownersError_GetSuggestion(tt *testing.T) {
+	var zeroValue string
+	c := &CodeownersError{Suggestion: &zeroValue}
+	c.GetSuggestion()
+	c = &CodeownersError{}
+	c.GetSuggestion()
+	c = nil
+	c.GetSuggestion()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
 	c := &CodeResult{HTMLURL: &zeroValue}
