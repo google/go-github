@@ -2294,6 +2294,14 @@ func (c *CodeOfConduct) GetURL() string {
 	return *c.URL
 }
 
+// GetSuggestion returns the Suggestion field if it's non-nil, zero value otherwise.
+func (c *CodeownersError) GetSuggestion() string {
+	if c == nil || c.Suggestion == nil {
+		return ""
+	}
+	return *c.Suggestion
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
