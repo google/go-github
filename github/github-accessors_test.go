@@ -12669,26 +12669,6 @@ func TestPagesUpdate_GetSource(tt *testing.T) {
 	p.GetSource()
 }
 
-func TestPendingDeploymentsRequest_GetComment(tt *testing.T) {
-	var zeroValue string
-	p := &PendingDeploymentsRequest{Comment: &zeroValue}
-	p.GetComment()
-	p = &PendingDeploymentsRequest{}
-	p.GetComment()
-	p = nil
-	p.GetComment()
-}
-
-func TestPendingDeploymentsRequest_GetState(tt *testing.T) {
-	var zeroValue string
-	p := &PendingDeploymentsRequest{State: &zeroValue}
-	p.GetState()
-	p = &PendingDeploymentsRequest{}
-	p.GetState()
-	p = nil
-	p.GetState()
-}
-
 func TestPingEvent_GetHook(tt *testing.T) {
 	p := &PingEvent{}
 	p.GetHook()

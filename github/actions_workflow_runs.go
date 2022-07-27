@@ -98,8 +98,8 @@ type WorkflowRunAttemptOptions struct {
 type PendingDeploymentsRequest struct {
 	EnvironmentIDs []int64 `json:"environment_ids"`
 	// State can be one of: "approved", "rejected".
-	State          string `json:"state"`
-	Comment        *string `json:"comment"`
+	State   string `json:"state"`
+	Comment string `json:"comment"`
 }
 
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {

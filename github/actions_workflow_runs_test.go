@@ -1081,7 +1081,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: String("approved"), Comment: String("")}
+	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		v := new(PendingDeploymentsRequest)
