@@ -96,7 +96,7 @@ type WorkflowRunAttemptOptions struct {
 
 // PendingDeploymentsRequest specificies body parameters to PendingDeployments
 type PendingDeploymentsRequest struct {
-	EnvironmentIDs *[]int  `json:"environment_ids"`
+	EnvironmentIDs []int64 `json:"environment_ids"`
 	State          *string `json:"state"`
 	Comment        *string `json:"comment"`
 }

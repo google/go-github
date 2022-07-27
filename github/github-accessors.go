@@ -10822,14 +10822,6 @@ func (p *PendingDeploymentsRequest) GetComment() string {
 	return *p.Comment
 }
 
-// GetEnvironmentIDs returns the EnvironmentIDs field if it's non-nil, zero value otherwise.
-func (p *PendingDeploymentsRequest) GetEnvironmentIDs() []int {
-	if p == nil || p.EnvironmentIDs == nil {
-		return nil
-	}
-	return *p.EnvironmentIDs
-}
-
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (p *PendingDeploymentsRequest) GetState() string {
 	if p == nil || p.State == nil {

@@ -12679,16 +12679,6 @@ func TestPendingDeploymentsRequest_GetComment(tt *testing.T) {
 	p.GetComment()
 }
 
-func TestPendingDeploymentsRequest_GetEnvironmentIDs(tt *testing.T) {
-	var zeroValue []int
-	p := &PendingDeploymentsRequest{EnvironmentIDs: &zeroValue}
-	p.GetEnvironmentIDs()
-	p = &PendingDeploymentsRequest{}
-	p.GetEnvironmentIDs()
-	p = nil
-	p.GetEnvironmentIDs()
-}
-
 func TestPendingDeploymentsRequest_GetState(tt *testing.T) {
 	var zeroValue string
 	p := &PendingDeploymentsRequest{State: &zeroValue}
