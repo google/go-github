@@ -94,7 +94,7 @@ type WorkflowRunAttemptOptions struct {
 	ExcludePullRequests *bool `url:"exclude_pull_requests,omitempty"`
 }
 
-// PendingDeploymentsRequest specificies body parameters to PendingDeployments
+// PendingDeploymentsRequest specifies body parameters to PendingDeployments.
 type PendingDeploymentsRequest struct {
 	EnvironmentIDs []int64 `json:"environment_ids"`
 	State          *string `json:"state"`
