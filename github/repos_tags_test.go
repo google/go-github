@@ -67,11 +67,11 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 	pattern := "tag*"
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(TagProtectionRequest)
+		v := new(tagProtectionRequest)
 		json.NewDecoder(r.Body).Decode(v)
 
 		testMethod(t, r, "POST")
-		want := &TagProtectionRequest{Pattern: "tag*"}
+		want := &tagProtectionRequest{Pattern: "tag*"}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}

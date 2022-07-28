@@ -16,8 +16,8 @@ type TagProtection struct {
 	Pattern *string `json:"pattern"`
 }
 
-// TagProtectionRequest represents a request to create tag protection
-type TagProtectionRequest struct {
+// tagProtectionRequest represents a request to create tag protection.
+type tagProtectionRequest struct {
 	// An optional glob pattern to match against when enforcing tag protection.
 	Pattern string `json:"pattern"`
 }
@@ -47,7 +47,7 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 // GitHub API docs: https://docs.github.com/en/rest/repos/tags#create-a-tag-protection-state-for-a-repository
 func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, repo, pattern string) (*TagProtection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/tags/protection", owner, repo)
-	r := &TagProtectionRequest{Pattern: pattern}
+	r := &tagProtectionRequest{Pattern: pattern}
 	req, err := s.client.NewRequest("POST", u, r)
 	if err != nil {
 		return nil, nil, err
