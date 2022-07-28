@@ -65,8 +65,8 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 // DeleteTagProtection deletes a tag protection from the specified repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/repos/tags#delete-a-tag-protection-state-for-a-repository
-func (s *RepositoriesService) DeleteTagProtection(ctx context.Context, owner, repo string, tag_protection_id int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/tags/protection/%v", owner, repo, tag_protection_id)
+func (s *RepositoriesService) DeleteTagProtection(ctx context.Context, owner, repo string, tagProtectionID int64) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/tags/protection/%v", owner, repo, tagProtectionID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
