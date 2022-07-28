@@ -17302,6 +17302,22 @@ func (t *Tag) GetVerification() *SignatureVerification {
 	return t.Verification
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (t *TagProtection) GetID() int64 {
+	if t == nil || t.ID == nil {
+		return 0
+	}
+	return *t.ID
+}
+
+// GetPattern returns the Pattern field if it's non-nil, zero value otherwise.
+func (t *TagProtection) GetPattern() string {
+	if t == nil || t.Pattern == nil {
+		return ""
+	}
+	return *t.Pattern
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (t *TaskStep) GetCompletedAt() Timestamp {
 	if t == nil || t.CompletedAt == nil {

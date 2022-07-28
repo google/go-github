@@ -20182,6 +20182,26 @@ func TestTag_GetVerification(tt *testing.T) {
 	t.GetVerification()
 }
 
+func TestTagProtection_GetID(tt *testing.T) {
+	var zeroValue int64
+	t := &TagProtection{ID: &zeroValue}
+	t.GetID()
+	t = &TagProtection{}
+	t.GetID()
+	t = nil
+	t.GetID()
+}
+
+func TestTagProtection_GetPattern(tt *testing.T) {
+	var zeroValue string
+	t := &TagProtection{Pattern: &zeroValue}
+	t.GetPattern()
+	t = &TagProtection{}
+	t.GetPattern()
+	t = nil
+	t.GetPattern()
+}
+
 func TestTaskStep_GetCompletedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	t := &TaskStep{CompletedAt: &zeroValue}
