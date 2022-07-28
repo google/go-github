@@ -4,9 +4,9 @@
 // license that can be found in the LICENSE file.
 
 // The tagprotection command demonstrates the functionality that
-// prompts the user for GitHub owner, repo, tag protection pattern and token
-// it will create new tag protection if the user enter pattern in prompt
-// otherwise it will just list all existing tag protection
+// prompts the user for GitHub owner, repo, tag protection pattern and token,
+// then creates a new tag protection if the user entered a pattern at the prompt.
+// Otherwise, it will just list all existing tag protections.
 package main
 
 import (
@@ -14,6 +14,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"syscall"
@@ -53,10 +54,9 @@ func main() {
 
 	// create new tag protection
 	if pattern != "" {
-		tagProtection, _, err := client.Repositories.CreateTagProtection(context.Background(), owner, repo, pattern)
+		tagProtection, _, err := client.Repositories.CreateTagProtection(ctx, owner, repo, pattern)
 		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			return
+			log.Fatalf("Error: %v\n", err)
 		}
 		println()
 		fmt.Printf("New tag protection created in github.com/%v/%v\n", owner, repo)
@@ -67,10 +67,9 @@ func main() {
 	// list all tag protection
 	println()
 	fmt.Printf("List all tag protection in github.com/%v/%v\n", owner, repo)
-	tagProtections, _, err := client.Repositories.ListTagProtection(context.Background(), owner, repo)
+	tagProtections, _, err := client.Repositories.ListTagProtection(ctx, owner, repo)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Error: %v\n", err)
 	}
 	results, _ := json.Marshal(tagProtections)
 	fmt.Println(string(results))
