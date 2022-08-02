@@ -51,7 +51,7 @@ type RepositoryContentResponse struct {
 // RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.
 type RepositoryContentFileOptions struct {
 	Message   *string       `json:"message,omitempty"`
-	Content   []byte        `json:"content,omitempty"` // unencoded
+	Content   []byte        `json:"content"` // unencoded
 	SHA       *string       `json:"sha,omitempty"`
 	Branch    *string       `json:"branch,omitempty"`
 	Author    *CommitAuthor `json:"author,omitempty"`
