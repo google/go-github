@@ -29,9 +29,9 @@ func (s *RepositoriesService) EnableLFS(ctx context.Context, owner, repo string)
 	return resp, nil
 }
 
-// DisableLFS turns the LFS (Large File Storage) feature OFF for the selected repo
+// DisableLFS turns the LFS (Large File Storage) feature OFF for the selected repo.
 //
-// Github API docs: https://docs.github.com/en/rest/repos/lfs#disable-git-lfs-for-a-repository
+// GitHub API docs: https://docs.github.com/en/rest/repos/lfs#disable-git-lfs-for-a-repository
 func (s *RepositoriesService) DisableLFS(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/lfs", owner, repo)
 
