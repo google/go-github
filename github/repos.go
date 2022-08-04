@@ -1018,7 +1018,7 @@ type BranchRestrictionsRequest struct {
 	Apps []string `json:"apps,omitempty"`
 }
 
-// BypassPullRequestAllowances represents the people, teams, or apps who are allowed to bypass required pull requests. 
+// BypassPullRequestAllowances represents the people, teams, or apps who are allowed to bypass required pull requests.
 type BypassPullRequestAllowances struct {
 	// The list of users allowed to bypass pull request requirements.
 	Users []*User `json:"users"`

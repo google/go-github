@@ -1274,7 +1274,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
 			},
-			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
+			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
 				Users: []string{"uuu"},
 				Teams: []string{"ttt"},
 				Apps:  []string{"aaa"},
@@ -1363,7 +1363,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				},
 			},
 			RequireCodeOwnerReviews: true,
-			BypassPullRequestAllowances: & BypassPullRequestAllowances{
+			BypassPullRequestAllowances: &BypassPullRequestAllowances{
 				Users: []*User{
 					{Login: String("uuu"), ID: Int64(10)},
 				},
@@ -1425,7 +1425,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
 			},
-			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
+			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
 				Users: []string{"uuu"},
 				Teams: []string{"ttt"},
 				Apps:  []string{"aaa"},
@@ -1514,7 +1514,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				},
 			},
 			RequireCodeOwnerReviews: true,
-			BypassPullRequestAllowances: & BypassPullRequestAllowances{
+			BypassPullRequestAllowances: &BypassPullRequestAllowances{
 				Users: []*User{
 					{Login: String("uuu"), ID: Int64(10)},
 				},
