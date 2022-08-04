@@ -919,6 +919,8 @@ type RequiredStatusCheck struct {
 
 // PullRequestReviewsEnforcement represents the pull request reviews enforcement of a protected branch.
 type PullRequestReviewsEnforcement struct {
+	// Allow specific users, teams, or apps to bypass pull request requirements.
+	BypassPullRequestAllowances *BypassPullRequestAllowances `json:"bypass_pull_request_allowances,omitempty"`
 	// Specifies which users and teams can dismiss pull request reviews.
 	DismissalRestrictions *DismissalRestrictions `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews are dismissed automatically, when a new commit is pushed.
@@ -934,6 +936,8 @@ type PullRequestReviewsEnforcement struct {
 // enforcement of a protected branch. It is separate from PullRequestReviewsEnforcement above
 // because the request structure is different from the response structure.
 type PullRequestReviewsEnforcementRequest struct {
+	// Allow specific users, teams, or apps to bypass pull request requirements.
+	BypassPullRequestAllowancesRequest *BypassPullRequestAllowancesRequest `json:"bypass_pull_request_allowances,omitempty"`
 	// Specifies which users and teams should be allowed to dismiss pull request reviews.
 	// User and team dismissal restrictions are only available for
 	// organization-owned repositories. Must be nil for personal repositories.
@@ -951,6 +955,8 @@ type PullRequestReviewsEnforcementRequest struct {
 // enforcement of a protected branch. It is separate from PullRequestReviewsEnforcementRequest above
 // because the patch request does not require all fields to be initialized.
 type PullRequestReviewsEnforcementUpdate struct {
+	// Allow specific users, teams, or apps to bypass pull request requirements.
+	BypassPullRequestAllowances *BypassPullRequestAllowances `json:"bypass_pull_request_allowances,omitempty"`
 	// Specifies which users and teams can dismiss pull request reviews. Can be omitted.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.
@@ -1010,6 +1016,29 @@ type BranchRestrictionsRequest struct {
 	Teams []string `json:"teams"`
 	// The list of app slugs with push access.
 	Apps []string `json:"apps,omitempty"`
+}
+
+// BypassPullRequestAllowances represents the people, teams, or apps who are allowed to bypass required pull requests. 
+type BypassPullRequestAllowances struct {
+	// The list of user slugs allowed to bypass pull request requirements.
+	Users []*User `json:"users"`
+	// The list of team slugs allowed to bypass pull request requirements.
+	Teams []*Team `json:"teams"`
+	// The list of app slugs allowed to bypass pull request requirements.
+	Apps []*App `json:"apps"`
+}
+
+// BypassPullRequestAllowancesRequest represents the people, teams, or apps who are
+// allowed to bypass required pull requests.
+// It is separate from BypassPullRequestAllowances above because the request structure is
+// different from the response structure.
+type BypassPullRequestAllowancesRequest struct {
+	// The list of user slugs allowed to bypass pull request requirements.
+	Users *[]string `json:"users"`
+	// The list of team slugs allowed to bypass pull request requirements.
+	Teams *[]string `json:"teams"`
+	// The list of app slugs allowed to bypass pull request requirements.
+	Apps *[]string `json:"apps,omitempty"`
 }
 
 // DismissalRestrictions specifies which users and teams can dismiss pull request reviews.

@@ -1274,6 +1274,11 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
 			},
+			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
+				Users: &[]string{"uuu"},
+				Teams: &[]string{"ttt"},
+				Apps:  &[]string{"aaa"},
+			},
 		},
 		Restrictions: &BranchRestrictionsRequest{
 			Users: []string{"u"},
@@ -1316,7 +1321,12 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 					}]
 				},
 				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true
+				"require_code_owner_reviews":true,
+				"bypass_pull_request_allowances": {
+					"users":[{"id":10,"login":"uuu"}],
+					"teams":[{"id":20,"slug":"ttt"}],
+					"apps":[{"id":30,"slug":"aaa"}]
+				}
 			},
 			"restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -1353,6 +1363,17 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				},
 			},
 			RequireCodeOwnerReviews: true,
+			BypassPullRequestAllowances: & BypassPullRequestAllowances{
+				Users: []*User{
+					{Login: String("uuu"), ID: Int64(10)},
+				},
+				Teams: []*Team{
+					{Slug: String("ttt"), ID: Int64(20)},
+				},
+				Apps: []*App{
+					{Slug: String("aaa"), ID: Int64(30)},
+				},
+			},
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{
@@ -1404,6 +1425,11 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
 			},
+			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
+				Users: &[]string{"uuu"},
+				Teams: &[]string{"ttt"},
+				Apps:  &[]string{"aaa"},
+			},
 		},
 		Restrictions: &BranchRestrictionsRequest{
 			Users: []string{"u"},
@@ -1446,7 +1472,12 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 					}]
 				},
 				"dismiss_stale_reviews":true,
-				"require_code_owner_reviews":true
+				"require_code_owner_reviews":true,
+				"bypass_pull_request_allowances": {
+					"users":[{"id":10,"login":"uuu"}],
+					"teams":[{"id":20,"slug":"ttt"}],
+					"apps":[{"id":30,"slug":"aaa"}]
+				}
 			},
 			"restrictions":{
 				"users":[{"id":1,"login":"u"}],
@@ -1483,6 +1514,17 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				},
 			},
 			RequireCodeOwnerReviews: true,
+			BypassPullRequestAllowances: & BypassPullRequestAllowances{
+				Users: []*User{
+					{Login: String("uuu"), ID: Int64(10)},
+				},
+				Teams: []*Team{
+					{Slug: String("ttt"), ID: Int64(20)},
+				},
+				Apps: []*App{
+					{Slug: String("aaa"), ID: Int64(30)},
+				},
+			},
 		},
 		Restrictions: &BranchRestrictions{
 			Users: []*User{

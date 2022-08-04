@@ -2116,6 +2116,36 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBypassPullRequestAllowancesRequest_GetApps(tt *testing.T) {
+	var zeroValue []string
+	b := &BypassPullRequestAllowancesRequest{Apps: &zeroValue}
+	b.GetApps()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetApps()
+	b = nil
+	b.GetApps()
+}
+
+func TestBypassPullRequestAllowancesRequest_GetTeams(tt *testing.T) {
+	var zeroValue []string
+	b := &BypassPullRequestAllowancesRequest{Teams: &zeroValue}
+	b.GetTeams()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetTeams()
+	b = nil
+	b.GetTeams()
+}
+
+func TestBypassPullRequestAllowancesRequest_GetUsers(tt *testing.T) {
+	var zeroValue []string
+	b := &BypassPullRequestAllowancesRequest{Users: &zeroValue}
+	b.GetUsers()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetUsers()
+	b = nil
+	b.GetUsers()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	c := &CheckRun{}
 	c.GetApp()
@@ -15019,6 +15049,13 @@ func TestPullRequestReviewRequest_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 }
 
+func TestPullRequestReviewsEnforcement_GetBypassPullRequestAllowances(tt *testing.T) {
+	p := &PullRequestReviewsEnforcement{}
+	p.GetBypassPullRequestAllowances()
+	p = nil
+	p.GetBypassPullRequestAllowances()
+}
+
 func TestPullRequestReviewsEnforcement_GetDismissalRestrictions(tt *testing.T) {
 	p := &PullRequestReviewsEnforcement{}
 	p.GetDismissalRestrictions()
@@ -15026,11 +15063,25 @@ func TestPullRequestReviewsEnforcement_GetDismissalRestrictions(tt *testing.T) {
 	p.GetDismissalRestrictions()
 }
 
+func TestPullRequestReviewsEnforcementRequest_GetBypassPullRequestAllowancesRequest(tt *testing.T) {
+	p := &PullRequestReviewsEnforcementRequest{}
+	p.GetBypassPullRequestAllowancesRequest()
+	p = nil
+	p.GetBypassPullRequestAllowancesRequest()
+}
+
 func TestPullRequestReviewsEnforcementRequest_GetDismissalRestrictionsRequest(tt *testing.T) {
 	p := &PullRequestReviewsEnforcementRequest{}
 	p.GetDismissalRestrictionsRequest()
 	p = nil
 	p.GetDismissalRestrictionsRequest()
+}
+
+func TestPullRequestReviewsEnforcementUpdate_GetBypassPullRequestAllowances(tt *testing.T) {
+	p := &PullRequestReviewsEnforcementUpdate{}
+	p.GetBypassPullRequestAllowances()
+	p = nil
+	p.GetBypassPullRequestAllowances()
 }
 
 func TestPullRequestReviewsEnforcementUpdate_GetDismissalRestrictionsRequest(tt *testing.T) {
