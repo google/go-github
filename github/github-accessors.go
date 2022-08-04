@@ -1774,30 +1774,6 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
-// GetApps returns the Apps field if it's non-nil, zero value otherwise.
-func (b *BypassPullRequestAllowancesRequest) GetApps() []string {
-	if b == nil || b.Apps == nil {
-		return nil
-	}
-	return *b.Apps
-}
-
-// GetTeams returns the Teams field if it's non-nil, zero value otherwise.
-func (b *BypassPullRequestAllowancesRequest) GetTeams() []string {
-	if b == nil || b.Teams == nil {
-		return nil
-	}
-	return *b.Teams
-}
-
-// GetUsers returns the Users field if it's non-nil, zero value otherwise.
-func (b *BypassPullRequestAllowancesRequest) GetUsers() []string {
-	if b == nil || b.Users == nil {
-		return nil
-	}
-	return *b.Users
-}
-
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
