@@ -12966,12 +12966,12 @@ func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest()
 	return p.DismissalRestrictionsRequest
 }
 
-// GetBypassPullRequestAllowances returns the BypassPullRequestAllowances field.
-func (p *PullRequestReviewsEnforcementUpdate) GetBypassPullRequestAllowances() *BypassPullRequestAllowances {
+// GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
+func (p *PullRequestReviewsEnforcementUpdate) GetBypassPullRequestAllowancesRequest() *BypassPullRequestAllowancesRequest {
 	if p == nil {
 		return nil
 	}
-	return p.BypassPullRequestAllowances
+	return p.BypassPullRequestAllowancesRequest
 }
 
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.

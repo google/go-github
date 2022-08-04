@@ -956,7 +956,7 @@ type PullRequestReviewsEnforcementRequest struct {
 // because the patch request does not require all fields to be initialized.
 type PullRequestReviewsEnforcementUpdate struct {
 	// Allow specific users, teams, or apps to bypass pull request requirements.
-	BypassPullRequestAllowances *BypassPullRequestAllowances `json:"bypass_pull_request_allowances,omitempty"`
+	BypassPullRequestAllowancesRequest *BypassPullRequestAllowancesRequest `json:"bypass_pull_request_allowances,omitempty"`
 	// Specifies which users and teams can dismiss pull request reviews. Can be omitted.
 	DismissalRestrictionsRequest *DismissalRestrictionsRequest `json:"dismissal_restrictions,omitempty"`
 	// Specifies if approved reviews can be dismissed automatically, when a new commit is pushed. Can be omitted.

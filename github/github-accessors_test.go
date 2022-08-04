@@ -15077,11 +15077,11 @@ func TestPullRequestReviewsEnforcementRequest_GetDismissalRestrictionsRequest(tt
 	p.GetDismissalRestrictionsRequest()
 }
 
-func TestPullRequestReviewsEnforcementUpdate_GetBypassPullRequestAllowances(tt *testing.T) {
+func TestPullRequestReviewsEnforcementUpdate_GetBypassPullRequestAllowancesRequest(tt *testing.T) {
 	p := &PullRequestReviewsEnforcementUpdate{}
-	p.GetBypassPullRequestAllowances()
+	p.GetBypassPullRequestAllowancesRequest()
 	p = nil
-	p.GetBypassPullRequestAllowances()
+	p.GetBypassPullRequestAllowancesRequest()
 }
 
 func TestPullRequestReviewsEnforcementUpdate_GetDismissalRestrictionsRequest(tt *testing.T) {
