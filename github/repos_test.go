@@ -1275,9 +1275,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				Teams: &[]string{"tt"},
 			},
 			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
-				Users: &[]string{"uuu"},
-				Teams: &[]string{"ttt"},
-				Apps:  &[]string{"aaa"},
+				Users: []string{"uuu"},
+				Teams: []string{"ttt"},
+				Apps:  []string{"aaa"},
 			},
 		},
 		Restrictions: &BranchRestrictionsRequest{
@@ -1426,9 +1426,9 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				Teams: &[]string{"tt"},
 			},
 			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest {
-				Users: &[]string{"uuu"},
-				Teams: &[]string{"ttt"},
-				Apps:  &[]string{"aaa"},
+				Users: []string{"uuu"},
+				Teams: []string{"ttt"},
+				Apps:  []string{"aaa"},
 			},
 		},
 		Restrictions: &BranchRestrictionsRequest{
