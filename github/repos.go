@@ -1020,11 +1020,11 @@ type BranchRestrictionsRequest struct {
 
 // BypassPullRequestAllowances represents the people, teams, or apps who are allowed to bypass required pull requests. 
 type BypassPullRequestAllowances struct {
-	// The list of user slugs allowed to bypass pull request requirements.
+	// The list of users allowed to bypass pull request requirements.
 	Users []*User `json:"users"`
-	// The list of team slugs allowed to bypass pull request requirements.
+	// The list of teams allowed to bypass pull request requirements.
 	Teams []*Team `json:"teams"`
-	// The list of app slugs allowed to bypass pull request requirements.
+	// The list of apps allowed to bypass pull request requirements.
 	Apps []*App `json:"apps"`
 }
 
@@ -1033,12 +1033,12 @@ type BypassPullRequestAllowances struct {
 // It is separate from BypassPullRequestAllowances above because the request structure is
 // different from the response structure.
 type BypassPullRequestAllowancesRequest struct {
-	// The list of user slugs allowed to bypass pull request requirements.
-	Users *[]string `json:"users"`
+	// The list of user logins allowed to bypass pull request requirements.
+	Users []string `json:"users"`
 	// The list of team slugs allowed to bypass pull request requirements.
-	Teams *[]string `json:"teams"`
+	Teams []string `json:"teams"`
 	// The list of app slugs allowed to bypass pull request requirements.
-	Apps *[]string `json:"apps,omitempty"`
+	Apps []string `json:"apps"`
 }
 
 // DismissalRestrictions specifies which users and teams can dismiss pull request reviews.
