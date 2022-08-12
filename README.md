@@ -141,10 +141,10 @@ import (
 func main() {
 	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
 	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
-	
+
 	// Or for endpoints that require JWT authentication
 	// itr, err := ghinstallation.NewAppsTransportKeyFromFile(http.DefaultTransport, 1, "2016-10-19.private-key.pem")
-	
+
 	if err != nil {
 		// Handle error.
 	}
