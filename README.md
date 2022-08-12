@@ -117,11 +117,23 @@ See the [oauth2 docs][] for complete instructions on using that library.
 For API methods that require HTTP Basic Authentication, use the
 [`BasicAuthTransport`](https://godoc.org/github.com/google/go-github/github#BasicAuthTransport).
 
+#### As a GitHub App ####
+
 GitHub Apps authentication can be provided by the [ghinstallation](https://github.com/bradleyfalzon/ghinstallation)
 package.
 
+> **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
+> while a few others (ex. [`GET /app/hook/deliverires`]) require [JWT] authentication.
+
+[`GET /rate_limit`]: https://docs.github.com/en/rest/rate-limit#get-rate-limit-status-for-the-authenticated-user
+[`GET /app/hook/deliverires`]: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
+[JWT]: https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-a-github-app
+
+
 ```go
 import (
+	"net/http"
+
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v45/github"
 )
@@ -129,6 +141,10 @@ import (
 func main() {
 	// Wrap the shared transport for use with the integration ID 1 authenticating with installation ID 99.
 	itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, 1, 99, "2016-10-19.private-key.pem")
+	
+	// Or for endpoints that require JWT authentication
+	// itr, err := ghinstallation.NewAppsTransportKeyFromFile(http.DefaultTransport, 1, "2016-10-19.private-key.pem")
+	
 	if err != nil {
 		// Handle error.
 	}
