@@ -12910,6 +12910,14 @@ func (p *PullRequestReviewRequest) GetNodeID() string {
 	return *p.NodeID
 }
 
+// GetBypassPullRequestAllowances returns the BypassPullRequestAllowances field.
+func (p *PullRequestReviewsEnforcement) GetBypassPullRequestAllowances() *BypassPullRequestAllowances {
+	if p == nil {
+		return nil
+	}
+	return p.BypassPullRequestAllowances
+}
+
 // GetDismissalRestrictions returns the DismissalRestrictions field.
 func (p *PullRequestReviewsEnforcement) GetDismissalRestrictions() *DismissalRestrictions {
 	if p == nil {
@@ -12918,12 +12926,28 @@ func (p *PullRequestReviewsEnforcement) GetDismissalRestrictions() *DismissalRes
 	return p.DismissalRestrictions
 }
 
+// GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
+func (p *PullRequestReviewsEnforcementRequest) GetBypassPullRequestAllowancesRequest() *BypassPullRequestAllowancesRequest {
+	if p == nil {
+		return nil
+	}
+	return p.BypassPullRequestAllowancesRequest
+}
+
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
 func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest() *DismissalRestrictionsRequest {
 	if p == nil {
 		return nil
 	}
 	return p.DismissalRestrictionsRequest
+}
+
+// GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
+func (p *PullRequestReviewsEnforcementUpdate) GetBypassPullRequestAllowancesRequest() *BypassPullRequestAllowancesRequest {
+	if p == nil {
+		return nil
+	}
+	return p.BypassPullRequestAllowancesRequest
 }
 
 // GetDismissalRestrictionsRequest returns the DismissalRestrictionsRequest field.
