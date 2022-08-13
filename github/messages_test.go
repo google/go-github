@@ -274,6 +274,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "check_suite",
 		},
 		{
+			payload:     &CodeScanningAlertEvent{},
+			messageType: "code_scanning_alert",
+		},
+		{
 			payload:     &CommitCommentEvent{},
 			messageType: "commit_comment",
 		},
