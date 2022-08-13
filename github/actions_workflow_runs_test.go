@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -1074,4 +1075,48 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestActionService_PendingDeployments(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
+
+	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
+		v := new(PendingDeploymentsRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	ctx := context.Background()
+	deployments, _, err := client.Actions.PendingDeployments(ctx, "o", "r", 399444496, input)
+	if err != nil {
+		t.Errorf("Actions.PendingDeployments returned error: %v", err)
+	}
+
+	want := []*Deployment{{ID: Int64(1)}, {ID: Int64(2)}}
+	if !cmp.Equal(deployments, want) {
+		t.Errorf("Actions.PendingDeployments returned %+v, want %+v", deployments, want)
+	}
+
+	const methodName = "PendingDeployments"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.PendingDeployments(ctx, "\n", "\n", 399444496, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.PendingDeployments(ctx, "o", "r", 399444496, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

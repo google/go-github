@@ -94,6 +94,14 @@ type WorkflowRunAttemptOptions struct {
 	ExcludePullRequests *bool `url:"exclude_pull_requests,omitempty"`
 }
 
+// PendingDeploymentsRequest specifies body parameters to PendingDeployments.
+type PendingDeploymentsRequest struct {
+	EnvironmentIDs []int64 `json:"environment_ids"`
+	// State can be one of: "approved", "rejected".
+	State   string `json:"state"`
+	Comment string `json:"comment"`
+}
+
 func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
 	u, err := addOptions(endpoint, opts)
 	if err != nil {
@@ -320,4 +328,24 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 	}
 
 	return workflowRunUsage, resp, nil
+}
+
+// PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
+func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, request *PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
+
+	req, err := s.client.NewRequest("POST", u, request)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var deployments []*Deployment
+	resp, err := s.client.Do(ctx, req, &deployments)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return deployments, resp, nil
 }
