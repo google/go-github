@@ -48,6 +48,7 @@ var (
 		"branch_protection_rule":         "BranchProtectionRuleEvent",
 		"check_run":                      "CheckRunEvent",
 		"check_suite":                    "CheckSuiteEvent",
+		"code_scanning_alert":            "CodeScanningAlertEvent",
 		"commit_comment":                 "CommitCommentEvent",
 		"content_reference":              "ContentReferenceEvent",
 		"create":                         "CreateEvent",

@@ -145,6 +145,7 @@ func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
 var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"check_run":                      &CheckRunEvent{},
 	"check_suite":                    &CheckSuiteEvent{},
+	"code_scanning_alert":            &CodeScanningAlertEvent{},
 	"commit_comment":                 &CommitCommentEvent{},
 	"content_reference":              &ContentReferenceEvent{},
 	"create":                         &CreateEvent{},
