@@ -248,7 +248,7 @@ func TestNewClient(t *testing.T) {
 	if got, want := c.BaseURL.String(), defaultBaseURL; got != want {
 		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
 	}
-	if got, want := c.UserAgent, userAgent; got != want {
+	if got, want := c.UserAgent, defaultUserAgent; got != want {
 		t.Errorf("NewClient UserAgent is %v, want %v", got, want)
 	}
 
@@ -507,9 +507,15 @@ func TestNewRequest(t *testing.T) {
 		t.Errorf("NewRequest(%q) Body is %v, want %v", inBody, got, want)
 	}
 
+	userAgent := req.Header.Get("User-Agent")
+
 	// test that default user-agent is attached to the request
-	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
+	if got, want := userAgent, c.UserAgent; got != want {
 		t.Errorf("NewRequest() User-Agent is %v, want %v", got, want)
+	}
+
+	if !strings.Contains(userAgent, Version) {
+		t.Errorf("NewRequest() User-Agent should contain %v, found %v", Version, userAgent)
 	}
 }
 

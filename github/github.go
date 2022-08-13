@@ -28,9 +28,11 @@ import (
 )
 
 const (
-	defaultBaseURL = "https://api.github.com/"
-	uploadBaseURL  = "https://uploads.github.com/"
-	userAgent      = "go-github"
+	Version = "45.2.0"
+
+	defaultBaseURL   = "https://api.github.com/"
+	defaultUserAgent = "go-github" + "/" + Version
+	uploadBaseURL    = "https://uploads.github.com/"
 
 	headerRateLimit     = "X-RateLimit-Limit"
 	headerRateRemaining = "X-RateLimit-Remaining"
@@ -301,7 +303,7 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
 
-	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent, UploadURL: uploadURL}
+	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: defaultUserAgent, UploadURL: uploadURL}
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
