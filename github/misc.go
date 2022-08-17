@@ -182,8 +182,8 @@ type APIMeta struct {
 	Web []string `json:"web,omitempty"`
 
 	// An array of IP addresses in CIDR format specifying the addresses
-	// which serve GitHub apis.
-	Api []string `json:"api,omitempty"`
+	// which serve GitHub APIs.
+	API []string `json:"api,omitempty"`
 }
 
 // APIMeta returns information about GitHub.com, the service. Or, if you access
