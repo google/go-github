@@ -190,7 +190,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		Dependabot:                       []string{"d"},
 		SSHKeyFingerprints:               map[string]string{"a": "f"},
 		SSHKeys:                          []string{"k"},
-		Api:                              []string{"a"},
+		API:                              []string{"a"},
 		Web:                              []string{"w"},
 	}
 	want := `{
@@ -232,7 +232,7 @@ func TestAPIMeta(t *testing.T) {
 		Importer:   []string{"i"},
 		Actions:    []string{"a"},
 		Dependabot: []string{"d"},
-		Api:        []string{"a"},
+		API:        []string{"a"},
 		Web:        []string{"w"},
 
 		VerifiablePasswordAuthentication: Bool(true),
