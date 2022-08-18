@@ -190,6 +190,8 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		Dependabot:                       []string{"d"},
 		SSHKeyFingerprints:               map[string]string{"a": "f"},
 		SSHKeys:                          []string{"k"},
+		API:                              []string{"a"},
+		Web:                              []string{"w"},
 	}
 	want := `{
 		"hooks":["h"],
@@ -200,7 +202,9 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"actions":["a"],
 		"dependabot":["d"],
 		"ssh_key_fingerprints":{"a":"f"},
-		"ssh_keys":["k"]
+		"ssh_keys":["k"],
+		"api":["a"],
+		"web":["w"]
 	}`
 
 	testJSONMarshal(t, a, want)
@@ -212,7 +216,7 @@ func TestAPIMeta(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true}`)
+		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "actions":["a"], "dependabot":["d"], "verifiable_password_authentication": true}`)
 	})
 
 	ctx := context.Background()
@@ -228,6 +232,8 @@ func TestAPIMeta(t *testing.T) {
 		Importer:   []string{"i"},
 		Actions:    []string{"a"},
 		Dependabot: []string{"d"},
+		API:        []string{"a"},
+		Web:        []string{"w"},
 
 		VerifiablePasswordAuthentication: Bool(true),
 	}
