@@ -176,6 +176,14 @@ type APIMeta struct {
 
 	// An array of SSH keys.
 	SSHKeys []string `json:"ssh_keys,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the addresses
+	// which serve GitHub websites.
+	Web []string `json:"web,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the addresses
+	// which serve GitHub APIs.
+	API []string `json:"api,omitempty"`
 }
 
 // APIMeta returns information about GitHub.com, the service. Or, if you access
