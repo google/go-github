@@ -7,3 +7,6 @@ require (
 	github.com/google/go-github/v46 v46.0.0
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 )
+
+// Use version at HEAD, not the latest published.
+replace github.com/google/go-github/v46 => ../..
