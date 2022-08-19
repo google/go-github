@@ -38,7 +38,7 @@ type SCIMUserName struct {
 	Formatted  *string `json:"formatted,omitempty"` // (Optional.)
 }
 
-//SCIMUserEmail represents SCIM user email.
+// SCIMUserEmail represents SCIM user email.
 type SCIMUserEmail struct {
 	Value   string  `json:"value"`             // (Required.)
 	Primary *bool   `json:"primary,omitempty"` // (Optional.)
