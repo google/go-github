@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "45.2.0"
+	Version = "46.0.0"
 
 	defaultBaseURL   = "https://api.github.com/"
 	defaultUserAgent = "go-github" + "/" + Version
@@ -949,17 +949,17 @@ func sanitizeURL(uri *url.URL) *url.URL {
 An Error reports more details on an individual error in an ErrorResponse.
 These are the possible validation error codes:
 
-    missing:
-        resource does not exist
-    missing_field:
-        a required field on a resource has not been set
-    invalid:
-        the formatting of a field is invalid
-    already_exists:
-        another resource has the same valid as this field
-    custom:
-        some resources return this (e.g. github.User.CreateKey()), additional
-        information is set in the Message field of the Error
+	missing:
+	    resource does not exist
+	missing_field:
+	    a required field on a resource has not been set
+	invalid:
+	    the formatting of a field is invalid
+	already_exists:
+	    another resource has the same valid as this field
+	custom:
+	    some resources return this (e.g. github.User.CreateKey()), additional
+	    information is set in the Message field of the Error
 
 GitHub error responses structure are often undocumented and inconsistent.
 Sometimes error is just a simple string (Issue #540).

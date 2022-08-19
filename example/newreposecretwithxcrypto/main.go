@@ -15,11 +15,13 @@
 // To verify the new secret, navigate to GitHub Repository > Settings > left side options bar > Secrets.
 //
 // Usage:
+//
 //	export GITHUB_AUTH_TOKEN=<auth token from github that has secret create rights>
 //	export SECRET_VARIABLE=<secret value of the secret variable>
 //	go run main.go -owner <owner name> -repo <repository name> SECRET_VARIABLE
 //
 // Example:
+//
 //	export GITHUB_AUTH_TOKEN=0000000000000000
 //	export SECRET_VARIABLE="my-secret"
 //	go run main.go -owner google -repo go-github SECRET_VARIABLE
@@ -34,7 +36,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v46/github"
 	"golang.org/x/crypto/nacl/box"
 	"golang.org/x/oauth2"
 )

@@ -12,11 +12,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v46/github"
 )
 
 // Fetch all the public organizations' membership of a user.
-//
 func fetchOrganizations(username string) ([]*github.Organization, error) {
 	client := github.NewClient(nil)
 	orgs, _, err := client.Organizations.List(context.Background(), username, nil)

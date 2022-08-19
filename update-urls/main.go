@@ -9,14 +9,16 @@
 // to update stale GitHub Developer v3 API documentation URLs.
 //
 // Usage (from go-github directory):
-//   go run ./update-urls/main.go
-//   go generate ./...
-//   go test ./...
-//   go vet ./...
+//
+//	go run ./update-urls/main.go
+//	go generate ./...
+//	go test ./...
+//	go vet ./...
 //
 // When confronted with "PLEASE CHECK MANUALLY AND FIX", the problematic
 // URL needs to be debugged. To debug a specific file, run like this:
-//   go run ./update-urls/main.go -v -d enterprise_actions_runners.go
+//
+//	go run ./update-urls/main.go -v -d enterprise_actions_runners.go
 package main
 
 import (

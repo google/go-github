@@ -193,35 +193,37 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 //
 // In order to use multi-line comments, you must use the "comfort fade" preview.
 // This replaces the use of the "Position" field in comments with 4 new fields:
-//   [Start]Side, and [Start]Line.
+//
+//	[Start]Side, and [Start]Line.
+//
 // These new fields must be used for ALL comments (including single-line),
 // with the following restrictions (empirically observed, so subject to change).
 //
 // For single-line "comfort fade" comments, you must use:
 //
-//    Path:  &path,  // as before
-//    Body:  &body,  // as before
-//    Side:  &"RIGHT" (or "LEFT")
-//    Line:  &123,  // NOT THE SAME AS POSITION, this is an actual line number.
+//	Path:  &path,  // as before
+//	Body:  &body,  // as before
+//	Side:  &"RIGHT" (or "LEFT")
+//	Line:  &123,  // NOT THE SAME AS POSITION, this is an actual line number.
 //
 // If StartSide or StartLine is used with single-line comments, a 422 is returned.
 //
 // For multi-line "comfort fade" comments, you must use:
 //
-//    Path:      &path,  // as before
-//    Body:      &body,  // as before
-//    StartSide: &"RIGHT" (or "LEFT")
-//    Side:      &"RIGHT" (or "LEFT")
-//    StartLine: &120,
-//    Line:      &125,
+//	Path:      &path,  // as before
+//	Body:      &body,  // as before
+//	StartSide: &"RIGHT" (or "LEFT")
+//	Side:      &"RIGHT" (or "LEFT")
+//	StartLine: &120,
+//	Line:      &125,
 //
 // Suggested edits are made by commenting on the lines to replace, and including the
 // suggested edit in a block like this (it may be surrounded in non-suggestion markdown):
 //
-//    ```suggestion
-//    Use this instead.
-//    It is waaaaaay better.
-//    ```
+//	```suggestion
+//	Use this instead.
+//	It is waaaaaay better.
+//	```
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%d/reviews", owner, repo, number)
 
