@@ -16984,6 +16984,26 @@ func TestRepository_GetMasterBranch(tt *testing.T) {
 	r.GetMasterBranch()
 }
 
+func TestRepository_GetMergeCommitMessage(tt *testing.T) {
+	var zeroValue string
+	r := &Repository{MergeCommitMessage: &zeroValue}
+	r.GetMergeCommitMessage()
+	r = &Repository{}
+	r.GetMergeCommitMessage()
+	r = nil
+	r.GetMergeCommitMessage()
+}
+
+func TestRepository_GetMergeCommitTitle(tt *testing.T) {
+	var zeroValue string
+	r := &Repository{MergeCommitTitle: &zeroValue}
+	r.GetMergeCommitTitle()
+	r = &Repository{}
+	r.GetMergeCommitTitle()
+	r = nil
+	r.GetMergeCommitTitle()
+}
+
 func TestRepository_GetMergesURL(tt *testing.T) {
 	var zeroValue string
 	r := &Repository{MergesURL: &zeroValue}
@@ -17177,6 +17197,26 @@ func TestRepository_GetSource(tt *testing.T) {
 	r.GetSource()
 	r = nil
 	r.GetSource()
+}
+
+func TestRepository_GetSquashMergeCommitMessage(tt *testing.T) {
+	var zeroValue string
+	r := &Repository{SquashMergeCommitMessage: &zeroValue}
+	r.GetSquashMergeCommitMessage()
+	r = &Repository{}
+	r.GetSquashMergeCommitMessage()
+	r = nil
+	r.GetSquashMergeCommitMessage()
+}
+
+func TestRepository_GetSquashMergeCommitTitle(tt *testing.T) {
+	var zeroValue string
+	r := &Repository{SquashMergeCommitTitle: &zeroValue}
+	r.GetSquashMergeCommitTitle()
+	r = &Repository{}
+	r.GetSquashMergeCommitTitle()
+	r = nil
+	r.GetSquashMergeCommitTitle()
 }
 
 func TestRepository_GetSSHURL(tt *testing.T) {
