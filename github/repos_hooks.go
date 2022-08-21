@@ -8,6 +8,9 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -196,4 +199,56 @@ func (s *RepositoriesService) TestHook(ctx context.Context, owner, repo string, 
 		return nil, err
 	}
 	return s.client.Do(ctx, req, nil)
+}
+
+// Subscribe lets servers register to receive updates when a topic is updated.
+//
+// GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+func (s *RepositoriesService) Subscribe(ctx context.Context, owner, repo, event, callback string, secret []byte) (*Response, error) {
+	req, err := s.createWebSubRequest("subscribe", owner, repo, event, callback, secret)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// Unsubscribe lets servers unregister to no longer receive updates when a topic is updated.
+//
+// GitHub API docs: https://docs.github.com/en/rest/webhooks#pubsubhubbub
+func (s *RepositoriesService) Unsubscribe(ctx context.Context, owner, repo, event, callback string, secret []byte) (*Response, error) {
+	req, err := s.createWebSubRequest("unsubscribe", owner, repo, event, callback, secret)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// createWebSubRequest returns a subscribe/unsubscribe request that implements
+// the WebSub (formerly PubSubHubbub) protocol.
+//
+// See: https://www.w3.org/TR/websub/#subscriber-sends-subscription-request
+func (s *RepositoriesService) createWebSubRequest(hubMode, owner, repo, event, callback string, secret []byte) (*http.Request, error) {
+	topic := fmt.Sprintf(
+		"https://github.com/%s/%s/events/%s",
+		owner,
+		repo,
+		event,
+	)
+	form := url.Values{}
+	form.Add("hub.mode", hubMode)
+	form.Add("hub.topic", topic)
+	form.Add("hub.callback", callback)
+	if secret != nil {
+		form.Add("hub.secret", string(secret))
+	}
+	body := strings.NewReader(form.Encode())
+
+	req, err := s.client.NewFormRequest("hub", body)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }

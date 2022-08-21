@@ -564,3 +564,69 @@ func TestBranchHook_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, v, want)
 }
+
+func TestRepositoriesService_Subscribe(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
+		testFormValues(t, r, values{
+			"hub.mode":     "subscribe",
+			"hub.topic":    "https://github.com/o/r/events/push",
+			"hub.callback": "http://postbin.org/123",
+			"hub.secret":   "test secret",
+		})
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.Subscribe(
+		ctx,
+		"o",
+		"r",
+		"push",
+		"http://postbin.org/123",
+		[]byte("test secret"),
+	)
+	if err != nil {
+		t.Errorf("Repositories.Subscribe returned error: %v", err)
+	}
+
+	testNewRequestAndDoFailure(t, "Subscribe", client, func() (*Response, error) {
+		return client.Repositories.Subscribe(ctx, "o", "r", "push", "http://postbin.org/123", nil)
+	})
+}
+
+func TestRepositoriesService_Unsubscribe(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/hub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+		testHeader(t, r, "Content-Type", "application/x-www-form-urlencoded")
+		testFormValues(t, r, values{
+			"hub.mode":     "unsubscribe",
+			"hub.topic":    "https://github.com/o/r/events/push",
+			"hub.callback": "http://postbin.org/123",
+			"hub.secret":   "test secret",
+		})
+	})
+
+	ctx := context.Background()
+	_, err := client.Repositories.Unsubscribe(
+		ctx,
+		"o",
+		"r",
+		"push",
+		"http://postbin.org/123",
+		[]byte("test secret"),
+	)
+	if err != nil {
+		t.Errorf("Repositories.Unsubscribe returned error: %v", err)
+	}
+
+	testNewRequestAndDoFailure(t, "Unsubscribe", client, func() (*Response, error) {
+		return client.Repositories.Unsubscribe(ctx, "o", "r", "push", "http://postbin.org/123", nil)
+	})
+}

@@ -602,6 +602,84 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
+func TestNewFormRequest(t *testing.T) {
+	c := NewClient(nil)
+
+	inURL, outURL := "/foo", defaultBaseURL+"foo"
+	form := url.Values{}
+	form.Add("login", "l")
+	inBody, outBody := strings.NewReader(form.Encode()), "login=l"
+	req, _ := c.NewFormRequest(inURL, inBody)
+
+	// test that relative URL was expanded
+	if got, want := req.URL.String(), outURL; got != want {
+		t.Errorf("NewFormRequest(%q) URL is %v, want %v", inURL, got, want)
+	}
+
+	// test that body was form encoded
+	body, _ := ioutil.ReadAll(req.Body)
+	if got, want := string(body), outBody; got != want {
+		t.Errorf("NewFormRequest(%q) Body is %v, want %v", inBody, got, want)
+	}
+
+	// test that default user-agent is attached to the request
+	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
+		t.Errorf("NewFormRequest() User-Agent is %v, want %v", got, want)
+	}
+}
+
+func TestNewFormRequest_badURL(t *testing.T) {
+	c := NewClient(nil)
+	_, err := c.NewFormRequest(":", nil)
+	testURLParseError(t, err)
+}
+
+func TestNewFormRequest_emptyUserAgent(t *testing.T) {
+	c := NewClient(nil)
+	c.UserAgent = ""
+	req, err := c.NewFormRequest(".", nil)
+	if err != nil {
+		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
+	}
+	if _, ok := req.Header["User-Agent"]; ok {
+		t.Fatal("constructed request contains unexpected User-Agent header")
+	}
+}
+
+func TestNewFormRequest_emptyBody(t *testing.T) {
+	c := NewClient(nil)
+	req, err := c.NewFormRequest(".", nil)
+	if err != nil {
+		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
+	}
+	if req.Body != nil {
+		t.Fatalf("constructed request contains a non-nil Body")
+	}
+}
+
+func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
+	tests := []struct {
+		rawURL    string
+		wantError bool
+	}{
+		{rawURL: "https://example.com/api/v3", wantError: true},
+		{rawURL: "https://example.com/api/v3/", wantError: false},
+	}
+	c := NewClient(nil)
+	for _, test := range tests {
+		u, err := url.Parse(test.rawURL)
+		if err != nil {
+			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+		}
+		c.BaseURL = u
+		if _, err := c.NewFormRequest("test", nil); test.wantError && err == nil {
+			t.Fatalf("Expected error to be returned.")
+		} else if !test.wantError && err != nil {
+			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
+		}
+	}
+}
+
 func TestNewUploadRequest_badURL(t *testing.T) {
 	c := NewClient(nil)
 	_, err := c.NewUploadRequest(":", nil, 0, "")
