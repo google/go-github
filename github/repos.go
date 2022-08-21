@@ -70,6 +70,10 @@ type Repository struct {
 	AllowForking              *bool           `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool           `json:"delete_branch_on_merge,omitempty"`
 	UseSquashPRTitleAsDefault *bool           `json:"use_squash_pr_title_as_default,omitempty"`
+	SquashMergeCommitTitle    *string         `json:"squash_merge_commit_title,omitempty"`   // Can be one of: "PR_TITLE", "COMMIT_OR_PR_TITLE"
+	SquashMergeCommitMessage  *string         `json:"squash_merge_commit_message,omitempty"` // Can be one of: "PR_BODY", "COMMIT_MESSAGES", "BLANK"
+	MergeCommitTitle          *string         `json:"merge_commit_title,omitempty"`          // Can be one of: "PR_TITLE", "MERGE_MESSAGE"
+	MergeCommitMessage        *string         `json:"merge_commit_message,omitempty"`        // Can be one of: "PR_BODY", "PR_TITLE", "BLANK"
 	Topics                    []string        `json:"topics,omitempty"`
 	Archived                  *bool           `json:"archived,omitempty"`
 	Disabled                  *bool           `json:"disabled,omitempty"`
@@ -374,6 +378,10 @@ type createRepoRequest struct {
 	AllowForking              *bool   `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool   `json:"delete_branch_on_merge,omitempty"`
 	UseSquashPRTitleAsDefault *bool   `json:"use_squash_pr_title_as_default,omitempty"`
+	SquashMergeCommitTitle    *string `json:"squash_merge_commit_title,omitempty"`
+	SquashMergeCommitMessage  *string `json:"squash_merge_commit_message,omitempty"`
+	MergeCommitTitle          *string `json:"merge_commit_title,omitempty"`
+	MergeCommitMessage        *string `json:"merge_commit_message,omitempty"`
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -420,6 +428,10 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowForking:              repo.AllowForking,
 		DeleteBranchOnMerge:       repo.DeleteBranchOnMerge,
 		UseSquashPRTitleAsDefault: repo.UseSquashPRTitleAsDefault,
+		SquashMergeCommitTitle:    repo.SquashMergeCommitTitle,
+		SquashMergeCommitMessage:  repo.SquashMergeCommitMessage,
+		MergeCommitTitle:          repo.MergeCommitTitle,
+		MergeCommitMessage:        repo.MergeCommitMessage,
 	}
 
 	req, err := s.client.NewRequest("POST", u, repoReq)

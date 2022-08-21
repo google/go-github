@@ -14590,6 +14590,22 @@ func (r *Repository) GetMasterBranch() string {
 	return *r.MasterBranch
 }
 
+// GetMergeCommitMessage returns the MergeCommitMessage field if it's non-nil, zero value otherwise.
+func (r *Repository) GetMergeCommitMessage() string {
+	if r == nil || r.MergeCommitMessage == nil {
+		return ""
+	}
+	return *r.MergeCommitMessage
+}
+
+// GetMergeCommitTitle returns the MergeCommitTitle field if it's non-nil, zero value otherwise.
+func (r *Repository) GetMergeCommitTitle() string {
+	if r == nil || r.MergeCommitTitle == nil {
+		return ""
+	}
+	return *r.MergeCommitTitle
+}
+
 // GetMergesURL returns the MergesURL field if it's non-nil, zero value otherwise.
 func (r *Repository) GetMergesURL() string {
 	if r == nil || r.MergesURL == nil {
@@ -14756,6 +14772,22 @@ func (r *Repository) GetSource() *Repository {
 		return nil
 	}
 	return r.Source
+}
+
+// GetSquashMergeCommitMessage returns the SquashMergeCommitMessage field if it's non-nil, zero value otherwise.
+func (r *Repository) GetSquashMergeCommitMessage() string {
+	if r == nil || r.SquashMergeCommitMessage == nil {
+		return ""
+	}
+	return *r.SquashMergeCommitMessage
+}
+
+// GetSquashMergeCommitTitle returns the SquashMergeCommitTitle field if it's non-nil, zero value otherwise.
+func (r *Repository) GetSquashMergeCommitTitle() string {
+	if r == nil || r.SquashMergeCommitTitle == nil {
+		return ""
+	}
+	return *r.SquashMergeCommitTitle
 }
 
 // GetSSHURL returns the SSHURL field if it's non-nil, zero value otherwise.
