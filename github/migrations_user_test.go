@@ -66,7 +66,7 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.Migrations.ListUserMigrations(ctx)
+	got, _, err := client.Migrations.ListUserMigrations(ctx, &ListOptions{Page: 1, PerPage: 2})
 	if err != nil {
 		t.Errorf("ListUserMigrations returned error %v", err)
 	}
@@ -78,7 +78,7 @@ func TestMigrationService_ListUserMigrations(t *testing.T) {
 
 	const methodName = "ListUserMigrations"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Migrations.ListUserMigrations(ctx)
+		got, resp, err := client.Migrations.ListUserMigrations(ctx, &ListOptions{Page: 1, PerPage: 2})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

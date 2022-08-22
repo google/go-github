@@ -24,7 +24,7 @@ func fetchAllUserMigrations() ([]*github.UserMigration, error) {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	migrations, _, err := client.Migrations.ListUserMigrations(ctx)
+	migrations, _, err := client.Migrations.ListUserMigrations(ctx, &github.ListOptions{Page: 1})
 	return migrations, err
 }
 
