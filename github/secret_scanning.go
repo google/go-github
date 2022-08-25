@@ -61,6 +61,9 @@ type SecretScanningAlertListOptions struct {
 	Resolution string `url:"resolution,omitempty"`
 
 	ListCursorOptions
+
+	// Listing for Org supports index based pagination
+	ListOptions
 }
 
 // SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
