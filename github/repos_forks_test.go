@@ -73,11 +73,11 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testFormValues(t, r, values{"organization": "o"})
+		testFormValues(t, r, values{"organization": "o", "name": "n", "default_branch_only": "true"})
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	opt := &RepositoryCreateForkOptions{Organization: "o"}
+	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
 	ctx := context.Background()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if err != nil {
@@ -110,13 +110,13 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testFormValues(t, r, values{"organization": "o"})
+		testFormValues(t, r, values{"organization": "o", "name": "n", "default_branch_only": "true"})
 		// This response indicates the fork will happen asynchronously.
 		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	opt := &RepositoryCreateForkOptions{Organization: "o"}
+	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
 	ctx := context.Background()
 	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
 	if _, ok := err.(*AcceptedError); !ok {
