@@ -53,7 +53,9 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 // RepositoriesService.CreateFork method.
 type RepositoryCreateForkOptions struct {
 	// The organization to fork the repository into.
-	Organization string `url:"organization,omitempty"`
+	Organization      string `url:"organization,omitempty"`
+	Name              string `url:"name,omitempty"`
+	DefaultBranchOnly bool   `url:"default_branch_only,omitempty"`
 }
 
 // CreateFork creates a fork of the specified repository.
