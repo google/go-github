@@ -62,9 +62,12 @@ type SecretScanningAlertListOptions struct {
 
 	ListCursorOptions
 
-	// List options can vary on the Enterprise type. On Enterprise Cloud, Secret Scan alerts show to support requesting by page number
-	// along with provided a cursor for an after param https://docs.github.com/en/enterprise-cloud@latest/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
-	// Whereas on Enterprise Server, it is just by pagination by index https://docs.github.com/en/enterprise-server@3.6/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
+	// List options can vary on the Enterprise type.
+	// On Enterprise Cloud, Secret Scan alerts support requesting by page number
+	// along with providing a cursor for an "after" param.
+	// See: https://docs.github.com/en/enterprise-cloud@latest/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
+	// Whereas on Enterprise Server, pagination is by index.
+	// See: https://docs.github.com/en/enterprise-server@3.6/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
 	ListOptions
 }
 
