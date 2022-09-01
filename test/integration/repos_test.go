@@ -188,3 +188,37 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}
 }
+
+func TestRepositories_Autolinks(t *testing.T) {
+	if !checkAuth("TestRepositories_Autolinks") {
+		return
+	}
+
+	// create a random repository
+	repo, err := createRandomTestRepository("", true)
+	if err != nil {
+		t.Fatalf("createRandomTestRepository returned error: %v", err)
+	}
+
+	opts := &github.AutolinkOptions{
+		KeyPrefix:      github.String("TICKET-"),
+		URLTemplate:    github.String("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: github.Bool(false),
+	}
+
+	actionlink, _, err := client.Repositories.AddAutolink(context.Background(), *repo.Owner.Login, *repo.Name, opts)
+	if err != nil {
+		t.Fatalf("Repositories.AddAutolink() returned error: %v", err)
+	}
+
+	if !cmp.Equal(actionlink.KeyPrefix, opts.KeyPrefix) ||
+		!cmp.Equal(actionlink.URLTemplate, opts.URLTemplate) ||
+		!cmp.Equal(actionlink.IsAlphanumeric, opts.IsAlphanumeric) {
+		t.Errorf("Repositories.AddAutolink() returned %+v, want %+v", actionlink, opts)
+	}
+
+	_, err = client.Repositories.Delete(context.Background(), *repo.Owner.Login, *repo.Name)
+	if err != nil {
+		t.Fatalf("Repositories.Delete() returned error: %v", err)
+	}
+}
