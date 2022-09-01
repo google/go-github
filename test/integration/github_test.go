@@ -60,6 +60,18 @@ func checkAuth(name string) bool {
 }
 
 func createRandomTestRepository(owner string, autoinit bool) (*github.Repository, error) {
+	// determine the owner to use if one wasn't specified
+	if owner == "" {
+		owner = os.Getenv("GITHUB_OWNER")
+		if owner == "" {
+			me, _, err := client.Users.Get(context.Background(), "")
+			if err != nil {
+				return nil, err
+			}
+			owner = *me.Login
+		}
+	}
+
 	// create random repo name that does not currently exist
 	var repoName string
 	for {
@@ -76,7 +88,14 @@ func createRandomTestRepository(owner string, autoinit bool) (*github.Repository
 	}
 
 	// create the repository
-	repo, _, err := client.Repositories.Create(context.Background(), "", &github.Repository{Name: github.String(repoName), AutoInit: github.Bool(autoinit)})
+	repo, _, err := client.Repositories.Create(
+		context.Background(),
+		owner,
+		&github.Repository{
+			Name:     github.String(repoName),
+			AutoInit: github.Bool(autoinit),
+		},
+	)
 	if err != nil {
 		return nil, err
 	}

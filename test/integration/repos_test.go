@@ -24,13 +24,8 @@ func TestRepositories_CRUD(t *testing.T) {
 		return
 	}
 
-	// get authenticated user
-	me, _, err := client.Users.Get(context.Background(), "")
-	if err != nil {
-		t.Fatalf("Users.Get('') returned error: %v", err)
-	}
-
-	repo, err := createRandomTestRepository(*me.Login, false)
+	// create a random repository
+	repo, err := createRandomTestRepository("", true)
 	if err != nil {
 		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
@@ -91,13 +86,8 @@ func TestRepositories_EditBranches(t *testing.T) {
 		return
 	}
 
-	// get authenticated user
-	me, _, err := client.Users.Get(context.Background(), "")
-	if err != nil {
-		t.Fatalf("Users.Get('') returned error: %v", err)
-	}
-
-	repo, err := createRandomTestRepository(*me.Login, true)
+	// create a random repository
+	repo, err := createRandomTestRepository("", true)
 	if err != nil {
 		t.Fatalf("createRandomTestRepository returned error: %v", err)
 	}
