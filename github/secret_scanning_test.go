@@ -152,7 +152,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/secret-scanning/alerts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key"})
+		testFormValues(t, r, values{"state": "open", "secret_type": "mailchimp_api_key", "per_page": "1", "page": "1"})
 
 		fmt.Fprint(w, `[{
 			"number": 1,
