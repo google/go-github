@@ -172,7 +172,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 	ctx := context.Background()
 
 	// Testing pagination by index
-	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions{Page: 1, PerPage: 1}}
+	opts := &SecretScanningAlertListOptions{State: "open", SecretType: "mailchimp_api_key", ListOptions: ListOptions{Page: 1, PerPage: 1}}
 
 	alerts, _, err := client.SecretScanning.ListAlertsForOrg(ctx, "o", opts)
 	if err != nil {
