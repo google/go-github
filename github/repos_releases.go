@@ -26,7 +26,9 @@ type RepositoryRelease struct {
 	Draft                  *bool   `json:"draft,omitempty"`
 	Prerelease             *bool   `json:"prerelease,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
-	GenerateReleaseNotes   *bool   `json:"generate_release_notes,omitempty"`
+
+	// The following fields are not used in EditRelease:
+	GenerateReleaseNotes *bool `json:"generate_release_notes,omitempty"`
 
 	// The following fields are not used in CreateRelease or EditRelease:
 	ID          *int64          `json:"id,omitempty"`
@@ -228,7 +230,6 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 		Draft:                  release.Draft,
 		Prerelease:             release.Prerelease,
 		DiscussionCategoryName: release.DiscussionCategoryName,
-		GenerateReleaseNotes:   release.GenerateReleaseNotes,
 	}
 
 	req, err := s.client.NewRequest("PATCH", u, releaseReq)
