@@ -273,20 +273,20 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	input := &RepositoryRelease{
 		Name:                   String("n"),
 		DiscussionCategoryName: String("General"),
-		GenerateReleaseNotes:   Bool(true),
 		// Fields to be removed:
-		ID:          Int64(2),
-		CreatedAt:   &Timestamp{referenceTime},
-		PublishedAt: &Timestamp{referenceTime},
-		URL:         String("http://url/"),
-		HTMLURL:     String("http://htmlurl/"),
-		AssetsURL:   String("http://assetsurl/"),
-		Assets:      []*ReleaseAsset{{ID: Int64(5)}},
-		UploadURL:   String("http://uploadurl/"),
-		ZipballURL:  String("http://zipballurl/"),
-		TarballURL:  String("http://tarballurl/"),
-		Author:      &User{Name: String("octocat")},
-		NodeID:      String("nodeid"),
+		GenerateReleaseNotes: Bool(true),
+		ID:                   Int64(2),
+		CreatedAt:            &Timestamp{referenceTime},
+		PublishedAt:          &Timestamp{referenceTime},
+		URL:                  String("http://url/"),
+		HTMLURL:              String("http://htmlurl/"),
+		AssetsURL:            String("http://assetsurl/"),
+		Assets:               []*ReleaseAsset{{ID: Int64(5)}},
+		UploadURL:            String("http://uploadurl/"),
+		ZipballURL:           String("http://zipballurl/"),
+		TarballURL:           String("http://tarballurl/"),
+		Author:               &User{Name: String("octocat")},
+		NodeID:               String("nodeid"),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -297,7 +297,6 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 		want := &repositoryReleaseRequest{
 			Name:                   String("n"),
 			DiscussionCategoryName: String("General"),
-			GenerateReleaseNotes:   Bool(true),
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
