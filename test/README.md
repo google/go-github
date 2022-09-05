@@ -31,6 +31,10 @@ Run tests using:
 
     GITHUB_AUTH_TOKEN=XXX go test -v -tags=integration ./integration
 
+Some tests create repositories. By default, the new repositories will be owned
+by the user identified by the OAuth token. Set the `GITHUB_OWNER='<GH_OWNER>'`
+environment variable to specify a different owner, such as an organization.
+
 Additionally there are a set of integration tests for the Authorizations API.
 These tests require a GitHub user (username and password), and also that a
 [GitHub Application](https://github.com/settings/applications/new) (with

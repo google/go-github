@@ -12,15 +12,17 @@ import (
 
 // AutolinkOptions specifies parameters for RepositoriesService.AddAutolink method.
 type AutolinkOptions struct {
-	KeyPrefix   *string `json:"key_prefix,omitempty"`
-	URLTemplate *string `json:"url_template,omitempty"`
+	KeyPrefix      *string `json:"key_prefix,omitempty"`
+	URLTemplate    *string `json:"url_template,omitempty"`
+	IsAlphanumeric *bool   `json:"is_alphanumeric,omitempty"`
 }
 
 // Autolink represents autolinks to external resources like JIRA issues and Zendesk tickets.
 type Autolink struct {
-	ID          *int64  `json:"id,omitempty"`
-	KeyPrefix   *string `json:"key_prefix,omitempty"`
-	URLTemplate *string `json:"url_template,omitempty"`
+	ID             *int64  `json:"id,omitempty"`
+	KeyPrefix      *string `json:"key_prefix,omitempty"`
+	URLTemplate    *string `json:"url_template,omitempty"`
+	IsAlphanumeric *bool   `json:"is_alphanumeric,omitempty"`
 }
 
 // ListAutolinks returns a list of autolinks configured for the given repository.

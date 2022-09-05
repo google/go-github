@@ -1374,6 +1374,14 @@ func (a *Autolink) GetID() int64 {
 	return *a.ID
 }
 
+// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
+func (a *Autolink) GetIsAlphanumeric() bool {
+	if a == nil || a.IsAlphanumeric == nil {
+		return false
+	}
+	return *a.IsAlphanumeric
+}
+
 // GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
 func (a *Autolink) GetKeyPrefix() string {
 	if a == nil || a.KeyPrefix == nil {
@@ -1388,6 +1396,14 @@ func (a *Autolink) GetURLTemplate() string {
 		return ""
 	}
 	return *a.URLTemplate
+}
+
+// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
+func (a *AutolinkOptions) GetIsAlphanumeric() bool {
+	if a == nil || a.IsAlphanumeric == nil {
+		return false
+	}
+	return *a.IsAlphanumeric
 }
 
 // GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.

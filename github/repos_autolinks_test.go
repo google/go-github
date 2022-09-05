@@ -62,7 +62,11 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	opt := &AutolinkOptions{KeyPrefix: String("TICKET-"), URLTemplate: String("https://example.com/TICKET?query=<num>")}
+	opt := &AutolinkOptions{
+		KeyPrefix:      String("TICKET-"),
+		URLTemplate:    String("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: Bool(true),
+	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(AutolinkOptions)
 		json.NewDecoder(r.Body).Decode(v)
@@ -71,7 +75,13 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"key_prefix": "TICKET-","url_template": "https://example.com/TICKET?query=<num>"}`))
+		w.Write([]byte(`
+			{
+				"key_prefix": "TICKET-",
+				"url_template": "https://example.com/TICKET?query=<num>",
+				"is_alphanumeric": true
+			}
+		`))
 	})
 	ctx := context.Background()
 	autolink, _, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
@@ -79,8 +89,9 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		t.Errorf("Repositories.AddAutolink returned error: %v", err)
 	}
 	want := &Autolink{
-		KeyPrefix:   String("TICKET-"),
-		URLTemplate: String("https://example.com/TICKET?query=<num>"),
+		KeyPrefix:      String("TICKET-"),
+		URLTemplate:    String("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: Bool(true),
 	}
 
 	if !cmp.Equal(autolink, want) {
@@ -157,13 +168,15 @@ func TestAutolinkOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &AutolinkOptions{}, "{}")
 
 	r := &AutolinkOptions{
-		KeyPrefix:   String("kp"),
-		URLTemplate: String("URLT"),
+		KeyPrefix:      String("kp"),
+		URLTemplate:    String("URLT"),
+		IsAlphanumeric: Bool(true),
 	}
 
 	want := `{
 		"key_prefix": "kp",
-		"url_template": "URLT"
+		"url_template": "URLT",
+		"is_alphanumeric": true
 	}`
 
 	testJSONMarshal(t, r, want)
@@ -173,15 +186,17 @@ func TestAutolink_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Autolink{}, "{}")
 
 	r := &Autolink{
-		ID:          Int64(1),
-		KeyPrefix:   String("kp"),
-		URLTemplate: String("URLT"),
+		ID:             Int64(1),
+		KeyPrefix:      String("kp"),
+		URLTemplate:    String("URLT"),
+		IsAlphanumeric: Bool(true),
 	}
 
 	want := `{
 		"id": 1,
 		"key_prefix": "kp",
-		"url_template": "URLT"
+		"url_template": "URLT",
+		"is_alphanumeric": true
 	}`
 
 	testJSONMarshal(t, r, want)

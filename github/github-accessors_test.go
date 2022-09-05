@@ -1640,6 +1640,16 @@ func TestAutolink_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestAutolink_GetIsAlphanumeric(tt *testing.T) {
+	var zeroValue bool
+	a := &Autolink{IsAlphanumeric: &zeroValue}
+	a.GetIsAlphanumeric()
+	a = &Autolink{}
+	a.GetIsAlphanumeric()
+	a = nil
+	a.GetIsAlphanumeric()
+}
+
 func TestAutolink_GetKeyPrefix(tt *testing.T) {
 	var zeroValue string
 	a := &Autolink{KeyPrefix: &zeroValue}
@@ -1658,6 +1668,16 @@ func TestAutolink_GetURLTemplate(tt *testing.T) {
 	a.GetURLTemplate()
 	a = nil
 	a.GetURLTemplate()
+}
+
+func TestAutolinkOptions_GetIsAlphanumeric(tt *testing.T) {
+	var zeroValue bool
+	a := &AutolinkOptions{IsAlphanumeric: &zeroValue}
+	a.GetIsAlphanumeric()
+	a = &AutolinkOptions{}
+	a.GetIsAlphanumeric()
+	a = nil
+	a.GetIsAlphanumeric()
 }
 
 func TestAutolinkOptions_GetKeyPrefix(tt *testing.T) {
