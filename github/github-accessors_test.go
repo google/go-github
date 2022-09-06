@@ -7734,6 +7734,16 @@ func TestInstallationPermissions_GetOrganizationAdministration(tt *testing.T) {
 	i.GetOrganizationAdministration()
 }
 
+func TestInstallationPermissions_GetOrganizationCustomRoles(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCustomRoles: &zeroValue}
+	i.GetOrganizationCustomRoles()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCustomRoles()
+	i = nil
+	i.GetOrganizationCustomRoles()
+}
+
 func TestInstallationPermissions_GetOrganizationHooks(tt *testing.T) {
 	var zeroValue string
 	i := &InstallationPermissions{OrganizationHooks: &zeroValue}
@@ -7742,6 +7752,16 @@ func TestInstallationPermissions_GetOrganizationHooks(tt *testing.T) {
 	i.GetOrganizationHooks()
 	i = nil
 	i.GetOrganizationHooks()
+}
+
+func TestInstallationPermissions_GetOrganizationPackages(tt *testing.T) {
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationPackages: &zeroValue}
+	i.GetOrganizationPackages()
+	i = &InstallationPermissions{}
+	i.GetOrganizationPackages()
+	i = nil
+	i.GetOrganizationPackages()
 }
 
 func TestInstallationPermissions_GetOrganizationPlan(tt *testing.T) {
