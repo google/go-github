@@ -6590,12 +6590,28 @@ func (i *InstallationPermissions) GetOrganizationAdministration() string {
 	return *i.OrganizationAdministration
 }
 
+// GetOrganizationCustomRoles returns the OrganizationCustomRoles field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCustomRoles() string {
+	if i == nil || i.OrganizationCustomRoles == nil {
+		return ""
+	}
+	return *i.OrganizationCustomRoles
+}
+
 // GetOrganizationHooks returns the OrganizationHooks field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationHooks() string {
 	if i == nil || i.OrganizationHooks == nil {
 		return ""
 	}
 	return *i.OrganizationHooks
+}
+
+// GetOrganizationPackages returns the OrganizationPackages field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationPackages() string {
+	if i == nil || i.OrganizationPackages == nil {
+		return ""
+	}
+	return *i.OrganizationPackages
 }
 
 // GetOrganizationPlan returns the OrganizationPlan field if it's non-nil, zero value otherwise.

@@ -77,7 +77,9 @@ type InstallationPermissions struct {
 	Metadata                      *string `json:"metadata,omitempty"`
 	Members                       *string `json:"members,omitempty"`
 	OrganizationAdministration    *string `json:"organization_administration,omitempty"`
+	OrganizationCustomRoles       *string `json:"organization_custom_roles,omitempty"`
 	OrganizationHooks             *string `json:"organization_hooks,omitempty"`
+	OrganizationPackages          *string `json:"organization_packages,omitempty"`
 	OrganizationPlan              *string `json:"organization_plan,omitempty"`
 	OrganizationPreReceiveHooks   *string `json:"organization_pre_receive_hooks,omitempty"`
 	OrganizationProjects          *string `json:"organization_projects,omitempty"`
