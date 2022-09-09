@@ -624,6 +624,58 @@ func TestGitService_GetRef_pathEscape(t *testing.T) {
 	})
 }
 
+func TestGitService_UpdateRef_pathEscape(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	args := &updateRefRequest{
+		SHA:   String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+		Force: Bool(true),
+	}
+
+	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
+		v := new(updateRefRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PATCH")
+		if !cmp.Equal(v, args) {
+			t.Errorf("Request body = %+v, want %+v", v, args)
+		}
+		fmt.Fprint(w, `
+		  {
+		    "ref": "refs/heads/b#1",
+		    "url": "https://api.github.com/repos/o/r/git/refs/heads/b%231",
+		    "object": {
+		      "type": "commit",
+		      "sha": "aa218f56b14c9653891f9e74264a383fa43fefbd",
+		      "url": "https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"
+		    }
+		  }`)
+	})
+
+	ctx := context.Background()
+	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", &Reference{
+		Ref:    String("refs/heads/b#1"),
+		Object: &GitObject{SHA: String("aa218f56b14c9653891f9e74264a383fa43fefbd")},
+	}, true)
+	if err != nil {
+		t.Errorf("Git.UpdateRef returned error: %v", err)
+	}
+
+	want := &Reference{
+		Ref: String("refs/heads/b#1"),
+		URL: String("https://api.github.com/repos/o/r/git/refs/heads/b%231"),
+		Object: &GitObject{
+			Type: String("commit"),
+			SHA:  String("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  String("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+		},
+	}
+	if !cmp.Equal(ref, want) {
+		t.Errorf("Git.UpdateRef returned %+v, want %+v", ref, want)
+	}
+}
+
 func TestReference_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Reference{}, "{}")
 
