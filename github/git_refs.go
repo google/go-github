@@ -142,7 +142,7 @@ func (s *GitService) CreateRef(ctx context.Context, owner string, repo string, r
 // GitHub API docs: https://docs.github.com/en/rest/git/refs#update-a-reference
 func (s *GitService) UpdateRef(ctx context.Context, owner string, repo string, ref *Reference, force bool) (*Reference, *Response, error) {
 	refPath := strings.TrimPrefix(*ref.Ref, "refs/")
-	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refPath)
+	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
 	req, err := s.client.NewRequest("PATCH", u, &updateRefRequest{
 		SHA:   ref.Object.SHA,
 		Force: &force,
