@@ -368,6 +368,22 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 	}
 }
 
+func TestActionsService_DownloadArtifact_invalidLocationHeader(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	badLocationHeader := "http://\ngithub.com\ngoogle\ngo-github"
+	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Location", badLocationHeader)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
+	testURLParseError(t, err)
+}
+
 func TestActionsService_DeleteArtifact(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
