@@ -199,13 +199,13 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
-	organization := new(Organization)
-	resp, err := s.client.Do(ctx, req, organization)
+	o := new(Organization)
+	resp, err := s.client.Do(ctx, req, o)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return organization, resp, nil
+	return o, resp, nil
 }
 
 // GetByID fetches an organization.
@@ -218,13 +218,13 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 		return nil, nil, err
 	}
 
-	organization := new(Organization)
-	resp, err := s.client.Do(ctx, req, organization)
+	o := new(Organization)
+	resp, err := s.client.Do(ctx, req, o)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return organization, resp, nil
+	return o, resp, nil
 }
 
 // Edit an organization.
