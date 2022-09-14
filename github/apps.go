@@ -166,13 +166,13 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 		return nil, nil, err
 	}
 
-	app := new(App)
-	resp, err := s.client.Do(ctx, req, app)
+	a := new(App)
+	resp, err := s.client.Do(ctx, req, a)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return app, resp, nil
+	return a, resp, nil
 }
 
 // ListInstallations lists the installations that the current GitHub App has.
