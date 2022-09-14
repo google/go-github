@@ -31,13 +31,13 @@ func (s *GitService) GetBlob(ctx context.Context, owner string, repo string, sha
 		return nil, nil, err
 	}
 
-	blob := new(Blob)
-	resp, err := s.client.Do(ctx, req, blob)
+	b := new(Blob)
+	resp, err := s.client.Do(ctx, req, b)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return blob, resp, nil
+	return b, resp, nil
 }
 
 // GetBlobRaw fetches a blob's contents from a repo.
@@ -72,11 +72,11 @@ func (s *GitService) CreateBlob(ctx context.Context, owner string, repo string, 
 		return nil, nil, err
 	}
 
-	t := new(Blob)
-	resp, err := s.client.Do(ctx, req, t)
+	b := new(Blob)
+	resp, err := s.client.Do(ctx, req, b)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return t, resp, nil
+	return b, resp, nil
 }
