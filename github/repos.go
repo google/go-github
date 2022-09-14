@@ -502,13 +502,13 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return repository, resp, nil
+	return r, resp, nil
 }
 
 // GetCodeOfConduct gets the contents of a repository's code of conduct.
@@ -545,13 +545,13 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 		return nil, nil, err
 	}
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	r := new(Repository)
+	resp, err := s.client.Do(ctx, req, r)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return repository, resp, nil
+	return r, resp, nil
 }
 
 // Edit updates a repository.
