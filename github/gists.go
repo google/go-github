@@ -180,13 +180,13 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 		return nil, nil, err
 	}
 
-	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	g := new(Gist)
+	resp, err := s.client.Do(ctx, req, g)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return gist, resp, nil
+	return g, resp, nil
 }
 
 // GetRevision gets a specific revision of a gist.
@@ -199,13 +199,13 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 		return nil, nil, err
 	}
 
-	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	g := new(Gist)
+	resp, err := s.client.Do(ctx, req, g)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return gist, resp, nil
+	return g, resp, nil
 }
 
 // Create a gist for authenticated user.
