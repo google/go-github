@@ -372,11 +372,12 @@ func TestActionsService_DownloadArtifact_invalidLocationHeader(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	badLocationHeader := "http://\ngithub.com\ngoogle\ngo-github"
 	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Location", badLocationHeader)
+		ctlChar := 0x7f
+		badURL := "https://google.com" + string(byte(ctlChar))
+		w.Header().Add("Location", badURL)
+		w.WriteHeader(http.StatusFound)
 	})
 
 	ctx := context.Background()
