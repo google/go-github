@@ -368,6 +368,23 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 	}
 }
 
+func TestActionsService_DownloadArtifact_invalidLocationHeader(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		ctlChar := 0x7f
+		badURL := "https://google.com" + string(byte(ctlChar))
+		w.Header().Add("Location", badURL)
+		w.WriteHeader(http.StatusFound)
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
+	testURLParseError(t, err)
+}
+
 func TestActionsService_DeleteArtifact(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
