@@ -905,7 +905,7 @@ type RequiredStatusChecks struct {
 	Contexts []string `json:"contexts,omitempty"`
 	// The list of status checks to require in order to merge into this
 	// branch.
-	Checks []*RequiredStatusCheck `json:"checks,omitempty"`
+	Checks []*RequiredStatusCheck `json:"checks"`
 }
 
 // RequiredStatusChecksRequest represents a request to edit a protected branch's status checks.
