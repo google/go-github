@@ -751,8 +751,8 @@ func TestRepositoriesService_GetArchiveLink_invalidLocationHeader(t *testing.T) 
 	mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		ctlChar := 0x7f
-		badUrl := "https://google.com" + string(byte(ctlChar))
-		w.Header().Add("Location", badUrl)
+		badURL := "https://google.com" + string(byte(ctlChar))
+		w.Header().Add("Location", badURL)
 		w.WriteHeader(http.StatusFound)
 	})
 
