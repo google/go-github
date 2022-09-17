@@ -320,5 +320,6 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 	if err != nil {
 		return nil, newResponse(resp), err
 	}
+
 	return parsedURL, newResponse(resp), nil
 }
