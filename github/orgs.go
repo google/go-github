@@ -82,6 +82,20 @@ type Organization struct {
 	MembersCanCreatePublicPages *bool `json:"members_can_create_public_pages,omitempty"`
 	// MembersCanCreatePrivatePages toggles whether organization members can create private GitHub Pages sites.
 	MembersCanCreatePrivatePages *bool `json:"members_can_create_private_pages,omitempty"`
+	// WebCommitSignoffRequire toggles
+	WebCommitSignoffRequired *bool `json:"web_commit_signoff_required,omitempty"`
+	// AdvancedSecurityAuditLogEnabled toggles whether the advanced security audit log is enabled.
+	AdvancedSecurityEnabledForNewRepos *bool `json:"advanced_security_enabled_for_new_repositories,omitempty"`
+	// DependabotAlertsEnabled toggles whether dependabot alerts are enabled.
+	DependabotAlertsEnabledForNewRepos *bool `json:"dependabot_alerts_enabled_for_new_repositories,omitempty"`
+	// DependabotSecurityUpdatesEnabled toggles whether dependabot security updates are enabled.
+	DependabotSecurityUpdatesEnabledForNewRepos *bool `json:"dependabot_security_updates_enabled_for_new_repositories,omitempty"`
+	// DependabotGraphEnabledForNewRepos toggles whether dependabot graph is enabled on new repositories.
+	DependencyGraphEnabledForNewRepos *bool `json:"dependency_graph_enabled_for_new_repositories,omitempty"`
+	// SecretScanningEnabled toggles whether secret scanning is enabled on new repositories.
+	SecretScanningEnabledForNewRepos *bool `json:"secret_scanning_enabled_for_new_repositories,omitempty"`
+	// SecretScanningPushProtectionEnabledForNewRepos toggles whether secret scanning push protection is enabled on new repositories.
+	SecretScanningPushProtectionEnabledForNewRepos *bool `json:"secret_scanning_push_protection_enabled_for_new_repositories,omitempty"`
 
 	// API URLs
 	URL              *string `json:"url,omitempty"`
