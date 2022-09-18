@@ -11041,6 +11041,16 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
+func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{AdvancedSecurityEnabledForNewRepos: &zeroValue}
+	o.GetAdvancedSecurityEnabledForNewRepos()
+	o = &Organization{}
+	o.GetAdvancedSecurityEnabledForNewRepos()
+	o = nil
+	o.GetAdvancedSecurityEnabledForNewRepos()
+}
+
 func TestOrganization_GetAvatarURL(tt *testing.T) {
 	var zeroValue string
 	o := &Organization{AvatarURL: &zeroValue}
@@ -11119,6 +11129,36 @@ func TestOrganization_GetDefaultRepoSettings(tt *testing.T) {
 	o.GetDefaultRepoSettings()
 	o = nil
 	o.GetDefaultRepoSettings()
+}
+
+func TestOrganization_GetDependabotAlertsEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{DependabotAlertsEnabledForNewRepos: &zeroValue}
+	o.GetDependabotAlertsEnabledForNewRepos()
+	o = &Organization{}
+	o.GetDependabotAlertsEnabledForNewRepos()
+	o = nil
+	o.GetDependabotAlertsEnabledForNewRepos()
+}
+
+func TestOrganization_GetDependabotSecurityUpdatesEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{DependabotSecurityUpdatesEnabledForNewRepos: &zeroValue}
+	o.GetDependabotSecurityUpdatesEnabledForNewRepos()
+	o = &Organization{}
+	o.GetDependabotSecurityUpdatesEnabledForNewRepos()
+	o = nil
+	o.GetDependabotSecurityUpdatesEnabledForNewRepos()
+}
+
+func TestOrganization_GetDependencyGraphEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{DependencyGraphEnabledForNewRepos: &zeroValue}
+	o.GetDependencyGraphEnabledForNewRepos()
+	o = &Organization{}
+	o.GetDependencyGraphEnabledForNewRepos()
+	o = nil
+	o.GetDependencyGraphEnabledForNewRepos()
 }
 
 func TestOrganization_GetDescription(tt *testing.T) {
@@ -11458,6 +11498,26 @@ func TestOrganization_GetReposURL(tt *testing.T) {
 	o.GetReposURL()
 }
 
+func TestOrganization_GetSecretScanningEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{SecretScanningEnabledForNewRepos: &zeroValue}
+	o.GetSecretScanningEnabledForNewRepos()
+	o = &Organization{}
+	o.GetSecretScanningEnabledForNewRepos()
+	o = nil
+	o.GetSecretScanningEnabledForNewRepos()
+}
+
+func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{SecretScanningPushProtectionEnabledForNewRepos: &zeroValue}
+	o.GetSecretScanningPushProtectionEnabledForNewRepos()
+	o = &Organization{}
+	o.GetSecretScanningPushProtectionEnabledForNewRepos()
+	o = nil
+	o.GetSecretScanningPushProtectionEnabledForNewRepos()
+}
+
 func TestOrganization_GetTotalPrivateRepos(tt *testing.T) {
 	var zeroValue int
 	o := &Organization{TotalPrivateRepos: &zeroValue}
@@ -11516,6 +11576,16 @@ func TestOrganization_GetURL(tt *testing.T) {
 	o.GetURL()
 	o = nil
 	o.GetURL()
+}
+
+func TestOrganization_GetWebCommitSignoffRequired(tt *testing.T) {
+	var zeroValue bool
+	o := &Organization{WebCommitSignoffRequired: &zeroValue}
+	o.GetWebCommitSignoffRequired()
+	o = &Organization{}
+	o.GetWebCommitSignoffRequired()
+	o = nil
+	o.GetWebCommitSignoffRequired()
 }
 
 func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
