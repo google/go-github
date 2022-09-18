@@ -9430,6 +9430,14 @@ func (o *OAuthAPP) GetURL() string {
 	return *o.URL
 }
 
+// GetAdvancedSecurityEnabledForNewRepos returns the AdvancedSecurityEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetAdvancedSecurityEnabledForNewRepos() bool {
+	if o == nil || o.AdvancedSecurityEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.AdvancedSecurityEnabledForNewRepos
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAvatarURL() string {
 	if o == nil || o.AvatarURL == nil {
@@ -9492,6 +9500,30 @@ func (o *Organization) GetDefaultRepoSettings() string {
 		return ""
 	}
 	return *o.DefaultRepoSettings
+}
+
+// GetDependabotAlertsEnabledForNewRepos returns the DependabotAlertsEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDependabotAlertsEnabledForNewRepos() bool {
+	if o == nil || o.DependabotAlertsEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.DependabotAlertsEnabledForNewRepos
+}
+
+// GetDependabotSecurityUpdatesEnabledForNewRepos returns the DependabotSecurityUpdatesEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDependabotSecurityUpdatesEnabledForNewRepos() bool {
+	if o == nil || o.DependabotSecurityUpdatesEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.DependabotSecurityUpdatesEnabledForNewRepos
+}
+
+// GetDependencyGraphEnabledForNewRepos returns the DependencyGraphEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDependencyGraphEnabledForNewRepos() bool {
+	if o == nil || o.DependencyGraphEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.DependencyGraphEnabledForNewRepos
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -9766,6 +9798,22 @@ func (o *Organization) GetReposURL() string {
 	return *o.ReposURL
 }
 
+// GetSecretScanningEnabledForNewRepos returns the SecretScanningEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningEnabledForNewRepos() bool {
+	if o == nil || o.SecretScanningEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.SecretScanningEnabledForNewRepos
+}
+
+// GetSecretScanningPushProtectionEnabledForNewRepos returns the SecretScanningPushProtectionEnabledForNewRepos field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningPushProtectionEnabledForNewRepos() bool {
+	if o == nil || o.SecretScanningPushProtectionEnabledForNewRepos == nil {
+		return false
+	}
+	return *o.SecretScanningPushProtectionEnabledForNewRepos
+}
+
 // GetTotalPrivateRepos returns the TotalPrivateRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetTotalPrivateRepos() int {
 	if o == nil || o.TotalPrivateRepos == nil {
@@ -9812,6 +9860,14 @@ func (o *Organization) GetURL() string {
 		return ""
 	}
 	return *o.URL
+}
+
+// GetWebCommitSignoffRequired returns the WebCommitSignoffRequired field if it's non-nil, zero value otherwise.
+func (o *Organization) GetWebCommitSignoffRequired() bool {
+	if o == nil || o.WebCommitSignoffRequired == nil {
+		return false
+	}
+	return *o.WebCommitSignoffRequired
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
