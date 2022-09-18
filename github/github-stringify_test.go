@@ -997,15 +997,22 @@ func TestOrganization_String(t *testing.T) {
 		MembersCanCreatePages:                Bool(false),
 		MembersCanCreatePublicPages:          Bool(false),
 		MembersCanCreatePrivatePages:         Bool(false),
-		URL:                                  String(""),
-		EventsURL:                            String(""),
-		HooksURL:                             String(""),
-		IssuesURL:                            String(""),
-		MembersURL:                           String(""),
-		PublicMembersURL:                     String(""),
-		ReposURL:                             String(""),
+		WebCommitSignoffRequired:             Bool(false),
+		AdvancedSecurityEnabledForNewRepos:   Bool(false),
+		DependabotAlertsEnabledForNewRepos:   Bool(false),
+		DependabotSecurityUpdatesEnabledForNewRepos:    Bool(false),
+		DependencyGraphEnabledForNewRepos:              Bool(false),
+		SecretScanningEnabledForNewRepos:               Bool(false),
+		SecretScanningPushProtectionEnabledForNewRepos: Bool(false),
+		URL:              String(""),
+		EventsURL:        String(""),
+		HooksURL:         String(""),
+		IssuesURL:        String(""),
+		MembersURL:       String(""),
+		PublicMembersURL: String(""),
+		ReposURL:         String(""),
 	}
-	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersCanForkPrivateRepos:false, MembersAllowedRepositoryCreationType:"", MembersCanCreatePages:false, MembersCanCreatePublicPages:false, MembersCanCreatePrivatePages:false, URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
+	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersCanForkPrivateRepos:false, MembersAllowedRepositoryCreationType:"", MembersCanCreatePages:false, MembersCanCreatePublicPages:false, MembersCanCreatePrivatePages:false, WebCommitSignoffRequired:false, AdvancedSecurityEnabledForNewRepos:false, DependabotAlertsEnabledForNewRepos:false, DependabotSecurityUpdatesEnabledForNewRepos:false, DependencyGraphEnabledForNewRepos:false, SecretScanningEnabledForNewRepos:false, SecretScanningPushProtectionEnabledForNewRepos:false, URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Organization.String = %v, want %v", got, want)
 	}
