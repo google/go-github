@@ -1,0 +1,256 @@
+// Copyright 2022 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build ignore
+// +build ignore
+
+// gen-marker-methods generates marker methods for event structs.
+//
+// It is meant to be used by go-github contributors in conjunction with the
+// go generate tool before sending a PR to GitHub.
+// Please see the CONTRIBUTING.md file for more information.
+package main
+
+import (
+	"bytes"
+	"flag"
+	"fmt"
+	"go/ast"
+	"go/format"
+	"go/parser"
+	"go/token"
+	"io/ioutil"
+	"log"
+	"os"
+	"sort"
+	"strings"
+	"text/template"
+)
+
+type markerInterface struct {
+	interfaceName string
+	methodName    string
+	path          string
+	structFilter  func(ts *ast.TypeSpec, st *ast.StructType) bool
+}
+
+const (
+	fileSuffix = "-marker-methods.go"
+)
+
+var (
+	verbose = flag.Bool("v", false, "Print verbose log messages")
+
+	sourceTmpl = template.Must(template.New("source").Parse(source))
+	testTmpl   = template.Must(template.New("test").Parse(test))
+)
+
+func logf(fmt string, args ...interface{}) {
+	if *verbose {
+		log.Printf(fmt, args...)
+	}
+}
+
+func main() {
+	flag.Parse()
+	fset := token.NewFileSet()
+
+	markerInterfaces := []markerInterface{
+		{
+			interfaceName: "GitHubEvent",
+			methodName:    "GHEvent",
+			path:          "github",
+			structFilter: func(ts *ast.TypeSpec, st *ast.StructType) bool {
+				return strings.HasSuffix(ts.Name.Name, "Event")
+			},
+		},
+	}
+
+	for _, mi := range markerInterfaces {
+		pkgs, err := parser.ParseDir(fset, ".", sourceFilter, 0)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		for pkgName, pkg := range pkgs {
+			t := &templateData{
+				filename: pkgName + fileSuffix,
+				Year:     2022,
+				Package:  pkgName,
+				Imports:  map[string]string{},
+			}
+			for filename, f := range pkg.Files {
+				logf("Processing %v...", filename)
+				if err := t.processAST(f, &mi); err != nil {
+					log.Fatal(err)
+				}
+			}
+			if err := t.dump(); err != nil {
+				log.Fatal(err)
+			}
+		}
+		logf("Done.")
+	}
+}
+
+func (t *templateData) processAST(f *ast.File, mi *markerInterface) error {
+	for _, decl := range f.Decls {
+		gd, ok := decl.(*ast.GenDecl)
+		if !ok {
+			continue
+		}
+		for _, spec := range gd.Specs {
+			ts, ok := spec.(*ast.TypeSpec)
+			if !ok {
+				continue
+			}
+			// Skip unexported identifiers.
+			if !ts.Name.IsExported() {
+				logf("Struct %v is unexported; skipping.", ts.Name)
+				continue
+			}
+			st, ok := ts.Type.(*ast.StructType)
+			if !ok {
+				continue
+			}
+
+			if !mi.structFilter(ts, st) {
+				continue
+			}
+
+			t.Getters = append(t.Getters, newGetter(ts.Name.String(), mi.interfaceName, mi.methodName))
+		}
+	}
+	return nil
+}
+
+func sourceFilter(fi os.FileInfo) bool {
+	return !strings.HasSuffix(fi.Name(), "_test.go") && !strings.HasSuffix(fi.Name(), fileSuffix)
+}
+
+func (t *templateData) dump() error {
+	if len(t.Getters) == 0 {
+		logf("No getters for %v; skipping.", t.filename)
+		return nil
+	}
+
+	// Sort getters by ReceiverType.FieldName.
+	sort.Sort(byName(t.Getters))
+
+	processTemplate := func(tmpl *template.Template, filename string) error {
+		var buf bytes.Buffer
+		if err := tmpl.Execute(&buf, t); err != nil {
+			return err
+		}
+		clean, err := format.Source(buf.Bytes())
+		if err != nil {
+			return fmt.Errorf("format.Source:\n%v\n%v", buf.String(), err)
+		}
+
+		logf("Writing %v...", filename)
+		if err := os.Chmod(filename, 0644); err != nil {
+			return fmt.Errorf("os.Chmod(%q, 0644): %v", filename, err)
+		}
+
+		if err := ioutil.WriteFile(filename, clean, 0444); err != nil {
+			return err
+		}
+
+		if err := os.Chmod(filename, 0444); err != nil {
+			return fmt.Errorf("os.Chmod(%q, 0444): %v", filename, err)
+		}
+
+		return nil
+	}
+
+	if err := processTemplate(sourceTmpl, t.filename); err != nil {
+		return err
+	}
+	return processTemplate(testTmpl, strings.ReplaceAll(t.filename, ".go", "_test.go"))
+}
+
+func newGetter(receiverType, interfaceName, methodName string) *getter {
+	return &getter{
+		sortVal:       strings.ToLower(receiverType) + "." + strings.ToLower(methodName),
+		ReceiverVar:   strings.ToLower(receiverType[:1]),
+		ReceiverType:  receiverType,
+		InterfaceName: interfaceName,
+		MethodName:    methodName,
+	}
+}
+
+type templateData struct {
+	filename string
+	Year     int
+	Package  string
+	Imports  map[string]string
+	Getters  []*getter
+}
+
+type getter struct {
+	sortVal       string // Lower-case version of "ReceiverType.FieldName".
+	ReceiverVar   string // The one-letter variable name to match the ReceiverType.
+	ReceiverType  string
+	InterfaceName string
+	MethodName    string
+}
+
+type byName []*getter
+
+func (b byName) Len() int           { return len(b) }
+func (b byName) Less(i, j int) bool { return b[i].sortVal < b[j].sortVal }
+func (b byName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+
+const source = `// Copyright {{.Year}} The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Code generated by gen-marker-methods; DO NOT EDIT.
+// Instead, please run "go generate ./..." as described here:
+// https://github.com/google/go-github/blob/master/CONTRIBUTING.md#submitting-a-patch
+
+package {{.Package}}
+{{with .Imports}}
+import (
+  {{- range . -}}
+  "{{.}}"
+  {{end -}}
+)
+{{end}}
+{{range .Getters}}
+// {{.MethodName}} implements the {{.InterfaceName}} marker interface.
+func ({{.ReceiverVar}} *{{.ReceiverType}}) {{.MethodName}}() {}
+{{end}}
+`
+
+const test = `// Copyright {{.Year}} The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Code generated by gen-accessors; DO NOT EDIT.
+// Instead, please run "go generate ./..." as described here:
+// https://github.com/google/go-github/blob/master/CONTRIBUTING.md#submitting-a-patch
+
+package {{.Package}}
+{{with .Imports}}
+import (
+  "testing"
+  {{range . -}}
+  "{{.}}"
+  {{end -}}
+)
+{{end}}
+{{range .Getters}}
+func Test{{.ReceiverType}}(tt *testing.T) {
+  {{.ReceiverVar}} := &{{.ReceiverType}}{}
+  {{.ReceiverVar}}.Get{{.FieldName}}()
+  {{.ReceiverVar}} = nil
+  {{.ReceiverVar}}.Get{{.FieldName}}()
+}
+{{end}}
+`

@@ -9,6 +9,10 @@ package github
 
 import "encoding/json"
 
+type GitHubEvent interface {
+	GHEvent()
+}
+
 // RequestedAction is included in a CheckRunEvent when a user has invoked an action,
 // i.e. when the CheckRunEvent's Action field is "requested_action".
 type RequestedAction struct {

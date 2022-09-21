@@ -28,7 +28,7 @@ func (e Event) String() string {
 
 // ParsePayload parses the event payload. For recognized event types,
 // a value of the corresponding struct type will be returned.
-func (e *Event) ParsePayload() (payload interface{}, err error) {
+func (e *Event) ParsePayload() (payload GitHubEvent, err error) {
 	switch *e.Type {
 	case "BranchProtectionRuleEvent":
 		payload = &BranchProtectionRuleEvent{}
