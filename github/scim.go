@@ -112,10 +112,12 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -147,10 +149,12 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -178,10 +182,12 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -194,5 +200,6 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
