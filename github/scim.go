@@ -88,15 +88,18 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	identities := new(SCIMProvisionedIdentities)
 	resp, err := s.client.Do(ctx, req, identities)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return identities, resp, nil
 }
 
@@ -125,11 +128,13 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 	if err != nil {
 		return nil, nil, err
 	}
+
 	user := new(SCIMUserAttributes)
 	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return user, resp, nil
 }
 
