@@ -1726,10 +1726,11 @@ func TestSecretScanning_String(t *testing.T) {
 
 func TestSecurityAndAnalysis_String(t *testing.T) {
 	v := SecurityAndAnalysis{
-		AdvancedSecurity: &AdvancedSecurity{},
-		SecretScanning:   &SecretScanning{},
+		AdvancedSecurity:             &AdvancedSecurity{},
+		SecretScanning:               &SecretScanning{},
+		SecretScanningPushProtection: &SecretScanningPushProtection{},
 	}
-	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}}`
+	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
 	}

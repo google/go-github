@@ -19717,6 +19717,16 @@ func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
 	s.GetState()
 }
 
+func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
+	var zeroValue string
+	s := &SecretScanningPushProtection{Status: &zeroValue}
+	s.GetStatus()
+	s = &SecretScanningPushProtection{}
+	s.GetStatus()
+	s = nil
+	s.GetStatus()
+}
+
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
 	var zeroValue string
 	s := &SecurityAdvisory{Description: &zeroValue}
@@ -19816,6 +19826,13 @@ func TestSecurityAndAnalysis_GetSecretScanning(tt *testing.T) {
 	s.GetSecretScanning()
 	s = nil
 	s.GetSecretScanning()
+}
+
+func TestSecurityAndAnalysis_GetSecretScanningPushProtection(tt *testing.T) {
+	s := &SecurityAndAnalysis{}
+	s.GetSecretScanningPushProtection()
+	s = nil
+	s.GetSecretScanningPushProtection()
 }
 
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {

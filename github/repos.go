@@ -205,8 +205,9 @@ type RepositoryListOptions struct {
 // SecurityAndAnalysis specifies the optional advanced security features
 // that are enabled on a given repository.
 type SecurityAndAnalysis struct {
-	AdvancedSecurity *AdvancedSecurity `json:"advanced_security,omitempty"`
-	SecretScanning   *SecretScanning   `json:"secret_scanning,omitempty"`
+	AdvancedSecurity             *AdvancedSecurity             `json:"advanced_security,omitempty"`
+	SecretScanning               *SecretScanning               `json:"secret_scanning,omitempty"`
+	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
 }
 
 func (s SecurityAndAnalysis) String() string {
@@ -233,6 +234,13 @@ type SecretScanning struct {
 
 func (s SecretScanning) String() string {
 	return Stringify(s)
+}
+
+// SecretScanningPushProtection specifies the state of secret scanning push protection on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
+type SecretScanningPushProtection struct {
+	Status *string `json:"status,omitempty"`
 }
 
 // List the repositories for a user. Passing the empty string will list
