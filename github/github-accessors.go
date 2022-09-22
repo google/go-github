@@ -16894,6 +16894,14 @@ func (s *SecretScanningAlertUpdateOptions) GetState() string {
 	return *s.State
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (s *SecretScanningPushProtection) GetStatus() string {
+	if s == nil || s.Status == nil {
+		return ""
+	}
+	return *s.Status
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (s *SecurityAdvisory) GetDescription() string {
 	if s == nil || s.Description == nil {
@@ -16980,6 +16988,14 @@ func (s *SecurityAndAnalysis) GetSecretScanning() *SecretScanning {
 		return nil
 	}
 	return s.SecretScanning
+}
+
+// GetSecretScanningPushProtection returns the SecretScanningPushProtection field.
+func (s *SecurityAndAnalysis) GetSecretScanningPushProtection() *SecretScanningPushProtection {
+	if s == nil {
+		return nil
+	}
+	return s.SecretScanningPushProtection
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
