@@ -238,7 +238,7 @@ func (s SecretScanning) String() string {
 
 // SecretScanningPushProtection specifies the state of secret scanning push protection on a repository.
 //
-// Github API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
+// GitHub API docs: https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning#about-secret-scanning-for-partner-patterns
 type SecretScanningPushProtection struct {
 	Status *string `json:"status,omitempty"`
 }
