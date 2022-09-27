@@ -19351,6 +19351,76 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
+func TestSCIMMeta_GetCreated(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SCIMMeta{Created: &zeroValue}
+	s.GetCreated()
+	s = &SCIMMeta{}
+	s.GetCreated()
+	s = nil
+	s.GetCreated()
+}
+
+func TestSCIMMeta_GetLastModified(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SCIMMeta{LastModified: &zeroValue}
+	s.GetLastModified()
+	s = &SCIMMeta{}
+	s.GetLastModified()
+	s = nil
+	s.GetLastModified()
+}
+
+func TestSCIMMeta_GetLocation(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMMeta{Location: &zeroValue}
+	s.GetLocation()
+	s = &SCIMMeta{}
+	s.GetLocation()
+	s = nil
+	s.GetLocation()
+}
+
+func TestSCIMMeta_GetResourceType(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMMeta{ResourceType: &zeroValue}
+	s.GetResourceType()
+	s = &SCIMMeta{}
+	s.GetResourceType()
+	s = nil
+	s.GetResourceType()
+}
+
+func TestSCIMProvisionedIdentities_GetItemsPerPage(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{ItemsPerPage: &zeroValue}
+	s.GetItemsPerPage()
+	s = &SCIMProvisionedIdentities{}
+	s.GetItemsPerPage()
+	s = nil
+	s.GetItemsPerPage()
+}
+
+func TestSCIMProvisionedIdentities_GetStartIndex(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{StartIndex: &zeroValue}
+	s.GetStartIndex()
+	s = &SCIMProvisionedIdentities{}
+	s.GetStartIndex()
+	s = nil
+	s.GetStartIndex()
+}
+
+func TestSCIMProvisionedIdentities_GetTotalResults(tt *testing.T) {
+	var zeroValue int
+	s := &SCIMProvisionedIdentities{TotalResults: &zeroValue}
+	s.GetTotalResults()
+	s = &SCIMProvisionedIdentities{}
+	s.GetTotalResults()
+	s = nil
+	s.GetTotalResults()
+}
+
 func TestSCIMUserAttributes_GetActive(tt *testing.T) {
 	var zeroValue bool
 	s := &SCIMUserAttributes{Active: &zeroValue}
@@ -19379,6 +19449,23 @@ func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
+}
+
+func TestSCIMUserAttributes_GetID(tt *testing.T) {
+	var zeroValue string
+	s := &SCIMUserAttributes{ID: &zeroValue}
+	s.GetID()
+	s = &SCIMUserAttributes{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSCIMUserAttributes_GetMeta(tt *testing.T) {
+	s := &SCIMUserAttributes{}
+	s.GetMeta()
+	s = nil
+	s.GetMeta()
 }
 
 func TestSCIMUserEmail_GetPrimary(tt *testing.T) {

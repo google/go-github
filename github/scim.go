@@ -29,6 +29,9 @@ type SCIMUserAttributes struct {
 	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
 	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
+	// Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions or GetSCIMProvisioningInfoForUser:
+	ID   *string   `json:"id,omitempty"`
+	Meta *SCIMMeta `json:"meta,omitempty"`
 }
 
 // SCIMUserName represents SCIM user information.
@@ -43,6 +46,23 @@ type SCIMUserEmail struct {
 	Value   string  `json:"value"`             // (Required.)
 	Primary *bool   `json:"primary,omitempty"` // (Optional.)
 	Type    *string `json:"type,omitempty"`    // (Optional.)
+}
+
+// SCIMMeta represents metadata about the SCIM resource.
+type SCIMMeta struct {
+	ResourceType *string    `json:"resourceType,omitempty"`
+	Created      *Timestamp `json:"created,omitempty"`
+	LastModified *Timestamp `json:"lastModified,omitempty"`
+	Location     *string    `json:"location,omitempty"`
+}
+
+// SCIMProvisionedIdentities represents the result of calling ListSCIMProvisionedIdentities.
+type SCIMProvisionedIdentities struct {
+	Schemas      []string              `json:"schemas,omitempty"`
+	TotalResults *int                  `json:"totalResults,omitempty"`
+	ItemsPerPage *int                  `json:"itemsPerPage,omitempty"`
+	StartIndex   *int                  `json:"startIndex,omitempty"`
+	Resources    []*SCIMUserAttributes `json:"Resources,omitempty"`
 }
 
 // ListSCIMProvisionedIdentitiesOptions represents options for ListSCIMProvisionedIdentities.
@@ -62,17 +82,25 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
 //
 // GitHub API docs: https://docs.github.com/en/rest/scim#list-scim-provisioned-identities
-func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*Response, error) {
+func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedIdentities, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+
+	identities := new(SCIMProvisionedIdentities)
+	resp, err := s.client.Do(ctx, req, identities)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return identities, resp, nil
 }
 
 // ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
@@ -84,23 +112,32 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/scim#supported-scim-user-attributes
-func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*Response, error) {
+func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+
+	user := new(SCIMUserAttributes)
+	resp, err := s.client.Do(ctx, req, &user)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return user, resp, nil
 }
 
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.
@@ -112,10 +149,12 @@ func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, s
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -143,10 +182,12 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 	if err != nil {
 		return nil, err
 	}
+
 	req, err := s.client.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -159,5 +200,6 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

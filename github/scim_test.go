@@ -9,6 +9,9 @@ import (
 	"context"
 	"net/http"
 	"testing"
+	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
@@ -18,23 +21,102 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{
+			"schemas": [
+			  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+			],
+			"totalResults": 1,
+			"itemsPerPage": 1,
+			"startIndex": 1,
+			"Resources": [
+			  {
+				"schemas": [
+				  "urn:ietf:params:scim:schemas:core:2.0:User"
+				],
+				"id": "5fc0c238-1112-11e8-8e45-920c87bdbd75",
+				"externalId": "00u1dhhb1fkIGP7RL1d8",
+				"userName": "octocat@github.com",
+				"displayName": "Mona Octocat",
+				"name": {
+				  "givenName": "Mona",
+				  "familyName": "Octocat",
+				  "formatted": "Mona Octocat"
+				},
+				"emails": [
+				  {
+					"value": "octocat@github.com",
+					"primary": true
+				  }
+				],
+				"active": true,
+				"meta": {
+				  "resourceType": "User",
+				  "created": "2018-02-13T15:05:24.000-00:00",
+				  "lastModified": "2018-02-13T15:05:24.000-00:00",
+				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"
+				}
+			  }
+			]
+		  }`))
 	})
 
 	ctx := context.Background()
 	opts := &ListSCIMProvisionedIdentitiesOptions{}
-	_, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
+	identities, _, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
 	}
 
+	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
+	want := SCIMProvisionedIdentities{
+		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
+		TotalResults: Int(1),
+		ItemsPerPage: Int(1),
+		StartIndex:   Int(1),
+		Resources: []*SCIMUserAttributes{
+			{
+				ID: String("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				Meta: &SCIMMeta{
+					ResourceType: String("User"),
+					Created:      &date,
+					LastModified: &date,
+					Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				},
+				UserName: "octocat@github.com",
+				Name: SCIMUserName{
+					GivenName:  "Mona",
+					FamilyName: "Octocat",
+					Formatted:  String("Mona Octocat"),
+				},
+				DisplayName: String("Mona Octocat"),
+				Emails: []*SCIMUserEmail{
+					{
+						Value:   "octocat@github.com",
+						Primary: Bool(true),
+					},
+				},
+				Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+				ExternalID: String("00u1dhhb1fkIGP7RL1d8"),
+				Groups:     nil,
+				Active:     Bool(true),
+			},
+		},
+	}
+
+	if !cmp.Equal(identities, &want) {
+		diff := cmp.Diff(identities, want)
+		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned %+v, want %+v: diff %+v", identities, want, diff)
+	}
+
 	const methodName = "ListSCIMProvisionedIdentities"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.SCIM.ListSCIMProvisionedIdentities(ctx, "\n", opts)
+		_, _, err = client.SCIM.ListSCIMProvisionedIdentities(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
+		_, r, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
+		return r, err
 	})
 }
 
@@ -83,22 +165,89 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{
+			"schemas": [
+			  "urn:ietf:params:scim:schemas:core:2.0:User"
+			],
+			"id": "edefdfedf-050c-11e7-8d32",
+			"externalId": "a7d0f98382",
+			"userName": "mona.octocat@okta.example.com",
+			"displayName": "Mona Octocat",
+			"name": {
+			  "givenName": "Mona",
+			  "familyName": "Octocat",
+			  "formatted": "Mona Octocat"
+			},
+			"emails": [
+			  {
+				"value": "mona.octocat@okta.example.com",
+				"primary": true
+			  },
+			  {
+				"value": "mona@octocat.github.com"
+			  }
+			],
+			"active": true,
+			"meta": {
+			  "resourceType": "User",
+			  "created": "2017-03-09T16:11:13-00:00",
+			  "lastModified": "2017-03-09T16:11:13-00:00",
+			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
+			}
+		  }`))
 	})
 
 	ctx := context.Background()
-	_, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
+	user, _, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
 	if err != nil {
 		t.Errorf("SCIM.GetSCIMProvisioningInfoForUser returned error: %v", err)
 	}
 
+	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, time.UTC)}
+	want := SCIMUserAttributes{
+		ID: String("edefdfedf-050c-11e7-8d32"),
+		Meta: &SCIMMeta{
+			ResourceType: String("User"),
+			Created:      &date,
+			LastModified: &date,
+			Location:     String("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
+		},
+		UserName: "mona.octocat@okta.example.com",
+		Name: SCIMUserName{
+			GivenName:  "Mona",
+			FamilyName: "Octocat",
+			Formatted:  String("Mona Octocat"),
+		},
+		DisplayName: String("Mona Octocat"),
+		Emails: []*SCIMUserEmail{
+			{
+				Value:   "mona.octocat@okta.example.com",
+				Primary: Bool(true),
+			},
+			{
+				Value: "mona@octocat.github.com",
+			},
+		},
+		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
+		ExternalID: String("a7d0f98382"),
+		Groups:     nil,
+		Active:     Bool(true),
+	}
+
+	if !cmp.Equal(user, &want) {
+		diff := cmp.Diff(user, want)
+		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned %+v, want %+v: diff %+v", user, want, diff)
+	}
+
 	const methodName = "GetSCIMProvisioningInfoForUser"
 	testBadOptions(t, methodName, func() error {
-		_, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "\n", "123")
+		_, _, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "\n", "123")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
+		_, r, err := client.SCIM.GetSCIMProvisioningInfoForUser(ctx, "o", "123")
+		return r, err
 	})
 }
 
