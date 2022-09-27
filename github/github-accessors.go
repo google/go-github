@@ -16582,6 +16582,62 @@ func (s *ScanningAnalysis) GetWarning() string {
 	return *s.Warning
 }
 
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetCreated() Timestamp {
+	if s == nil || s.Created == nil {
+		return Timestamp{}
+	}
+	return *s.Created
+}
+
+// GetLastModified returns the LastModified field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetLastModified() Timestamp {
+	if s == nil || s.LastModified == nil {
+		return Timestamp{}
+	}
+	return *s.LastModified
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetLocation() string {
+	if s == nil || s.Location == nil {
+		return ""
+	}
+	return *s.Location
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (s *SCIMMeta) GetResourceType() string {
+	if s == nil || s.ResourceType == nil {
+		return ""
+	}
+	return *s.ResourceType
+}
+
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetItemsPerPage() int {
+	if s == nil || s.ItemsPerPage == nil {
+		return 0
+	}
+	return *s.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetStartIndex() int {
+	if s == nil || s.StartIndex == nil {
+		return 0
+	}
+	return *s.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (s *SCIMProvisionedIdentities) GetTotalResults() int {
+	if s == nil || s.TotalResults == nil {
+		return 0
+	}
+	return *s.TotalResults
+}
+
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
 func (s *SCIMUserAttributes) GetActive() bool {
 	if s == nil || s.Active == nil {
@@ -16604,6 +16660,22 @@ func (s *SCIMUserAttributes) GetExternalID() string {
 		return ""
 	}
 	return *s.ExternalID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *SCIMUserAttributes) GetID() string {
+	if s == nil || s.ID == nil {
+		return ""
+	}
+	return *s.ID
+}
+
+// GetMeta returns the Meta field.
+func (s *SCIMUserAttributes) GetMeta() *SCIMMeta {
+	if s == nil {
+		return nil
+	}
+	return s.Meta
 }
 
 // GetPrimary returns the Primary field if it's non-nil, zero value otherwise.
