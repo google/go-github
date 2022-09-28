@@ -17230,6 +17230,38 @@ func (s *SourceImportAuthor) GetURL() string {
 	return *s.URL
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (s *SSHSigningKey) GetCreatedAt() Timestamp {
+	if s == nil || s.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *s.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *SSHSigningKey) GetID() int64 {
+	if s == nil || s.ID == nil {
+		return 0
+	}
+	return *s.ID
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (s *SSHSigningKey) GetKey() string {
+	if s == nil || s.Key == nil {
+		return ""
+	}
+	return *s.Key
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (s *SSHSigningKey) GetTitle() string {
+	if s == nil || s.Title == nil {
+		return ""
+	}
+	return *s.Title
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (s *StarEvent) GetAction() string {
 	if s == nil || s.Action == nil {

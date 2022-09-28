@@ -20116,6 +20116,46 @@ func TestSourceImportAuthor_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSSHSigningKey_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SSHSigningKey{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SSHSigningKey{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSSHSigningKey_GetID(tt *testing.T) {
+	var zeroValue int64
+	s := &SSHSigningKey{ID: &zeroValue}
+	s.GetID()
+	s = &SSHSigningKey{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSSHSigningKey_GetKey(tt *testing.T) {
+	var zeroValue string
+	s := &SSHSigningKey{Key: &zeroValue}
+	s.GetKey()
+	s = &SSHSigningKey{}
+	s.GetKey()
+	s = nil
+	s.GetKey()
+}
+
+func TestSSHSigningKey_GetTitle(tt *testing.T) {
+	var zeroValue string
+	s := &SSHSigningKey{Title: &zeroValue}
+	s.GetTitle()
+	s = &SSHSigningKey{}
+	s.GetTitle()
+	s = nil
+	s.GetTitle()
+}
+
 func TestStarEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	s := &StarEvent{Action: &zeroValue}
