@@ -36,7 +36,7 @@ jobs:
 
     steps:
     - name: Cancel previous
-      uses: styfle/cancel-workflow-action@bb6001c4ea612bf59c3abfc4756fbceee4f870c7 #0.10.0
+      uses: styfle/cancel-workflow-action@9f10b1b9fa56e99e4c5d12c2a085c8a0c37ab0ac #0.10.0
       with:
         access_token: ${{ github.token }}
 
