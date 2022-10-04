@@ -874,8 +874,8 @@ type BranchProtectionRule struct {
 type ProtectionChanges struct {
 	AdminEnforced                            *AdminEnforcedChanges                            `json:"admin_enforced,omitempty"`
 	AllowDeletionsEnforcementLevel           *AllowDeletionsEnforcementLevelChanges           `json:"allow_deletions_enforcement_level,omitempty"`
-	AuthorizedActorNames                     *AuthorizedActorNamesChanges                     `json:"authorized_actor_names,omitempty"`
-	AuthorizedActorsOnly                     *AuthorizedActorsOnlyChanges                     `json:"authorized_actors_only,omitempty"`
+	AuthorizedActorNames                     *AuthorizedActorNames                            `json:"authorized_actor_names,omitempty"`
+	AuthorizedActorsOnly                     *AuthorizedActorsOnly                            `json:"authorized_actors_only,omitempty"`
 	AuthorizedDismissalActorsOnly            *AuthorizedDismissalActorsOnlyChanges            `json:"authorized_dismissal_actors_only,omitempty"`
 	CreateProtected                          *CreateProtectedChanges                          `json:"create_protected,omitempty"`
 	DismissStaleReviewsOnPush                *DismissStaleReviewsOnPushChanges                `json:"dismiss_stale_reviews_on_push,omitempty"`
@@ -899,13 +899,13 @@ type AllowDeletionsEnforcementLevelChanges struct {
 	From *string `json:"from,omitempty"`
 }
 
-// AuthorizedActorNamesChanges represents who are authorized to edit the branch protection rules.
-type AuthorizedActorNamesChanges struct {
+// AuthorizedActorNames represents who are authorized to edit the branch protection rules.
+type AuthorizedActorNames struct {
 	From []string `json:"from,omitempty"`
 }
 
-// AuthorizedActorsOnlyChanges represents if the branch rule can be edited by authorized actors only.
-type AuthorizedActorsOnlyChanges struct {
+// AuthorizedActorsOnly represents if the branch rule can be edited by authorized actors only.
+type AuthorizedActorsOnly struct {
 	From *bool `json:"from,omitempty"`
 }
 

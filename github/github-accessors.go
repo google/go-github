@@ -1375,7 +1375,7 @@ func (a *AuthorizationUpdateRequest) GetNoteURL() string {
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (a *AuthorizedActorsOnlyChanges) GetFrom() bool {
+func (a *AuthorizedActorsOnly) GetFrom() bool {
 	if a == nil || a.From == nil {
 		return false
 	}
@@ -11871,7 +11871,7 @@ func (p *ProtectionChanges) GetAllowDeletionsEnforcementLevel() *AllowDeletionsE
 }
 
 // GetAuthorizedActorNames returns the AuthorizedActorNames field.
-func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNamesChanges {
+func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNames {
 	if p == nil {
 		return nil
 	}
@@ -11879,7 +11879,7 @@ func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNamesChang
 }
 
 // GetAuthorizedActorsOnly returns the AuthorizedActorsOnly field.
-func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnlyChanges {
+func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnly {
 	if p == nil {
 		return nil
 	}

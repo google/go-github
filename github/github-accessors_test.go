@@ -1640,11 +1640,11 @@ func TestAuthorizationUpdateRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 }
 
-func TestAuthorizedActorsOnlyChanges_GetFrom(tt *testing.T) {
+func TestAuthorizedActorsOnly_GetFrom(tt *testing.T) {
 	var zeroValue bool
-	a := &AuthorizedActorsOnlyChanges{From: &zeroValue}
+	a := &AuthorizedActorsOnly{From: &zeroValue}
 	a.GetFrom()
-	a = &AuthorizedActorsOnlyChanges{}
+	a = &AuthorizedActorsOnly{}
 	a.GetFrom()
 	a = nil
 	a.GetFrom()
