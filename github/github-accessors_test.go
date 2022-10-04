@@ -105,6 +105,16 @@ func TestActionsPermissionsRepository_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	a := &AdminEnforcedChanges{From: &zeroValue}
+	a.GetFrom()
+	a = &AdminEnforcedChanges{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
+}
+
 func TestAdminEnforcement_GetURL(tt *testing.T) {
 	var zeroValue string
 	a := &AdminEnforcement{URL: &zeroValue}
@@ -459,6 +469,16 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 	a = nil
 	a.GetURL()
+}
+
+func TestAllowDeletionsEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	a := &AllowDeletionsEnforcementLevelChanges{From: &zeroValue}
+	a.GetFrom()
+	a = &AllowDeletionsEnforcementLevelChanges{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
 }
 
 func TestAnalysesListOptions_GetRef(tt *testing.T) {
@@ -1620,11 +1640,21 @@ func TestAuthorizationUpdateRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 }
 
-func TestAuthorizedActorsOnly_GetFrom(tt *testing.T) {
+func TestAuthorizedActorsOnlyChanges_GetFrom(tt *testing.T) {
 	var zeroValue bool
-	a := &AuthorizedActorsOnly{From: &zeroValue}
+	a := &AuthorizedActorsOnlyChanges{From: &zeroValue}
 	a.GetFrom()
-	a = &AuthorizedActorsOnly{}
+	a = &AuthorizedActorsOnlyChanges{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
+}
+
+func TestAuthorizedDismissalActorsOnlyChanges_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	a := &AuthorizedDismissalActorsOnlyChanges{From: &zeroValue}
+	a.GetFrom()
+	a = &AuthorizedDismissalActorsOnlyChanges{}
 	a.GetFrom()
 	a = nil
 	a.GetFrom()
@@ -4143,6 +4173,16 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateProtectedChanges{From: &zeroValue}
+	c.GetFrom()
+	c = &CreateProtectedChanges{}
+	c.GetFrom()
+	c = nil
+	c.GetFrom()
+}
+
 func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	var zeroValue bool
 	c := &CreateRunnerGroupRequest{AllowsPublicRepositories: &zeroValue}
@@ -5294,6 +5334,16 @@ func TestDismissedReview_GetState(tt *testing.T) {
 	d.GetState()
 	d = nil
 	d.GetState()
+}
+
+func TestDismissStaleReviewsOnPushChanges_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	d := &DismissStaleReviewsOnPushChanges{From: &zeroValue}
+	d.GetFrom()
+	d = &DismissStaleReviewsOnPushChanges{}
+	d.GetFrom()
+	d = nil
+	d.GetFrom()
 }
 
 func TestDispatchRequestOptions_GetClientPayload(tt *testing.T) {
@@ -9576,6 +9626,16 @@ func TestLicense_GetURL(tt *testing.T) {
 	l.GetURL()
 }
 
+func TestLinearHistoryRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	l := &LinearHistoryRequirementEnforcementLevelChanges{From: &zeroValue}
+	l.GetFrom()
+	l = &LinearHistoryRequirementEnforcementLevelChanges{}
+	l.GetFrom()
+	l = nil
+	l.GetFrom()
+}
+
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {
 	var zeroValue int64
 	l := &ListCheckRunsOptions{AppID: &zeroValue}
@@ -13771,6 +13831,20 @@ func TestProtection_GetRestrictions(tt *testing.T) {
 	p.GetRestrictions()
 }
 
+func TestProtectionChanges_GetAdminEnforced(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetAdminEnforced()
+	p = nil
+	p.GetAdminEnforced()
+}
+
+func TestProtectionChanges_GetAllowDeletionsEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetAllowDeletionsEnforcementLevel()
+	p = nil
+	p.GetAllowDeletionsEnforcementLevel()
+}
+
 func TestProtectionChanges_GetAuthorizedActorNames(tt *testing.T) {
 	p := &ProtectionChanges{}
 	p.GetAuthorizedActorNames()
@@ -13783,6 +13857,83 @@ func TestProtectionChanges_GetAuthorizedActorsOnly(tt *testing.T) {
 	p.GetAuthorizedActorsOnly()
 	p = nil
 	p.GetAuthorizedActorsOnly()
+}
+
+func TestProtectionChanges_GetAuthorizedDismissalActorsOnly(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetAuthorizedDismissalActorsOnly()
+	p = nil
+	p.GetAuthorizedDismissalActorsOnly()
+}
+
+func TestProtectionChanges_GetCreateProtected(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetCreateProtected()
+	p = nil
+	p.GetCreateProtected()
+}
+
+func TestProtectionChanges_GetDismissStaleReviewsOnPush(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetDismissStaleReviewsOnPush()
+	p = nil
+	p.GetDismissStaleReviewsOnPush()
+}
+
+func TestProtectionChanges_GetLinearHistoryRequirementEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetLinearHistoryRequirementEnforcementLevel()
+	p = nil
+	p.GetLinearHistoryRequirementEnforcementLevel()
+}
+
+func TestProtectionChanges_GetPullRequestReviewsEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetPullRequestReviewsEnforcementLevel()
+	p = nil
+	p.GetPullRequestReviewsEnforcementLevel()
+}
+
+func TestProtectionChanges_GetRequireCodeOwnerReview(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetRequireCodeOwnerReview()
+	p = nil
+	p.GetRequireCodeOwnerReview()
+}
+
+func TestProtectionChanges_GetRequiredConversationResolutionLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetRequiredConversationResolutionLevel()
+	p = nil
+	p.GetRequiredConversationResolutionLevel()
+}
+
+func TestProtectionChanges_GetRequiredDeploymentsEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetRequiredDeploymentsEnforcementLevel()
+	p = nil
+	p.GetRequiredDeploymentsEnforcementLevel()
+}
+
+func TestProtectionChanges_GetRequiredStatusChecks(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetRequiredStatusChecks()
+	p = nil
+	p.GetRequiredStatusChecks()
+}
+
+func TestProtectionChanges_GetRequiredStatusChecksEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetRequiredStatusChecksEnforcementLevel()
+	p = nil
+	p.GetRequiredStatusChecksEnforcementLevel()
+}
+
+func TestProtectionChanges_GetSignatureRequirementEnforcementLevel(tt *testing.T) {
+	p := &ProtectionChanges{}
+	p.GetSignatureRequirementEnforcementLevel()
+	p = nil
+	p.GetSignatureRequirementEnforcementLevel()
 }
 
 func TestProtectionRequest_GetAllowDeletions(tt *testing.T) {
@@ -15141,6 +15292,16 @@ func TestPullRequestReviewsEnforcement_GetDismissalRestrictions(tt *testing.T) {
 	p.GetDismissalRestrictions()
 	p = nil
 	p.GetDismissalRestrictions()
+}
+
+func TestPullRequestReviewsEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	p := &PullRequestReviewsEnforcementLevelChanges{From: &zeroValue}
+	p.GetFrom()
+	p = &PullRequestReviewsEnforcementLevelChanges{}
+	p.GetFrom()
+	p = nil
+	p.GetFrom()
 }
 
 func TestPullRequestReviewsEnforcementRequest_GetBypassPullRequestAllowancesRequest(tt *testing.T) {
@@ -18794,6 +18955,36 @@ func TestRepoStatus_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRequireCodeOwnerReviewChanges_GetFrom(tt *testing.T) {
+	var zeroValue bool
+	r := &RequireCodeOwnerReviewChanges{From: &zeroValue}
+	r.GetFrom()
+	r = &RequireCodeOwnerReviewChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestRequiredConversationResolutionLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredConversationResolutionLevelChanges{From: &zeroValue}
+	r.GetFrom()
+	r = &RequiredConversationResolutionLevelChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestRequiredDeploymentsEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredDeploymentsEnforcementLevelChanges{From: &zeroValue}
+	r.GetFrom()
+	r = &RequiredDeploymentsEnforcementLevelChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
 func TestRequiredReviewer_GetType(tt *testing.T) {
 	var zeroValue string
 	r := &RequiredReviewer{Type: &zeroValue}
@@ -18812,6 +19003,16 @@ func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
 	r.GetAppID()
 	r = nil
 	r.GetAppID()
+}
+
+func TestRequiredStatusChecksEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	r := &RequiredStatusChecksEnforcementLevelChanges{From: &zeroValue}
+	r.GetFrom()
+	r = &RequiredStatusChecksEnforcementLevelChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
 }
 
 func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
@@ -19940,6 +20141,16 @@ func TestServiceHook_GetName(tt *testing.T) {
 	s.GetName()
 	s = nil
 	s.GetName()
+}
+
+func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
+	var zeroValue string
+	s := &SignatureRequirementEnforcementLevelChanges{From: &zeroValue}
+	s.GetFrom()
+	s = &SignatureRequirementEnforcementLevelChanges{}
+	s.GetFrom()
+	s = nil
+	s.GetFrom()
 }
 
 func TestSignaturesProtectedBranch_GetEnabled(tt *testing.T) {

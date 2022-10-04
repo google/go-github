@@ -86,6 +86,14 @@ func (a *ActionsPermissionsRepository) GetSelectedActionsURL() string {
 	return *a.SelectedActionsURL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (a *AdminEnforcedChanges) GetFrom() bool {
+	if a == nil || a.From == nil {
+		return false
+	}
+	return *a.From
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcement) GetURL() string {
 	if a == nil || a.URL == nil {
@@ -412,6 +420,14 @@ func (a *Alert) GetURL() string {
 		return ""
 	}
 	return *a.URL
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (a *AllowDeletionsEnforcementLevelChanges) GetFrom() string {
+	if a == nil || a.From == nil {
+		return ""
+	}
+	return *a.From
 }
 
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
@@ -1359,7 +1375,15 @@ func (a *AuthorizationUpdateRequest) GetNoteURL() string {
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
-func (a *AuthorizedActorsOnly) GetFrom() bool {
+func (a *AuthorizedActorsOnlyChanges) GetFrom() bool {
+	if a == nil || a.From == nil {
+		return false
+	}
+	return *a.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (a *AuthorizedDismissalActorsOnlyChanges) GetFrom() bool {
 	if a == nil || a.From == nil {
 		return false
 	}
@@ -3542,6 +3566,14 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 	return *c.Role
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (c *CreateProtectedChanges) GetFrom() bool {
+	if c == nil || c.From == nil {
+		return false
+	}
+	return *c.From
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -4532,6 +4564,14 @@ func (d *DismissedReview) GetState() string {
 		return ""
 	}
 	return *d.State
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (d *DismissStaleReviewsOnPushChanges) GetFrom() bool {
+	if d == nil || d.From == nil {
+		return false
+	}
+	return *d.From
 }
 
 // GetClientPayload returns the ClientPayload field if it's non-nil, zero value otherwise.
@@ -8174,6 +8214,14 @@ func (l *License) GetURL() string {
 	return *l.URL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (l *LinearHistoryRequirementEnforcementLevelChanges) GetFrom() string {
+	if l == nil || l.From == nil {
+		return ""
+	}
+	return *l.From
+}
+
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
 func (l *ListCheckRunsOptions) GetAppID() int64 {
 	if l == nil || l.AppID == nil {
@@ -11806,8 +11854,24 @@ func (p *Protection) GetRestrictions() *BranchRestrictions {
 	return p.Restrictions
 }
 
+// GetAdminEnforced returns the AdminEnforced field.
+func (p *ProtectionChanges) GetAdminEnforced() *AdminEnforcedChanges {
+	if p == nil {
+		return nil
+	}
+	return p.AdminEnforced
+}
+
+// GetAllowDeletionsEnforcementLevel returns the AllowDeletionsEnforcementLevel field.
+func (p *ProtectionChanges) GetAllowDeletionsEnforcementLevel() *AllowDeletionsEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.AllowDeletionsEnforcementLevel
+}
+
 // GetAuthorizedActorNames returns the AuthorizedActorNames field.
-func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNames {
+func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNamesChanges {
 	if p == nil {
 		return nil
 	}
@@ -11815,11 +11879,99 @@ func (p *ProtectionChanges) GetAuthorizedActorNames() *AuthorizedActorNames {
 }
 
 // GetAuthorizedActorsOnly returns the AuthorizedActorsOnly field.
-func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnly {
+func (p *ProtectionChanges) GetAuthorizedActorsOnly() *AuthorizedActorsOnlyChanges {
 	if p == nil {
 		return nil
 	}
 	return p.AuthorizedActorsOnly
+}
+
+// GetAuthorizedDismissalActorsOnly returns the AuthorizedDismissalActorsOnly field.
+func (p *ProtectionChanges) GetAuthorizedDismissalActorsOnly() *AuthorizedDismissalActorsOnlyChanges {
+	if p == nil {
+		return nil
+	}
+	return p.AuthorizedDismissalActorsOnly
+}
+
+// GetCreateProtected returns the CreateProtected field.
+func (p *ProtectionChanges) GetCreateProtected() *CreateProtectedChanges {
+	if p == nil {
+		return nil
+	}
+	return p.CreateProtected
+}
+
+// GetDismissStaleReviewsOnPush returns the DismissStaleReviewsOnPush field.
+func (p *ProtectionChanges) GetDismissStaleReviewsOnPush() *DismissStaleReviewsOnPushChanges {
+	if p == nil {
+		return nil
+	}
+	return p.DismissStaleReviewsOnPush
+}
+
+// GetLinearHistoryRequirementEnforcementLevel returns the LinearHistoryRequirementEnforcementLevel field.
+func (p *ProtectionChanges) GetLinearHistoryRequirementEnforcementLevel() *LinearHistoryRequirementEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.LinearHistoryRequirementEnforcementLevel
+}
+
+// GetPullRequestReviewsEnforcementLevel returns the PullRequestReviewsEnforcementLevel field.
+func (p *ProtectionChanges) GetPullRequestReviewsEnforcementLevel() *PullRequestReviewsEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequestReviewsEnforcementLevel
+}
+
+// GetRequireCodeOwnerReview returns the RequireCodeOwnerReview field.
+func (p *ProtectionChanges) GetRequireCodeOwnerReview() *RequireCodeOwnerReviewChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequireCodeOwnerReview
+}
+
+// GetRequiredConversationResolutionLevel returns the RequiredConversationResolutionLevel field.
+func (p *ProtectionChanges) GetRequiredConversationResolutionLevel() *RequiredConversationResolutionLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredConversationResolutionLevel
+}
+
+// GetRequiredDeploymentsEnforcementLevel returns the RequiredDeploymentsEnforcementLevel field.
+func (p *ProtectionChanges) GetRequiredDeploymentsEnforcementLevel() *RequiredDeploymentsEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredDeploymentsEnforcementLevel
+}
+
+// GetRequiredStatusChecks returns the RequiredStatusChecks field.
+func (p *ProtectionChanges) GetRequiredStatusChecks() *RequiredStatusChecksChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredStatusChecks
+}
+
+// GetRequiredStatusChecksEnforcementLevel returns the RequiredStatusChecksEnforcementLevel field.
+func (p *ProtectionChanges) GetRequiredStatusChecksEnforcementLevel() *RequiredStatusChecksEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredStatusChecksEnforcementLevel
+}
+
+// GetSignatureRequirementEnforcementLevel returns the SignatureRequirementEnforcementLevel field.
+func (p *ProtectionChanges) GetSignatureRequirementEnforcementLevel() *SignatureRequirementEnforcementLevelChanges {
+	if p == nil {
+		return nil
+	}
+	return p.SignatureRequirementEnforcementLevel
 }
 
 // GetAllowDeletions returns the AllowDeletions field if it's non-nil, zero value otherwise.
@@ -13012,6 +13164,14 @@ func (p *PullRequestReviewsEnforcement) GetDismissalRestrictions() *DismissalRes
 		return nil
 	}
 	return p.DismissalRestrictions
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementLevelChanges) GetFrom() string {
+	if p == nil || p.From == nil {
+		return ""
+	}
+	return *p.From
 }
 
 // GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
@@ -16134,6 +16294,30 @@ func (r *RepoStatus) GetURL() string {
 	return *r.URL
 }
 
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RequireCodeOwnerReviewChanges) GetFrom() bool {
+	if r == nil || r.From == nil {
+		return false
+	}
+	return *r.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RequiredConversationResolutionLevelChanges) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RequiredDeploymentsEnforcementLevelChanges) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (r *RequiredReviewer) GetType() string {
 	if r == nil || r.Type == nil {
@@ -16148,6 +16332,14 @@ func (r *RequiredStatusCheck) GetAppID() int64 {
 		return 0
 	}
 	return *r.AppID
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecksEnforcementLevelChanges) GetFrom() string {
+	if r == nil || r.From == nil {
+		return ""
+	}
+	return *r.From
 }
 
 // GetStrict returns the Strict field if it's non-nil, zero value otherwise.
@@ -17084,6 +17276,14 @@ func (s *ServiceHook) GetName() string {
 		return ""
 	}
 	return *s.Name
+}
+
+// GetFrom returns the From field if it's non-nil, zero value otherwise.
+func (s *SignatureRequirementEnforcementLevelChanges) GetFrom() string {
+	if s == nil || s.From == nil {
+		return ""
+	}
+	return *s.From
 }
 
 // GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.

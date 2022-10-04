@@ -872,17 +872,95 @@ type BranchProtectionRule struct {
 
 // ProtectionChanges represents the changes to the rule if the BranchProtection was edited.
 type ProtectionChanges struct {
-	AuthorizedActorsOnly *AuthorizedActorsOnly `json:"authorized_actors_only,omitempty"`
-	AuthorizedActorNames *AuthorizedActorNames `json:"authorized_actor_names,omitempty"`
+	PullRequestReviewsEnforcementLevel       *PullRequestReviewsEnforcementLevelChanges       `json:"pull_request_reviews_enforcement_level,omitempty"`
+	DismissStaleReviewsOnPush                *DismissStaleReviewsOnPushChanges                `json:"dismiss_stale_reviews_on_push,omitempty"`
+	RequireCodeOwnerReview                   *RequireCodeOwnerReviewChanges                   `json:"require_code_owner_review,omitempty"`
+	AuthorizedDismissalActorsOnly            *AuthorizedDismissalActorsOnlyChanges            `json:"authorized_dismissal_actors_only,omitempty"`
+	RequiredStatusChecks                     *RequiredStatusChecksChanges                     `json:"required_status_checks,omitempty"`
+	RequiredStatusChecksEnforcementLevel     *RequiredStatusChecksEnforcementLevelChanges     `json:"required_status_checks_enforcement_level,omitempty"`
+	SignatureRequirementEnforcementLevel     *SignatureRequirementEnforcementLevelChanges     `json:"signature_requirement_enforcement_level,omitempty"`
+	LinearHistoryRequirementEnforcementLevel *LinearHistoryRequirementEnforcementLevelChanges `json:"linear_history_requirement_enforcement_level,omitempty"`
+	AdminEnforced                            *AdminEnforcedChanges                            `json:"admin_enforced,omitempty"`
+	CreateProtected                          *CreateProtectedChanges                          `json:"create_protected,omitempty"`
+	AllowDeletionsEnforcementLevel           *AllowDeletionsEnforcementLevelChanges           `json:"allow_deletions_enforcement_level,omitempty"`
+	RequiredDeploymentsEnforcementLevel      *RequiredDeploymentsEnforcementLevelChanges      `json:"required_deployments_enforcement_level,omitempty"`
+	RequiredConversationResolutionLevel      *RequiredConversationResolutionLevelChanges      `json:"required_conversation_resolution_level,omitempty"`
+	AuthorizedActorsOnly                     *AuthorizedActorsOnlyChanges                     `json:"authorized_actors_only,omitempty"`
+	AuthorizedActorNames                     *AuthorizedActorNamesChanges                     `json:"authorized_actor_names,omitempty"`
 }
 
-// AuthorizedActorNames represents who are authorized to edit the branch protection rules.
-type AuthorizedActorNames struct {
+// PullRequestReviewsEnforcementLevelChanges represents the changes made to the PullRequestReviewsEnforcementLevel policy.
+type PullRequestReviewsEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// DismissStaleReviewsOnPushChanges represents the changes made to the DismissStaleReviewsOnPushChanges policy.
+type DismissStaleReviewsOnPushChanges struct {
+	From *bool `json:"from"`
+}
+
+// RequireCodeOwnerReviewChanges represents the changes made to the RequireCodeOwnerReview policy.
+type RequireCodeOwnerReviewChanges struct {
+	From *bool `json:"from,omitempty"`
+}
+
+// AuthorizedDismissalActorsOnlyChanges represents the changes made to the AuthorizedDismissalActorsOnly policy.
+type AuthorizedDismissalActorsOnlyChanges struct {
+	From *bool `json:"from,omitempty"`
+}
+
+// RequiredStatusChecksChanges represents the changes made to the RequiredStatusChecks policy.
+type RequiredStatusChecksChanges struct {
 	From []string `json:"from,omitempty"`
 }
 
-// AuthorizedActorsOnly represents if the branche rule can be edited by authorized actors only.
-type AuthorizedActorsOnly struct {
+// RequiredStatusChecksEnforcementLevelChanges represents the changes made to the RequiredStatusChecksEnforcement policy.
+type RequiredStatusChecksEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// SignatureRequirementEnforcementLevelChanges represents the changes made to the SignatureRequirementEnforcement policy.
+type SignatureRequirementEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// LinearHistoryRequirementEnforcementLevelChanges represents the changes made to the LinearHistoryRequirementEnforcement policy.
+type LinearHistoryRequirementEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// AdminEnforcedChanges represents the changes made to the AdminEnforced policy.
+type AdminEnforcedChanges struct {
+	From *bool `json:"from,omitempty"`
+}
+
+// CreateProtectedChanges represents the changes made to the CreateProtected policy.
+type CreateProtectedChanges struct {
+	From *bool `json:"from,omitempty"`
+}
+
+// AllowDeletionsEnforcementLevelChanges represents the changes made to the AllowDeletionsEnforcement policy.
+type AllowDeletionsEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// RequiredDeploymentsEnforcementLevelChanges represents the changes made to the RequiredDeploymentsEnforcement policy.
+type RequiredDeploymentsEnforcementLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// RequiredConversationResolutionLevelChanges represents the changes made to the RequiredConversationResolution policy.
+type RequiredConversationResolutionLevelChanges struct {
+	From *string `json:"from,omitempty"`
+}
+
+// AuthorizedActorNamesChanges represents who are authorized to edit the branch protection rules.
+type AuthorizedActorNamesChanges struct {
+	From []string `json:"from,omitempty"`
+}
+
+// AuthorizedActorsOnlyChanges represents if the branch rule can be edited by authorized actors only.
+type AuthorizedActorsOnlyChanges struct {
 	From *bool `json:"from,omitempty"`
 }
 
