@@ -28,7 +28,7 @@ func (c *Client) AppRestrictionsEnabled(org string) (bool, error) {
 		return false, err
 	}
 
-	s := doc.Find(".oauth-application-whitelist svg").First()
+	s := doc.Find(".oauth-application-allowlist svg").First()
 	if s.Length() == 0 {
 		return false, errors.New("unable to find expected markup")
 	}
@@ -52,7 +52,7 @@ func (c *Client) ListOAuthApps(org string) ([]OAuthApp, error) {
 	}
 
 	var apps []OAuthApp
-	doc.Find(".oauth-application-whitelist ul > li").Each(func(i int, s *goquery.Selection) {
+	doc.Find(".oauth-application-allowlist ul > li").Each(func(i int, s *goquery.Selection) {
 		var app OAuthApp
 		app.Name = s.Find(".request-info strong").First().Text()
 		app.Description = s.Find(".request-info .application-description").Text()
