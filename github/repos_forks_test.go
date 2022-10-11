@@ -73,7 +73,7 @@ func TestRepositoriesService_CreateFork(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testFormValues(t, r, values{"organization": "o", "name": "n", "default_branch_only": "true"})
+		testBody(t, r, `{"organization":"o","name":"n","default_branch_only":true}`+"\n")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -110,7 +110,7 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testFormValues(t, r, values{"organization": "o", "name": "n", "default_branch_only": "true"})
+		testBody(t, r, `{"organization":"o","name":"n","default_branch_only":true}`+"\n")
 		// This response indicates the fork will happen asynchronously.
 		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `{"id":1}`)
