@@ -55,6 +55,7 @@ jobs:
           echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
           echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
         fi
+      shell: bash
 
     - name: Cache go modules
       uses: actions/cache@v3
