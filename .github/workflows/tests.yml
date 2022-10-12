@@ -48,13 +48,8 @@ jobs:
     # Get values for cache paths to be used in later steps 
     - id: cache-paths
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          echo "go-cache=$(go env GOCACHE)" | Out-File -FilePath $GITHUB_OUTPUT -Encoding utf8 -Append
-          echo "go-mod-cache=$(go env GOMODCACHE)" | Out-File -FilePath $GITHUB_OUTPUT -Encoding utf8 -Append
-        else
-          echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
-          echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-        fi
+        echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+        echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Cache go modules
