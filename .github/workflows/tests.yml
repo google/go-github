@@ -48,15 +48,15 @@ jobs:
     # Get values for cache paths to be used in later steps 
     - id: cache-paths
       run: |
-        echo "GOCACHE=$(go env GOCACHE)" >> $GITHUB_ENV
-        echo "GOMODCACHE=$(go env GOMODCACHE)" >> $GITHUB_ENV
+        echo "go-cache=$(go env GOCACHE)" | Out-File -FilePath $GITHUB_OUTPUT -Encoding utf8 -Append
+        echo "go-mod-cache=$(go env GOMODCACHE)" | Out-File -FilePath $GITHUB_OUTPUT -Encoding utf8 -Append
 
     - name: Cache go modules
       uses: actions/cache@v3
       with:
         path: |
-          ${{ env.GOCACHE }}
-          ${{ env.GOMODCACHE }}
+          ${{ steps.cache-paths.outputs.go-cache }}
+          ${{ steps.cache-paths.outputs.go-mod-cache }}
         key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
         restore-keys: ${{ runner.os }}-go-
 
