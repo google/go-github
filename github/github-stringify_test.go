@@ -1714,6 +1714,19 @@ func TestRepositoryRelease_String(t *testing.T) {
 	}
 }
 
+func TestSSHSigningKey_String(t *testing.T) {
+	v := SSHSigningKey{
+		ID:        Int64(0),
+		Key:       String(""),
+		Title:     String(""),
+		CreatedAt: &Timestamp{},
+	}
+	want := `github.SSHSigningKey{ID:0, Key:"", Title:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("SSHSigningKey.String = %v, want %v", got, want)
+	}
+}
+
 func TestSecretScanning_String(t *testing.T) {
 	v := SecretScanning{
 		Status: String(""),
