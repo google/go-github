@@ -48,7 +48,7 @@ jobs:
     # Get values for cache paths to be used in later steps 
     - id: cache-paths
       run: |
-        echo "go-cache=$(go env GOCACHE) >> $GITHUB_OUTPUT"
+        echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
         echo "go-mod-cache=$(go env GOMODCACHE) >> $GITHUB_OUTPUT"
 
     - name: Cache go modules
