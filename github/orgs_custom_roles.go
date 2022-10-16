@@ -77,7 +77,7 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 	return resultingRole, resp, err
 }
 
-// UpdateCustomRepoRole creates a custom repository role in this organization.
+// UpdateCustomRepoRole updates a custom repository role in this organization.
 // In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#update-a-custom-role
