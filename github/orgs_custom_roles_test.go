@@ -29,7 +29,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned error: %v", err)
 	}
 
-	want := &OrganizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer"), BaseRole: String("write"), Permissions: &[]string{"delete_alerts_code_scanning"}}}}
+	want := &OrganizationCustomRepoRoles{TotalCount: Int(1), CustomRepoRoles: []*CustomRepoRoles{{ID: Int64(1), Name: String("Developer"), BaseRole: String("write"), Permissions: []string{"delete_alerts_code_scanning"}}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListCustomRepoRoles returned %+v, want %+v", apps, want)
 	}
@@ -64,14 +64,14 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 		Name:        String("Labeler"),
 		Description: String("A role for issue and PR labelers"),
 		BaseRole:    String("read"),
-		Permissions: &[]string{"add_label"},
+		Permissions: []string{"add_label"},
 	}
 	apps, _, err := client.Organizations.CreateCustomRepoRole(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.CreateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Labeler"), BaseRole: String("read"), Permissions: &[]string{"add_label"}, Description: String("A role for issue and PR labelers")}
+	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Labeler"), BaseRole: String("read"), Permissions: []string{"add_label"}, Description: String("A role for issue and PR labelers")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.CreateCustomRepoRole returned %+v, want %+v", apps, want)
@@ -112,7 +112,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Updated Name"), BaseRole: String("read"), Permissions: &[]string{"add_label"}, Description: String("Updated Description")}
+	want := &CustomRepoRoles{ID: Int64(8030), Name: String("Updated Name"), BaseRole: String("read"), Permissions: []string{"add_label"}, Description: String("Updated Description")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned %+v, want %+v", apps, want)
