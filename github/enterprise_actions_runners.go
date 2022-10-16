@@ -10,6 +10,25 @@ import (
 	"fmt"
 )
 
+// ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
+func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, enterprise string) ([]*RunnerApplicationDownload, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/runners/downloads", enterprise)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var rads []*RunnerApplicationDownload
+	resp, err := s.client.Do(ctx, req, &rads)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return rads, resp, nil
+}
+
 // CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/self-hosted-runners#create-a-registration-token-for-an-enterprise
