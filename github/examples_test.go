@@ -123,6 +123,7 @@ func ExamplePullRequestsService_Create() {
 	newPR := &github.NewPullRequest{
 		Title:               github.String("My awesome pull request"),
 		Head:                github.String("branch_to_merge"),
+		HeadRepo:            github.String("my_org/my_repo"),
 		Base:                github.String("master"),
 		Body:                github.String("This is the description of the PR created with the package `github.com/google/go-github/github`"),
 		MaintainerCanModify: github.Bool(true),

@@ -245,6 +245,7 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner string, repo str
 type NewPullRequest struct {
 	Title               *string `json:"title,omitempty"`
 	Head                *string `json:"head,omitempty"`
+	HeadRepo            *string `json:"head_repo,omitempty"`
 	Base                *string `json:"base,omitempty"`
 	Body                *string `json:"body,omitempty"`
 	Issue               *int    `json:"issue,omitempty"`
