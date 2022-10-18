@@ -228,7 +228,7 @@ type Discussion struct {
 	Body               *string             `json:"body,omitempty"`
 }
 
-// DiscussionCommentEvent represents discussion comment event
+// DiscussionCommentEvent represents a discussion comment event.
 type DiscussionCommentEvent struct {
 	Action     *string            `json:"action,omitempty"`
 	Comment    *DiscussionComment `json:"comment,omitempty"`
