@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v47.0.0"
+	Version = "v48.0.0"
 
 	defaultBaseURL   = "https://api.github.com/"
 	defaultUserAgent = "go-github" + "/" + Version
