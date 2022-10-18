@@ -228,6 +228,16 @@ type Discussion struct {
 	Body               *string             `json:"body,omitempty"`
 }
 
+// DiscussionCommentEvent represents discussion comment event
+type DiscussionCommentEvent struct {
+	Action     *string            `json:"action,omitempty"`
+	Comment    *DiscussionComment `json:"comment,omitempty"`
+	Discussion *Discussion        `json:"discussion,omitempty"`
+	Repo       *Repository        `json:"repository,omitempty"`
+	Org        *Organization      `json:"organization,omitempty"`
+	Sender     *User              `json:"user,omitempty"`
+}
+
 // DiscussionCategory represents a discussion category in a GitHub DiscussionEvent.
 type DiscussionCategory struct {
 	ID           *int64     `json:"id,omitempty"`
