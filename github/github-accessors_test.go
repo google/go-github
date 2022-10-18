@@ -4173,6 +4173,36 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateOrUpdateCustomRoleOptions_GetBaseRole(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateCustomRoleOptions{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrUpdateCustomRoleOptions{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateOrUpdateCustomRoleOptions_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateCustomRoleOptions{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrUpdateCustomRoleOptions{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrUpdateCustomRoleOptions_GetName(tt *testing.T) {
+	var zeroValue string
+	c := &CreateOrUpdateCustomRoleOptions{Name: &zeroValue}
+	c.GetName()
+	c = &CreateOrUpdateCustomRoleOptions{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
 	var zeroValue bool
 	c := &CreateProtectedChanges{From: &zeroValue}
@@ -4238,6 +4268,26 @@ func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	c.GetBody()
 	c = nil
 	c.GetBody()
+}
+
+func TestCustomRepoRoles_GetBaseRole(tt *testing.T) {
+	var zeroValue string
+	c := &CustomRepoRoles{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CustomRepoRoles{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCustomRepoRoles_GetDescription(tt *testing.T) {
+	var zeroValue string
+	c := &CustomRepoRoles{Description: &zeroValue}
+	c.GetDescription()
+	c = &CustomRepoRoles{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
 }
 
 func TestCustomRepoRoles_GetID(tt *testing.T) {
@@ -20325,6 +20375,46 @@ func TestSourceImportAuthor_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSSHSigningKey_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	s := &SSHSigningKey{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SSHSigningKey{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSSHSigningKey_GetID(tt *testing.T) {
+	var zeroValue int64
+	s := &SSHSigningKey{ID: &zeroValue}
+	s.GetID()
+	s = &SSHSigningKey{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSSHSigningKey_GetKey(tt *testing.T) {
+	var zeroValue string
+	s := &SSHSigningKey{Key: &zeroValue}
+	s.GetKey()
+	s = &SSHSigningKey{}
+	s.GetKey()
+	s = nil
+	s.GetKey()
+}
+
+func TestSSHSigningKey_GetTitle(tt *testing.T) {
+	var zeroValue string
+	s := &SSHSigningKey{Title: &zeroValue}
+	s.GetTitle()
+	s = &SSHSigningKey{}
+	s.GetTitle()
+	s = nil
+	s.GetTitle()
 }
 
 func TestStarEvent_GetAction(tt *testing.T) {
