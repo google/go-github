@@ -4471,6 +4471,54 @@ func (d *DiscussionComment) GetURL() string {
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DiscussionCommentEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetComment returns the Comment field.
+func (d *DiscussionCommentEvent) GetComment() *DiscussionComment {
+	if d == nil {
+		return nil
+	}
+	return d.Comment
+}
+
+// GetDiscussion returns the Discussion field.
+func (d *DiscussionCommentEvent) GetDiscussion() *Discussion {
+	if d == nil {
+		return nil
+	}
+	return d.Discussion
+}
+
+// GetOrg returns the Org field.
+func (d *DiscussionCommentEvent) GetOrg() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Org
+}
+
+// GetRepo returns the Repo field.
+func (d *DiscussionCommentEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DiscussionCommentEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (d *DiscussionEvent) GetAction() string {
 	if d == nil || d.Action == nil {
 		return ""
