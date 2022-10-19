@@ -516,26 +516,51 @@ func TestValidatePayloadFromBody_UnsupportedContentType(t *testing.T) {
 	}
 }
 
-func TestDeliveryID(t *testing.T) {
-	id := "8970a780-244e-11e7-91ca-da3aabcb9793"
-	req, err := http.NewRequest("POST", "http://localhost", nil)
-	if err != nil {
-		t.Fatalf("DeliveryID: %v", err)
+func TestMessageHeaders(t *testing.T) {
+	tests := []struct {
+		key string
+		id  string
+	}{
+		{
+			key: DeliveryIDHeader,
+			id:  "8970a780-244e-11e7-91ca-da3aabcb9793",
+		},
+		{
+			key: "X-Github-Delivery",
+			id:  "8970a780-244e-11e7-91ca-da3aabcb9793",
+		},
 	}
-	req.Header.Set("X-Github-Delivery", id)
 
-	got := DeliveryID(req)
-	if got != id {
-		t.Errorf("DeliveryID(%#v) = %q, want %q", req, got, id)
+	for _, test := range tests {
+		r, _ := http.NewRequest("POST", "https://example.com", nil)
+		r.Header.Set(test.key, test.id)
+		if got, want := DeliveryID(r), test.id; got != want {
+			t.Errorf("DeliveryID(%#v) = %#v, want %#v", r, got, want)
+		}
 	}
 }
 
 func TestWebHookType(t *testing.T) {
-	want := "yo"
-	req := &http.Request{
-		Header: http.Header{EventTypeHeader: []string{want}},
+	tests := []struct {
+		key string
+		id  string
+	}{
+		{
+			key: EventTypeHeader,
+			id:  "issues",
+		},
+		{
+			key: "x-github-event",
+			id:  "issues",
+		},
 	}
-	if got := WebHookType(req); got != want {
-		t.Errorf("WebHookType = %q, want %q", got, want)
+
+	for _, test := range tests {
+		r, _ := http.NewRequest("POST", "https://example.com", nil)
+		r.Header.Set(test.key, test.id)
+
+		if got, want := WebHookType(r), test.id; got != want {
+			t.Errorf("WebHookType(%#v) = %#v, want %#v", r, got, want)
+		}
 	}
 }

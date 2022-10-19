@@ -37,9 +37,9 @@ const (
 	// SHA256SignatureHeader is the GitHub header key used to pass the HMAC-SHA256 hexdigest.
 	SHA256SignatureHeader = "X-Hub-Signature-256"
 	// EventTypeHeader is the GitHub header key used to pass the event type.
-	EventTypeHeader = "X-Github-Event"
+	EventTypeHeader = "X-GitHub-Event"
 	// DeliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
-	DeliveryIDHeader = "X-Github-Delivery"
+	DeliveryIDHeader = "X-GitHub-Delivery"
 )
 
 var (
