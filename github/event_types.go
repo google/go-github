@@ -235,7 +235,7 @@ type DiscussionCommentEvent struct {
 	Discussion *Discussion        `json:"discussion,omitempty"`
 	Repo       *Repository        `json:"repository,omitempty"`
 	Org        *Organization      `json:"organization,omitempty"`
-	User       *User              `json:"user,omitempty"`
+	Sender     *User              `json:"sender,omitempty"`
 }
 
 // DiscussionCategory represents a discussion category in a GitHub DiscussionEvent.

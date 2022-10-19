@@ -6165,7 +6165,7 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 			MembersCanCreatePublicPages:          Bool(false),
 			MembersCanCreatePrivatePages:         Bool(true),
 		},
-		User: &User{
+		Sender: &User{
 			Login:     String("l"),
 			ID:        Int64(1),
 			NodeID:    String("n"),
@@ -6250,7 +6250,7 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 			"members_can_create_public_pages":false,
 			"members_can_create_private_pages":true
 		},
-		"user":{
+		"sender":{
 			"login":"l",
 			"id":1,
 			"node_id":"n",

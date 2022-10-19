@@ -4550,12 +4550,12 @@ func (d *DiscussionCommentEvent) GetRepo() *Repository {
 	return d.Repo
 }
 
-// GetUser returns the User field.
-func (d *DiscussionCommentEvent) GetUser() *User {
+// GetSender returns the Sender field.
+func (d *DiscussionCommentEvent) GetSender() *User {
 	if d == nil {
 		return nil
 	}
-	return d.User
+	return d.Sender
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

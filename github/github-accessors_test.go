@@ -5319,11 +5319,11 @@ func TestDiscussionCommentEvent_GetRepo(tt *testing.T) {
 	d.GetRepo()
 }
 
-func TestDiscussionCommentEvent_GetUser(tt *testing.T) {
+func TestDiscussionCommentEvent_GetSender(tt *testing.T) {
 	d := &DiscussionCommentEvent{}
-	d.GetUser()
+	d.GetSender()
 	d = nil
-	d.GetUser()
+	d.GetSender()
 }
 
 func TestDiscussionEvent_GetAction(tt *testing.T) {
