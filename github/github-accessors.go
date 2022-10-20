@@ -4558,6 +4558,14 @@ func (d *DiscussionEvent) GetSender() *User {
 	return d.Sender
 }
 
+// GetApps returns the Apps field if it's non-nil, zero value otherwise.
+func (d *DismissalRestrictionsRequest) GetApps() []string {
+	if d == nil || d.Apps == nil {
+		return nil
+	}
+	return *d.Apps
+}
+
 // GetTeams returns the Teams field if it's non-nil, zero value otherwise.
 func (d *DismissalRestrictionsRequest) GetTeams() []string {
 	if d == nil || d.Teams == nil {

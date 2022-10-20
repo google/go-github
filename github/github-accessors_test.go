@@ -5326,6 +5326,16 @@ func TestDiscussionEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDismissalRestrictionsRequest_GetApps(tt *testing.T) {
+	var zeroValue []string
+	d := &DismissalRestrictionsRequest{Apps: &zeroValue}
+	d.GetApps()
+	d = &DismissalRestrictionsRequest{}
+	d.GetApps()
+	d = nil
+	d.GetApps()
+}
+
 func TestDismissalRestrictionsRequest_GetTeams(tt *testing.T) {
 	var zeroValue []string
 	d := &DismissalRestrictionsRequest{Teams: &zeroValue}

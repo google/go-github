@@ -1074,6 +1074,10 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 						"teams":[{
 							"id":4,
 							"slug":"t"
+						}],
+						"apps":[{
+							"id":5,
+							"slug":"a"
 						}]
 					},
 					"dismiss_stale_reviews":true,
@@ -1086,7 +1090,8 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					},
 					"restrictions":{
 						"users":[{"id":1,"login":"u"}],
-						"teams":[{"id":2,"slug":"t"}]
+						"teams":[{"id":2,"slug":"t"}],
+						"apps":[{"id":3,"slug":"a"}]
 					},
 					"required_conversation_resolution": {
 						"enabled": true
@@ -1119,6 +1124,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 				Teams: []*Team{
 					{Slug: String("t"), ID: Int64(4)},
 				},
+				Apps: []*App{
+					{Slug: String("a"), ID: Int64(5)},
+				},
 			},
 			RequireCodeOwnerReviews:      true,
 			RequiredApprovingReviewCount: 1,
@@ -1133,6 +1141,9 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			},
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
+			},
+			Apps: []*App{
+				{Slug: String("a"), ID: Int64(3)},
 			},
 		},
 		RequiredConversationResolution: &RequiredConversationResolution{
@@ -1273,6 +1284,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
+				Apps:  &[]string{"aa"},
 			},
 			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
 				Users: []string{"uuu"},
@@ -1318,6 +1330,10 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 					"teams":[{
 						"id":4,
 						"slug":"tt"
+					}],
+					"apps":[{
+						"id":5,
+						"slug":"aa"
 					}]
 				},
 				"dismiss_stale_reviews":true,
@@ -1360,6 +1376,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				},
 				Teams: []*Team{
 					{Slug: String("tt"), ID: Int64(4)},
+				},
+				Apps: []*App{
+					{Slug: String("aa"), ID: Int64(5)},
 				},
 			},
 			RequireCodeOwnerReviews: true,
@@ -1424,6 +1443,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
+				Apps:  &[]string{"aa"},
 			},
 			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
 				Users: []string{"uuu"},
@@ -1469,6 +1489,10 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 					"teams":[{
 						"id":4,
 						"slug":"tt"
+					}],
+					"apps":[{
+						"id":5,
+						"slug":"aa"
 					}]
 				},
 				"dismiss_stale_reviews":true,
@@ -1511,6 +1535,9 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 				},
 				Teams: []*Team{
 					{Slug: String("tt"), ID: Int64(4)},
+				},
+				Apps: []*App{
+					{Slug: String("aa"), ID: Int64(5)},
 				},
 			},
 			RequireCodeOwnerReviews: true,
@@ -1557,6 +1584,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 				Users: &[]string{"uu"},
 				Teams: &[]string{"tt"},
+				Apps:  &[]string{"aa"},
 			},
 			BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
 				Users: []string{"uuu"},
@@ -1597,6 +1625,10 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 					"teams":[{
 						"id":4,
 						"slug":"tt"
+					}],
+					"apps":[{
+						"id":5,
+						"slug":"aa"
 					}]
 				},
 				"dismiss_stale_reviews":true,
@@ -1635,6 +1667,9 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				},
 				Teams: []*Team{
 					{Slug: String("tt"), ID: Int64(4)},
+				},
+				Apps: []*App{
+					{Slug: String("aa"), ID: Int64(5)},
 				},
 			},
 			RequireCodeOwnerReviews: true,
@@ -2088,7 +2123,8 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 		fmt.Fprintf(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}]
+				"teams":[{"id":2,"slug":"t"}],
+				"apps":[{"id":3,"slug":"a"}]
 			},
 			"dismiss_stale_reviews":true,
 			"require_code_owner_reviews":true,
@@ -2110,6 +2146,9 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 			},
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
+			},
+			Apps: []*App{
+				{Slug: String("a"), ID: Int64(3)},
 			},
 		},
 		RequireCodeOwnerReviews:      true,
@@ -2143,6 +2182,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 			Users: &[]string{"u"},
 			Teams: &[]string{"t"},
+			Apps:  &[]string{"a"},
 		},
 	}
 
@@ -2159,7 +2199,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 		fmt.Fprintf(w, `{
 			"dismissal_restrictions":{
 				"users":[{"id":1,"login":"u"}],
-				"teams":[{"id":2,"slug":"t"}]
+				"teams":[{"id":2,"slug":"t"}],
+				"apps":[{"id":3,"slug":"a"}]
 			},
 			"dismiss_stale_reviews":true,
 			"require_code_owner_reviews":true,
@@ -2181,6 +2222,9 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 			},
 			Teams: []*Team{
 				{Slug: String("t"), ID: Int64(2)},
+			},
+			Apps: []*App{
+				{Slug: String("a"), ID: Int64(3)},
 			},
 		},
 		RequireCodeOwnerReviews:      true,
@@ -2515,6 +2559,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
 			Users: &[]string{},
 			Teams: &[]string{},
+			Apps:  &[]string{},
 		},
 	}
 
@@ -2523,7 +2568,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
-	want = `{"dismissal_restrictions":{"users":[],"teams":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
+	want = `{"dismissal_restrictions":{"users":[],"teams":[],"apps":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
 	if want != string(got) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
 	}
