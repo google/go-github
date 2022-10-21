@@ -121,7 +121,7 @@ type AlertListOptions struct {
 	// Return code scanning alerts for a specific branch reference. The ref must be formatted as heads/<branch name>.
 	Ref string `url:"ref,omitempty"`
 
-	ListOptions
+	ListCursorOptions
 }
 
 // AnalysesListOptions specifies optional parameters to the CodeScanningService.ListAnalysesForRepo method.
