@@ -123,7 +123,7 @@ GitHub Apps authentication can be provided by the [ghinstallation](https://githu
 package.
 
 > **Note**: Most endpoints (ex. [`GET /rate_limit`]) require access token authentication
-> while a few others (ex. [`GET /app/hook/deliverires`]) require [JWT] authentication.
+> while a few others (ex. [`GET /app/hook/deliveries`]) require [JWT] authentication.
 
 [`GET /rate_limit`]: https://docs.github.com/en/rest/rate-limit#get-rate-limit-status-for-the-authenticated-user
 [`GET /app/hook/deliverires`]: https://docs.github.com/en/rest/apps/webhooks#list-deliveries-for-an-app-webhook
