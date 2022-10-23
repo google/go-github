@@ -205,6 +205,16 @@ type DiscussionEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// DiscussionCommentEvent represents a discussion comment event.
+type DiscussionCommentEvent struct {
+	Action     *string            `json:"action,omitempty"`
+	Comment    *DiscussionComment `json:"comment,omitempty"`
+	Discussion *Discussion        `json:"discussion,omitempty"`
+	Repo       *Repository        `json:"repository,omitempty"`
+	Org        *Organization      `json:"organization,omitempty"`
+	Sender     *User              `json:"sender,omitempty"`
+}
+
 // Discussion represents a discussion in a GitHub DiscussionEvent.
 type Discussion struct {
 	RepositoryURL      *string             `json:"repository_url,omitempty"`
@@ -226,16 +236,6 @@ type Discussion struct {
 	AuthorAssociation  *string             `json:"author_association,omitempty"`
 	ActiveLockReason   *string             `json:"active_lock_reason,omitempty"`
 	Body               *string             `json:"body,omitempty"`
-}
-
-// DiscussionCommentEvent represents a discussion comment event.
-type DiscussionCommentEvent struct {
-	Action     *string            `json:"action,omitempty"`
-	Comment    *DiscussionComment `json:"comment,omitempty"`
-	Discussion *Discussion        `json:"discussion,omitempty"`
-	Repo       *Repository        `json:"repository,omitempty"`
-	Org        *Organization      `json:"organization,omitempty"`
-	Sender     *User              `json:"sender,omitempty"`
 }
 
 // DiscussionCategory represents a discussion category in a GitHub DiscussionEvent.
