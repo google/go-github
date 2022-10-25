@@ -389,3 +389,23 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSCIMUserName_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SCIMUserName{}, `{
+		"givenName":"","familyName":""
+	}`)
+
+	u := &SCIMUserName{
+		GivenName:  "Name1",
+		FamilyName: "Fname",
+		Formatted:  String("formatted name"),
+	}
+
+	want := `{
+			"givenName": "Name1",
+			"familyName": "Fname",
+			"formatted": "formatted name"	
+	}`
+
+	testJSONMarshal(t, u, want)
+}
