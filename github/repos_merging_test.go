@@ -138,8 +138,8 @@ func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
 
 	want := `{
 		"message": "message",
-		"merge_type":"merge_type",
-		"base_branch":"base_branch"
+		"merge_type": "merge_type",
+		"base_branch": "base_branch"
 	}`
 
 	testJSONMarshal(t, u, want)
