@@ -419,7 +419,7 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 
 	want := `{
 		"schemas": ["test", "schema"],
-		"operations":{
+		"operations": {
 			"op": "TestOp",
 			"path": "path"
 		}
