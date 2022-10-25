@@ -390,6 +390,62 @@ func TestSCIMUserAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UpdateAttributeForSCIMUserOperations{}, `{}`)
+
+	u := &UpdateAttributeForSCIMUserOperations{
+		Op:   "TestOp",
+		Path: String("path"),
+	}
+
+	want := `{
+		"op": "TestOp",
+		"path": "path"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UpdateAttributeForSCIMUserOptions{}, `{}`)
+
+	u := &UpdateAttributeForSCIMUserOptions{
+		Schemas: []string{"test", "schema"},
+		Operations: UpdateAttributeForSCIMUserOperations{
+			Op:   "TestOp",
+			Path: String("path"),
+		},
+	}
+
+	want := `{
+		"schemas": ["test", "schema"],
+		"operations": {
+			"op": "TestOp",
+			"path": "path"
+		}
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
+
+	u := &ListSCIMProvisionedIdentitiesOptions{
+		StartIndex: Int(1),
+		Count:      Int(10),
+		Filter:     String("test"),
+	}
+
+	want := `{
+		"startIndex": 1,
+		"count": 10,
+	 	"filter": "test"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestSCIMUserName_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SCIMUserName{}, `{
 		"givenName":"","familyName":""
@@ -406,6 +462,5 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 			"familyName": "Fname",
 			"formatted": "formatted name"	
 	}`
-
 	testJSONMarshal(t, u, want)
 }
