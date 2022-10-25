@@ -464,3 +464,79 @@ func TestSCIMUserName_Marshal(t *testing.T) {
 	}`
 	testJSONMarshal(t, u, want)
 }
+
+func TestSCIMMeta_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SCIMMeta{}, `{}`)
+
+	u := &SCIMMeta{
+		ResourceType: String("test"),
+		Location:     String("test"),
+	}
+
+	want := `{
+		"resourceType": "test",
+		"location": "test"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
+	testJSONMarshal(t, &SCIMProvisionedIdentities{}, `{}`)
+
+	u := &SCIMProvisionedIdentities{
+		Schemas:      []string{"test", "schema"},
+		TotalResults: Int(1),
+		ItemsPerPage: Int(2),
+		StartIndex:   Int(1),
+		Resources: []*SCIMUserAttributes{
+			{
+				UserName: "SCIM",
+				Name: SCIMUserName{
+					GivenName:  "scim",
+					FamilyName: "test",
+					Formatted:  String("SCIM"),
+				},
+				DisplayName: String("Test SCIM"),
+				Emails: []*SCIMUserEmail{
+					{
+						Value:   "test",
+						Primary: Bool(true),
+						Type:    String("test"),
+					},
+				},
+				Schemas:    []string{"schema1"},
+				ExternalID: String("id"),
+				Groups:     []string{"group1"},
+				Active:     Bool(true),
+			},
+		},
+	}
+
+	want := `{
+		"schemas": ["test", "schema"],
+		"totalResults": 1,
+		"itemsPerPage": 2,
+		"startIndex": 1,
+		"Resources": [{
+			"userName": "SCIM",
+			"name": {
+				"givenName": "scim",
+				"familyName": "test",
+				"formatted": "SCIM"
+			},
+			"displayName": "Test SCIM",
+			"emails": [{
+				"value": "test",
+				"primary": true,
+				"type": "test"
+			}],
+			"schemas": ["schema1"],
+			"externalId": "id",
+			"groups": ["group1"],
+			"active": true
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
