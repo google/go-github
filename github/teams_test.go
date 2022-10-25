@@ -2098,3 +2098,39 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		t.Errorf("Teams.GetExternalGroup returned status %d, want %d", got, want)
 	}
 }
+
+func TestIDPGroupList_Marshal(t *testing.T) {
+	testJSONMarshal(t, &IDPGroupList{}, "{}")
+
+	u := &IDPGroupList{
+		Groups: []*IDPGroup{
+			{
+				GroupID:          String("abc1"),
+				GroupName:        String("test group"),
+				GroupDescription: String("test group descripation"),
+			},
+			{
+				GroupID:          String("abc2"),
+				GroupName:        String("test group2"),
+				GroupDescription: String("test group descripation2"),
+			},
+		},
+	}
+
+	want := `{
+		"groups": [
+			{
+				"group_id": "abc1",
+				"group_name": "test group",
+				"group_description": "test group descripation"
+			},
+			{
+				"group_id": "abc2",
+				"group_name": "test group2",
+				"group_description": "test group descripation2"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
