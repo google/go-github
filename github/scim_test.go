@@ -399,7 +399,7 @@ func TestUpdateAttributeForSCIMUserOperations_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"op":"TestOp",
+		"op": "TestOp",
 		"path": "path"
 	}`
 
@@ -418,9 +418,9 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"schemas":["test", "schema"],
+		"schemas": ["test", "schema"],
 		"operations":{
-			"op":"TestOp",
+			"op": "TestOp",
 			"path": "path"
 		}
 	}`
@@ -438,9 +438,9 @@ func TestListSCIMProvisionedIdentitiesOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"startIndex":1,
+		"startIndex": 1,
 		"count": 10,
-	 	"filter":"test"
+	 	"filter": "test"
 	}`
 
 	testJSONMarshal(t, u, want)
