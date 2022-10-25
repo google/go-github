@@ -3006,14 +3006,18 @@ func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
 func TestDispatchRequestOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &DispatchRequestOptions{}, "{}")
 
+	cp := json.RawMessage(`{"testKey":"testValue"}`)
 	u := &DispatchRequestOptions{
-		EventType: "test_event_type",
+		EventType:     "test_event_type",
+		ClientPayload: &cp,
 	}
 
 	want := `{
-		"event_type":"test_event_type",
-		"client_payload":null
-	}`
+		"event_type": "test_event_type",
+		"client_payload": {
+		  "testKey": "testValue"
+		}
+	  }`
 
 	testJSONMarshal(t, u, want)
 }
