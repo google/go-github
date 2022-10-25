@@ -20,6 +20,12 @@ type RunnerApplicationDownload struct {
 	SHA256Checksum    *string `json:"sha256_checksum,omitempty"`
 }
 
+// ActionsEnabledOnEnterpriseOrgs represents all the repositories in an enterprise for which Actions is enabled.
+type ActionsEnabledOnEnterpriseOrgs struct {
+	TotalCount    int             `json:"total_count"`
+	Organizations []*Organization `json:"organizations"`
+}
+
 // ActionsEnabledOnOrgRepos represents all the repositories in an organization for which Actions is enabled.
 type ActionsEnabledOnOrgRepos struct {
 	TotalCount   int           `json:"total_count"`
@@ -238,6 +244,89 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, owner stri
 	}
 
 	return runners, resp, nil
+}
+
+// ListEnabledOrgsInEnterprise lists the selected organizations that are enabled for GitHub Actions in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#list-selected-organizations-enabled-for-github-actions-in-an-enterprise
+func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner string, opts *ListOptions) (*ActionsEnabledOnEnterpriseOrgs, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	orgs := &ActionsEnabledOnEnterpriseOrgs{}
+	resp, err := s.client.Do(ctx, req, orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgs, resp, nil
+}
+
+// SetEnabledOrgsInEnterprise replaces the list of selected organizations that are enabled for GitHub Actions in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#set-selected-organizations-enabled-for-github-actions-in-an-enterprise
+func (s *ActionsService) SetEnabledOrgsInEnterprise(ctx context.Context, owner string, organizationIDs []int64) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
+
+	req, err := s.client.NewRequest("PUT", u, struct {
+		IDs []int64 `json:"selected_organization_ids"`
+	}{IDs: organizationIDs})
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// AddEnabledOrgInEnterprise adds an organization to the list of selected organizations that are enabled for GitHub Actions in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#enable-a-selected-organization-for-github-actions-in-an-enterprise
+func (s *ActionsService) AddEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// RemoveEnabledOrgInEnterprise removes an organization from the list of selected organizations that are enabled for GitHub Actions in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/permissions#disable-a-selected-organization-for-github-actions-in-an-enterprise
+func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
 
 // ListEnabledReposInOrg lists the selected repositories that are enabled for GitHub Actions in an organization.
