@@ -3031,8 +3031,8 @@ func TestTransferRequest_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"new_owner":"testOwner",
-		"team_ids":[1,2]
+		"new_owner": "testOwner",
+		"team_ids": [1,2]
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -3059,8 +3059,8 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 	}
 
 	want2 := `{
-		"url":"testURL",
-		"enabled":true
+		"url": "testURL",
+		"enabled": true
 	}`
 
 	testJSONMarshal(t, u2, want2)
@@ -3076,9 +3076,9 @@ func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"users":["user1","user2"],
-		"teams":["team1","team2"],
-		"apps":["app1","app2"]
+		"users": ["user1","user2"],
+		"teams": ["team1","team2"],
+		"apps": ["app1","app2"]
 	}`
 
 	testJSONMarshal(t, u, want)
