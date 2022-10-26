@@ -126,3 +126,21 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RepoMergeUpstreamResult{}, "{}")
+
+	u := &RepoMergeUpstreamResult{
+		Message:    String("message"),
+		MergeType:  String("merge_type"),
+		BaseBranch: String("base_branch"),
+	}
+
+	want := `{
+		"message": "message",
+		"merge_type": "merge_type",
+		"base_branch": "base_branch"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
