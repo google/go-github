@@ -3047,8 +3047,8 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"url":"https://www.testURL.in",
-		"enabled":false
+		"url": "https://www.testURL.in",
+		"enabled": false
 	}`
 
 	testJSONMarshal(t, u, want)
