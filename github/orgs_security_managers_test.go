@@ -48,6 +48,7 @@ func TestOrganizationsService_ListSecurityManagerTeams(t *testing.T) {
 		return resp, err
 	})
 }
+
 func TestOrganizationsService_ListSecurityManagerTeams_invalidOrg(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
