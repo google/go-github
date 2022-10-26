@@ -562,6 +562,27 @@ func TestTeamDiscussion_Marshal(t *testing.T) {
 		CommentsURL:   String("https://api.github.com/teams/2/discussions/3/comments"),
 		CreatedAt:     &Timestamp{referenceTime},
 		LastEditedAt:  &Timestamp{referenceTime},
+		HTMLURL:       String("https://api.github.com/teams/2/discussions/3/comments"),
+		NodeID:        String("A123"),
+		Number:        Int(10),
+		Pinned:        Bool(true),
+		Private:       Bool(false),
+		TeamURL:       String("https://api.github.com/teams/2/discussions/3/comments"),
+		Title:         String("Test"),
+		UpdatedAt:     &Timestamp{referenceTime},
+		URL:           String("https://api.github.com/teams/2/discussions/3/comments"),
+		Reactions: &Reactions{
+			TotalCount: Int(1),
+			PlusOne:    Int(2),
+			MinusOne:   Int(-3),
+			Laugh:      Int(4),
+			Confused:   Int(5),
+			Heart:      Int(6),
+			Hooray:     Int(7),
+			Rocket:     Int(8),
+			Eyes:       Int(9),
+			URL:        String("https://api.github.com/teams/2/discussions/3/comments"),
+		},
 	}
 
 	want := `{
@@ -580,7 +601,28 @@ func TestTeamDiscussion_Marshal(t *testing.T) {
 		"comments_count": 1,
 		"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
 		"created_at": ` + referenceTimeStr + `,
-		"last_edited_at": ` + referenceTimeStr + `
+		"last_edited_at": ` + referenceTimeStr + `,
+		"html_url": "https://api.github.com/teams/2/discussions/3/comments",
+		"node_id": "A123",
+		"number": 10,
+		"pinned": true,
+		"private": false,
+		"team_url": "https://api.github.com/teams/2/discussions/3/comments",
+		"title": "Test",
+		"updated_at": ` + referenceTimeStr + `,
+		"url": "https://api.github.com/teams/2/discussions/3/comments",
+		"reactions": {
+			"total_count": 1,
+			"+1": 2,
+			"-1": -3,
+			"laugh": 4,
+			"confused": 5,
+			"heart": 6,
+			"hooray": 7,
+			"rocket": 8,
+			"eyes": 9,
+			"url": "https://api.github.com/teams/2/discussions/3/comments"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
