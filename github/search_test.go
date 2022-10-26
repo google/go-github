@@ -876,3 +876,41 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestLabelsSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &LabelsSearchResult{}, "{}")
+
+	u := &LabelsSearchResult{
+		Total:             Int(5),
+		IncompleteResults: Bool(false),
+		Labels: []*LabelResult{
+			{
+				ID:          Int64(1),
+				URL:         String("https://www.test-url.com"),
+				Name:        String("test name"),
+				Color:       String("green"),
+				Default:     Bool(true),
+				Description: String("testDescription"),
+				Score:       Float64(1),
+			},
+		},
+	}
+
+	want := `{
+		"total_count": 5,
+		"incomplete_results": false,
+		"items": [
+			{
+				"id": 1,
+				"url": "https://www.test-url.com",
+				"name": "test name",
+				"color": "green",
+				"default": true,
+				"description": "testDescription",
+				"score": 1
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
