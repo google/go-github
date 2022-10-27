@@ -2134,3 +2134,23 @@ func TestIDPGroupList_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestExternalGroupMember_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ExternalGroupMember{}, "{}")
+
+	u := &ExternalGroupMember{
+		MemberID:    Int64(1),
+		MemberLogin: String("test member"),
+		MemberName:  String("test member name"),
+		MemberEmail: String("test member email"),
+	}
+
+	want := `{
+		"member_id": 1,
+		"member_login": "test member",
+		"member_name":"test member name",
+		"member_email":"test member email"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
