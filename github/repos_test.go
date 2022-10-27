@@ -3083,3 +3083,47 @@ func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestAdminEnforcement_Marshal(t *testing.T) {
+	testJSONMarshal(t, &AdminEnforcement{}, "{}")
+
+	u := &AdminEnforcement{
+		URL:     String("https://www.test-url.in"),
+		Enabled: false,
+	}
+
+	want := `{
+		"url": "https://www.test-url.in",
+		"enabled": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
+	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, "{}")
+
+	u := &PullRequestReviewsEnforcementUpdate{
+		BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
+			Users: []string{"user1", "user2"},
+			Teams: []string{"team1", "team2"},
+			Apps:  []string{"app1", "app2"},
+		},
+		DismissStaleReviews:          Bool(false),
+		RequireCodeOwnerReviews:      Bool(true),
+		RequiredApprovingReviewCount: 2,
+	}
+
+	want := `{
+		"bypass_pull_request_allowances": {
+			"users": ["user1","user2"],
+			"teams": ["team1","team2"],
+			"apps": ["app1","app2"]
+		},
+		"dismiss_stale_reviews": false,
+		"require_code_owner_reviews": true,
+		"required_approving_review_count": 2
+	}`
+
+	testJSONMarshal(t, u, want)
+}
