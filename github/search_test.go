@@ -914,3 +914,28 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+func TestCommitResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CommitResult{}, "{}")
+
+	c := &CommitResult{
+		SHA:         String("test"),
+		HTMLURL:     String("hurl"),
+		CommentsURL: String("test curl"),
+		URL:         String("test_url"),
+		Repository:  &Repository{ID: Int64(1)},
+		Score:       Float64(1.1),
+	}
+
+	want := `{
+		"sha": "test",
+		"html_url": "hutl",
+		"comments_url": "test curl",
+		"url": "test_url",
+		"repository": {
+			"id": 1
+		},
+		"score":1.1
+	}`
+
+	testJSONMarshal(t, c, want)
+}
