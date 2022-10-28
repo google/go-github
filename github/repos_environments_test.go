@@ -426,6 +426,7 @@ func TestEnvironment_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, repoEnv, want)
 }
+
 func TestBranchPolicy_Marshal(t *testing.T) {
 	testJSONMarshal(t, &BranchPolicy{}, "{}")
 
