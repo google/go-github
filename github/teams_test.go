@@ -2224,3 +2224,23 @@ func TestExternalGroupTeam_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestListExternalGroupsOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ListExternalGroupsOptions{}, "{}")
+
+	u := &ListExternalGroupsOptions{
+		DisplayName: String("test"),
+		ListOptions: ListOptions{
+			Page:    1,
+			PerPage: 2,
+		},
+	}
+
+	want := `{
+		"DisplayName": "test",
+		"page":	1,
+		"PerPage":	2
+	}`
+
+	testJSONMarshal(t, u, want)
+}
