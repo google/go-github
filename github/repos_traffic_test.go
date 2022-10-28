@@ -308,3 +308,17 @@ func TestTrafficData_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
+
+	u := &TrafficBreakdownOptions{
+		Per: "day",
+	}
+
+	want := `{
+		"per": "day"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
