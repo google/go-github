@@ -2154,3 +2154,19 @@ func TestExternalGroupMember_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestExternalGroupTeam_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ExternalGroupTeam{}, "{}")
+
+	u := &ExternalGroupTeam{
+		TeamID:   Int64(123),
+		TeamName: String("test"),
+	}
+
+	want := `{
+		"team_id": 123,
+		"team_name": "test"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
