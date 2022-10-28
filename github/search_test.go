@@ -920,22 +920,35 @@ func TestCommitResult_Marshal(t *testing.T) {
 	c := &CommitResult{
 		SHA:         String("test"),
 		HTMLURL:     String("hurl"),
-		CommentsURL: String("test curl"),
-		URL:         String("test_url"),
+		CommentsURL: String("curl"),
+		URL:         String("url"),
 		Repository:  &Repository{ID: Int64(1)},
-		Score:       Float64(1.1),
+		Score:       Float64(123),
+		Commit:      &Commit{SHA: String("test")},
+		Author:      &User{ID: Int64(1)},
+		Committer:   &User{ID: Int64(1)},
+		Parents:     []*Commit{},
 	}
 
 	want := `{
 		"sha": "test",
-		"html_url": "hutl",
-		"comments_url": "test curl",
-		"url": "test_url",
-		"repository": {
-			"id": 1
+		"commit": {
+		   "sha": "test"
 		},
-		"score":1.1
-	}`
+		"author": {
+		   "id": 1
+		},
+		"committer": {
+		   "id": 1
+		},
+		"html_url": "hurl",
+		"url": "url",
+		"comments_url": "curl",
+		"repository": {
+		   "id": 1
+		},
+		"score": 123
+	 }`
 
 	testJSONMarshal(t, c, want)
 }
