@@ -914,6 +914,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
 func TestCommitResult_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommitResult{}, "{}")
 
