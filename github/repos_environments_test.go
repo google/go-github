@@ -426,3 +426,19 @@ func TestEnvironment_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, repoEnv, want)
 }
+
+func TestBranchPolicy_Marshal(t *testing.T) {
+	testJSONMarshal(t, &BranchPolicy{}, "{}")
+
+	bp := &BranchPolicy{
+		ProtectedBranches:    Bool(false),
+		CustomBranchPolicies: Bool(false),
+	}
+
+	want := `{
+		"protected_branches": false,
+		"custom_branch_policies": false
+	}`
+
+	testJSONMarshal(t, bp, want)
+}

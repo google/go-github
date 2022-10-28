@@ -2154,3 +2154,73 @@ func TestExternalGroupMember_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestExternalGroup_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ExternalGroup{}, "{}")
+
+	u := &ExternalGroup{
+		GroupID:   Int64(123),
+		GroupName: String("group1"),
+		UpdatedAt: &Timestamp{referenceTime},
+		Teams: []*ExternalGroupTeam{
+			{
+				TeamID:   Int64(1),
+				TeamName: String("team-test"),
+			},
+			{
+				TeamID:   Int64(2),
+				TeamName: String("team-test2"),
+			},
+		},
+		Members: []*ExternalGroupMember{
+			{
+				MemberID:    Int64(1),
+				MemberLogin: String("test"),
+				MemberName:  String("test"),
+				MemberEmail: String("test@github.com"),
+			},
+		},
+	}
+
+	want := `{
+		"group_id": 123,
+		"group_name": "group1",
+		"updated_at": ` + referenceTimeStr + `,
+		"teams": [
+			{
+				"team_id": 1,
+				"team_name": "team-test"
+			},
+			{
+				"team_id": 2,
+				"team_name": "team-test2"
+			}
+		],
+		"members": [
+			{
+				"member_id": 1,
+				"member_login": "test",
+				"member_name": "test",
+				"member_email": "test@github.com"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestExternalGroupTeam_Marshal(t *testing.T) {
+	testJSONMarshal(t, &ExternalGroupTeam{}, "{}")
+
+	u := &ExternalGroupTeam{
+		TeamID:   Int64(123),
+		TeamName: String("test"),
+	}
+
+	want := `{
+		"team_id": 123,
+		"team_name": "test"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
