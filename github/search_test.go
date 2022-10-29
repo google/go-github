@@ -953,3 +953,39 @@ func TestCommitResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, c, want)
 }
+
+func TestUsersSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &UsersSearchResult{}, "{}")
+
+	u := &UsersSearchResult{
+		Total:             Int(2),
+		IncompleteResults: Bool(false),
+		Users: []*User{{
+			Login:      String("loginTest"),
+			ID:         Int64(1),
+			NodeID:     String("NodeTest"),
+			AvatarURL:  String("AvatarURLTest"),
+			HTMLURL:    String("Hurl"),
+			GravatarID: String("gravatarIDTest"),
+			Name:       String("nameTest"),
+		}},
+	}
+
+	want := `{
+		"total_count": 2,
+		"incomplete_results": false,
+		"items": [
+		   {
+			  "login": "loginTest",
+			  "id": 1,
+			  "node_id": "NodeTest",
+			  "avatar_url": "AvatarURLTest",
+			  "html_url": "Hurl",
+			  "gravatar_id": "gravatarIDTest",
+			  "name": "nameTest"
+		   }
+		]
+	 }`
+
+	testJSONMarshal(t, u, want)
+}
