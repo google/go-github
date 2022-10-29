@@ -972,17 +972,17 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"total_count":2,
-		"incomplete_results":false,
-		"items":[
+		"total_count": 2,
+		"incomplete_results": false,
+		"items": [
 		   {
-			  "login":"loginTest",
-			  "id":1,
-			  "node_id":"NodeTest",
-			  "avatar_url":"AvatarURLTest",
-			  "html_url":"Hurl",
-			  "gravatar_id":"gravatarIDTest",
-			  "name":"nameTest"
+			  "login": "loginTest",
+			  "id": 1,
+			  "node_id": "NodeTest",
+			  "avatar_url": "AvatarURLTest",
+			  "html_url": "Hurl",
+			  "gravatar_id": "gravatarIDTest",
+			  "name": "nameTest"
 		   }
 		]
 	 }`
