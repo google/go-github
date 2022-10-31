@@ -989,3 +989,21 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestCodeSearchResult_Marshal(t *testing.T) {
+	testJSONMarshal(t, &CodeSearchResult{}, "{}")
+
+	u := &CodeSearchResult{
+		Total:             Int(4),
+		IncompleteResults: Bool(false),
+		CodeResults:       []*CodeResult{{Name: String("n")}},
+	}
+
+	want := `{
+		"total_count" : 4,
+		"incomplete_results" : false,
+		"items" : [{"name": "n"}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
