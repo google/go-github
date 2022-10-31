@@ -10,7 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -442,7 +442,7 @@ func TestRepositoriesService_DownloadReleaseAsset_Stream(t *testing.T) {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}
 	want := []byte("Hello World")
-	content, err := ioutil.ReadAll(reader)
+	content, err := io.ReadAll(reader)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned bad reader: %v", err)
 	}
@@ -498,7 +498,7 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirect(t *testing.T) {
 
 	ctx := context.Background()
 	reader, _, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, http.DefaultClient)
-	content, err := ioutil.ReadAll(reader)
+	content, err := io.ReadAll(reader)
 	if err != nil {
 		t.Errorf("Repositories.DownloadReleaseAsset returned error: %v", err)
 	}

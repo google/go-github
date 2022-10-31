@@ -11,7 +11,6 @@ package integration
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -183,7 +182,7 @@ func TestRepositories_DownloadReleaseAsset(t *testing.T) {
 		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}
 	defer func() { _ = rc.Close() }()
-	_, err = io.Copy(ioutil.Discard, rc)
+	_, err = io.Copy(io.Discard, rc)
 	if err != nil {
 		t.Fatalf("Repositories.DownloadReleaseAsset(andersjanmyr, goose, 484892, true) returned error: %v", err)
 	}

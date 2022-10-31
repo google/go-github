@@ -21,7 +21,6 @@ import (
 	"go/format"
 	"go/parser"
 	"go/token"
-	"io/ioutil"
 	"log"
 	"os"
 	"sort"
@@ -190,7 +189,7 @@ func (t *templateData) dump() error {
 			return fmt.Errorf("os.Chmod(%q, 0644): %v", filename, err)
 		}
 
-		if err := ioutil.WriteFile(filename, clean, 0444); err != nil {
+		if err := os.WriteFile(filename, clean, 0444); err != nil {
 			return err
 		}
 

@@ -10,9 +10,9 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
@@ -23,7 +23,7 @@ import (
 func main() {
 	const gitHost = "https://git.api.com"
 
-	privatePem, err := ioutil.ReadFile("path/to/pem")
+	privatePem, err := os.ReadFile("path/to/pem")
 	if err != nil {
 		log.Fatalf("failed to read pem: %v", err)
 	}

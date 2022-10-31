@@ -25,7 +25,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -118,7 +117,7 @@ func getFileContent(fileArg string) (targetName string, b []byte, err error) {
 		targetName = files[1]
 	}
 
-	b, err = ioutil.ReadFile(localFile)
+	b, err = os.ReadFile(localFile)
 	return targetName, b, err
 }
 
