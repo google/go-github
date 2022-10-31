@@ -122,6 +122,10 @@ type AlertListOptions struct {
 	Ref string `url:"ref,omitempty"`
 
 	ListCursorOptions
+
+	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
+	// since ListCursorOptions accepts "page" as string only.
+	ListOptions
 }
 
 // AnalysesListOptions specifies optional parameters to the CodeScanningService.ListAnalysesForRepo method.
