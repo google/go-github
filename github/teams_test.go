@@ -2244,3 +2244,17 @@ func TestListExternalGroupsOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestTeamAddTeamRepoOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &TeamAddTeamRepoOptions{}, "{}")
+
+	u := &TeamAddTeamRepoOptions{
+		Permission: "a",
+	}
+
+	want := `{
+		"permission": "a"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
