@@ -3127,3 +3127,19 @@ func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestRequiredStatusCheck_Marshal(t *testing.T) {
+	testJSONMarshal(t, &RequiredStatusCheck{}, "{}")
+
+	u := &RequiredStatusCheck{
+		Context: "ctx",
+		AppID:   Int64(1),
+	}
+
+	want := `{
+		"context": "ctx",
+		"app_id": 1
+	}`
+
+	testJSONMarshal(t, u, want)
+}
