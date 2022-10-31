@@ -427,3 +427,19 @@ func TestUserListOptions_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestHovercardOptions_Marshal(t *testing.T) {
+	testJSONMarshal(t, &HovercardOptions{}, "{}")
+
+	u := &HovercardOptions{
+		SubjectType: "subjectType",
+		SubjectID:   "subjectID",
+	}
+
+	want := `{
+		"SubjectType" : "subjectType",
+		"SubjectID" : "subjectID"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
