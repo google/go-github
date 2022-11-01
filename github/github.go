@@ -237,6 +237,14 @@ type ListCursorOptions struct {
 	// For paginated result sets, the number of results to include per page.
 	PerPage int `url:"per_page,omitempty"`
 
+	// For paginated result sets, the number of results per page (max 100), starting from the first matching result.
+	// This parameter must not be used in combination with last.
+	First int `url:"first,omitempty"`
+
+	// For paginated result sets, the number of results per page (max 100), starting from the last matching result.
+	// This parameter must not be used in combination with first.
+	Last int `url:"last,omitempty"`
+
 	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
 	After string `url:"after,omitempty"`
 
