@@ -573,7 +573,7 @@ type MergeGroup struct {
 	HeadCommit *Commit `json:"head_commit,omitempty"`
 }
 
-// Activity related to merge groups in a merge queue. The type of activity is specified
+// MergeGroupEvent represents activity related to merge groups in a merge queue. The type of activity is specified
 // in the action property of the payload object.
 //
 // GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#merge_group
