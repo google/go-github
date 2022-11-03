@@ -54,7 +54,7 @@ type DependabotAlert struct {
 	SecurityAdvisory      *DependabotSecurityAdvisory `json:"security_advisory,omitempty"`
 	SecurityVulnerability *AdvisoryVulnerability      `json:"security_vulnerability,omitempty"`
 	URL                   *string                     `json:"url,omitempty"`
-	HtmlURL               *string                     `json:"html_url,omitempty"`
+	HTMLURL               *string                     `json:"html_url,omitempty"`
 	CreatedAt             *Timestamp                  `json:"created_at,omitempty"`
 	UpdatedAt             *Timestamp                  `json:"updated_at,omitempty"`
 	DismissedAt           *Timestamp                  `json:"dismissed_at,omitempty"`

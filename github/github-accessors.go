@@ -3814,12 +3814,12 @@ func (d *DependabotAlert) GetFixedAt() Timestamp {
 	return *d.FixedAt
 }
 
-// GetHtmlURL returns the HtmlURL field if it's non-nil, zero value otherwise.
-func (d *DependabotAlert) GetHtmlURL() string {
-	if d == nil || d.HtmlURL == nil {
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
 		return ""
 	}
-	return *d.HtmlURL
+	return *d.HTMLURL
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.

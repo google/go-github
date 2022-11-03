@@ -4462,14 +4462,14 @@ func TestDependabotAlert_GetFixedAt(tt *testing.T) {
 	d.GetFixedAt()
 }
 
-func TestDependabotAlert_GetHtmlURL(tt *testing.T) {
+func TestDependabotAlert_GetHTMLURL(tt *testing.T) {
 	var zeroValue string
-	d := &DependabotAlert{HtmlURL: &zeroValue}
-	d.GetHtmlURL()
+	d := &DependabotAlert{HTMLURL: &zeroValue}
+	d.GetHTMLURL()
 	d = &DependabotAlert{}
-	d.GetHtmlURL()
+	d.GetHTMLURL()
 	d = nil
-	d.GetHtmlURL()
+	d.GetHTMLURL()
 }
 
 func TestDependabotAlert_GetNumber(tt *testing.T) {
