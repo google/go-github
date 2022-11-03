@@ -39,7 +39,7 @@ type DependabotSecurityAdvisory struct {
 	References      []*AdvisoryReference     `json:"references,omitempty"`
 	PublishedAt     *Timestamp               `json:"published_at,omitempty"`
 	UpdatedAt       *Timestamp               `json:"updated_at,omitempty"`
-	WithdrawnAt     *Timestamp              `json:"withdrawn_at,omitempty"`
+	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
 }
 
 // DependabotAlert represents a dependabot alert
@@ -53,11 +53,11 @@ type DependabotAlert struct {
 	HtmlURL               *string                     `json:"html_url,omitempty"`
 	CreatedAt             *Timestamp                  `json:"created_at,omitempty"`
 	UpdatedAt             *Timestamp                  `json:"updated_at,omitempty"`
-	DismissedAt           *Timestamp                 `json:"dismissed_at,omitempty"`
-	DismissedBy           *User                      `json:"dismissed_by,omitempty"`
+	DismissedAt           *Timestamp                  `json:"dismissed_at,omitempty"`
+	DismissedBy           *User                       `json:"dismissed_by,omitempty"`
 	DismissedReason       *string                     `json:"dismissed_reason,omitempty"`
 	DismissedComment      *string                     `json:"dismissed_comment,omitempty"`
-	FixedAt               *Timestamp                 `json:"fixed_at,omitempty"`
+	FixedAt               *Timestamp                  `json:"fixed_at,omitempty"`
 }
 
 type ListAlertsOptions struct {
