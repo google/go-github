@@ -225,6 +225,43 @@ func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
 	a.GetUserLogin()
 }
 
+func TestAdvisoryCVSs_GetScore(tt *testing.T) {
+	a := &AdvisoryCVSs{}
+	a.GetScore()
+	a = nil
+	a.GetScore()
+}
+
+func TestAdvisoryCVSs_GetVectorString(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryCVSs{VectorString: &zeroValue}
+	a.GetVectorString()
+	a = &AdvisoryCVSs{}
+	a.GetVectorString()
+	a = nil
+	a.GetVectorString()
+}
+
+func TestAdvisoryCWEs_GetCWEID(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryCWEs{CWEID: &zeroValue}
+	a.GetCWEID()
+	a = &AdvisoryCWEs{}
+	a.GetCWEID()
+	a = nil
+	a.GetCWEID()
+}
+
+func TestAdvisoryCWEs_GetName(tt *testing.T) {
+	var zeroValue string
+	a := &AdvisoryCWEs{Name: &zeroValue}
+	a.GetName()
+	a = &AdvisoryCWEs{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
 func TestAdvisoryIdentifier_GetType(tt *testing.T) {
 	var zeroValue string
 	a := &AdvisoryIdentifier{Type: &zeroValue}
@@ -4359,6 +4396,248 @@ func TestDeleteEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
+}
+
+func TestDependabotAlert_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{CreatedAt: &zeroValue}
+	d.GetCreatedAt()
+	d = &DependabotAlert{}
+	d.GetCreatedAt()
+	d = nil
+	d.GetCreatedAt()
+}
+
+func TestDependabotAlert_GetDependency(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetDependency()
+	d = nil
+	d.GetDependency()
+}
+
+func TestDependabotAlert_GetDismissedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{DismissedAt: &zeroValue}
+	d.GetDismissedAt()
+	d = &DependabotAlert{}
+	d.GetDismissedAt()
+	d = nil
+	d.GetDismissedAt()
+}
+
+func TestDependabotAlert_GetDismissedBy(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetDismissedBy()
+	d = nil
+	d.GetDismissedBy()
+}
+
+func TestDependabotAlert_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlert{DismissedComment: &zeroValue}
+	d.GetDismissedComment()
+	d = &DependabotAlert{}
+	d.GetDismissedComment()
+	d = nil
+	d.GetDismissedComment()
+}
+
+func TestDependabotAlert_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlert{DismissedReason: &zeroValue}
+	d.GetDismissedReason()
+	d = &DependabotAlert{}
+	d.GetDismissedReason()
+	d = nil
+	d.GetDismissedReason()
+}
+
+func TestDependabotAlert_GetFixedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{FixedAt: &zeroValue}
+	d.GetFixedAt()
+	d = &DependabotAlert{}
+	d.GetFixedAt()
+	d = nil
+	d.GetFixedAt()
+}
+
+func TestDependabotAlert_GetHtmlURL(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlert{HtmlURL: &zeroValue}
+	d.GetHtmlURL()
+	d = &DependabotAlert{}
+	d.GetHtmlURL()
+	d = nil
+	d.GetHtmlURL()
+}
+
+func TestDependabotAlert_GetNumber(tt *testing.T) {
+	var zeroValue int
+	d := &DependabotAlert{Number: &zeroValue}
+	d.GetNumber()
+	d = &DependabotAlert{}
+	d.GetNumber()
+	d = nil
+	d.GetNumber()
+}
+
+func TestDependabotAlert_GetSecurityAdvisory(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetSecurityAdvisory()
+	d = nil
+	d.GetSecurityAdvisory()
+}
+
+func TestDependabotAlert_GetSecurityVulnerability(tt *testing.T) {
+	d := &DependabotAlert{}
+	d.GetSecurityVulnerability()
+	d = nil
+	d.GetSecurityVulnerability()
+}
+
+func TestDependabotAlert_GetState(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlert{State: &zeroValue}
+	d.GetState()
+	d = &DependabotAlert{}
+	d.GetState()
+	d = nil
+	d.GetState()
+}
+
+func TestDependabotAlert_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotAlert{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &DependabotAlert{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
+func TestDependabotAlert_GetURL(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotAlert{URL: &zeroValue}
+	d.GetURL()
+	d = &DependabotAlert{}
+	d.GetURL()
+	d = nil
+	d.GetURL()
+}
+
+func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{CVEID: &zeroValue}
+	d.GetCVEID()
+	d = &DependabotSecurityAdvisory{}
+	d.GetCVEID()
+	d = nil
+	d.GetCVEID()
+}
+
+func TestDependabotSecurityAdvisory_GetCVSs(tt *testing.T) {
+	d := &DependabotSecurityAdvisory{}
+	d.GetCVSs()
+	d = nil
+	d.GetCVSs()
+}
+
+func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{Description: &zeroValue}
+	d.GetDescription()
+	d = &DependabotSecurityAdvisory{}
+	d.GetDescription()
+	d = nil
+	d.GetDescription()
+}
+
+func TestDependabotSecurityAdvisory_GetGHSAID(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{GHSAID: &zeroValue}
+	d.GetGHSAID()
+	d = &DependabotSecurityAdvisory{}
+	d.GetGHSAID()
+	d = nil
+	d.GetGHSAID()
+}
+
+func TestDependabotSecurityAdvisory_GetPublishedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotSecurityAdvisory{PublishedAt: &zeroValue}
+	d.GetPublishedAt()
+	d = &DependabotSecurityAdvisory{}
+	d.GetPublishedAt()
+	d = nil
+	d.GetPublishedAt()
+}
+
+func TestDependabotSecurityAdvisory_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{Severity: &zeroValue}
+	d.GetSeverity()
+	d = &DependabotSecurityAdvisory{}
+	d.GetSeverity()
+	d = nil
+	d.GetSeverity()
+}
+
+func TestDependabotSecurityAdvisory_GetSummary(tt *testing.T) {
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{Summary: &zeroValue}
+	d.GetSummary()
+	d = &DependabotSecurityAdvisory{}
+	d.GetSummary()
+	d = nil
+	d.GetSummary()
+}
+
+func TestDependabotSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotSecurityAdvisory{UpdatedAt: &zeroValue}
+	d.GetUpdatedAt()
+	d = &DependabotSecurityAdvisory{}
+	d.GetUpdatedAt()
+	d = nil
+	d.GetUpdatedAt()
+}
+
+func TestDependabotSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
+	var zeroValue Timestamp
+	d := &DependabotSecurityAdvisory{WithdrawnAt: &zeroValue}
+	d.GetWithdrawnAt()
+	d = &DependabotSecurityAdvisory{}
+	d.GetWithdrawnAt()
+	d = nil
+	d.GetWithdrawnAt()
+}
+
+func TestDependency_GetManifestPath(tt *testing.T) {
+	var zeroValue string
+	d := &Dependency{ManifestPath: &zeroValue}
+	d.GetManifestPath()
+	d = &Dependency{}
+	d.GetManifestPath()
+	d = nil
+	d.GetManifestPath()
+}
+
+func TestDependency_GetPackage(tt *testing.T) {
+	d := &Dependency{}
+	d.GetPackage()
+	d = nil
+	d.GetPackage()
+}
+
+func TestDependency_GetScope(tt *testing.T) {
+	var zeroValue string
+	d := &Dependency{Scope: &zeroValue}
+	d.GetScope()
+	d = &Dependency{}
+	d.GetScope()
+	d = nil
+	d.GetScope()
 }
 
 func TestDeployKeyEvent_GetAction(tt *testing.T) {
@@ -9694,6 +9973,76 @@ func TestLinearHistoryRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) 
 	l.GetFrom()
 	l = nil
 	l.GetFrom()
+}
+
+func TestListAlertsOptions_GetDirection(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Direction: &zeroValue}
+	l.GetDirection()
+	l = &ListAlertsOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListAlertsOptions_GetEcosystem(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Ecosystem: &zeroValue}
+	l.GetEcosystem()
+	l = &ListAlertsOptions{}
+	l.GetEcosystem()
+	l = nil
+	l.GetEcosystem()
+}
+
+func TestListAlertsOptions_GetPackage(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Package: &zeroValue}
+	l.GetPackage()
+	l = &ListAlertsOptions{}
+	l.GetPackage()
+	l = nil
+	l.GetPackage()
+}
+
+func TestListAlertsOptions_GetScope(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Scope: &zeroValue}
+	l.GetScope()
+	l = &ListAlertsOptions{}
+	l.GetScope()
+	l = nil
+	l.GetScope()
+}
+
+func TestListAlertsOptions_GetSeverity(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Severity: &zeroValue}
+	l.GetSeverity()
+	l = &ListAlertsOptions{}
+	l.GetSeverity()
+	l = nil
+	l.GetSeverity()
+}
+
+func TestListAlertsOptions_GetSort(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{Sort: &zeroValue}
+	l.GetSort()
+	l = &ListAlertsOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListAlertsOptions_GetState(tt *testing.T) {
+	var zeroValue string
+	l := &ListAlertsOptions{State: &zeroValue}
+	l.GetState()
+	l = &ListAlertsOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {
