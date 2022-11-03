@@ -10,22 +10,26 @@ import (
 	"fmt"
 )
 
+// Dependency reprensents the vulnerable dependency.
 type Dependency struct {
 	Package      *VulnerabilityPackage `json:"package,omitempty"`
 	ManifestPath *string               `json:"manifest_path,omitempty"`
 	Scope        *string               `json:"scope,omitempty"`
 }
 
+// AdvisoryCVSs represents the advisory pertaining to the Common Vulnerability Scoring System.
 type AdvisoryCVSs struct {
 	Score        *float64 `json:"score,omitempty"`
 	VectorString *string  `json:"vector_string,omitempty"`
 }
 
+// AdvisoryCWEs reprensent the advisory pertaining to Common Weakness Enumeration.
 type AdvisoryCWEs struct {
 	CWEID *string `json:"cwe_id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 }
 
+// DependabotSecurityAdvisory represents the GitHub Security Advisory.
 type DependabotSecurityAdvisory struct {
 	GHSAID          *string                  `json:"ghsa_id,omitempty"`
 	CVEID           *string                  `json:"cve_id,omitempty"`
@@ -42,7 +46,7 @@ type DependabotSecurityAdvisory struct {
 	WithdrawnAt     *Timestamp               `json:"withdrawn_at,omitempty"`
 }
 
-// DependabotAlert represents a dependabot alert
+// DependabotAlert represents a Dependabot alert.
 type DependabotAlert struct {
 	Number                *int                        `json:"number,omitempty"`
 	State                 *string                     `json:"state,omitempty"`
@@ -60,6 +64,8 @@ type DependabotAlert struct {
 	FixedAt               *Timestamp                  `json:"fixed_at,omitempty"`
 }
 
+// ListAlertsOptions specifies the optional parameters to the DependabotService.ListRepoAlerts
+// and DependabotService.ListOrgAlerts methods.
 type ListAlertsOptions struct {
 	State     *string `url:"state,omitempty"`
 	Severity  *string `url:"severity,omitempty"`
