@@ -76,6 +76,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &MemberEvent{}
 	case "MembershipEvent":
 		payload = &MembershipEvent{}
+	case "MergeGroupEvent":
+		payload = &MergeGroupEvent{}
 	case "MetaEvent":
 		payload = &MetaEvent{}
 	case "MilestoneEvent":

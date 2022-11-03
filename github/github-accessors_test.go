@@ -10389,6 +10389,98 @@ func TestMembershipEvent_GetTeam(tt *testing.T) {
 	m.GetTeam()
 }
 
+func TestMergeGroup_GetBaseRef(tt *testing.T) {
+	var zeroValue string
+	m := &MergeGroup{BaseRef: &zeroValue}
+	m.GetBaseRef()
+	m = &MergeGroup{}
+	m.GetBaseRef()
+	m = nil
+	m.GetBaseRef()
+}
+
+func TestMergeGroup_GetBaseSHA(tt *testing.T) {
+	var zeroValue string
+	m := &MergeGroup{BaseSHA: &zeroValue}
+	m.GetBaseSHA()
+	m = &MergeGroup{}
+	m.GetBaseSHA()
+	m = nil
+	m.GetBaseSHA()
+}
+
+func TestMergeGroup_GetHeadCommit(tt *testing.T) {
+	m := &MergeGroup{}
+	m.GetHeadCommit()
+	m = nil
+	m.GetHeadCommit()
+}
+
+func TestMergeGroup_GetHeadRef(tt *testing.T) {
+	var zeroValue string
+	m := &MergeGroup{HeadRef: &zeroValue}
+	m.GetHeadRef()
+	m = &MergeGroup{}
+	m.GetHeadRef()
+	m = nil
+	m.GetHeadRef()
+}
+
+func TestMergeGroup_GetHeadSHA(tt *testing.T) {
+	var zeroValue string
+	m := &MergeGroup{HeadSHA: &zeroValue}
+	m.GetHeadSHA()
+	m = &MergeGroup{}
+	m.GetHeadSHA()
+	m = nil
+	m.GetHeadSHA()
+}
+
+func TestMergeGroupEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	m := &MergeGroupEvent{Action: &zeroValue}
+	m.GetAction()
+	m = &MergeGroupEvent{}
+	m.GetAction()
+	m = nil
+	m.GetAction()
+}
+
+func TestMergeGroupEvent_GetInstallation(tt *testing.T) {
+	m := &MergeGroupEvent{}
+	m.GetInstallation()
+	m = nil
+	m.GetInstallation()
+}
+
+func TestMergeGroupEvent_GetMergeGroup(tt *testing.T) {
+	m := &MergeGroupEvent{}
+	m.GetMergeGroup()
+	m = nil
+	m.GetMergeGroup()
+}
+
+func TestMergeGroupEvent_GetOrg(tt *testing.T) {
+	m := &MergeGroupEvent{}
+	m.GetOrg()
+	m = nil
+	m.GetOrg()
+}
+
+func TestMergeGroupEvent_GetRepo(tt *testing.T) {
+	m := &MergeGroupEvent{}
+	m.GetRepo()
+	m = nil
+	m.GetRepo()
+}
+
+func TestMergeGroupEvent_GetSender(tt *testing.T) {
+	m := &MergeGroupEvent{}
+	m.GetSender()
+	m = nil
+	m.GetSender()
+}
+
 func TestMessage_GetText(tt *testing.T) {
 	var zeroValue string
 	m := &Message{Text: &zeroValue}
