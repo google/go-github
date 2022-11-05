@@ -559,6 +559,37 @@ type MembershipEvent struct {
 	Installation *Installation `json:"installation,omitempty"`
 }
 
+// MergeGroup represents the merge group in a merge queue.
+type MergeGroup struct {
+	// The SHA of the merge group.
+	HeadSHA *string `json:"head_sha,omitempty"`
+	// The full ref of the merge group.
+	HeadRef *string `json:"head_ref,omitempty"`
+	// The SHA of the merge group's parent commit.
+	BaseSHA *string `json:"base_sha,omitempty"`
+	// The full ref of the branch the merge group will be merged into.
+	BaseRef *string `json:"base_ref,omitempty"`
+	// An expanded representation of the head_sha commit.
+	HeadCommit *Commit `json:"head_commit,omitempty"`
+}
+
+// MergeGroupEvent represents activity related to merge groups in a merge queue. The type of activity is specified
+// in the action property of the payload object.
+//
+// GitHub API docs: https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#merge_group
+type MergeGroupEvent struct {
+	// The action that was performed. Currently, can only be checks_requested.
+	Action *string `json:"action,omitempty"`
+	// The merge group.
+	MergeGroup *MergeGroup `json:"merge_group,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Repo         *Repository   `json:"repository,omitempty"`
+	Org          *Organization `json:"organization,omitempty"`
+	Installation *Installation `json:"installation,omitempty"`
+	Sender       *User         `json:"sender,omitempty"`
+}
+
 // MetaEvent is triggered when the webhook that this event is configured on is deleted.
 // This event will only listen for changes to the particular hook the event is installed on.
 // Therefore, it must be selected for each hook that you'd like to receive meta events for.

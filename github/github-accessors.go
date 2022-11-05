@@ -8870,6 +8870,94 @@ func (m *MembershipEvent) GetTeam() *Team {
 	return m.Team
 }
 
+// GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
+func (m *MergeGroup) GetBaseRef() string {
+	if m == nil || m.BaseRef == nil {
+		return ""
+	}
+	return *m.BaseRef
+}
+
+// GetBaseSHA returns the BaseSHA field if it's non-nil, zero value otherwise.
+func (m *MergeGroup) GetBaseSHA() string {
+	if m == nil || m.BaseSHA == nil {
+		return ""
+	}
+	return *m.BaseSHA
+}
+
+// GetHeadCommit returns the HeadCommit field.
+func (m *MergeGroup) GetHeadCommit() *Commit {
+	if m == nil {
+		return nil
+	}
+	return m.HeadCommit
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (m *MergeGroup) GetHeadRef() string {
+	if m == nil || m.HeadRef == nil {
+		return ""
+	}
+	return *m.HeadRef
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (m *MergeGroup) GetHeadSHA() string {
+	if m == nil || m.HeadSHA == nil {
+		return ""
+	}
+	return *m.HeadSHA
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (m *MergeGroupEvent) GetAction() string {
+	if m == nil || m.Action == nil {
+		return ""
+	}
+	return *m.Action
+}
+
+// GetInstallation returns the Installation field.
+func (m *MergeGroupEvent) GetInstallation() *Installation {
+	if m == nil {
+		return nil
+	}
+	return m.Installation
+}
+
+// GetMergeGroup returns the MergeGroup field.
+func (m *MergeGroupEvent) GetMergeGroup() *MergeGroup {
+	if m == nil {
+		return nil
+	}
+	return m.MergeGroup
+}
+
+// GetOrg returns the Org field.
+func (m *MergeGroupEvent) GetOrg() *Organization {
+	if m == nil {
+		return nil
+	}
+	return m.Org
+}
+
+// GetRepo returns the Repo field.
+func (m *MergeGroupEvent) GetRepo() *Repository {
+	if m == nil {
+		return nil
+	}
+	return m.Repo
+}
+
+// GetSender returns the Sender field.
+func (m *MergeGroupEvent) GetSender() *User {
+	if m == nil {
+		return nil
+	}
+	return m.Sender
+}
+
 // GetText returns the Text field if it's non-nil, zero value otherwise.
 func (m *Message) GetText() string {
 	if m == nil || m.Text == nil {
