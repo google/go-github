@@ -68,6 +68,7 @@ var (
 		"marketplace_purchase":           "MarketplacePurchaseEvent",
 		"member":                         "MemberEvent",
 		"membership":                     "MembershipEvent",
+		"merge_group":                    "MergeGroupEvent",
 		"meta":                           "MetaEvent",
 		"milestone":                      "MilestoneEvent",
 		"organization":                   "OrganizationEvent",

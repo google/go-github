@@ -354,6 +354,10 @@ func TestParseWebHook(t *testing.T) {
 			messageType: "membership",
 		},
 		{
+			payload:     &MergeGroupEvent{},
+			messageType: "merge_group",
+		},
+		{
 			payload:     &MetaEvent{},
 			messageType: "meta",
 		},
