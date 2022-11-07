@@ -10,7 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -293,7 +293,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
-		buf, err := ioutil.ReadAll(r.Body)
+		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Unable to read body: %v", err)
 		}
@@ -377,7 +377,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		v := new(NewTeam)
-		buf, err := ioutil.ReadAll(r.Body)
+		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Unable to read body: %v", err)
 		}

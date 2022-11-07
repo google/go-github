@@ -10,7 +10,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 
@@ -118,7 +118,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		got, err := ioutil.ReadAll(r.Body)
+		got, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Fatalf("unable to read body: %v", err)
 		}

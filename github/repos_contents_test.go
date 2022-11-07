@@ -9,7 +9,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"testing"
@@ -146,7 +146,7 @@ func TestRepositoriesService_DownloadContents_Success(t *testing.T) {
 		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
 	}
 
-	bytes, err := ioutil.ReadAll(r)
+	bytes, err := io.ReadAll(r)
 	if err != nil {
 		t.Errorf("Error reading response body: %v", err)
 	}
@@ -198,7 +198,7 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 		t.Errorf("Repositories.DownloadContents returned status code %v, want %v", got, want)
 	}
 
-	bytes, err := ioutil.ReadAll(r)
+	bytes, err := io.ReadAll(r)
 	if err != nil {
 		t.Errorf("Error reading response body: %v", err)
 	}
@@ -276,7 +276,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_Success(t *testing.T) {
 		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
 	}
 
-	bytes, err := ioutil.ReadAll(r)
+	bytes, err := io.ReadAll(r)
 	if err != nil {
 		t.Errorf("Error reading response body: %v", err)
 	}
@@ -339,7 +339,7 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
 	}
 
-	bytes, err := ioutil.ReadAll(r)
+	bytes, err := io.ReadAll(r)
 	if err != nil {
 		t.Errorf("Error reading response body: %v", err)
 	}

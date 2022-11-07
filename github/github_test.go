@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -70,7 +70,7 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 // directory, and create the file in that directory. It is the caller's
 // responsibility to remove the directory and its contents when no longer needed.
 func openTestFile(name, content string) (file *os.File, dir string, err error) {
-	dir, err = ioutil.TempDir("", "go-github")
+	dir, err = os.MkdirTemp("", "go-github")
 	if err != nil {
 		return nil, dir, err
 	}
@@ -133,7 +133,7 @@ func testURLParseError(t *testing.T, err error) {
 
 func testBody(t *testing.T, r *http.Request, want string) {
 	t.Helper()
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Errorf("Error reading request body: %v", err)
 	}
@@ -502,7 +502,7 @@ func TestNewRequest(t *testing.T) {
 	}
 
 	// test that body was JSON encoded
-	body, _ := ioutil.ReadAll(req.Body)
+	body, _ := io.ReadAll(req.Body)
 	if got, want := string(body), outBody; got != want {
 		t.Errorf("NewRequest(%q) Body is %v, want %v", inBody, got, want)
 	}
@@ -617,7 +617,7 @@ func TestNewFormRequest(t *testing.T) {
 	}
 
 	// test that body was form encoded
-	body, _ := ioutil.ReadAll(req.Body)
+	body, _ := io.ReadAll(req.Body)
 	if got, want := string(body), outBody; got != want {
 		t.Errorf("NewFormRequest(%q) Body is %v, want %v", inBody, got, want)
 	}
@@ -1398,7 +1398,7 @@ func TestCheckResponse(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
-		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
+		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"errors": [{"resource": "r", "field": "f", "code": "c"}],
 			"block": {"reason": "dmca", "created_at": "2016-03-17T15:39:46Z"}}`)),
 	}
@@ -1427,7 +1427,7 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
 		Header:     http.Header{},
-		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
+		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"documentation_url": "url"}`)),
 	}
 	res.Header.Set(headerRateLimit, "60")
@@ -1454,7 +1454,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusForbidden,
-		Body: ioutil.NopCloser(strings.NewReader(`{"message":"m",
+		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"documentation_url": "docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"}`)),
 	}
 	err := CheckResponse(res).(*AbuseRateLimitError)
@@ -1847,7 +1847,7 @@ func TestCheckResponse_noBody(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
-		Body:       ioutil.NopCloser(strings.NewReader("")),
+		Body:       io.NopCloser(strings.NewReader("")),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
 
@@ -1868,7 +1868,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	res := &http.Response{
 		Request:    &http.Request{},
 		StatusCode: http.StatusBadRequest,
-		Body:       ioutil.NopCloser(strings.NewReader(httpBody)),
+		Body:       io.NopCloser(strings.NewReader(httpBody)),
 	}
 	err := CheckResponse(res).(*ErrorResponse)
 
@@ -1884,7 +1884,7 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	if !errors.Is(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
 	}
-	data, err2 := ioutil.ReadAll(err.Response.Body)
+	data, err2 := io.ReadAll(err.Response.Body)
 	if err2 != nil {
 		t.Fatalf("failed to read response body: %v", err)
 	}
@@ -2373,9 +2373,9 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 		t.Fatalf("client.BareDo returned error: %v", err)
 	}
 
-	got, err := ioutil.ReadAll(resp.Body)
+	got, err := io.ReadAll(resp.Body)
 	if err != nil {
-		t.Fatalf("ioutil.ReadAll returned error: %v", err)
+		t.Fatalf("io.ReadAll returned error: %v", err)
 	}
 	if string(got) != expectedBody {
 		t.Fatalf("Expected %q, got %q", expectedBody, string(got))
