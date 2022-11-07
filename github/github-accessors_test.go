@@ -4280,6 +4280,16 @@ func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	c := &CreateRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	c.GetRestrictedToWorkflows()
+	c = &CreateRunnerGroupRequest{}
+	c.GetRestrictedToWorkflows()
+	c = nil
+	c.GetRestrictedToWorkflows()
+}
+
 func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	var zeroValue string
 	c := &CreateRunnerGroupRequest{Visibility: &zeroValue}
@@ -19776,6 +19786,16 @@ func TestRunnerGroup_GetName(tt *testing.T) {
 	r.GetName()
 }
 
+func TestRunnerGroup_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{RestrictedToWorkflows: &zeroValue}
+	r.GetRestrictedToWorkflows()
+	r = &RunnerGroup{}
+	r.GetRestrictedToWorkflows()
+	r = nil
+	r.GetRestrictedToWorkflows()
+}
+
 func TestRunnerGroup_GetRunnersURL(tt *testing.T) {
 	var zeroValue string
 	r := &RunnerGroup{RunnersURL: &zeroValue}
@@ -22689,6 +22709,16 @@ func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
 	u.GetName()
 	u = nil
 	u.GetName()
+}
+
+func TestUpdateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
+	var zeroValue bool
+	u := &UpdateRunnerGroupRequest{RestrictedToWorkflows: &zeroValue}
+	u.GetRestrictedToWorkflows()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetRestrictedToWorkflows()
+	u = nil
+	u.GetRestrictedToWorkflows()
 }
 
 func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
