@@ -28,7 +28,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -189,10 +189,10 @@ type liveFileRewriter struct {
 
 func (lfr *liveFileRewriter) Position(pos token.Pos) token.Position { return lfr.fset.Position(pos) }
 func (lfr *liveFileRewriter) ReadFile(filename string) ([]byte, error) {
-	return ioutil.ReadFile(filename)
+	return os.ReadFile(filename)
 }
 func (lfr *liveFileRewriter) WriteFile(filename string, buf []byte, mode os.FileMode) error {
-	return ioutil.WriteFile(filename, buf, mode)
+	return os.WriteFile(filename, buf, mode)
 }
 
 func validateRewriteURLs(usedHelpers usedHelpersMap, endpointsByFilename endpointsByFilenameMap, docCache documentCacheReader, fileRewriter FileRewriter) {
@@ -599,7 +599,7 @@ func (dc *documentCache) CacheDocFromInternet(urlWithID, filename string, pos to
 	url := baseURL
 	logf("urlWithID: %v ; finalURL: %v ; baseURL: %v, fullURL: %v", urlWithID, finalURL, baseURL, fullURL)
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	check("Unable to read body of URL: %v, %v", url, err)
 	check("Unable to close body of URL: %v, %v", url, resp.Body.Close())
 	dc.apiDocs[url], err = parseWebPageEndpoints(string(b))
