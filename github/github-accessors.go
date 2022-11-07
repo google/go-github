@@ -206,6 +206,38 @@ func (a *AdvancedSecurityCommittersBreakdown) GetUserLogin() string {
 	return *a.UserLogin
 }
 
+// GetScore returns the Score field.
+func (a *AdvisoryCVSs) GetScore() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Score
+}
+
+// GetVectorString returns the VectorString field if it's non-nil, zero value otherwise.
+func (a *AdvisoryCVSs) GetVectorString() string {
+	if a == nil || a.VectorString == nil {
+		return ""
+	}
+	return *a.VectorString
+}
+
+// GetCWEID returns the CWEID field if it's non-nil, zero value otherwise.
+func (a *AdvisoryCWEs) GetCWEID() string {
+	if a == nil || a.CWEID == nil {
+		return ""
+	}
+	return *a.CWEID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AdvisoryCWEs) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (a *AdvisoryIdentifier) GetType() string {
 	if a == nil || a.Type == nil {
@@ -3732,6 +3764,214 @@ func (d *DeleteEvent) GetSender() *User {
 		return nil
 	}
 	return d.Sender
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetCreatedAt() Timestamp {
+	if d == nil || d.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.CreatedAt
+}
+
+// GetDependency returns the Dependency field.
+func (d *DependabotAlert) GetDependency() *Dependency {
+	if d == nil {
+		return nil
+	}
+	return d.Dependency
+}
+
+// GetDismissedAt returns the DismissedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetDismissedAt() Timestamp {
+	if d == nil || d.DismissedAt == nil {
+		return Timestamp{}
+	}
+	return *d.DismissedAt
+}
+
+// GetDismissedBy returns the DismissedBy field.
+func (d *DependabotAlert) GetDismissedBy() *User {
+	if d == nil {
+		return nil
+	}
+	return d.DismissedBy
+}
+
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetDismissedComment() string {
+	if d == nil || d.DismissedComment == nil {
+		return ""
+	}
+	return *d.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetDismissedReason() string {
+	if d == nil || d.DismissedReason == nil {
+		return ""
+	}
+	return *d.DismissedReason
+}
+
+// GetFixedAt returns the FixedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetFixedAt() Timestamp {
+	if d == nil || d.FixedAt == nil {
+		return Timestamp{}
+	}
+	return *d.FixedAt
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetHTMLURL() string {
+	if d == nil || d.HTMLURL == nil {
+		return ""
+	}
+	return *d.HTMLURL
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetNumber() int {
+	if d == nil || d.Number == nil {
+		return 0
+	}
+	return *d.Number
+}
+
+// GetSecurityAdvisory returns the SecurityAdvisory field.
+func (d *DependabotAlert) GetSecurityAdvisory() *DependabotSecurityAdvisory {
+	if d == nil {
+		return nil
+	}
+	return d.SecurityAdvisory
+}
+
+// GetSecurityVulnerability returns the SecurityVulnerability field.
+func (d *DependabotAlert) GetSecurityVulnerability() *AdvisoryVulnerability {
+	if d == nil {
+		return nil
+	}
+	return d.SecurityVulnerability
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetState() string {
+	if d == nil || d.State == nil {
+		return ""
+	}
+	return *d.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (d *DependabotAlert) GetURL() string {
+	if d == nil || d.URL == nil {
+		return ""
+	}
+	return *d.URL
+}
+
+// GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetCVEID() string {
+	if d == nil || d.CVEID == nil {
+		return ""
+	}
+	return *d.CVEID
+}
+
+// GetCVSs returns the CVSs field.
+func (d *DependabotSecurityAdvisory) GetCVSs() *AdvisoryCVSs {
+	if d == nil {
+		return nil
+	}
+	return d.CVSs
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetDescription() string {
+	if d == nil || d.Description == nil {
+		return ""
+	}
+	return *d.Description
+}
+
+// GetGHSAID returns the GHSAID field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetGHSAID() string {
+	if d == nil || d.GHSAID == nil {
+		return ""
+	}
+	return *d.GHSAID
+}
+
+// GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetPublishedAt() Timestamp {
+	if d == nil || d.PublishedAt == nil {
+		return Timestamp{}
+	}
+	return *d.PublishedAt
+}
+
+// GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetSeverity() string {
+	if d == nil || d.Severity == nil {
+		return ""
+	}
+	return *d.Severity
+}
+
+// GetSummary returns the Summary field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetSummary() string {
+	if d == nil || d.Summary == nil {
+		return ""
+	}
+	return *d.Summary
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetUpdatedAt() Timestamp {
+	if d == nil || d.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *d.UpdatedAt
+}
+
+// GetWithdrawnAt returns the WithdrawnAt field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetWithdrawnAt() Timestamp {
+	if d == nil || d.WithdrawnAt == nil {
+		return Timestamp{}
+	}
+	return *d.WithdrawnAt
+}
+
+// GetManifestPath returns the ManifestPath field if it's non-nil, zero value otherwise.
+func (d *Dependency) GetManifestPath() string {
+	if d == nil || d.ManifestPath == nil {
+		return ""
+	}
+	return *d.ManifestPath
+}
+
+// GetPackage returns the Package field.
+func (d *Dependency) GetPackage() *VulnerabilityPackage {
+	if d == nil {
+		return nil
+	}
+	return d.Package
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (d *Dependency) GetScope() string {
+	if d == nil || d.Scope == nil {
+		return ""
+	}
+	return *d.Scope
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -8276,6 +8516,62 @@ func (l *LinearHistoryRequirementEnforcementLevelChanges) GetFrom() string {
 		return ""
 	}
 	return *l.From
+}
+
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetDirection() string {
+	if l == nil || l.Direction == nil {
+		return ""
+	}
+	return *l.Direction
+}
+
+// GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetEcosystem() string {
+	if l == nil || l.Ecosystem == nil {
+		return ""
+	}
+	return *l.Ecosystem
+}
+
+// GetPackage returns the Package field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetPackage() string {
+	if l == nil || l.Package == nil {
+		return ""
+	}
+	return *l.Package
+}
+
+// GetScope returns the Scope field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetScope() string {
+	if l == nil || l.Scope == nil {
+		return ""
+	}
+	return *l.Scope
+}
+
+// GetSeverity returns the Severity field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetSeverity() string {
+	if l == nil || l.Severity == nil {
+		return ""
+	}
+	return *l.Severity
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetSort() string {
+	if l == nil || l.Sort == nil {
+		return ""
+	}
+	return *l.Sort
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (l *ListAlertsOptions) GetState() string {
+	if l == nil || l.State == nil {
+		return ""
+	}
+	return *l.State
 }
 
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
