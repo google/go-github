@@ -302,6 +302,14 @@ func (a *Alert) GetDismissedBy() *User {
 	return a.DismissedBy
 }
 
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (a *Alert) GetDismissedComment() string {
+	if a == nil || a.DismissedComment == nil {
+		return ""
+	}
+	return *a.DismissedComment
+}
+
 // GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
 func (a *Alert) GetDismissedReason() string {
 	if a == nil || a.DismissedReason == nil {
