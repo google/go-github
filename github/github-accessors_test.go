@@ -333,6 +333,16 @@ func TestAlert_GetDismissedBy(tt *testing.T) {
 	a.GetDismissedBy()
 }
 
+func TestAlert_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	a := &Alert{DismissedComment: &zeroValue}
+	a.GetDismissedComment()
+	a = &Alert{}
+	a.GetDismissedComment()
+	a = nil
+	a.GetDismissedComment()
+}
+
 func TestAlert_GetDismissedReason(tt *testing.T) {
 	var zeroValue string
 	a := &Alert{DismissedReason: &zeroValue}
