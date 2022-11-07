@@ -2853,6 +2853,284 @@ func TestRepositoriesService_RemoveAppRestrictions(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_ListTeamRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListTeamRestrictions returned error: %v", err)
+	}
+
+	const methodName = "ListTeamRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListTeamRestrictions(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListTeamRestrictions(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.ReplaceTeamRestrictions returned error: %v", err)
+	}
+	want := []*Team{
+		{Name: String("octocat")},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.ReplaceTeamRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "ReplaceTeamRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ReplaceTeamRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ReplaceTeamRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.AddTeamRestrictions returned error: %v", err)
+	}
+	want := []*Team{
+		{Name: String("octocat")},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.AddTeamRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "AddTeamRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.AddTeamRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.AddTeamRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_RemoveTeamRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		fmt.Fprint(w, `[]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.RemoveTeamRestrictions returned error: %v", err)
+	}
+	want := []*Team{}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.RemoveTeamRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "RemoveTeamRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RemoveTeamRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RemoveTeamRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_ListUserRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+
+	ctx := context.Background()
+	_, _, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", "b")
+	if err != nil {
+		t.Errorf("Repositories.ListUserRestrictions returned error: %v", err)
+	}
+
+	const methodName = "ListUserRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListUserRestrictions(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListUserRestrictions(ctx, "o", "r", "b")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.ReplaceUserRestrictions returned error: %v", err)
+	}
+	want := []*User{
+		{Name: String("octocat")},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.ReplaceUserRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "ReplaceUserRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ReplaceUserRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ReplaceUserRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `[{
+				"name": "octocat"
+			}]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.AddUserRestrictions returned error: %v", err)
+	}
+	want := []*User{
+		{Name: String("octocat")},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.AddUserRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "AddUserRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.AddUserRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.AddUserRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_RemoveUserRestrictions(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection/restrictions/users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		fmt.Fprint(w, `[]`)
+	})
+	input := []string{"octocat"}
+	ctx := context.Background()
+	got, _, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.RemoveUserRestrictions returned error: %v", err)
+	}
+	want := []*User{}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Repositories.RemoveUserRestrictions returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "RemoveUserRestrictions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.RemoveUserRestrictions(ctx, "\n", "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.RemoveUserRestrictions(ctx, "o", "r", "b", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_Transfer(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

@@ -1690,6 +1690,16 @@ func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch 
 	return apps, resp, nil
 }
 
+// ListAppRestrictions lists the GitHub apps that have push access to a given protected branch.
+// It requires the GitHub apps to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
+//
+// Note: This is a wrapper around ListApps so a naming convention with ListUserRestrictions and ListTeamRestrictions is preserved.
+func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
+	return s.ListApps(ctx, owner, repo, branch)
+}
+
 // ReplaceAppRestrictions replaces the apps that have push access to a given protected branch.
 // It removes all apps that previously had push access and grants push access to the new list of apps.
 // It requires the GitHub apps to have `write` access to the `content` permission.
@@ -1755,6 +1765,180 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 	}
 
 	return apps, resp, nil
+}
+
+// ListTeamRestrictions lists the GitHub teams that have push access to a given protected branch.
+// It requires the GitHub teams to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-teams-with-access-to-the-protected-branch
+func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, repo, branch string) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teams []*Team
+	resp, err := s.client.Do(ctx, req, &teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teams, resp, nil
+}
+
+// ReplaceTeamRestrictions replaces the team that have push access to a given protected branch.
+// It removes all teams that previously had push access and grants push access to the new list of teams.
+// It requires the GitHub teams to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
+func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	req, err := s.client.NewRequest("PUT", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teams []*Team
+	resp, err := s.client.Do(ctx, req, &teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teams, resp, nil
+}
+
+// AddTeamRestrictions grants the specified teams push access to a given protected branch.
+// It requires the GitHub teams to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
+func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	req, err := s.client.NewRequest("POST", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teams []*Team
+	resp, err := s.client.Do(ctx, req, &teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teams, resp, nil
+}
+
+// RemoveTeamRestrictions removes the ability of an team to push to this branch.
+// It requires the GitHub teams to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
+func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var teams []*Team
+	resp, err := s.client.Do(ctx, req, &teams)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return teams, resp, nil
+}
+
+// ListUserRestrictions lists the GitHub users that have push access to a given protected branch.
+// It requires the GitHub users to have `write` access to the `content` permission.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-users-with-access-to-the-protected-branch
+func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, repo, branch string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+}
+
+// ReplaceUserRestrictions replaces the team that have push access to a given protected branch.
+// It removes all users that previously had push access and grants push access to the new list of users.
+// It requires the GitHub users to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
+func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	req, err := s.client.NewRequest("PUT", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+}
+
+// AddUserRestrictions grants the specified users push access to a given protected branch.
+// It requires the GitHub users to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
+func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	req, err := s.client.NewRequest("POST", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
+}
+
+// RemoveUserRestrictions removes the ability of an team to push to this branch.
+// It requires the GitHub users to have `write` access to the `content` permission.
+//
+// Note: The list of users, apps, and teams in total is limited to 100 items.
+//
+// GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
+func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
+	req, err := s.client.NewRequest("DELETE", u, slug)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var users []*User
+	resp, err := s.client.Do(ctx, req, &users)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return users, resp, nil
 }
 
 // TransferRequest represents a request to transfer a repository.
