@@ -87,6 +87,7 @@ type Alert struct {
 	DismissedBy        *User                 `json:"dismissed_by,omitempty"`
 	DismissedAt        *Timestamp            `json:"dismissed_at,omitempty"`
 	DismissedReason    *string               `json:"dismissed_reason,omitempty"`
+	DismissedComment   *string               `json:"dismissed_comment,omitempty"`
 	InstancesURL       *string               `json:"instances_url,omitempty"`
 }
 
