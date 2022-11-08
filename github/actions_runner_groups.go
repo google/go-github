@@ -40,9 +40,9 @@ type CreateRunnerGroupRequest struct {
 	Runners []int64 `json:"runners,omitempty"`
 	// If set to True, public repos can use this runner group
 	AllowsPublicRepositories *bool `json:"allows_public_repositories,omitempty"`
-	// If true, the runner group will be restricted to running only the workflows specified in the selected_workflows array
+	// If true, the runner group will be restricted to running only the workflows specified in the SelectedWorkflows slice.
 	RestrictedToWorkflows *bool `json:"restricted_to_workflows,omitempty"`
-	// List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.
+	// List of workflows the runner group should be allowed to run. This setting will be ignored unless RestrictedToWorkflows is set to true.
 	SelectedWorkflows []string `json:"selected_workflows,omitempty"`
 }
 
