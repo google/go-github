@@ -24013,6 +24013,16 @@ func TestWorkflowJob_GetNodeID(tt *testing.T) {
 	w.GetNodeID()
 }
 
+func TestWorkflowJob_GetRunAttempt(tt *testing.T) {
+	var zeroValue int64
+	w := &WorkflowJob{RunAttempt: &zeroValue}
+	w.GetRunAttempt()
+	w = &WorkflowJob{}
+	w.GetRunAttempt()
+	w = nil
+	w.GetRunAttempt()
+}
+
 func TestWorkflowJob_GetRunID(tt *testing.T) {
 	var zeroValue int64
 	w := &WorkflowJob{RunID: &zeroValue}

@@ -20566,6 +20566,14 @@ func (w *WorkflowJob) GetNodeID() string {
 	return *w.NodeID
 }
 
+// GetRunAttempt returns the RunAttempt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetRunAttempt() int64 {
+	if w == nil || w.RunAttempt == nil {
+		return 0
+	}
+	return *w.RunAttempt
+}
+
 // GetRunID returns the RunID field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetRunID() int64 {
 	if w == nil || w.RunID == nil {
