@@ -324,6 +324,7 @@ func TestJobs_Marshal(t *testing.T) {
 					},
 				},
 				CheckRunURL: String("c"),
+				RunAttempt:  Int64(2),
 			},
 		},
 	}
@@ -351,7 +352,8 @@ func TestJobs_Marshal(t *testing.T) {
 				"started_at": ` + referenceTimeStr + `,
 				"completed_at": ` + referenceTimeStr + `
 			}],
-			"check_run_url": "c"
+			"check_run_url": "c",
+			"run_attempt": 2
 		}]
 	}`
 
