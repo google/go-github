@@ -12,16 +12,17 @@ import (
 
 // RunnerGroup represents a self-hosted runner group configured in an organization.
 type RunnerGroup struct {
-	ID                       *int64   `json:"id,omitempty"`
-	Name                     *string  `json:"name,omitempty"`
-	Visibility               *string  `json:"visibility,omitempty"`
-	Default                  *bool    `json:"default,omitempty"`
-	SelectedRepositoriesURL  *string  `json:"selected_repositories_url,omitempty"`
-	RunnersURL               *string  `json:"runners_url,omitempty"`
-	Inherited                *bool    `json:"inherited,omitempty"`
-	AllowsPublicRepositories *bool    `json:"allows_public_repositories,omitempty"`
-	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
-	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
+	ID                           *int64   `json:"id,omitempty"`
+	Name                         *string  `json:"name,omitempty"`
+	Visibility                   *string  `json:"visibility,omitempty"`
+	Default                      *bool    `json:"default,omitempty"`
+	SelectedRepositoriesURL      *string  `json:"selected_repositories_url,omitempty"`
+	RunnersURL                   *string  `json:"runners_url,omitempty"`
+	Inherited                    *bool    `json:"inherited,omitempty"`
+	AllowsPublicRepositories     *bool    `json:"allows_public_repositories,omitempty"`
+	RestrictedToWorkflows        *bool    `json:"restricted_to_workflows,omitempty"`
+	SelectedWorkflows            []string `json:"selected_workflows,omitempty"`
+	WorkflowRestrictionsReadOnly *bool    `json:"workflow_restrictions_read_only,omitempty"`
 }
 
 // RunnerGroups represents a collection of self-hosted runner groups configured for an organization.

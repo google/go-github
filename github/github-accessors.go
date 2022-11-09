@@ -17022,6 +17022,14 @@ func (r *RunnerGroup) GetVisibility() string {
 	return *r.Visibility
 }
 
+// GetWorkflowRestrictionsReadOnly returns the WorkflowRestrictionsReadOnly field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetWorkflowRestrictionsReadOnly() bool {
+	if r == nil || r.WorkflowRestrictionsReadOnly == nil {
+		return false
+	}
+	return *r.WorkflowRestrictionsReadOnly
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *RunnerLabels) GetID() int64 {
 	if r == nil || r.ID == nil {

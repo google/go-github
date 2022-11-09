@@ -19826,6 +19826,16 @@ func TestRunnerGroup_GetVisibility(tt *testing.T) {
 	r.GetVisibility()
 }
 
+func TestRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
+	var zeroValue bool
+	r := &RunnerGroup{WorkflowRestrictionsReadOnly: &zeroValue}
+	r.GetWorkflowRestrictionsReadOnly()
+	r = &RunnerGroup{}
+	r.GetWorkflowRestrictionsReadOnly()
+	r = nil
+	r.GetWorkflowRestrictionsReadOnly()
+}
+
 func TestRunnerLabels_GetID(tt *testing.T) {
 	var zeroValue int64
 	r := &RunnerLabels{ID: &zeroValue}
