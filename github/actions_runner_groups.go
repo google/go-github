@@ -12,14 +12,17 @@ import (
 
 // RunnerGroup represents a self-hosted runner group configured in an organization.
 type RunnerGroup struct {
-	ID                       *int64  `json:"id,omitempty"`
-	Name                     *string `json:"name,omitempty"`
-	Visibility               *string `json:"visibility,omitempty"`
-	Default                  *bool   `json:"default,omitempty"`
-	SelectedRepositoriesURL  *string `json:"selected_repositories_url,omitempty"`
-	RunnersURL               *string `json:"runners_url,omitempty"`
-	Inherited                *bool   `json:"inherited,omitempty"`
-	AllowsPublicRepositories *bool   `json:"allows_public_repositories,omitempty"`
+	ID                           *int64   `json:"id,omitempty"`
+	Name                         *string  `json:"name,omitempty"`
+	Visibility                   *string  `json:"visibility,omitempty"`
+	Default                      *bool    `json:"default,omitempty"`
+	SelectedRepositoriesURL      *string  `json:"selected_repositories_url,omitempty"`
+	RunnersURL                   *string  `json:"runners_url,omitempty"`
+	Inherited                    *bool    `json:"inherited,omitempty"`
+	AllowsPublicRepositories     *bool    `json:"allows_public_repositories,omitempty"`
+	RestrictedToWorkflows        *bool    `json:"restricted_to_workflows,omitempty"`
+	SelectedWorkflows            []string `json:"selected_workflows,omitempty"`
+	WorkflowRestrictionsReadOnly *bool    `json:"workflow_restrictions_read_only,omitempty"`
 }
 
 // RunnerGroups represents a collection of self-hosted runner groups configured for an organization.
@@ -38,13 +41,19 @@ type CreateRunnerGroupRequest struct {
 	Runners []int64 `json:"runners,omitempty"`
 	// If set to True, public repos can use this runner group
 	AllowsPublicRepositories *bool `json:"allows_public_repositories,omitempty"`
+	// If true, the runner group will be restricted to running only the workflows specified in the SelectedWorkflows slice.
+	RestrictedToWorkflows *bool `json:"restricted_to_workflows,omitempty"`
+	// List of workflows the runner group should be allowed to run. This setting will be ignored unless RestrictedToWorkflows is set to true.
+	SelectedWorkflows []string `json:"selected_workflows,omitempty"`
 }
 
 // UpdateRunnerGroupRequest represents a request to update a Runner group for an organization.
 type UpdateRunnerGroupRequest struct {
-	Name                     *string `json:"name,omitempty"`
-	Visibility               *string `json:"visibility,omitempty"`
-	AllowsPublicRepositories *bool   `json:"allows_public_repositories,omitempty"`
+	Name                     *string  `json:"name,omitempty"`
+	Visibility               *string  `json:"visibility,omitempty"`
+	AllowsPublicRepositories *bool    `json:"allows_public_repositories,omitempty"`
+	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
+	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
 }
 
 // SetRepoAccessRunnerGroupRequest represents a request to replace the list of repositories
