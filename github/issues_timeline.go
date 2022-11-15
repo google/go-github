@@ -35,6 +35,8 @@ type Timeline struct {
 	SHA *string `json:"sha,omitempty"`
 	// The commit message.
 	Message *string `json:"message,omitempty"`
+	// A list of parent commits.
+	Parents []*Commit `json:"parents,omitempty"`
 
 	// Event identifies the actual type of Event that occurred. Possible values
 	// are:
