@@ -7310,6 +7310,14 @@ func (i *Issue) GetAssignee() *User {
 	return i.Assignee
 }
 
+// GetAssignees returns the Assignees field if it's non-nil, zero value otherwise.
+func (i *Issue) GetAssignees() []*User {
+	if i == nil || i.Assignees == nil {
+		return nil
+	}
+	return i.Assignees
+}
+
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
 func (i *Issue) GetAuthorAssociation() string {
 	if i == nil || i.AuthorAssociation == nil {

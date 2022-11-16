@@ -8595,6 +8595,16 @@ func TestIssue_GetAssignee(tt *testing.T) {
 	i.GetAssignee()
 }
 
+func TestIssue_GetAssignees(tt *testing.T) {
+	var zeroValue []*User
+	i := &Issue{Assignees: zeroValue}
+	i.GetAssignees()
+	i = &Issue{}
+	i.GetAssignees()
+	i = nil
+	i.GetAssignees()
+}
+
 func TestIssue_GetAuthorAssociation(tt *testing.T) {
 	var zeroValue string
 	i := &Issue{AuthorAssociation: &zeroValue}
