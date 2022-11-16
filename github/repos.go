@@ -1028,6 +1028,8 @@ type PullRequestReviewsEnforcement struct {
 	// RequiredApprovingReviewCount specifies the number of approvals required before the pull request can be merged.
 	// Valid values are 1-6.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
+	// RequireLastPushApproval specifies whether the last pusher to a pull request branch can approve it.
+	RequireLastPushApproval bool `json:"require_last_push_approval"`
 }
 
 // PullRequestReviewsEnforcementRequest represents request to set the pull request review
