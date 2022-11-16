@@ -1067,7 +1067,7 @@ type PullRequestReviewsEnforcementUpdate struct {
 	// Valid values are 1 - 6 or 0 to not require reviewers.
 	RequiredApprovingReviewCount int `json:"required_approving_review_count"`
 	// RequireLastPushApproval specifies whether the last pusher to a pull request branch can approve it.
-	RequireLastPushApproval *bool `json:"require_last_push_approval"`
+	RequireLastPushApproval *bool `json:"require_last_push_approval,omitempty"`
 }
 
 // RequireLinearHistory represents the configuration to enforce branches with no merge commit.
