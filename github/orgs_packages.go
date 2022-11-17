@@ -81,7 +81,7 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 
 // Get all versions of a package in an organization.
 //
-// GitHub API docs: https://docs.github.com/en/rest/packages#get-all-package-versions-for-a-package-owned-by-an-organization
+// GitHub API docs: https://docs.github.com/en/rest/packages#list-package-versions-for-a-package-owned-by-an-organization
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/packages/%v/%v/versions", org, packageType, packageName)
 	u, err := addOptions(u, opts)
