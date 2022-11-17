@@ -15873,6 +15873,16 @@ func TestPullRequestReviewsEnforcementUpdate_GetRequireCodeOwnerReviews(tt *test
 	p.GetRequireCodeOwnerReviews()
 }
 
+func TestPullRequestReviewsEnforcementUpdate_GetRequireLastPushApproval(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestReviewsEnforcementUpdate{RequireLastPushApproval: &zeroValue}
+	p.GetRequireLastPushApproval()
+	p = &PullRequestReviewsEnforcementUpdate{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
+}
+
 func TestPullRequestReviewThreadEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	p := &PullRequestReviewThreadEvent{Action: &zeroValue}
