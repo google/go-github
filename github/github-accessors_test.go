@@ -4290,6 +4290,16 @@ func TestCreateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	c.GetRestrictedToWorkflows()
 }
 
+func TestCreateRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	var zeroValue []string
+	c := &CreateRunnerGroupRequest{SelectedWorkflows: &zeroValue}
+	c.GetSelectedWorkflows()
+	c = &CreateRunnerGroupRequest{}
+	c.GetSelectedWorkflows()
+	c = nil
+	c.GetSelectedWorkflows()
+}
+
 func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	var zeroValue string
 	c := &CreateRunnerGroupRequest{Visibility: &zeroValue}
@@ -19826,6 +19836,16 @@ func TestRunnerGroup_GetSelectedRepositoriesURL(tt *testing.T) {
 	r.GetSelectedRepositoriesURL()
 }
 
+func TestRunnerGroup_GetSelectedWorkflows(tt *testing.T) {
+	var zeroValue []string
+	r := &RunnerGroup{SelectedWorkflows: &zeroValue}
+	r.GetSelectedWorkflows()
+	r = &RunnerGroup{}
+	r.GetSelectedWorkflows()
+	r = nil
+	r.GetSelectedWorkflows()
+}
+
 func TestRunnerGroup_GetVisibility(tt *testing.T) {
 	var zeroValue string
 	r := &RunnerGroup{Visibility: &zeroValue}
@@ -22739,6 +22759,16 @@ func TestUpdateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	u.GetRestrictedToWorkflows()
 	u = nil
 	u.GetRestrictedToWorkflows()
+}
+
+func TestUpdateRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	var zeroValue []string
+	u := &UpdateRunnerGroupRequest{SelectedWorkflows: &zeroValue}
+	u.GetSelectedWorkflows()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetSelectedWorkflows()
+	u = nil
+	u.GetSelectedWorkflows()
 }
 
 func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {

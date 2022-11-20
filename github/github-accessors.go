@@ -3662,6 +3662,14 @@ func (c *CreateRunnerGroupRequest) GetRestrictedToWorkflows() bool {
 	return *c.RestrictedToWorkflows
 }
 
+// GetSelectedWorkflows returns the SelectedWorkflows field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetSelectedWorkflows() []string {
+	if c == nil || c.SelectedWorkflows == nil {
+		return nil
+	}
+	return *c.SelectedWorkflows
+}
+
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	if c == nil || c.Visibility == nil {
@@ -17022,6 +17030,14 @@ func (r *RunnerGroup) GetSelectedRepositoriesURL() string {
 	return *r.SelectedRepositoriesURL
 }
 
+// GetSelectedWorkflows returns the SelectedWorkflows field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetSelectedWorkflows() []string {
+	if r == nil || r.SelectedWorkflows == nil {
+		return nil
+	}
+	return *r.SelectedWorkflows
+}
+
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
 func (r *RunnerGroup) GetVisibility() string {
 	if r == nil || r.Visibility == nil {
@@ -19508,6 +19524,14 @@ func (u *UpdateRunnerGroupRequest) GetRestrictedToWorkflows() bool {
 		return false
 	}
 	return *u.RestrictedToWorkflows
+}
+
+// GetSelectedWorkflows returns the SelectedWorkflows field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetSelectedWorkflows() []string {
+	if u == nil || u.SelectedWorkflows == nil {
+		return nil
+	}
+	return *u.SelectedWorkflows
 }
 
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
