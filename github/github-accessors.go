@@ -13670,6 +13670,14 @@ func (p *PullRequestReviewsEnforcementUpdate) GetRequireCodeOwnerReviews() bool 
 	return *p.RequireCodeOwnerReviews
 }
 
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementUpdate) GetRequireLastPushApproval() bool {
+	if p == nil || p.RequireLastPushApproval == nil {
+		return false
+	}
+	return *p.RequireLastPushApproval
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestReviewThreadEvent) GetAction() string {
 	if p == nil || p.Action == nil {
