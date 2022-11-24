@@ -3654,6 +3654,14 @@ func (c *CreateRunnerGroupRequest) GetName() string {
 	return *c.Name
 }
 
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetRestrictedToWorkflows() bool {
+	if c == nil || c.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *c.RestrictedToWorkflows
+}
+
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	if c == nil || c.Visibility == nil {
@@ -13662,6 +13670,14 @@ func (p *PullRequestReviewsEnforcementUpdate) GetRequireCodeOwnerReviews() bool 
 	return *p.RequireCodeOwnerReviews
 }
 
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementUpdate) GetRequireLastPushApproval() bool {
+	if p == nil || p.RequireLastPushApproval == nil {
+		return false
+	}
+	return *p.RequireLastPushApproval
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestReviewThreadEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -16982,6 +16998,14 @@ func (r *RunnerGroup) GetName() string {
 	return *r.Name
 }
 
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetRestrictedToWorkflows() bool {
+	if r == nil || r.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *r.RestrictedToWorkflows
+}
+
 // GetRunnersURL returns the RunnersURL field if it's non-nil, zero value otherwise.
 func (r *RunnerGroup) GetRunnersURL() string {
 	if r == nil || r.RunnersURL == nil {
@@ -17004,6 +17028,14 @@ func (r *RunnerGroup) GetVisibility() string {
 		return ""
 	}
 	return *r.Visibility
+}
+
+// GetWorkflowRestrictionsReadOnly returns the WorkflowRestrictionsReadOnly field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetWorkflowRestrictionsReadOnly() bool {
+	if r == nil || r.WorkflowRestrictionsReadOnly == nil {
+		return false
+	}
+	return *r.WorkflowRestrictionsReadOnly
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -19468,6 +19500,14 @@ func (u *UpdateRunnerGroupRequest) GetName() string {
 		return ""
 	}
 	return *u.Name
+}
+
+// GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetRestrictedToWorkflows() bool {
+	if u == nil || u.RestrictedToWorkflows == nil {
+		return false
+	}
+	return *u.RestrictedToWorkflows
 }
 
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
