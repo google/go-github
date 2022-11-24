@@ -28,6 +28,6 @@ jobs:
     - name: golangci-lint ${{ matrix.working-directory }}
       uses: golangci/golangci-lint-action@0ad9a0988b3973e851ab0a07adf248ec2e100376 #v3.3.1
       with:
-        version: v1.44.0
+        version: v1.50.1
         working-directory: ${{ matrix.working-directory}}
         args: --verbose
