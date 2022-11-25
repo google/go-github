@@ -44,6 +44,7 @@ type WorkflowJob struct {
 	RunnerName      *string  `json:"runner_name,omitempty"`
 	RunnerGroupID   *int64   `json:"runner_group_id,omitempty"`
 	RunnerGroupName *string  `json:"runner_group_name,omitempty"`
+	RunAttempt      *int64   `json:"run_attempt,omitempty"`
 }
 
 // Jobs represents a slice of repository action workflow job.
