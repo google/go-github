@@ -841,9 +841,9 @@ type Protection struct {
 	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
 	// LockBranch represents if the branch is marked as read-only. If this is true, users will not be able to push to the branch.
-	LockBranch                     *bool                     `json:"lock_branch,omitempty"`
+	LockBranch *bool `json:"lock_branch,omitempty"`
 	// AllowForkSyncing represents whether users can pull changes from upstream when the branch is locked.
-	AllowForkSyncing               *bool               `json:"allow_fork_syncing,omitempty"`
+	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
 // BranchProtectionRule represents the rule applied to a repositories branch.
@@ -898,19 +898,9 @@ type AdminEnforcedChanges struct {
 	From *bool `json:"from,omitempty"`
 }
 
-// LockBranch represents if the branch is marked as read-only. If this is true, users will not be able to push to the branch.
-type LockBranch struct {
-	From *bool `json:"lock_branch"`
-}
-
 // AllowDeletionsEnforcementLevelChanges represents the changes made to the AllowDeletionsEnforcementLevel policy.
 type AllowDeletionsEnforcementLevelChanges struct {
 	From *string `json:"from,omitempty"`
-}
-
-// AllowForkSyncing represents whether users can pull changes from upstream when the branch is locked.
-type AllowForkSyncing struct {
-	From *bool `json:"allow_fork_syncing"`
 }
 
 // AuthorizedActorNames represents who are authorized to edit the branch protection rules.
