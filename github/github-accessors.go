@@ -12254,12 +12254,28 @@ func (p *Protection) GetAllowForcePushes() *AllowForcePushes {
 	return p.AllowForcePushes
 }
 
+// GetAllowForkSyncing returns the AllowForkSyncing field if it's non-nil, zero value otherwise.
+func (p *Protection) GetAllowForkSyncing() bool {
+	if p == nil || p.AllowForkSyncing == nil {
+		return false
+	}
+	return *p.AllowForkSyncing
+}
+
 // GetEnforceAdmins returns the EnforceAdmins field.
 func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	if p == nil {
 		return nil
 	}
 	return p.EnforceAdmins
+}
+
+// GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.
+func (p *Protection) GetLockBranch() bool {
+	if p == nil || p.LockBranch == nil {
+		return false
+	}
+	return *p.LockBranch
 }
 
 // GetRequiredConversationResolution returns the RequiredConversationResolution field.
