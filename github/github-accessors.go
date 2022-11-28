@@ -15646,6 +15646,14 @@ func (r *Repository) GetWatchersCount() int {
 	return *r.WatchersCount
 }
 
+// GetAccessLevel returns the AccessLevel field if it's non-nil, zero value otherwise.
+func (r *RepositoryActionsAccessLevel) GetAccessLevel() string {
+	if r == nil || r.AccessLevel == nil {
+		return ""
+	}
+	return *r.AccessLevel
+}
+
 // GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
 func (r *RepositoryActiveCommitters) GetAdvancedSecurityCommitters() int {
 	if r == nil || r.AdvancedSecurityCommitters == nil {

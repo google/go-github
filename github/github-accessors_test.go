@@ -18208,6 +18208,16 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 }
 
+func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
+	r.GetAccessLevel()
+	r = &RepositoryActionsAccessLevel{}
+	r.GetAccessLevel()
+	r = nil
+	r.GetAccessLevel()
+}
+
 func TestRepositoryActiveCommitters_GetAdvancedSecurityCommitters(tt *testing.T) {
 	var zeroValue int
 	r := &RepositoryActiveCommitters{AdvancedSecurityCommitters: &zeroValue}
