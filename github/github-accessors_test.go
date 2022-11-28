@@ -14310,11 +14310,31 @@ func TestProtection_GetAllowForcePushes(tt *testing.T) {
 	p.GetAllowForcePushes()
 }
 
+func TestProtection_GetAllowForkSyncing(tt *testing.T) {
+	var zeroValue bool
+	p := &Protection{AllowForkSyncing: &zeroValue}
+	p.GetAllowForkSyncing()
+	p = &Protection{}
+	p.GetAllowForkSyncing()
+	p = nil
+	p.GetAllowForkSyncing()
+}
+
 func TestProtection_GetEnforceAdmins(tt *testing.T) {
 	p := &Protection{}
 	p.GetEnforceAdmins()
 	p = nil
 	p.GetEnforceAdmins()
+}
+
+func TestProtection_GetLockBranch(tt *testing.T) {
+	var zeroValue bool
+	p := &Protection{LockBranch: &zeroValue}
+	p.GetLockBranch()
+	p = &Protection{}
+	p.GetLockBranch()
+	p = nil
+	p.GetLockBranch()
 }
 
 func TestProtection_GetRequiredConversationResolution(tt *testing.T) {

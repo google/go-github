@@ -840,6 +840,10 @@ type Protection struct {
 	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
 	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
+	// LockBranch represents if the branch is marked as read-only. If this is true, users will not be able to push to the branch.
+	LockBranch *bool `json:"lock_branch,omitempty"`
+	// AllowForkSyncing represents whether users can pull changes from upstream when the branch is locked.
+	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
 // BranchProtectionRule represents the rule applied to a repositories branch.
