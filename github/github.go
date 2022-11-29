@@ -397,7 +397,7 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 // RequestOption represents an option that can modify an http.Request.
 type RequestOption func(req *http.Request)
 
-// WithVersion modifies the GitHub v3 API version for this individual request.
+// WithVersion overrides the GitHub v3 API version for this individual request.
 // For more information, see:
 // https://github.blog/2022-11-28-to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/
 func WithVersion(version string) RequestOption {
