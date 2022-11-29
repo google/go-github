@@ -28,6 +28,7 @@ type Issue struct {
 	ID                *int64            `json:"id,omitempty"`
 	Number            *int              `json:"number,omitempty"`
 	State             *string           `json:"state,omitempty"`
+	StateReason       *string           `json:"state_reason,omitempty"`
 	Locked            *bool             `json:"locked,omitempty"`
 	Title             *string           `json:"title,omitempty"`
 	Body              *string           `json:"body,omitempty"`
