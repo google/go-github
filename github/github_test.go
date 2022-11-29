@@ -517,6 +517,17 @@ func TestNewRequest(t *testing.T) {
 	if !strings.Contains(userAgent, Version) {
 		t.Errorf("NewRequest() User-Agent should contain %v, found %v", Version, userAgent)
 	}
+
+	apiVersion := req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, defaultAPIVersion; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
+
+	req, _ = c.NewRequest("GET", inURL, inBody, WithVersion("2022-11-29"))
+	apiVersion = req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, "2022-11-29"; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
 }
 
 func TestNewRequest_invalidJSON(t *testing.T) {
