@@ -7470,6 +7470,14 @@ func (i *Issue) GetState() string {
 	return *i.State
 }
 
+// GetStateReason returns the StateReason field if it's non-nil, zero value otherwise.
+func (i *Issue) GetStateReason() string {
+	if i == nil || i.StateReason == nil {
+		return ""
+	}
+	return *i.StateReason
+}
+
 // GetTitle returns the Title field if it's non-nil, zero value otherwise.
 func (i *Issue) GetTitle() string {
 	if i == nil || i.Title == nil {

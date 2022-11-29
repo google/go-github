@@ -8780,6 +8780,16 @@ func TestIssue_GetState(tt *testing.T) {
 	i.GetState()
 }
 
+func TestIssue_GetStateReason(tt *testing.T) {
+	var zeroValue string
+	i := &Issue{StateReason: &zeroValue}
+	i.GetStateReason()
+	i = &Issue{}
+	i.GetStateReason()
+	i = nil
+	i.GetStateReason()
+}
+
 func TestIssue_GetTitle(tt *testing.T) {
 	var zeroValue string
 	i := &Issue{Title: &zeroValue}
