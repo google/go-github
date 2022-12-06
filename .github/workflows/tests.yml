@@ -1,3 +1,7 @@
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -15,9 +19,6 @@ permissions:
 
 jobs:
   test:
-    permissions:
-      actions: write  # for styfle/cancel-workflow-action to cancel/stop running workflows
-      contents: read  # for actions/checkout to fetch code
     strategy:
       matrix:
         go-version: [1.x, 1.18.x]
@@ -35,11 +36,6 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - name: Cancel previous
-      uses: styfle/cancel-workflow-action@b173b6ec0100793626c2d9e6b90435061f4fc3e5 #0.11.0
-      with:
-        access_token: ${{ github.token }}
-
     - uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.go-version }}
