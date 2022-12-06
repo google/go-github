@@ -15158,6 +15158,14 @@ func (r *Repository) GetGitURL() string {
 	return *r.GitURL
 }
 
+// GetHasDiscussions returns the HasDiscussions field if it's non-nil, zero value otherwise.
+func (r *Repository) GetHasDiscussions() bool {
+	if r == nil || r.HasDiscussions == nil {
+		return false
+	}
+	return *r.HasDiscussions
+}
+
 // GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
 func (r *Repository) GetHasDownloads() bool {
 	if r == nil || r.HasDownloads == nil {

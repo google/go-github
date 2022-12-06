@@ -17619,6 +17619,16 @@ func TestRepository_GetGitURL(tt *testing.T) {
 	r.GetGitURL()
 }
 
+func TestRepository_GetHasDiscussions(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{HasDiscussions: &zeroValue}
+	r.GetHasDiscussions()
+	r = &Repository{}
+	r.GetHasDiscussions()
+	r = nil
+	r.GetHasDiscussions()
+}
+
 func TestRepository_GetHasDownloads(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{HasDownloads: &zeroValue}
