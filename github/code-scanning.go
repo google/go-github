@@ -236,6 +236,25 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 	return alerts, resp, nil
 }
 
+// GetAlertForOrg gets a single code scanning alert for a repository.
+
+func (s *CodeScanningService) GetAlertOrg(ctx context.Context, owner, org string, id int64) (*Alert, *Response, error) {
+	u := fmt.Sprintf("org/%v/%v/code-scanning/alerts/%v", owner, org, id)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	a := new(Alert)
+	resp, err := s.client.Do(ctx, req, a)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return a, resp, nil
+}
+
 // GetAlert gets a single code scanning alert for a repository.
 //
 // You must use an access token with the security_events scope to use this endpoint.
