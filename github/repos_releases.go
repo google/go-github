@@ -19,12 +19,13 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	TagName                *string `json:"tag_name,omitempty"`
-	TargetCommitish        *string `json:"target_commitish,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	Body                   *string `json:"body,omitempty"`
-	Draft                  *bool   `json:"draft,omitempty"`
-	Prerelease             *bool   `json:"prerelease,omitempty"`
+	TagName         *string `json:"tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Body            *string `json:"body,omitempty"`
+	Draft           *bool   `json:"draft,omitempty"`
+	Prerelease      *bool   `json:"prerelease,omitempty"`
+	// MakeLatest can be one of: "true", "false", or "legacy".
 	MakeLatest             *string `json:"make_latest,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 
