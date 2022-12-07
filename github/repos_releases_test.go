@@ -708,6 +708,7 @@ func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 		Body:                   String("body"),
 		Draft:                  Bool(false),
 		Prerelease:             Bool(false),
+		MakeLatest:             String("legacy"),
 		DiscussionCategoryName: String("dcn"),
 	}
 
@@ -718,6 +719,7 @@ func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 		"body": "body",
 		"draft": false,
 		"prerelease": false,
+		"make_latest": "legacy",
 		"discussion_category_name": "dcn"
 	}`
 
@@ -774,6 +776,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		Body:                   String("body"),
 		Draft:                  Bool(false),
 		Prerelease:             Bool(false),
+		MakeLatest:             String("legacy"),
 		DiscussionCategoryName: String("dcn"),
 		ID:                     Int64(1),
 		CreatedAt:              &Timestamp{referenceTime},
@@ -796,6 +799,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 		"body": "body",
 		"draft": false,
 		"prerelease": false,
+		"make_latest": "legacy",
 		"discussion_category_name": "dcn",
 		"id": 1,
 		"created_at": ` + referenceTimeStr + `,

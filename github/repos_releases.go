@@ -25,6 +25,7 @@ type RepositoryRelease struct {
 	Body                   *string `json:"body,omitempty"`
 	Draft                  *bool   `json:"draft,omitempty"`
 	Prerelease             *bool   `json:"prerelease,omitempty"`
+	MakeLatest             *string `json:"make_latest,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 
 	// The following fields are not used in EditRelease:
@@ -176,6 +177,7 @@ type repositoryReleaseRequest struct {
 	Body                   *string `json:"body,omitempty"`
 	Draft                  *bool   `json:"draft,omitempty"`
 	Prerelease             *bool   `json:"prerelease,omitempty"`
+	MakeLatest             *string `json:"make_latest,omitempty"`
 	GenerateReleaseNotes   *bool   `json:"generate_release_notes,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 }
@@ -196,6 +198,7 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 		Body:                   release.Body,
 		Draft:                  release.Draft,
 		Prerelease:             release.Prerelease,
+		MakeLatest:             release.MakeLatest,
 		DiscussionCategoryName: release.DiscussionCategoryName,
 		GenerateReleaseNotes:   release.GenerateReleaseNotes,
 	}
@@ -229,6 +232,7 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 		Body:                   release.Body,
 		Draft:                  release.Draft,
 		Prerelease:             release.Prerelease,
+		MakeLatest:             release.MakeLatest,
 		DiscussionCategoryName: release.DiscussionCategoryName,
 	}
 
