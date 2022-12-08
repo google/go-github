@@ -16406,6 +16406,14 @@ func (r *RepositoryRelease) GetID() int64 {
 	return *r.ID
 }
 
+// GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetMakeLatest() string {
+	if r == nil || r.MakeLatest == nil {
+		return ""
+	}
+	return *r.MakeLatest
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetName() string {
 	if r == nil || r.Name == nil {
