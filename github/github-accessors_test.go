@@ -19077,6 +19077,16 @@ func TestRepositoryRelease_GetID(tt *testing.T) {
 	r.GetID()
 }
 
+func TestRepositoryRelease_GetMakeLatest(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRelease{MakeLatest: &zeroValue}
+	r.GetMakeLatest()
+	r = &RepositoryRelease{}
+	r.GetMakeLatest()
+	r = nil
+	r.GetMakeLatest()
+}
+
 func TestRepositoryRelease_GetName(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryRelease{Name: &zeroValue}
