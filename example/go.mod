@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
-	github.com/google/go-github/v48 v48.0.0
+	github.com/google/go-github/v48 v48.2.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
 	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
 	google.golang.org/appengine v1.6.7
