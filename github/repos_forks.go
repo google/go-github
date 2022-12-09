@@ -7,9 +7,8 @@ package github
 
 import (
 	"context"
-	"fmt"
-
 	"encoding/json"
+	"fmt"
 )
 
 // RepositoryListForksOptions specifies the optional parameters to the
@@ -53,9 +52,9 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 // RepositoriesService.CreateFork method.
 type RepositoryCreateForkOptions struct {
 	// The organization to fork the repository into.
-	Organization      string `url:"organization,omitempty"`
-	Name              string `url:"name,omitempty"`
-	DefaultBranchOnly bool   `url:"default_branch_only,omitempty"`
+	Organization      string `json:"organization,omitempty"`
+	Name              string `json:"name,omitempty"`
+	DefaultBranchOnly bool   `json:"default_branch_only,omitempty"`
 }
 
 // CreateFork creates a fork of the specified repository.
@@ -70,12 +69,8 @@ type RepositoryCreateForkOptions struct {
 // GitHub API docs: https://docs.github.com/en/rest/repos/forks#create-a-fork
 func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
