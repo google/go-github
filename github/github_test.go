@@ -517,6 +517,17 @@ func TestNewRequest(t *testing.T) {
 	if !strings.Contains(userAgent, Version) {
 		t.Errorf("NewRequest() User-Agent should contain %v, found %v", Version, userAgent)
 	}
+
+	apiVersion := req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, defaultAPIVersion; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
+
+	req, _ = c.NewRequest("GET", inURL, inBody, WithVersion("2022-11-29"))
+	apiVersion = req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, "2022-11-29"; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
 }
 
 func TestNewRequest_invalidJSON(t *testing.T) {
@@ -626,6 +637,17 @@ func TestNewFormRequest(t *testing.T) {
 	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
 		t.Errorf("NewFormRequest() User-Agent is %v, want %v", got, want)
 	}
+
+	apiVersion := req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, defaultAPIVersion; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
+
+	req, _ = c.NewFormRequest(inURL, inBody, WithVersion("2022-11-29"))
+	apiVersion = req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, "2022-11-29"; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
 }
 
 func TestNewFormRequest_badURL(t *testing.T) {
@@ -677,6 +699,22 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
 		}
+	}
+}
+
+func TestNewUploadRequest_WithVersion(t *testing.T) {
+	c := NewClient(nil)
+	req, _ := c.NewUploadRequest("https://example.com/", nil, 0, "")
+
+	apiVersion := req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, defaultAPIVersion; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+	}
+
+	req, _ = c.NewUploadRequest("https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
+	apiVersion = req.Header.Get(headerAPIVersion)
+	if got, want := apiVersion, "2022-11-29"; got != want {
+		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 }
 
