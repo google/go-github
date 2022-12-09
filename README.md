@@ -332,6 +332,40 @@ Preview functionality may take the form of entire methods or simply additional
 data returned from an otherwise non-preview method. Refer to the GitHub API
 documentation for details on preview functionality.
 
+### Calendar Versioning ###
+
+As of 2022-11-28, GitHub [has announced](https://github.blog/2022-11-28-to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/)
+that they are starting to version their v3 API based on "calendar-versioning".
+
+In practice, our goal is to make per-method version overrides (at
+least in the core library) rare and temporary.
+
+Our understanding of the GitHub docs is that they will be revving the
+entire API to each new date-based version, even if only a few methods
+have breaking changes. Other methods will accept the new version with
+their existing functionality. So when a new date-based version of the
+GitHub API is released, we (the repo maintainers) plan to:
+
+* update each method that had breaking changes, overriding their
+  per-method API version header. This may happen in one or multiple
+  commits and PRs, and is all done in the main branch.
+
+* once all of the methods with breaking changes have been updated,
+  have a final commit that bumps the default API version, and remove
+  all of the per-method overrides. That would now get a major version
+  bump when the next go-github release is made.
+
+### Version Compatibility Table ###
+
+The following table identifies which version of the GitHub API is
+supported by this (and past) versions of this repo (go-github).
+Versions prior to 48.2.0 are not listed.
+
+| go-github Version | GitHub v3 API Version |
+| ----------------- | --------------------- |
+| 48.2.0            | 2022-11-28            |
+
+
 ## License ##
 
 This library is distributed under the BSD-style license found in the [LICENSE](./LICENSE)
