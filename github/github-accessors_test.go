@@ -24022,27 +24022,6 @@ func TestWorkflowDispatchEvent_GetWorkflow(tt *testing.T) {
 	w.GetWorkflow()
 }
 
-func TestWorkflowEnvironment_GetMacOS(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetMacOS()
-	w = nil
-	w.GetMacOS()
-}
-
-func TestWorkflowEnvironment_GetUbuntu(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetUbuntu()
-	w = nil
-	w.GetUbuntu()
-}
-
-func TestWorkflowEnvironment_GetWindows(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetWindows()
-	w = nil
-	w.GetWindows()
-}
-
 func TestWorkflowJob_GetCheckRunURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJob{CheckRunURL: &zeroValue}
@@ -24584,27 +24563,6 @@ func TestWorkflowRunBill_GetTotalMS(tt *testing.T) {
 	w.GetTotalMS()
 	w = nil
 	w.GetTotalMS()
-}
-
-func TestWorkflowRunEnvironment_GetMacOS(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetMacOS()
-	w = nil
-	w.GetMacOS()
-}
-
-func TestWorkflowRunEnvironment_GetUbuntu(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetUbuntu()
-	w = nil
-	w.GetUbuntu()
-}
-
-func TestWorkflowRunEnvironment_GetWindows(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetWindows()
-	w = nil
-	w.GetWindows()
 }
 
 func TestWorkflowRunEvent_GetAction(tt *testing.T) {

@@ -20566,30 +20566,6 @@ func (w *WorkflowDispatchEvent) GetWorkflow() string {
 	return *w.Workflow
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowEnvironment) GetUbuntu() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowEnvironment) GetWindows() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetCheckRunURL() string {
 	if w == nil || w.CheckRunURL == nil {
@@ -21046,30 +21022,6 @@ func (w *WorkflowRunBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowRunEnvironment) GetMacOS() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowRunEnvironment) GetUbuntu() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (w *WorkflowRunEvent) GetAction() string {
 	if w == nil || w.Action == nil {
@@ -21151,7 +21103,7 @@ func (w *WorkflowRuns) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowRunUsage) GetBillable() *WorkflowRunEnvironment {
+func (w *WorkflowRunUsage) GetBillable() *WorkflowRunBillMap {
 	if w == nil {
 		return nil
 	}
@@ -21175,7 +21127,7 @@ func (w *Workflows) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowUsage) GetBillable() *WorkflowEnvironment {
+func (w *WorkflowUsage) GetBillable() *WorkflowBillMap {
 	if w == nil {
 		return nil
 	}

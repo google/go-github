@@ -403,7 +403,6 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
 	ctx := context.Background()
 	runs, _, err := client.Actions.ListRepositoryWorkflowRuns(ctx, "o", "r", opts)
-
 	if err != nil {
 		t.Errorf("Actions.ListRepositoryWorkflowRuns returned error: %v", err)
 	}
@@ -505,8 +504,8 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	}
 
 	want := &WorkflowRunUsage{
-		Billable: &WorkflowRunEnvironment{
-			Ubuntu: &WorkflowRunBill{
+		Billable: &WorkflowRunBillMap{
+			"UBUNTU": &WorkflowRunBill{
 				TotalMS: Int64(180000),
 				Jobs:    Int(1),
 				JobRuns: []*WorkflowRunJobRun{
@@ -516,7 +515,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 					},
 				},
 			},
-			MacOS: &WorkflowRunBill{
+			"MACOS": &WorkflowRunBill{
 				TotalMS: Int64(240000),
 				Jobs:    Int(2),
 				JobRuns: []*WorkflowRunJobRun{
@@ -530,7 +529,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 					},
 				},
 			},
-			Windows: &WorkflowRunBill{
+			"WINDOWS": &WorkflowRunBill{
 				TotalMS: Int64(300000),
 				Jobs:    Int(2),
 			},
@@ -975,7 +974,7 @@ func TestWorkflowRuns_Marshal(t *testing.T) {
 					"created_at": ` + referenceTimeStr + `,
 					"suspended_at": ` + referenceTimeStr + `,
 					"url": "u"
-				}		
+				}
 			}
 		]
 	}`
@@ -999,19 +998,19 @@ func TestWorkflowRunBill_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestWorkflowRunEnvironment_Marshal(t *testing.T) {
-	testJSONMarshal(t, &WorkflowRunEnvironment{}, "{}")
+func TestWorkflowRunBillMap_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowRunBillMap{}, "{}")
 
-	u := &WorkflowRunEnvironment{
-		Ubuntu: &WorkflowRunBill{
+	u := &WorkflowRunBillMap{
+		"UBUNTU": &WorkflowRunBill{
 			TotalMS: Int64(1),
 			Jobs:    Int(1),
 		},
-		MacOS: &WorkflowRunBill{
+		"MACOS": &WorkflowRunBill{
 			TotalMS: Int64(1),
 			Jobs:    Int(1),
 		},
-		Windows: &WorkflowRunBill{
+		"WINDOWS": &WorkflowRunBill{
 			TotalMS: Int64(1),
 			Jobs:    Int(1),
 		},
@@ -1039,16 +1038,16 @@ func TestWorkflowRunUsage_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowRunUsage{}, "{}")
 
 	u := &WorkflowRunUsage{
-		Billable: &WorkflowRunEnvironment{
-			Ubuntu: &WorkflowRunBill{
+		Billable: &WorkflowRunBillMap{
+			"UBUNTU": &WorkflowRunBill{
 				TotalMS: Int64(1),
 				Jobs:    Int(1),
 			},
-			MacOS: &WorkflowRunBill{
+			"MACOS": &WorkflowRunBill{
 				TotalMS: Int64(1),
 				Jobs:    Int(1),
 			},
-			Windows: &WorkflowRunBill{
+			"WINDOWS": &WorkflowRunBill{
 				TotalMS: Int64(1),
 				Jobs:    Int(1),
 			},
