@@ -24,6 +24,7 @@ type ActionBilling struct {
 	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown"`
 }
 
+// MinutesUsedBreakdown counts the actions minutes used by machine type (e.g. UBUNTU, WINDOWS, MACOS).
 type MinutesUsedBreakdown = map[string]int
 
 // PackageBilling represents a GitHub Package billing.

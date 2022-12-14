@@ -36,6 +36,7 @@ type WorkflowUsage struct {
 }
 
 // WorkflowBillMap represents different runner environments available for a workflow.
+// Its key is the name of its environment, e.g. "UBUNTU", "MACOS", "WINDOWS", etc.
 type WorkflowBillMap map[string]*WorkflowBill
 
 // WorkflowBill specifies billable time for a specific environment in a workflow.
