@@ -1070,11 +1070,12 @@ func CheckResponse(r *http.Response) error {
 		return nil
 	}
 
-	errorResponse := &ErrorResponse{Response: r}
+	errorResponse := &ErrorResponse{}
 	data, err := io.ReadAll(r.Body)
 	if err == nil && data != nil {
 		json.Unmarshal(data, errorResponse)
 	}
+	errorResponse.Response = r
 	// Re-populate error response body because GitHub error responses are often
 	// undocumented and inconsistent.
 	// Issue #1136, #540.
