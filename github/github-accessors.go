@@ -38,6 +38,102 @@ func (a *ActionsAllowed) GetVerifiedAllowed() bool {
 	return *a.VerifiedAllowed
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetLastAccessedAt returns the LastAccessedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetLastAccessedAt() Timestamp {
+	if a == nil || a.LastAccessedAt == nil {
+		return Timestamp{}
+	}
+	return *a.LastAccessedAt
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSizeInBytes returns the SizeInBytes field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetSizeInBytes() int64 {
+	if a == nil || a.SizeInBytes == nil {
+		return 0
+	}
+	return *a.SizeInBytes
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetVersion() string {
+	if a == nil || a.Version == nil {
+		return ""
+	}
+	return *a.Version
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheList) GetTotalCount() int64 {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
+}
+
+// GetActiveCachesCount returns the ActiveCachesCount field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheUsage) GetActiveCachesCount() int64 {
+	if a == nil || a.ActiveCachesCount == nil {
+		return 0
+	}
+	return *a.ActiveCachesCount
+}
+
+// GetActiveCacheUsageSize returns the ActiveCacheUsageSize field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheUsage) GetActiveCacheUsageSize() int64 {
+	if a == nil || a.ActiveCacheUsageSize == nil {
+		return 0
+	}
+	return *a.ActiveCacheUsageSize
+}
+
+// GetFullName returns the FullName field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheUsage) GetFullName() string {
+	if a == nil || a.FullName == nil {
+		return ""
+	}
+	return *a.FullName
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheUsageList) GetTotalCount() int64 {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
+}
+
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissions) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
@@ -19348,6 +19444,22 @@ func (t *TopicsSearchResult) GetTotal() int {
 		return 0
 	}
 	return *t.Total
+}
+
+// GetTotalActiveCachesCount returns the TotalActiveCachesCount field if it's non-nil, zero value otherwise.
+func (t *TotalCacheUsage) GetTotalActiveCachesCount() int64 {
+	if t == nil || t.TotalActiveCachesCount == nil {
+		return 0
+	}
+	return *t.TotalActiveCachesCount
+}
+
+// GetTotalActiveCacheUsageSize returns the TotalActiveCacheUsageSize field if it's non-nil, zero value otherwise.
+func (t *TotalCacheUsage) GetTotalActiveCacheUsageSize() int64 {
+	if t == nil || t.TotalActiveCacheUsageSize == nil {
+		return 0
+	}
+	return *t.TotalActiveCacheUsageSize
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.

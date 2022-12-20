@@ -45,6 +45,126 @@ func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
 	a.GetVerifiedAllowed()
 }
 
+func TestActionsCache_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsCache{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsCache_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{ID: &zeroValue}
+	a.GetID()
+	a = &ActionsCache{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsCache_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCache{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCache_GetLastAccessedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{LastAccessedAt: &zeroValue}
+	a.GetLastAccessedAt()
+	a = &ActionsCache{}
+	a.GetLastAccessedAt()
+	a = nil
+	a.GetLastAccessedAt()
+}
+
+func TestActionsCache_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCache{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCache_GetSizeInBytes(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{SizeInBytes: &zeroValue}
+	a.GetSizeInBytes()
+	a = &ActionsCache{}
+	a.GetSizeInBytes()
+	a = nil
+	a.GetSizeInBytes()
+}
+
+func TestActionsCache_GetVersion(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Version: &zeroValue}
+	a.GetVersion()
+	a = &ActionsCache{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
+}
+
+func TestActionsCacheList_GetTotalCount(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCacheList{TotalCount: &zeroValue}
+	a.GetTotalCount()
+	a = &ActionsCacheList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsCacheUsage_GetActiveCachesCount(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCacheUsage{ActiveCachesCount: &zeroValue}
+	a.GetActiveCachesCount()
+	a = &ActionsCacheUsage{}
+	a.GetActiveCachesCount()
+	a = nil
+	a.GetActiveCachesCount()
+}
+
+func TestActionsCacheUsage_GetActiveCacheUsageSize(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCacheUsage{ActiveCacheUsageSize: &zeroValue}
+	a.GetActiveCacheUsageSize()
+	a = &ActionsCacheUsage{}
+	a.GetActiveCacheUsageSize()
+	a = nil
+	a.GetActiveCacheUsageSize()
+}
+
+func TestActionsCacheUsage_GetFullName(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheUsage{FullName: &zeroValue}
+	a.GetFullName()
+	a = &ActionsCacheUsage{}
+	a.GetFullName()
+	a = nil
+	a.GetFullName()
+}
+
+func TestActionsCacheUsageList_GetTotalCount(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCacheUsageList{TotalCount: &zeroValue}
+	a.GetTotalCount()
+	a = &ActionsCacheUsageList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
 func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissions{AllowedActions: &zeroValue}
@@ -22533,6 +22653,26 @@ func TestTopicsSearchResult_GetTotal(tt *testing.T) {
 	t.GetTotal()
 	t = nil
 	t.GetTotal()
+}
+
+func TestTotalCacheUsage_GetTotalActiveCachesCount(tt *testing.T) {
+	var zeroValue int64
+	t := &TotalCacheUsage{TotalActiveCachesCount: &zeroValue}
+	t.GetTotalActiveCachesCount()
+	t = &TotalCacheUsage{}
+	t.GetTotalActiveCachesCount()
+	t = nil
+	t.GetTotalActiveCachesCount()
+}
+
+func TestTotalCacheUsage_GetTotalActiveCacheUsageSize(tt *testing.T) {
+	var zeroValue int64
+	t := &TotalCacheUsage{TotalActiveCacheUsageSize: &zeroValue}
+	t.GetTotalActiveCacheUsageSize()
+	t = &TotalCacheUsage{}
+	t.GetTotalActiveCacheUsageSize()
+	t = nil
+	t.GetTotalActiveCacheUsageSize()
 }
 
 func TestTrafficClones_GetCount(tt *testing.T) {
