@@ -42,7 +42,6 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 //
 // GitHub API docs: https://docs.github.com/en/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, enterpriseSecurityAnalysisSettings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
-
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
 	req, err := s.client.NewRequest("PATCH", u, enterpriseSecurityAnalysisSettings)
 	if err != nil {

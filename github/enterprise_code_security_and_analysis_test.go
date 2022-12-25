@@ -9,9 +9,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/google/go-cmp/cmp"
 	"net/http"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
