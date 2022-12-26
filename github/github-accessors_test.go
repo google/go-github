@@ -528,6 +528,16 @@ func TestAllowDeletionsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	a.GetFrom()
 }
 
+func TestAllowForkSyncing_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	a := &AllowForkSyncing{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AllowForkSyncing{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
 func TestAnalysesListOptions_GetRef(tt *testing.T) {
 	var zeroValue string
 	a := &AnalysesListOptions{Ref: &zeroValue}
@@ -10265,6 +10275,16 @@ func TestLocation_GetStartLine(tt *testing.T) {
 	l.GetStartLine()
 }
 
+func TestLockBranch_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	l := &LockBranch{Enabled: &zeroValue}
+	l.GetEnabled()
+	l = &LockBranch{}
+	l.GetEnabled()
+	l = nil
+	l.GetEnabled()
+}
+
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
 	var zeroValue Timestamp
 	m := &MarketplacePendingChange{EffectiveDate: &zeroValue}
@@ -14321,10 +14341,7 @@ func TestProtection_GetAllowForcePushes(tt *testing.T) {
 }
 
 func TestProtection_GetAllowForkSyncing(tt *testing.T) {
-	var zeroValue bool
-	p := &Protection{AllowForkSyncing: &zeroValue}
-	p.GetAllowForkSyncing()
-	p = &Protection{}
+	p := &Protection{}
 	p.GetAllowForkSyncing()
 	p = nil
 	p.GetAllowForkSyncing()
@@ -14338,10 +14355,7 @@ func TestProtection_GetEnforceAdmins(tt *testing.T) {
 }
 
 func TestProtection_GetLockBranch(tt *testing.T) {
-	var zeroValue bool
-	p := &Protection{LockBranch: &zeroValue}
-	p.GetLockBranch()
-	p = &Protection{}
+	p := &Protection{}
 	p.GetLockBranch()
 	p = nil
 	p.GetLockBranch()

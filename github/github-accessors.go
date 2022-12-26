@@ -470,6 +470,14 @@ func (a *AllowDeletionsEnforcementLevelChanges) GetFrom() string {
 	return *a.From
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (a *AllowForkSyncing) GetEnabled() bool {
+	if a == nil || a.Enabled == nil {
+		return false
+	}
+	return *a.Enabled
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
 func (a *AnalysesListOptions) GetRef() string {
 	if a == nil || a.Ref == nil {
@@ -8742,6 +8750,14 @@ func (l *Location) GetStartLine() int {
 	return *l.StartLine
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (l *LockBranch) GetEnabled() bool {
+	if l == nil || l.Enabled == nil {
+		return false
+	}
+	return *l.Enabled
+}
+
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
@@ -12262,12 +12278,12 @@ func (p *Protection) GetAllowForcePushes() *AllowForcePushes {
 	return p.AllowForcePushes
 }
 
-// GetAllowForkSyncing returns the AllowForkSyncing field if it's non-nil, zero value otherwise.
-func (p *Protection) GetAllowForkSyncing() bool {
-	if p == nil || p.AllowForkSyncing == nil {
-		return false
+// GetAllowForkSyncing returns the AllowForkSyncing field.
+func (p *Protection) GetAllowForkSyncing() *AllowForkSyncing {
+	if p == nil {
+		return nil
 	}
-	return *p.AllowForkSyncing
+	return p.AllowForkSyncing
 }
 
 // GetEnforceAdmins returns the EnforceAdmins field.
@@ -12278,12 +12294,12 @@ func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	return p.EnforceAdmins
 }
 
-// GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.
-func (p *Protection) GetLockBranch() bool {
-	if p == nil || p.LockBranch == nil {
-		return false
+// GetLockBranch returns the LockBranch field.
+func (p *Protection) GetLockBranch() *LockBranch {
+	if p == nil {
+		return nil
 	}
-	return *p.LockBranch
+	return p.LockBranch
 }
 
 // GetRequiredConversationResolution returns the RequiredConversationResolution field.
