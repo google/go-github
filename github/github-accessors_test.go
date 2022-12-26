@@ -5974,6 +5974,46 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseSecurityAnalysisSettings_GetAdvancedSecurityEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{AdvancedSecurityEnabledForNewRepositories: &zeroValue}
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+	e = nil
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningEnabledForNewRepositories: &zeroValue}
+	e.GetSecretScanningEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningEnabledForNewRepositories()
+	e = nil
+	e.GetSecretScanningEnabledForNewRepositories()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionCustomLink(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningPushProtectionCustomLink: &zeroValue}
+	e.GetSecretScanningPushProtectionCustomLink()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningPushProtectionCustomLink()
+	e = nil
+	e.GetSecretScanningPushProtectionCustomLink()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningPushProtectionEnabledForNewRepositories: &zeroValue}
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+	e = nil
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+}
+
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	e := &Environment{CreatedAt: &zeroValue}

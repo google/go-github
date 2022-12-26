@@ -40,10 +40,10 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
 	}
 	want := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             true,
-		SecretScanningEnabledForNewRepositories:               true,
-		SecretScanningPushProtectionEnabledForNewRepositories: true,
-		SecretScanningPushProtectionCustomLink:                "https://github.com/test-org/test-repo/blob/main/README.md",
+		AdvancedSecurityEnabledForNewRepositories:             Bool(true),
+		SecretScanningEnabledForNewRepositories:               Bool(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
+		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
 	}
 
 	if !cmp.Equal(enterpriseSecurityAnalysisSettings, want) {
@@ -69,10 +69,10 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 	defer teardown()
 
 	input := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             true,
-		SecretScanningEnabledForNewRepositories:               true,
-		SecretScanningPushProtectionEnabledForNewRepositories: true,
-		SecretScanningPushProtectionCustomLink:                "https://github.com/test-org/test-repo/blob/main/README.md",
+		AdvancedSecurityEnabledForNewRepositories:             Bool(true),
+		SecretScanningEnabledForNewRepositories:               Bool(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: Bool(true),
+		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
 	}
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(w http.ResponseWriter, r *http.Request) {
@@ -114,154 +114,19 @@ func TestEnterpriseService_EnableAdvancedSecurity(t *testing.T) {
 
 	ctx := context.Background()
 
-	const methodName = "EnableAdvancedSecurity"
+	const methodName = "EnableDisableSecurityFeature"
 
-	_, err := client.Enterprise.EnableAdvancedSecurity(ctx, "e")
+	_, err := client.Enterprise.EnableDisableSecurityFeature(ctx, "e", "advanced_security", "enable_all")
 	if err != nil {
 		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
 	}
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.EnableAdvancedSecurity(ctx, "o")
+		_, err = client.Enterprise.EnableDisableSecurityFeature(ctx, "o", "advanced_security", "enable_all")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.EnableAdvancedSecurity(ctx, "e")
-	})
-}
-
-func TestEnterpriseService_DisableAdvancedSecurity(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/enterprises/e/advanced_security/disable_all", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-	})
-
-	ctx := context.Background()
-
-	const methodName = "DisableAdvancedSecurity"
-
-	_, err := client.Enterprise.DisableAdvancedSecurity(ctx, "e")
-	if err != nil {
-		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
-	}
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.DisableAdvancedSecurity(ctx, "o")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.DisableAdvancedSecurity(ctx, "e")
-	})
-}
-
-func TestEnterpriseService_EnableSecretScanning(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/enterprises/e/secret_scanning/enable_all", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-	})
-
-	ctx := context.Background()
-
-	const methodName = "EnableSecretScanning"
-
-	_, err := client.Enterprise.EnableSecretScanning(ctx, "e")
-	if err != nil {
-		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
-	}
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.EnableSecretScanning(ctx, "o")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.EnableSecretScanning(ctx, "e")
-	})
-}
-
-func TestEnterpriseService_DisableSecretScanning(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/enterprises/e/secret_scanning/disable_all", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-	})
-
-	ctx := context.Background()
-
-	const methodName = "DisableSecretScanning"
-
-	_, err := client.Enterprise.DisableSecretScanning(ctx, "e")
-	if err != nil {
-		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
-	}
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.DisableSecretScanning(ctx, "o")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.DisableSecretScanning(ctx, "e")
-	})
-}
-
-func TestEnterpriseService_EnableSecretScanningPushProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/enterprises/e/secret_scanning_push_protection/enable_all", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-	})
-
-	ctx := context.Background()
-
-	const methodName = "EnableSecretScanningPushProtection"
-
-	_, err := client.Enterprise.EnableSecretScanningPushProtection(ctx, "e")
-	if err != nil {
-		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
-	}
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.EnableSecretScanningPushProtection(ctx, "o")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.EnableSecretScanningPushProtection(ctx, "e")
-	})
-}
-
-func TestEnterpriseService_DisableSecretScanningPushProtection(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/enterprises/e/secret_scanning_push_protection/disable_all", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-	})
-
-	ctx := context.Background()
-
-	const methodName = "DisableSecretScanningPushProtection"
-
-	_, err := client.Enterprise.DisableSecretScanningPushProtection(ctx, "e")
-	if err != nil {
-		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
-	}
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Enterprise.DisableSecretScanningPushProtection(ctx, "o")
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.DisableSecretScanningPushProtection(ctx, "e")
+		return client.Enterprise.EnableDisableSecurityFeature(ctx, "e", "advanced_security", "enable_all")
 	})
 }
