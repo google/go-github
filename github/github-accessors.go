@@ -5118,6 +5118,38 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetAdvancedSecurityEnabledForNewRepositories returns the AdvancedSecurityEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetAdvancedSecurityEnabledForNewRepositories() bool {
+	if e == nil || e.AdvancedSecurityEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.AdvancedSecurityEnabledForNewRepositories
+}
+
+// GetSecretScanningEnabledForNewRepositories returns the SecretScanningEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningEnabledForNewRepositories() bool {
+	if e == nil || e.SecretScanningEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.SecretScanningEnabledForNewRepositories
+}
+
+// GetSecretScanningPushProtectionCustomLink returns the SecretScanningPushProtectionCustomLink field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionCustomLink() string {
+	if e == nil || e.SecretScanningPushProtectionCustomLink == nil {
+		return ""
+	}
+	return *e.SecretScanningPushProtectionCustomLink
+}
+
+// GetSecretScanningPushProtectionEnabledForNewRepositories returns the SecretScanningPushProtectionEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnabledForNewRepositories() bool {
+	if e == nil || e.SecretScanningPushProtectionEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.SecretScanningPushProtectionEnabledForNewRepositories
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
