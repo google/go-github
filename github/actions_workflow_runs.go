@@ -65,16 +65,13 @@ type ListWorkflowRunsOptions struct {
 
 // WorkflowRunUsage represents a usage of a specific workflow run.
 type WorkflowRunUsage struct {
-	Billable      *WorkflowRunEnvironment `json:"billable,omitempty"`
-	RunDurationMS *int64                  `json:"run_duration_ms,omitempty"`
+	Billable      *WorkflowRunBillMap `json:"billable,omitempty"`
+	RunDurationMS *int64              `json:"run_duration_ms,omitempty"`
 }
 
-// WorkflowRunEnvironment represents different runner environments available for a workflow run.
-type WorkflowRunEnvironment struct {
-	Ubuntu  *WorkflowRunBill `json:"UBUNTU,omitempty"`
-	MacOS   *WorkflowRunBill `json:"MACOS,omitempty"`
-	Windows *WorkflowRunBill `json:"WINDOWS,omitempty"`
-}
+// WorkflowRunBillMap represents different runner environments available for a workflow run.
+// Its key is the name of its environment, e.g. "UBUNTU", "MACOS", "WINDOWS", etc.
+type WorkflowRunBillMap map[string]*WorkflowRunBill
 
 // WorkflowRunBill specifies billable time for a specific environment in a workflow run.
 type WorkflowRunBill struct {

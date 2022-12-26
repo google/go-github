@@ -470,6 +470,14 @@ func (a *AllowDeletionsEnforcementLevelChanges) GetFrom() string {
 	return *a.From
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (a *AllowForkSyncing) GetEnabled() bool {
+	if a == nil || a.Enabled == nil {
+		return false
+	}
+	return *a.Enabled
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
 func (a *AnalysesListOptions) GetRef() string {
 	if a == nil || a.Ref == nil {
@@ -8774,6 +8782,14 @@ func (l *Location) GetStartLine() int {
 	return *l.StartLine
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (l *LockBranch) GetEnabled() bool {
+	if l == nil || l.Enabled == nil {
+		return false
+	}
+	return *l.Enabled
+}
+
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
@@ -12294,12 +12310,12 @@ func (p *Protection) GetAllowForcePushes() *AllowForcePushes {
 	return p.AllowForcePushes
 }
 
-// GetAllowForkSyncing returns the AllowForkSyncing field if it's non-nil, zero value otherwise.
-func (p *Protection) GetAllowForkSyncing() bool {
-	if p == nil || p.AllowForkSyncing == nil {
-		return false
+// GetAllowForkSyncing returns the AllowForkSyncing field.
+func (p *Protection) GetAllowForkSyncing() *AllowForkSyncing {
+	if p == nil {
+		return nil
 	}
-	return *p.AllowForkSyncing
+	return p.AllowForkSyncing
 }
 
 // GetEnforceAdmins returns the EnforceAdmins field.
@@ -12310,12 +12326,12 @@ func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	return p.EnforceAdmins
 }
 
-// GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.
-func (p *Protection) GetLockBranch() bool {
-	if p == nil || p.LockBranch == nil {
-		return false
+// GetLockBranch returns the LockBranch field.
+func (p *Protection) GetLockBranch() *LockBranch {
+	if p == nil {
+		return nil
 	}
-	return *p.LockBranch
+	return p.LockBranch
 }
 
 // GetRequiredConversationResolution returns the RequiredConversationResolution field.
@@ -20598,30 +20614,6 @@ func (w *WorkflowDispatchEvent) GetWorkflow() string {
 	return *w.Workflow
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowEnvironment) GetUbuntu() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowEnvironment) GetWindows() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetCheckRunURL() string {
 	if w == nil || w.CheckRunURL == nil {
@@ -21078,30 +21070,6 @@ func (w *WorkflowRunBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowRunEnvironment) GetMacOS() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowRunEnvironment) GetUbuntu() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (w *WorkflowRunEvent) GetAction() string {
 	if w == nil || w.Action == nil {
@@ -21183,7 +21151,7 @@ func (w *WorkflowRuns) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowRunUsage) GetBillable() *WorkflowRunEnvironment {
+func (w *WorkflowRunUsage) GetBillable() *WorkflowRunBillMap {
 	if w == nil {
 		return nil
 	}
@@ -21207,7 +21175,7 @@ func (w *Workflows) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowUsage) GetBillable() *WorkflowEnvironment {
+func (w *WorkflowUsage) GetBillable() *WorkflowBillMap {
 	if w == nil {
 		return nil
 	}
