@@ -57,9 +57,10 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 }
 
 // EnableDisableSecurityFeature enables or disables a security feature for all repositories in an enterprise.
-//
+// Valid values for securityProduct : advanced_security, secret_scanning, secret_scanning_push_protection
+// Valid values for enablement :  enable_all, disable_all
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#enable-or-disable-a-security-feature
-func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise string, securityProduct string, enablement string) (*Response, error) {
+func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise, securityProduct, enablement string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/%v/%v", enterprise, securityProduct, enablement)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
