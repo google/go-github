@@ -35,7 +35,7 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 
 	const methodName = "GetCodeSecurityAndAnalysis"
 
-	enterpriseSecurityAnalysisSettings, _, err := client.Enterprise.GetCodeSecurityAndAnalysis(ctx, "e")
+	settings, _, err := client.Enterprise.GetCodeSecurityAndAnalysis(ctx, "e")
 	if err != nil {
 		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
 	}
@@ -46,8 +46,8 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		SecretScanningPushProtectionCustomLink:                String("https://github.com/test-org/test-repo/blob/main/README.md"),
 	}
 
-	if !cmp.Equal(enterpriseSecurityAnalysisSettings, want) {
-		t.Errorf("Enterprise.%v return \ngot: %+v,\nwant:%+v", methodName, enterpriseSecurityAnalysisSettings, want)
+	if !cmp.Equal(settings, want) {
+		t.Errorf("Enterprise.%v return \ngot: %+v,\nwant:%+v", methodName, settings, want)
 	}
 
 	testBadOptions(t, methodName, func() (err error) {
