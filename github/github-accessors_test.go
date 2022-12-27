@@ -2900,6 +2900,13 @@ func TestCodeScanningAlertEvent_GetCommitOID(tt *testing.T) {
 	c.GetCommitOID()
 }
 
+func TestCodeScanningAlertEvent_GetInstallation(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetInstallation()
+	c = nil
+	c.GetInstallation()
+}
+
 func TestCodeScanningAlertEvent_GetOrg(tt *testing.T) {
 	c := &CodeScanningAlertEvent{}
 	c.GetOrg()
