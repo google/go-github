@@ -115,6 +115,46 @@ func TestActionsCache_GetVersion(tt *testing.T) {
 	a.GetVersion()
 }
 
+func TestActionsCacheListOptions_GetDirection(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Direction: &zeroValue}
+	a.GetDirection()
+	a = &ActionsCacheListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestActionsCacheListOptions_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCacheListOptions{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCacheListOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCacheListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCacheListOptions_GetSort(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Sort: &zeroValue}
+	a.GetSort()
+	a = &ActionsCacheListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
 func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissions{AllowedActions: &zeroValue}

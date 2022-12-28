@@ -52,8 +52,8 @@ type ActionsCacheUsageList struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#get-github-actions-cache-usage-for-an-enterprise
 type TotalCacheUsage struct {
-	TotalActiveCacheUsageSizeInBytes int64 `json:"total_active_caches_size_in_bytes"`
-	TotalActiveCachesCount           int   `json:"total_active_caches_count"`
+	TotalActiveCachesUsageSizeInBytes int64 `json:"total_active_caches_size_in_bytes"`
+	TotalActiveCachesCount            int   `json:"total_active_caches_count"`
 }
 
 // ActionsCacheListOptions represents a list of all possible optional Query parameters for ListCaches method.
@@ -64,12 +64,12 @@ type ActionsCacheListOptions struct {
 	// The Git reference for the results you want to list.
 	// The ref for a branch can be formatted either as refs/heads/<branch name>
 	// or simply <branch name>. To reference a pull request use refs/pull/<number>/merge
-	Ref string `url:"ref,omitempty"`
-	Key string `url:"key,omitempty"`
+	Ref *string `url:"ref,omitempty"`
+	Key *string `url:"key,omitempty"`
 	// Can be one of: "created_at", "last_accessed_at", "size_in_bytes". Default: "last_accessed_at"
-	Sort string `url:"sort,omitempty"`
+	Sort *string `url:"sort,omitempty"`
 	// Can be one of: "asc", "desc" Default: desc
-	Direction string `url:"direction,omitempty"`
+	Direction *string `url:"direction,omitempty"`
 }
 
 // ListCaches lists the GitHub Actions caches for a repository.

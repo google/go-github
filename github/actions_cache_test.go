@@ -394,7 +394,7 @@ func TestActionsService_GetCacheUsageForOrg(t *testing.T) {
 		t.Errorf("Actions.GetTotalCacheUsageForOrg returned error: %v", err)
 	}
 
-	want := &TotalCacheUsage{TotalActiveCacheUsageSizeInBytes: 1000, TotalActiveCachesCount: 1}
+	want := &TotalCacheUsage{TotalActiveCachesUsageSizeInBytes: 1000, TotalActiveCachesCount: 1}
 	if !cmp.Equal(cache, want) {
 		t.Errorf("Actions.GetTotalCacheUsageForOrg returned %+v, want %+v", cache, want)
 	}
@@ -465,7 +465,7 @@ func TestActionsService_GetCacheUsageForEnterprise(t *testing.T) {
 		t.Errorf("Actions.GetTotalCacheUsageForEnterprise returned error: %v", err)
 	}
 
-	want := &TotalCacheUsage{TotalActiveCacheUsageSizeInBytes: 1000, TotalActiveCachesCount: 1}
+	want := &TotalCacheUsage{TotalActiveCachesUsageSizeInBytes: 1000, TotalActiveCachesCount: 1}
 	if !cmp.Equal(cache, want) {
 		t.Errorf("Actions.GetTotalCacheUsageForEnterprise returned %+v, want %+v", cache, want)
 	}

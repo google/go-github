@@ -94,6 +94,38 @@ func (a *ActionsCache) GetVersion() string {
 	return *a.Version
 }
 
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetDirection() string {
+	if a == nil || a.Direction == nil {
+		return ""
+	}
+	return *a.Direction
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetSort() string {
+	if a == nil || a.Sort == nil {
+		return ""
+	}
+	return *a.Sort
+}
+
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissions) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
