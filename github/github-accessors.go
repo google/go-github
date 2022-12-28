@@ -2454,6 +2454,14 @@ func (c *CodeScanningAlertEvent) GetCommitOID() string {
 	return *c.CommitOID
 }
 
+// GetInstallation returns the Installation field.
+func (c *CodeScanningAlertEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
 // GetOrg returns the Org field.
 func (c *CodeScanningAlertEvent) GetOrg() *Organization {
 	if c == nil {
