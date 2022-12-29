@@ -189,15 +189,14 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 	e := new(Environment)
 	resp, err := s.client.Do(ctx, req, e)
 
-	fmt.Printf("%#v", environment.Reviewers)
-	fmt.Printf("runs")
-
 	if err != nil {
 		// The API returns 422 when the pricing plan doesn't support all the fields sent.
 		// This path will be executed for Pro/Teams private repos.
 		// For public repos, regardless of the pricing plan, all fields supported.
 		// For Free plan private repos the returned error code is 404.
-		if resp.StatusCode == 422 {
+		// We are checking that the user didn't try to send a value for unsupported fields,
+		// and return an error if they did.
+		if resp.StatusCode == 422 && len(environment.Reviewers) == 0 && *environment.WaitTimer == 0 {
 
 			req, err = s.client.NewRequest("PUT", u, &CreateUpdateEnvironmentWithoutEnterprise{
 				DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
