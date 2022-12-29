@@ -4334,6 +4334,13 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 }
 
+func TestCreateUpdateEnvironmentWithoutEnterprise_GetDeploymentBranchPolicy(tt *testing.T) {
+	c := &CreateUpdateEnvironmentWithoutEnterprise{}
+	c.GetDeploymentBranchPolicy()
+	c = nil
+	c.GetDeploymentBranchPolicy()
+}
+
 func TestCreateUserProjectOptions_GetBody(tt *testing.T) {
 	var zeroValue string
 	c := &CreateUserProjectOptions{Body: &zeroValue}

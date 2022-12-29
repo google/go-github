@@ -3702,6 +3702,14 @@ func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	return *c.WaitTimer
 }
 
+// GetDeploymentBranchPolicy returns the DeploymentBranchPolicy field.
+func (c *CreateUpdateEnvironmentWithoutEnterprise) GetDeploymentBranchPolicy() *BranchPolicy {
+	if c == nil {
+		return nil
+	}
+	return c.DeploymentBranchPolicy
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (c *CreateUserProjectOptions) GetBody() string {
 	if c == nil || c.Body == nil {

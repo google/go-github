@@ -168,6 +168,13 @@ type CreateUpdateEnvironment struct {
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
+// CreateUpdateEnvironmentWithoutEnterprise represents the fields accepted for Pro/Teams private repos.
+// Ref: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
+// See https://github.com/google/go-github/issues/2602 for more information.
+type CreateUpdateEnvironmentWithoutEnterprise struct {
+	DeploymentBranchPolicy *BranchPolicy `json:"deployment_branch_policy"`
+}
+
 // CreateUpdateEnvironment create or update a new environment for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment
@@ -181,8 +188,33 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 
 	e := new(Environment)
 	resp, err := s.client.Do(ctx, req, e)
+
+	fmt.Printf("%#v", environment.Reviewers)
+	fmt.Printf("runs")
+
 	if err != nil {
-		return nil, resp, err
+		// The API returns 422 when the pricing plan doesn't support all the fields sent.
+		// This path will be executed for Pro/Teams private repos.
+		// For public repos, regardless of the pricing plan, all fields supported.
+		// For Free plan private repos the returned error code is 404.
+		if resp.StatusCode == 422 {
+
+			req, err = s.client.NewRequest("PUT", u, &CreateUpdateEnvironmentWithoutEnterprise{
+				DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
+			})
+
+			if err != nil {
+				return nil, nil, err
+			}
+
+			resp, err = s.client.Do(ctx, req, e)
+			if err != nil {
+				return nil, resp, err
+			}
+		} else {
+			return nil, resp, err
+		}
+
 	}
 	return e, resp, nil
 }
