@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 )
 
 // Environment represents a single environment in a repository.
@@ -171,7 +172,7 @@ type CreateUpdateEnvironment struct {
 // CreateUpdateEnvironmentWithoutEnterprise represents the fields accepted for Pro/Teams private repos.
 // Ref: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
 // See https://github.com/google/go-github/issues/2602 for more information.
-type CreateUpdateEnvironmentWithoutEnterprise struct {
+type createUpdateEnvironmentNoEnterprise struct {
 	DeploymentBranchPolicy *BranchPolicy `json:"deployment_branch_policy"`
 }
 
@@ -196,24 +197,33 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 		// For Free plan private repos the returned error code is 404.
 		// We are checking that the user didn't try to send a value for unsupported fields,
 		// and return an error if they did.
-		if resp.StatusCode == 422 && len(environment.Reviewers) == 0 && *environment.WaitTimer == 0 {
+		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && environment != nil && len(environment.Reviewers) == 0 && environment.GetWaitTimer() == 0 {
+			return s.createNewEnvNoEnterprise(ctx, u, environment)
 
-			req, err = s.client.NewRequest("PUT", u, &CreateUpdateEnvironmentWithoutEnterprise{
-				DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
-			})
-
-			if err != nil {
-				return nil, nil, err
-			}
-
-			resp, err = s.client.Do(ctx, req, e)
-			if err != nil {
-				return nil, resp, err
-			}
 		} else {
 			return nil, resp, err
 		}
 
+	}
+	return e, resp, nil
+}
+
+// Creating an internal function for cases where the original call returned 422
+// Currently only the `deployment_branch_policy` paramter is supported for Pro/Team private repos
+func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
+	req, err := s.client.NewRequest("PUT", u, &createUpdateEnvironmentNoEnterprise{
+		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
+	})
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	e := new(Environment)
+
+	resp, err := s.client.Do(ctx, req, e)
+	if err != nil {
+		return nil, resp, err
 	}
 	return e, resp, nil
 }
