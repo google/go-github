@@ -169,7 +169,7 @@ type CreateUpdateEnvironment struct {
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
-// CreateUpdateEnvironmentWithoutEnterprise represents the fields accepted for Pro/Teams private repos.
+// createUpdateEnvironmentNoEnterprise represents the fields accepted for Pro/Teams private repos.
 // Ref: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
 // See https://github.com/google/go-github/issues/2602 for more information.
 type createUpdateEnvironmentNoEnterprise struct {
