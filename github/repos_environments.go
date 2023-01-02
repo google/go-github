@@ -208,8 +208,8 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 	return e, resp, nil
 }
 
-// Creating an internal function for cases where the original call returned 422
-// Currently only the `deployment_branch_policy` paramter is supported for Pro/Team private repos
+// createNewEnvNoEnterprise is an internal function for cases where the original call returned 422.
+// Currently only the `deployment_branch_policy` parameter is supported for Pro/Team private repos.
 func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	req, err := s.client.NewRequest("PUT", u, &createUpdateEnvironmentNoEnterprise{
 		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
