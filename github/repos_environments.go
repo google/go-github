@@ -189,7 +189,6 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 
 	e := new(Environment)
 	resp, err := s.client.Do(ctx, req, e)
-
 	if err != nil {
 		// The API returns 422 when the pricing plan doesn't support all the fields sent.
 		// This path will be executed for Pro/Teams private repos.
@@ -199,28 +198,23 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 		// and return an error if they did.
 		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && environment != nil && len(environment.Reviewers) == 0 && environment.GetWaitTimer() == 0 {
 			return s.createNewEnvNoEnterprise(ctx, u, environment)
-
-		} else {
-			return nil, resp, err
 		}
-
+		return nil, resp, err
 	}
 	return e, resp, nil
 }
 
-// Creating an internal function for cases where the original call returned 422
+// createNewEnvNoEnterprise is an internal function for cases where the original call returned 422.
 // Currently only the `deployment_branch_policy` paramter is supported for Pro/Team private repos
 func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	req, err := s.client.NewRequest("PUT", u, &createUpdateEnvironmentNoEnterprise{
 		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
 	})
-
 	if err != nil {
 		return nil, nil, err
 	}
 
 	e := new(Environment)
-
 	resp, err := s.client.Do(ctx, req, e)
 	if err != nil {
 		return nil, resp, err
