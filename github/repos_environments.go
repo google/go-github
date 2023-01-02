@@ -169,7 +169,7 @@ type CreateUpdateEnvironment struct {
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
-// CreateUpdateEnvironmentWithoutEnterprise represents the fields accepted for Pro/Teams private repos.
+// createUpdateEnvironmentNoEnterprise represents the fields accepted for Pro/Teams private repos.
 // Ref: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
 // See https://github.com/google/go-github/issues/2602 for more information.
 type createUpdateEnvironmentNoEnterprise struct {
@@ -205,7 +205,7 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 }
 
 // createNewEnvNoEnterprise is an internal function for cases where the original call returned 422.
-// Currently only the `deployment_branch_policy` paramter is supported for Pro/Team private repos
+// Currently only the `deployment_branch_policy` parameter is supported for Pro/Team private repos.
 func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	req, err := s.client.NewRequest("PUT", u, &createUpdateEnvironmentNoEnterprise{
 		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
