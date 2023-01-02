@@ -220,6 +220,42 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &CreateUpdateEnvironment{}
+	callCount := 0
+
+	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+		v := new(CreateUpdateEnvironment)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if callCount == 0 {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			callCount++
+		} else {
+			want := &CreateUpdateEnvironment{}
+			if !cmp.Equal(v, want) {
+				t.Errorf("Request body = %+v, want %+v", v, want)
+			}
+			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
+		}
+	})
+
+	ctx := context.Background()
+	release, _, err := client.Repositories.CreateUpdateEnvironment(ctx, "o", "r", "e", input)
+	if err != nil {
+		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
+	}
+
+	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{}}
+	if !cmp.Equal(release, want) {
+		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
+	}
+}
+
 func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
