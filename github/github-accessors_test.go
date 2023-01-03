@@ -11699,6 +11699,16 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
+func TestOIDCSubjectClaimCustomizationTemplate_GetUseDefault(tt *testing.T) {
+	var zeroValue bool
+	o := &OIDCSubjectClaimCustomizationTemplate{UseDefault: &zeroValue}
+	o.GetUseDefault()
+	o = &OIDCSubjectClaimCustomizationTemplate{}
+	o.GetUseDefault()
+	o = nil
+	o.GetUseDefault()
+}
+
 func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
 	var zeroValue bool
 	o := &Organization{AdvancedSecurityEnabledForNewRepos: &zeroValue}
