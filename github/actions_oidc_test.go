@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestActionsService_GetOrganizationOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
+func TestActionsService_GetOrgOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -24,24 +24,24 @@ func TestActionsService_GetOrganizationOIDCSubjectClaimCustomizationTemplate(t *
 	})
 
 	ctx := context.Background()
-	template, _, err := client.Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "o")
+	template, _, err := client.Actions.GetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
+		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
 	}
 
 	want := &OIDCSubjectClaimCustomizationTemplate{IncludeClaimKeys: []string{"repo", "context"}}
 	if !cmp.Equal(template, want) {
-		t.Errorf("Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate returned %+v, want %+v", template, want)
+		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomizationTemplate returned %+v, want %+v", template, want)
 	}
 
-	const methodName = "GetOrganizationOIDCSubjectClaimCustomizationTemplate"
+	const methodName = "GetOrgOIDCSubjectClaimCustomizationTemplate"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "\n")
+		_, _, err = client.Actions.GetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "o")
+		got, resp, err := client.Actions.GetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -49,7 +49,7 @@ func TestActionsService_GetOrganizationOIDCSubjectClaimCustomizationTemplate(t *
 	})
 }
 
-func TestActionsService_GetRepositoryOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
+func TestActionsService_GetRepoOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -59,24 +59,24 @@ func TestActionsService_GetRepositoryOIDCSubjectClaimCustomizationTemplate(t *te
 	})
 
 	ctx := context.Background()
-	template, _, err := client.Actions.GetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r")
+	template, _, err := client.Actions.GetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Actions.GetRepositoryOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
+		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
 	}
 
 	want := &OIDCSubjectClaimCustomizationTemplate{UseDefault: Bool(false), IncludeClaimKeys: []string{"repo", "context"}}
 	if !cmp.Equal(template, want) {
-		t.Errorf("Actions.GetOrganizationOIDCSubjectClaimCustomizationTemplate returned %+v, want %+v", template, want)
+		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomizationTemplate returned %+v, want %+v", template, want)
 	}
 
-	const methodName = "GetRepositoryOIDCSubjectClaimCustomizationTemplate"
+	const methodName = "GetRepoOIDCSubjectClaimCustomizationTemplate"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "\n", "\n")
+		_, _, err = client.Actions.GetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r")
+		got, resp, err := client.Actions.GetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -84,7 +84,7 @@ func TestActionsService_GetRepositoryOIDCSubjectClaimCustomizationTemplate(t *te
 	})
 }
 
-func TestActionsService_SetOrganizationOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
+func TestActionsService_SetOrgOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -99,24 +99,24 @@ func TestActionsService_SetOrganizationOIDCSubjectClaimCustomizationTemplate(t *
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
 	ctx := context.Background()
-	_, err := client.Actions.SetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "o", input)
+	_, err := client.Actions.SetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Actions.SetOrganizationOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
+		t.Errorf("Actions.SetOrgOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
 	}
 
-	const methodName = "SetOrganizationOIDCSubjectClaimCustomizationTemplate"
+	const methodName = "SetOrgOIDCSubjectClaimCustomizationTemplate"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "\n", input)
+		_, err = client.Actions.SetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetOrganizationOIDCSubjectClaimCustomizationTemplate(ctx, "o", input)
+		return client.Actions.SetOrgOIDCSubjectClaimCustomizationTemplate(ctx, "o", input)
 	})
 }
 
-func TestActionsService_SetRepositoryOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
+func TestActionsService_SetRepoOIDCSubjectClaimCustomizationTemplate(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -132,19 +132,19 @@ func TestActionsService_SetRepositoryOIDCSubjectClaimCustomizationTemplate(t *te
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
 	ctx := context.Background()
-	_, err := client.Actions.SetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r", input)
+	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Actions.SetRepositoryOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
+		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomizationTemplate returned error: %v", err)
 	}
 
-	const methodName = "SetRepositoryOIDCSubjectClaimCustomizationTemplate"
+	const methodName = "SetRepoOIDCSubjectClaimCustomizationTemplate"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "\n", "\n", input)
+		_, err = client.Actions.SetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetRepositoryOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r", input)
+		return client.Actions.SetRepoOIDCSubjectClaimCustomizationTemplate(ctx, "o", "r", input)
 	})
 }
