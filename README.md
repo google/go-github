@@ -363,8 +363,8 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
+| 49.0.0            | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
-
 
 ## License ##
 
