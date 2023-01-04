@@ -9991,7 +9991,7 @@ func (o *OAuthAPP) GetURL() string {
 }
 
 // GetUseDefault returns the UseDefault field if it's non-nil, zero value otherwise.
-func (o *OIDCSubjectClaimCustomizationTemplate) GetUseDefault() bool {
+func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
 	if o == nil || o.UseDefault == nil {
 		return false
 	}

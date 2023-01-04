@@ -11699,11 +11699,11 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
-func TestOIDCSubjectClaimCustomizationTemplate_GetUseDefault(tt *testing.T) {
+func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	var zeroValue bool
-	o := &OIDCSubjectClaimCustomizationTemplate{UseDefault: &zeroValue}
+	o := &OIDCSubjectClaimCustomTemplate{UseDefault: &zeroValue}
 	o.GetUseDefault()
-	o = &OIDCSubjectClaimCustomizationTemplate{}
+	o = &OIDCSubjectClaimCustomTemplate{}
 	o.GetUseDefault()
 	o = nil
 	o.GetUseDefault()
