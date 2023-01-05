@@ -38,6 +38,94 @@ func (a *ActionsAllowed) GetVerifiedAllowed() bool {
 	return *a.VerifiedAllowed
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetLastAccessedAt returns the LastAccessedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetLastAccessedAt() Timestamp {
+	if a == nil || a.LastAccessedAt == nil {
+		return Timestamp{}
+	}
+	return *a.LastAccessedAt
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSizeInBytes returns the SizeInBytes field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetSizeInBytes() int64 {
+	if a == nil || a.SizeInBytes == nil {
+		return 0
+	}
+	return *a.SizeInBytes
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetVersion() string {
+	if a == nil || a.Version == nil {
+		return ""
+	}
+	return *a.Version
+}
+
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetDirection() string {
+	if a == nil || a.Direction == nil {
+		return ""
+	}
+	return *a.Direction
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetSort() string {
+	if a == nil || a.Sort == nil {
+		return ""
+	}
+	return *a.Sort
+}
+
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissions) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
