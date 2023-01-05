@@ -10078,6 +10078,14 @@ func (o *OAuthAPP) GetURL() string {
 	return *o.URL
 }
 
+// GetUseDefault returns the UseDefault field if it's non-nil, zero value otherwise.
+func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
+	if o == nil || o.UseDefault == nil {
+		return false
+	}
+	return *o.UseDefault
+}
+
 // GetAdvancedSecurityEnabledForNewRepos returns the AdvancedSecurityEnabledForNewRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAdvancedSecurityEnabledForNewRepos() bool {
 	if o == nil || o.AdvancedSecurityEnabledForNewRepos == nil {
