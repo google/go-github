@@ -45,6 +45,116 @@ func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
 	a.GetVerifiedAllowed()
 }
 
+func TestActionsCache_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsCache{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsCache_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{ID: &zeroValue}
+	a.GetID()
+	a = &ActionsCache{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsCache_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCache{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCache_GetLastAccessedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{LastAccessedAt: &zeroValue}
+	a.GetLastAccessedAt()
+	a = &ActionsCache{}
+	a.GetLastAccessedAt()
+	a = nil
+	a.GetLastAccessedAt()
+}
+
+func TestActionsCache_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCache{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCache_GetSizeInBytes(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{SizeInBytes: &zeroValue}
+	a.GetSizeInBytes()
+	a = &ActionsCache{}
+	a.GetSizeInBytes()
+	a = nil
+	a.GetSizeInBytes()
+}
+
+func TestActionsCache_GetVersion(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Version: &zeroValue}
+	a.GetVersion()
+	a = &ActionsCache{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
+}
+
+func TestActionsCacheListOptions_GetDirection(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Direction: &zeroValue}
+	a.GetDirection()
+	a = &ActionsCacheListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestActionsCacheListOptions_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCacheListOptions{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCacheListOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCacheListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCacheListOptions_GetSort(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Sort: &zeroValue}
+	a.GetSort()
+	a = &ActionsCacheListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
 func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissions{AllowedActions: &zeroValue}
