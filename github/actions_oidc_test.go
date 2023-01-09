@@ -148,3 +148,35 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	})
 }
+
+func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testBody(t, r, `{"use_default":true}`+"\n")
+		w.WriteHeader(http.StatusCreated)
+	})
+
+	input := &OIDCSubjectClaimCustomTemplate{
+		UseDefault: Bool(true),
+	}
+	ctx := context.Background()
+	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
+	}
+
+	const methodName = "SetRepoOIDCSubjectClaimCustomTemplate"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
+	})
+}
