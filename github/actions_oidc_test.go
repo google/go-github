@@ -170,7 +170,6 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 	}
 
 	const methodName = "SetRepoOIDCSubjectClaimCustomTemplate"
-
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "\n", "\n", input)
 		return err
