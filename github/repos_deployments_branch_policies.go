@@ -23,7 +23,7 @@ type DeploymentBranchPolicyResponse struct {
 	BranchPolicies []*DeploymentBranchPolicy `json:"branch_policies,omitempty"`
 }
 
-// DeploymentBranchPolicyRequest represents a deployment branch policy request
+// DeploymentBranchPolicyRequest represents a deployment branch policy request.
 type DeploymentBranchPolicyRequest struct {
 	Name *string `json:"name,omitempty"`
 }
