@@ -13,7 +13,7 @@ import (
 // OIDCSubjectClaimCustomTemplate represents an OIDC subject claim customization template.
 type OIDCSubjectClaimCustomTemplate struct {
 	UseDefault       *bool    `json:"use_default,omitempty"`
-	IncludeClaimKeys []string `json:"include_claim_keys"`
+	IncludeClaimKeys []string `json:"include_claim_keys,omitempty"`
 }
 
 // GetOrgOIDCSubjectClaimCustomTemplate gets the subject claim customization template for an organization.
