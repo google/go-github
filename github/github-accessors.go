@@ -4238,6 +4238,46 @@ func (d *Deployment) GetURL() string {
 	return *d.URL
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicyRequest) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicyResponse) GetTotalCount() int {
+	if d == nil || d.TotalCount == nil {
+		return 0
+	}
+	return *d.TotalCount
+}
+
 // GetDeployment returns the Deployment field.
 func (d *DeploymentEvent) GetDeployment() *Deployment {
 	if d == nil {

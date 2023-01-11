@@ -4959,6 +4959,56 @@ func TestDeployment_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDeploymentBranchPolicy_GetID(tt *testing.T) {
+	var zeroValue int64
+	d := &DeploymentBranchPolicy{ID: &zeroValue}
+	d.GetID()
+	d = &DeploymentBranchPolicy{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDeploymentBranchPolicy_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicy{Name: &zeroValue}
+	d.GetName()
+	d = &DeploymentBranchPolicy{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDeploymentBranchPolicy_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicy{NodeID: &zeroValue}
+	d.GetNodeID()
+	d = &DeploymentBranchPolicy{}
+	d.GetNodeID()
+	d = nil
+	d.GetNodeID()
+}
+
+func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
+	d.GetName()
+	d = &DeploymentBranchPolicyRequest{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDeploymentBranchPolicyResponse_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	d := &DeploymentBranchPolicyResponse{TotalCount: &zeroValue}
+	d.GetTotalCount()
+	d = &DeploymentBranchPolicyResponse{}
+	d.GetTotalCount()
+	d = nil
+	d.GetTotalCount()
+}
+
 func TestDeploymentEvent_GetDeployment(tt *testing.T) {
 	d := &DeploymentEvent{}
 	d.GetDeployment()
