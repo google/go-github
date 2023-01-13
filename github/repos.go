@@ -1745,7 +1745,7 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 	return newApps, resp, nil
 }
 
-// RemoveAppRestrictions removes the ability of an app to push to this branch.
+// RemoveAppRestrictions removes the restrictions of an app from pushing to this branch.
 // It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
@@ -1832,7 +1832,7 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 	return newTeams, resp, nil
 }
 
-// RemoveTeamRestrictions removes the ability of an team to push to this branch.
+// RemoveTeamRestrictions removes the restrictions of a team from pushing to this branch.
 // It requires the GitHub teams to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
@@ -1919,7 +1919,7 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 	return newUsers, resp, nil
 }
 
-// RemoveUserRestrictions removes the ability of an team to push to this branch.
+// RemoveUserRestrictions removes the restrictions of a user from pushing to this branch.
 // It requires the GitHub users to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
