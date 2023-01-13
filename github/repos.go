@@ -1116,9 +1116,9 @@ type AdminEnforcement struct {
 type BranchRestrictions struct {
 	// The list of user logins with push access.
 	Users []*User `json:"users"`
-	// The list of team slugs with push access.
+	// The list of teams with push access.
 	Teams []*Team `json:"teams"`
-	// The list of app slugs with push access.
+	// The list of apps with push access.
 	Apps []*App `json:"apps"`
 }
 
@@ -1129,9 +1129,9 @@ type BranchRestrictions struct {
 type BranchRestrictionsRequest struct {
 	// The list of user logins with push access. (Required; use []string{} instead of nil for empty list.)
 	Users []string `json:"users"`
-	// The list of team slugs with push access. (Required; use []string{} instead of nil for empty list.)
+	// The list of teams with push access. (Required; use []string{} instead of nil for empty list.)
 	Teams []string `json:"teams"`
-	// The list of app slugs with push access.
+	// The list of apps with push access.
 	Apps []string `json:"apps"`
 }
 
@@ -1152,9 +1152,9 @@ type BypassPullRequestAllowances struct {
 type BypassPullRequestAllowancesRequest struct {
 	// The list of user logins allowed to bypass pull request requirements.
 	Users []string `json:"users"`
-	// The list of team slugs allowed to bypass pull request requirements.
+	// The list of teams allowed to bypass pull request requirements.
 	Teams []string `json:"teams"`
-	// The list of app slugs allowed to bypass pull request requirements.
+	// The list of apps allowed to bypass pull request requirements.
 	Apps []string `json:"apps"`
 }
 
@@ -1176,7 +1176,7 @@ type DismissalRestrictions struct {
 type DismissalRestrictionsRequest struct {
 	// The list of user logins who can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Users *[]string `json:"users,omitempty"`
-	// The list of team slugs which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
+	// The list of teams which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Teams *[]string `json:"teams,omitempty"`
 	// The list of apps which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Apps *[]string `json:"apps,omitempty"`
@@ -1707,20 +1707,20 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-app-access-restrictions
-func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error) {
+func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
-	req, err := s.client.NewRequest("PUT", u, slug)
+	req, err := s.client.NewRequest("PUT", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var apps []*App
-	resp, err := s.client.Do(ctx, req, &apps)
+	var newApps []*App
+	resp, err := s.client.Do(ctx, req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return apps, resp, nil
+	return newApps, resp, nil
 }
 
 // AddAppRestrictions grants the specified apps push access to a given protected branch.
@@ -1729,20 +1729,20 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-app-access-restrictions
-func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error) {
+func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
-	req, err := s.client.NewRequest("POST", u, slug)
+	req, err := s.client.NewRequest("POST", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var apps []*App
-	resp, err := s.client.Do(ctx, req, &apps)
+	var newApps []*App
+	resp, err := s.client.Do(ctx, req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return apps, resp, nil
+	return newApps, resp, nil
 }
 
 // RemoveAppRestrictions removes the ability of an app to push to this branch.
@@ -1751,20 +1751,20 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-app-access-restrictions
-func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*App, *Response, error) {
+func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
-	req, err := s.client.NewRequest("DELETE", u, slug)
+	req, err := s.client.NewRequest("DELETE", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var apps []*App
-	resp, err := s.client.Do(ctx, req, &apps)
+	var newApps []*App
+	resp, err := s.client.Do(ctx, req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return apps, resp, nil
+	return newApps, resp, nil
 }
 
 // ListTeamRestrictions lists the GitHub teams that have push access to a given protected branch.
@@ -1788,26 +1788,26 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 }
 
 // ReplaceTeamRestrictions replaces the team that have push access to a given protected branch.
-// It removes all teams that previously had push access and grants push access to the new list of teams.
+// This removes all teams that previously had push access and grants push access to the new list of teams.
 // It requires the GitHub teams to have `write` access to the `content` permission.
 //
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
-func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
-	req, err := s.client.NewRequest("PUT", u, slug)
+	req, err := s.client.NewRequest("PUT", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	var newTeams []*Team
+	resp, err := s.client.Do(ctx, req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return teams, resp, nil
+	return newTeams, resp, nil
 }
 
 // AddTeamRestrictions grants the specified teams push access to a given protected branch.
@@ -1816,20 +1816,20 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
-func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
-	req, err := s.client.NewRequest("POST", u, slug)
+	req, err := s.client.NewRequest("POST", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	var newTeams []*Team
+	resp, err := s.client.Do(ctx, req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return teams, resp, nil
+	return newTeams, resp, nil
 }
 
 // RemoveTeamRestrictions removes the ability of an team to push to this branch.
@@ -1838,20 +1838,20 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
-func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*Team, *Response, error) {
+func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, branch)
-	req, err := s.client.NewRequest("DELETE", u, slug)
+	req, err := s.client.NewRequest("DELETE", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	var newTeams []*Team
+	resp, err := s.client.Do(ctx, req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return teams, resp, nil
+	return newTeams, resp, nil
 }
 
 // ListUserRestrictions lists the GitHub users that have push access to a given protected branch.
@@ -1881,20 +1881,20 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#set-team-access-restrictions
-func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
-	req, err := s.client.NewRequest("PUT", u, slug)
+	req, err := s.client.NewRequest("PUT", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	var newUsers []*User
+	resp, err := s.client.Do(ctx, req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return users, resp, nil
+	return newUsers, resp, nil
 }
 
 // AddUserRestrictions grants the specified users push access to a given protected branch.
@@ -1903,20 +1903,20 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#add-team-access-restrictions
-func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
-	req, err := s.client.NewRequest("POST", u, slug)
+	req, err := s.client.NewRequest("POST", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	var newUsers []*User
+	resp, err := s.client.Do(ctx, req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return users, resp, nil
+	return newUsers, resp, nil
 }
 
 // RemoveUserRestrictions removes the ability of an team to push to this branch.
@@ -1925,20 +1925,20 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 // Note: The list of users, apps, and teams in total is limited to 100 items.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#remove-team-access-restrictions
-func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, slug []string) ([]*User, *Response, error) {
+func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, branch)
-	req, err := s.client.NewRequest("DELETE", u, slug)
+	req, err := s.client.NewRequest("DELETE", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	var newUsers []*User
+	resp, err := s.client.Do(ctx, req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return users, resp, nil
+	return newUsers, resp, nil
 }
 
 // TransferRequest represents a request to transfer a repository.
