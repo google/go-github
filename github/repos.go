@@ -1874,7 +1874,7 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 	return users, resp, nil
 }
 
-// ReplaceUserRestrictions replaces the team that have push access to a given protected branch.
+// ReplaceUserRestrictions replaces the user that have push access to a given protected branch.
 // It removes all users that previously had push access and grants push access to the new list of users.
 // It requires the GitHub users to have `write` access to the `content` permission.
 //
