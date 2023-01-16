@@ -2714,7 +2714,7 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_ListApps(t *testing.T) {
+func TestRepositoriesService_ListAppRestrictions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -2723,19 +2723,19 @@ func TestRepositoriesService_ListApps(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, _, err := client.Repositories.ListApps(ctx, "o", "r", "b")
+	_, _, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", "b")
 	if err != nil {
-		t.Errorf("Repositories.ListApps returned error: %v", err)
+		t.Errorf("Repositories.ListAppRestrictions returned error: %v", err)
 	}
 
-	const methodName = "ListApps"
+	const methodName = "ListAppRestrictions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListApps(ctx, "\n", "\n", "\n")
+		_, _, err = client.Repositories.ListAppRestrictions(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListApps(ctx, "o", "r", "b")
+		got, resp, err := client.Repositories.ListAppRestrictions(ctx, "o", "r", "b")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

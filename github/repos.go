@@ -1116,9 +1116,9 @@ type AdminEnforcement struct {
 type BranchRestrictions struct {
 	// The list of user logins with push access.
 	Users []*User `json:"users"`
-	// The list of teams with push access.
+	// The list of team slugs with push access.
 	Teams []*Team `json:"teams"`
-	// The list of apps with push access.
+	// The list of app slugs with push access.
 	Apps []*App `json:"apps"`
 }
 
@@ -1129,9 +1129,9 @@ type BranchRestrictions struct {
 type BranchRestrictionsRequest struct {
 	// The list of user logins with push access. (Required; use []string{} instead of nil for empty list.)
 	Users []string `json:"users"`
-	// The list of teams with push access. (Required; use []string{} instead of nil for empty list.)
+	// The list of team slugs with push access. (Required; use []string{} instead of nil for empty list.)
 	Teams []string `json:"teams"`
-	// The list of apps with push access.
+	// The list of app slugs with push access.
 	Apps []string `json:"apps"`
 }
 
@@ -1152,9 +1152,9 @@ type BypassPullRequestAllowances struct {
 type BypassPullRequestAllowancesRequest struct {
 	// The list of user logins allowed to bypass pull request requirements.
 	Users []string `json:"users"`
-	// The list of teams allowed to bypass pull request requirements.
+	// The list of team slugs allowed to bypass pull request requirements.
 	Teams []string `json:"teams"`
-	// The list of apps allowed to bypass pull request requirements.
+	// The list of app slugs allowed to bypass pull request requirements.
 	Apps []string `json:"apps"`
 }
 
@@ -1176,9 +1176,9 @@ type DismissalRestrictions struct {
 type DismissalRestrictionsRequest struct {
 	// The list of user logins who can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Users *[]string `json:"users,omitempty"`
-	// The list of teams which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
+	// The list of team slugs which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Teams *[]string `json:"teams,omitempty"`
-	// The list of apps which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
+	// The list of app slugs which can dismiss pull request reviews. (Required; use nil to disable dismissal_restrictions or &[]string{} otherwise.)
 	Apps *[]string `json:"apps,omitempty"`
 }
 
@@ -1674,6 +1674,8 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 // It requires the GitHub apps to have `write` access to the `content` permission.
 //
 // GitHub API docs: https://docs.github.com/en/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
+//
+// Deprecated: Please use ListAppRestrictions instead.
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, branch)
 	req, err := s.client.NewRequest("GET", u, nil)
