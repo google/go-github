@@ -1711,7 +1711,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 
 	input := &ProtectionRequest{
 		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-			RequireLastPushApproval: true,
+			RequireLastPushApproval: Bool(true),
 		},
 	}
 
@@ -2581,7 +2581,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
-	want := `{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":false}`
+	want := `{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
 	if want != string(got) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
 	}
@@ -2595,7 +2595,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
-	want = `{"dismissal_restrictions":{},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":false}`
+	want = `{"dismissal_restrictions":{},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
 	if want != string(got) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
 	}
@@ -2606,7 +2606,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 			Teams: &[]string{},
 			Apps:  &[]string{},
 		},
-		RequireLastPushApproval: true,
+		RequireLastPushApproval: Bool(true),
 	}
 
 	got, err = json.Marshal(req)

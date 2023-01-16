@@ -13854,6 +13854,14 @@ func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest()
 	return p.DismissalRestrictionsRequest
 }
 
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementRequest) GetRequireLastPushApproval() bool {
+	if p == nil || p.RequireLastPushApproval == nil {
+		return false
+	}
+	return *p.RequireLastPushApproval
+}
+
 // GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
 func (p *PullRequestReviewsEnforcementUpdate) GetBypassPullRequestAllowancesRequest() *BypassPullRequestAllowancesRequest {
 	if p == nil {
