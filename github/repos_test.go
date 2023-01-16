@@ -1702,6 +1702,48 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 	}
 }
 
+func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &ProtectionRequest{
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+			RequireLastPushApproval: true,
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprintf(w, `{
+			"required_pull_request_reviews":{
+				"require_last_push_approval":true
+			}
+		}`)
+	})
+
+	ctx := context.Background()
+	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+	}
+
+	want := &Protection{
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+			RequireLastPushApproval: true,
+		},
+	}
+	if !cmp.Equal(protection, want) {
+		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+	}
+}
+
 func TestRepositoriesService_RemoveBranchProtection(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
