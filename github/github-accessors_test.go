@@ -24443,6 +24443,16 @@ func TestWorkflowJob_GetURL(tt *testing.T) {
 	w.GetURL()
 }
 
+func TestWorkflowJob_GetWorkflowName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{WorkflowName: &zeroValue}
+	w.GetWorkflowName()
+	w = &WorkflowJob{}
+	w.GetWorkflowName()
+	w = nil
+	w.GetWorkflowName()
+}
+
 func TestWorkflowJobEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJobEvent{Action: &zeroValue}

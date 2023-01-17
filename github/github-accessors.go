@@ -20910,6 +20910,14 @@ func (w *WorkflowJob) GetURL() string {
 	return *w.URL
 }
 
+// GetWorkflowName returns the WorkflowName field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetWorkflowName() string {
+	if w == nil || w.WorkflowName == nil {
+		return ""
+	}
+	return *w.WorkflowName
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (w *WorkflowJobEvent) GetAction() string {
 	if w == nil || w.Action == nil {
