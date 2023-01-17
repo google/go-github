@@ -264,7 +264,8 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 				CompletedAt: &Timestamp{referenceTime},
 			},
 		},
-		CheckRunURL: String("c"),
+		CheckRunURL:  String("c"),
+		WorkflowName: String("w"),
 	}
 
 	want := `{
@@ -288,7 +289,8 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 			"started_at": ` + referenceTimeStr + `,
 			"completed_at": ` + referenceTimeStr + `
 		}],
-		"check_run_url": "c"
+		"check_run_url": "c",
+		"workflow_name": "w"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -323,8 +325,9 @@ func TestJobs_Marshal(t *testing.T) {
 						CompletedAt: &Timestamp{referenceTime},
 					},
 				},
-				CheckRunURL: String("c"),
-				RunAttempt:  Int64(2),
+				CheckRunURL:  String("c"),
+				RunAttempt:   Int64(2),
+				WorkflowName: String("w"),
 			},
 		},
 	}
@@ -353,7 +356,8 @@ func TestJobs_Marshal(t *testing.T) {
 				"completed_at": ` + referenceTimeStr + `
 			}],
 			"check_run_url": "c",
-			"run_attempt": 2
+			"run_attempt": 2,
+			"workflow_name": "w"
 		}]
 	}`
 
