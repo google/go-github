@@ -1082,6 +1082,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					},
 					"dismiss_stale_reviews":true,
 					"require_code_owner_reviews":true,
+					"require_last_push_approval":false,
 					"required_approving_review_count":1
 					},
 					"enforce_admins":{
@@ -1130,6 +1131,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 			},
 			RequireCodeOwnerReviews:      true,
 			RequiredApprovingReviewCount: 1,
+			RequireLastPushApproval:      false,
 		},
 		EnforceAdmins: &AdminEnforcement{
 			URL:     String("/repos/o/r/branches/b/protection/enforce_admins"),
@@ -1633,6 +1635,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 				},
 				"dismiss_stale_reviews":true,
 				"require_code_owner_reviews":true,
+				"require_last_push_approval":false,
 				"bypass_pull_request_allowances": {
 					"users":[{"id":10,"login":"uuu"}],
 					"teams":[{"id":20,"slug":"ttt"}],
@@ -1695,6 +1698,48 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			Apps: []*App{
 				{Slug: String("a"), ID: Int64(3)},
 			},
+		},
+	}
+	if !cmp.Equal(protection, want) {
+		t.Errorf("Repositories.UpdateBranchProtection returned %+v, want %+v", protection, want)
+	}
+}
+
+func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &ProtectionRequest{
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
+			RequireLastPushApproval: Bool(true),
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
+		v := new(ProtectionRequest)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprintf(w, `{
+			"required_pull_request_reviews":{
+				"require_last_push_approval":true
+			}
+		}`)
+	})
+
+	ctx := context.Background()
+	protection, _, err := client.Repositories.UpdateBranchProtection(ctx, "o", "r", "b", input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateBranchProtection returned error: %v", err)
+	}
+
+	want := &Protection{
+		RequiredPullRequestReviews: &PullRequestReviewsEnforcement{
+			RequireLastPushApproval: true,
 		},
 	}
 	if !cmp.Equal(protection, want) {
@@ -2561,6 +2606,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 			Teams: &[]string{},
 			Apps:  &[]string{},
 		},
+		RequireLastPushApproval: Bool(true),
 	}
 
 	got, err = json.Marshal(req)
@@ -2568,7 +2614,7 @@ func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestirctio
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
 	}
 
-	want = `{"dismissal_restrictions":{"users":[],"teams":[],"apps":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
+	want = `{"dismissal_restrictions":{"users":[],"teams":[],"apps":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":true}`
 	if want != string(got) {
 		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
 	}

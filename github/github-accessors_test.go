@@ -16100,6 +16100,16 @@ func TestPullRequestReviewsEnforcementRequest_GetDismissalRestrictionsRequest(tt
 	p.GetDismissalRestrictionsRequest()
 }
 
+func TestPullRequestReviewsEnforcementRequest_GetRequireLastPushApproval(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestReviewsEnforcementRequest{RequireLastPushApproval: &zeroValue}
+	p.GetRequireLastPushApproval()
+	p = &PullRequestReviewsEnforcementRequest{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
+}
+
 func TestPullRequestReviewsEnforcementUpdate_GetBypassPullRequestAllowancesRequest(tt *testing.T) {
 	p := &PullRequestReviewsEnforcementUpdate{}
 	p.GetBypassPullRequestAllowancesRequest()
