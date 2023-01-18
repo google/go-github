@@ -170,8 +170,9 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
-	rateMu     sync.Mutex
-	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	rateMu                  sync.Mutex
+	rateLimits              [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -706,6 +707,12 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 				Rate:     err.Rate,
 			}, err
 		}
+		// If we've hit a secondary rate limit, don't make further requests before Retry After.
+		if err := c.checkSecondaryRateLimitBeforeDo(req); err != nil {
+			return &Response{
+				Response: err.Response,
+			}, err
+		}
 	}
 
 	resp, err := c.client.Do(req)
@@ -756,6 +763,13 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 			aerr.Raw = b
 			err = aerr
+		}
+
+		rerr, ok := err.(*AbuseRateLimitError)
+		if ok && rerr.RetryAfter != nil {
+			c.rateMu.Lock()
+			c.secondaryRateLimitReset = time.Now().Add(*rerr.RetryAfter)
+			c.rateMu.Unlock()
 		}
 	}
 	return response, err
@@ -815,6 +829,35 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 			Rate:     rate,
 			Response: resp,
 			Message:  fmt.Sprintf("API rate limit of %v still exceeded until %v, not making remote request.", rate.Limit, rate.Reset.Time),
+		}
+	}
+
+	return nil
+}
+
+// checkSecondaryRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
+// current client state in order to quickly check if *AbuseRateLimitError can be immediately returned
+// from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
+// Otherwise it returns nil, and Client.Do should proceed normally.
+func (c *Client) checkSecondaryRateLimitBeforeDo(req *http.Request) *AbuseRateLimitError {
+	c.rateMu.Lock()
+	secondary := c.secondaryRateLimitReset
+	c.rateMu.Unlock()
+
+	if secondary.After(time.Now()) {
+		// Create a fake response.
+		resp := &http.Response{
+			Status:     http.StatusText(http.StatusForbidden),
+			StatusCode: http.StatusForbidden,
+			Request:    req,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader("")),
+		}
+		retryAfter := time.Until(secondary)
+		return &AbuseRateLimitError{
+			Response:   resp,
+			Message:    fmt.Sprintf("API secondary rate limit exceeded until %v, not making remote request.", secondary),
+			RetryAfter: &retryAfter,
 		}
 	}
 
