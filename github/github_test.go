@@ -1407,6 +1407,27 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
 	}
+
+	// expect prevention of a following request
+	_, err = client.Do(ctx, req, nil)
+
+	if err == nil {
+		t.Error("Expected error to be returned.")
+	}
+	abuseRateLimitErr, ok = err.(*AbuseRateLimitError)
+	if !ok {
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+	}
+	if abuseRateLimitErr.RetryAfter == nil {
+		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+	}
+	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
+	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got < 1 {
+		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+	}
+	if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
+		t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
+	}
 }
 
 func TestDo_noContent(t *testing.T) {
