@@ -209,7 +209,7 @@ The GitHub API has good support for conditional requests which will help
 prevent you from burning through your rate limit, as well as help speed up your
 application. `go-github` does not handle conditional requests directly, but is
 instead designed to work with a caching `http.Transport`. We recommend using
-https://github.com/gregjones/httpcache for that.
+https://github.com/gregjones/httpcache for that. For example:
 
 ```go
 import "github.com/gregjones/httpcache"
@@ -225,7 +225,6 @@ import "github.com/gregjones/httpcache"
 	}
 	client := github.NewClient(tc)
 ```
-
 
 Learn more about GitHub conditional requests at
 https://docs.github.com/en/rest/overview/resources-in-the-rest-api#conditional-requests.
