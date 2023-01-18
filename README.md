@@ -211,6 +211,22 @@ application. `go-github` does not handle conditional requests directly, but is
 instead designed to work with a caching `http.Transport`. We recommend using
 https://github.com/gregjones/httpcache for that.
 
+```go
+import "github.com/gregjones/httpcache"
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+	)
+	tc := &http.Client{
+		Transport: &oauth2.Transport{
+			Base:   httpcache.NewMemoryCacheTransport(),
+			Source: ts,
+		},
+	}
+	client := github.NewClient(tc)
+```
+
+
 Learn more about GitHub conditional requests at
 https://docs.github.com/en/rest/overview/resources-in-the-rest-api#conditional-requests.
 
