@@ -185,6 +185,11 @@ func testBadOptions(t *testing.T, methodName string, f func() error) {
 // Method f should be a regular call that would normally succeed, but
 // should return an error when NewRequest or s.client.Do fails.
 func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client, f func() (*Response, error)) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, coreCategory, f)
+}
+
+// testNewRequestAndDoFailureCategory works Like testNewRequestAndDoFailure, but allows setting the category
+func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client *Client, category rateLimitCategory, f func() (*Response, error)) {
 	t.Helper()
 	if methodName == "" {
 		t.Error("testNewRequestAndDoFailure: must supply method methodName")
@@ -200,7 +205,7 @@ func testNewRequestAndDoFailure(t *testing.T, methodName string, client *Client,
 	}
 
 	client.BaseURL.Path = "/api-v3/"
-	client.rateLimits[0].Reset.Time = time.Now().Add(10 * time.Minute)
+	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
 	if bypass := resp.Request.Context().Value(bypassRateLimitCheck); bypass != nil {
 		return
@@ -1133,6 +1138,36 @@ func TestDo_rateLimit(t *testing.T) {
 	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
 	if resp.Rate.Reset.UTC() != reset {
 		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	}
+}
+
+func TestDo_rateLimitCategory(t *testing.T) {
+	if c := category(http.MethodGet, "/"); c != coreCategory {
+		t.Errorf("expecting default category to be core, found %v", c)
+	}
+	if c := category(http.MethodGet, "/search/issues?q=rate"); c != searchCategory {
+		t.Errorf("expecting search category, found %v", c)
+	}
+	if c := category(http.MethodGet, "/graphql"); c != graphqlCategory {
+		t.Errorf("expecting graphQL category, found %v", c)
+	}
+	if c := category(http.MethodPost, "/app-manifests/code/conversions"); c != integrationManifestCategory {
+		t.Errorf("expecting integration manifest category, found %v", c)
+	}
+	if c := category(http.MethodGet, "/app-manifests/code/conversions"); c == integrationManifestCategory {
+		t.Errorf("expecting GET to not match integration manifest category, but it is")
+	}
+	if c := category(http.MethodPut, "/repos/google/go-github/import"); c != sourceImportCategory {
+		t.Errorf("expecting source import category, found %v", c)
+	}
+	if c := category(http.MethodGet, "/repos/google/go-github/import"); c == sourceImportCategory {
+		t.Errorf("expecting GET to not match source import category, but it is")
+	}
+	if c := category(http.MethodPost, "/repos/google/go-github/code-scanning/sarifs"); c != codeScanningUploadCategory {
+		t.Errorf("expecting code scanning upload category, found %v", c)
+	}
+	if c := category(http.MethodGet, "/scim/v2/organizations/ORG/Users"); c != scimCategory {
+		t.Errorf("expecting scim category, found %v", c)
 	}
 }
 
@@ -2136,9 +2171,15 @@ func TestRateLimits_overQuota(t *testing.T) {
 		Reset:     Timestamp{time.Now().Add(time.Hour).Local()},
 	}
 	mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+		// note: actionsRunnerRegistrationCategory is skipped because it is not implemented yet
 		fmt.Fprint(w, `{"resources":{
 			"core": {"limit":2,"remaining":1,"reset":1372700873},
-			"search": {"limit":3,"remaining":2,"reset":1372700874}
+			"search": {"limit":3,"remaining":2,"reset":1372700874},
+			"graphql": {"limit":4,"remaining":3,"reset":1372700875},
+			"integration_manifest": {"limit":5,"remaining":4,"reset":1372700876},
+			"source_import": {"limit":6,"remaining":5,"reset":1372700877},
+			"code_scanning_upload": {"limit":7,"remaining":6,"reset":1372700878},
+			"scim": {"limit":9,"remaining":8,"reset":1372700880}
 		}}`)
 	})
 
@@ -2159,6 +2200,31 @@ func TestRateLimits_overQuota(t *testing.T) {
 			Remaining: 2,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 54, 0, time.UTC).Local()},
 		},
+		GraphQL: &Rate{
+			Limit:     4,
+			Remaining: 3,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 55, 0, time.UTC).Local()},
+		},
+		IntegrationManifest: &Rate{
+			Limit:     5,
+			Remaining: 4,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 56, 0, time.UTC).Local()},
+		},
+		SourceImport: &Rate{
+			Limit:     6,
+			Remaining: 5,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 57, 0, time.UTC).Local()},
+		},
+		CodeScanningUpload: &Rate{
+			Limit:     7,
+			Remaining: 6,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 47, 58, 0, time.UTC).Local()},
+		},
+		SCIM: &Rate{
+			Limit:     9,
+			Remaining: 8,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 00, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
@@ -2169,6 +2235,21 @@ func TestRateLimits_overQuota(t *testing.T) {
 	}
 	if got, want := client.rateLimits[searchCategory], *want.Search; got != want {
 		t.Errorf("client.rateLimits[searchCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[graphqlCategory], *want.GraphQL; got != want {
+		t.Errorf("client.rateLimits[graphqlCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[integrationManifestCategory], *want.IntegrationManifest; got != want {
+		t.Errorf("client.rateLimits[integrationManifestCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[sourceImportCategory], *want.SourceImport; got != want {
+		t.Errorf("client.rateLimits[sourceImportCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[codeScanningUploadCategory], *want.CodeScanningUpload; got != want {
+		t.Errorf("client.rateLimits[codeScanningUploadCategory] is %+v, want %+v", got, want)
+	}
+	if got, want := client.rateLimits[scimCategory], *want.SCIM; got != want {
+		t.Errorf("client.rateLimits[scimCategory] is %+v, want %+v", got, want)
 	}
 }
 

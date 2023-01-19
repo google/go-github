@@ -703,7 +703,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 	req = withContext(ctx, req)
 
-	rateLimitCategory := category(req.URL.Path)
+	rateLimitCategory := category(req.Method, req.URL.Path)
 
 	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
 		// If we've hit rate limit, don't make further requests before Reset time.
@@ -1241,13 +1241,36 @@ const (
 	categories // An array of this length will be able to contain all rate limit categories.
 )
 
-// category returns the rate limit category of the endpoint, determined by Request.URL.Path.
-func category(path string) rateLimitCategory {
+// category returns the rate limit category of the endpoint, determined by HTTP method and Request.URL.Path.
+func category(method string, path string) rateLimitCategory {
 	switch {
+	// https://docs.github.com/en/rest/rate-limit#about-rate-limits
 	default:
+		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
+		// because no API found for this category.
 		return coreCategory
 	case strings.HasPrefix(path, "/search/"):
 		return searchCategory
+	case path == "/graphql":
+		return graphqlCategory
+	case strings.HasPrefix(path, "/app-manifests/") &&
+		strings.HasSuffix(path, "/conversions") &&
+		method == http.MethodPost:
+		return integrationManifestCategory
+
+	// https://docs.github.com/en/rest/migrations/source-imports#start-an-import
+	case strings.HasPrefix(path, "/repos/") &&
+		strings.HasSuffix(path, "/import") &&
+		method == http.MethodPut:
+		return sourceImportCategory
+
+	// https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
+	case strings.HasSuffix(path, "/code-scanning/sarifs"):
+		return codeScanningUploadCategory
+
+	// https://docs.github.com/en/enterprise-cloud@latest/rest/scim
+	case strings.HasPrefix(path, "/scim/"):
+		return scimCategory
 	}
 }
 
