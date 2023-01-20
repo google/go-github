@@ -273,7 +273,7 @@ func TestNewTokenClient(t *testing.T) {
 	c := NewTokenClient(ctx, token)
 	tr, ok := c.Client().Transport.(*oauth2.Transport)
 	if !ok {
-		t.Error("Client transport is not oauth.Transport")
+		t.Error("Client transport is not oauth2.Transport")
 	}
 	if tok, err := tr.Source.Token(); err != nil || tok.AccessToken != token {
 		t.Errorf("Client not using correct token")
