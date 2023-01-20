@@ -347,17 +347,9 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
-// NewClient returns a new GitHub API client authenticated with the provided token.
+// NewTokenClient returns a new GitHub API client authenticated with the provided token.
 func NewTokenClient(ctx context.Context, token string) *Client {
-	return NewClient(
-		oauth2.NewClient(
-			ctx, oauth2.StaticTokenSource(
-				&oauth2.Token{
-					AccessToken: token,
-				},
-			),
-		),
-	)
+	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
