@@ -269,7 +269,8 @@ func TestClient(t *testing.T) {
 
 func TestNewTokenClient(t *testing.T) {
 	token := "gh_test_token"
-	c := NewTokenClient(token)
+	ctx := context.Background()
+	c := NewTokenClient(ctx, token)
 	tr, ok := c.Client().Transport.(*oauth2.Transport)
 	if !ok {
 		t.Error("Client transport is not oauth2.Transport")
