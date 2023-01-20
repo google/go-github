@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -263,6 +264,19 @@ func TestClient(t *testing.T) {
 	c2 := c.Client()
 	if c.client == c2 {
 		t.Error("Client returned same http.Client, but should be different")
+	}
+}
+
+func TestNewTokenClient(t *testing.T) {
+	token := "gh_test_token"
+	ctx := context.Background()
+	c := NewTokenClient(ctx, token)
+	tr, ok := c.Client().Transport.(*oauth2.Transport)
+	if !ok {
+		t.Error("Client transport is not oauth.Transport")
+	}
+	if tok, err := tr.Source.Token(); err != nil || tok.AccessToken != token {
+		t.Errorf("Client not using correct token")
 	}
 }
 
