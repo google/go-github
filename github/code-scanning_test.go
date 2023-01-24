@@ -709,14 +709,14 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)
 	}
 
-	const methodName = "GetAlert"
+	const methodName = "UpdateAlert"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.CodeScanning.UpdateAlert(ctx, "\n", "\n", -88, stateInfo)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeScanning.GetAlert(ctx, "o", "r", 88)
+		got, resp, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
