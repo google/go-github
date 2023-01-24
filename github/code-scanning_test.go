@@ -616,7 +616,6 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-
 	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"rule_id":"js/useless-expression",
@@ -654,7 +653,9 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 					]
 				},
 				"created_at":"2019-01-02T15:04:05Z",
-				"state":"open",
+				"state":"dismissed",
+				"dismissed_reason": "false positive",
+				"dismissed_comment": "This alert is not actually correct as sanitizer is used",
 				"closed_by":null,
 				"closed_at":null,
 				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
@@ -662,10 +663,13 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	stateInfo := &StateInfo{State: String("dismissed"), DismissedReason: String("false positive"), DismissedComment: String("This alert is not actually correct as sanitizer is used")}
+	dismissedComment := String("This alert is not actually correct as sanitizer is used")
+	dismissedReason := String("false positive")
+	state := String("dismissed")
+	stateInfo := &StateInfo{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
 	if err != nil {
-		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
+		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
 	}
 
 	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
@@ -682,12 +686,14 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 			FullDescription: String("Expression has no effect"),
 			Help:            String("Expression has no effect"),
 		},
-		CreatedAt: &date,
-		State:     String("open"),
-		ClosedBy:  nil,
-		ClosedAt:  nil,
-		URL:       String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
-		HTMLURL:   String("https://github.com/o/r/security/code-scanning/88"),
+		CreatedAt:        &date,
+		State:            state,
+		DismissedReason:  dismissedReason,
+		DismissedComment: dismissedComment,
+		ClosedBy:         nil,
+		ClosedAt:         nil,
+		URL:              String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:          String("https://github.com/o/r/security/code-scanning/88"),
 		MostRecentInstance: &MostRecentInstance{
 			Ref:       String("refs/heads/main"),
 			State:     String("dismissed"),
@@ -706,7 +712,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(alert, want) {
-		t.Errorf("CodeScanning.GetAlert returned %+v, want %+v", alert, want)
+		t.Errorf("CodeScanning.UpdateAlert returned %+v, want %+v", alert, want)
 	}
 
 	const methodName = "UpdateAlert"
