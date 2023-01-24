@@ -173,6 +173,15 @@ type SarifAnalysis struct {
 	ToolName    *string    `json:"tool_name,omitempty"`
 }
 
+// StateInfo specifies the state of a code scanning alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
+type StateInfo struct {
+	State            *string `json:"state,omitempty"`
+	DismissedReason  *string `json:"dismissed_reason,omitempty"`
+	DismissedComment *string `json:"dismissed_comment,omitempty"`
+}
+
 // SarifID identifies a sarif analysis upload.
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning
@@ -248,6 +257,31 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	a := new(Alert)
+	resp, err := s.client.Do(ctx, req, a)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return a, resp, nil
+}
+
+// UpdateAlert updates the state of a single code scanning alert for a repository.
+//
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
+//
+// The security alert_id is the number at the end of the security alert's URL.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *StateInfo) (*Alert, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("PATCH", u, stateInfo)
 	if err != nil {
 		return nil, nil, err
 	}
