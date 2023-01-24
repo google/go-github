@@ -21301,6 +21301,36 @@ func TestStarredRepository_GetStarredAt(tt *testing.T) {
 	s.GetStarredAt()
 }
 
+func TestStateInfo_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	s := &StateInfo{DismissedComment: &zeroValue}
+	s.GetDismissedComment()
+	s = &StateInfo{}
+	s.GetDismissedComment()
+	s = nil
+	s.GetDismissedComment()
+}
+
+func TestStateInfo_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	s := &StateInfo{DismissedReason: &zeroValue}
+	s.GetDismissedReason()
+	s = &StateInfo{}
+	s.GetDismissedReason()
+	s = nil
+	s.GetDismissedReason()
+}
+
+func TestStateInfo_GetState(tt *testing.T) {
+	var zeroValue string
+	s := &StateInfo{State: &zeroValue}
+	s.GetState()
+	s = &StateInfo{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
 func TestStatusEvent_GetCommit(tt *testing.T) {
 	s := &StatusEvent{}
 	s.GetCommit()

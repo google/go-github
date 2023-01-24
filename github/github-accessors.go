@@ -18262,6 +18262,30 @@ func (s *StarredRepository) GetStarredAt() Timestamp {
 	return *s.StarredAt
 }
 
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (s *StateInfo) GetDismissedComment() string {
+	if s == nil || s.DismissedComment == nil {
+		return ""
+	}
+	return *s.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (s *StateInfo) GetDismissedReason() string {
+	if s == nil || s.DismissedReason == nil {
+		return ""
+	}
+	return *s.DismissedReason
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (s *StateInfo) GetState() string {
+	if s == nil || s.State == nil {
+		return ""
+	}
+	return *s.State
+}
+
 // GetCommit returns the Commit field.
 func (s *StatusEvent) GetCommit() *RepositoryCommit {
 	if s == nil {
