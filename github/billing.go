@@ -29,9 +29,9 @@ type MinutesUsedBreakdown = map[string]int
 
 // PackageBilling represents a GitHub Package billing.
 type PackageBilling struct {
-	TotalGigabytesBandwidthUsed     int `json:"total_gigabytes_bandwidth_used"`
-	TotalPaidGigabytesBandwidthUsed int `json:"total_paid_gigabytes_bandwidth_used"`
-	IncludedGigabytesBandwidth      int `json:"included_gigabytes_bandwidth"`
+	TotalGigabytesBandwidthUsed     int     `json:"total_gigabytes_bandwidth_used"`
+	TotalPaidGigabytesBandwidthUsed int     `json:"total_paid_gigabytes_bandwidth_used"`
+	IncludedGigabytesBandwidth      float64 `json:"included_gigabytes_bandwidth"`
 }
 
 // StorageBilling represents a GitHub Storage billing.
