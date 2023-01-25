@@ -2582,6 +2582,22 @@ func (c *CodeScanningAlertEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedComment() string {
+	if c == nil || c.DismissedComment == nil {
+		return ""
+	}
+	return *c.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedReason() string {
+	if c == nil || c.DismissedReason == nil {
+		return ""
+	}
+	return *c.DismissedReason
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (c *CodeSearchResult) GetIncompleteResults() bool {
 	if c == nil || c.IncompleteResults == nil {
@@ -18260,22 +18276,6 @@ func (s *StarredRepository) GetStarredAt() Timestamp {
 		return Timestamp{}
 	}
 	return *s.StarredAt
-}
-
-// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
-func (s *StateInfo) GetDismissedComment() string {
-	if s == nil || s.DismissedComment == nil {
-		return ""
-	}
-	return *s.DismissedComment
-}
-
-// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
-func (s *StateInfo) GetDismissedReason() string {
-	if s == nil || s.DismissedReason == nil {
-		return ""
-	}
-	return *s.DismissedReason
 }
 
 // GetCommit returns the Commit field.

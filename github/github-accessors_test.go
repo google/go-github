@@ -3048,6 +3048,26 @@ func TestCodeScanningAlertEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCodeScanningAlertState_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertState{DismissedComment: &zeroValue}
+	c.GetDismissedComment()
+	c = &CodeScanningAlertState{}
+	c.GetDismissedComment()
+	c = nil
+	c.GetDismissedComment()
+}
+
+func TestCodeScanningAlertState_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertState{DismissedReason: &zeroValue}
+	c.GetDismissedReason()
+	c = &CodeScanningAlertState{}
+	c.GetDismissedReason()
+	c = nil
+	c.GetDismissedReason()
+}
+
 func TestCodeSearchResult_GetIncompleteResults(tt *testing.T) {
 	var zeroValue bool
 	c := &CodeSearchResult{IncompleteResults: &zeroValue}
@@ -21299,26 +21319,6 @@ func TestStarredRepository_GetStarredAt(tt *testing.T) {
 	s.GetStarredAt()
 	s = nil
 	s.GetStarredAt()
-}
-
-func TestStateInfo_GetDismissedComment(tt *testing.T) {
-	var zeroValue string
-	s := &StateInfo{DismissedComment: &zeroValue}
-	s.GetDismissedComment()
-	s = &StateInfo{}
-	s.GetDismissedComment()
-	s = nil
-	s.GetDismissedComment()
-}
-
-func TestStateInfo_GetDismissedReason(tt *testing.T) {
-	var zeroValue string
-	s := &StateInfo{DismissedReason: &zeroValue}
-	s.GetDismissedReason()
-	s = &StateInfo{}
-	s.GetDismissedReason()
-	s = nil
-	s.GetDismissedReason()
 }
 
 func TestStatusEvent_GetCommit(tt *testing.T) {
