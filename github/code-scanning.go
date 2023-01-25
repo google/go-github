@@ -179,7 +179,7 @@ type SarifAnalysis struct {
 type CodeScanningAlertState struct {
 	// State sets the state of the code scanning alert and is a required field.
 	// You must also provide DismissedReason when you set the state to "dismissed".
-	// It can be one of: "open", "dismissed".
+	// State can be one of: "open", "dismissed".
 	State string `json:"state"`
 	// DismissedReason represents the reason for dismissing or closing the alert.
 	// It is required when the state is "dismissed".
