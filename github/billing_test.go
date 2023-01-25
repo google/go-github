@@ -21,9 +21,9 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-				"total_minutes_used": 305,
+				"total_minutes_used": 305.0,
 				"total_paid_minutes_used": 0.0,
-				"included_minutes": 3000,
+				"included_minutes": 3000.0,
 				"minutes_used_breakdown": {
 					"UBUNTU": 205,
 					"MACOS": 10,
@@ -39,9 +39,9 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 	}
 
 	want := &ActionBilling{
-		TotalMinutesUsed:     305,
-		TotalPaidMinutesUsed: 0,
-		IncludedMinutes:      3000,
+		TotalMinutesUsed:     305.0,
+		TotalPaidMinutesUsed: 0.0,
+		IncludedMinutes:      3000.0,
 		MinutesUsedBreakdown: MinutesUsedBreakdown{
 			"UBUNTU":  205,
 			"MACOS":   10,
