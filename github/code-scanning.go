@@ -177,8 +177,15 @@ type SarifAnalysis struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type StateInfo struct {
-	State            *string `json:"state,omitempty"`
-	DismissedReason  *string `json:"dismissed_reason,omitempty"`
+	// State sets the state of the code scanning alert and is a required field.
+	// You must provide DismissedReason when you set the state to "dismissed".
+	// It can be one of: "open", "dismissed".
+	State string `json:"state"`
+	// DismissedReason represents he reason for dismissing or closing the alert.
+	// It is required when the state is "dismissed".
+	// It can be one of: "false positive", "won't fix", "used in tests".
+	DismissedReason *string `json:"dismissed_reason,omitempty"`
+	// DismissedComment is associated with the dismissal of the alert.
 	DismissedComment *string `json:"dismissed_comment,omitempty"`
 }
 
