@@ -181,7 +181,7 @@ type CodeScanningAlertState struct {
 	// You must provide DismissedReason when you set the state to "dismissed".
 	// It can be one of: "open", "dismissed".
 	State string `json:"state"`
-	// DismissedReason represents he reason for dismissing or closing the alert.
+	// DismissedReason represents the reason for dismissing or closing the alert.
 	// It is required when the state is "dismissed".
 	// It can be one of: "false positive", "won't fix", "used in tests".
 	DismissedReason *string `json:"dismissed_reason,omitempty"`
