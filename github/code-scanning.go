@@ -173,7 +173,7 @@ type SarifAnalysis struct {
 	ToolName    *string    `json:"tool_name,omitempty"`
 }
 
-// StateInfo specifies the state of a code scanning alert.
+// CodeScanningAlertState specifies the state of a code scanning alert.
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning
 type StateInfo struct {
