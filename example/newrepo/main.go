@@ -17,7 +17,6 @@ import (
 	"os"
 
 	"github.com/google/go-github/v49/github"
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -37,9 +36,7 @@ func main() {
 		log.Fatal("No name: New repos must be given a name")
 	}
 	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client := github.NewTokenClient(ctx, token)
 
 	r := &github.Repository{Name: name, Private: private, Description: description, AutoInit: autoInit}
 	repo, _, err := client.Repositories.Create(ctx, "", r)
