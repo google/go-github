@@ -18,9 +18,9 @@ type BillingService service
 
 // ActionBilling represents a GitHub Action billing.
 type ActionBilling struct {
-	TotalMinutesUsed     int                  `json:"total_minutes_used"`
+	TotalMinutesUsed     float64              `json:"total_minutes_used"`
 	TotalPaidMinutesUsed float64              `json:"total_paid_minutes_used"`
-	IncludedMinutes      int                  `json:"included_minutes"`
+	IncludedMinutes      float64              `json:"included_minutes"`
 	MinutesUsedBreakdown MinutesUsedBreakdown `json:"minutes_used_breakdown"`
 }
 
@@ -29,16 +29,16 @@ type MinutesUsedBreakdown = map[string]int
 
 // PackageBilling represents a GitHub Package billing.
 type PackageBilling struct {
-	TotalGigabytesBandwidthUsed     int `json:"total_gigabytes_bandwidth_used"`
-	TotalPaidGigabytesBandwidthUsed int `json:"total_paid_gigabytes_bandwidth_used"`
-	IncludedGigabytesBandwidth      int `json:"included_gigabytes_bandwidth"`
+	TotalGigabytesBandwidthUsed     int     `json:"total_gigabytes_bandwidth_used"`
+	TotalPaidGigabytesBandwidthUsed int     `json:"total_paid_gigabytes_bandwidth_used"`
+	IncludedGigabytesBandwidth      float64 `json:"included_gigabytes_bandwidth"`
 }
 
 // StorageBilling represents a GitHub Storage billing.
 type StorageBilling struct {
 	DaysLeftInBillingCycle       int     `json:"days_left_in_billing_cycle"`
 	EstimatedPaidStorageForMonth float64 `json:"estimated_paid_storage_for_month"`
-	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
+	EstimatedStorageForMonth     float64 `json:"estimated_storage_for_month"`
 }
 
 // ActiveCommitters represents the total active committers across all repositories in an Organization.
