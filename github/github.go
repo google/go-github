@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -344,6 +345,11 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
 	return c
+}
+
+// NewTokenClient returns a new GitHub API client authenticated with the provided token.
+func NewTokenClient(ctx context.Context, token string) *Client {
+	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
 }
 
 // NewEnterpriseClient returns a new GitHub API client with provided
