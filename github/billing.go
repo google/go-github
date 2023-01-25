@@ -38,7 +38,7 @@ type PackageBilling struct {
 type StorageBilling struct {
 	DaysLeftInBillingCycle       int     `json:"days_left_in_billing_cycle"`
 	EstimatedPaidStorageForMonth float64 `json:"estimated_paid_storage_for_month"`
-	EstimatedStorageForMonth     int     `json:"estimated_storage_for_month"`
+	EstimatedStorageForMonth     float64 `json:"estimated_storage_for_month"`
 }
 
 // ActiveCommitters represents the total active committers across all repositories in an Organization.
