@@ -666,7 +666,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 	dismissedComment := String("This alert is not actually correct as sanitizer is used")
 	dismissedReason := String("false positive")
 	state := String("dismissed")
-	stateInfo := &StateInfo{State: state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+	stateInfo := &CodeScanningAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
 	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
 	if err != nil {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
