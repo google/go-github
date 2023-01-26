@@ -2582,6 +2582,22 @@ func (c *CodeScanningAlertEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedComment() string {
+	if c == nil || c.DismissedComment == nil {
+		return ""
+	}
+	return *c.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedReason() string {
+	if c == nil || c.DismissedReason == nil {
+		return ""
+	}
+	return *c.DismissedReason
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (c *CodeSearchResult) GetIncompleteResults() bool {
 	if c == nil || c.IncompleteResults == nil {

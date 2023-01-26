@@ -613,6 +613,123 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 	})
 }
 
+func TestCodeScanningService_UpdateAlert(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+	mux.HandleFunc("/repos/o/r/code-scanning/alerts/88", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"rule_id":"js/useless-expression",
+				"rule_severity":"warning",
+				"rule_description":"Expression has no effect",
+				"tool": {
+					"name": "CodeQL",
+					"guid": null,
+					"version": "1.4.0"
+				},
+				"rule": {
+					"id": "useless expression",
+					"severity": "warning",
+					"description": "Expression has no effect",
+					"name": "useless expression",
+					"full_description": "Expression has no effect",
+					"help": "Expression has no effect"
+				},
+				"most_recent_instance": {
+					"ref": "refs/heads/main",
+					"state": "dismissed",
+					"commit_sha": "abcdefg12345",
+					"message": {
+						"text": "This path depends on a user-provided value."
+					},
+					"location": {
+						"path": "spec-main/api-session-spec.ts",
+						"start_line": 917,
+						"end_line": 917,
+						"start_column": 7,
+						"end_column": 18
+					},
+					"classifications": [
+						"test"
+					]
+				},
+				"created_at":"2019-01-02T15:04:05Z",
+				"state":"dismissed",
+				"dismissed_reason": "false positive",
+				"dismissed_comment": "This alert is not actually correct as sanitizer is used",
+				"closed_by":null,
+				"closed_at":null,
+				"url":"https://api.github.com/repos/o/r/code-scanning/alerts/88",
+				"html_url":"https://github.com/o/r/security/code-scanning/88"}`)
+	})
+
+	ctx := context.Background()
+	dismissedComment := String("This alert is not actually correct as sanitizer is used")
+	dismissedReason := String("false positive")
+	state := String("dismissed")
+	stateInfo := &CodeScanningAlertState{State: *state, DismissedReason: dismissedReason, DismissedComment: dismissedComment}
+	alert, _, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
+	if err != nil {
+		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
+	}
+
+	date := Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}
+	want := &Alert{
+		RuleID:          String("js/useless-expression"),
+		RuleSeverity:    String("warning"),
+		RuleDescription: String("Expression has no effect"),
+		Tool:            &Tool{Name: String("CodeQL"), GUID: nil, Version: String("1.4.0")},
+		Rule: &Rule{
+			ID:              String("useless expression"),
+			Severity:        String("warning"),
+			Description:     String("Expression has no effect"),
+			Name:            String("useless expression"),
+			FullDescription: String("Expression has no effect"),
+			Help:            String("Expression has no effect"),
+		},
+		CreatedAt:        &date,
+		State:            state,
+		DismissedReason:  dismissedReason,
+		DismissedComment: dismissedComment,
+		ClosedBy:         nil,
+		ClosedAt:         nil,
+		URL:              String("https://api.github.com/repos/o/r/code-scanning/alerts/88"),
+		HTMLURL:          String("https://github.com/o/r/security/code-scanning/88"),
+		MostRecentInstance: &MostRecentInstance{
+			Ref:       String("refs/heads/main"),
+			State:     String("dismissed"),
+			CommitSHA: String("abcdefg12345"),
+			Message: &Message{
+				Text: String("This path depends on a user-provided value."),
+			},
+			Location: &Location{
+				Path:        String("spec-main/api-session-spec.ts"),
+				StartLine:   Int(917),
+				EndLine:     Int(917),
+				StartColumn: Int(7),
+				EndColumn:   Int(18),
+			},
+			Classifications: []string{"test"},
+		},
+	}
+	if !cmp.Equal(alert, want) {
+		t.Errorf("CodeScanning.UpdateAlert returned %+v, want %+v", alert, want)
+	}
+
+	const methodName = "UpdateAlert"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.CodeScanning.UpdateAlert(ctx, "\n", "\n", -88, stateInfo)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.CodeScanning.UpdateAlert(ctx, "o", "r", 88, stateInfo)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestCodeScanningService_GetAlert(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
