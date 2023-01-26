@@ -173,6 +173,22 @@ type SarifAnalysis struct {
 	ToolName    *string    `json:"tool_name,omitempty"`
 }
 
+// CodeScanningAlertState specifies the state of a code scanning alert.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning
+type CodeScanningAlertState struct {
+	// State sets the state of the code scanning alert and is a required field.
+	// You must also provide DismissedReason when you set the state to "dismissed".
+	// State can be one of: "open", "dismissed".
+	State string `json:"state"`
+	// DismissedReason represents the reason for dismissing or closing the alert.
+	// It is required when the state is "dismissed".
+	// It can be one of: "false positive", "won't fix", "used in tests".
+	DismissedReason *string `json:"dismissed_reason,omitempty"`
+	// DismissedComment is associated with the dismissal of the alert.
+	DismissedComment *string `json:"dismissed_comment,omitempty"`
+}
+
 // SarifID identifies a sarif analysis upload.
 //
 // GitHub API docs: https://docs.github.com/en/rest/code-scanning
@@ -248,6 +264,31 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	a := new(Alert)
+	resp, err := s.client.Do(ctx, req, a)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return a, resp, nil
+}
+
+// UpdateAlert updates the state of a single code scanning alert for a repository.
+//
+// You must use an access token with the security_events scope to use this endpoint.
+// GitHub Apps must have the security_events read permission to use this endpoint.
+//
+// The security alert_id is the number at the end of the security alert's URL.
+//
+// GitHub API docs: https://docs.github.com/en/rest/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
+
+	req, err := s.client.NewRequest("PATCH", u, stateInfo)
 	if err != nil {
 		return nil, nil, err
 	}
