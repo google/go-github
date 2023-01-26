@@ -31,7 +31,6 @@ import (
 	"time"
 
 	"github.com/google/go-github/v49/github"
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -188,9 +187,7 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	client = github.NewClient(tc)
+	client = github.NewTokenClient(ctx, token)
 
 	ref, err := getRef()
 	if err != nil {

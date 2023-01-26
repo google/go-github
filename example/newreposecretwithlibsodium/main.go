@@ -37,7 +37,6 @@ import (
 
 	sodium "github.com/GoKillers/libsodium-go/cryptobox"
 	"github.com/google/go-github/v49/github"
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -71,7 +70,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ctx, client, err := githubAuth(token)
+	ctx := context.Background()
+	client := github.NewTokenClient(ctx, token)
 	if err != nil {
 		log.Fatalf("unable to authorize using env GITHUB_AUTH_TOKEN: %v", err)
 	}
@@ -97,18 +97,6 @@ func getSecretValue(secretName string) (string, error) {
 		return "", fmt.Errorf("secret value not found under env variable %q", secretName)
 	}
 	return secretValue, nil
-}
-
-// githubAuth returns a GitHub client and context.
-func githubAuth(token string) (context.Context, *github.Client, error) {
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-
-	client := github.NewClient(tc)
-	return ctx, client, nil
 }
 
 // addRepoSecret will add a secret to a GitHub repo for use in GitHub Actions.

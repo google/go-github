@@ -26,7 +26,6 @@ import (
 	"strings"
 
 	"github.com/google/go-github/v49/github"
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -47,10 +46,7 @@ func main() {
 		print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		client = github.NewClient(nil)
 	} else {
-		tc := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		))
-		client = github.NewClient(tc)
+		client = github.NewTokenClient(context.Background(), token)
 		auth = true
 	}
 

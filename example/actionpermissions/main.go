@@ -15,7 +15,6 @@ import (
 	"os"
 
 	"github.com/google/go-github/v49/github"
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -36,9 +35,7 @@ func main() {
 		log.Fatal("No owner: owner of repo must be given")
 	}
 	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client := github.NewTokenClient(ctx, token)
 
 	actionsPermissionsRepository, _, err := client.Repositories.GetActionsPermissions(ctx, *owner, *name)
 	if err != nil {
