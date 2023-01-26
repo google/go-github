@@ -7,7 +7,6 @@ package github
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // Event represents a GitHub event.
@@ -18,7 +17,7 @@ type Event struct {
 	Repo       *Repository      `json:"repo,omitempty"`
 	Actor      *User            `json:"actor,omitempty"`
 	Org        *Organization    `json:"org,omitempty"`
-	CreatedAt  *time.Time       `json:"created_at,omitempty"`
+	CreatedAt  *Timestamp       `json:"created_at,omitempty"`
 	ID         *string          `json:"id,omitempty"`
 }
 

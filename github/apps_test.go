@@ -997,7 +997,7 @@ func TestInstallationToken_Marshal(t *testing.T) {
 
 	u := &InstallationToken{
 		Token:     String("t"),
-		ExpiresAt: &referenceTime,
+		ExpiresAt: &Timestamp{referenceTime},
 		Permissions: &InstallationPermissions{
 			Actions:                       String("a"),
 			Administration:                String("ad"),

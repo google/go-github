@@ -25,13 +25,13 @@ func TestIssueImportService_Create(t *testing.T) {
 		IssueImport: IssueImport{
 			Assignee:  String("developer"),
 			Body:      "Dummy description",
-			CreatedAt: &createdAt,
+			CreatedAt: &Timestamp{createdAt},
 			Labels:    []string{"l1", "l2"},
 			Milestone: Int(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
-			CreatedAt: &createdAt,
+			CreatedAt: &Timestamp{createdAt},
 			Body:      "Comment body",
 		}},
 	}
@@ -142,7 +142,7 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now())
+	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()})
 	if err != nil {
 		t.Errorf("CheckStatusSince returned error: %v", err)
 	}
@@ -154,12 +154,12 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 
 	const methodName = "CheckStatusSince"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.IssueImport.CheckStatusSince(ctx, "\n", "\n", time.Now())
+		_, _, err = client.IssueImport.CheckStatusSince(ctx, "\n", "\n", Timestamp{time.Now()})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now())
+		got, resp, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -179,7 +179,7 @@ func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", time.Now()); err == nil {
+	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()}); err == nil {
 		t.Errorf("CheckStatusSince returned no error, want JSON err")
 	}
 }
@@ -189,7 +189,7 @@ func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
 	defer teardown()
 
 	ctx := context.Background()
-	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", time.Now())
+	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", Timestamp{time.Now()})
 	testURLParseError(t, err)
 }
 
@@ -240,8 +240,8 @@ func TestIssueImportResponse_Marshal(t *testing.T) {
 		URL:              String("url"),
 		ImportIssuesURL:  String("iiu"),
 		RepositoryURL:    String("ru"),
-		CreatedAt:        &referenceTime,
-		UpdatedAt:        &referenceTime,
+		CreatedAt:        &Timestamp{referenceTime},
+		UpdatedAt:        &Timestamp{referenceTime},
 		Message:          String("msg"),
 		DocumentationURL: String("durl"),
 		Errors: []*IssueImportError{
@@ -283,7 +283,7 @@ func TestComment_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Comment{}, "{}")
 
 	u := &Comment{
-		CreatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
 		Body:      "body",
 	}
 
@@ -301,9 +301,9 @@ func TestIssueImport_Marshal(t *testing.T) {
 	u := &IssueImport{
 		Title:     "title",
 		Body:      "body",
-		CreatedAt: &referenceTime,
-		ClosedAt:  &referenceTime,
-		UpdatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
+		ClosedAt:  &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
 		Assignee:  String("a"),
 		Milestone: Int(1),
 		Closed:    Bool(false),
@@ -334,9 +334,9 @@ func TestIssueImportRequest_Marshal(t *testing.T) {
 		IssueImport: IssueImport{
 			Title:     "title",
 			Body:      "body",
-			CreatedAt: &referenceTime,
-			ClosedAt:  &referenceTime,
-			UpdatedAt: &referenceTime,
+			CreatedAt: &Timestamp{referenceTime},
+			ClosedAt:  &Timestamp{referenceTime},
+			UpdatedAt: &Timestamp{referenceTime},
 			Assignee:  String("a"),
 			Milestone: Int(1),
 			Closed:    Bool(false),
@@ -344,7 +344,7 @@ func TestIssueImportRequest_Marshal(t *testing.T) {
 		},
 		Comments: []*Comment{
 			{
-				CreatedAt: &referenceTime,
+				CreatedAt: &Timestamp{referenceTime},
 				Body:      "body",
 			},
 		},

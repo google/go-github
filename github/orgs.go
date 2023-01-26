@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // OrganizationsService provides access to the organization related functions
@@ -35,8 +34,8 @@ type Organization struct {
 	PublicGists                 *int       `json:"public_gists,omitempty"`
 	Followers                   *int       `json:"followers,omitempty"`
 	Following                   *int       `json:"following,omitempty"`
-	CreatedAt                   *time.Time `json:"created_at,omitempty"`
-	UpdatedAt                   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt                   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt                   *Timestamp `json:"updated_at,omitempty"`
 	TotalPrivateRepos           *int       `json:"total_private_repos,omitempty"`
 	OwnedPrivateRepos           *int       `json:"owned_private_repos,omitempty"`
 	PrivateGists                *int       `json:"private_gists,omitempty"`

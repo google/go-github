@@ -193,7 +193,7 @@ func TestIssueEvent_Marshal(t *testing.T) {
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
 		Event:     String("event"),
-		CreatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
 		Issue:     &Issue{ID: Int64(1)},
 		Assignee: &User{
 			Login:           String("l"),

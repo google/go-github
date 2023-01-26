@@ -9,7 +9,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 )
 
 var ErrMixedCommentStyles = errors.New("cannot use both position and side/line form comments")
@@ -20,7 +19,7 @@ type PullRequestReview struct {
 	NodeID         *string    `json:"node_id,omitempty"`
 	User           *User      `json:"user,omitempty"`
 	Body           *string    `json:"body,omitempty"`
-	SubmittedAt    *time.Time `json:"submitted_at,omitempty"`
+	SubmittedAt    *Timestamp `json:"submitted_at,omitempty"`
 	CommitID       *string    `json:"commit_id,omitempty"`
 	HTMLURL        *string    `json:"html_url,omitempty"`
 	PullRequestURL *string    `json:"pull_request_url,omitempty"`

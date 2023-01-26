@@ -107,7 +107,7 @@ func TestTag_Marshal(t *testing.T) {
 		URL:     String("url"),
 		Message: String("msg"),
 		Tagger: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),
@@ -163,7 +163,7 @@ func TestCreateTagRequest_Marshal(t *testing.T) {
 		Object:  String("obj"),
 		Type:    String("type"),
 		Tagger: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),

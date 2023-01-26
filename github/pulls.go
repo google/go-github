@@ -9,7 +9,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"time"
 )
 
 // PullRequestsService handles communication with the pull request related
@@ -34,10 +33,10 @@ type PullRequest struct {
 	Locked              *bool                 `json:"locked,omitempty"`
 	Title               *string               `json:"title,omitempty"`
 	Body                *string               `json:"body,omitempty"`
-	CreatedAt           *time.Time            `json:"created_at,omitempty"`
-	UpdatedAt           *time.Time            `json:"updated_at,omitempty"`
-	ClosedAt            *time.Time            `json:"closed_at,omitempty"`
-	MergedAt            *time.Time            `json:"merged_at,omitempty"`
+	CreatedAt           *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp            `json:"updated_at,omitempty"`
+	ClosedAt            *Timestamp            `json:"closed_at,omitempty"`
+	MergedAt            *Timestamp            `json:"merged_at,omitempty"`
 	Labels              []*Label              `json:"labels,omitempty"`
 	User                *User                 `json:"user,omitempty"`
 	Draft               *bool                 `json:"draft,omitempty"`
