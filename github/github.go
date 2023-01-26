@@ -847,7 +847,7 @@ An ErrorResponse reports one or more errors caused by an API request.
 GitHub API docs: https://docs.github.com/en/rest/#client-errors
 */
 type ErrorResponse struct {
-	Response *http.Response // HTTP response that caused this error
+	Response *http.Response `json:"-"`       // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
 	Errors   []Error        `json:"errors"`  // more detail on individual errors
 	// Block is only populated on certain types of errors such as code 451.
