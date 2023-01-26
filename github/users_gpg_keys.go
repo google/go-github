@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // GPGKey represents a GitHub user's public GPG key used to verify GPG signed commits and tags.
@@ -26,8 +25,8 @@ type GPGKey struct {
 	CanEncryptComms   *bool       `json:"can_encrypt_comms,omitempty"`
 	CanEncryptStorage *bool       `json:"can_encrypt_storage,omitempty"`
 	CanCertify        *bool       `json:"can_certify,omitempty"`
-	CreatedAt         *time.Time  `json:"created_at,omitempty"`
-	ExpiresAt         *time.Time  `json:"expires_at,omitempty"`
+	CreatedAt         *Timestamp  `json:"created_at,omitempty"`
+	ExpiresAt         *Timestamp  `json:"expires_at,omitempty"`
 }
 
 // String stringifies a GPGKey.

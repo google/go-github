@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // Metric represents the different fields for one file in community health files.
@@ -38,7 +37,7 @@ type CommunityHealthMetrics struct {
 	Description           *string               `json:"description"`
 	Documentation         *string               `json:"documentation"`
 	Files                 *CommunityHealthFiles `json:"files"`
-	UpdatedAt             *time.Time            `json:"updated_at"`
+	UpdatedAt             *Timestamp            `json:"updated_at"`
 	ContentReportsEnabled *bool                 `json:"content_reports_enabled"`
 }
 
