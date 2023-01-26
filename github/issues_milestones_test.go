@@ -284,10 +284,10 @@ func TestMilestone_Marshal(t *testing.T) {
 		},
 		OpenIssues:   Int(1),
 		ClosedIssues: Int(1),
-		CreatedAt:    &referenceTime,
-		UpdatedAt:    &referenceTime,
-		ClosedAt:     &referenceTime,
-		DueOn:        &referenceTime,
+		CreatedAt:    &Timestamp{referenceTime},
+		UpdatedAt:    &Timestamp{referenceTime},
+		ClosedAt:     &Timestamp{referenceTime},
+		DueOn:        &Timestamp{referenceTime},
 		NodeID:       String("nid"),
 	}
 

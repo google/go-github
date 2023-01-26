@@ -18,8 +18,8 @@ type IssueComment struct {
 	Body      *string    `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	Reactions *Reactions `json:"reactions,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 	// AuthorAssociation is the comment author's relationship to the issue's repository.
 	// Possible values are "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIMER", "FIRST_TIME_CONTRIBUTOR", "MEMBER", "OWNER", or "NONE".
 	AuthorAssociation *string `json:"author_association,omitempty"`

@@ -126,7 +126,7 @@ func TestTimeline_Marshal(t *testing.T) {
 		},
 		Event:     String("event"),
 		CommitID:  String("cid"),
-		CreatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
 		Label:     &Label{ID: Int64(1)},
 		Assignee: &User{
 			Login:           String("l"),

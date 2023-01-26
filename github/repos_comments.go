@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // RepositoryComment represents a comment for a commit, file, or line in a repository.
@@ -20,8 +19,8 @@ type RepositoryComment struct {
 	CommitID  *string    `json:"commit_id,omitempty"`
 	User      *User      `json:"user,omitempty"`
 	Reactions *Reactions `json:"reactions,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 
 	// User-mutable fields
 	Body *string `json:"body"`

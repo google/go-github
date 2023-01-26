@@ -672,13 +672,13 @@ func TestBranchCommit_Marshal(t *testing.T) {
 		Commit: &Commit{
 			SHA: String("s"),
 			Author: &CommitAuthor{
-				Date:  &referenceTime,
+				Date:  &Timestamp{referenceTime},
 				Name:  String("n"),
 				Email: String("e"),
 				Login: String("u"),
 			},
 			Committer: &CommitAuthor{
-				Date:  &referenceTime,
+				Date:  &Timestamp{referenceTime},
 				Name:  String("n"),
 				Email: String("e"),
 				Login: String("u"),

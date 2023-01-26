@@ -21,7 +21,9 @@ linters:
     - staticcheck
     - ineffassign
     - unused
-issues: 
+issues:
+  exclude:
+    - composites
   exclude-rules:
   - linters:
     - dogsled

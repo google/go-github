@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // GistComment represents a Gist comment.
@@ -17,7 +16,7 @@ type GistComment struct {
 	URL       *string    `json:"url,omitempty"`
 	Body      *string    `json:"body,omitempty"`
 	User      *User      `json:"user,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 func (g GistComment) String() string {

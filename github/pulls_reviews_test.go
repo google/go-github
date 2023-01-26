@@ -739,7 +739,7 @@ func TestPullRequestReview_Marshal(t *testing.T) {
 			SuspendedAt:     &Timestamp{referenceTime},
 		},
 		Body:              String("body"),
-		SubmittedAt:       &referenceTime,
+		SubmittedAt:       &Timestamp{referenceTime},
 		CommitID:          String("cid"),
 		HTMLURL:           String("hurl"),
 		PullRequestURL:    String("prurl"),

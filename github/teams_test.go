@@ -1709,7 +1709,7 @@ func TestInvitation_Marshal(t *testing.T) {
 		Login:             String("login123"),
 		Email:             String("go@github.com"),
 		Role:              String("developer"),
-		CreatedAt:         &referenceTime,
+		CreatedAt:         &Timestamp{referenceTime},
 		TeamCount:         Int(99),
 		InvitationTeamURL: String("url"),
 	}

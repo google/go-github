@@ -28,8 +28,8 @@ type Gist struct {
 	HTMLURL     *string                   `json:"html_url,omitempty"`
 	GitPullURL  *string                   `json:"git_pull_url,omitempty"`
 	GitPushURL  *string                   `json:"git_push_url,omitempty"`
-	CreatedAt   *time.Time                `json:"created_at,omitempty"`
-	UpdatedAt   *time.Time                `json:"updated_at,omitempty"`
+	CreatedAt   *Timestamp                `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp                `json:"updated_at,omitempty"`
 	NodeID      *string                   `json:"node_id,omitempty"`
 }
 

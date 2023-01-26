@@ -78,7 +78,7 @@ func TestEvent_Marshal(t *testing.T) {
 			MembersCanCreatePublicPages:          Bool(false),
 			MembersCanCreatePrivatePages:         Bool(true),
 		},
-		CreatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
 		ID:        String("id"),
 	}
 

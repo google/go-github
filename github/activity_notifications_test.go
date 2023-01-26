@@ -107,14 +107,14 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Activity.MarkNotificationsRead(ctx, time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+	_, err := client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkNotificationsRead"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkNotificationsRead(ctx, time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+		return client.Activity.MarkNotificationsRead(ctx, Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
 	})
 }
 
@@ -131,19 +131,19 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkRepositoryNotificationsRead"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC))
+		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", Timestamp{time.Date(2006, time.January, 02, 15, 04, 05, 0, time.UTC)})
 	})
 }
 
@@ -331,8 +331,8 @@ func TestNotification_Marshal(t *testing.T) {
 		},
 		Reason:     String("r"),
 		Unread:     Bool(true),
-		UpdatedAt:  &referenceTime,
-		LastReadAt: &referenceTime,
+		UpdatedAt:  &Timestamp{referenceTime},
+		LastReadAt: &Timestamp{referenceTime},
 		URL:        String("u"),
 	}
 
@@ -383,7 +383,7 @@ func TestMarkReadOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &markReadOptions{}, "{}")
 
 	u := &markReadOptions{
-		LastReadAt: referenceTime,
+		LastReadAt: Timestamp{referenceTime},
 	}
 
 	want := `{

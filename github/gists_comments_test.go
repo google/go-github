@@ -42,7 +42,7 @@ func TestGistComments_Marshal(t *testing.T) {
 			CreatedAt:   &Timestamp{referenceTime},
 			URL:         String("u"),
 		},
-		CreatedAt: &createdAt,
+		CreatedAt: &Timestamp{createdAt},
 	}
 
 	want := `{

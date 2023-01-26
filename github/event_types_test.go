@@ -4855,8 +4855,8 @@ func TestCommitCommentEvent_Marshal(t *testing.T) {
 				Eyes:       Int(1),
 				URL:        String("url"),
 			},
-			CreatedAt: &referenceTime,
-			UpdatedAt: &referenceTime,
+			CreatedAt: &Timestamp{referenceTime},
+			UpdatedAt: &Timestamp{referenceTime},
 			Body:      String("b"),
 			Path:      String("path"),
 			Position:  Int(1),
@@ -6224,8 +6224,8 @@ func TestPingEvent_Marshal(t *testing.T) {
 		Zen:    String("z"),
 		HookID: Int64(1),
 		Hook: &Hook{
-			CreatedAt:    &referenceTime,
-			UpdatedAt:    &referenceTime,
+			CreatedAt:    &Timestamp{referenceTime},
+			UpdatedAt:    &Timestamp{referenceTime},
 			URL:          String("url"),
 			ID:           Int64(1),
 			Type:         String("t"),
@@ -10698,8 +10698,8 @@ func TestMetaEvent_Marshal(t *testing.T) {
 		Action: String("a"),
 		HookID: Int64(1),
 		Hook: &Hook{
-			CreatedAt:    &referenceTime,
-			UpdatedAt:    &referenceTime,
+			CreatedAt:    &Timestamp{referenceTime},
+			UpdatedAt:    &Timestamp{referenceTime},
 			URL:          String("u"),
 			ID:           Int64(1),
 			Type:         String("t"),
@@ -11745,7 +11745,7 @@ func TestHeadCommit_Marshal(t *testing.T) {
 	u := &HeadCommit{
 		Message: String("m"),
 		Author: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("n"),
 			Email: String("e"),
 			Login: String("u"),
@@ -11757,7 +11757,7 @@ func TestHeadCommit_Marshal(t *testing.T) {
 		TreeID:    String("tid"),
 		Timestamp: &Timestamp{referenceTime},
 		Committer: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("n"),
 			Email: String("e"),
 			Login: String("u"),
