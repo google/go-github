@@ -66,7 +66,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Hook{CreatedAt: &referenceTime}
+	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
 
 	mux.HandleFunc("/orgs/o/hooks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createHookRequest)

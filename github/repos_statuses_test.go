@@ -163,8 +163,8 @@ func TestRepoStatus_Marshal(t *testing.T) {
 		Context:     String("ctx"),
 		AvatarURL:   String("aurl"),
 		Creator:     &User{ID: Int64(1)},
-		CreatedAt:   &referenceTime,
-		UpdatedAt:   &referenceTime,
+		CreatedAt:   &Timestamp{referenceTime},
+		UpdatedAt:   &Timestamp{referenceTime},
 	}
 
 	want := `{
@@ -205,8 +205,8 @@ func TestCombinedStatus_Marshal(t *testing.T) {
 				Context:     String("ctx"),
 				AvatarURL:   String("aurl"),
 				Creator:     &User{ID: Int64(1)},
-				CreatedAt:   &referenceTime,
-				UpdatedAt:   &referenceTime,
+				CreatedAt:   &Timestamp{referenceTime},
+				UpdatedAt:   &Timestamp{referenceTime},
 			},
 		},
 		CommitURL:     String("curl"),

@@ -20,8 +20,8 @@ import (
 func TestPullComments_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PullRequestComment{}, "{}")
 
-	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
-	updatedAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
+	createdAt := Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}
+	updatedAt := Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}
 	reactions := &Reactions{
 		TotalCount: Int(1),
 		PlusOne:    Int(1),

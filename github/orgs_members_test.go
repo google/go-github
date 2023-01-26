@@ -590,7 +590,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 			Login:     String("monalisa"),
 			Email:     String("octocat@github.com"),
 			Role:      String("direct_member"),
-			CreatedAt: &createdAt,
+			CreatedAt: &Timestamp{createdAt},
 			Inviter: &User{
 				Login:             String("other_user"),
 				ID:                Int64(1),
@@ -805,7 +805,7 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 			Role:         String("direct_member"),
 			FailedAt:     &Timestamp{time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)},
 			FailedReason: String("the reason"),
-			CreatedAt:    &createdAt,
+			CreatedAt:    &Timestamp{createdAt},
 			Inviter: &User{
 				Login:             String("other_user"),
 				ID:                Int64(1),

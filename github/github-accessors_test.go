@@ -3200,7 +3200,7 @@ func TestCombinedStatus_GetTotalCount(tt *testing.T) {
 }
 
 func TestComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &Comment{CreatedAt: &zeroValue}
 	c.GetCreatedAt()
 	c = &Comment{}
@@ -3345,7 +3345,7 @@ func TestCommit_GetVerification(tt *testing.T) {
 }
 
 func TestCommitAuthor_GetDate(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &CommitAuthor{Date: &zeroValue}
 	c.GetDate()
 	c = &CommitAuthor{}
@@ -3858,7 +3858,7 @@ func TestCommunityHealthMetrics_GetHealthPercentage(tt *testing.T) {
 }
 
 func TestCommunityHealthMetrics_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &CommunityHealthMetrics{UpdatedAt: &zeroValue}
 	c.GetUpdatedAt()
 	c = &CommunityHealthMetrics{}
@@ -6363,7 +6363,7 @@ func TestEvent_GetActor(tt *testing.T) {
 }
 
 func TestEvent_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	e := &Event{CreatedAt: &zeroValue}
 	e.GetCreatedAt()
 	e = &Event{}
@@ -6744,7 +6744,7 @@ func TestGist_GetComments(tt *testing.T) {
 }
 
 func TestGist_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &Gist{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &Gist{}
@@ -6841,7 +6841,7 @@ func TestGist_GetPublic(tt *testing.T) {
 }
 
 func TestGist_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &Gist{UpdatedAt: &zeroValue}
 	g.GetUpdatedAt()
 	g = &Gist{}
@@ -6861,7 +6861,7 @@ func TestGistComment_GetBody(tt *testing.T) {
 }
 
 func TestGistComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GistComment{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &GistComment{}
@@ -7254,7 +7254,7 @@ func TestGPGKey_GetCanSign(tt *testing.T) {
 }
 
 func TestGPGKey_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GPGKey{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &GPGKey{}
@@ -7264,7 +7264,7 @@ func TestGPGKey_GetCreatedAt(tt *testing.T) {
 }
 
 func TestGPGKey_GetExpiresAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GPGKey{ExpiresAt: &zeroValue}
 	g.GetExpiresAt()
 	g = &GPGKey{}
@@ -7465,7 +7465,7 @@ func TestHook_GetActive(tt *testing.T) {
 }
 
 func TestHook_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	h := &Hook{CreatedAt: &zeroValue}
 	h.GetCreatedAt()
 	h = &Hook{}
@@ -7525,7 +7525,7 @@ func TestHook_GetType(tt *testing.T) {
 }
 
 func TestHook_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	h := &Hook{UpdatedAt: &zeroValue}
 	h.GetUpdatedAt()
 	h = &Hook{}
@@ -8625,7 +8625,7 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 }
 
 func TestInstallationToken_GetExpiresAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &InstallationToken{ExpiresAt: &zeroValue}
 	i.GetExpiresAt()
 	i = &InstallationToken{}
@@ -8689,7 +8689,7 @@ func TestInteractionRestriction_GetOrigin(tt *testing.T) {
 }
 
 func TestInvitation_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Invitation{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &Invitation{}
@@ -8833,7 +8833,7 @@ func TestIssue_GetBody(tt *testing.T) {
 }
 
 func TestIssue_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{ClosedAt: &zeroValue}
 	i.GetClosedAt()
 	i = &Issue{}
@@ -8870,7 +8870,7 @@ func TestIssue_GetCommentsURL(tt *testing.T) {
 }
 
 func TestIssue_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &Issue{}
@@ -9018,7 +9018,7 @@ func TestIssue_GetTitle(tt *testing.T) {
 }
 
 func TestIssue_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &Issue{}
@@ -9065,7 +9065,7 @@ func TestIssueComment_GetBody(tt *testing.T) {
 }
 
 func TestIssueComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueComment{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueComment{}
@@ -9122,7 +9122,7 @@ func TestIssueComment_GetReactions(tt *testing.T) {
 }
 
 func TestIssueComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueComment{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueComment{}
@@ -9239,7 +9239,7 @@ func TestIssueEvent_GetCommitID(tt *testing.T) {
 }
 
 func TestIssueEvent_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueEvent{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueEvent{}
@@ -9365,7 +9365,7 @@ func TestIssueImport_GetClosed(tt *testing.T) {
 }
 
 func TestIssueImport_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{ClosedAt: &zeroValue}
 	i.GetClosedAt()
 	i = &IssueImport{}
@@ -9375,7 +9375,7 @@ func TestIssueImport_GetClosedAt(tt *testing.T) {
 }
 
 func TestIssueImport_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueImport{}
@@ -9395,7 +9395,7 @@ func TestIssueImport_GetMilestone(tt *testing.T) {
 }
 
 func TestIssueImport_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueImport{}
@@ -9455,7 +9455,7 @@ func TestIssueImportError_GetValue(tt *testing.T) {
 }
 
 func TestIssueImportResponse_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImportResponse{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueImportResponse{}
@@ -9525,7 +9525,7 @@ func TestIssueImportResponse_GetStatus(tt *testing.T) {
 }
 
 func TestIssueImportResponse_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImportResponse{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueImportResponse{}
@@ -11293,7 +11293,7 @@ func TestMigration_GetURL(tt *testing.T) {
 }
 
 func TestMilestone_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{ClosedAt: &zeroValue}
 	m.GetClosedAt()
 	m = &Milestone{}
@@ -11313,7 +11313,7 @@ func TestMilestone_GetClosedIssues(tt *testing.T) {
 }
 
 func TestMilestone_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{CreatedAt: &zeroValue}
 	m.GetCreatedAt()
 	m = &Milestone{}
@@ -11340,7 +11340,7 @@ func TestMilestone_GetDescription(tt *testing.T) {
 }
 
 func TestMilestone_GetDueOn(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{DueOn: &zeroValue}
 	m.GetDueOn()
 	m = &Milestone{}
@@ -11430,7 +11430,7 @@ func TestMilestone_GetTitle(tt *testing.T) {
 }
 
 func TestMilestone_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{UpdatedAt: &zeroValue}
 	m.GetUpdatedAt()
 	m = &Milestone{}
@@ -11726,7 +11726,7 @@ func TestNotification_GetID(tt *testing.T) {
 }
 
 func TestNotification_GetLastReadAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	n := &Notification{LastReadAt: &zeroValue}
 	n.GetLastReadAt()
 	n = &Notification{}
@@ -11770,7 +11770,7 @@ func TestNotification_GetUnread(tt *testing.T) {
 }
 
 func TestNotification_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	n := &Notification{UpdatedAt: &zeroValue}
 	n.GetUpdatedAt()
 	n = &Notification{}
@@ -11930,7 +11930,7 @@ func TestOrganization_GetCompany(tt *testing.T) {
 }
 
 func TestOrganization_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	o := &Organization{CreatedAt: &zeroValue}
 	o.GetCreatedAt()
 	o = &Organization{}
@@ -12387,7 +12387,7 @@ func TestOrganization_GetType(tt *testing.T) {
 }
 
 func TestOrganization_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	o := &Organization{UpdatedAt: &zeroValue}
 	o.GetUpdatedAt()
 	o = &Organization{}
@@ -14932,7 +14932,7 @@ func TestPullRequest_GetChangedFiles(tt *testing.T) {
 }
 
 func TestPullRequest_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{ClosedAt: &zeroValue}
 	p.GetClosedAt()
 	p = &PullRequest{}
@@ -14982,7 +14982,7 @@ func TestPullRequest_GetCommitsURL(tt *testing.T) {
 }
 
 func TestPullRequest_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{CreatedAt: &zeroValue}
 	p.GetCreatedAt()
 	p = &PullRequest{}
@@ -15126,7 +15126,7 @@ func TestPullRequest_GetMerged(tt *testing.T) {
 }
 
 func TestPullRequest_GetMergedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{MergedAt: &zeroValue}
 	p.GetMergedAt()
 	p = &PullRequest{}
@@ -15250,7 +15250,7 @@ func TestPullRequest_GetTitle(tt *testing.T) {
 }
 
 func TestPullRequest_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{UpdatedAt: &zeroValue}
 	p.GetUpdatedAt()
 	p = &PullRequest{}
@@ -15418,7 +15418,7 @@ func TestPullRequestComment_GetCommitID(tt *testing.T) {
 }
 
 func TestPullRequestComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestComment{CreatedAt: &zeroValue}
 	p.GetCreatedAt()
 	p = &PullRequestComment{}
@@ -15605,7 +15605,7 @@ func TestPullRequestComment_GetStartSide(tt *testing.T) {
 }
 
 func TestPullRequestComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestComment{UpdatedAt: &zeroValue}
 	p.GetUpdatedAt()
 	p = &PullRequestComment{}
@@ -15892,7 +15892,7 @@ func TestPullRequestReview_GetState(tt *testing.T) {
 }
 
 func TestPullRequestReview_GetSubmittedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestReview{SubmittedAt: &zeroValue}
 	p.GetSubmittedAt()
 	p = &PullRequestReview{}
@@ -18540,7 +18540,7 @@ func TestRepositoryComment_GetCommitID(tt *testing.T) {
 }
 
 func TestRepositoryComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepositoryComment{CreatedAt: &zeroValue}
 	r.GetCreatedAt()
 	r = &RepositoryComment{}
@@ -18607,7 +18607,7 @@ func TestRepositoryComment_GetReactions(tt *testing.T) {
 }
 
 func TestRepositoryComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepositoryComment{UpdatedAt: &zeroValue}
 	r.GetUpdatedAt()
 	r = &RepositoryComment{}
@@ -19701,7 +19701,7 @@ func TestRepoStatus_GetContext(tt *testing.T) {
 }
 
 func TestRepoStatus_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepoStatus{CreatedAt: &zeroValue}
 	r.GetCreatedAt()
 	r = &RepoStatus{}
@@ -19768,7 +19768,7 @@ func TestRepoStatus_GetTargetURL(tt *testing.T) {
 }
 
 func TestRepoStatus_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepoStatus{UpdatedAt: &zeroValue}
 	r.GetUpdatedAt()
 	r = &RepoStatus{}
@@ -22433,7 +22433,7 @@ func TestTimeline_GetCommitURL(tt *testing.T) {
 }
 
 func TestTimeline_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	t := &Timeline{CreatedAt: &zeroValue}
 	t.GetCreatedAt()
 	t = &Timeline{}
@@ -22542,7 +22542,7 @@ func TestTimeline_GetState(tt *testing.T) {
 }
 
 func TestTimeline_GetSubmittedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	t := &Timeline{SubmittedAt: &zeroValue}
 	t.GetSubmittedAt()
 	t = &Timeline{}

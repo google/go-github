@@ -57,8 +57,8 @@ func TestGist_Marshal(t *testing.T) {
 		HTMLURL:    String("html-url"),
 		GitPullURL: String("gitpull-url"),
 		GitPushURL: String("gitpush-url"),
-		CreatedAt:  &createdAt,
-		UpdatedAt:  &updatedAt,
+		CreatedAt:  &Timestamp{createdAt},
+		UpdatedAt:  &Timestamp{updatedAt},
 		NodeID:     String("node"),
 	}
 
