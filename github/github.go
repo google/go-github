@@ -1242,7 +1242,7 @@ const (
 )
 
 // category returns the rate limit category of the endpoint, determined by HTTP method and Request.URL.Path.
-func category(method string, path string) rateLimitCategory {
+func category(method, path string) rateLimitCategory {
 	switch {
 	// https://docs.github.com/en/rest/rate-limit#about-rate-limits
 	default:
