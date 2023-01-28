@@ -13,10 +13,14 @@ import (
 	"fmt"
 
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v50/github"
 )
 
 func main() {
+	var username string
+	fmt.Print("Enter GitHub username: ")
+	fmt.Scanf("%s", &username)
+
 	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(nil)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
@@ -26,7 +30,6 @@ func main() {
 	client := github.NewClient(rateLimiter)
 
 	// arbitrary usage of the client
-	username := "some-username"
 	organizations, _, err := client.Organizations.List(context.Background(), username, nil)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
