@@ -1457,7 +1457,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		t.Fatalf("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
-	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got < 1 {
+	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
 	}
 	if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
