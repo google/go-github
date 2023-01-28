@@ -186,6 +186,24 @@ if _, ok := err.(*github.RateLimitError); ok {
 Learn more about GitHub rate limiting at
 https://docs.github.com/en/rest/rate-limit .
 
+In addition to these rate limits, GitHub imposes a secondary rate limit on all API clients.
+This rate limit prevents clients from making too many concurrent requests.
+
+To detect an API secondary rate limit error, you can check if its type is `*github.AbuseRateLimitError`:
+
+```go
+repos, _, err := client.Repositories.List(ctx, "", nil)
+if _, ok := err.(*github.AbuseRateLimitError); ok {
+	log.Println("hit secondary rate limit")
+}
+```
+
+You can use [go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
+secondary rate limit sleep-and-retry for you.
+
+Learn more about GitHub secondary rate limiting at
+https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits .
+
 ### Accepted Status ###
 
 Some endpoints may return a 202 Accepted status code, meaning that the
