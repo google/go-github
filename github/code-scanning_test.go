@@ -83,7 +83,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		return err
 	})
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+	testNewRequestAndDoFailureCategory(t, methodName, client, codeScanningUploadCategory, func() (*Response, error) {
 		_, resp, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 		return resp, err
 	})

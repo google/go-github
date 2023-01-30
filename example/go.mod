@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.4
+	github.com/gofri/go-github-ratelimit v1.0.1
 	github.com/google/go-github/v50 v50.0.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
 	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
