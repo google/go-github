@@ -1148,49 +1148,49 @@ func TestDo_rateLimitCategory(t *testing.T) {
 		category rateLimitCategory
 	}{
 		{
-			http.MethodGet,
-			"/",
-			coreCategory,
+			method:   http.MethodGet,
+			url:      "/",
+			category: coreCategory,
 		},
 		{
-			http.MethodGet,
-			"/search/issues?q=rate",
-			searchCategory,
+			method:   http.MethodGet,
+			url:      "/search/issues?q=rate",
+			category: searchCategory,
 		},
 		{
-			http.MethodGet,
-			"/graphql",
-			graphqlCategory,
+			method:   http.MethodGet,
+			url:      "/graphql",
+			category: graphqlCategory,
 		},
 		{
-			http.MethodPost,
-			"/app-manifests/code/conversions",
-			integrationManifestCategory,
+			method:   http.MethodPost,
+			url:      "/app-manifests/code/conversions",
+			category: integrationManifestCategory,
 		},
 		{
-			http.MethodGet,
-			"/app-manifests/code/conversions",
-			coreCategory, // only POST requests are in the integration manifest category
+			method:   http.MethodGet,
+			url:      "/app-manifests/code/conversions",
+			category: coreCategory, // only POST requests are in the integration manifest category
 		},
 		{
-			http.MethodPut,
-			"/repos/google/go-github/import",
-			sourceImportCategory,
+			method:   http.MethodPut,
+			url:      "/repos/google/go-github/import",
+			category: sourceImportCategory,
 		},
 		{
-			http.MethodGet,
-			"/repos/google/go-github/import",
-			coreCategory, // only PUT requests are in the source import category
+			method:   http.MethodGet,
+			url:      "/repos/google/go-github/import",
+			category: coreCategory, // only PUT requests are in the source import category
 		},
 		{
-			http.MethodPost,
-			"/repos/google/go-github/code-scanning/sarifs",
-			codeScanningUploadCategory,
+			method:   http.MethodPost,
+			url:      "/repos/google/go-github/code-scanning/sarifs",
+			category: codeScanningUploadCategory,
 		},
 		{
-			http.MethodGet,
-			"/scim/v2/organizations/ORG/Users",
-			scimCategory,
+			method:   http.MethodGet,
+			url:      "/scim/v2/organizations/ORG/Users",
+			category: scimCategory,
 		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
@@ -2155,36 +2155,36 @@ func TestRateLimits(t *testing.T) {
 		rate     *Rate
 	}{
 		{
-			coreCategory,
-			want.Core,
+			category: coreCategory,
+			rate:     want.Core,
 		},
 		{
-			searchCategory,
-			want.Search,
+			category: searchCategory,
+			rate:     want.Search,
 		},
 		{
-			graphqlCategory,
-			want.GraphQL,
+			category: graphqlCategory,
+			rate:     want.GraphQL,
 		},
 		{
-			integrationManifestCategory,
-			want.IntegrationManifest,
+			category: integrationManifestCategory,
+			rate:     want.IntegrationManifest,
 		},
 		{
-			sourceImportCategory,
-			want.SourceImport,
+			category: sourceImportCategory,
+			rate:     want.SourceImport,
 		},
 		{
-			codeScanningUploadCategory,
-			want.CodeScanningUpload,
+			category: codeScanningUploadCategory,
+			rate:     want.CodeScanningUpload,
 		},
 		{
-			actionsRunnerRegistrationCategory,
-			want.ActionsRunnerRegistration,
+			category: actionsRunnerRegistrationCategory,
+			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			scimCategory,
-			want.SCIM,
+			category: scimCategory,
+			rate:     want.SCIM,
 		},
 	}
 
@@ -2287,36 +2287,36 @@ func TestRateLimits_overQuota(t *testing.T) {
 		rate     *Rate
 	}{
 		{
-			coreCategory,
-			want.Core,
+			category: coreCategory,
+			rate:     want.Core,
 		},
 		{
-			searchCategory,
-			want.Search,
+			category: searchCategory,
+			rate:     want.Search,
 		},
 		{
-			graphqlCategory,
-			want.GraphQL,
+			category: graphqlCategory,
+			rate:     want.GraphQL,
 		},
 		{
-			integrationManifestCategory,
-			want.IntegrationManifest,
+			category: integrationManifestCategory,
+			rate:     want.IntegrationManifest,
 		},
 		{
-			sourceImportCategory,
-			want.SourceImport,
+			category: sourceImportCategory,
+			rate:     want.SourceImport,
 		},
 		{
-			codeScanningUploadCategory,
-			want.CodeScanningUpload,
+			category: codeScanningUploadCategory,
+			rate:     want.CodeScanningUpload,
 		},
 		{
-			actionsRunnerRegistrationCategory,
-			want.ActionsRunnerRegistration,
+			category: actionsRunnerRegistrationCategory,
+			rate:     want.ActionsRunnerRegistration,
 		},
 		{
-			scimCategory,
-			want.SCIM,
+			category: scimCategory,
+			rate:     want.SCIM,
 		},
 	}
 	for _, tt := range tests {
