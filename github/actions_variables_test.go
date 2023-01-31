@@ -34,7 +34,7 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 
 	want := &ActionsVariables{
 		TotalCount: 4,
-		Variables: []*ActionVariable{
+		Variables: []*ActionsVariable{
 			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
@@ -73,7 +73,7 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 		t.Errorf("Actions.GetRepoVariable returned error: %v", err)
 	}
 
-	want := &ActionVariable{
+	want := &ActionsVariable{
 		Name:      "NAME",
 		Value:     "VALUE",
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
@@ -109,7 +109,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
@@ -141,7 +141,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
@@ -206,7 +206,7 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 
 	want := &ActionsVariables{
 		TotalCount: 3,
-		Variables: []*ActionVariable{
+		Variables: []*ActionsVariable{
 			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("private")},
 			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("all")},
 			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("selected"), SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
@@ -246,7 +246,7 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 		t.Errorf("Actions.GetOrgVariable returned error: %v", err)
 	}
 
-	want := &ActionVariable{
+	want := &ActionsVariable{
 		Name:                    "NAME",
 		Value:                   "VALUE",
 		CreatedAt:               &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
@@ -284,7 +284,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            String("selected"),
@@ -318,7 +318,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            String("selected"),
@@ -505,7 +505,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 
 	want := &ActionsVariables{
 		TotalCount: 4,
-		Variables: []*ActionVariable{
+		Variables: []*ActionsVariable{
 			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
@@ -544,7 +544,7 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 		t.Errorf("Actions.GetEnvVariable returned error: %v", err)
 	}
 
-	want := &ActionVariable{
+	want := &ActionsVariable{
 		Name:      "variable",
 		Value:     "VAR",
 		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
@@ -580,7 +580,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:  "variable",
 		Value: "VAR",
 	}
@@ -612,7 +612,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	input := &ActionVariable{
+	input := &ActionsVariable{
 		Name:  "variable",
 		Value: "VAR",
 	}
