@@ -176,7 +176,7 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 		t.Errorf("Actions.( returned error: %v", err)
 	}
 
-	const methodName = "("
+	const methodName = "DeleteRepoVariable"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Actions.DeleteRepoVariable(ctx, "\n", "\n", "\n")
 		return err
