@@ -10,8 +10,8 @@ import (
 	"fmt"
 )
 
-// Variable represents a repository action variable.
-type Variable struct {
+// ActionVariable represents a repository action variable.
+type ActionVariable struct {
 	Name       string    `json:"name"`
 	Value      string    `json:"value"`
 	CreatedAt  Timestamp `json:"created_at"`
@@ -23,13 +23,13 @@ type Variable struct {
 	SelectedRepositoryIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
-// Variables represents one item from the ListVariables response.
-type Variables struct {
-	TotalCount int         `json:"total_count"`
-	Variables  []*Variable `json:"variables"`
+// ActionsVariables represents one item from the ListVariables response.
+type ActionsVariables struct {
+	TotalCount int               `json:"total_count"`
+	Variables  []*ActionVariable `json:"variables"`
 }
 
-func (s *ActionsService) listVariables(ctx context.Context, url string, opts *ListOptions) (*Variables, *Response, error) {
+func (s *ActionsService) listVariables(ctx context.Context, url string, opts *ListOptions) (*ActionsVariables, *Response, error) {
 	u, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
@@ -40,7 +40,7 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 		return nil, nil, err
 	}
 
-	variables := new(Variables)
+	variables := new(ActionsVariables)
 	resp, err := s.client.Do(ctx, req, &variables)
 	if err != nil {
 		return nil, resp, err
@@ -52,7 +52,7 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 // ListRepoVariables lists all variables available in a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-repository-variables
-func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*Variables, *Response, error) {
+func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
 	return s.listVariables(ctx, url, opts)
 }
@@ -60,7 +60,7 @@ func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo stri
 // ListOrgVariables lists all variables available in an organization.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-organization-variables
-func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts *ListOptions) (*Variables, *Response, error) {
+func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts *ListOptions) (*ActionsVariables, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables", org)
 	return s.listVariables(ctx, url, opts)
 }
@@ -68,18 +68,18 @@ func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts 
 // ListEnvVariables lists all variables available in an environment.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#list-environment-variables
-func (s *ActionsService) ListEnvVariables(ctx context.Context, repoID int, env string, opts *ListOptions) (*Variables, *Response, error) {
+func (s *ActionsService) ListEnvVariables(ctx context.Context, repoID int, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/variables", repoID, env)
 	return s.listVariables(ctx, url, opts)
 }
 
-func (s *ActionsService) getVariable(ctx context.Context, url string) (*Variable, *Response, error) {
+func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionVariable, *Response, error) {
 	req, err := s.client.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	variable := new(Variable)
+	variable := new(ActionVariable)
 	resp, err := s.client.Do(ctx, req, variable)
 	if err != nil {
 		return nil, resp, err
@@ -91,7 +91,7 @@ func (s *ActionsService) getVariable(ctx context.Context, url string) (*Variable
 // GetRepoVariable gets a single repository variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-a-repository-variable
-func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name string) (*Variable, *Response, error) {
+func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name string) (*ActionVariable, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
 	return s.getVariable(ctx, url)
 }
@@ -99,7 +99,7 @@ func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name 
 // GetOrgVariable gets a single organization variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-an-organization-variable
-func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (*Variable, *Response, error) {
+func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (*ActionVariable, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
 	return s.getVariable(ctx, url)
 }
@@ -107,12 +107,12 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 // GetEnvVariable gets a single environment variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#get-an-environment-variable
-func (s *ActionsService) GetEnvVariable(ctx context.Context, repoID int, env, variableName string) (*Variable, *Response, error) {
+func (s *ActionsService) GetEnvVariable(ctx context.Context, repoID int, env, variableName string) (*ActionVariable, *Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variableName)
 	return s.getVariable(ctx, url)
 }
 
-func (s *ActionsService) postVariable(ctx context.Context, url string, variable *Variable) (*Response, error) {
+func (s *ActionsService) postVariable(ctx context.Context, url string, variable *ActionVariable) (*Response, error) {
 	req, err := s.client.NewRequest("POST", url, variable)
 	if err != nil {
 		return nil, err
@@ -123,7 +123,7 @@ func (s *ActionsService) postVariable(ctx context.Context, url string, variable 
 // CreateRepoVariable creates a repository variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-a-repository-variable
-func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, variable *Variable) (*Response, error) {
+func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
 	return s.postVariable(ctx, url, variable)
 }
@@ -131,7 +131,7 @@ func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo str
 // CreateOrgVariable creates an organization variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-organization-variable
-func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, variable *Variable) (*Response, error) {
+func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables", org)
 	return s.postVariable(ctx, url, variable)
 }
@@ -139,12 +139,12 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, vari
 // CreateEnvVariable creates an environment variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-environment-variable
-func (s *ActionsService) CreateEnvVariable(ctx context.Context, repoID int, env string, variable *Variable) (*Response, error) {
+func (s *ActionsService) CreateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/variables", repoID, env)
 	return s.postVariable(ctx, url, variable)
 }
 
-func (s *ActionsService) patchVariable(ctx context.Context, url string, variable *Variable) (*Response, error) {
+func (s *ActionsService) patchVariable(ctx context.Context, url string, variable *ActionVariable) (*Response, error) {
 	req, err := s.client.NewRequest("PATCH", url, variable)
 	if err != nil {
 		return nil, err
@@ -155,7 +155,7 @@ func (s *ActionsService) patchVariable(ctx context.Context, url string, variable
 // UpdateRepoVariable updates a repository variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#update-a-repository-variable
-func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo string, variable *Variable) (*Response, error) {
+func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
@@ -163,7 +163,7 @@ func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo str
 // UpdateOrgVariable updates an organization variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#update-an-organization-variable
-func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, variable *Variable) (*Response, error) {
+func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
@@ -171,7 +171,7 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, vari
 // UpdateEnvVariable updates an environment variable.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/variables#create-an-environment-variable
-func (s *ActionsService) UpdateEnvVariable(ctx context.Context, repoID int, env string, variable *Variable) (*Response, error) {
+func (s *ActionsService) UpdateEnvVariable(ctx context.Context, repoID int, env string, variable *ActionVariable) (*Response, error) {
 	url := fmt.Sprintf("repositories/%v/environments/%v/variables/%v", repoID, env, variable.Name)
 	return s.patchVariable(ctx, url, variable)
 }
