@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 )
 
 // Timeline represents an event that occurred around an Issue or Pull Request.
@@ -118,7 +117,7 @@ type Timeline struct {
 	// The string SHA of a commit that referenced this Issue or Pull Request.
 	CommitID *string `json:"commit_id,omitempty"`
 	// The timestamp indicating when the event occurred.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	// The Label object including `name` and `color` attributes. Only provided for
 	// 'labeled' and 'unlabeled' events.
 	Label *Label `json:"label,omitempty"`
@@ -149,7 +148,7 @@ type Timeline struct {
 
 	// The review summary text.
 	Body        *string    `json:"body,omitempty"`
-	SubmittedAt *time.Time `json:"submitted_at,omitempty"`
+	SubmittedAt *Timestamp `json:"submitted_at,omitempty"`
 }
 
 // Source represents a reference's source.

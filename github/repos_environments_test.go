@@ -220,6 +220,110 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &CreateUpdateEnvironment{}
+	callCount := 0
+
+	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+		v := new(CreateUpdateEnvironment)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		if callCount == 0 {
+			w.WriteHeader(http.StatusUnprocessableEntity)
+			callCount++
+		} else {
+			want := &CreateUpdateEnvironment{}
+			if !cmp.Equal(v, want) {
+				t.Errorf("Request body = %+v, want %+v", v, want)
+			}
+			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
+		}
+	})
+
+	ctx := context.Background()
+	release, _, err := client.Repositories.CreateUpdateEnvironment(ctx, "o", "r", "e", input)
+	if err != nil {
+		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
+	}
+
+	want := &Environment{ID: Int64(1), Name: String("staging"), ProtectionRules: []*ProtectionRule{}}
+	if !cmp.Equal(release, want) {
+		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
+	}
+}
+
+func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	input := &CreateUpdateEnvironment{
+		DeploymentBranchPolicy: &BranchPolicy{
+			ProtectedBranches:    Bool(true),
+			CustomBranchPolicies: Bool(false),
+		},
+	}
+
+	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
+		v := new(createUpdateEnvironmentNoEnterprise)
+		json.NewDecoder(r.Body).Decode(v)
+
+		testMethod(t, r, "PUT")
+		want := &createUpdateEnvironmentNoEnterprise{
+			DeploymentBranchPolicy: &BranchPolicy{
+				ProtectedBranches:    Bool(true),
+				CustomBranchPolicies: Bool(false),
+			},
+		}
+		if !cmp.Equal(v, want) {
+			t.Errorf("Request body = %+v, want %+v", v, want)
+		}
+		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
+	})
+
+	ctx := context.Background()
+	release, _, err := client.Repositories.createNewEnvNoEnterprise(ctx, "repos/o/r/environments/e", input)
+	if err != nil {
+		t.Errorf("Repositories.createNewEnvNoEnterprise returned error: %v", err)
+	}
+
+	want := &Environment{
+		ID:   Int64(1),
+		Name: String("staging"),
+		ProtectionRules: []*ProtectionRule{
+			{
+				ID:     Int64(1),
+				NodeID: String("id"),
+				Type:   String("branch_policy"),
+			},
+		},
+		DeploymentBranchPolicy: &BranchPolicy{
+			ProtectedBranches:    Bool(true),
+			CustomBranchPolicies: Bool(false),
+		},
+	}
+	if !cmp.Equal(release, want) {
+		t.Errorf("Repositories.createNewEnvNoEnterprise returned %+v, want %+v", release, want)
+	}
+
+	const methodName = "createNewEnvNoEnterprise"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.createNewEnvNoEnterprise(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.createNewEnvNoEnterprise(ctx, "repos/o/r/environments/e", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

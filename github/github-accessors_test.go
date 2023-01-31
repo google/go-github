@@ -45,6 +45,116 @@ func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
 	a.GetVerifiedAllowed()
 }
 
+func TestActionsCache_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsCache{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsCache_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{ID: &zeroValue}
+	a.GetID()
+	a = &ActionsCache{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestActionsCache_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCache{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCache_GetLastAccessedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsCache{LastAccessedAt: &zeroValue}
+	a.GetLastAccessedAt()
+	a = &ActionsCache{}
+	a.GetLastAccessedAt()
+	a = nil
+	a.GetLastAccessedAt()
+}
+
+func TestActionsCache_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCache{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCache_GetSizeInBytes(tt *testing.T) {
+	var zeroValue int64
+	a := &ActionsCache{SizeInBytes: &zeroValue}
+	a.GetSizeInBytes()
+	a = &ActionsCache{}
+	a.GetSizeInBytes()
+	a = nil
+	a.GetSizeInBytes()
+}
+
+func TestActionsCache_GetVersion(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCache{Version: &zeroValue}
+	a.GetVersion()
+	a = &ActionsCache{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
+}
+
+func TestActionsCacheListOptions_GetDirection(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Direction: &zeroValue}
+	a.GetDirection()
+	a = &ActionsCacheListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestActionsCacheListOptions_GetKey(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Key: &zeroValue}
+	a.GetKey()
+	a = &ActionsCacheListOptions{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestActionsCacheListOptions_GetRef(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Ref: &zeroValue}
+	a.GetRef()
+	a = &ActionsCacheListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestActionsCacheListOptions_GetSort(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsCacheListOptions{Sort: &zeroValue}
+	a.GetSort()
+	a = &ActionsCacheListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
 func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
 	var zeroValue string
 	a := &ActionsPermissions{AllowedActions: &zeroValue}
@@ -526,6 +636,16 @@ func TestAllowDeletionsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	a.GetFrom()
 	a = nil
 	a.GetFrom()
+}
+
+func TestAllowForkSyncing_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	a := &AllowForkSyncing{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AllowForkSyncing{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
 }
 
 func TestAnalysesListOptions_GetRef(tt *testing.T) {
@@ -2890,6 +3010,13 @@ func TestCodeScanningAlertEvent_GetCommitOID(tt *testing.T) {
 	c.GetCommitOID()
 }
 
+func TestCodeScanningAlertEvent_GetInstallation(tt *testing.T) {
+	c := &CodeScanningAlertEvent{}
+	c.GetInstallation()
+	c = nil
+	c.GetInstallation()
+}
+
 func TestCodeScanningAlertEvent_GetOrg(tt *testing.T) {
 	c := &CodeScanningAlertEvent{}
 	c.GetOrg()
@@ -2919,6 +3046,26 @@ func TestCodeScanningAlertEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 	c = nil
 	c.GetSender()
+}
+
+func TestCodeScanningAlertState_GetDismissedComment(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertState{DismissedComment: &zeroValue}
+	c.GetDismissedComment()
+	c = &CodeScanningAlertState{}
+	c.GetDismissedComment()
+	c = nil
+	c.GetDismissedComment()
+}
+
+func TestCodeScanningAlertState_GetDismissedReason(tt *testing.T) {
+	var zeroValue string
+	c := &CodeScanningAlertState{DismissedReason: &zeroValue}
+	c.GetDismissedReason()
+	c = &CodeScanningAlertState{}
+	c.GetDismissedReason()
+	c = nil
+	c.GetDismissedReason()
 }
 
 func TestCodeSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -3073,7 +3220,7 @@ func TestCombinedStatus_GetTotalCount(tt *testing.T) {
 }
 
 func TestComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &Comment{CreatedAt: &zeroValue}
 	c.GetCreatedAt()
 	c = &Comment{}
@@ -3218,7 +3365,7 @@ func TestCommit_GetVerification(tt *testing.T) {
 }
 
 func TestCommitAuthor_GetDate(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &CommitAuthor{Date: &zeroValue}
 	c.GetDate()
 	c = &CommitAuthor{}
@@ -3731,7 +3878,7 @@ func TestCommunityHealthMetrics_GetHealthPercentage(tt *testing.T) {
 }
 
 func TestCommunityHealthMetrics_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	c := &CommunityHealthMetrics{UpdatedAt: &zeroValue}
 	c.GetUpdatedAt()
 	c = &CommunityHealthMetrics{}
@@ -4830,6 +4977,56 @@ func TestDeployment_GetURL(tt *testing.T) {
 	d.GetURL()
 	d = nil
 	d.GetURL()
+}
+
+func TestDeploymentBranchPolicy_GetID(tt *testing.T) {
+	var zeroValue int64
+	d := &DeploymentBranchPolicy{ID: &zeroValue}
+	d.GetID()
+	d = &DeploymentBranchPolicy{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDeploymentBranchPolicy_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicy{Name: &zeroValue}
+	d.GetName()
+	d = &DeploymentBranchPolicy{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDeploymentBranchPolicy_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicy{NodeID: &zeroValue}
+	d.GetNodeID()
+	d = &DeploymentBranchPolicy{}
+	d.GetNodeID()
+	d = nil
+	d.GetNodeID()
+}
+
+func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	var zeroValue string
+	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
+	d.GetName()
+	d = &DeploymentBranchPolicyRequest{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDeploymentBranchPolicyResponse_GetTotalCount(tt *testing.T) {
+	var zeroValue int
+	d := &DeploymentBranchPolicyResponse{TotalCount: &zeroValue}
+	d.GetTotalCount()
+	d = &DeploymentBranchPolicyResponse{}
+	d.GetTotalCount()
+	d = nil
+	d.GetTotalCount()
 }
 
 func TestDeploymentEvent_GetDeployment(tt *testing.T) {
@@ -5974,6 +6171,46 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 }
 
+func TestEnterpriseSecurityAnalysisSettings_GetAdvancedSecurityEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{AdvancedSecurityEnabledForNewRepositories: &zeroValue}
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+	e = nil
+	e.GetAdvancedSecurityEnabledForNewRepositories()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningEnabledForNewRepositories: &zeroValue}
+	e.GetSecretScanningEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningEnabledForNewRepositories()
+	e = nil
+	e.GetSecretScanningEnabledForNewRepositories()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionCustomLink(tt *testing.T) {
+	var zeroValue string
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningPushProtectionCustomLink: &zeroValue}
+	e.GetSecretScanningPushProtectionCustomLink()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningPushProtectionCustomLink()
+	e = nil
+	e.GetSecretScanningPushProtectionCustomLink()
+}
+
+func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningPushProtectionEnabledForNewRepositories(tt *testing.T) {
+	var zeroValue bool
+	e := &EnterpriseSecurityAnalysisSettings{SecretScanningPushProtectionEnabledForNewRepositories: &zeroValue}
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+	e = &EnterpriseSecurityAnalysisSettings{}
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+	e = nil
+	e.GetSecretScanningPushProtectionEnabledForNewRepositories()
+}
+
 func TestEnvironment_GetCreatedAt(tt *testing.T) {
 	var zeroValue Timestamp
 	e := &Environment{CreatedAt: &zeroValue}
@@ -6146,7 +6383,7 @@ func TestEvent_GetActor(tt *testing.T) {
 }
 
 func TestEvent_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	e := &Event{CreatedAt: &zeroValue}
 	e.GetCreatedAt()
 	e = &Event{}
@@ -6527,7 +6764,7 @@ func TestGist_GetComments(tt *testing.T) {
 }
 
 func TestGist_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &Gist{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &Gist{}
@@ -6624,7 +6861,7 @@ func TestGist_GetPublic(tt *testing.T) {
 }
 
 func TestGist_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &Gist{UpdatedAt: &zeroValue}
 	g.GetUpdatedAt()
 	g = &Gist{}
@@ -6644,7 +6881,7 @@ func TestGistComment_GetBody(tt *testing.T) {
 }
 
 func TestGistComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GistComment{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &GistComment{}
@@ -7037,7 +7274,7 @@ func TestGPGKey_GetCanSign(tt *testing.T) {
 }
 
 func TestGPGKey_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GPGKey{CreatedAt: &zeroValue}
 	g.GetCreatedAt()
 	g = &GPGKey{}
@@ -7047,7 +7284,7 @@ func TestGPGKey_GetCreatedAt(tt *testing.T) {
 }
 
 func TestGPGKey_GetExpiresAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	g := &GPGKey{ExpiresAt: &zeroValue}
 	g.GetExpiresAt()
 	g = &GPGKey{}
@@ -7248,7 +7485,7 @@ func TestHook_GetActive(tt *testing.T) {
 }
 
 func TestHook_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	h := &Hook{CreatedAt: &zeroValue}
 	h.GetCreatedAt()
 	h = &Hook{}
@@ -7308,7 +7545,7 @@ func TestHook_GetType(tt *testing.T) {
 }
 
 func TestHook_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	h := &Hook{UpdatedAt: &zeroValue}
 	h.GetUpdatedAt()
 	h = &Hook{}
@@ -8408,7 +8645,7 @@ func TestInstallationRepositoriesEvent_GetSender(tt *testing.T) {
 }
 
 func TestInstallationToken_GetExpiresAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &InstallationToken{ExpiresAt: &zeroValue}
 	i.GetExpiresAt()
 	i = &InstallationToken{}
@@ -8472,7 +8709,7 @@ func TestInteractionRestriction_GetOrigin(tt *testing.T) {
 }
 
 func TestInvitation_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Invitation{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &Invitation{}
@@ -8616,7 +8853,7 @@ func TestIssue_GetBody(tt *testing.T) {
 }
 
 func TestIssue_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{ClosedAt: &zeroValue}
 	i.GetClosedAt()
 	i = &Issue{}
@@ -8653,7 +8890,7 @@ func TestIssue_GetCommentsURL(tt *testing.T) {
 }
 
 func TestIssue_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &Issue{}
@@ -8801,7 +9038,7 @@ func TestIssue_GetTitle(tt *testing.T) {
 }
 
 func TestIssue_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &Issue{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &Issue{}
@@ -8848,7 +9085,7 @@ func TestIssueComment_GetBody(tt *testing.T) {
 }
 
 func TestIssueComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueComment{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueComment{}
@@ -8905,7 +9142,7 @@ func TestIssueComment_GetReactions(tt *testing.T) {
 }
 
 func TestIssueComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueComment{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueComment{}
@@ -9022,7 +9259,7 @@ func TestIssueEvent_GetCommitID(tt *testing.T) {
 }
 
 func TestIssueEvent_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueEvent{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueEvent{}
@@ -9148,7 +9385,7 @@ func TestIssueImport_GetClosed(tt *testing.T) {
 }
 
 func TestIssueImport_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{ClosedAt: &zeroValue}
 	i.GetClosedAt()
 	i = &IssueImport{}
@@ -9158,7 +9395,7 @@ func TestIssueImport_GetClosedAt(tt *testing.T) {
 }
 
 func TestIssueImport_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueImport{}
@@ -9178,7 +9415,7 @@ func TestIssueImport_GetMilestone(tt *testing.T) {
 }
 
 func TestIssueImport_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImport{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueImport{}
@@ -9238,7 +9475,7 @@ func TestIssueImportError_GetValue(tt *testing.T) {
 }
 
 func TestIssueImportResponse_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImportResponse{CreatedAt: &zeroValue}
 	i.GetCreatedAt()
 	i = &IssueImportResponse{}
@@ -9308,7 +9545,7 @@ func TestIssueImportResponse_GetStatus(tt *testing.T) {
 }
 
 func TestIssueImportResponse_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	i := &IssueImportResponse{UpdatedAt: &zeroValue}
 	i.GetUpdatedAt()
 	i = &IssueImportResponse{}
@@ -10265,6 +10502,16 @@ func TestLocation_GetStartLine(tt *testing.T) {
 	l.GetStartLine()
 }
 
+func TestLockBranch_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	l := &LockBranch{Enabled: &zeroValue}
+	l.GetEnabled()
+	l = &LockBranch{}
+	l.GetEnabled()
+	l = nil
+	l.GetEnabled()
+}
+
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
 	var zeroValue Timestamp
 	m := &MarketplacePendingChange{EffectiveDate: &zeroValue}
@@ -11066,7 +11313,7 @@ func TestMigration_GetURL(tt *testing.T) {
 }
 
 func TestMilestone_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{ClosedAt: &zeroValue}
 	m.GetClosedAt()
 	m = &Milestone{}
@@ -11086,7 +11333,7 @@ func TestMilestone_GetClosedIssues(tt *testing.T) {
 }
 
 func TestMilestone_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{CreatedAt: &zeroValue}
 	m.GetCreatedAt()
 	m = &Milestone{}
@@ -11113,7 +11360,7 @@ func TestMilestone_GetDescription(tt *testing.T) {
 }
 
 func TestMilestone_GetDueOn(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{DueOn: &zeroValue}
 	m.GetDueOn()
 	m = &Milestone{}
@@ -11203,7 +11450,7 @@ func TestMilestone_GetTitle(tt *testing.T) {
 }
 
 func TestMilestone_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	m := &Milestone{UpdatedAt: &zeroValue}
 	m.GetUpdatedAt()
 	m = &Milestone{}
@@ -11499,7 +11746,7 @@ func TestNotification_GetID(tt *testing.T) {
 }
 
 func TestNotification_GetLastReadAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	n := &Notification{LastReadAt: &zeroValue}
 	n.GetLastReadAt()
 	n = &Notification{}
@@ -11543,7 +11790,7 @@ func TestNotification_GetUnread(tt *testing.T) {
 }
 
 func TestNotification_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	n := &Notification{UpdatedAt: &zeroValue}
 	n.GetUpdatedAt()
 	n = &Notification{}
@@ -11632,6 +11879,16 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
+func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
+	var zeroValue bool
+	o := &OIDCSubjectClaimCustomTemplate{UseDefault: &zeroValue}
+	o.GetUseDefault()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetUseDefault()
+	o = nil
+	o.GetUseDefault()
+}
+
 func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
 	var zeroValue bool
 	o := &Organization{AdvancedSecurityEnabledForNewRepos: &zeroValue}
@@ -11693,7 +11950,7 @@ func TestOrganization_GetCompany(tt *testing.T) {
 }
 
 func TestOrganization_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	o := &Organization{CreatedAt: &zeroValue}
 	o.GetCreatedAt()
 	o = &Organization{}
@@ -12150,7 +12407,7 @@ func TestOrganization_GetType(tt *testing.T) {
 }
 
 func TestOrganization_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	o := &Organization{UpdatedAt: &zeroValue}
 	o.GetUpdatedAt()
 	o = &Organization{}
@@ -14321,10 +14578,7 @@ func TestProtection_GetAllowForcePushes(tt *testing.T) {
 }
 
 func TestProtection_GetAllowForkSyncing(tt *testing.T) {
-	var zeroValue bool
-	p := &Protection{AllowForkSyncing: &zeroValue}
-	p.GetAllowForkSyncing()
-	p = &Protection{}
+	p := &Protection{}
 	p.GetAllowForkSyncing()
 	p = nil
 	p.GetAllowForkSyncing()
@@ -14338,10 +14592,7 @@ func TestProtection_GetEnforceAdmins(tt *testing.T) {
 }
 
 func TestProtection_GetLockBranch(tt *testing.T) {
-	var zeroValue bool
-	p := &Protection{LockBranch: &zeroValue}
-	p.GetLockBranch()
-	p = &Protection{}
+	p := &Protection{}
 	p.GetLockBranch()
 	p = nil
 	p.GetLockBranch()
@@ -14701,7 +14952,7 @@ func TestPullRequest_GetChangedFiles(tt *testing.T) {
 }
 
 func TestPullRequest_GetClosedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{ClosedAt: &zeroValue}
 	p.GetClosedAt()
 	p = &PullRequest{}
@@ -14751,7 +15002,7 @@ func TestPullRequest_GetCommitsURL(tt *testing.T) {
 }
 
 func TestPullRequest_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{CreatedAt: &zeroValue}
 	p.GetCreatedAt()
 	p = &PullRequest{}
@@ -14895,7 +15146,7 @@ func TestPullRequest_GetMerged(tt *testing.T) {
 }
 
 func TestPullRequest_GetMergedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{MergedAt: &zeroValue}
 	p.GetMergedAt()
 	p = &PullRequest{}
@@ -15019,7 +15270,7 @@ func TestPullRequest_GetTitle(tt *testing.T) {
 }
 
 func TestPullRequest_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequest{UpdatedAt: &zeroValue}
 	p.GetUpdatedAt()
 	p = &PullRequest{}
@@ -15187,7 +15438,7 @@ func TestPullRequestComment_GetCommitID(tt *testing.T) {
 }
 
 func TestPullRequestComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestComment{CreatedAt: &zeroValue}
 	p.GetCreatedAt()
 	p = &PullRequestComment{}
@@ -15374,7 +15625,7 @@ func TestPullRequestComment_GetStartSide(tt *testing.T) {
 }
 
 func TestPullRequestComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestComment{UpdatedAt: &zeroValue}
 	p.GetUpdatedAt()
 	p = &PullRequestComment{}
@@ -15661,7 +15912,7 @@ func TestPullRequestReview_GetState(tt *testing.T) {
 }
 
 func TestPullRequestReview_GetSubmittedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	p := &PullRequestReview{SubmittedAt: &zeroValue}
 	p.GetSubmittedAt()
 	p = &PullRequestReview{}
@@ -15867,6 +16118,16 @@ func TestPullRequestReviewsEnforcementRequest_GetDismissalRestrictionsRequest(tt
 	p.GetDismissalRestrictionsRequest()
 	p = nil
 	p.GetDismissalRestrictionsRequest()
+}
+
+func TestPullRequestReviewsEnforcementRequest_GetRequireLastPushApproval(tt *testing.T) {
+	var zeroValue bool
+	p := &PullRequestReviewsEnforcementRequest{RequireLastPushApproval: &zeroValue}
+	p.GetRequireLastPushApproval()
+	p = &PullRequestReviewsEnforcementRequest{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
 }
 
 func TestPullRequestReviewsEnforcementUpdate_GetBypassPullRequestAllowancesRequest(tt *testing.T) {
@@ -17619,6 +17880,16 @@ func TestRepository_GetGitURL(tt *testing.T) {
 	r.GetGitURL()
 }
 
+func TestRepository_GetHasDiscussions(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{HasDiscussions: &zeroValue}
+	r.GetHasDiscussions()
+	r = &Repository{}
+	r.GetHasDiscussions()
+	r = nil
+	r.GetHasDiscussions()
+}
+
 func TestRepository_GetHasDownloads(tt *testing.T) {
 	var zeroValue bool
 	r := &Repository{HasDownloads: &zeroValue}
@@ -18238,6 +18509,16 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 }
 
+func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryActionsAccessLevel{AccessLevel: &zeroValue}
+	r.GetAccessLevel()
+	r = &RepositoryActionsAccessLevel{}
+	r.GetAccessLevel()
+	r = nil
+	r.GetAccessLevel()
+}
+
 func TestRepositoryActiveCommitters_GetAdvancedSecurityCommitters(tt *testing.T) {
 	var zeroValue int
 	r := &RepositoryActiveCommitters{AdvancedSecurityCommitters: &zeroValue}
@@ -18279,7 +18560,7 @@ func TestRepositoryComment_GetCommitID(tt *testing.T) {
 }
 
 func TestRepositoryComment_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepositoryComment{CreatedAt: &zeroValue}
 	r.GetCreatedAt()
 	r = &RepositoryComment{}
@@ -18346,7 +18627,7 @@ func TestRepositoryComment_GetReactions(tt *testing.T) {
 }
 
 func TestRepositoryComment_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepositoryComment{UpdatedAt: &zeroValue}
 	r.GetUpdatedAt()
 	r = &RepositoryComment{}
@@ -19057,6 +19338,16 @@ func TestRepositoryRelease_GetID(tt *testing.T) {
 	r.GetID()
 }
 
+func TestRepositoryRelease_GetMakeLatest(tt *testing.T) {
+	var zeroValue string
+	r := &RepositoryRelease{MakeLatest: &zeroValue}
+	r.GetMakeLatest()
+	r = &RepositoryRelease{}
+	r.GetMakeLatest()
+	r = nil
+	r.GetMakeLatest()
+}
+
 func TestRepositoryRelease_GetName(tt *testing.T) {
 	var zeroValue string
 	r := &RepositoryRelease{Name: &zeroValue}
@@ -19430,7 +19721,7 @@ func TestRepoStatus_GetContext(tt *testing.T) {
 }
 
 func TestRepoStatus_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepoStatus{CreatedAt: &zeroValue}
 	r.GetCreatedAt()
 	r = &RepoStatus{}
@@ -19497,7 +19788,7 @@ func TestRepoStatus_GetTargetURL(tt *testing.T) {
 }
 
 func TestRepoStatus_GetUpdatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	r := &RepoStatus{UpdatedAt: &zeroValue}
 	r.GetUpdatedAt()
 	r = &RepoStatus{}
@@ -22162,7 +22453,7 @@ func TestTimeline_GetCommitURL(tt *testing.T) {
 }
 
 func TestTimeline_GetCreatedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	t := &Timeline{CreatedAt: &zeroValue}
 	t.GetCreatedAt()
 	t = &Timeline{}
@@ -22271,7 +22562,7 @@ func TestTimeline_GetState(tt *testing.T) {
 }
 
 func TestTimeline_GetSubmittedAt(tt *testing.T) {
-	var zeroValue time.Time
+	var zeroValue Timestamp
 	t := &Timeline{SubmittedAt: &zeroValue}
 	t.GetSubmittedAt()
 	t = &Timeline{}
@@ -23992,27 +24283,6 @@ func TestWorkflowDispatchEvent_GetWorkflow(tt *testing.T) {
 	w.GetWorkflow()
 }
 
-func TestWorkflowEnvironment_GetMacOS(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetMacOS()
-	w = nil
-	w.GetMacOS()
-}
-
-func TestWorkflowEnvironment_GetUbuntu(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetUbuntu()
-	w = nil
-	w.GetUbuntu()
-}
-
-func TestWorkflowEnvironment_GetWindows(tt *testing.T) {
-	w := &WorkflowEnvironment{}
-	w.GetWindows()
-	w = nil
-	w.GetWindows()
-}
-
 func TestWorkflowJob_GetCheckRunURL(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJob{CheckRunURL: &zeroValue}
@@ -24191,6 +24461,16 @@ func TestWorkflowJob_GetURL(tt *testing.T) {
 	w.GetURL()
 	w = nil
 	w.GetURL()
+}
+
+func TestWorkflowJob_GetWorkflowName(tt *testing.T) {
+	var zeroValue string
+	w := &WorkflowJob{WorkflowName: &zeroValue}
+	w.GetWorkflowName()
+	w = &WorkflowJob{}
+	w.GetWorkflowName()
+	w = nil
+	w.GetWorkflowName()
 }
 
 func TestWorkflowJobEvent_GetAction(tt *testing.T) {
@@ -24554,27 +24834,6 @@ func TestWorkflowRunBill_GetTotalMS(tt *testing.T) {
 	w.GetTotalMS()
 	w = nil
 	w.GetTotalMS()
-}
-
-func TestWorkflowRunEnvironment_GetMacOS(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetMacOS()
-	w = nil
-	w.GetMacOS()
-}
-
-func TestWorkflowRunEnvironment_GetUbuntu(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetUbuntu()
-	w = nil
-	w.GetUbuntu()
-}
-
-func TestWorkflowRunEnvironment_GetWindows(tt *testing.T) {
-	w := &WorkflowRunEnvironment{}
-	w.GetWindows()
-	w = nil
-	w.GetWindows()
 }
 
 func TestWorkflowRunEvent_GetAction(tt *testing.T) {

@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -210,7 +209,7 @@ func TestGPGEmail_Marshal(t *testing.T) {
 func TestGPGKey_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GPGKey{}, "{}")
 
-	ti := &time.Time{}
+	ti := &Timestamp{}
 
 	g := &GPGKey{
 		ID:           Int64(1),

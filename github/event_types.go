@@ -1389,4 +1389,6 @@ type CodeScanningAlertEvent struct {
 	Repo      *Repository   `json:"repository,omitempty"`
 	Org       *Organization `json:"organization,omitempty"`
 	Sender    *User         `json:"sender,omitempty"`
+
+	Installation *Installation `json:"installation,omitempty"`
 }

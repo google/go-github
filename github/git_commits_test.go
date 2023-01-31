@@ -24,13 +24,13 @@ func TestCommit_Marshal(t *testing.T) {
 	u := &Commit{
 		SHA: String("s"),
 		Author: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("n"),
 			Email: String("e"),
 			Login: String("u"),
 		},
 		Committer: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("n"),
 			Email: String("e"),
 			Login: String("u"),
@@ -313,7 +313,7 @@ func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 	author := CommitAuthor{
 		Name:  String("go-github"),
 		Email: String("go-github@github.com"),
-		Date:  &date,
+		Date:  &Timestamp{date},
 	}
 	input := &Commit{
 		Message:    String("Commit Message."),
@@ -417,7 +417,7 @@ func TestGitService_createSignature_invalidKey(t *testing.T) {
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 	})
 
@@ -442,7 +442,7 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 	})
 	if err == nil {
@@ -459,7 +459,7 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 	})
 	if err == nil {
@@ -487,7 +487,7 @@ func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 	})
 	expected := `parent p
@@ -509,12 +509,12 @@ func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 		Author: &CommitAuthor{
 			Name:  String("go-github"),
 			Email: String("go-github@github.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 		Committer: &CommitAuthor{
 			Name:  String("foo"),
 			Email: String("foo@bar.com"),
-			Date:  &date,
+			Date:  &Timestamp{date},
 		},
 	})
 	expected := `parent p
@@ -619,7 +619,7 @@ func TestCommitAuthor_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CommitAuthor{}, "{}")
 
 	u := &CommitAuthor{
-		Date:  &referenceTime,
+		Date:  &Timestamp{referenceTime},
 		Name:  String("name"),
 		Email: String("email"),
 		Login: String("login"),
@@ -640,13 +640,13 @@ func TestCreateCommit_Marshal(t *testing.T) {
 
 	u := &createCommit{
 		Author: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),
 		},
 		Committer: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),

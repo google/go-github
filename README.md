@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v48/github)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v50/github)
 [![Test Status](https://github.com/google/go-github/workflows/tests/badge.svg)](https://github.com/google/go-github/actions?query=workflow%3Atests)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -24,7 +24,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v48
+go get github.com/google/go-github/v50
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -32,7 +32,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v48/github"
+import "github.com/google/go-github/v50/github"
 ```
 
 and run `go get` without parameters.
@@ -40,13 +40,13 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v48@master
+go get github.com/google/go-github/v50@master
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v48/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v50/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -135,7 +135,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v50/github"
 )
 
 func main() {
@@ -186,6 +186,24 @@ if _, ok := err.(*github.RateLimitError); ok {
 Learn more about GitHub rate limiting at
 https://docs.github.com/en/rest/rate-limit .
 
+In addition to these rate limits, GitHub imposes a secondary rate limit on all API clients.
+This rate limit prevents clients from making too many concurrent requests.
+
+To detect an API secondary rate limit error, you can check if its type is `*github.AbuseRateLimitError`:
+
+```go
+repos, _, err := client.Repositories.List(ctx, "", nil)
+if _, ok := err.(*github.AbuseRateLimitError); ok {
+	log.Println("hit secondary rate limit")
+}
+```
+
+You can use [go-github-ratelimit](https://github.com/gofri/go-github-ratelimit) to handle
+secondary rate limit sleep-and-retry for you.
+
+Learn more about GitHub secondary rate limiting at
+https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits .
+
 ### Accepted Status ###
 
 Some endpoints may return a 202 Accepted status code, meaning that the
@@ -209,7 +227,22 @@ The GitHub API has good support for conditional requests which will help
 prevent you from burning through your rate limit, as well as help speed up your
 application. `go-github` does not handle conditional requests directly, but is
 instead designed to work with a caching `http.Transport`. We recommend using
-https://github.com/gregjones/httpcache for that.
+https://github.com/gregjones/httpcache for that. For example:
+
+```go
+import "github.com/gregjones/httpcache"
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+	)
+	tc := &http.Client{
+		Transport: &oauth2.Transport{
+			Base:   httpcache.NewMemoryCacheTransport(),
+			Source: ts,
+		},
+	}
+	client := github.NewClient(tc)
+```
 
 Learn more about GitHub conditional requests at
 https://docs.github.com/en/rest/overview/resources-in-the-rest-api#conditional-requests.
@@ -290,7 +323,7 @@ For complete usage of go-github, see the full [package docs][].
 [oauth2]: https://github.com/golang/oauth2
 [oauth2 docs]: https://godoc.org/golang.org/x/oauth2
 [personal API token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v48/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v50/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -331,6 +364,42 @@ versioning policy:
 Preview functionality may take the form of entire methods or simply additional
 data returned from an otherwise non-preview method. Refer to the GitHub API
 documentation for details on preview functionality.
+
+### Calendar Versioning ###
+
+As of 2022-11-28, GitHub [has announced](https://github.blog/2022-11-28-to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/)
+that they are starting to version their v3 API based on "calendar-versioning".
+
+In practice, our goal is to make per-method version overrides (at
+least in the core library) rare and temporary.
+
+Our understanding of the GitHub docs is that they will be revving the
+entire API to each new date-based version, even if only a few methods
+have breaking changes. Other methods will accept the new version with
+their existing functionality. So when a new date-based version of the
+GitHub API is released, we (the repo maintainers) plan to:
+
+* update each method that had breaking changes, overriding their
+  per-method API version header. This may happen in one or multiple
+  commits and PRs, and is all done in the main branch.
+
+* once all of the methods with breaking changes have been updated,
+  have a final commit that bumps the default API version, and remove
+  all of the per-method overrides. That would now get a major version
+  bump when the next go-github release is made.
+
+### Version Compatibility Table ###
+
+The following table identifies which version of the GitHub API is
+supported by this (and past) versions of this repo (go-github).
+Versions prior to 48.2.0 are not listed.
+
+| go-github Version | GitHub v3 API Version |
+| ----------------- | --------------------- |
+| 50.0.0            | 2022-11-28            |
+| 49.1.0            | 2022-11-28            |
+| 49.0.0            | 2022-11-28            |
+| 48.2.0            | 2022-11-28            |
 
 ## License ##
 

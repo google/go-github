@@ -21,9 +21,9 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 	mux.HandleFunc("/orgs/o/settings/billing/actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-				"total_minutes_used": 305,
+				"total_minutes_used": 305.0,
 				"total_paid_minutes_used": 0.0,
-				"included_minutes": 3000,
+				"included_minutes": 3000.0,
 				"minutes_used_breakdown": {
 					"UBUNTU": 205,
 					"MACOS": 10,
@@ -39,13 +39,13 @@ func TestBillingService_GetActionsBillingOrg(t *testing.T) {
 	}
 
 	want := &ActionBilling{
-		TotalMinutesUsed:     305,
-		TotalPaidMinutesUsed: 0,
-		IncludedMinutes:      3000,
+		TotalMinutesUsed:     305.0,
+		TotalPaidMinutesUsed: 0.0,
+		IncludedMinutes:      3000.0,
 		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			Ubuntu:  205,
-			MacOS:   10,
-			Windows: 90,
+			"UBUNTU":  205,
+			"MACOS":   10,
+			"WINDOWS": 90,
 		},
 	}
 	if !cmp.Equal(hook, want) {
@@ -209,9 +209,9 @@ func TestBillingService_GetActionsBillingUser(t *testing.T) {
 		TotalPaidMinutesUsed: 0,
 		IncludedMinutes:      3000,
 		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			Ubuntu:  205,
-			MacOS:   10,
-			Windows: 90,
+			"UBUNTU":  205,
+			"MACOS":   10,
+			"WINDOWS": 90,
 		},
 	}
 	if !cmp.Equal(hook, want) {
@@ -350,9 +350,9 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 	testJSONMarshal(t, &MinutesUsedBreakdown{}, "{}")
 
 	u := &MinutesUsedBreakdown{
-		Ubuntu:  1,
-		MacOS:   1,
-		Windows: 1,
+		"UBUNTU":  1,
+		"MACOS":   1,
+		"WINDOWS": 1,
 	}
 
 	want := `{
@@ -372,9 +372,9 @@ func TestActionBilling_Marshal(t *testing.T) {
 		TotalPaidMinutesUsed: 1,
 		IncludedMinutes:      1,
 		MinutesUsedBreakdown: MinutesUsedBreakdown{
-			Ubuntu:  1,
-			MacOS:   1,
-			Windows: 1,
+			"UBUNTU":  1,
+			"MACOS":   1,
+			"WINDOWS": 1,
 		},
 	}
 

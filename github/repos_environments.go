@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 )
 
 // Environment represents a single environment in a repository.
@@ -168,6 +169,13 @@ type CreateUpdateEnvironment struct {
 	DeploymentBranchPolicy *BranchPolicy   `json:"deployment_branch_policy"`
 }
 
+// createUpdateEnvironmentNoEnterprise represents the fields accepted for Pro/Teams private repos.
+// Ref: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment
+// See https://github.com/google/go-github/issues/2602 for more information.
+type createUpdateEnvironmentNoEnterprise struct {
+	DeploymentBranchPolicy *BranchPolicy `json:"deployment_branch_policy"`
+}
+
 // CreateUpdateEnvironment create or update a new environment for a repository.
 //
 // GitHub API docs: https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment
@@ -175,6 +183,33 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 	u := fmt.Sprintf("repos/%s/%s/environments/%s", owner, repo, name)
 
 	req, err := s.client.NewRequest("PUT", u, environment)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	e := new(Environment)
+	resp, err := s.client.Do(ctx, req, e)
+	if err != nil {
+		// The API returns 422 when the pricing plan doesn't support all the fields sent.
+		// This path will be executed for Pro/Teams private repos.
+		// For public repos, regardless of the pricing plan, all fields supported.
+		// For Free plan private repos the returned error code is 404.
+		// We are checking that the user didn't try to send a value for unsupported fields,
+		// and return an error if they did.
+		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && environment != nil && len(environment.Reviewers) == 0 && environment.GetWaitTimer() == 0 {
+			return s.createNewEnvNoEnterprise(ctx, u, environment)
+		}
+		return nil, resp, err
+	}
+	return e, resp, nil
+}
+
+// createNewEnvNoEnterprise is an internal function for cases where the original call returned 422.
+// Currently only the `deployment_branch_policy` parameter is supported for Pro/Team private repos.
+func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
+	req, err := s.client.NewRequest("PUT", u, &createUpdateEnvironmentNoEnterprise{
+		DeploymentBranchPolicy: environment.DeploymentBranchPolicy,
+	})
 	if err != nil {
 		return nil, nil, err
 	}

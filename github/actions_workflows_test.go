@@ -153,14 +153,14 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 	}
 
 	want := &WorkflowUsage{
-		Billable: &WorkflowEnvironment{
-			Ubuntu: &WorkflowBill{
+		Billable: &WorkflowBillMap{
+			"UBUNTU": &WorkflowBill{
 				TotalMS: Int64(180000),
 			},
-			MacOS: &WorkflowBill{
+			"MACOS": &WorkflowBill{
 				TotalMS: Int64(240000),
 			},
-			Windows: &WorkflowBill{
+			"WINDOWS": &WorkflowBill{
 				TotalMS: Int64(300000),
 			},
 		},
@@ -200,14 +200,14 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	}
 
 	want := &WorkflowUsage{
-		Billable: &WorkflowEnvironment{
-			Ubuntu: &WorkflowBill{
+		Billable: &WorkflowBillMap{
+			"UBUNTU": &WorkflowBill{
 				TotalMS: Int64(180000),
 			},
-			MacOS: &WorkflowBill{
+			"MACOS": &WorkflowBill{
 				TotalMS: Int64(240000),
 			},
-			Windows: &WorkflowBill{
+			"WINDOWS": &WorkflowBill{
 				TotalMS: Int64(300000),
 			},
 		},
@@ -545,17 +545,17 @@ func TestWorkflowBill_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestWorkflowEnvironment_Marshal(t *testing.T) {
-	testJSONMarshal(t, &WorkflowEnvironment{}, "{}")
+func TestWorkflowBillMap_Marshal(t *testing.T) {
+	testJSONMarshal(t, &WorkflowBillMap{}, "{}")
 
-	u := &WorkflowEnvironment{
-		Ubuntu: &WorkflowBill{
+	u := &WorkflowBillMap{
+		"UBUNTU": &WorkflowBill{
 			TotalMS: Int64(1),
 		},
-		MacOS: &WorkflowBill{
+		"MACOS": &WorkflowBill{
 			TotalMS: Int64(1),
 		},
-		Windows: &WorkflowBill{
+		"WINDOWS": &WorkflowBill{
 			TotalMS: Int64(1),
 		},
 	}
@@ -579,14 +579,14 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WorkflowUsage{}, "{}")
 
 	u := &WorkflowUsage{
-		Billable: &WorkflowEnvironment{
-			Ubuntu: &WorkflowBill{
+		Billable: &WorkflowBillMap{
+			"UBUNTU": &WorkflowBill{
 				TotalMS: Int64(1),
 			},
-			MacOS: &WorkflowBill{
+			"MACOS": &WorkflowBill{
 				TotalMS: Int64(1),
 			},
-			Windows: &WorkflowBill{
+			"WINDOWS": &WorkflowBill{
 				TotalMS: Int64(1),
 			},
 		},

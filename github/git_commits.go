@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"golang.org/x/crypto/openpgp"
 )
@@ -56,7 +55,7 @@ func (c Commit) String() string {
 // CommitAuthor represents the author or committer of a commit. The commit
 // author may not correspond to a GitHub User.
 type CommitAuthor struct {
-	Date  *time.Time `json:"date,omitempty"`
+	Date  *Timestamp `json:"date,omitempty"`
 	Name  *string    `json:"name,omitempty"`
 	Email *string    `json:"email,omitempty"`
 

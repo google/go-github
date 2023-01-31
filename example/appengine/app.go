@@ -12,8 +12,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v48/github"
-	"golang.org/x/oauth2"
+	"github.com/google/go-github/v50/github"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
 )
@@ -29,11 +28,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := appengine.NewContext(r)
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_AUTH_TOKEN")},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client := github.NewTokenClient(ctx, os.Getenv("GITHUB_AUTH_TOKEN"))
 
 	commits, _, err := client.Repositories.ListCommits(ctx, "google", "go-github", nil)
 	if err != nil {

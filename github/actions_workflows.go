@@ -32,15 +32,12 @@ type Workflows struct {
 
 // WorkflowUsage represents a usage of a specific workflow.
 type WorkflowUsage struct {
-	Billable *WorkflowEnvironment `json:"billable,omitempty"`
+	Billable *WorkflowBillMap `json:"billable,omitempty"`
 }
 
-// WorkflowEnvironment represents different runner environments available for a workflow.
-type WorkflowEnvironment struct {
-	Ubuntu  *WorkflowBill `json:"UBUNTU,omitempty"`
-	MacOS   *WorkflowBill `json:"MACOS,omitempty"`
-	Windows *WorkflowBill `json:"WINDOWS,omitempty"`
-}
+// WorkflowBillMap represents different runner environments available for a workflow.
+// Its key is the name of its environment, e.g. "UBUNTU", "MACOS", "WINDOWS", etc.
+type WorkflowBillMap map[string]*WorkflowBill
 
 // WorkflowBill specifies billable time for a specific environment in a workflow.
 type WorkflowBill struct {

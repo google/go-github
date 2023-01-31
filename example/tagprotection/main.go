@@ -19,9 +19,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v50/github"
 	"golang.org/x/crypto/ssh/terminal"
-	"golang.org/x/oauth2"
 )
 
 func main() {
@@ -45,12 +44,7 @@ func main() {
 	token := string(byteToken)
 
 	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-
-	client := github.NewClient(tc)
+	client := github.NewTokenClient(ctx, token)
 
 	// create new tag protection
 	if pattern != "" {

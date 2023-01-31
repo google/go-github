@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // RepoStatus represents the status of a repository at a particular reference.
@@ -35,8 +34,8 @@ type RepoStatus struct {
 	AvatarURL *string `json:"avatar_url,omitempty"`
 
 	Creator   *User      `json:"creator,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 }
 
 func (r RepoStatus) String() string {

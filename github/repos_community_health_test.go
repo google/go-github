@@ -76,7 +76,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 	want := &CommunityHealthMetrics{
 		HealthPercentage:      Int(100),
 		Description:           String("My first repository on GitHub!"),
-		UpdatedAt:             &updatedAt,
+		UpdatedAt:             &Timestamp{updatedAt},
 		ContentReportsEnabled: Bool(true),
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{
@@ -310,7 +310,7 @@ func TestCommunityHealthMetrics_Marshal(t *testing.T) {
 				HTMLURL: String("hurl"),
 			},
 		},
-		UpdatedAt:             &referenceTime,
+		UpdatedAt:             &Timestamp{referenceTime},
 		ContentReportsEnabled: Bool(true),
 	}
 

@@ -24,15 +24,18 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
+	"golang.org/x/oauth2"
 )
 
 const (
-	Version = "v48.0.0"
+	Version = "v50.0.0"
 
-	defaultBaseURL   = "https://api.github.com/"
-	defaultUserAgent = "go-github" + "/" + Version
-	uploadBaseURL    = "https://uploads.github.com/"
+	defaultAPIVersion = "2022-11-28"
+	defaultBaseURL    = "https://api.github.com/"
+	defaultUserAgent  = "go-github" + "/" + Version
+	uploadBaseURL     = "https://uploads.github.com/"
 
+	headerAPIVersion    = "X-GitHub-Api-Version"
 	headerRateLimit     = "X-RateLimit-Limit"
 	headerRateRemaining = "X-RateLimit-Remaining"
 	headerRateReset     = "X-RateLimit-Reset"
@@ -168,8 +171,9 @@ type Client struct {
 	// User agent used when communicating with the GitHub API.
 	UserAgent string
 
-	rateMu     sync.Mutex
-	rateLimits [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	rateMu                  sync.Mutex
+	rateLimits              [categories]Rate // Rate limits for the client as determined by the most recent API calls.
+	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -344,6 +348,11 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
+// NewTokenClient returns a new GitHub API client authenticated with the provided token.
+func NewTokenClient(ctx context.Context, token string) *Client {
+	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
+}
+
 // NewEnterpriseClient returns a new GitHub API client with provided
 // base URL and upload URL (often is your GitHub Enterprise hostname).
 // If the base URL does not have the suffix "/api/v3/", it will be added automatically.
@@ -392,12 +401,24 @@ func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*C
 	return c, nil
 }
 
+// RequestOption represents an option that can modify an http.Request.
+type RequestOption func(req *http.Request)
+
+// WithVersion overrides the GitHub v3 API version for this individual request.
+// For more information, see:
+// https://github.blog/2022-11-28-to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/
+func WithVersion(version string) RequestOption {
+	return func(req *http.Request) {
+		req.Header.Set(headerAPIVersion, version)
+	}
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
-func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
+func (c *Client) NewRequest(method, urlStr string, body interface{}, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
@@ -430,6 +451,12 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
+	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+
+	for _, opt := range opts {
+		opt(req)
+	}
+
 	return req, nil
 }
 
@@ -437,7 +464,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 // Body is sent with Content-Type: application/x-www-form-urlencoded.
-func (c *Client) NewFormRequest(urlStr string, body io.Reader) (*http.Request, error) {
+func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
@@ -457,13 +484,19 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader) (*http.Request, e
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
+	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+
+	for _, opt := range opts {
+		opt(req)
+	}
+
 	return req, nil
 }
 
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
-func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string) (*http.Request, error) {
+func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("UploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
@@ -485,6 +518,12 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	req.Header.Set("Content-Type", mediaType)
 	req.Header.Set("Accept", mediaTypeV3)
 	req.Header.Set("User-Agent", c.UserAgent)
+	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+
+	for _, opt := range opts {
+		opt(req)
+	}
+
 	return req, nil
 }
 
@@ -664,7 +703,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 	req = withContext(ctx, req)
 
-	rateLimitCategory := category(req.URL.Path)
+	rateLimitCategory := category(req.Method, req.URL.Path)
 
 	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
 		// If we've hit rate limit, don't make further requests before Reset time.
@@ -672,6 +711,12 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 			return &Response{
 				Response: err.Response,
 				Rate:     err.Rate,
+			}, err
+		}
+		// If we've hit a secondary rate limit, don't make further requests before Retry After.
+		if err := c.checkSecondaryRateLimitBeforeDo(ctx, req); err != nil {
+			return &Response{
+				Response: err.Response,
 			}, err
 		}
 	}
@@ -724,6 +769,14 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 
 			aerr.Raw = b
 			err = aerr
+		}
+
+		// Update the secondary rate limit if we hit it.
+		rerr, ok := err.(*AbuseRateLimitError)
+		if ok && rerr.RetryAfter != nil {
+			c.rateMu.Lock()
+			c.secondaryRateLimitReset = time.Now().Add(*rerr.RetryAfter)
+			c.rateMu.Unlock()
 		}
 	}
 	return response, err
@@ -789,6 +842,35 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory rat
 	return nil
 }
 
+// checkSecondaryRateLimitBeforeDo does not make any network calls, but uses existing knowledge from
+// current client state in order to quickly check if *AbuseRateLimitError can be immediately returned
+// from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
+// Otherwise it returns nil, and Client.Do should proceed normally.
+func (c *Client) checkSecondaryRateLimitBeforeDo(ctx context.Context, req *http.Request) *AbuseRateLimitError {
+	c.rateMu.Lock()
+	secondary := c.secondaryRateLimitReset
+	c.rateMu.Unlock()
+	if !secondary.IsZero() && time.Now().Before(secondary) {
+		// Create a fake response.
+		resp := &http.Response{
+			Status:     http.StatusText(http.StatusForbidden),
+			StatusCode: http.StatusForbidden,
+			Request:    req,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader("")),
+		}
+
+		retryAfter := time.Until(secondary)
+		return &AbuseRateLimitError{
+			Response:   resp,
+			Message:    fmt.Sprintf("API secondary rate limit exceeded until %v, not making remote request.", secondary),
+			RetryAfter: &retryAfter,
+		}
+	}
+
+	return nil
+}
+
 // compareHTTPResponse returns whether two http.Response objects are equal or not.
 // Currently, only StatusCode is checked. This function is used when implementing the
 // Is(error) bool interface for the custom error types in this package.
@@ -809,7 +891,7 @@ An ErrorResponse reports one or more errors caused by an API request.
 GitHub API docs: https://docs.github.com/en/rest/#client-errors
 */
 type ErrorResponse struct {
-	Response *http.Response // HTTP response that caused this error
+	Response *http.Response `json:"-"`       // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
 	Errors   []Error        `json:"errors"`  // more detail on individual errors
 	// Block is only populated on certain types of errors such as code 451.
@@ -1159,13 +1241,36 @@ const (
 	categories // An array of this length will be able to contain all rate limit categories.
 )
 
-// category returns the rate limit category of the endpoint, determined by Request.URL.Path.
-func category(path string) rateLimitCategory {
+// category returns the rate limit category of the endpoint, determined by HTTP method and Request.URL.Path.
+func category(method, path string) rateLimitCategory {
 	switch {
+	// https://docs.github.com/en/rest/rate-limit#about-rate-limits
 	default:
+		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
+		// because no API found for this category.
 		return coreCategory
 	case strings.HasPrefix(path, "/search/"):
 		return searchCategory
+	case path == "/graphql":
+		return graphqlCategory
+	case strings.HasPrefix(path, "/app-manifests/") &&
+		strings.HasSuffix(path, "/conversions") &&
+		method == http.MethodPost:
+		return integrationManifestCategory
+
+	// https://docs.github.com/en/rest/migrations/source-imports#start-an-import
+	case strings.HasPrefix(path, "/repos/") &&
+		strings.HasSuffix(path, "/import") &&
+		method == http.MethodPut:
+		return sourceImportCategory
+
+	// https://docs.github.com/en/rest/code-scanning#upload-an-analysis-as-sarif-data
+	case strings.HasSuffix(path, "/code-scanning/sarifs"):
+		return codeScanningUploadCategory
+
+	// https://docs.github.com/en/enterprise-cloud@latest/rest/scim
+	case strings.HasPrefix(path, "/scim/"):
+		return scimCategory
 	}
 }
 
@@ -1358,8 +1463,8 @@ func formatRateReset(d time.Duration) string {
 
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
-func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool) (*http.Response, error) {
-	req, err := c.NewRequest("GET", u, nil)
+func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, followRedirects bool, opts ...RequestOption) (*http.Response, error) {
+	req, err := c.NewRequest("GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1380,7 +1485,7 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	if followRedirects && resp.StatusCode == http.StatusMovedPermanently {
 		resp.Body.Close()
 		u = resp.Header.Get("Location")
-		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false)
+		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, false, opts...)
 	}
 	return resp, err
 }

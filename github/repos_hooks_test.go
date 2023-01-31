@@ -19,7 +19,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	input := &Hook{CreatedAt: &referenceTime}
+	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		v := new(createHookRequest)
@@ -525,8 +525,8 @@ func TestBranchHook_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Hook{}, "{}")
 
 	v := &Hook{
-		CreatedAt: &referenceTime,
-		UpdatedAt: &referenceTime,
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
 		URL:       String("url"),
 		ID:        Int64(1),
 		Type:      String("type"),

@@ -838,13 +838,13 @@ func TestRepositoryContentResponse_Marshal(t *testing.T) {
 		Commit: Commit{
 			SHA: String("s"),
 			Author: &CommitAuthor{
-				Date:  &referenceTime,
+				Date:  &Timestamp{referenceTime},
 				Name:  String("n"),
 				Email: String("e"),
 				Login: String("u"),
 			},
 			Committer: &CommitAuthor{
-				Date:  &referenceTime,
+				Date:  &Timestamp{referenceTime},
 				Name:  String("n"),
 				Email: String("e"),
 				Login: String("u"),
@@ -958,13 +958,13 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 		SHA:     String("type"),
 		Branch:  String("type"),
 		Author: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),
 		},
 		Committer: &CommitAuthor{
-			Date:  &referenceTime,
+			Date:  &Timestamp{referenceTime},
 			Name:  String("name"),
 			Email: String("email"),
 			Login: String("login"),

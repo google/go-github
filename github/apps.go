@@ -8,7 +8,6 @@ package github
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 // AppsService provides access to the installation related functions
@@ -36,7 +35,7 @@ type App struct {
 // InstallationToken represents an installation token.
 type InstallationToken struct {
 	Token        *string                  `json:"token,omitempty"`
-	ExpiresAt    *time.Time               `json:"expires_at,omitempty"`
+	ExpiresAt    *Timestamp               `json:"expires_at,omitempty"`
 	Permissions  *InstallationPermissions `json:"permissions,omitempty"`
 	Repositories []*Repository            `json:"repositories,omitempty"`
 }

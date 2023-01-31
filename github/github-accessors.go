@@ -38,6 +38,94 @@ func (a *ActionsAllowed) GetVerifiedAllowed() bool {
 	return *a.VerifiedAllowed
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetLastAccessedAt returns the LastAccessedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetLastAccessedAt() Timestamp {
+	if a == nil || a.LastAccessedAt == nil {
+		return Timestamp{}
+	}
+	return *a.LastAccessedAt
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSizeInBytes returns the SizeInBytes field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetSizeInBytes() int64 {
+	if a == nil || a.SizeInBytes == nil {
+		return 0
+	}
+	return *a.SizeInBytes
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (a *ActionsCache) GetVersion() string {
+	if a == nil || a.Version == nil {
+		return ""
+	}
+	return *a.Version
+}
+
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetDirection() string {
+	if a == nil || a.Direction == nil {
+		return ""
+	}
+	return *a.Direction
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetRef() string {
+	if a == nil || a.Ref == nil {
+		return ""
+	}
+	return *a.Ref
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (a *ActionsCacheListOptions) GetSort() string {
+	if a == nil || a.Sort == nil {
+		return ""
+	}
+	return *a.Sort
+}
+
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissions) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
@@ -468,6 +556,14 @@ func (a *AllowDeletionsEnforcementLevelChanges) GetFrom() string {
 		return ""
 	}
 	return *a.From
+}
+
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (a *AllowForkSyncing) GetEnabled() bool {
+	if a == nil || a.Enabled == nil {
+		return false
+	}
+	return *a.Enabled
 }
 
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
@@ -2446,6 +2542,14 @@ func (c *CodeScanningAlertEvent) GetCommitOID() string {
 	return *c.CommitOID
 }
 
+// GetInstallation returns the Installation field.
+func (c *CodeScanningAlertEvent) GetInstallation() *Installation {
+	if c == nil {
+		return nil
+	}
+	return c.Installation
+}
+
 // GetOrg returns the Org field.
 func (c *CodeScanningAlertEvent) GetOrg() *Organization {
 	if c == nil {
@@ -2476,6 +2580,22 @@ func (c *CodeScanningAlertEvent) GetSender() *User {
 		return nil
 	}
 	return c.Sender
+}
+
+// GetDismissedComment returns the DismissedComment field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedComment() string {
+	if c == nil || c.DismissedComment == nil {
+		return ""
+	}
+	return *c.DismissedComment
+}
+
+// GetDismissedReason returns the DismissedReason field if it's non-nil, zero value otherwise.
+func (c *CodeScanningAlertState) GetDismissedReason() string {
+	if c == nil || c.DismissedReason == nil {
+		return ""
+	}
+	return *c.DismissedReason
 }
 
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
@@ -2607,9 +2727,9 @@ func (c *CombinedStatus) GetTotalCount() int {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (c *Comment) GetCreatedAt() time.Time {
+func (c *Comment) GetCreatedAt() Timestamp {
 	if c == nil || c.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.CreatedAt
 }
@@ -2735,9 +2855,9 @@ func (c *Commit) GetVerification() *SignatureVerification {
 }
 
 // GetDate returns the Date field if it's non-nil, zero value otherwise.
-func (c *CommitAuthor) GetDate() time.Time {
+func (c *CommitAuthor) GetDate() Timestamp {
 	if c == nil || c.Date == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.Date
 }
@@ -3191,9 +3311,9 @@ func (c *CommunityHealthMetrics) GetHealthPercentage() int {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (c *CommunityHealthMetrics) GetUpdatedAt() time.Time {
+func (c *CommunityHealthMetrics) GetUpdatedAt() Timestamp {
 	if c == nil || c.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *c.UpdatedAt
 }
@@ -4132,6 +4252,46 @@ func (d *Deployment) GetURL() string {
 		return ""
 	}
 	return *d.URL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetID() int64 {
+	if d == nil || d.ID == nil {
+		return 0
+	}
+	return *d.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicy) GetNodeID() string {
+	if d == nil || d.NodeID == nil {
+		return ""
+	}
+	return *d.NodeID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicyRequest) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (d *DeploymentBranchPolicyResponse) GetTotalCount() int {
+	if d == nil || d.TotalCount == nil {
+		return 0
+	}
+	return *d.TotalCount
 }
 
 // GetDeployment returns the Deployment field.
@@ -5110,6 +5270,38 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetAdvancedSecurityEnabledForNewRepositories returns the AdvancedSecurityEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetAdvancedSecurityEnabledForNewRepositories() bool {
+	if e == nil || e.AdvancedSecurityEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.AdvancedSecurityEnabledForNewRepositories
+}
+
+// GetSecretScanningEnabledForNewRepositories returns the SecretScanningEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningEnabledForNewRepositories() bool {
+	if e == nil || e.SecretScanningEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.SecretScanningEnabledForNewRepositories
+}
+
+// GetSecretScanningPushProtectionCustomLink returns the SecretScanningPushProtectionCustomLink field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionCustomLink() string {
+	if e == nil || e.SecretScanningPushProtectionCustomLink == nil {
+		return ""
+	}
+	return *e.SecretScanningPushProtectionCustomLink
+}
+
+// GetSecretScanningPushProtectionEnabledForNewRepositories returns the SecretScanningPushProtectionEnabledForNewRepositories field if it's non-nil, zero value otherwise.
+func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningPushProtectionEnabledForNewRepositories() bool {
+	if e == nil || e.SecretScanningPushProtectionEnabledForNewRepositories == nil {
+		return false
+	}
+	return *e.SecretScanningPushProtectionEnabledForNewRepositories
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
@@ -5255,9 +5447,9 @@ func (e *Event) GetActor() *User {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (e *Event) GetCreatedAt() time.Time {
+func (e *Event) GetCreatedAt() Timestamp {
 	if e == nil || e.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *e.CreatedAt
 }
@@ -5591,9 +5783,9 @@ func (g *Gist) GetComments() int {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (g *Gist) GetCreatedAt() time.Time {
+func (g *Gist) GetCreatedAt() Timestamp {
 	if g == nil || g.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *g.CreatedAt
 }
@@ -5671,9 +5863,9 @@ func (g *Gist) GetPublic() bool {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (g *Gist) GetUpdatedAt() time.Time {
+func (g *Gist) GetUpdatedAt() Timestamp {
 	if g == nil || g.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *g.UpdatedAt
 }
@@ -5687,9 +5879,9 @@ func (g *GistComment) GetBody() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (g *GistComment) GetCreatedAt() time.Time {
+func (g *GistComment) GetCreatedAt() Timestamp {
 	if g == nil || g.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *g.CreatedAt
 }
@@ -6023,17 +6215,17 @@ func (g *GPGKey) GetCanSign() bool {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (g *GPGKey) GetCreatedAt() time.Time {
+func (g *GPGKey) GetCreatedAt() Timestamp {
 	if g == nil || g.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *g.CreatedAt
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
-func (g *GPGKey) GetExpiresAt() time.Time {
+func (g *GPGKey) GetExpiresAt() Timestamp {
 	if g == nil || g.ExpiresAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *g.ExpiresAt
 }
@@ -6199,9 +6391,9 @@ func (h *Hook) GetActive() bool {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (h *Hook) GetCreatedAt() time.Time {
+func (h *Hook) GetCreatedAt() Timestamp {
 	if h == nil || h.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *h.CreatedAt
 }
@@ -6247,9 +6439,9 @@ func (h *Hook) GetType() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (h *Hook) GetUpdatedAt() time.Time {
+func (h *Hook) GetUpdatedAt() Timestamp {
 	if h == nil || h.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *h.UpdatedAt
 }
@@ -7151,9 +7343,9 @@ func (i *InstallationRepositoriesEvent) GetSender() *User {
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
-func (i *InstallationToken) GetExpiresAt() time.Time {
+func (i *InstallationToken) GetExpiresAt() Timestamp {
 	if i == nil || i.ExpiresAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.ExpiresAt
 }
@@ -7207,9 +7399,9 @@ func (i *InteractionRestriction) GetOrigin() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *Invitation) GetCreatedAt() time.Time {
+func (i *Invitation) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7327,9 +7519,9 @@ func (i *Issue) GetBody() string {
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
-func (i *Issue) GetClosedAt() time.Time {
+func (i *Issue) GetClosedAt() Timestamp {
 	if i == nil || i.ClosedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.ClosedAt
 }
@@ -7359,9 +7551,9 @@ func (i *Issue) GetCommentsURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *Issue) GetCreatedAt() time.Time {
+func (i *Issue) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7487,9 +7679,9 @@ func (i *Issue) GetTitle() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (i *Issue) GetUpdatedAt() time.Time {
+func (i *Issue) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.UpdatedAt
 }
@@ -7527,9 +7719,9 @@ func (i *IssueComment) GetBody() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueComment) GetCreatedAt() time.Time {
+func (i *IssueComment) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7575,9 +7767,9 @@ func (i *IssueComment) GetReactions() *Reactions {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueComment) GetUpdatedAt() time.Time {
+func (i *IssueComment) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.UpdatedAt
 }
@@ -7695,9 +7887,9 @@ func (i *IssueEvent) GetCommitID() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueEvent) GetCreatedAt() time.Time {
+func (i *IssueEvent) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7815,17 +8007,17 @@ func (i *IssueImport) GetClosed() bool {
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
-func (i *IssueImport) GetClosedAt() time.Time {
+func (i *IssueImport) GetClosedAt() Timestamp {
 	if i == nil || i.ClosedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.ClosedAt
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueImport) GetCreatedAt() time.Time {
+func (i *IssueImport) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7839,9 +8031,9 @@ func (i *IssueImport) GetMilestone() int {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueImport) GetUpdatedAt() time.Time {
+func (i *IssueImport) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.UpdatedAt
 }
@@ -7887,9 +8079,9 @@ func (i *IssueImportError) GetValue() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueImportResponse) GetCreatedAt() time.Time {
+func (i *IssueImportResponse) GetCreatedAt() Timestamp {
 	if i == nil || i.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.CreatedAt
 }
@@ -7943,9 +8135,9 @@ func (i *IssueImportResponse) GetStatus() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (i *IssueImportResponse) GetUpdatedAt() time.Time {
+func (i *IssueImportResponse) GetUpdatedAt() Timestamp {
 	if i == nil || i.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *i.UpdatedAt
 }
@@ -8742,6 +8934,14 @@ func (l *Location) GetStartLine() int {
 	return *l.StartLine
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (l *LockBranch) GetEnabled() bool {
+	if l == nil || l.Enabled == nil {
+		return false
+	}
+	return *l.Enabled
+}
+
 // GetEffectiveDate returns the EffectiveDate field if it's non-nil, zero value otherwise.
 func (m *MarketplacePendingChange) GetEffectiveDate() Timestamp {
 	if m == nil || m.EffectiveDate == nil {
@@ -9455,9 +9655,9 @@ func (m *Migration) GetURL() string {
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
-func (m *Milestone) GetClosedAt() time.Time {
+func (m *Milestone) GetClosedAt() Timestamp {
 	if m == nil || m.ClosedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *m.ClosedAt
 }
@@ -9471,9 +9671,9 @@ func (m *Milestone) GetClosedIssues() int {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (m *Milestone) GetCreatedAt() time.Time {
+func (m *Milestone) GetCreatedAt() Timestamp {
 	if m == nil || m.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *m.CreatedAt
 }
@@ -9495,9 +9695,9 @@ func (m *Milestone) GetDescription() string {
 }
 
 // GetDueOn returns the DueOn field if it's non-nil, zero value otherwise.
-func (m *Milestone) GetDueOn() time.Time {
+func (m *Milestone) GetDueOn() Timestamp {
 	if m == nil || m.DueOn == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *m.DueOn
 }
@@ -9567,9 +9767,9 @@ func (m *Milestone) GetTitle() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (m *Milestone) GetUpdatedAt() time.Time {
+func (m *Milestone) GetUpdatedAt() Timestamp {
 	if m == nil || m.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *m.UpdatedAt
 }
@@ -9823,9 +10023,9 @@ func (n *Notification) GetID() string {
 }
 
 // GetLastReadAt returns the LastReadAt field if it's non-nil, zero value otherwise.
-func (n *Notification) GetLastReadAt() time.Time {
+func (n *Notification) GetLastReadAt() Timestamp {
 	if n == nil || n.LastReadAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *n.LastReadAt
 }
@@ -9863,9 +10063,9 @@ func (n *Notification) GetUnread() bool {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (n *Notification) GetUpdatedAt() time.Time {
+func (n *Notification) GetUpdatedAt() Timestamp {
 	if n == nil || n.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *n.UpdatedAt
 }
@@ -9934,6 +10134,14 @@ func (o *OAuthAPP) GetURL() string {
 	return *o.URL
 }
 
+// GetUseDefault returns the UseDefault field if it's non-nil, zero value otherwise.
+func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
+	if o == nil || o.UseDefault == nil {
+		return false
+	}
+	return *o.UseDefault
+}
+
 // GetAdvancedSecurityEnabledForNewRepos returns the AdvancedSecurityEnabledForNewRepos field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAdvancedSecurityEnabledForNewRepos() bool {
 	if o == nil || o.AdvancedSecurityEnabledForNewRepos == nil {
@@ -9983,9 +10191,9 @@ func (o *Organization) GetCompany() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (o *Organization) GetCreatedAt() time.Time {
+func (o *Organization) GetCreatedAt() Timestamp {
 	if o == nil || o.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *o.CreatedAt
 }
@@ -10351,9 +10559,9 @@ func (o *Organization) GetType() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (o *Organization) GetUpdatedAt() time.Time {
+func (o *Organization) GetUpdatedAt() Timestamp {
 	if o == nil || o.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *o.UpdatedAt
 }
@@ -12262,12 +12470,12 @@ func (p *Protection) GetAllowForcePushes() *AllowForcePushes {
 	return p.AllowForcePushes
 }
 
-// GetAllowForkSyncing returns the AllowForkSyncing field if it's non-nil, zero value otherwise.
-func (p *Protection) GetAllowForkSyncing() bool {
-	if p == nil || p.AllowForkSyncing == nil {
-		return false
+// GetAllowForkSyncing returns the AllowForkSyncing field.
+func (p *Protection) GetAllowForkSyncing() *AllowForkSyncing {
+	if p == nil {
+		return nil
 	}
-	return *p.AllowForkSyncing
+	return p.AllowForkSyncing
 }
 
 // GetEnforceAdmins returns the EnforceAdmins field.
@@ -12278,12 +12486,12 @@ func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	return p.EnforceAdmins
 }
 
-// GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.
-func (p *Protection) GetLockBranch() bool {
-	if p == nil || p.LockBranch == nil {
-		return false
+// GetLockBranch returns the LockBranch field.
+func (p *Protection) GetLockBranch() *LockBranch {
+	if p == nil {
+		return nil
 	}
-	return *p.LockBranch
+	return p.LockBranch
 }
 
 // GetRequiredConversationResolution returns the RequiredConversationResolution field.
@@ -12639,9 +12847,9 @@ func (p *PullRequest) GetChangedFiles() int {
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetClosedAt() time.Time {
+func (p *PullRequest) GetClosedAt() Timestamp {
 	if p == nil || p.ClosedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.ClosedAt
 }
@@ -12679,9 +12887,9 @@ func (p *PullRequest) GetCommitsURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetCreatedAt() time.Time {
+func (p *PullRequest) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.CreatedAt
 }
@@ -12799,9 +13007,9 @@ func (p *PullRequest) GetMerged() bool {
 }
 
 // GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetMergedAt() time.Time {
+func (p *PullRequest) GetMergedAt() Timestamp {
 	if p == nil || p.MergedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.MergedAt
 }
@@ -12903,9 +13111,9 @@ func (p *PullRequest) GetTitle() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetUpdatedAt() time.Time {
+func (p *PullRequest) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.UpdatedAt
 }
@@ -13047,9 +13255,9 @@ func (p *PullRequestComment) GetCommitID() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequestComment) GetCreatedAt() time.Time {
+func (p *PullRequestComment) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.CreatedAt
 }
@@ -13199,9 +13407,9 @@ func (p *PullRequestComment) GetStartSide() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequestComment) GetUpdatedAt() time.Time {
+func (p *PullRequestComment) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.UpdatedAt
 }
@@ -13455,9 +13663,9 @@ func (p *PullRequestReview) GetState() string {
 }
 
 // GetSubmittedAt returns the SubmittedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequestReview) GetSubmittedAt() time.Time {
+func (p *PullRequestReview) GetSubmittedAt() Timestamp {
 	if p == nil || p.SubmittedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *p.SubmittedAt
 }
@@ -13660,6 +13868,14 @@ func (p *PullRequestReviewsEnforcementRequest) GetDismissalRestrictionsRequest()
 		return nil
 	}
 	return p.DismissalRestrictionsRequest
+}
+
+// GetRequireLastPushApproval returns the RequireLastPushApproval field if it's non-nil, zero value otherwise.
+func (p *PullRequestReviewsEnforcementRequest) GetRequireLastPushApproval() bool {
+	if p == nil || p.RequireLastPushApproval == nil {
+		return false
+	}
+	return *p.RequireLastPushApproval
 }
 
 // GetBypassPullRequestAllowancesRequest returns the BypassPullRequestAllowancesRequest field.
@@ -15158,6 +15374,14 @@ func (r *Repository) GetGitURL() string {
 	return *r.GitURL
 }
 
+// GetHasDiscussions returns the HasDiscussions field if it's non-nil, zero value otherwise.
+func (r *Repository) GetHasDiscussions() bool {
+	if r == nil || r.HasDiscussions == nil {
+		return false
+	}
+	return *r.HasDiscussions
+}
+
 // GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
 func (r *Repository) GetHasDownloads() bool {
 	if r == nil || r.HasDownloads == nil {
@@ -15670,6 +15894,14 @@ func (r *Repository) GetWatchersCount() int {
 	return *r.WatchersCount
 }
 
+// GetAccessLevel returns the AccessLevel field if it's non-nil, zero value otherwise.
+func (r *RepositoryActionsAccessLevel) GetAccessLevel() string {
+	if r == nil || r.AccessLevel == nil {
+		return ""
+	}
+	return *r.AccessLevel
+}
+
 // GetAdvancedSecurityCommitters returns the AdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
 func (r *RepositoryActiveCommitters) GetAdvancedSecurityCommitters() int {
 	if r == nil || r.AdvancedSecurityCommitters == nil {
@@ -15703,9 +15935,9 @@ func (r *RepositoryComment) GetCommitID() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (r *RepositoryComment) GetCreatedAt() time.Time {
+func (r *RepositoryComment) GetCreatedAt() Timestamp {
 	if r == nil || r.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *r.CreatedAt
 }
@@ -15759,9 +15991,9 @@ func (r *RepositoryComment) GetReactions() *Reactions {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (r *RepositoryComment) GetUpdatedAt() time.Time {
+func (r *RepositoryComment) GetUpdatedAt() Timestamp {
 	if r == nil || r.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *r.UpdatedAt
 }
@@ -16390,6 +16622,14 @@ func (r *RepositoryRelease) GetID() int64 {
 	return *r.ID
 }
 
+// GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetMakeLatest() string {
+	if r == nil || r.MakeLatest == nil {
+		return ""
+	}
+	return *r.MakeLatest
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetName() string {
 	if r == nil || r.Name == nil {
@@ -16703,9 +16943,9 @@ func (r *RepoStatus) GetContext() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (r *RepoStatus) GetCreatedAt() time.Time {
+func (r *RepoStatus) GetCreatedAt() Timestamp {
 	if r == nil || r.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *r.CreatedAt
 }
@@ -16759,9 +16999,9 @@ func (r *RepoStatus) GetTargetURL() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (r *RepoStatus) GetUpdatedAt() time.Time {
+func (r *RepoStatus) GetUpdatedAt() Timestamp {
 	if r == nil || r.UpdatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *r.UpdatedAt
 }
@@ -19023,9 +19263,9 @@ func (t *Timeline) GetCommitURL() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (t *Timeline) GetCreatedAt() time.Time {
+func (t *Timeline) GetCreatedAt() Timestamp {
 	if t == nil || t.CreatedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *t.CreatedAt
 }
@@ -19127,9 +19367,9 @@ func (t *Timeline) GetState() string {
 }
 
 // GetSubmittedAt returns the SubmittedAt field if it's non-nil, zero value otherwise.
-func (t *Timeline) GetSubmittedAt() time.Time {
+func (t *Timeline) GetSubmittedAt() Timestamp {
 	if t == nil || t.SubmittedAt == nil {
-		return time.Time{}
+		return Timestamp{}
 	}
 	return *t.SubmittedAt
 }
@@ -20542,30 +20782,6 @@ func (w *WorkflowDispatchEvent) GetWorkflow() string {
 	return *w.Workflow
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowEnvironment) GetMacOS() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowEnvironment) GetUbuntu() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowEnvironment) GetWindows() *WorkflowBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetCheckRunURL returns the CheckRunURL field if it's non-nil, zero value otherwise.
 func (w *WorkflowJob) GetCheckRunURL() string {
 	if w == nil || w.CheckRunURL == nil {
@@ -20708,6 +20924,14 @@ func (w *WorkflowJob) GetURL() string {
 		return ""
 	}
 	return *w.URL
+}
+
+// GetWorkflowName returns the WorkflowName field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetWorkflowName() string {
+	if w == nil || w.WorkflowName == nil {
+		return ""
+	}
+	return *w.WorkflowName
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -21022,30 +21246,6 @@ func (w *WorkflowRunBill) GetTotalMS() int64 {
 	return *w.TotalMS
 }
 
-// GetMacOS returns the MacOS field.
-func (w *WorkflowRunEnvironment) GetMacOS() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.MacOS
-}
-
-// GetUbuntu returns the Ubuntu field.
-func (w *WorkflowRunEnvironment) GetUbuntu() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Ubuntu
-}
-
-// GetWindows returns the Windows field.
-func (w *WorkflowRunEnvironment) GetWindows() *WorkflowRunBill {
-	if w == nil {
-		return nil
-	}
-	return w.Windows
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (w *WorkflowRunEvent) GetAction() string {
 	if w == nil || w.Action == nil {
@@ -21127,7 +21327,7 @@ func (w *WorkflowRuns) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowRunUsage) GetBillable() *WorkflowRunEnvironment {
+func (w *WorkflowRunUsage) GetBillable() *WorkflowRunBillMap {
 	if w == nil {
 		return nil
 	}
@@ -21151,7 +21351,7 @@ func (w *Workflows) GetTotalCount() int {
 }
 
 // GetBillable returns the Billable field.
-func (w *WorkflowUsage) GetBillable() *WorkflowEnvironment {
+func (w *WorkflowUsage) GetBillable() *WorkflowBillMap {
 	if w == nil {
 		return nil
 	}

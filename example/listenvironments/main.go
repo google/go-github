@@ -18,8 +18,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v48/github"
-	"golang.org/x/oauth2"
+	"github.com/google/go-github/v50/github"
 )
 
 func main() {
@@ -31,11 +30,8 @@ func main() {
 		log.Fatal("Unauthorized: No token present")
 	}
 
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-
 	ctx := context.Background()
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	client := github.NewTokenClient(ctx, token)
 
 	expectedPageSize := 2
 

@@ -12,7 +12,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v50/github"
 )
 
 const (
