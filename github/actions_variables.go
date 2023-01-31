@@ -12,15 +12,15 @@ import (
 
 // ActionVariable represents a repository action variable.
 type ActionVariable struct {
-	Name       string    `json:"name"`
-	Value      string    `json:"value"`
-	CreatedAt  Timestamp `json:"created_at"`
-	UpdatedAt  Timestamp `json:"updated_at"`
-	Visibility string    `json:"visibility,omitempty"`
+	Name       string     `json:"name"`
+	Value      string     `json:"value"`
+	CreatedAt  *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
+	Visibility *string    `json:"visibility,omitempty"`
 	// Used by ListOrgVariables and GetOrgVariables
-	SelectedRepositoriesURL string `json:"selected_repositories_url,omitempty"`
+	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
 	// Used by UpdateOrgVariable and CreateOrgVariable
-	SelectedRepositoryIDs SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
+	SelectedRepositoryIDs *SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
 // ActionsVariables represents one item from the ListVariables response.

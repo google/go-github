@@ -35,8 +35,8 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionVariable{
-			{Name: "A", Value: "AA", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{Name: "B", Value: "BB", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -76,8 +76,8 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 	want := &ActionVariable{
 		Name:      "NAME",
 		Value:     "VALUE",
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetRepoVariable returned %+v, want %+v", variable, want)
@@ -105,7 +105,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`+"\n")
+		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -137,7 +137,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`+"\n")
+		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -207,9 +207,9 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 3,
 		Variables: []*ActionVariable{
-			{Name: "A", Value: "AA", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "private"},
-			{Name: "B", Value: "BB", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "all"},
-			{Name: "C", Value: "CC", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("private")},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("all")},
+			{Name: "C", Value: "CC", CreatedAt: &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: String("selected"), SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -249,10 +249,10 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 	want := &ActionVariable{
 		Name:                    "NAME",
 		Value:                   "VALUE",
-		CreatedAt:               Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt:               Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		Visibility:              "selected",
-		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories",
+		CreatedAt:               &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt:               &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		Visibility:              String("selected"),
+		SelectedRepositoriesURL: String("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetOrgVariable returned %+v, want %+v", variable, want)
@@ -280,15 +280,15 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 	})
 
 	input := &ActionVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		Visibility:            String("selected"),
+		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
 	_, err := client.Actions.CreateOrgVariable(ctx, "o", input)
@@ -314,15 +314,15 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	input := &ActionVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
-		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		Visibility:            String("selected"),
+		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
 	ctx := context.Background()
 	_, err := client.Actions.UpdateOrgVariable(ctx, "o", input)
@@ -506,8 +506,8 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionVariable{
-			{Name: "A", Value: "AA", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
-			{Name: "B", Value: "BB", CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "A", Value: "AA", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
+			{Name: "B", Value: "BB", CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)}},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -547,8 +547,8 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	want := &ActionVariable{
 		Name:      "variable",
 		Value:     "VAR",
-		CreatedAt: Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		CreatedAt: &Timestamp{time.Date(2019, time.January, 02, 15, 04, 05, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2020, time.January, 02, 15, 04, 05, 0, time.UTC)},
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetEnvVariable returned %+v, want %+v", variable, want)
@@ -576,7 +576,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	mux.HandleFunc("/repositories/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`+"\n")
+		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -608,7 +608,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	mux.HandleFunc("/repositories/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`+"\n")
+		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
 		w.WriteHeader(http.StatusNoContent)
 	})
 
