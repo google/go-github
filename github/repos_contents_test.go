@@ -757,7 +757,7 @@ func TestRepositoriesService_GetArchiveLink_invalidLocationHeader(t *testing.T) 
 	})
 
 	ctx := context.Background()
-	_, _, err := client.Repositories.GetArchiveLink(ctx, "o", "r", Tarball, &RepositoryContentGetOptions{}, false)
+	_, _, err := client.Repositories.GetArchiveLink(ctx, "\n", "\n", Tarball, &RepositoryContentGetOptions{}, false)
 	testURLParseError(t, err)
 }
 

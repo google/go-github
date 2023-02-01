@@ -381,7 +381,7 @@ func TestActionsService_DownloadArtifact_invalidLocationHeader(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	_, _, err := client.Actions.DownloadArtifact(ctx, "o", "r", 1, false)
+	_, _, err := client.Actions.DownloadArtifact(ctx, "\n", "\n", 1, false)
 	testURLParseError(t, err)
 }
 
