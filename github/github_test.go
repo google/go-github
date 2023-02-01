@@ -2860,6 +2860,16 @@ func TestParseTokenExpiration(t *testing.T) {
 			header: "2021-09-03 02:34:04 UTC",
 			want:   Timestamp{time.Date(2021, time.September, 3, 2, 34, 4, 0, time.UTC)},
 		},
+		{
+			header: "2021-09-03 14:34:04 UTC",
+			want:   Timestamp{time.Date(2021, time.September, 3, 14, 34, 4, 0, time.UTC)},
+		},
+		// Some tokens include the timezone offset instead of the timezone.
+		// https://github.com/google/go-github/issues/2649
+		{
+			header: "2023-04-26 20:23:26 +0200",
+			want:   Timestamp{time.Date(2023, time.April, 26, 18, 23, 26, 0, time.UTC)},
+		},
 	}
 
 	for _, tt := range tests {
@@ -2871,7 +2881,7 @@ func TestParseTokenExpiration(t *testing.T) {
 		res.Header.Set(headerTokenExpiration, tt.header)
 		exp := parseTokenExpiration(res)
 		if !exp.Equal(tt.want) {
-			t.Errorf("parseTokenExpiration returned %#v, want %#v", exp, tt.want)
+			t.Errorf("parseTokenExpiration of %q\nreturned %#v\n    want %#v", tt.header, exp, tt.want)
 		}
 	}
 }
