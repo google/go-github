@@ -174,6 +174,46 @@ func (a *ActionsPermissionsRepository) GetSelectedActionsURL() string {
 	return *a.SelectedActionsURL
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsVariable) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetSelectedRepositoriesURL returns the SelectedRepositoriesURL field if it's non-nil, zero value otherwise.
+func (a *ActionsVariable) GetSelectedRepositoriesURL() string {
+	if a == nil || a.SelectedRepositoriesURL == nil {
+		return ""
+	}
+	return *a.SelectedRepositoriesURL
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field.
+func (a *ActionsVariable) GetSelectedRepositoryIDs() *SelectedRepoIDs {
+	if a == nil {
+		return nil
+	}
+	return a.SelectedRepositoryIDs
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *ActionsVariable) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (a *ActionsVariable) GetVisibility() string {
+	if a == nil || a.Visibility == nil {
+		return ""
+	}
+	return *a.Visibility
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcedChanges) GetFrom() bool {
 	if a == nil || a.From == nil {

@@ -215,6 +215,53 @@ func TestActionsPermissionsRepository_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsVariable_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsVariable{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ActionsVariable{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestActionsVariable_GetSelectedRepositoriesURL(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsVariable{SelectedRepositoriesURL: &zeroValue}
+	a.GetSelectedRepositoriesURL()
+	a = &ActionsVariable{}
+	a.GetSelectedRepositoriesURL()
+	a = nil
+	a.GetSelectedRepositoriesURL()
+}
+
+func TestActionsVariable_GetSelectedRepositoryIDs(tt *testing.T) {
+	a := &ActionsVariable{}
+	a.GetSelectedRepositoryIDs()
+	a = nil
+	a.GetSelectedRepositoryIDs()
+}
+
+func TestActionsVariable_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &ActionsVariable{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &ActionsVariable{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestActionsVariable_GetVisibility(tt *testing.T) {
+	var zeroValue string
+	a := &ActionsVariable{Visibility: &zeroValue}
+	a.GetVisibility()
+	a = &ActionsVariable{}
+	a.GetVisibility()
+	a = nil
+	a.GetVisibility()
+}
+
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	var zeroValue bool
 	a := &AdminEnforcedChanges{From: &zeroValue}
