@@ -94,6 +94,46 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/repos/o/r/collaborators", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"permission": "pull", "page": "2"})
+		fmt.Fprintf(w, `[{"id":1}, {"id":2}]`)
+	})
+
+	opt := &ListCollaboratorsOptions{
+		ListOptions: ListOptions{Page: 2},
+		Permission:  "pull",
+	}
+	ctx := context.Background()
+	users, _, err := client.Repositories.ListCollaborators(ctx, "o", "r", opt)
+	if err != nil {
+		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
+	}
+
+	want := []*User{{ID: Int64(1)}, {ID: Int64(2)}}
+	if !cmp.Equal(users, want) {
+		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
+	}
+
+	const methodName = "ListCollaborators"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCollaborators(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.ListCollaborators(ctx, "o", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestRepositoriesService_ListCollaborators_invalidOwner(t *testing.T) {
 	client, _, _, teardown := setup()
 	defer teardown()
