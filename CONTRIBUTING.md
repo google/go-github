@@ -47,13 +47,13 @@ are more sensitive, emailed to <opensource@google.com>.
      [go vet][] over your code. this will help you find common style issues
      within your code and will keep styling consistent within the project.
 
-  2. Any significant changes should almost always be accompanied by tests. The
+  1. Any significant changes should almost always be accompanied by tests. The
      project already has good test coverage, so look at some of the existing
      tests if you're unsure how to go about it. [gocov][] and [gocov-html][]
      are invaluable tools for seeing which parts of your code aren't being
      exercised by your tests.
 
-  3. Please run:
+  1. Please run:
      * `go generate github.com/google/go-github/...`
      * `go test github.com/google/go-github/...`
      * `go vet github.com/google/go-github/...`
@@ -67,11 +67,11 @@ are more sensitive, emailed to <opensource@google.com>.
    In any case, it is always a good idea to read official Go documentation when working on this project, as the definition of tools and
    commands of the Go programming language is described in further detail there.
 
-  4. Do your best to have [well-formed commit messages][] for each change.
+  1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
      messages are able to be formatted properly by various git tools.
 
-  5. Finally, push the commits to your fork and submit a [pull request][].
+  1. Finally, push the commits to your fork and submit a [pull request][].
      Before pushing commits, it is highly advised to check for generated files
      that were either created or modified for the sake of your commit. Running
      `go generate -x ./...` should return a log of modified generated files that should
