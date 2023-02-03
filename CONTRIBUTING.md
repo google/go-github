@@ -60,7 +60,7 @@ are more sensitive, emailed to <opensource@google.com>.
 
    The `go generate ./...` command will update or generate certain files, and the resulting changes should be included in your pull request.
 
-   The `go test ./...` command will run tests inside your code. This will help you spot places where code might be faulty before commiting.
+   The `go test ./...` command will run tests inside your code. This will help you spot places where code might be faulty before committing.
 
    And finally, the `go vet ./...` command will check linting and styling over your code, keeping the project consistent formatting-wise.
 
