@@ -78,10 +78,13 @@ type MarketplacePlanAccount struct {
 
 // MarketplacePurchaseAccount represents a GitHub Account (user or organization) for a Purchase.
 type MarketplacePurchaseAccount struct {
+	URL                      *string `json:"url,omitempty"`
 	Type                     *string `json:"type,omitempty"`
 	ID                       *int64  `json:"id,omitempty"`
 	Login                    *string `json:"login,omitempty"`
 	OrganizationBillingEmail *string `json:"organization_billing_email,omitempty"`
+	Email                    *string `json:"email,omitempty"`
+	NodeID                   *string `json:"node_id,omitempty"`
 }
 
 // ListPlans lists all plans for your Marketplace listing.
