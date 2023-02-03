@@ -571,7 +571,8 @@ type Response struct {
 	// propagate to Response.
 	Rate Rate
 
-	// token's expiration date
+	// token's expiration date. Timestamp is 0001-01-01 when token doesn't expire.
+	// So it is valid for TokenExpiration.Equal(Timestamp{}) or TokenExpiration.Time.After(time.Now())
 	TokenExpiration Timestamp
 }
 
@@ -672,14 +673,19 @@ func parseRate(r *http.Response) Rate {
 }
 
 // parseTokenExpiration parses the TokenExpiration related headers.
+// Returns 0001-01-01 if the header is not defined or could not be parsed.
 func parseTokenExpiration(r *http.Response) Timestamp {
-	var exp Timestamp
 	if v := r.Header.Get(headerTokenExpiration); v != "" {
-		if t, err := time.Parse("2006-01-02 03:04:05 MST", v); err == nil {
-			exp = Timestamp{t.Local()}
+		if t, err := time.Parse("2006-01-02 15:04:05 MST", v); err == nil {
+			return Timestamp{t.Local()}
+		}
+		// Some tokens include the timezone offset instead of the timezone.
+		// https://github.com/google/go-github/issues/2649
+		if t, err := time.Parse("2006-01-02 15:04:05 -0700", v); err == nil {
+			return Timestamp{t.Local()}
 		}
 	}
-	return exp
+	return Timestamp{} // 0001-01-01 00:00:00
 }
 
 type requestContext uint8
