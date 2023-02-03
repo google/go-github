@@ -9174,6 +9174,14 @@ func (m *MarketplacePlanAccount) GetURL() string {
 	return *m.URL
 }
 
+// GetAccount returns the Account field.
+func (m *MarketplacePurchase) GetAccount() *MarketplacePurchaseAccount {
+	if m == nil {
+		return nil
+	}
+	return m.Account
+}
+
 // GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetBillingCycle() string {
 	if m == nil || m.BillingCycle == nil {
@@ -9228,6 +9236,38 @@ func (m *MarketplacePurchase) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *m.UpdatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetID() int64 {
+	if m == nil || m.ID == nil {
+		return 0
+	}
+	return *m.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetLogin() string {
+	if m == nil || m.Login == nil {
+		return ""
+	}
+	return *m.Login
+}
+
+// GetOrganizationBillingEmail returns the OrganizationBillingEmail field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetOrganizationBillingEmail() string {
+	if m == nil || m.OrganizationBillingEmail == nil {
+		return ""
+	}
+	return *m.OrganizationBillingEmail
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetType() string {
+	if m == nil || m.Type == nil {
+		return ""
+	}
+	return *m.Type
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
