@@ -58,14 +58,18 @@ are more sensitive, emailed to <opensource@google.com>.
      * `go test github.com/google/go-github/...`
      * `go vet github.com/google/go-github/...`
 
-   The `go generate ./...` command will update or generate certain files, and the resulting changes should be included in your pull request.
+   The `go generate ./...` command will update or generate certain files, and the 
+   resulting changes should be included in your pull request.
 
-   The `go test ./...` command will run tests inside your code. This will help you spot places where code might be faulty before committing.
+   The `go test ./...` command will run tests inside your code. This will help you
+   spot places where code might be faulty before committing.
 
-   And finally, the `go vet ./...` command will check linting and styling over your code, keeping the project consistent formatting-wise.
+   And finally, the `go vet ./...` command will check linting and styling over your 
+   code, keeping the project consistent formatting-wise.
 
-   In any case, it is always a good idea to read official Go documentation when working on this project, as the definition of tools and
-   commands of the Go programming language is described in further detail there.
+   In any case, it is always a good idea to read official Go documentation when working 
+   on this project, as the definition of tools and commands of the Go programming 
+   language is described in further detail there.
 
   1. Do your best to have [well-formed commit messages][] for each change.
      This provides consistency throughout the project, and ensures that commit
@@ -141,4 +145,5 @@ this][modified-comment].
 [rebase-comment]: https://github.com/google/go-github/pull/277#issuecomment-183035491
 [modified-comment]: https://github.com/google/go-github/pull/280#issuecomment-184859046
 
-**When creating a release, don't forget to update the `Version` constant in `github.go`.** This is used to send the version in the `User-Agent` header to identify clients to the GitHub API.
+**When creating a release, don't forget to update the `Version` constant in `github.go`.** This is used to 
+send the version in the `User-Agent` header to identify clients to the GitHub API.
