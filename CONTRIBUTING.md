@@ -84,7 +84,7 @@ are more sensitive, emailed to <opensource@google.com>.
      it more difficult for reviewers to see what has changed since the last
      code review.
 
-[Go Documentation]: https://pkg.go.dev/std
+[official Go documentation]: https://pkg.go.dev/std
 [forking]: https://help.github.com/articles/fork-a-repo
 [golint]: https://github.com/golang/lint
 [golint readme]: https://github.com/golang/lint/blob/master/README.md
