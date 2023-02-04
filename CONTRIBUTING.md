@@ -67,7 +67,7 @@ are more sensitive, emailed to <opensource@google.com>.
    And finally, the `go vet ./...` command will check linting and styling over your 
    code, keeping the project consistent formatting-wise.
 
-   In any case, it is always a good idea to read official Go documentation when working 
+   In any case, it is always a good idea to read [official Go documentation][] when working 
    on this project, as the definition of tools and commands of the Go programming 
    language is described in further detail there.
 
