@@ -902,12 +902,76 @@ func (a *Artifact) GetSizeInBytes() int64 {
 	return *a.SizeInBytes
 }
 
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (a *Artifact) GetWorkflowRun() *ArtifactWorkflowRun {
+	if a == nil {
+		return nil
+	}
+	return a.WorkflowRun
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (a *ArtifactList) GetTotalCount() int64 {
 	if a == nil || a.TotalCount == nil {
 		return 0
 	}
 	return *a.TotalCount
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadBranch() string {
+	if a == nil || a.HeadBranch == nil {
+		return ""
+	}
+	return *a.HeadBranch
+}
+
+// GetHeadRepositoryID returns the HeadRepositoryID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadRepositoryID() int64 {
+	if a == nil || a.HeadRepositoryID == nil {
+		return 0
+	}
+	return *a.HeadRepositoryID
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadSHA() string {
+	if a == nil || a.HeadSHA == nil {
+		return ""
+	}
+	return *a.HeadSHA
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetRepositoryID() int64 {
+	if a == nil || a.RepositoryID == nil {
+		return 0
+	}
+	return *a.RepositoryID
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
