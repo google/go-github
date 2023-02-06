@@ -438,10 +438,19 @@ func TestArtifact_Marshal(t *testing.T) {
 		NodeID:             String("nid"),
 		Name:               String("n"),
 		SizeInBytes:        Int64(1),
+		URL:                String("u"),
 		ArchiveDownloadURL: String("a"),
 		Expired:            Bool(false),
 		CreatedAt:          &Timestamp{referenceTime},
+		UpdatedAt:          &Timestamp{referenceTime},
 		ExpiresAt:          &Timestamp{referenceTime},
+		WorkflowRun: &ArtifactWorkflowRun{
+			ID:               Int64(1),
+			RepositoryID:     Int64(1),
+			HeadRepositoryID: Int64(1),
+			HeadBranch:       String("b"),
+			HeadSHA:          String("s"),
+		},
 	}
 
 	want := `{
@@ -449,10 +458,19 @@ func TestArtifact_Marshal(t *testing.T) {
 		"node_id": "nid",
 		"name": "n",
 		"size_in_bytes": 1,
+		"url": "u",
 		"archive_download_url": "a",
 		"expired": false,
 		"created_at": ` + referenceTimeStr + `,
-		"expires_at": ` + referenceTimeStr + `
+		"updated_at": ` + referenceTimeStr + `,
+		"expires_at": ` + referenceTimeStr + `,
+		"workflow_run": {
+			"id": 1,
+			"repository_id": 1,
+			"head_repository_id": 1,
+			"head_branch": "b",
+			"head_sha": "s"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -469,10 +487,19 @@ func TestArtifactList_Marshal(t *testing.T) {
 				NodeID:             String("nid"),
 				Name:               String("n"),
 				SizeInBytes:        Int64(1),
+				URL:                String("u"),
 				ArchiveDownloadURL: String("a"),
 				Expired:            Bool(false),
 				CreatedAt:          &Timestamp{referenceTime},
+				UpdatedAt:          &Timestamp{referenceTime},
 				ExpiresAt:          &Timestamp{referenceTime},
+				WorkflowRun: &ArtifactWorkflowRun{
+					ID:               Int64(1),
+					RepositoryID:     Int64(1),
+					HeadRepositoryID: Int64(1),
+					HeadBranch:       String("b"),
+					HeadSHA:          String("s"),
+				},
 			},
 		},
 	}
@@ -484,10 +511,19 @@ func TestArtifactList_Marshal(t *testing.T) {
 			"node_id": "nid",
 			"name": "n",
 			"size_in_bytes": 1,
+			"url": "u",
 			"archive_download_url": "a",
 			"expired": false,
 			"created_at": ` + referenceTimeStr + `,
-			"expires_at": ` + referenceTimeStr + `
+			"updated_at": ` + referenceTimeStr + `,
+			"expires_at": ` + referenceTimeStr + `,
+			"workflow_run": {
+				"id": 1,
+				"repository_id": 1,
+				"head_repository_id": 1,
+				"head_branch": "b",
+				"head_sha": "s"
+			}
 		}]
 	}`
 

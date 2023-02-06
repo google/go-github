@@ -902,12 +902,76 @@ func (a *Artifact) GetSizeInBytes() int64 {
 	return *a.SizeInBytes
 }
 
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *Artifact) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
+// GetWorkflowRun returns the WorkflowRun field.
+func (a *Artifact) GetWorkflowRun() *ArtifactWorkflowRun {
+	if a == nil {
+		return nil
+	}
+	return a.WorkflowRun
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (a *ArtifactList) GetTotalCount() int64 {
 	if a == nil || a.TotalCount == nil {
 		return 0
 	}
 	return *a.TotalCount
+}
+
+// GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadBranch() string {
+	if a == nil || a.HeadBranch == nil {
+		return ""
+	}
+	return *a.HeadBranch
+}
+
+// GetHeadRepositoryID returns the HeadRepositoryID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadRepositoryID() int64 {
+	if a == nil || a.HeadRepositoryID == nil {
+		return 0
+	}
+	return *a.HeadRepositoryID
+}
+
+// GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetHeadSHA() string {
+	if a == nil || a.HeadSHA == nil {
+		return ""
+	}
+	return *a.HeadSHA
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (a *ArtifactWorkflowRun) GetRepositoryID() int64 {
+	if a == nil || a.RepositoryID == nil {
+		return 0
+	}
+	return *a.RepositoryID
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -9174,6 +9238,14 @@ func (m *MarketplacePlanAccount) GetURL() string {
 	return *m.URL
 }
 
+// GetAccount returns the Account field.
+func (m *MarketplacePurchase) GetAccount() *MarketplacePurchaseAccount {
+	if m == nil {
+		return nil
+	}
+	return m.Account
+}
+
 // GetBillingCycle returns the BillingCycle field if it's non-nil, zero value otherwise.
 func (m *MarketplacePurchase) GetBillingCycle() string {
 	if m == nil || m.BillingCycle == nil {
@@ -9228,6 +9300,62 @@ func (m *MarketplacePurchase) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *m.UpdatedAt
+}
+
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetEmail() string {
+	if m == nil || m.Email == nil {
+		return ""
+	}
+	return *m.Email
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetID() int64 {
+	if m == nil || m.ID == nil {
+		return 0
+	}
+	return *m.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetLogin() string {
+	if m == nil || m.Login == nil {
+		return ""
+	}
+	return *m.Login
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetNodeID() string {
+	if m == nil || m.NodeID == nil {
+		return ""
+	}
+	return *m.NodeID
+}
+
+// GetOrganizationBillingEmail returns the OrganizationBillingEmail field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetOrganizationBillingEmail() string {
+	if m == nil || m.OrganizationBillingEmail == nil {
+		return ""
+	}
+	return *m.OrganizationBillingEmail
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetType() string {
+	if m == nil || m.Type == nil {
+		return ""
+	}
+	return *m.Type
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (m *MarketplacePurchaseAccount) GetURL() string {
+	if m == nil || m.URL == nil {
+		return ""
+	}
+	return *m.URL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
