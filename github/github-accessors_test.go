@@ -1056,6 +1056,33 @@ func TestArtifact_GetSizeInBytes(tt *testing.T) {
 	a.GetSizeInBytes()
 }
 
+func TestArtifact_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	a := &Artifact{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &Artifact{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestArtifact_GetURL(tt *testing.T) {
+	var zeroValue string
+	a := &Artifact{URL: &zeroValue}
+	a.GetURL()
+	a = &Artifact{}
+	a.GetURL()
+	a = nil
+	a.GetURL()
+}
+
+func TestArtifact_GetWorkflowRun(tt *testing.T) {
+	a := &Artifact{}
+	a.GetWorkflowRun()
+	a = nil
+	a.GetWorkflowRun()
+}
+
 func TestArtifactList_GetTotalCount(tt *testing.T) {
 	var zeroValue int64
 	a := &ArtifactList{TotalCount: &zeroValue}
@@ -1064,6 +1091,56 @@ func TestArtifactList_GetTotalCount(tt *testing.T) {
 	a.GetTotalCount()
 	a = nil
 	a.GetTotalCount()
+}
+
+func TestArtifactWorkflowRun_GetHeadBranch(tt *testing.T) {
+	var zeroValue string
+	a := &ArtifactWorkflowRun{HeadBranch: &zeroValue}
+	a.GetHeadBranch()
+	a = &ArtifactWorkflowRun{}
+	a.GetHeadBranch()
+	a = nil
+	a.GetHeadBranch()
+}
+
+func TestArtifactWorkflowRun_GetHeadRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	a := &ArtifactWorkflowRun{HeadRepositoryID: &zeroValue}
+	a.GetHeadRepositoryID()
+	a = &ArtifactWorkflowRun{}
+	a.GetHeadRepositoryID()
+	a = nil
+	a.GetHeadRepositoryID()
+}
+
+func TestArtifactWorkflowRun_GetHeadSHA(tt *testing.T) {
+	var zeroValue string
+	a := &ArtifactWorkflowRun{HeadSHA: &zeroValue}
+	a.GetHeadSHA()
+	a = &ArtifactWorkflowRun{}
+	a.GetHeadSHA()
+	a = nil
+	a.GetHeadSHA()
+}
+
+func TestArtifactWorkflowRun_GetID(tt *testing.T) {
+	var zeroValue int64
+	a := &ArtifactWorkflowRun{ID: &zeroValue}
+	a.GetID()
+	a = &ArtifactWorkflowRun{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestArtifactWorkflowRun_GetRepositoryID(tt *testing.T) {
+	var zeroValue int64
+	a := &ArtifactWorkflowRun{RepositoryID: &zeroValue}
+	a.GetRepositoryID()
+	a = &ArtifactWorkflowRun{}
+	a.GetRepositoryID()
+	a = nil
+	a.GetRepositoryID()
 }
 
 func TestAttachment_GetBody(tt *testing.T) {
