@@ -10790,6 +10790,13 @@ func TestMarketplacePlanAccount_GetURL(tt *testing.T) {
 	m.GetURL()
 }
 
+func TestMarketplacePurchase_GetAccount(tt *testing.T) {
+	m := &MarketplacePurchase{}
+	m.GetAccount()
+	m = nil
+	m.GetAccount()
+}
+
 func TestMarketplacePurchase_GetBillingCycle(tt *testing.T) {
 	var zeroValue string
 	m := &MarketplacePurchase{BillingCycle: &zeroValue}
@@ -10855,6 +10862,76 @@ func TestMarketplacePurchase_GetUpdatedAt(tt *testing.T) {
 	m.GetUpdatedAt()
 	m = nil
 	m.GetUpdatedAt()
+}
+
+func TestMarketplacePurchaseAccount_GetEmail(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{Email: &zeroValue}
+	m.GetEmail()
+	m = &MarketplacePurchaseAccount{}
+	m.GetEmail()
+	m = nil
+	m.GetEmail()
+}
+
+func TestMarketplacePurchaseAccount_GetID(tt *testing.T) {
+	var zeroValue int64
+	m := &MarketplacePurchaseAccount{ID: &zeroValue}
+	m.GetID()
+	m = &MarketplacePurchaseAccount{}
+	m.GetID()
+	m = nil
+	m.GetID()
+}
+
+func TestMarketplacePurchaseAccount_GetLogin(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{Login: &zeroValue}
+	m.GetLogin()
+	m = &MarketplacePurchaseAccount{}
+	m.GetLogin()
+	m = nil
+	m.GetLogin()
+}
+
+func TestMarketplacePurchaseAccount_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{NodeID: &zeroValue}
+	m.GetNodeID()
+	m = &MarketplacePurchaseAccount{}
+	m.GetNodeID()
+	m = nil
+	m.GetNodeID()
+}
+
+func TestMarketplacePurchaseAccount_GetOrganizationBillingEmail(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{OrganizationBillingEmail: &zeroValue}
+	m.GetOrganizationBillingEmail()
+	m = &MarketplacePurchaseAccount{}
+	m.GetOrganizationBillingEmail()
+	m = nil
+	m.GetOrganizationBillingEmail()
+}
+
+func TestMarketplacePurchaseAccount_GetType(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{Type: &zeroValue}
+	m.GetType()
+	m = &MarketplacePurchaseAccount{}
+	m.GetType()
+	m = nil
+	m.GetType()
+}
+
+func TestMarketplacePurchaseAccount_GetURL(tt *testing.T) {
+	var zeroValue string
+	m := &MarketplacePurchaseAccount{URL: &zeroValue}
+	m.GetURL()
+	m = &MarketplacePurchaseAccount{}
+	m.GetURL()
+	m = nil
+	m.GetURL()
 }
 
 func TestMarketplacePurchaseEvent_GetAction(tt *testing.T) {

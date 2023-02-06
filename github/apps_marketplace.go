@@ -46,6 +46,7 @@ type MarketplacePlan struct {
 
 // MarketplacePurchase represents a GitHub Apps Marketplace Purchase.
 type MarketplacePurchase struct {
+	Account *MarketplacePurchaseAccount `json:"account,omitempty"`
 	// BillingCycle can be one of the values "yearly", "monthly" or nil.
 	BillingCycle    *string          `json:"billing_cycle,omitempty"`
 	NextBillingDate *Timestamp       `json:"next_billing_date,omitempty"`
@@ -73,6 +74,17 @@ type MarketplacePlanAccount struct {
 	OrganizationBillingEmail *string                   `json:"organization_billing_email,omitempty"`
 	MarketplacePurchase      *MarketplacePurchase      `json:"marketplace_purchase,omitempty"`
 	MarketplacePendingChange *MarketplacePendingChange `json:"marketplace_pending_change,omitempty"`
+}
+
+// MarketplacePurchaseAccount represents a GitHub Account (user or organization) for a Purchase.
+type MarketplacePurchaseAccount struct {
+	URL                      *string `json:"url,omitempty"`
+	Type                     *string `json:"type,omitempty"`
+	ID                       *int64  `json:"id,omitempty"`
+	Login                    *string `json:"login,omitempty"`
+	OrganizationBillingEmail *string `json:"organization_billing_email,omitempty"`
+	Email                    *string `json:"email,omitempty"`
+	NodeID                   *string `json:"node_id,omitempty"`
 }
 
 // ListPlans lists all plans for your Marketplace listing.
