@@ -12,20 +12,34 @@ import (
 	"net/url"
 )
 
-// Artifact reprents a GitHub artifact.  Artifacts allow sharing
+// ArtifactWorkflowRun represents a GitHub artifact's workflow run.
+//
+// GitHub API docs: https://docs.github.com/en/rest/actions/artifacts
+type ArtifactWorkflowRun struct {
+	ID               *int64  `json:"id,omitempty"`
+	RepositoryID     *int64  `json:"repository_id,omitempty"`
+	HeadRepositoryID *int64  `json:"head_repository_id,omitempty"`
+	HeadBranch       *string `json:"head_branch,omitempty"`
+	HeadSHA          *string `json:"head_sha,omitempty"`
+}
+
+// Artifact represents a GitHub artifact.  Artifacts allow sharing
 // data between jobs in a workflow and provide storage for data
 // once a workflow is complete.
 //
 // GitHub API docs: https://docs.github.com/en/rest/actions/artifacts
 type Artifact struct {
-	ID                 *int64     `json:"id,omitempty"`
-	NodeID             *string    `json:"node_id,omitempty"`
-	Name               *string    `json:"name,omitempty"`
-	SizeInBytes        *int64     `json:"size_in_bytes,omitempty"`
-	ArchiveDownloadURL *string    `json:"archive_download_url,omitempty"`
-	Expired            *bool      `json:"expired,omitempty"`
-	CreatedAt          *Timestamp `json:"created_at,omitempty"`
-	ExpiresAt          *Timestamp `json:"expires_at,omitempty"`
+	ID                 *int64               `json:"id,omitempty"`
+	NodeID             *string              `json:"node_id,omitempty"`
+	Name               *string              `json:"name,omitempty"`
+	SizeInBytes        *int64               `json:"size_in_bytes,omitempty"`
+	URL                *string              `json:"url,omitempty"`
+	ArchiveDownloadURL *string              `json:"archive_download_url,omitempty"`
+	Expired            *bool                `json:"expired,omitempty"`
+	CreatedAt          *Timestamp           `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp           `json:"updated_at,omitempty"`
+	ExpiresAt          *Timestamp           `json:"expires_at,omitempty"`
+	WorkflowRun        *ArtifactWorkflowRun `json:"workflow_run,omitempty"`
 }
 
 // ArtifactList represents a list of GitHub artifacts.
