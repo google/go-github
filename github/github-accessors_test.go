@@ -9843,6 +9843,13 @@ func TestIssuesEvent_GetLabel(tt *testing.T) {
 	i.GetLabel()
 }
 
+func TestIssuesEvent_GetMilestone(tt *testing.T) {
+	i := &IssuesEvent{}
+	i.GetMilestone()
+	i = nil
+	i.GetMilestone()
+}
+
 func TestIssuesEvent_GetRepo(tt *testing.T) {
 	i := &IssuesEvent{}
 	i.GetRepo()
