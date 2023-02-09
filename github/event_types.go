@@ -485,6 +485,7 @@ type IssuesEvent struct {
 	Repo         *Repository   `json:"repository,omitempty"`
 	Sender       *User         `json:"sender,omitempty"`
 	Installation *Installation `json:"installation,omitempty"`
+	Milestone    *Milestone    `json:"milestone,omitempty"`
 }
 
 // LabelEvent is triggered when a repository's label is created, edited, or deleted.

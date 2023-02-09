@@ -8390,6 +8390,14 @@ func (i *IssuesEvent) GetLabel() *Label {
 	return i.Label
 }
 
+// GetMilestone returns the Milestone field.
+func (i *IssuesEvent) GetMilestone() *Milestone {
+	if i == nil {
+		return nil
+	}
+	return i.Milestone
+}
+
 // GetRepo returns the Repo field.
 func (i *IssuesEvent) GetRepo() *Repository {
 	if i == nil {
