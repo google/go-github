@@ -22728,6 +22728,13 @@ func TestTimeline_GetRename(tt *testing.T) {
 	t.GetRename()
 }
 
+func TestTimeline_GetRequestedTeam(tt *testing.T) {
+	t := &Timeline{}
+	t.GetRequestedTeam()
+	t = nil
+	t.GetRequestedTeam()
+}
+
 func TestTimeline_GetRequester(tt *testing.T) {
 	t := &Timeline{}
 	t.GetRequester()
