@@ -19502,6 +19502,14 @@ func (t *Timeline) GetRename() *Rename {
 	return t.Rename
 }
 
+// GetRequestedTeam returns the RequestedTeam field.
+func (t *Timeline) GetRequestedTeam() *Team {
+	if t == nil {
+		return nil
+	}
+	return t.RequestedTeam
+}
+
 // GetRequester returns the Requester field.
 func (t *Timeline) GetRequester() *User {
 	if t == nil {
