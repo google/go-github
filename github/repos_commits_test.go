@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/ProtonMail/go-crypto/openpgp"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_ListCommits(t *testing.T) {

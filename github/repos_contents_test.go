@@ -14,8 +14,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/ProtonMail/go-crypto/openpgp"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoryContent_GetContent(t *testing.T) {
