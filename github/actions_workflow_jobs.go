@@ -33,6 +33,7 @@ type WorkflowJob struct {
 	HTMLURL     *string     `json:"html_url,omitempty"`
 	Status      *string     `json:"status,omitempty"`
 	Conclusion  *string     `json:"conclusion,omitempty"`
+	CreatedAt   *Timestamp  `json:"created_at,omitempty"`
 	StartedAt   *Timestamp  `json:"started_at,omitempty"`
 	CompletedAt *Timestamp  `json:"completed_at,omitempty"`
 	Name        *string     `json:"name,omitempty"`
