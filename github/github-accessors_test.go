@@ -24548,6 +24548,16 @@ func TestWorkflowJob_GetConclusion(tt *testing.T) {
 	w.GetConclusion()
 }
 
+func TestWorkflowJob_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	w := &WorkflowJob{CreatedAt: &zeroValue}
+	w.GetCreatedAt()
+	w = &WorkflowJob{}
+	w.GetCreatedAt()
+	w = nil
+	w.GetCreatedAt()
+}
+
 func TestWorkflowJob_GetHeadSHA(tt *testing.T) {
 	var zeroValue string
 	w := &WorkflowJob{HeadSHA: &zeroValue}
