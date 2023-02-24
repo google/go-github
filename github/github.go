@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	Version = "v50.0.0"
+	Version = "v50.1.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
