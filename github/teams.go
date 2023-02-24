@@ -913,7 +913,7 @@ type ListExternalGroupsOptions struct {
 	ListOptions
 }
 
-// ListExternalGroups lists external groups connected to a team on GitHub.
+// ListExternalGroups lists external groups in an organization on GitHub.
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-in-an-organization
 func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts *ListExternalGroupsOptions) (*ExternalGroupList, *Response, error) {
@@ -922,6 +922,26 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	externalGroups := new(ExternalGroupList)
+	resp, err := s.client.Do(ctx, req, externalGroups)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return externalGroups, resp, nil
+}
+
+// ListExternalGroupsForTeamBySlug lists external groups connected to a team on GitHub.
+//
+// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/teams/external-groups#list-a-connection-between-an-external-group-and-a-team
+func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org, slug string) (*ExternalGroupList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
