@@ -6086,6 +6086,184 @@ func TestDiscussionEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestDiscussionCommentEvent_Marshal(t *testing.T) {
+	testJSONMarshal(t, &DiscussionCommentEvent{}, "{}")
+
+	u := &DiscussionCommentEvent{
+		Action: String("a"),
+		Comment: &DiscussionComment{
+			Author: &User{
+				Login:             String("author"),
+				ID:                Int64(0),
+				AvatarURL:         String("a"),
+				GravatarID:        String("g"),
+				URL:               String("u"),
+				HTMLURL:           String("u"),
+				FollowersURL:      String("flwrurl"),
+				FollowingURL:      String("flwiurl"),
+				GistsURL:          String("giurl"),
+				StarredURL:        String("strurl"),
+				SubscriptionsURL:  String("suburl"),
+				OrganizationsURL:  String("orgurl"),
+				ReposURL:          String("repourl"),
+				EventsURL:         String("evurl"),
+				ReceivedEventsURL: String("recvurl"),
+				Type:              String("User"),
+				SiteAdmin:         Bool(false),
+			},
+			Body:          String("b"),
+			BodyHTML:      String("bodyhtml"),
+			BodyVersion:   String("version"),
+			CreatedAt:     &Timestamp{referenceTime},
+			LastEditedAt:  nil,
+			DiscussionURL: String("discurl"),
+			HTMLURL:       String("htmlurl"),
+			NodeID:        String("node"),
+			Number:        Int(4),
+			UpdatedAt:     &Timestamp{referenceTime},
+			URL:           String("url"),
+		},
+		Discussion: &Discussion{
+			RepositoryURL: String("rurl"),
+			DiscussionCategory: &DiscussionCategory{
+				ID:           Int64(1),
+				NodeID:       String("nid"),
+				RepositoryID: Int64(1),
+				Emoji:        String("emoji"),
+				Name:         String("name"),
+				Description:  String("description"),
+				CreatedAt:    &Timestamp{referenceTime},
+				UpdatedAt:    &Timestamp{referenceTime},
+				Slug:         String("slug"),
+				IsAnswerable: Bool(false),
+			},
+		},
+		Repo: &Repository{
+			ID:   Int64(1),
+			URL:  String("s"),
+			Name: String("n"),
+		},
+		Org: &Organization{
+			BillingEmail:                         String("be"),
+			Blog:                                 String("b"),
+			Company:                              String("c"),
+			Email:                                String("e"),
+			TwitterUsername:                      String("tu"),
+			Location:                             String("loc"),
+			Name:                                 String("n"),
+			Description:                          String("d"),
+			IsVerified:                           Bool(true),
+			HasOrganizationProjects:              Bool(true),
+			HasRepositoryProjects:                Bool(true),
+			DefaultRepoPermission:                String("drp"),
+			MembersCanCreateRepos:                Bool(true),
+			MembersCanCreateInternalRepos:        Bool(true),
+			MembersCanCreatePrivateRepos:         Bool(true),
+			MembersCanCreatePublicRepos:          Bool(false),
+			MembersAllowedRepositoryCreationType: String("marct"),
+			MembersCanCreatePages:                Bool(true),
+			MembersCanCreatePublicPages:          Bool(false),
+			MembersCanCreatePrivatePages:         Bool(true),
+		},
+		Sender: &User{
+			Login:     String("l"),
+			ID:        Int64(1),
+			NodeID:    String("n"),
+			URL:       String("u"),
+			ReposURL:  String("r"),
+			EventsURL: String("e"),
+			AvatarURL: String("a"),
+		},
+	}
+	want := `{
+		"action":"a",
+		"comment":{
+			"author":{
+				"login":"author",
+				"id":0,
+				"avatar_url":"a",
+				"html_url":"u",
+				"gravatar_id":"g",
+				"type":"User",
+				"site_admin":false,
+				"url":"u",
+				"events_url":"evurl",
+				"following_url":"flwiurl",
+				"followers_url":"flwrurl",
+				"gists_url":"giurl",
+				"organizations_url":"orgurl",
+				"received_events_url":"recvurl",
+				"repos_url":"repourl",
+				"starred_url":"strurl",
+				"subscriptions_url":"suburl"
+			},
+			"body":"b",
+			"body_html":"bodyhtml",
+			"body_version":"version",
+			"created_at": ` + referenceTimeStr + `,
+			"discussion_url":"discurl",
+			"html_url":"htmlurl",
+			"node_id":"node",
+			"number":4,
+			"updated_at": ` + referenceTimeStr + `,
+			"url":"url"
+		},
+		"discussion":{
+			"repository_url":"rurl",
+			"category":{
+				"id":1,
+				"node_id":"nid",
+				"repository_id":1,
+				"emoji":"emoji",
+				"name":"name",
+				"description":"description",
+				"created_at": ` + referenceTimeStr + `,
+				"updated_at": ` + referenceTimeStr + `,
+				"slug":"slug",
+				"is_answerable":false
+			}
+		},
+		"repository":{
+			"id":1,
+			"name":"n",
+			"url":"s"
+		},
+		"organization":{
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"loc",
+			"email":"e",
+			"twitter_username":"tu",
+			"description":"d",
+			"billing_email":"be",
+			"is_verified":true,
+			"has_organization_projects":true,
+			"has_repository_projects":true,
+			"default_repository_permission":"drp",
+			"members_can_create_repositories":true,
+			"members_can_create_public_repositories":false,
+			"members_can_create_private_repositories":true,
+			"members_can_create_internal_repositories":true,
+			"members_allowed_repository_creation_type":"marct",
+			"members_can_create_pages":true,
+			"members_can_create_public_pages":false,
+			"members_can_create_private_pages":true
+		},
+		"sender":{
+			"login":"l",
+			"id":1,
+			"node_id":"n",
+			"avatar_url":"a",
+			"url":"u",
+			"events_url":"e",
+			"repos_url":"r"
+		}
+}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestPackageEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &PackageEvent{}, "{}")
 

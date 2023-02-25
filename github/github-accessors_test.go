@@ -5921,6 +5921,51 @@ func TestDiscussionComment_GetURL(tt *testing.T) {
 	d.GetURL()
 }
 
+func TestDiscussionCommentEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCommentEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DiscussionCommentEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDiscussionCommentEvent_GetComment(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetComment()
+	d = nil
+	d.GetComment()
+}
+
+func TestDiscussionCommentEvent_GetDiscussion(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetDiscussion()
+	d = nil
+	d.GetDiscussion()
+}
+
+func TestDiscussionCommentEvent_GetOrg(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
+func TestDiscussionCommentEvent_GetRepo(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDiscussionCommentEvent_GetSender(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
+}
+
 func TestDiscussionEvent_GetAction(tt *testing.T) {
 	var zeroValue string
 	d := &DiscussionEvent{Action: &zeroValue}

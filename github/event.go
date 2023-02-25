@@ -51,6 +51,8 @@ func (e *Event) ParsePayload() (payload interface{}, err error) {
 		payload = &DeploymentEvent{}
 	case "DeploymentStatusEvent":
 		payload = &DeploymentStatusEvent{}
+	case "DiscussionCommentEvent":
+		payload = &DiscussionCommentEvent{}
 	case "DiscussionEvent":
 		payload = &DiscussionEvent{}
 	case "ForkEvent":
