@@ -5751,10 +5751,10 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 			CreatedAt:         &Timestamp{referenceTime},
 			DiscussionID:      Int64(1),
 			HTMLURL:           String("hurl"),
-			ID: 			   Int64(1),
-			NodeID:     	   String("nid"),
+			ID:                Int64(1),
+			NodeID:            String("nid"),
 			ParentID:          Int64(1),
-			Reaction:          &Reactions{
+			Reactions: &Reactions{
 				TotalCount: Int(1),
 				PlusOne:    Int(1),
 				MinusOne:   Int(1),
@@ -5766,8 +5766,8 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 				Eyes:       Int(1),
 				URL:        String("url"),
 			},
-			RepositoryURL: 	   String("rurl"),
-			UpdatedAt:         &Timestamp{referenceTime},
+			RepositoryURL: String("rurl"),
+			UpdatedAt:     &Timestamp{referenceTime},
 			User: &User{
 				Login:     String("l"),
 				ID:        Int64(1),
@@ -6153,7 +6153,6 @@ func TestDiscussionCommentEvent_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
-
 
 func TestDiscussionEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &DiscussionEvent{}, "{}")

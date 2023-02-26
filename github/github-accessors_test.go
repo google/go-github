@@ -3463,11 +3463,11 @@ func TestCommentDiscussion_GetParentID(tt *testing.T) {
 	c.GetParentID()
 }
 
-func TestCommentDiscussion_GetReaction(tt *testing.T) {
+func TestCommentDiscussion_GetReactions(tt *testing.T) {
 	c := &CommentDiscussion{}
-	c.GetReaction()
+	c.GetReactions()
 	c = nil
-	c.GetReaction()
+	c.GetReactions()
 }
 
 func TestCommentDiscussion_GetRepositoryURL(tt *testing.T) {

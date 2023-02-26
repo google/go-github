@@ -2926,12 +2926,12 @@ func (c *CommentDiscussion) GetParentID() int64 {
 	return *c.ParentID
 }
 
-// GetReaction returns the Reaction field.
-func (c *CommentDiscussion) GetReaction() *Reactions {
+// GetReactions returns the Reactions field.
+func (c *CommentDiscussion) GetReactions() *Reactions {
 	if c == nil {
 		return nil
 	}
-	return c.Reaction
+	return c.Reactions
 }
 
 // GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
