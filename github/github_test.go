@@ -169,6 +169,19 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	}
 }
 
+func testAddOptions(t *testing.T, url string, v interface{}, want string) {
+	t.Helper()
+
+	u, err := addOptions(url, v)
+	if err != nil {
+		t.Errorf("Unable to add %#v as query parameters", v)
+	}
+
+	if u != want {
+		t.Errorf("addOptions(%q, %#v) returned %s, want %s", url, v, u, want)
+	}
+}
+
 // Test how bad options are handled. Method f under test should
 // return an error.
 func testBadOptions(t *testing.T, methodName string, f func() error) {

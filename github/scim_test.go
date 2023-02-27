@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -444,6 +445,33 @@ func TestListSCIMProvisionedIdentitiesOptions_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
+	url := "some/path"
+
+	testAddOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)
+
+	testAddOptions(
+		t,
+		url,
+		&ListSCIMProvisionedIdentitiesOptions{
+			StartIndex: Int(1),
+			Count:      Int(10),
+		},
+		fmt.Sprintf("%s?count=10&startIndex=1", url),
+	)
+
+	testAddOptions(
+		t,
+		url,
+		&ListSCIMProvisionedIdentitiesOptions{
+			StartIndex: Int(1),
+			Count:      Int(10),
+			Filter:     String("test"),
+		},
+		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
+	)
 }
 
 func TestSCIMUserName_Marshal(t *testing.T) {
