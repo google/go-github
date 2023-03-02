@@ -63,8 +63,10 @@ type AuditEntry struct {
 	Message               *string     `json:"message,omitempty"`
 	Name                  *string     `json:"name,omitempty"`
 	OldUser               *string     `json:"old_user,omitempty"`
+	OldPermission         *string     `json:"old_permission,omitempty"` // The permission level for membership changes, for example `admin` or `read`.
 	OpenSSHPublicKey      *string     `json:"openssh_public_key,omitempty"`
 	Org                   *string     `json:"org,omitempty"`
+	Permission            *string     `json:"permission,omitempty"` // The permission level for membership changes, for example `admin` or `read`.
 	PreviousVisibility    *string     `json:"previous_visibility,omitempty"`
 	ReadOnly              *string     `json:"read_only,omitempty"`
 	Repo                  *string     `json:"repo,omitempty"`

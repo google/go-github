@@ -1222,6 +1222,14 @@ func (a *AuditEntry) GetName() string {
 	return *a.Name
 }
 
+// GetOldPermission returns the OldPermission field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetOldPermission() string {
+	if a == nil || a.OldPermission == nil {
+		return ""
+	}
+	return *a.OldPermission
+}
+
 // GetOldUser returns the OldUser field if it's non-nil, zero value otherwise.
 func (a *AuditEntry) GetOldUser() string {
 	if a == nil || a.OldUser == nil {
@@ -1244,6 +1252,14 @@ func (a *AuditEntry) GetOrg() string {
 		return ""
 	}
 	return *a.Org
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (a *AuditEntry) GetPermission() string {
+	if a == nil || a.Permission == nil {
+		return ""
+	}
+	return *a.Permission
 }
 
 // GetPreviousVisibility returns the PreviousVisibility field if it's non-nil, zero value otherwise.
@@ -20988,6 +21004,14 @@ func (w *WorkflowJob) GetConclusion() string {
 		return ""
 	}
 	return *w.Conclusion
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (w *WorkflowJob) GetCreatedAt() Timestamp {
+	if w == nil || w.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *w.CreatedAt
 }
 
 // GetHeadSHA returns the HeadSHA field if it's non-nil, zero value otherwise.

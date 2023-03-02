@@ -1447,6 +1447,16 @@ func TestAuditEntry_GetName(tt *testing.T) {
 	a.GetName()
 }
 
+func TestAuditEntry_GetOldPermission(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{OldPermission: &zeroValue}
+	a.GetOldPermission()
+	a = &AuditEntry{}
+	a.GetOldPermission()
+	a = nil
+	a.GetOldPermission()
+}
+
 func TestAuditEntry_GetOldUser(tt *testing.T) {
 	var zeroValue string
 	a := &AuditEntry{OldUser: &zeroValue}
@@ -1475,6 +1485,16 @@ func TestAuditEntry_GetOrg(tt *testing.T) {
 	a.GetOrg()
 	a = nil
 	a.GetOrg()
+}
+
+func TestAuditEntry_GetPermission(tt *testing.T) {
+	var zeroValue string
+	a := &AuditEntry{Permission: &zeroValue}
+	a.GetPermission()
+	a = &AuditEntry{}
+	a.GetPermission()
+	a = nil
+	a.GetPermission()
 }
 
 func TestAuditEntry_GetPreviousVisibility(tt *testing.T) {
@@ -24526,6 +24546,16 @@ func TestWorkflowJob_GetConclusion(tt *testing.T) {
 	w.GetConclusion()
 	w = nil
 	w.GetConclusion()
+}
+
+func TestWorkflowJob_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	w := &WorkflowJob{CreatedAt: &zeroValue}
+	w.GetCreatedAt()
+	w = &WorkflowJob{}
+	w.GetCreatedAt()
+	w = nil
+	w.GetCreatedAt()
 }
 
 func TestWorkflowJob_GetHeadSHA(tt *testing.T) {
