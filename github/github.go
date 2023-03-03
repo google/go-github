@@ -309,7 +309,7 @@ func addOptions(s string, opts interface{}) (string, error) {
 // for you (such as that provided by the golang.org/x/oauth2 library).
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
-		httpClient = &http.Client{}
+		httpClient = &http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}}
 	}
 	baseURL, _ := url.Parse(defaultBaseURL)
 	uploadURL, _ := url.Parse(uploadBaseURL)
