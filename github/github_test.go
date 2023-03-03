@@ -264,6 +264,13 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
+func TestNewClientWithEnvProxy(t *testing.T) {
+	client := NewClientWithEnvProxy()
+	if got, want := client.BaseURL.String(), defaultBaseURL; got != want {
+		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
+	}
+}
+
 func TestClient(t *testing.T) {
 	c := NewClient(nil)
 	c2 := c.Client()
