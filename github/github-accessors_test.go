@@ -3373,6 +3373,130 @@ func TestComment_GetCreatedAt(tt *testing.T) {
 	c.GetCreatedAt()
 }
 
+func TestCommentDiscussion_GetAuthorAssociation(tt *testing.T) {
+	var zeroValue string
+	c := &CommentDiscussion{AuthorAssociation: &zeroValue}
+	c.GetAuthorAssociation()
+	c = &CommentDiscussion{}
+	c.GetAuthorAssociation()
+	c = nil
+	c.GetAuthorAssociation()
+}
+
+func TestCommentDiscussion_GetBody(tt *testing.T) {
+	var zeroValue string
+	c := &CommentDiscussion{Body: &zeroValue}
+	c.GetBody()
+	c = &CommentDiscussion{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCommentDiscussion_GetChildCommentCount(tt *testing.T) {
+	var zeroValue int
+	c := &CommentDiscussion{ChildCommentCount: &zeroValue}
+	c.GetChildCommentCount()
+	c = &CommentDiscussion{}
+	c.GetChildCommentCount()
+	c = nil
+	c.GetChildCommentCount()
+}
+
+func TestCommentDiscussion_GetCreatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CommentDiscussion{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CommentDiscussion{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCommentDiscussion_GetDiscussionID(tt *testing.T) {
+	var zeroValue int64
+	c := &CommentDiscussion{DiscussionID: &zeroValue}
+	c.GetDiscussionID()
+	c = &CommentDiscussion{}
+	c.GetDiscussionID()
+	c = nil
+	c.GetDiscussionID()
+}
+
+func TestCommentDiscussion_GetHTMLURL(tt *testing.T) {
+	var zeroValue string
+	c := &CommentDiscussion{HTMLURL: &zeroValue}
+	c.GetHTMLURL()
+	c = &CommentDiscussion{}
+	c.GetHTMLURL()
+	c = nil
+	c.GetHTMLURL()
+}
+
+func TestCommentDiscussion_GetID(tt *testing.T) {
+	var zeroValue int64
+	c := &CommentDiscussion{ID: &zeroValue}
+	c.GetID()
+	c = &CommentDiscussion{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCommentDiscussion_GetNodeID(tt *testing.T) {
+	var zeroValue string
+	c := &CommentDiscussion{NodeID: &zeroValue}
+	c.GetNodeID()
+	c = &CommentDiscussion{}
+	c.GetNodeID()
+	c = nil
+	c.GetNodeID()
+}
+
+func TestCommentDiscussion_GetParentID(tt *testing.T) {
+	var zeroValue int64
+	c := &CommentDiscussion{ParentID: &zeroValue}
+	c.GetParentID()
+	c = &CommentDiscussion{}
+	c.GetParentID()
+	c = nil
+	c.GetParentID()
+}
+
+func TestCommentDiscussion_GetReactions(tt *testing.T) {
+	c := &CommentDiscussion{}
+	c.GetReactions()
+	c = nil
+	c.GetReactions()
+}
+
+func TestCommentDiscussion_GetRepositoryURL(tt *testing.T) {
+	var zeroValue string
+	c := &CommentDiscussion{RepositoryURL: &zeroValue}
+	c.GetRepositoryURL()
+	c = &CommentDiscussion{}
+	c.GetRepositoryURL()
+	c = nil
+	c.GetRepositoryURL()
+}
+
+func TestCommentDiscussion_GetUpdatedAt(tt *testing.T) {
+	var zeroValue Timestamp
+	c := &CommentDiscussion{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CommentDiscussion{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCommentDiscussion_GetUser(tt *testing.T) {
+	c := &CommentDiscussion{}
+	c.GetUser()
+	c = nil
+	c.GetUser()
+}
+
 func TestCommentStats_GetTotalCommitComments(tt *testing.T) {
 	var zeroValue int
 	c := &CommentStats{TotalCommitComments: &zeroValue}
@@ -5919,6 +6043,58 @@ func TestDiscussionComment_GetURL(tt *testing.T) {
 	d.GetURL()
 	d = nil
 	d.GetURL()
+}
+
+func TestDiscussionCommentEvent_GetAction(tt *testing.T) {
+	var zeroValue string
+	d := &DiscussionCommentEvent{Action: &zeroValue}
+	d.GetAction()
+	d = &DiscussionCommentEvent{}
+	d.GetAction()
+	d = nil
+	d.GetAction()
+}
+
+func TestDiscussionCommentEvent_GetComment(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetComment()
+	d = nil
+	d.GetComment()
+}
+
+func TestDiscussionCommentEvent_GetDiscussion(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetDiscussion()
+	d = nil
+	d.GetDiscussion()
+}
+
+func TestDiscussionCommentEvent_GetInstallation(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetInstallation()
+	d = nil
+	d.GetInstallation()
+}
+
+func TestDiscussionCommentEvent_GetOrg(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetOrg()
+	d = nil
+	d.GetOrg()
+}
+
+func TestDiscussionCommentEvent_GetRepo(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetRepo()
+	d = nil
+	d.GetRepo()
+}
+
+func TestDiscussionCommentEvent_GetSender(tt *testing.T) {
+	d := &DiscussionCommentEvent{}
+	d.GetSender()
+	d = nil
+	d.GetSender()
 }
 
 func TestDiscussionEvent_GetAction(tt *testing.T) {

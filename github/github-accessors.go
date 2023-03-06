@@ -2854,6 +2854,110 @@ func (c *Comment) GetCreatedAt() Timestamp {
 	return *c.CreatedAt
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetAuthorAssociation() string {
+	if c == nil || c.AuthorAssociation == nil {
+		return ""
+	}
+	return *c.AuthorAssociation
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetChildCommentCount returns the ChildCommentCount field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetChildCommentCount() int {
+	if c == nil || c.ChildCommentCount == nil {
+		return 0
+	}
+	return *c.ChildCommentCount
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetDiscussionID returns the DiscussionID field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetDiscussionID() int64 {
+	if c == nil || c.DiscussionID == nil {
+		return 0
+	}
+	return *c.DiscussionID
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetNodeID() string {
+	if c == nil || c.NodeID == nil {
+		return ""
+	}
+	return *c.NodeID
+}
+
+// GetParentID returns the ParentID field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetParentID() int64 {
+	if c == nil || c.ParentID == nil {
+		return 0
+	}
+	return *c.ParentID
+}
+
+// GetReactions returns the Reactions field.
+func (c *CommentDiscussion) GetReactions() *Reactions {
+	if c == nil {
+		return nil
+	}
+	return c.Reactions
+}
+
+// GetRepositoryURL returns the RepositoryURL field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetRepositoryURL() string {
+	if c == nil || c.RepositoryURL == nil {
+		return ""
+	}
+	return *c.RepositoryURL
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CommentDiscussion) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetUser returns the User field.
+func (c *CommentDiscussion) GetUser() *User {
+	if c == nil {
+		return nil
+	}
+	return c.User
+}
+
 // GetTotalCommitComments returns the TotalCommitComments field if it's non-nil, zero value otherwise.
 func (c *CommentStats) GetTotalCommitComments() int {
 	if c == nil || c.TotalCommitComments == nil {
@@ -5044,6 +5148,62 @@ func (d *DiscussionComment) GetURL() string {
 		return ""
 	}
 	return *d.URL
+}
+
+// GetAction returns the Action field if it's non-nil, zero value otherwise.
+func (d *DiscussionCommentEvent) GetAction() string {
+	if d == nil || d.Action == nil {
+		return ""
+	}
+	return *d.Action
+}
+
+// GetComment returns the Comment field.
+func (d *DiscussionCommentEvent) GetComment() *CommentDiscussion {
+	if d == nil {
+		return nil
+	}
+	return d.Comment
+}
+
+// GetDiscussion returns the Discussion field.
+func (d *DiscussionCommentEvent) GetDiscussion() *Discussion {
+	if d == nil {
+		return nil
+	}
+	return d.Discussion
+}
+
+// GetInstallation returns the Installation field.
+func (d *DiscussionCommentEvent) GetInstallation() *Installation {
+	if d == nil {
+		return nil
+	}
+	return d.Installation
+}
+
+// GetOrg returns the Org field.
+func (d *DiscussionCommentEvent) GetOrg() *Organization {
+	if d == nil {
+		return nil
+	}
+	return d.Org
+}
+
+// GetRepo returns the Repo field.
+func (d *DiscussionCommentEvent) GetRepo() *Repository {
+	if d == nil {
+		return nil
+	}
+	return d.Repo
+}
+
+// GetSender returns the Sender field.
+func (d *DiscussionCommentEvent) GetSender() *User {
+	if d == nil {
+		return nil
+	}
+	return d.Sender
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

@@ -153,6 +153,7 @@ var hookDeliveryPayloadTypeToStruct = map[string]interface{}{
 	"deploy_key":                     &DeployKeyEvent{},
 	"deployment":                     &DeploymentEvent{},
 	"deployment_status":              &DeploymentStatusEvent{},
+	"discussion_comment":             &DiscussionCommentEvent{},
 	"discussion":                     &DiscussionEvent{},
 	"fork":                           &ForkEvent{},
 	"github_app_authorization":       &GitHubAppAuthorizationEvent{},

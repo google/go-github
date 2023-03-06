@@ -56,6 +56,7 @@ var (
 		"deployment":                     "DeploymentEvent",
 		"deployment_status":              "DeploymentStatusEvent",
 		"discussion":                     "DiscussionEvent",
+		"discussion_comment":             "DiscussionCommentEvent",
 		"fork":                           "ForkEvent",
 		"github_app_authorization":       "GitHubAppAuthorizationEvent",
 		"gollum":                         "GollumEvent",
