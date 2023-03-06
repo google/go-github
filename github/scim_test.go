@@ -430,6 +430,8 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 }
 
 func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
+	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
+
 	url := "some/path"
 
 	testAddOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)

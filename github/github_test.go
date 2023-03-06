@@ -172,8 +172,6 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 func testAddOptions(t *testing.T, url string, v interface{}, want string) {
 	t.Helper()
 
-	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
-
 	got, err := addOptions(url, v)
 	if err != nil {
 		t.Errorf("Unable to add %#v as query parameters", v)
