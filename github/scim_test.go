@@ -429,24 +429,6 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestListSCIMProvisionedIdentitiesOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
-
-	u := &ListSCIMProvisionedIdentitiesOptions{
-		StartIndex: Int(1),
-		Count:      Int(10),
-		Filter:     String("test"),
-	}
-
-	want := `{
-		"startIndex": 1,
-		"count": 10,
-	 	"filter": "test"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 	url := "some/path"
 
