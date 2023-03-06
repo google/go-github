@@ -172,13 +172,15 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 func testAddOptions(t *testing.T, url string, v interface{}, want string) {
 	t.Helper()
 
-	u, err := addOptions(url, v)
+	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
+
+	got, err := addOptions(url, v)
 	if err != nil {
 		t.Errorf("Unable to add %#v as query parameters", v)
 	}
 
-	if u != want {
-		t.Errorf("addOptions(%q, %#v) returned %s, want %s", url, v, u, want)
+	if got != want {
+		t.Errorf("addOptions(%q, %#v) returned %v, want %v", url, v, got, want)
 	}
 }
 
