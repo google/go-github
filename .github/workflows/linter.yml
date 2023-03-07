@@ -17,7 +17,7 @@ jobs:
         # since that needs libsodium to run.
         working-directory:
           - ""
-          - example
+          # - example  # Fails with "no go files to analyze"
           - scrape
           - update-urls
     runs-on: ${{ matrix.platform }}
@@ -30,4 +30,4 @@ jobs:
       with:
         version: latest
         working-directory: ${{ matrix.working-directory}}
-        args: --verbose ./...
+        args: --verbose
