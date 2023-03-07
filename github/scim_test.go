@@ -430,7 +430,11 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 }
 
 func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
-	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
+	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{
+		"StartIndex": null,
+		"Count": null,
+		"Filter": null
+	}`)
 
 	url := "some/path"
 
