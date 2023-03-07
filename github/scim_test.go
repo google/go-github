@@ -434,9 +434,9 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 
 	url := "some/path"
 
-	testAddOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)
+	testAddURLOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)
 
-	testAddOptions(
+	testAddURLOptions(
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
@@ -446,7 +446,7 @@ func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
 		fmt.Sprintf("%s?count=10&startIndex=1", url),
 	)
 
-	testAddOptions(
+	testAddURLOptions(
 		t,
 		url,
 		&ListSCIMProvisionedIdentitiesOptions{
