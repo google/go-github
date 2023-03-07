@@ -17,7 +17,20 @@ jobs:
         # since that needs libsodium to run.
         working-directory:
           - ""
-          - example
+          - example/actionpermissions
+          - example/appengine
+          - example/basicauth
+          - example/commitpr
+          - example/listenvironments
+          - example/migrations
+          - example/newfilewithappauth
+          - example/newrepo
+          - example/newreposecretwithxcrypto
+          - example/ratelimit
+          - example/simple
+          - example/tagprotection
+          - example/tokenauth
+          - example/topics
           - scrape
           - update-urls
     runs-on: ${{ matrix.platform }}
@@ -30,4 +43,4 @@ jobs:
       with:
         version: latest
         working-directory: ${{ matrix.working-directory}}
-        args: --verbose ./...
+        args: --verbose
