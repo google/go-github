@@ -18,7 +18,7 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/custom_roles", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"total_count": 1, "custom_roles": [{ "id": 1, "name": "Developer", "base_role": "write", "permissions": ["delete_alerts_code_scanning"]}]}`)
 	})
@@ -53,7 +53,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/custom_roles", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/custom-repository-roles", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{"id":8030,"name":"Labeler","description":"A role for issue and PR labelers","base_role":"read","permissions":["add_label"]}`)
 	})
@@ -96,7 +96,7 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/custom_roles/8030", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"id":8030,"name":"Updated Name","description":"Updated Description","base_role":"read","permissions":["add_label"]}`)
 	})
@@ -137,7 +137,7 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/orgs/o/custom_roles/8030", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/custom-repository-roles/8030", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		w.WriteHeader(http.StatusNoContent)
 	})
