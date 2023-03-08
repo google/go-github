@@ -32,7 +32,7 @@ type CustomRepoRoles struct {
 //
 // GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom_roles", org)
+	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -59,9 +59,9 @@ type CreateOrUpdateCustomRoleOptions struct {
 // CreateCustomRepoRole creates a custom repository role in this organization.
 // In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#create-a-custom-role
+// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#create-a-custom-repository-role
 func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom_roles", org)
+	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -80,9 +80,9 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 // UpdateCustomRepoRole updates a custom repository role in this organization.
 // In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#update-a-custom-role
+// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#update-a-custom-repository-role
 func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, roleID string, opts *CreateOrUpdateCustomRoleOptions) (*CustomRepoRoles, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom_roles/%v", org, roleID)
+	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -101,9 +101,9 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org, ro
 // DeleteCustomRepoRole deletes an existing custom repository role in this organization.
 // In order to delete custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#delete-a-custom-role
+// GitHub API docs: https://docs.github.com/en/rest/orgs/custom-roles#delete-a-custom-repository-role
 func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org, roleID string) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/custom_roles/%v", org, roleID)
+	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
