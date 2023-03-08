@@ -60,6 +60,7 @@ type ListWorkflowRunsOptions struct {
 	Event   string `url:"event,omitempty"`
 	Status  string `url:"status,omitempty"`
 	Created string `url:"created,omitempty"`
+	HeadSHA string `url:"head_sha,omitempty"`
 	ListOptions
 }
 
