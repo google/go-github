@@ -348,6 +348,11 @@ func NewClient(httpClient *http.Client) *Client {
 	return c
 }
 
+// NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
+func NewClientWithEnvProxy() *Client {
+	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
+}
+
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
 func NewTokenClient(ctx context.Context, token string) *Client {
 	return NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})))
