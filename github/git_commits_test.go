@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/google/go-cmp/cmp"
-	"golang.org/x/crypto/openpgp"
 )
 
 func TestCommit_Marshal(t *testing.T) {
@@ -309,6 +309,9 @@ func TestGitService_CreateSignedCommitWithKey(t *testing.T) {
 		t.Errorf("Error reading keyring: %+v", err)
 	}
 
+	// Set the key lifetime to nil so we don't care about the example key expiring and making tests fail
+	keyring[0].Identities["go-github <go-github@github.com>"].SelfSignature.KeyLifetimeSecs = nil
+
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	author := CommitAuthor{
 		Name:  String("go-github"),
@@ -344,7 +347,7 @@ Commit Message.`)
 		}
 
 		sigReader := strings.NewReader(*v.Signature)
-		signer, err := openpgp.CheckArmoredDetachedSignature(keyring, messageReader, sigReader)
+		signer, err := openpgp.CheckArmoredDetachedSignature(keyring, messageReader, sigReader, nil)
 		if err != nil {
 			t.Errorf("Error verifying signature: %+v", err)
 		}
@@ -409,8 +412,13 @@ func TestGitService_createSignature_noAuthor(t *testing.T) {
 
 func TestGitService_createSignature_invalidKey(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+	authorName := "go-github"
+	authorEmail := "go-github@github.com"
 
-	_, err := createSignature(&openpgp.Entity{}, &createCommit{
+	signKey, _ := openpgp.NewEntity(authorName, "", authorEmail, nil)
+	_ = signKey.RevokeKey(0, "Invalidate key", nil)
+
+	_, err := createSignature(signKey, &createCommit{
 		Message: String("Commit Message."),
 		Tree:    String("t"),
 		Parents: []string{"p"},

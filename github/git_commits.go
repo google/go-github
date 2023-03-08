@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"strings"
 
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 // SignatureVerification represents GPG signature verification.
