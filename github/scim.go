@@ -69,14 +69,14 @@ type SCIMProvisionedIdentities struct {
 //
 // Github API docs: https://docs.github.com/en/rest/scim#list-scim-provisioned-identities--parameters
 type ListSCIMProvisionedIdentitiesOptions struct {
-	StartIndex *int `json:"startIndex,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
-	Count      *int `json:"count,omitempty"`      // Used for pagination: the number of results to return. (Optional.)
+	StartIndex *int `url:"startIndex,omitempty"` // Used for pagination: the index of the first result to return. (Optional.)
+	Count      *int `url:"count,omitempty"`      // Used for pagination: the number of results to return. (Optional.)
 	// Filter results using the equals query parameter operator (eq).
 	// You can filter results that are equal to id, userName, emails, and external_id.
 	// For example, to search for an identity with the userName Octocat, you would use this query: ?filter=userName%20eq%20\"Octocat\".
 	// To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\".
 	// (Optional.)
-	Filter *string `json:"filter,omitempty"`
+	Filter *string `url:"filter,omitempty"`
 }
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
