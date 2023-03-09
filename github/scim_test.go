@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -428,22 +429,37 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestListSCIMProvisionedIdentitiesOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{}`)
+func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
+	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{
+		"StartIndex": null,
+		"Count": null,
+		"Filter": null
+	}`)
 
-	u := &ListSCIMProvisionedIdentitiesOptions{
-		StartIndex: Int(1),
-		Count:      Int(10),
-		Filter:     String("test"),
-	}
+	url := "some/path"
 
-	want := `{
-		"startIndex": 1,
-		"count": 10,
-	 	"filter": "test"
-	}`
+	testAddURLOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)
 
-	testJSONMarshal(t, u, want)
+	testAddURLOptions(
+		t,
+		url,
+		&ListSCIMProvisionedIdentitiesOptions{
+			StartIndex: Int(1),
+			Count:      Int(10),
+		},
+		fmt.Sprintf("%s?count=10&startIndex=1", url),
+	)
+
+	testAddURLOptions(
+		t,
+		url,
+		&ListSCIMProvisionedIdentitiesOptions{
+			StartIndex: Int(1),
+			Count:      Int(10),
+			Filter:     String("test"),
+		},
+		fmt.Sprintf("%s?count=10&filter=test&startIndex=1", url),
+	)
 }
 
 func TestSCIMUserName_Marshal(t *testing.T) {

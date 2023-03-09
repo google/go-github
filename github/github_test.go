@@ -169,6 +169,33 @@ func testJSONMarshal(t *testing.T, v interface{}, want string) {
 	}
 }
 
+// Test whether the v fields have the url tag and the parsing of v
+// produces query parameters that corresponds to the want string.
+func testAddURLOptions(t *testing.T, url string, v interface{}, want string) {
+	t.Helper()
+
+	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
+	for i := 0; i < vt.NumField(); i++ {
+		field := vt.Field(i)
+		if alias, ok := field.Tag.Lookup("url"); ok {
+			if alias == "" {
+				t.Errorf("The field %+v has a blank url tag", field)
+			}
+		} else {
+			t.Errorf("The field %+v has no url tag specified", field)
+		}
+	}
+
+	got, err := addOptions(url, v)
+	if err != nil {
+		t.Errorf("Unable to add %#v as query parameters", v)
+	}
+
+	if got != want {
+		t.Errorf("addOptions(%q, %#v) returned %v, want %v", url, v, got, want)
+	}
+}
+
 // Test how bad options are handled. Method f under test should
 // return an error.
 func testBadOptions(t *testing.T, methodName string, f func() error) {
