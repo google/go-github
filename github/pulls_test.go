@@ -852,12 +852,7 @@ func TestPullRequestMergeRequest_Marshal(t *testing.T) {
 		SHA:           "sha",
 	}
 
-	want := `{
-		"commit_message": "cm",
-		"commit_title": "ct",
-		"merge_method": "mm",
-		"sha": "sha"
-	}`
+	want := `{"commit_message":"cm","commit_title":"ct","merge_method":"mm","sha":"sha"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -871,11 +866,7 @@ func TestPullRequestMergeResult_Marshal(t *testing.T) {
 		Message: String("msg"),
 	}
 
-	want := `{
-		"sha": "sha",
-		"merged": false,
-		"message": "msg"
-	}`
+	want := `{"sha":"sha","merged":false,"message":"msg"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -891,13 +882,7 @@ func TestPullRequestUpdate_Marshal(t *testing.T) {
 		MaintainerCanModify: Bool(false),
 	}
 
-	want := `{
-		"title": "title",
-		"body": "body",
-		"state": "state",
-		"base": "base",
-		"maintainer_can_modify": false
-	}`
+	want := `{"title":"title","body":"body","state":"state","base":"base","maintainer_can_modify":false}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -910,10 +895,7 @@ func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
 		URL:     String("url"),
 	}
 
-	want := `{
-		"message": "message",
-		"url": "url"
-	}`
+	want := `{"message":"message","url":"url"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -925,9 +907,7 @@ func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
 		ExpectedHeadSHA: String("eh"),
 	}
 
-	want := `{
-		"expected_head_sha": "eh"
-	}`
+	want := `{"expected_head_sha":"eh"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -945,15 +925,7 @@ func TestNewPullRequest_Marshal(t *testing.T) {
 		Draft:               Bool(false),
 	}
 
-	want := `{
-		"title": "eh",
-		"head": "eh",
-		"base": "eh",
-		"body": "eh",
-		"issue": 1,
-		"maintainer_can_modify": false,
-		"draft": false
-	}`
+	want := `{"title":"eh","head":"eh","base":"eh","body":"eh","issue":1,"maintainer_can_modify":false,"draft":false}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -988,34 +960,7 @@ func TestPullRequestBranch_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"label": "label",
-		"ref": "ref",
-		"sha": "sha",
-		"repo": {
-			"id": 1
-		},
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
+	want := `{"label":"label","ref":"ref","sha":"sha","repo":{"id":1},"user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1027,9 +972,7 @@ func TestPRLink_Marshal(t *testing.T) {
 		HRef: String("href"),
 	}
 
-	want := `{
-		"href": "href"
-	}`
+	want := `{"href":"href"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1064,32 +1007,7 @@ func TestPRLinks_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"self": {
-			"href": "href"
-		},
-		"html": {
-			"href": "href"
-		},
-		"issue": {
-			"href": "href"
-		},
-		"comments": {
-			"href": "href"
-		},
-		"review_comments": {
-			"href": "href"
-		},
-		"review_comment": {
-			"href": "href"
-		},
-		"commits": {
-			"href": "href"
-		},
-		"statuses": {
-			"href": "href"
-		}
-	}`
+	want := `{"self":{"href":"href"},"html":{"href":"href"},"issue":{"href":"href"},"comments":{"href":"href"},"review_comments":{"href":"href"},"review_comment":{"href":"href"},"commits":{"href":"href"},"statuses":{"href":"href"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1123,31 +1041,7 @@ func TestPullRequestAutoMerge_Marshal(t *testing.T) {
 		CommitMessage: String("cm"),
 	}
 
-	want := `{
-		"enabled_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"merge_method": "mm",
-		"commit_title": "ct",
-		"commit_message": "cm"
-	}`
+	want := `{"enabled_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"merge_method":"mm","commit_title":"ct","commit_message":"cm"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1360,224 +1254,7 @@ func TestPullRequest_Marshal(t *testing.T) {
 		ActiveLockReason: String("alr"),
 	}
 
-	want := `{
-		"id": 1,
-		"number": 1,
-		"state": "state",
-		"locked": false,
-		"title": "title",
-		"body": "body",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"closed_at": ` + referenceTimeStr + `,
-		"merged_at": ` + referenceTimeStr + `,
-		"labels": [
-			{
-				"id": 1
-			}
-		],
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"draft": false,
-		"merged": false,
-		"mergeable": false,
-		"mergeable_state": "ms",
-		"merged_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"merge_commit_sha": "mcs",
-		"rebaseable": false,
-		"comments": 1,
-		"commits": 1,
-		"additions": 1,
-		"deletions": 1,
-		"changed_files": 1,
-		"url": "url",
-		"html_url": "hurl",
-		"issue_url": "iurl",
-		"statuses_url": "surl",
-		"diff_url": "durl",
-		"patch_url": "purl",
-		"commits_url": "curl",
-		"comments_url": "comurl",
-		"review_comments_url": "rcurls",
-		"review_comment_url": "rcurl",
-		"review_comments": 1,
-		"assignee": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"assignees": [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"milestone": {
-			"id": 1
-		},
-		"maintainer_can_modify": true,
-		"author_association": "aa",
-		"node_id": "nid",
-		"requested_reviewers": [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"auto_merge": {
-			"enabled_by": {
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			},
-			"merge_method": "mm",
-			"commit_title": "ct",
-			"commit_message": "cm"
-		},
-		"requested_teams": [
-			{
-				"id": 1
-			}
-		],
-		"_links": {
-			"self": {
-				"href": "href"
-			},
-			"html": {
-				"href": "href"
-			},
-			"issue": {
-				"href": "href"
-			},
-			"comments": {
-				"href": "href"
-			},
-			"review_comments": {
-				"href": "href"
-			},
-			"review_comment": {
-				"href": "href"
-			},
-			"commits": {
-				"href": "href"
-			},
-			"statuses": {
-				"href": "href"
-			}
-		},
-		"head": {
-			"ref": "r2",
-			"repo": {
-				"id": 2
-			}
-		},
-		"base": {
-			"ref": "r2",
-			"repo": {
-				"id": 2
-			}
-		},
-		"active_lock_reason": "alr"
-	}`
+	want := `{"id":1,"number":1,"state":"state","locked":false,"title":"title","body":"body","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"closed_at":` + referenceTimeStr + `,"merged_at":` + referenceTimeStr + `,"labels":[{"id":1}],"user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"draft":false,"merged":false,"mergeable":false,"mergeable_state":"ms","merged_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"merge_commit_sha":"mcs","rebaseable":false,"comments":1,"commits":1,"additions":1,"deletions":1,"changed_files":1,"url":"url","html_url":"hurl","issue_url":"iurl","statuses_url":"surl","diff_url":"durl","patch_url":"purl","commits_url":"curl","comments_url":"comurl","review_comments_url":"rcurls","review_comment_url":"rcurl","review_comments":1,"assignee":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"assignees":[{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}],"milestone":{"id":1},"maintainer_can_modify":true,"author_association":"aa","node_id":"nid","requested_reviewers":[{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}],"auto_merge":{"enabled_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"merge_method":"mm","commit_title":"ct","commit_message":"cm"},"requested_teams":[{"id":1}],"_links":{"self":{"href":"href"},"html":{"href":"href"},"issue":{"href":"href"},"comments":{"href":"href"},"review_comments":{"href":"href"},"review_comment":{"href":"href"},"commits":{"href":"href"},"statuses":{"href":"href"}},"head":{"ref":"r2","repo":{"id":2}},"base":{"ref":"r2","repo":{"id":2}},"active_lock_reason":"alr"}`
 
 	testJSONMarshal(t, u, want)
 }

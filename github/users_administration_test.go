@@ -150,9 +150,7 @@ func TestUserSuspendOptions_Marshal(t *testing.T) {
 		Reason: String("reason"),
 	}
 
-	want := `{
-		"reason": "reason"
-	}`
+	want := `{"reason":"reason"}`
 
 	testJSONMarshal(t, u, want)
 }

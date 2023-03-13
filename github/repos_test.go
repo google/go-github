@@ -3306,9 +3306,7 @@ func TestAdvancedSecurity_Marshal(t *testing.T) {
 		Status: String("status"),
 	}
 
-	want := `{
-		"status": "status"
-	}`
+	want := `{"status":"status"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3320,15 +3318,13 @@ func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
 		From: Bool(true),
 	}
 
-	want := `{
-		"from" : true
-	}`
+	want := `{"from":true}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestDispatchRequestOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &DispatchRequestOptions{}, "{}")
+	testJSONMarshal(t, &DispatchRequestOptions{}, `{"event_type":""}`)
 
 	cp := json.RawMessage(`{"testKey":"testValue"}`)
 	u := &DispatchRequestOptions{
@@ -3336,28 +3332,20 @@ func TestDispatchRequestOptions_Marshal(t *testing.T) {
 		ClientPayload: &cp,
 	}
 
-	want := `{
-		"event_type": "test_event_type",
-		"client_payload": {
-		  "testKey": "testValue"
-		}
-	  }`
+	want := `{"event_type":"test_event_type","client_payload":{"testKey":"testValue"}}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestTransferRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &TransferRequest{}, "{}")
+	testJSONMarshal(t, &TransferRequest{}, `{"new_owner":""}`)
 
 	u := &TransferRequest{
 		NewOwner: "testOwner",
 		TeamID:   []int64{1, 2},
 	}
 
-	want := `{
-		"new_owner": "testOwner",
-		"team_ids": [1,2]
-	}`
+	want := `{"new_owner":"testOwner","team_ids":[1,2]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -3370,10 +3358,7 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 		Enabled: Bool(false),
 	}
 
-	want := `{
-		"url": "https://www.testURL.in",
-		"enabled": false
-	}`
+	want := `{"url":"https://www.testURL.in","enabled":false}`
 
 	testJSONMarshal(t, u, want)
 
@@ -3382,10 +3367,7 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 		Enabled: Bool(true),
 	}
 
-	want2 := `{
-		"url": "testURL",
-		"enabled": true
-	}`
+	want2 := `{"url":"testURL","enabled":true}`
 
 	testJSONMarshal(t, u2, want2)
 }
@@ -3399,33 +3381,26 @@ func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
 		Apps:  &[]string{"app1", "app2"},
 	}
 
-	want := `{
-		"users": ["user1","user2"],
-		"teams": ["team1","team2"],
-		"apps": ["app1","app2"]
-	}`
+	want := `{"users":["user1","user2"],"teams":["team1","team2"],"apps":["app1","app2"]}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestAdminEnforcement_Marshal(t *testing.T) {
-	testJSONMarshal(t, &AdminEnforcement{}, "{}")
+	testJSONMarshal(t, &AdminEnforcement{}, `{"enabled":false}`)
 
 	u := &AdminEnforcement{
 		URL:     String("https://www.test-url.in"),
 		Enabled: false,
 	}
 
-	want := `{
-		"url": "https://www.test-url.in",
-		"enabled": false
-	}`
+	want := `{"url":"https://www.test-url.in","enabled":false}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
-	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, "{}")
+	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, `{"required_approving_review_count":0}`)
 
 	u := &PullRequestReviewsEnforcementUpdate{
 		BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
@@ -3438,32 +3413,20 @@ func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
 		RequiredApprovingReviewCount: 2,
 	}
 
-	want := `{
-		"bypass_pull_request_allowances": {
-			"users": ["user1","user2"],
-			"teams": ["team1","team2"],
-			"apps": ["app1","app2"]
-		},
-		"dismiss_stale_reviews": false,
-		"require_code_owner_reviews": true,
-		"required_approving_review_count": 2
-	}`
+	want := `{"bypass_pull_request_allowances":{"users":["user1","user2"],"teams":["team1","team2"],"apps":["app1","app2"]},"dismiss_stale_reviews":false,"require_code_owner_reviews":true,"required_approving_review_count":2}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestRequiredStatusCheck_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RequiredStatusCheck{}, "{}")
+	testJSONMarshal(t, &RequiredStatusCheck{}, `{"context":""}`)
 
 	u := &RequiredStatusCheck{
 		Context: "ctx",
 		AppID:   Int64(1),
 	}
 
-	want := `{
-		"context": "ctx",
-		"app_id": 1
-	}`
+	want := `{"context":"ctx","app_id":1}`
 
 	testJSONMarshal(t, u, want)
 }

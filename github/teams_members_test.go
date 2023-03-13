@@ -797,15 +797,15 @@ func TestTeamAddTeamMembershipOptions_Marshal(t *testing.T) {
 		Role: "role",
 	}
 
-	want := `{
-		"role": "role"
-	}`
+	want := `{"role":"role"}`
 
 	testJSONMarshal(t, u, want)
 }
 
-func TestTeamListTeamMembersOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &TeamListTeamMembersOptions{}, "{}")
+func TestTeamListTeamMembersOptions_addOptions(t *testing.T) {
+	url := "some/path"
+
+	testAddURLOptions(t, url, &TeamListTeamMembersOptions{}, url)
 
 	u := &TeamListTeamMembersOptions{
 		Role: "role",
@@ -815,11 +815,5 @@ func TestTeamListTeamMembersOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"role": "role",
-		"Page": 1,
-		"PerPage": 2
-	}`
-
-	testJSONMarshal(t, u, want)
+	testAddURLOptions(t, url, u, url+`?page=1&per_page=2&role=role`)
 }

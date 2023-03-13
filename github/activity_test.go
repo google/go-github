@@ -139,10 +139,7 @@ func TestFeedLink_Marshal(t *testing.T) {
 		Type: String("t"),
 	}
 
-	want := `{
-		"href": "h",
-		"type": "t"
-	}`
+	want := `{"href":"h","type":"t"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -192,47 +189,7 @@ func TestFeeds_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"timeline_url": "t",
-		"user_url": "u",
-		"current_user_public_url": "cupu",
-		"current_user_url": "cuu",
-		"current_user_actor_url": "cuau",
-		"current_user_organization_url": "cuou",
-		"current_user_organization_urls": ["a"],
-		"_links": {
-			"timeline": {
-				"href": "h",
-				"type": "t"
-				},
-			"user": {
-				"href": "h",
-				"type": "t"
-			},
-			"current_user_public": {
-				"href": "h",
-				"type": "t"
-			},
-			"current_user": {
-				"href": "h",
-				"type": "t"
-			},
-			"current_user_actor": {
-				"href": "h",
-				"type": "t"
-			},
-			"current_user_organization": {
-				"href": "h",
-				"type": "t"
-			},
-			"current_user_organizations": [
-				{
-					"href": "h",
-					"type": "t"
-				}
-			]
-		}
-	}`
+	want := `{"timeline_url":"t","user_url":"u","current_user_public_url":"cupu","current_user_url":"cuu","current_user_actor_url":"cuau","current_user_organization_url":"cuou","current_user_organization_urls":["a"],"_links":{"timeline":{"href":"h","type":"t"},"user":{"href":"h","type":"t"},"current_user_public":{"href":"h","type":"t"},"current_user":{"href":"h","type":"t"},"current_user_actor":{"href":"h","type":"t"},"current_user_organization":{"href":"h","type":"t"},"current_user_organizations":[{"href":"h","type":"t"}]}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -273,38 +230,7 @@ func TestFeedLinks_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"timeline": {
-			"href": "h",
-			"type": "t"
-		},
-		"user": {
-			"href": "h",
-			"type": "t"
-		},
-		"current_user_public": {
-			"href": "h",
-			"type": "t"
-		},
-		"current_user": {
-			"href": "h",
-			"type": "t"
-		},
-		"current_user_actor": {
-			"href": "h",
-			"type": "t"
-		},
-		"current_user_organization": {
-			"href": "h",
-			"type": "t"
-		},
-		"current_user_organizations": [
-			{
-				"href": "h",
-				"type": "t"
-			}
-		]
-	}`
+	want := `{"timeline":{"href":"h","type":"t"},"user":{"href":"h","type":"t"},"current_user_public":{"href":"h","type":"t"},"current_user":{"href":"h","type":"t"},"current_user_actor":{"href":"h","type":"t"},"current_user_organization":{"href":"h","type":"t"},"current_user_organizations":[{"href":"h","type":"t"}]}`
 
 	testJSONMarshal(t, u, want)
 }

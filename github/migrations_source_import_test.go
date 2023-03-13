@@ -344,12 +344,7 @@ func TestLargeFile_Marshal(t *testing.T) {
 		Size:    Int(1),
 	}
 
-	want := `{
-		"ref_name": "rn",
-		"path": "p",
-		"oid": "oid",
-		"size": 1
-	}`
+	want := `{"ref_name":"rn","path":"p","oid":"oid","size":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -367,15 +362,7 @@ func TestSourceImportAuthor_Marshal(t *testing.T) {
 		ImportURL:  String("iurl"),
 	}
 
-	want := `{
-		"id": 1,
-		"remote_id": "rid",
-		"remote_name": "rn",
-		"email": "e",
-		"name": "n",
-		"url": "url",
-		"import_url": "iurl"
-	}`
+	want := `{"id":1,"remote_id":"rid","remote_name":"rn","email":"e","name":"n","url":"url","import_url":"iurl"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -409,35 +396,7 @@ func TestImport_Marshal(t *testing.T) {
 		ProjectChoices:  []*Import{{VCSURL: String("vcsurl")}},
 	}
 
-	want := `{
-		"vcs_url": "vcsurl",
-		"vcs": "vcs",
-		"vcs_username": "vcsusr",
-		"vcs_password": "vcspass",
-		"tfvc_project": "tfvcp",
-		"use_lfs": "uselfs",
-		"has_large_files": false,
-		"large_files_size": 1,
-		"large_files_count": 1,
-		"status": "status",
-		"commit_count": 1,
-		"status_text": "statustxt",
-		"authors_count": 1,
-		"percent": 1,
-		"push_percent": 1,
-		"url": "url",
-		"html_url": "hurl",
-		"authors_url": "aurl",
-		"repository_url": "rurl",
-		"message": "msg",
-		"failed_step": "fs",
-		"human_name": "hn",
-		"project_choices": [
-			{
-				"vcs_url": "vcsurl"
-			}
-		]
-	}`
+	want := `{"vcs_url":"vcsurl","vcs":"vcs","vcs_username":"vcsusr","vcs_password":"vcspass","tfvc_project":"tfvcp","use_lfs":"uselfs","has_large_files":false,"large_files_size":1,"large_files_count":1,"status":"status","commit_count":1,"status_text":"statustxt","authors_count":1,"percent":1,"push_percent":1,"url":"url","html_url":"hurl","authors_url":"aurl","repository_url":"rurl","message":"msg","failed_step":"fs","human_name":"hn","project_choices":[{"vcs_url":"vcsurl"}]}`
 
 	testJSONMarshal(t, u, want)
 }

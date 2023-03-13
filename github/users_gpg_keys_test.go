@@ -198,10 +198,7 @@ func TestGPGEmail_Marshal(t *testing.T) {
 		Verified: Bool(false),
 	}
 
-	want := `{
-		"email" : "email@abc.com",
-		"verified" : false
-	}`
+	want := `{"email":"email@abc.com","verified":false}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -234,28 +231,7 @@ func TestGPGKey_Marshal(t *testing.T) {
 		ExpiresAt:         ti,
 	}
 
-	want := `{
-			"id":1,
-			"primary_key_id":1,
-			"key_id":"someKeyID",
-			"raw_key":"someRawKeyID",
-			"public_key":"somePublicKey",
-			"emails":[
-				{
-					"email":"someEmail",
-					"verified":true
-				}
-			],
-			"subkeys":[
-				{}
-			],
-			"can_sign":true,
-			"can_encrypt_comms":true,
-			"can_encrypt_storage":true,
-			"can_certify":true,
-			"created_at":"0001-01-01T00:00:00Z",
-			"expires_at":"0001-01-01T00:00:00Z"
-		}`
+	want := `{"id":1,"primary_key_id":1,"key_id":"someKeyID","raw_key":"someRawKeyID","public_key":"somePublicKey","emails":[{"email":"someEmail","verified":true}],"subkeys":[{}],"can_sign":true,"can_encrypt_comms":true,"can_encrypt_storage":true,"can_certify":true,"created_at":"0001-01-01T00:00:00Z","expires_at":"0001-01-01T00:00:00Z"}`
 
 	testJSONMarshal(t, g, want)
 }

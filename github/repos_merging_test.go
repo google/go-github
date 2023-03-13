@@ -72,11 +72,7 @@ func TestRepositoryMergeRequest_Marshal(t *testing.T) {
 		CommitMessage: String("cm"),
 	}
 
-	want := `{
-		"base": "base",
-		"head": "head",
-		"commit_message": "cm"
-	}`
+	want := `{"base":"base","head":"head","commit_message":"cm"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -136,11 +132,7 @@ func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
 		BaseBranch: String("base_branch"),
 	}
 
-	want := `{
-		"message": "message",
-		"merge_type": "merge_type",
-		"base_branch": "base_branch"
-	}`
+	want := `{"message":"message","merge_type":"merge_type","base_branch":"base_branch"}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -17,7 +17,7 @@ type TeamListTeamMembersOptions struct {
 	// values are "all", "member", "maintainer". Default is "all".
 	Role string `url:"role,omitempty"`
 
-	ListOptions
+	ListOptions `url:",omitempty"`
 }
 
 // ListTeamMembersByID lists all of the users who are members of a team, given a specified

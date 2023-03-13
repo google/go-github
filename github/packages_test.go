@@ -17,13 +17,7 @@ func TestPackageRegistry_Marshal(t *testing.T) {
 		URL:      String("url"),
 		Vendor:   String("vendor"),
 	}
-	want := `{
-		"about_url": "aurl",
-		"name": "name",
-		"type": "type",
-		"url": "url",
-		"vendor": "vendor"
-	}`
+	want := `{"about_url":"aurl","name":"name","type":"type","url":"url","vendor":"vendor"}`
 
 	testJSONMarshal(t, o, want)
 }
@@ -65,39 +59,7 @@ func TestPackageFile_Marshal(t *testing.T) {
 		UpdatedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"download_url": "durl",
-		"id": 1,
-		"name": "name",
-		"sha256": "sha256",
-		"sha1": "sha1",
-		"md5": "md5",
-		"content_type": "ct",
-		"state": "state",
-		"author": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"size": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `
-	}`
+	want := `{"download_url":"durl","id":1,"name":"name","sha256":"sha256","sha1":"sha1","md5":"md5","content_type":"ct","state":"state","author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"size":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, o, want)
 }
@@ -138,38 +100,7 @@ func TestPackageRelease_Marshal(t *testing.T) {
 		PublishedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"url": "url",
-		"html_url": "hurl",
-		"id": 1,
-		"tag_name": "tn",
-		"target_commitish": "tcs",
-		"name": "name",
-		"draft": true,
-		"author": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"prerelease": true,
-		"created_at": ` + referenceTimeStr + `,
-		"published_at": ` + referenceTimeStr + `
-	}`
+	want := `{"url":"url","html_url":"hurl","id":1,"tag_name":"tn","target_commitish":"tcs","name":"name","draft":true,"author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"prerelease":true,"created_at":` + referenceTimeStr + `,"published_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, o, want)
 }
@@ -282,110 +213,7 @@ func TestPackageVersion_Marshal(t *testing.T) {
 		InstallationCommand: String("ic"),
 	}
 
-	want := `{
-		"id": 1,
-		"version": "ver",
-		"summary": "sum",
-		"body": "body",
-		"body_html": "btnhtml",
-		"release": {
-			"url": "url",
-			"html_url": "hurl",
-			"id": 1,
-			"tag_name": "tn",
-			"target_commitish": "tcs",
-			"name": "name",
-			"draft": true,
-			"author": {
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			},
-			"prerelease": true,
-			"created_at": ` + referenceTimeStr + `,
-			"published_at": ` + referenceTimeStr + `
-		},
-		"manifest": "mani",
-		"html_url": "hurl",
-		"tag_name": "tn",
-		"target_commitish": "tcs",
-		"target_oid": "tid",
-		"draft": true,
-		"prerelease": true,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"package_files": [
-			{
-				"download_url": "durl",
-				"id": 1,
-				"name": "name",
-				"sha256": "sha256",
-				"sha1": "sha1",
-				"md5": "md5",
-				"content_type": "ct",
-				"state": "state",
-				"author": {
-					"login": "l",
-					"id": 1,
-					"avatar_url": "a",
-					"gravatar_id": "g",
-					"name": "n",
-					"company": "c",
-					"blog": "b",
-					"location": "l",
-					"email": "e",
-					"hireable": true,
-					"bio": "b",
-					"twitter_username": "t",
-					"public_repos": 1,
-					"followers": 1,
-					"following": 1,
-					"created_at": ` + referenceTimeStr + `,
-					"suspended_at": ` + referenceTimeStr + `,
-					"url": "u"
-				},
-				"size": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"updated_at": ` + referenceTimeStr + `
-			}
-		],
-		"author": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"installation_command": "ic"
-	}`
+	want := `{"id":1,"version":"ver","summary":"sum","body":"body","body_html":"btnhtml","release":{"url":"url","html_url":"hurl","id":1,"tag_name":"tn","target_commitish":"tcs","name":"name","draft":true,"author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"prerelease":true,"created_at":` + referenceTimeStr + `,"published_at":` + referenceTimeStr + `},"manifest":"mani","html_url":"hurl","tag_name":"tn","target_commitish":"tcs","target_oid":"tid","draft":true,"prerelease":true,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"package_files":[{"download_url":"durl","id":1,"name":"name","sha256":"sha256","sha1":"sha1","md5":"md5","content_type":"ct","state":"state","author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"size":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}],"author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"installation_command":"ic"}`
 
 	testJSONMarshal(t, o, want)
 }
@@ -534,146 +362,7 @@ func TestPackage_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"name": "name",
-		"package_type": "pt",
-		"html_url": "hurl",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"visibility": "private",
-		"owner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"package_version": {
-			"id": 1,
-			"version": "ver",
-			"summary": "sum",
-			"body": "body",
-			"body_html": "btnhtml",
-			"release": {
-				"url": "url",
-				"html_url": "hurl",
-				"id": 1,
-				"tag_name": "tn",
-				"target_commitish": "tcs",
-				"name": "name",
-				"draft": true,
-				"author": {
-					"login": "l",
-					"id": 1,
-					"avatar_url": "a",
-					"gravatar_id": "g",
-					"name": "n",
-					"company": "c",
-					"blog": "b",
-					"location": "l",
-					"email": "e",
-					"hireable": true,
-					"bio": "b",
-					"twitter_username": "t",
-					"public_repos": 1,
-					"followers": 1,
-					"following": 1,
-					"created_at": ` + referenceTimeStr + `,
-					"suspended_at": ` + referenceTimeStr + `,
-					"url": "u"
-				},
-				"prerelease": true,
-				"created_at": ` + referenceTimeStr + `,
-				"published_at": ` + referenceTimeStr + `
-			},
-			"manifest": "mani",
-			"html_url": "hurl",
-			"tag_name": "tn",
-			"target_commitish": "tcs",
-			"target_oid": "tid",
-			"draft": true,
-			"prerelease": true,
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"package_files": [
-				{
-					"download_url": "durl",
-					"id": 1,
-					"name": "name",
-					"sha256": "sha256",
-					"sha1": "sha1",
-					"md5": "md5",
-					"content_type": "ct",
-					"state": "state",
-					"author": {
-						"login": "l",
-						"id": 1,
-						"avatar_url": "a",
-						"gravatar_id": "g",
-						"name": "n",
-						"company": "c",
-						"blog": "b",
-						"location": "l",
-						"email": "e",
-						"hireable": true,
-						"bio": "b",
-						"twitter_username": "t",
-						"public_repos": 1,
-						"followers": 1,
-						"following": 1,
-						"created_at": ` + referenceTimeStr + `,
-						"suspended_at": ` + referenceTimeStr + `,
-						"url": "u"
-					},
-					"size": 1,
-					"created_at": ` + referenceTimeStr + `,
-					"updated_at": ` + referenceTimeStr + `
-				}
-			],
-			"author": {
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			},
-			"installation_command": "ic"
-		},
-		"registry": {
-			"about_url": "aurl",
-			"name": "name",
-			"type": "type",
-			"url": "url",
-			"vendor": "vendor"
-		}
-	}`
+	want := `{"id":1,"name":"name","package_type":"pt","html_url":"hurl","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"owner":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"package_version":{"id":1,"version":"ver","summary":"sum","body":"body","body_html":"btnhtml","release":{"url":"url","html_url":"hurl","id":1,"tag_name":"tn","target_commitish":"tcs","name":"name","draft":true,"author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"prerelease":true,"created_at":` + referenceTimeStr + `,"published_at":` + referenceTimeStr + `},"manifest":"mani","html_url":"hurl","tag_name":"tn","target_commitish":"tcs","target_oid":"tid","draft":true,"prerelease":true,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"package_files":[{"download_url":"durl","id":1,"name":"name","sha256":"sha256","sha1":"sha1","md5":"md5","content_type":"ct","state":"state","author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"size":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}],"author":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"installation_command":"ic"},"registry":{"about_url":"aurl","name":"name","type":"type","url":"url","vendor":"vendor"},"visibility":"private"}`
 
 	testJSONMarshal(t, o, want)
 }

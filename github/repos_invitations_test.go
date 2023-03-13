@@ -138,28 +138,7 @@ func TestRepositoryInvitation_Marshal(t *testing.T) {
 		HTMLURL:     String("h"),
 	}
 
-	want := `{
-		"id":1,
-		"repository":{
-			"id":1,
-			"name":"n",
-			"url":"u"
-		},
-		"invitee":{
-			"id":1,
-			"name":"n",
-			"url":"u"
-		},
-		"inviter":{
-			"id":1,
-			"name":"n",
-			"url":"u"
-		},
-		"permissions":"p",
-		"created_at":` + referenceTimeStr + `,
-		"url":"u",
-		"html_url":"h"
-	}`
+	want := `{"id":1,"repository":{"id":1,"name":"n","url":"u"},"invitee":{"id":1,"name":"n","url":"u"},"inviter":{"id":1,"name":"n","url":"u"},"permissions":"p","created_at":` + referenceTimeStr + `,"url":"u","html_url":"h"}`
 
 	testJSONMarshal(t, r, want)
 }

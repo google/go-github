@@ -355,11 +355,7 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 		"WINDOWS": 1,
 	}
 
-	want := `{
-		"UBUNTU": 1,
-		"MACOS": 1,
-		"WINDOWS": 1
-	}`
+	want := `{"MACOS":1,"UBUNTU":1,"WINDOWS":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -378,22 +374,13 @@ func TestActionBilling_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_minutes_used": 1,
-		"total_paid_minutes_used": 1,
-		"included_minutes": 1,
-		"minutes_used_breakdown": {
-			"UBUNTU": 1,
-			"MACOS": 1,
-			"WINDOWS": 1
-		}
-	}`
+	want := `{"total_minutes_used":1,"total_paid_minutes_used":1,"included_minutes":1,"minutes_used_breakdown":{"MACOS":1,"UBUNTU":1,"WINDOWS":1}}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestPackageBilling_Marshal(t *testing.T) {
-	testJSONMarshal(t, &PackageBilling{}, "{}")
+	testJSONMarshal(t, &PackageBilling{}, `{"total_gigabytes_bandwidth_used":0,"total_paid_gigabytes_bandwidth_used":0,"included_gigabytes_bandwidth":0}`)
 
 	u := &PackageBilling{
 		TotalGigabytesBandwidthUsed:     1,
@@ -401,17 +388,13 @@ func TestPackageBilling_Marshal(t *testing.T) {
 		IncludedGigabytesBandwidth:      1,
 	}
 
-	want := `{
-		"total_gigabytes_bandwidth_used": 1,
-		"total_paid_gigabytes_bandwidth_used": 1,
-		"included_gigabytes_bandwidth": 1
-	}`
+	want := `{"total_gigabytes_bandwidth_used":1,"total_paid_gigabytes_bandwidth_used":1,"included_gigabytes_bandwidth":1}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestStorageBilling_Marshal(t *testing.T) {
-	testJSONMarshal(t, &StorageBilling{}, "{}")
+	testJSONMarshal(t, &StorageBilling{}, `{"days_left_in_billing_cycle":0,"estimated_paid_storage_for_month":0,"estimated_storage_for_month":0}`)
 
 	u := &StorageBilling{
 		DaysLeftInBillingCycle:       1,
@@ -419,11 +402,7 @@ func TestStorageBilling_Marshal(t *testing.T) {
 		EstimatedStorageForMonth:     1,
 	}
 
-	want := `{
-		"days_left_in_billing_cycle": 1,
-		"estimated_paid_storage_for_month": 1,
-		"estimated_storage_for_month": 1
-	}`
+	want := `{"days_left_in_billing_cycle":1,"estimated_paid_storage_for_month":1,"estimated_storage_for_month":1}`
 
 	testJSONMarshal(t, u, want)
 }

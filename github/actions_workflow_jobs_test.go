@@ -226,14 +226,7 @@ func TestTaskStep_Marshal(t *testing.T) {
 		CompletedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"name": "n",
-		"status": "s",
-		"conclusion": "c",
-		"number": 1,
-		"started_at": ` + referenceTimeStr + `,
-		"completed_at": ` + referenceTimeStr + `
-	}`
+	want := `{"name":"n","status":"s","conclusion":"c","number":1,"started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -269,31 +262,7 @@ func TestWorkflowJob_Marshal(t *testing.T) {
 		WorkflowName: String("w"),
 	}
 
-	want := `{
-		"id": 1,
-		"run_id": 1,
-		"run_url": "r",
-		"node_id": "n",
-		"head_sha": "h",
-		"url": "u",
-		"html_url": "h",
-		"status": "s",
-		"conclusion": "c",
-		"created_at": ` + referenceTimeStr + `,
-		"started_at": ` + referenceTimeStr + `,
-		"completed_at": ` + referenceTimeStr + `,
-		"name": "n",
-		"steps": [{
-			"name": "n",
-			"status": "s",
-			"conclusion": "c",
-			"number": 1,
-			"started_at": ` + referenceTimeStr + `,
-			"completed_at": ` + referenceTimeStr + `
-		}],
-		"check_run_url": "c",
-		"workflow_name": "w"
-	}`
+	want := `{"id":1,"run_id":1,"run_url":"r","node_id":"n","head_sha":"h","url":"u","html_url":"h","status":"s","conclusion":"c","created_at":` + referenceTimeStr + `,"started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `,"name":"n","steps":[{"name":"n","status":"s","conclusion":"c","number":1,"started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `}],"check_run_url":"c","workflow_name":"w"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -335,35 +304,7 @@ func TestJobs_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"jobs": [{
-			"id": 1,
-			"run_id": 1,
-			"run_url": "r",
-			"node_id": "n",
-			"head_sha": "h",
-			"url": "u",
-			"html_url": "h",
-			"status": "s",
-			"conclusion": "c",
-			"created_at": ` + referenceTimeStr + `,
-			"started_at": ` + referenceTimeStr + `,
-			"completed_at": ` + referenceTimeStr + `,
-			"name": "n",
-			"steps": [{
-				"name": "n",
-				"status": "s",
-				"conclusion": "c",
-				"number": 1,
-				"started_at": ` + referenceTimeStr + `,
-				"completed_at": ` + referenceTimeStr + `
-			}],
-			"check_run_url": "c",
-			"run_attempt": 2,
-			"workflow_name": "w"
-		}]
-	}`
+	want := `{"total_count":1,"jobs":[{"id":1,"run_id":1,"run_url":"r","node_id":"n","head_sha":"h","url":"u","html_url":"h","status":"s","conclusion":"c","created_at":` + referenceTimeStr + `,"started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `,"name":"n","steps":[{"name":"n","status":"s","conclusion":"c","number":1,"started_at":` + referenceTimeStr + `,"completed_at":` + referenceTimeStr + `}],"check_run_url":"c","run_attempt":2,"workflow_name":"w"}]}`
 
 	testJSONMarshal(t, u, want)
 }

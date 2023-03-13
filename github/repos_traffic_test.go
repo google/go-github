@@ -210,11 +210,7 @@ func TestTrafficReferrer_Marshal(t *testing.T) {
 		Uniques:  Int(0),
 	}
 
-	want := `{
-		"referrer" : "referrer",
-		"count" : 0,
-		"uniques" : 0
-	}`
+	want := `{"referrer":"referrer","count":0,"uniques":0}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -232,15 +228,7 @@ func TestTrafficViews_Marshal(t *testing.T) {
 		Uniques: Int(0),
 	}
 
-	want := `{
-		"views": [{
-			"timestamp": "2016-05-31T16:00:00.000Z",
-			"count": 7,
-			"uniques": 6
-		}],
-		"count" : 0,
-		"uniques" : 0
-	}`
+	want := `{"views":[{"timestamp":"2016-05-31T16:00:00Z","count":7,"uniques":6}],"count":0,"uniques":0}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -258,15 +246,7 @@ func TestTrafficClones_Marshal(t *testing.T) {
 		Uniques: Int(0),
 	}
 
-	want := `{
-		"clones": [{
-			"timestamp": "2021-10-29T16:00:00.000Z",
-			"count": 1,
-			"uniques": 1
-		}],
-		"count" : 0,
-		"uniques" : 0
-	}`
+	want := `{"clones":[{"timestamp":"2021-10-29T16:00:00Z","count":1,"uniques":1}],"count":0,"uniques":0}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -281,12 +261,7 @@ func TestTrafficPath_Marshal(t *testing.T) {
 		Uniques: Int(3),
 	}
 
-	want := `{
-		"path" : "test/path",
-		"title": "test",
-		"count": 2,
-		"uniques": 3
-	}`
+	want := `{"path":"test/path","title":"test","count":2,"uniques":3}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -294,31 +269,26 @@ func TestTrafficPath_Marshal(t *testing.T) {
 func TestTrafficData_Marshal(t *testing.T) {
 	testJSONMarshal(t, &TrafficData{}, "{}")
 
+	// what about `referenceTimeStr`?!
 	u := &TrafficData{
 		Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
 		Count:     Int(7),
 		Uniques:   Int(6),
 	}
 
-	want := `{	
-			"timestamp": "2016-05-31T16:00:00.000Z",
-			"count": 7,
-			"uniques": 6
-      }`
+	want := `{"timestamp":"2016-05-31T16:00:00Z","count":7,"uniques":6}`
 
 	testJSONMarshal(t, u, want)
 }
 
-func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
+func TestTrafficBreakdownOptions_addOptions(t *testing.T) {
+	url := "some/path"
+
+	testAddURLOptions(t, url, &UserListOptions{}, url)
 
 	u := &TrafficBreakdownOptions{
 		Per: "day",
 	}
 
-	want := `{
-		"per": "day"
-	}`
-
-	testJSONMarshal(t, u, want)
+	testAddURLOptions(t, url, u, url+`?per=day`)
 }

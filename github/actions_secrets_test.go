@@ -812,23 +812,20 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 }
 
 func TestPublicKey_Marshal(t *testing.T) {
-	testJSONMarshal(t, &PublicKey{}, "{}")
+	testJSONMarshal(t, &PublicKey{}, `{"key_id":null,"key":null}`)
 
 	u := &PublicKey{
 		KeyID: String("kid"),
 		Key:   String("k"),
 	}
 
-	want := `{
-		"key_id": "kid",
-		"key": "k"
-	}`
+	want := `{"key_id":"kid","key":"k"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecret_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Secret{}, "{}")
+	testJSONMarshal(t, &Secret{}, `{"name":"","created_at":"0001-01-01T00:00:00Z","updated_at":"0001-01-01T00:00:00Z"}`)
 
 	u := &Secret{
 		Name:                    "n",
@@ -838,19 +835,13 @@ func TestSecret_Marshal(t *testing.T) {
 		SelectedRepositoriesURL: "s",
 	}
 
-	want := `{
-		"name": "n",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"visibility": "v",
-		"selected_repositories_url": "s"
-	}`
+	want := `{"name":"n","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"visibility":"v","selected_repositories_url":"s"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestSecrets_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Secrets{}, "{}")
+	testJSONMarshal(t, &Secrets{}, `{"total_count":0,"secrets":null}`)
 
 	u := &Secrets{
 		TotalCount: 1,
@@ -864,24 +855,13 @@ func TestSecrets_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"secrets": [
-			{
-				"name": "n",
-				"created_at": ` + referenceTimeStr + `,
-				"updated_at": ` + referenceTimeStr + `,
-				"visibility": "v",
-				"selected_repositories_url": "s"
-			}
-		]
-	}`
+	want := `{"total_count":1,"secrets":[{"name":"n","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"visibility":"v","selected_repositories_url":"s"}]}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestEncryptedSecret_Marshal(t *testing.T) {
-	testJSONMarshal(t, &EncryptedSecret{}, "{}")
+	testJSONMarshal(t, &EncryptedSecret{}, `{"key_id":"","encrypted_value":""}`)
 
 	u := &EncryptedSecret{
 		Name:                  "n",
@@ -891,12 +871,7 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		SelectedRepositoryIDs: []int64{1},
 	}
 
-	want := `{
-		"key_id": "kid",
-		"encrypted_value": "e",
-		"visibility": "v",
-		"selected_repository_ids": [1]
-	}`
+	want := `{"key_id":"kid","encrypted_value":"e","visibility":"v","selected_repository_ids":[1]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -915,16 +890,7 @@ func TestSelectedReposList_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
+	want := `{"total_count":1,"repositories":[{"id":1,"name":"n","url":"u"}]}`
 
 	testJSONMarshal(t, u, want)
 }

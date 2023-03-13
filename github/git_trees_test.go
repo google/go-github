@@ -360,27 +360,13 @@ func TestTree_Marshal(t *testing.T) {
 		Truncated: Bool(false),
 	}
 
-	want := `{
-		"sha": "sha",
-		"tree": [
-			{
-				"sha": "sha",
-				"path": "path",
-				"mode": "mode",
-				"type": "type",
-				"size": 1,
-				"content": "content",
-				"url": "url"
-			}
-		],
-		"truncated": false
-	}`
+	want := `{"sha":"sha","tree":[{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}],"truncated":false}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestTreeEntry_Marshal(t *testing.T) {
-	testJSONMarshal(t, &TreeEntry{}, "{}")
+	testJSONMarshal(t, &TreeEntry{}, `{"sha":null}`)
 
 	u := &TreeEntry{
 		SHA:     String("sha"),
@@ -392,21 +378,13 @@ func TestTreeEntry_Marshal(t *testing.T) {
 		URL:     String("url"),
 	}
 
-	want := `{
-		"sha": "sha",
-		"path": "path",
-		"mode": "mode",
-		"type": "type",
-		"size": 1,
-		"content": "content",
-		"url": "url"
-	}`
+	want := `{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
-	testJSONMarshal(t, &treeEntryWithFileDelete{}, "{}")
+	testJSONMarshal(t, &treeEntryWithFileDelete{}, `{"sha":null}`)
 
 	u := &treeEntryWithFileDelete{
 		SHA:     String("sha"),
@@ -418,31 +396,20 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 		URL:     String("url"),
 	}
 
-	want := `{
-		"sha": "sha",
-		"path": "path",
-		"mode": "mode",
-		"type": "type",
-		"size": 1,
-		"content": "content",
-		"url": "url"
-	}`
+	want := `{"sha":"sha","path":"path","mode":"mode","type":"type","size":1,"content":"content","url":"url"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestCreateTree_Marshal(t *testing.T) {
-	testJSONMarshal(t, &createTree{}, "{}")
+	testJSONMarshal(t, &createTree{}, `{"tree":null}`)
 
 	u := &createTree{
 		BaseTree: "bt",
 		Entries:  []interface{}{"e"},
 	}
 
-	want := `{
-		"base_tree": "bt",
-		"tree": ["e"]
-	}`
+	want := `{"base_tree":"bt","tree":["e"]}`
 
 	testJSONMarshal(t, u, want)
 }

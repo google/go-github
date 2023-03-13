@@ -393,46 +393,7 @@ func TestRepoEnvironment_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count":1,
-		"environments":[
-		   {
-			  "owner":"me",
-			  "repo":"se",
-			  "environment_name":"dev",
-			  "wait_timer":123,
-			  "reviewers":[
-				 {
-					"type":"main",
-					"id":1
-				 },
-				 {
-					"type":"rev",
-					"id":2
-				 }
-			  ],
-			  "deployment_branch_policy":{
-				 "protected_branches":false,
-				 "custom_branch_policies":false
-			  },
-			  "id":2,
-			  "node_id":"star",
-			  "name":"eg",
-			  "url":"https://hey.in",
-			  "html_url":"htmlurl",
-			  "created_at":` + referenceTimeStr + `,
-			  "updated_at":` + referenceTimeStr + `,
-			  "protection_rules":[
-				 {
-					"id":21,
-					"node_id":"mnb",
-					"type":"ewq",
-					"wait_timer":9090
-				 }
-			  ]
-		   }
-		]
-	 }`
+	want := `{"total_count":1,"environments":[{"owner":"me","repo":"se","environment_name":"dev","wait_timer":123,"reviewers":[{"type":"main","id":1},{"type":"rev","id":2}],"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":false},"id":2,"node_id":"star","name":"eg","url":"https://hey.in","html_url":"htmlurl","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"protection_rules":[{"id":21,"node_id":"mnb","type":"ewq","wait_timer":9090}]}]}`
 
 	testJSONMarshal(t, repoEnv, want)
 }
@@ -445,10 +406,7 @@ func TestEnvReviewers_Marshal(t *testing.T) {
 		ID:   Int64(1),
 	}
 
-	want := `{
-		"type":"main",
-		"id":1
-	}`
+	want := `{"type":"main","id":1}`
 
 	testJSONMarshal(t, repoEnv, want)
 }
@@ -492,41 +450,7 @@ func TestEnvironment_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"owner":"o",
-		"repo":"r",
-		"environment_name":"e",
-		"wait_timer":123,
-		"reviewers":[
-			{
-				"type":"main",
-				"id":1
-			},
-			{
-				"type":"rev",
-				"id":2
-			}
-		],
-		"deployment_branch_policy":{
-			"protected_branches":false,
-			"custom_branch_policies":false
-		},
-		"id":2,
-		"node_id":"star",
-		"name":"eg",
-		"url":"https://hey.in",
-		"html_url":"htmlurl",
-		"created_at":` + referenceTimeStr + `,
-		"updated_at":` + referenceTimeStr + `,
-		"protection_rules":[
-			{
-				"id":21,
-				"node_id":"mnb",
-				"type":"ewq",
-				"wait_timer":9090
-			}
-		]
-	}`
+	want := `{"owner":"o","repo":"r","environment_name":"e","wait_timer":123,"reviewers":[{"type":"main","id":1},{"type":"rev","id":2}],"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":false},"id":2,"node_id":"star","name":"eg","url":"https://hey.in","html_url":"htmlurl","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"protection_rules":[{"id":21,"node_id":"mnb","type":"ewq","wait_timer":9090}]}`
 
 	testJSONMarshal(t, repoEnv, want)
 }
@@ -539,10 +463,7 @@ func TestBranchPolicy_Marshal(t *testing.T) {
 		CustomBranchPolicies: Bool(false),
 	}
 
-	want := `{
-		"protected_branches": false,
-		"custom_branch_policies": false
-	}`
+	want := `{"protected_branches":false,"custom_branch_policies":false}`
 
 	testJSONMarshal(t, bp, want)
 }

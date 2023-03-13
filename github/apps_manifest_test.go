@@ -106,41 +106,7 @@ func TestAppConfig_Marshal(t *testing.T) {
 		PEM:           String("pem"),
 	}
 
-	want := `{
-		"id": 1,
-		"slug": "s",
-		"node_id": "nid",
-		"owner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"name": "n",
-		"description": "d",
-		"external_url": "eu",
-		"html_url": "hu",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"client_id": "ci",
-		"client_secret": "cs",
-		"webhook_secret": "ws",
-		"pem": "pem"
-	}`
+	want := `{"id":1,"slug":"s","node_id":"nid","owner":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"name":"n","description":"d","external_url":"eu","html_url":"hu","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"client_id":"ci","client_secret":"cs","webhook_secret":"ws","pem":"pem"}`
 
 	testJSONMarshal(t, u, want)
 }

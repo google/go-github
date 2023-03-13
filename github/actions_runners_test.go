@@ -596,20 +596,13 @@ func TestRunnerApplicationDownload_Marshal(t *testing.T) {
 		SHA256Checksum:    String("s"),
 	}
 
-	want := `{
-		"os": "o",
-		"architecture": "a",
-		"download_url": "d",
-		"filename": "f",
-		"temp_download_token": "t",
-		"sha256_checksum": "s"
-	}`
+	want := `{"os":"o","architecture":"a","download_url":"d","filename":"f","temp_download_token":"t","sha256_checksum":"s"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, "{}")
+	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, `{"total_count":0,"repositories":null}`)
 
 	u := &ActionsEnabledOnOrgRepos{
 		TotalCount: 1,
@@ -622,16 +615,7 @@ func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
+	want := `{"total_count":1,"repositories":[{"id":1,"name":"n","url":"u"}]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -644,10 +628,7 @@ func TestRegistrationToken_Marshal(t *testing.T) {
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `
-	}`
+	want := `{"token":"t","expires_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -661,11 +642,7 @@ func TestRunnerLabels_Marshal(t *testing.T) {
 		Type: String("t"),
 	}
 
-	want := `{
-		"id": 1,
-		"name": "n",
-		"type": "t"
-	}`
+	want := `{"id":1,"name":"n","type":"t"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -688,26 +665,13 @@ func TestRunner_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"name": "n",
-		"os": "o",
-		"status": "s",
-		"busy": false,
-		"labels": [
-			{
-				"id": 1,
-				"name": "n",
-				"type": "t"
-			}
-		]
-	}`
+	want := `{"id":1,"name":"n","os":"o","status":"s","busy":false,"labels":[{"id":1,"name":"n","type":"t"}]}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestRunners_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Runners{}, "{}")
+	testJSONMarshal(t, &Runners{}, `{"total_count":0,"runners":null}`)
 
 	u := &Runners{
 		TotalCount: 1,
@@ -729,25 +693,7 @@ func TestRunners_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"runners": [
-			{
-				"id": 1,
-		"name": "n",
-		"os": "o",
-		"status": "s",
-		"busy": false,
-		"labels": [
-			{
-				"id": 1,
-				"name": "n",
-				"type": "t"
-			}
-		]
-			}
-		]
-	}`
+	want := `{"total_count":1,"runners":[{"id":1,"name":"n","os":"o","status":"s","busy":false,"labels":[{"id":1,"name":"n","type":"t"}]}]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -760,10 +706,7 @@ func TestRemoveToken_Marshal(t *testing.T) {
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `
-	}`
+	want := `{"token":"t","expires_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }

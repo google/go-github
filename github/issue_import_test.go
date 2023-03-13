@@ -220,13 +220,7 @@ func TestIssueImportError_Marshal(t *testing.T) {
 		Code:     String("code"),
 	}
 
-	want := `{
-		"location": "loc",
-		"resource": "res",
-		"field": "field",
-		"value": "value",
-		"code": "code"
-	}`
+	want := `{"location":"loc","resource":"res","field":"field","value":"value","code":"code"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -255,48 +249,26 @@ func TestIssueImportResponse_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"status": "status",
-		"url": "url",
-		"import_issues_url": "iiu",
-		"repository_url": "ru",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"message": "msg",
-		"documentation_url": "durl",
-		"errors": [
-			{
-				"location": "loc",
-				"resource": "res",
-				"field": "field",
-				"value": "value",
-				"code": "code"
-			}
-		]
-	}`
+	want := `{"id":1,"status":"status","url":"url","import_issues_url":"iiu","repository_url":"ru","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"message":"msg","documentation_url":"durl","errors":[{"location":"loc","resource":"res","field":"field","value":"value","code":"code"}]}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestComment_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Comment{}, "{}")
+	testJSONMarshal(t, &Comment{}, `{"body":""}`)
 
 	u := &Comment{
 		CreatedAt: &Timestamp{referenceTime},
 		Body:      "body",
 	}
 
-	want := `{
-		"created_at": ` + referenceTimeStr + `,
-		"body": "body"
-	}`
+	want := `{"created_at":` + referenceTimeStr + `,"body":"body"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestIssueImport_Marshal(t *testing.T) {
-	testJSONMarshal(t, &IssueImport{}, "{}")
+	testJSONMarshal(t, &IssueImport{}, `{"title":"","body":""}`)
 
 	u := &IssueImport{
 		Title:     "title",
@@ -310,25 +282,13 @@ func TestIssueImport_Marshal(t *testing.T) {
 		Labels:    []string{"l"},
 	}
 
-	want := `{
-		"title": "title",
-		"body": "body",
-		"created_at": ` + referenceTimeStr + `,
-		"closed_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"assignee": "a",
-		"milestone": 1,
-		"closed": false,
-		"labels": [
-			"l"
-		]
-	}`
+	want := `{"title":"title","body":"body","created_at":` + referenceTimeStr + `,"closed_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"assignee":"a","milestone":1,"closed":false,"labels":["l"]}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestIssueImportRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &IssueImportRequest{}, "{}")
+	testJSONMarshal(t, &IssueImportRequest{}, `{"issue":{"title":"","body":""}}`)
 
 	u := &IssueImportRequest{
 		IssueImport: IssueImport{
@@ -350,27 +310,7 @@ func TestIssueImportRequest_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"issue": {
-			"title": "title",
-			"body": "body",
-			"created_at": ` + referenceTimeStr + `,
-			"closed_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"assignee": "a",
-			"milestone": 1,
-			"closed": false,
-			"labels": [
-				"l"
-			]
-		},
-		"comments": [
-			{
-				"created_at": ` + referenceTimeStr + `,
-				"body": "body"
-			}
-		]
-	}`
+	want := `{"issue":{"title":"title","body":"body","created_at":` + referenceTimeStr + `,"closed_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"assignee":"a","milestone":1,"closed":false,"labels":["l"]},"comments":[{"created_at":` + referenceTimeStr + `,"body":"body"}]}`
 
 	testJSONMarshal(t, u, want)
 }

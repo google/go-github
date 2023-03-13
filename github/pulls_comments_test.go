@@ -77,58 +77,7 @@ func TestPullComments_Marshal(t *testing.T) {
 		PullRequestURL: String("pullrequestcommentPullRequestURL"),
 	}
 
-	want := `{
-		"id": 10,
-		"in_reply_to_id": 8,
-		"body": "Test comment",
-		"path": "file1.txt",
-		"diff_hunk": "@@ -16,33 +16,40 @@ fmt.Println()",
-		"pull_request_review_id": 42,
-		"position": 1,
-		"original_position": 4,
-		"start_line": 2,
-		"line": 3,
-		"original_line": 2,
-		"original_start_line": 2,
-		"side": "RIGHT",
-		"start_side": "LEFT",
-		"commit_id": "ab",
-		"original_commit_id": "9c",
-		"user": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"reactions": {
-			"total_count": 1,
-			"+1": 1,
-			"-1": 0,
-			"laugh": 0,
-			"confused": 0,
-			"heart": 0,
-			"hooray": 0,
-			"rocket": 0,
-			"eyes": 0,
-			"url": "u"
-		},
-		"created_at": "2002-02-10T15:30:00Z",
-		"updated_at": "2002-02-10T15:30:00Z",
-		"url": "pullrequestcommentUrl",
-		"html_url": "pullrequestcommentHTMLUrl",
-		"pull_request_url": "pullrequestcommentPullRequestURL"
-	}`
+	want := `{"id":10,"in_reply_to_id":8,"body":"Test comment","path":"file1.txt","diff_hunk":"@@ -16,33 +16,40 @@ fmt.Println()","pull_request_review_id":42,"position":1,"original_position":4,"start_line":2,"line":3,"original_line":2,"original_start_line":2,"side":"RIGHT","start_side":"LEFT","commit_id":"ab","original_commit_id":"9c","user":{"login":"ll","id":123,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"reactions":{"total_count":1,"+1":1,"-1":0,"laugh":0,"confused":0,"heart":0,"hooray":0,"rocket":0,"eyes":0,"url":"u"},"created_at":"2002-02-10T15:30:00Z","updated_at":"2002-02-10T15:30:00Z","url":"pullrequestcommentUrl","html_url":"pullrequestcommentHTMLUrl","pull_request_url":"pullrequestcommentPullRequestURL"}`
 
 	testJSONMarshal(t, u, want)
 }

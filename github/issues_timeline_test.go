@@ -76,23 +76,7 @@ func TestSource_Marshal(t *testing.T) {
 		Issue: &Issue{ID: Int64(1)},
 	}
 
-	want := `{
-		"id": 1,
-		"url": "url",
-		"actor": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
-		},
-		"type": "type",
-		"issue": {
-			"id": 1
-		}
-	}`
+	want := `{"id":1,"url":"url","actor":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"type":"type","issue":{"id":1}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -172,85 +156,7 @@ func TestTimeline_Marshal(t *testing.T) {
 		State:       String("state"),
 	}
 
-	want := `{
-		"id": 1,
-		"url": "url",
-		"commit_url": "curl",
-		"actor": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"event": "event",
-		"commit_id": "cid",
-		"created_at": ` + referenceTimeStr + `,
-		"label": {
-			"id": 1
-		},
-		"assignee": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"milestone": {
-			"id": 1
-		},
-		"source": {
-			"id": 1,
-			"url": "url",
-			"actor": {
-				"login": "l",
-				"id": 1,
-				"node_id": "n",
-				"avatar_url": "a",
-				"url": "u",
-				"events_url": "e",
-				"repos_url": "r"
-			},
-			"type": "type",
-			"issue": {
-				"id": 1
-			}
-		},
-		"rename": {
-			"from": "from",
-			"to": "to"
-		},
-		"project_card": {
-			"id": 1
-		},
-		"state": "state"
-	}`
+	want := `{"id":1,"url":"url","commit_url":"curl","actor":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"event":"event","commit_id":"cid","created_at":` + referenceTimeStr + `,"label":{"id":1},"assignee":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"milestone":{"id":1},"source":{"id":1,"url":"url","actor":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"type":"type","issue":{"id":1}},"rename":{"from":"from","to":"to"},"project_card":{"id":1},"state":"state"}`
 
 	testJSONMarshal(t, u, want)
 }

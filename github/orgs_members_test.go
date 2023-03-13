@@ -891,49 +891,13 @@ func TestMembership_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"url": "url",
-		"state": "state",
-		"role": "email",
-		"organization_url": "orgurl",
-		"organization": {
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "loc",
-			"email": "e",
-			"twitter_username": "tu",
-			"description": "d",
-			"billing_email": "be",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "drp",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "marct",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		},
-		"user": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
-		}
-	}`
+	want := `{"url":"url","state":"state","role":"email","organization_url":"orgurl","organization":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"user":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"}}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CreateOrgInvitationOptions{}, "{}")
+	testJSONMarshal(t, &CreateOrgInvitationOptions{}, `{"role":null,"team_ids":null}`)
 
 	u := &CreateOrgInvitationOptions{
 		InviteeID: Int64(1),
@@ -942,14 +906,7 @@ func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
 		TeamID:    []int64{1},
 	}
 
-	want := `{
-		"invitee_id": 1,
-		"email": "email",
-		"role": "role",
-		"team_ids": [
-			1
-		]
-	}`
+	want := `{"invitee_id":1,"email":"email","role":"role","team_ids":[1]}`
 
 	testJSONMarshal(t, u, want)
 }

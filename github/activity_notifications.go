@@ -97,7 +97,7 @@ func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner
 }
 
 type markReadOptions struct {
-	LastReadAt Timestamp `json:"last_read_at,omitempty"`
+	LastReadAt *Timestamp `json:"last_read_at,omitempty"`
 }
 
 // MarkNotificationsRead marks all notifications up to lastRead as read.
@@ -105,7 +105,7 @@ type markReadOptions struct {
 // GitHub API docs: https://docs.github.com/en/rest/activity#mark-as-read
 func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Timestamp) (*Response, error) {
 	opts := &markReadOptions{
-		LastReadAt: lastRead,
+		LastReadAt: &lastRead,
 	}
 	req, err := s.client.NewRequest("PUT", "notifications", opts)
 	if err != nil {
@@ -121,7 +121,7 @@ func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Ti
 // GitHub API docs: https://docs.github.com/en/rest/activity/notifications#mark-repository-notifications-as-read
 func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, owner, repo string, lastRead Timestamp) (*Response, error) {
 	opts := &markReadOptions{
-		LastReadAt: lastRead,
+		LastReadAt: &lastRead,
 	}
 	u := fmt.Sprintf("repos/%v/%v/notifications", owner, repo)
 	req, err := s.client.NewRequest("PUT", u, opts)

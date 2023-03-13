@@ -194,15 +194,7 @@ func TestKey_Marshal(t *testing.T) {
 		CreatedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"id": 1,
-		"key": "abc",
-		"url": "url",
-		"title": "title",
-		"read_only": true,
-		"verified": true,
-		"created_at": ` + referenceTimeStr + `
-	}`
+	want := `{"id":1,"key":"abc","url":"url","title":"title","read_only":true,"verified":true,"created_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -54,7 +54,7 @@ type SearchOptions struct {
 	// Whether to retrieve text match metadata with a query
 	TextMatch bool `url:"-"`
 
-	ListOptions
+	ListOptions `url:",omitempty"`
 }
 
 // Common search parameters.

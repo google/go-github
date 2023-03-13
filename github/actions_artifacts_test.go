@@ -453,25 +453,7 @@ func TestArtifact_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"name": "n",
-		"size_in_bytes": 1,
-		"url": "u",
-		"archive_download_url": "a",
-		"expired": false,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"expires_at": ` + referenceTimeStr + `,
-		"workflow_run": {
-			"id": 1,
-			"repository_id": 1,
-			"head_repository_id": 1,
-			"head_branch": "b",
-			"head_sha": "s"
-		}
-	}`
+	want := `{"id":1,"node_id":"nid","name":"n","size_in_bytes":1,"url":"u","archive_download_url":"a","expired":false,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"expires_at":` + referenceTimeStr + `,"workflow_run":{"id":1,"repository_id":1,"head_repository_id":1,"head_branch":"b","head_sha":"s"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -504,28 +486,7 @@ func TestArtifactList_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"artifacts": [{
-			"id": 1,
-			"node_id": "nid",
-			"name": "n",
-			"size_in_bytes": 1,
-			"url": "u",
-			"archive_download_url": "a",
-			"expired": false,
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"expires_at": ` + referenceTimeStr + `,
-			"workflow_run": {
-				"id": 1,
-				"repository_id": 1,
-				"head_repository_id": 1,
-				"head_branch": "b",
-				"head_sha": "s"
-			}
-		}]
-	}`
+	want := `{"total_count":1,"artifacts":[{"id":1,"node_id":"nid","name":"n","size_in_bytes":1,"url":"u","archive_download_url":"a","expired":false,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"expires_at":` + referenceTimeStr + `,"workflow_run":{"id":1,"repository_id":1,"head_repository_id":1,"head_branch":"b","head_sha":"s"}}]}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -175,7 +175,7 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 }
 
 func TestListRepositories_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ListRepositories{}, "{}")
+	testJSONMarshal(t, &ListRepositories{}, `{"repositories":null}`)
 
 	u := &ListRepositories{
 		TotalCount: Int(1),
@@ -188,14 +188,7 @@ func TestListRepositories_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"total_count": 1,
-		"repositories": [{
-			"id":1,
-			"name":"n",
-			"url":"u"
-			}]
-	}`
+	want := `{"total_count":1,"repositories":[{"id":1,"name":"n","url":"u"}]}`
 
 	testJSONMarshal(t, u, want)
 }

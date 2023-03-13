@@ -90,9 +90,7 @@ func TestRepositoryActionsAccessLevel_Marshal(t *testing.T) {
 		AccessLevel: String("enterprise"),
 	}
 
-	want := `{
-		"access_level": "enterprise"
-	}`
+	want := `{"access_level":"enterprise"}`
 
 	testJSONMarshal(t, u, want)
 }

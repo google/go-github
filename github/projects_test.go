@@ -50,37 +50,7 @@ func TestProject_Marshal(t *testing.T) {
 			URL:         String("u"),
 		},
 	}
-	want := `{
-		"id": 1,
-		"url": "u",
-		"html_url": "h",
-		"columns_url": "c",
-		"owner_url": "o",
-		"name": "n",
-		"body": "b",
-		"number": 1,
-		"state": "s",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"node_id": "n",
-		"creator": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
+	want := `{"id":1,"url":"u","html_url":"h","columns_url":"c","owner_url":"o","name":"n","body":"b","number":1,"state":"s","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"node_id":"n","creator":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"}}`
 	testJSONMarshal(t, u, want)
 }
 
@@ -860,13 +830,7 @@ func TestProjectOptions_Marshal(t *testing.T) {
 		Private:                Bool(false),
 	}
 
-	want := `{
-		"name": "name",
-		"body": "body",
-		"state": "state",
-		"organization_permission": "op",
-		"private": false
-	}`
+	want := `{"name":"name","body":"body","state":"state","organization_permission":"op","private":false}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -885,44 +849,31 @@ func TestProjectColumn_Marshal(t *testing.T) {
 		NodeID:     String("onidp"),
 	}
 
-	want := `{
-		"id": 1,
-		"name": "name",
-		"url": "url",
-		"project_url": "purl",
-		"cards_url": "curl",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"node_id": "onidp"
-	}`
+	want := `{"id":1,"name":"name","url":"url","project_url":"purl","cards_url":"curl","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"node_id":"onidp"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestProjectColumnOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ProjectColumnOptions{}, "{}")
+	testJSONMarshal(t, &ProjectColumnOptions{}, `{"name":""}`)
 
 	u := &ProjectColumnOptions{
 		Name: "name",
 	}
 
-	want := `{
-		"name": "name"
-	}`
+	want := `{"name":"name"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestProjectColumnMoveOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ProjectColumnMoveOptions{}, "{}")
+	testJSONMarshal(t, &ProjectColumnMoveOptions{}, `{"position":""}`)
 
 	u := &ProjectColumnMoveOptions{
 		Position: "pos",
 	}
 
-	want := `{
-		"position": "pos"
-	}`
+	want := `{"position":"pos"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -967,42 +918,7 @@ func TestProjectCard_Marshal(t *testing.T) {
 		PreviousColumnName: String("pcn"),
 	}
 
-	want := `{
-		"url": "url",
-		"column_url": "curl",
-		"content_url": "conurl",
-		"id": 1,
-		"note": "note",
-		"creator": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"node_id": "nid",
-		"archived": true,
-		"column_id": 1,
-		"project_id": 1,
-		"project_url": "purl",
-		"column_name": "cn",
-		"previous_column_name": "pcn"
-	}`
+	want := `{"url":"url","column_url":"curl","content_url":"conurl","id":1,"note":"note","creator":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"node_id":"nid","archived":true,"column_id":1,"project_id":1,"project_url":"purl","column_name":"cn","previous_column_name":"pcn"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1017,28 +933,20 @@ func TestProjectCardOptions_Marshal(t *testing.T) {
 		Archived:    Bool(false),
 	}
 
-	want := `{
-		"note": "note",
-		"content_id": 1,
-		"content_type": "ct",
-		"archived": false
-	}`
+	want := `{"note":"note","content_id":1,"content_type":"ct","archived":false}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestProjectCardMoveOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &ProjectCardMoveOptions{}, "{}")
+	testJSONMarshal(t, &ProjectCardMoveOptions{}, `{"position":""}`)
 
 	u := &ProjectCardMoveOptions{
 		Position: "pos",
 		ColumnID: 1,
 	}
 
-	want := `{
-		"position": "pos",
-		"column_id": 1
-	}`
+	want := `{"position":"pos","column_id":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1050,9 +958,7 @@ func TestProjectCollaboratorOptions_Marshal(t *testing.T) {
 		Permission: String("per"),
 	}
 
-	want := `{
-		"permission": "per"
-	}`
+	want := `{"permission":"per"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1084,29 +990,7 @@ func TestProjectPermissionLevel_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"permission": "per",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
+	want := `{"permission":"per","user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
 
 	testJSONMarshal(t, u, want)
 }

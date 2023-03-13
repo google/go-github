@@ -216,14 +216,7 @@ func TestAuthorizationUpdateRequest_Marshal(t *testing.T) {
 		Fingerprint:  String("f"),
 	}
 
-	want := `{
-		"scopes": ["s"],
-		"add_scopes": ["a"],
-		"remove_scopes": ["r"],
-		"note": "n",
-		"note_url": "nu",
-		"fingerprint": "f"
-	}`
+	want := `{"scopes":["s"],"add_scopes":["a"],"remove_scopes":["r"],"note":"n","note_url":"nu","fingerprint":"f"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -240,14 +233,7 @@ func TestAuthorizationRequest_Marshal(t *testing.T) {
 		Fingerprint:  String("f"),
 	}
 
-	want := `{
-		"scopes": ["s"],
-		"client_id": "cid",
-		"client_secret": "cs",
-		"note": "n",
-		"note_url": "nu",
-		"fingerprint": "f"
-	}`
+	want := `{"scopes":["s"],"note":"n","note_url":"nu","client_id":"cid","client_secret":"cs","fingerprint":"f"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -261,11 +247,7 @@ func TestAuthorizationApp_Marshal(t *testing.T) {
 		ClientID: String("cid"),
 	}
 
-	want := `{
-		"url": "u",
-		"name": "n",
-		"client_id": "cid"
-	}`
+	want := `{"url":"u","name":"n","client_id":"cid"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -286,18 +268,7 @@ func TestGrant_Marshal(t *testing.T) {
 		Scopes:    []string{"s"},
 	}
 
-	want := `{
-		"id": 1,
-		"url": "u",
-		"app": {
-			"url": "u",
-			"name": "n",
-			"client_id": "cid"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"scopes": ["s"]
-	}`
+	want := `{"id":1,"url":"u","app":{"url":"u","name":"n","client_id":"cid"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"scopes":["s"]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -344,44 +315,7 @@ func TestAuthorization_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"url": "u",
-		"scopes": ["s"],
-		"token": "t",
-		"token_last_eight": "tle",
-		"hashed_token": "ht",
-		"app": {
-			"url": "u",
-			"name": "n",
-			"client_id": "cid"
-		},
-		"note": "n",
-		"note_url": "nu",
-		"updated_at": ` + referenceTimeStr + `,
-		"created_at": ` + referenceTimeStr + `,
-		"fingerprint": "f",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
+	want := `{"id":1,"url":"u","scopes":["s"],"token":"t","token_last_eight":"tle","hashed_token":"ht","app":{"url":"u","name":"n","client_id":"cid"},"note":"n","note_url":"nu","updated_at":` + referenceTimeStr + `,"created_at":` + referenceTimeStr + `,"fingerprint":"f","user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
 
 	testJSONMarshal(t, u, want)
 }

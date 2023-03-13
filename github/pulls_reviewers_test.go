@@ -23,15 +23,7 @@ func TestReviewersRequest_Marshal(t *testing.T) {
 		TeamReviewers: []string{"t"},
 	}
 
-	want := `{
-		"node_id": "n",
-		"reviewers": [
-			"r"
-		],
-		"team_reviewers" : [
-			"t"
-		]
-	}`
+	want := `{"node_id":"n","reviewers":["r"],"team_reviewers":["t"]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -76,44 +68,7 @@ func TestReviewers_Marshal(t *testing.T) {
 		}},
 	}
 
-	want := `{
-		"users" : [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"teams" : [
-			{
-				"id": 1,
-				"node_id": "node",
-				"name": "n",
-				"description": "d",
-				"url": "u",
-				"slug": "s",
-				"permission": "p",
-				"privacy": "priv",
-				"members_count": 1,
-				"repos_count": 1,
-				"members_url": "m",
-				"repositories_url": "r",
-				"ldap_dn": "l"
-			}
-		]
-	}`
+	want := `{"users":[{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"}],"teams":[{"id":1,"node_id":"node","name":"n","description":"d","url":"u","slug":"s","permission":"p","privacy":"priv","members_count":1,"repos_count":1,"members_url":"m","repositories_url":"r","ldap_dn":"l"}]}`
 
 	testJSONMarshal(t, u, want)
 }

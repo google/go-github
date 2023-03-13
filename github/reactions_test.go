@@ -24,11 +24,7 @@ func TestReaction_Marshal(t *testing.T) {
 		Content: String("+1"),
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "n",
-		"content": "+1"
-	}`
+	want := `{"id":1,"node_id":"n","content":"+1"}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -49,18 +45,7 @@ func TestReactions_Marshal(t *testing.T) {
 		URL:        String("u"),
 	}
 
-	want := `{
-		"total_count": 1,
-		"+1": 1,
-		"-1": 1,
-		"laugh": 1,
-		"confused": 1,
-		"heart": 1,
-		"hooray": 1,
-		"rocket": 1,
-		"eyes": 1,		
-		"url": "u"
-	}`
+	want := `{"total_count":1,"+1":1,"-1":1,"laugh":1,"confused":1,"heart":1,"hooray":1,"rocket":1,"eyes":1,"url":"u"}`
 
 	testJSONMarshal(t, r, want)
 }

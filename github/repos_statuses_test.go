@@ -167,21 +167,7 @@ func TestRepoStatus_Marshal(t *testing.T) {
 		UpdatedAt:   &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"url": "url",
-		"state": "state",
-		"target_url": "turl",
-		"description": "desc",
-		"context": "ctx",
-		"avatar_url": "aurl",
-		"creator": {
-			"id": 1
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `
-	}`
+	want := `{"id":1,"node_id":"nid","url":"url","state":"state","target_url":"turl","description":"desc","context":"ctx","avatar_url":"aurl","creator":{"id":1},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -213,31 +199,7 @@ func TestCombinedStatus_Marshal(t *testing.T) {
 		RepositoryURL: String("rurl"),
 	}
 
-	want := `{
-		"state": "state",
-		"name": "name",
-		"sha": "sha",
-		"total_count": 1,
-		"statuses": [
-			{
-				"id": 1,
-				"node_id": "nid",
-				"url": "url",
-				"state": "state",
-				"target_url": "turl",
-				"description": "desc",
-				"context": "ctx",
-				"avatar_url": "aurl",
-				"creator": {
-					"id": 1
-				},
-				"created_at": ` + referenceTimeStr + `,
-				"updated_at": ` + referenceTimeStr + `
-			}
-		],
-		"commit_url": "curl",
-		"repository_url": "rurl"
-	}`
+	want := `{"state":"state","name":"name","sha":"sha","total_count":1,"statuses":[{"id":1,"node_id":"nid","url":"url","state":"state","target_url":"turl","description":"desc","context":"ctx","avatar_url":"aurl","creator":{"id":1},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}],"commit_url":"curl","repository_url":"rurl"}`
 
 	testJSONMarshal(t, u, want)
 }

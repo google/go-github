@@ -366,10 +366,7 @@ func TestPagesSource_Marshal(t *testing.T) {
 		Path:   String("path"),
 	}
 
-	want := `{
-		"branch": "branch",
-		"path": "path"
-	}`
+	want := `{"branch":"branch","path":"path"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -381,25 +378,20 @@ func TestPagesError_Marshal(t *testing.T) {
 		Message: String("message"),
 	}
 
-	want := `{
-		"message": "message"
-	}`
+	want := `{"message":"message"}`
 
 	testJSONMarshal(t, u, want)
 }
 
 func TestPagesUpdate_Marshal(t *testing.T) {
-	testJSONMarshal(t, &PagesUpdate{}, "{}")
+	testJSONMarshal(t, &PagesUpdate{}, `{"cname":null}`)
 
 	u := &PagesUpdate{
 		CNAME:  String("cname"),
 		Source: &PagesSource{Path: String("src")},
 	}
 
-	want := `{
-		"cname": "cname",
-		"source": { "path": "src" }
-	}`
+	want := `{"cname":"cname","source":{"path":"src"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -419,17 +411,7 @@ func TestPages_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"url": "url",
-		"status": "status",
-		"cname": "cname",
-		"custom_404": false,
-		"html_url": "hurl",
-		"source": {
-			"branch": "branch",
-			"path": "path"
-		}
-	}`
+	want := `{"url":"url","status":"status","cname":"cname","custom_404":false,"html_url":"hurl","source":{"branch":"branch","path":"path"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -450,20 +432,7 @@ func TestPagesBuild_Marshal(t *testing.T) {
 		UpdatedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"url": "url",
-		"status": "status",
-		"error": {
-			"message": "message"
-		},
-		"pusher": {
-			"id": 1
-		},
-		"commit": "commit",
-		"duration": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `
-	}`
+	want := `{"url":"url","status":"status","error":{"message":"message"},"pusher":{"id":1},"commit":"commit","duration":1,"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -478,12 +447,7 @@ func TestCreatePagesRequest_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"source": {
-			"branch": "branch",
-			"path": "path"
-		}
-	}`
+	want := `{"source":{"branch":"branch","path":"path"}}`
 
 	testJSONMarshal(t, u, want)
 }

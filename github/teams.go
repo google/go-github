@@ -910,7 +910,7 @@ func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID
 type ListExternalGroupsOptions struct {
 	DisplayName *string `url:"display_name,omitempty"`
 
-	ListOptions
+	ListOptions `url:",omitempty"`
 }
 
 // ListExternalGroups lists external groups in an organization on GitHub.

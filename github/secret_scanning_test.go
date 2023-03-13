@@ -498,24 +498,7 @@ func TestSecretScanningAlert_Marshal(t *testing.T) {
 		Secret:     String("test"),
 	}
 
-	want := `{
-		"number": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"url": "https://api.github.com/teams/2/discussions/3/comments",
-		"html_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"locations_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"state": "test_state",
-		"resolution": "test_resolution",
-		"resolved_at": ` + referenceTimeStr + `,
-		"resolved_by": {
-			"login": "test",
-			"id": 10,
-			"node_id": "A123",
-			"avatar_url": "https://api.github.com/teams/2/discussions/3/comments"
-		},
-		"secret_type": "test",
-		"secret": "test"
-	}`
+	want := `{"number":1,"created_at":` + referenceTimeStr + `,"url":"https://api.github.com/teams/2/discussions/3/comments","html_url":"https://api.github.com/teams/2/discussions/3/comments","locations_url":"https://api.github.com/teams/2/discussions/3/comments","state":"test_state","resolution":"test_resolution","resolved_at":` + referenceTimeStr + `,"resolved_by":{"login":"test","id":10,"node_id":"A123","avatar_url":"https://api.github.com/teams/2/discussions/3/comments"},"secret_type":"test","secret":"test"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -538,20 +521,7 @@ func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"type": "test",
-		"details": {
-			"path": "test_path",
-			"start_line": 10,
-			"end_line": 20,
-			"start_column": 30,
-			"end_column": 40,
-			"blob_sha": "test_sha",
-			"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
-			"commit_sha": "test_sha",
-			"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
-		} 
-	}`
+	want := `{"type":"test","details":{"path":"test_path","start_line":10,"end_line":20,"start_column":30,"end_column":40,"blob_sha":"test_sha","blob_url":"https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b","commit_sha":"test_sha","commit_url":"https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -571,17 +541,7 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 		CommitURL:   String("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
 	}
 
-	want := `{
-		"path": "test_path",
-		"start_line": 10,
-		"end_line": 20,
-		"start_column": 30,
-		"end_column": 40,
-		"blob_sha": "test_sha",
-		"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
-		"commit_sha": "test_sha",
-		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"	
-	}`
+	want := `{"path":"test_path","start_line":10,"end_line":20,"start_column":30,"end_column":40,"blob_sha":"test_sha","blob_url":"https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b","commit_sha":"test_sha","commit_url":"https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -138,10 +138,7 @@ func TestRename_Marshal(t *testing.T) {
 		To:   String("to"),
 	}
 
-	want := `{
-		"from": "from",
-		"to": "to"
-	}`
+	want := `{"from":"from","to":"to"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -156,12 +153,7 @@ func TestDismissedReview_Marshal(t *testing.T) {
 		DismissalCommitID: String("dcid"),
 	}
 
-	want := `{
-		"state": "state",
-		"review_id": 1,
-		"dismissal_message": "dm",
-		"dismissal_commit_id": "dcid"
-	}`
+	want := `{"state":"state","review_id":1,"dismissal_message":"dm","dismissal_commit_id":"dcid"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -292,136 +284,7 @@ func TestIssueEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"id": 1,
-		"url": "url",
-		"actor": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"event": "event",
-		"created_at": ` + referenceTimeStr + `,
-		"issue": {
-			"id": 1
-		},
-		"assignee": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"assigner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"commit_id": "cid",
-		"milestone": {
-			"id": 1
-		},
-		"label": {
-			"id": 1
-		},
-		"rename": {
-			"from": "from",
-			"to": "to"
-		},
-		"lock_reason": "lr",
-		"project_card": {
-			"id": 1
-		},
-		"dismissed_review": {
-			"state": "state",
-			"review_id": 1,
-			"dismissal_message": "dm",
-			"dismissal_commit_id": "dcid"
-		},
-		"requested_reviewer": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"review_requester": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
+	want := `{"id":1,"url":"url","actor":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"event":"event","created_at":` + referenceTimeStr + `,"issue":{"id":1},"assignee":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"assigner":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"commit_id":"cid","milestone":{"id":1},"label":{"id":1},"rename":{"from":"from","to":"to"},"lock_reason":"lr","project_card":{"id":1},"dismissed_review":{"state":"state","review_id":1,"dismissal_message":"dm","dismissal_commit_id":"dcid"},"requested_reviewer":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"review_requester":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"}}`
 
 	testJSONMarshal(t, u, want)
 }

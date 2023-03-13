@@ -462,32 +462,7 @@ func TestDiscussionComment_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"author":{},
-		"body":"body",
-		"body_html":"body html",
-		"body_version":"body version",
-		"created_at":` + referenceTimeStr + `,
-		"last_edited_at":` + referenceTimeStr + `,
-		"discussion_url":"url",
-		"html_url":"html url",
-		"node_id":"node",
-		"number":1,
-		"updated_at":` + referenceTimeStr + `,
-		"url":"url",
-		"reactions":{
-			"total_count": 10,
-			"+1": 1,
-			"-1": 1,
-			"laugh": 1,
-			"confused": 1,
-			"heart": 2,
-			"hooray": 5,
-			"rocket": 3,
-			"eyes": 9,
-			"url":"url"
-		}
-	}`
+	want := `{"author":{},"body":"body","body_html":"body html","body_version":"body version","created_at":` + referenceTimeStr + `,"last_edited_at":` + referenceTimeStr + `,"discussion_url":"url","html_url":"html url","node_id":"node","number":1,"updated_at":` + referenceTimeStr + `,"url":"url","reactions":{"total_count":10,"+1":1,"-1":1,"laugh":1,"confused":1,"heart":2,"hooray":5,"rocket":3,"eyes":9,"url":"url"}}`
 
 	testJSONMarshal(t, u, want)
 }

@@ -45,29 +45,7 @@ func TestGistComments_Marshal(t *testing.T) {
 		CreatedAt: &Timestamp{createdAt},
 	}
 
-	want := `{
-		"id": 1,
-		"url": "u",
-		"body": "test gist comment",
-		"user": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"created_at": "2002-02-10T15:30:00Z"
-	}`
+	want := `{"id":1,"url":"u","body":"test gist comment","user":{"login":"ll","id":123,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"created_at":"2002-02-10T15:30:00Z"}`
 
 	testJSONMarshal(t, u, want)
 }

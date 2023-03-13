@@ -82,51 +82,7 @@ func TestEvent_Marshal(t *testing.T) {
 		ID:        String("id"),
 	}
 
-	want := `{
-		"type": "t",
-		"public": false,
-		"payload": {
-			"key": "value"
-		},
-		"repo": {
-			"id": 1,
-			"name": "n",
-			"url": "s"
-		},
-		"actor": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
-		},
-		"org": {
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "loc",
-			"email": "e",
-			"twitter_username": "tu",
-			"description": "d",
-			"billing_email": "be",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "drp",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "marct",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"id": "id"
-	}`
+	want := `{"type":"t","public":false,"payload":{"key":"value"},"repo":{"id":1,"name":"n","url":"s"},"actor":{"login":"l","id":1,"node_id":"n","avatar_url":"a","url":"u","events_url":"e","repos_url":"r"},"org":{"name":"n","company":"c","blog":"b","location":"loc","email":"e","twitter_username":"tu","description":"d","billing_email":"be","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"drp","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"marct","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true},"created_at":` + referenceTimeStr + `,"id":"id"}`
 
 	testJSONMarshal(t, u, want)
 }

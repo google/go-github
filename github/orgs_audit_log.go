@@ -16,7 +16,7 @@ type GetAuditLogOptions struct {
 	Include *string `url:"include,omitempty"` // Event type includes. Can be one of "web", "git", "all". Default: "web". (Optional.)
 	Order   *string `url:"order,omitempty"`   // The order of audit log events. Can be one of "asc" or "desc". Default: "desc". (Optional.)
 
-	ListCursorOptions
+	ListCursorOptions `url:",omitempty"`
 }
 
 // HookConfig describes metadata about a webhook configuration.

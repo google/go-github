@@ -62,45 +62,7 @@ func TestGist_Marshal(t *testing.T) {
 		NodeID:     String("node"),
 	}
 
-	want := `{
-		"id": "i",
-		"description": "description",
-		"public": true,
-		"owner": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"files": {
-			"gistfile.py": {
-				"size": 167,
-				"filename": "gistfile.py",
-				"language": "Python",
-				"type": "application/x-python",
-				"raw_url": "raw-url",
-				"content": "c"
-			}
-		},
-		"comments": 1,
-		"html_url": "html-url",
-		"git_pull_url": "gitpull-url",
-		"git_push_url": "gitpush-url",
-		"created_at": "2010-02-10T10:10:00Z",
-		"updated_at": "2010-02-10T10:10:00Z",
-		"node_id": "node"
-	}`
+	want := `{"id":"i","description":"description","public":true,"owner":{"login":"ll","id":123,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"files":{"gistfile.py":{"size":167,"filename":"gistfile.py","language":"Python","type":"application/x-python","raw_url":"raw-url","content":"c"}},"comments":1,"html_url":"html-url","git_pull_url":"gitpull-url","git_push_url":"gitpush-url","created_at":"2010-02-10T10:10:00Z","updated_at":"2010-02-10T10:10:00Z","node_id":"node"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -137,34 +99,7 @@ func TestGistCommit_Marshal(t *testing.T) {
 		NodeID:      String("node"),
 	}
 
-	want := `{
-		"url": "u",
-		"version": "v",
-		"user": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"change_status": {
-			"additions": 1,
-			"deletions": 1,
-			"total": 2
-		},
-		"committed_at": ` + referenceTimeStr + `,
-		"node_id": "node"
-	}`
+	want := `{"url":"u","version":"v","user":{"login":"ll","id":123,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"change_status":{"additions":1,"deletions":1,"total":2},"committed_at":` + referenceTimeStr + `,"node_id":"node"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -197,30 +132,7 @@ func TestGistFork_Marshal(t *testing.T) {
 		NodeID:    String("node"),
 	}
 
-	want := `{
-		"url": "u",
-		"user": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"id": "id",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"node_id": "node"
-	}`
+	want := `{"url":"u","user":{"login":"ll","id":123,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"},"id":"id","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"node_id":"node"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1030,14 +942,7 @@ func TestGistFile_Marshal(t *testing.T) {
 		Content:  String("con"),
 	}
 
-	want := `{
-		"size": 1,
-		"filename": "fn",
-		"language": "lan",
-		"type": "type",
-		"raw_url": "rurl",
-		"content": "con"
-	}`
+	want := `{"size":1,"filename":"fn","language":"lan","type":"type","raw_url":"rurl","content":"con"}`
 
 	testJSONMarshal(t, u, want)
 }

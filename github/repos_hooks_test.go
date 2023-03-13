@@ -371,68 +371,7 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"action": "action",
-		"after":  "after",
-		"before": "before",
-		"commits": [
-			{
-			"added":   ["1", "2", "3"],
-			"author":{
-				"email": "abc@gmail.com",
-				"name": "abc",
-				"username": "abc_12"
-			},
-			"committer": {
-				"email": "abc@gmail.com",
-				"name": "abc",
-				"username": "abc_12"
-			}, 
-			"id":       "1",
-			"message":  "WebHookCommit",
-			"modified": ["abc", "efg", "erd"],
-			"removed":  ["cmd", "rti", "duv"]
-			}
-		],
-		"compare": "compare",
-		"created": true,
-		"forced":  false,
-		"head_commit": {
-			"added":   ["1", "2", "3"],
-		"author":{
-			"email": "abc@gmail.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"committer": {
-			"email": "abc@gmail.com",
-			"name": "abc",
-			"username": "abc_12"
-		}, 
-		"id":       "1",
-		"message":  "WebHookCommit",
-		"modified": ["abc", "efg", "erd"],
-		"removed":  ["cmd", "rti", "duv"]
-		},
-		"installation": {
-			"id": 12
-		},
-		"organization": {
-			"id" : 22
-		},
-		"pusher":{
-			"login": "rd@yahoo.com",
-			"id": 112
-		},
-		"repository":{
-			"id": 321,
-			"node_id": "node_321"
-		},
-		"sender":{
-			"login": "st@gmail.com",
-			"id": 202
-		}
-	}`
+	want := `{"commits":[{"message":"WebHookCommit","author":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"id":"1","committer":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"added":["1","2","3"],"removed":["cmd","rti","duv"],"modified":["abc","efg","erd"]}],"before":"before","action":"action","after":"after","created":true,"forced":false,"compare":"compare","repository":{"id":321,"node_id":"node_321"},"head_commit":{"message":"WebHookCommit","author":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"id":"1","committer":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"added":["1","2","3"],"removed":["cmd","rti","duv"],"modified":["abc","efg","erd"]},"pusher":{"login":"rd@yahoo.com","id":112},"sender":{"login":"st@gmail.com","id":202},"installation":{"id":12},"organization":{"id":22}}`
 
 	testJSONMarshal(t, v, want)
 }
@@ -446,11 +385,7 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 		Login: String("abc_12"),
 	}
 
-	want := `{
-			"email": "abc@gmail.com",
-			"name": "abc",
-			"username": "abc_12"
-	}`
+	want := `{"name":"abc","email":"abc@gmail.com","username":"abc_12"}`
 
 	testJSONMarshal(t, v, want)
 }
@@ -476,29 +411,13 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 		Removed:  []string{"cmd", "rti", "duv"},
 	}
 
-	want := `{
-		"added":   ["1", "2", "3"],
-		"author":{
-			"email": "abc@gmail.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"committer": {
-			"email": "abc@gmail.com",
-			"name": "abc",
-			"username": "abc_12"
-		}, 
-		"id":       "1",
-		"message":  "WebHookCommit",
-		"modified": ["abc", "efg", "erd"],
-		"removed":  ["cmd", "rti", "duv"]
-	}`
+	want := `{"message":"WebHookCommit","author":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"id":"1","committer":{"name":"abc","email":"abc@gmail.com","username":"abc_12"},"added":["1","2","3"],"removed":["cmd","rti","duv"],"modified":["abc","efg","erd"]}`
 
 	testJSONMarshal(t, v, want)
 }
 
 func TestBranchCreateHookRequest_Marshal(t *testing.T) {
-	testJSONMarshal(t, &createHookRequest{}, "{}")
+	testJSONMarshal(t, &createHookRequest{}, `{"name":""}`)
 
 	v := &createHookRequest{
 		Name:   "abc",
@@ -509,14 +428,7 @@ func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"name": "abc",
-		"active": true,
-		"events": ["1","2","3"],
-		"config":{
-			"thing": "@123"
-		}
-	}`
+	want := `{"name":"abc","config":{"thing":"@123"},"events":["1","2","3"],"active":true}`
 
 	testJSONMarshal(t, v, want)
 }
@@ -543,24 +455,7 @@ func TestBranchHook_Marshal(t *testing.T) {
 		Active: Bool(true),
 	}
 
-	want := `{
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "url",
-		"id": 1,
-		"type": "type",
-		"name": "name",
-		"test_url": "testurl",
-		"ping_url": "pingurl",
-		"last_response":{
-			"item": "item"
-		},
-		"config":{
-			"thing": "@123"
-		},
-		"events": ["1","2","3"],
-		"active": true		
-	}`
+	want := `{"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"url":"url","id":1,"type":"type","name":"name","test_url":"testurl","ping_url":"pingurl","last_response":{"item":"item"},"config":{"thing":"@123"},"events":["1","2","3"],"active":true}`
 
 	testJSONMarshal(t, v, want)
 }

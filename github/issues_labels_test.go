@@ -527,15 +527,7 @@ func TestLabel_Marshal(t *testing.T) {
 		NodeID:      String("nid"),
 	}
 
-	want := `{
-		"id": 1,
-		"url": "url",
-		"name": "name",
-		"color": "color",
-		"description": "desc",
-		"default": false,
-		"node_id": "nid"
-	}`
+	want := `{"id":1,"url":"url","name":"name","color":"color","description":"desc","default":false,"node_id":"nid"}`
 
 	testJSONMarshal(t, u, want)
 }

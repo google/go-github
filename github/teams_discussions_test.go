@@ -585,45 +585,8 @@ func TestTeamDiscussion_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"author": {
-			"login": "author",
-			"id": 0,
-			"avatar_url": "https://avatars1.githubusercontent.com/u/0?v=4",
-			"gravatar_id": "",
-			"url": "https://api.github.com/users/author",
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `	
-		},
-		"body": "test",
-		"body_html": "<p>test</p>",
-		"body_version": "version",
-		"comments_count": 1,
-		"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"created_at": ` + referenceTimeStr + `,
-		"last_edited_at": ` + referenceTimeStr + `,
-		"html_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"node_id": "A123",
-		"number": 10,
-		"pinned": true,
-		"private": false,
-		"team_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"title": "Test",
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "https://api.github.com/teams/2/discussions/3/comments",
-		"reactions": {
-			"total_count": 1,
-			"+1": 2,
-			"-1": -3,
-			"laugh": 4,
-			"confused": 5,
-			"heart": 6,
-			"hooray": 7,
-			"rocket": 8,
-			"eyes": 9,
-			"url": "https://api.github.com/teams/2/discussions/3/comments"
-		}
-	}`
+	bodyHTML, _ := json.Marshal(`<p>test</p>`)
+	want := `{"author":{"login":"author","id":0,"avatar_url":"https://avatars1.githubusercontent.com/u/0?v=4","gravatar_id":"","created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"https://api.github.com/users/author"},"body":"test","body_html":` + string(bodyHTML) + `,"body_version":"version","comments_count":1,"comments_url":"https://api.github.com/teams/2/discussions/3/comments","created_at":` + referenceTimeStr + `,"last_edited_at":` + referenceTimeStr + `,"html_url":"https://api.github.com/teams/2/discussions/3/comments","node_id":"A123","number":10,"pinned":true,"private":false,"team_url":"https://api.github.com/teams/2/discussions/3/comments","title":"Test","updated_at":` + referenceTimeStr + `,"url":"https://api.github.com/teams/2/discussions/3/comments","reactions":{"total_count":1,"+1":2,"-1":-3,"laugh":4,"confused":5,"heart":6,"hooray":7,"rocket":8,"eyes":9,"url":"https://api.github.com/teams/2/discussions/3/comments"}}`
 
 	testJSONMarshal(t, u, want)
 }

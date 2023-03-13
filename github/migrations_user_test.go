@@ -265,21 +265,7 @@ func TestUserMigration_Marshal(t *testing.T) {
 		Repositories:       []*Repository{{ID: Int64(1)}},
 	}
 
-	want := `{
-		"id": 1,
-		"guid": "guid",
-		"state": "state",
-		"lock_repositories": false,
-		"exclude_attachments": false,
-		"url": "url",
-		"created_at": "ca",
-		"updated_at": "ua",
-		"repositories": [
-			{
-				"id": 1
-			}
-		]
-	}`
+	want := `{"id":1,"guid":"guid","state":"state","lock_repositories":false,"exclude_attachments":false,"url":"url","created_at":"ca","updated_at":"ua","repositories":[{"id":1}]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -293,13 +279,7 @@ func TestStartUserMigration_Marshal(t *testing.T) {
 		ExcludeAttachments: Bool(false),
 	}
 
-	want := `{
-		"repositories": [
-			"r"
-		],
-		"lock_repositories": false,
-		"exclude_attachments": false
-	}`
+	want := `{"repositories":["r"],"lock_repositories":false,"exclude_attachments":false}`
 
 	testJSONMarshal(t, u, want)
 }

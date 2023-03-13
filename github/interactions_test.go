@@ -16,11 +16,7 @@ func TestInteractionRestriction_Marshal(t *testing.T) {
 		ExpiresAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"limit": "limit",
-		"origin": "origin",
-		"expires_at": ` + referenceTimeStr + `
-	}`
+	want := `{"limit":"limit","origin":"origin","expires_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }

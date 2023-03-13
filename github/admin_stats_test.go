@@ -219,11 +219,7 @@ func TestIssueStats_Marshal(t *testing.T) {
 		ClosedIssues: Int(1),
 	}
 
-	want := `{
-		"total_issues": 1,
-		"open_issues": 1,
-		"closed_issues": 1
-	}`
+	want := `{"total_issues":1,"open_issues":1,"closed_issues":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -237,11 +233,7 @@ func TestHookStats_Marshal(t *testing.T) {
 		InactiveHooks: Int(1),
 	}
 
-	want := `{
-		"total_hooks": 1,
-		"active_hooks": 1,
-		"inactive_hooks": 1
-	}`
+	want := `{"total_hooks":1,"active_hooks":1,"inactive_hooks":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -255,11 +247,7 @@ func TestMilestoneStats_Marshal(t *testing.T) {
 		ClosedMilestones: Int(1),
 	}
 
-	want := `{
-		"total_milestones": 1,
-		"open_milestones": 1,
-		"closed_milestones": 1
-	}`
+	want := `{"total_milestones":1,"open_milestones":1,"closed_milestones":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -274,12 +262,7 @@ func TestOrgStats_Marshal(t *testing.T) {
 		TotalTeamMembers: Int(1),
 	}
 
-	want := `{
-		"total_orgs": 1,
-		"disabled_orgs": 1,
-		"total_teams": 1,
-		"total_team_members": 1
-	}`
+	want := `{"total_orgs":1,"disabled_orgs":1,"total_teams":1,"total_team_members":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -294,12 +277,7 @@ func TestCommentStats_Marshal(t *testing.T) {
 		TotalPullRequestComments: Int(1),
 	}
 
-	want := `{
-		"total_commit_comments": 1,
-		"total_gist_comments": 1,
-		"total_issue_comments": 1,
-		"total_pull_request_comments": 1
-	}`
+	want := `{"total_commit_comments":1,"total_gist_comments":1,"total_issue_comments":1,"total_pull_request_comments":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -311,9 +289,7 @@ func TestPageStats_Marshal(t *testing.T) {
 		TotalPages: Int(1),
 	}
 
-	want := `{
-		"total_pages": 1
-	}`
+	want := `{"total_pages":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -327,11 +303,7 @@ func TestUserStats_Marshal(t *testing.T) {
 		SuspendedUsers: Int(1),
 	}
 
-	want := `{
-		"total_users": 1,
-		"admin_users": 1,
-		"suspended_users": 1
-	}`
+	want := `{"total_users":1,"admin_users":1,"suspended_users":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -345,11 +317,7 @@ func TestGistStats_Marshal(t *testing.T) {
 		PublicGists:  Int(1),
 	}
 
-	want := `{
-		"total_gists": 1,
-		"private_gists": 1,
-		"public_gists": 1
-	}`
+	want := `{"total_gists":1,"private_gists":1,"public_gists":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -364,12 +332,7 @@ func TestPullStats_Marshal(t *testing.T) {
 		UnmergablePulls: Int(1),
 	}
 
-	want := `{
-		"total_pulls": 1,
-		"merged_pulls": 1,
-		"mergeable_pulls": 1,
-		"unmergeable_pulls": 1
-	}`
+	want := `{"total_pulls":1,"merged_pulls":1,"mergeable_pulls":1,"unmergeable_pulls":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -386,14 +349,7 @@ func TestRepoStats_Marshal(t *testing.T) {
 		TotalWikis:  Int(1),
 	}
 
-	want := `{
-		"total_repos": 1,
-		"root_repos": 1,
-		"fork_repos": 1,
-		"org_repos": 1,
-		"total_pushes": 1,
-		"total_wikis": 1
-	}`
+	want := `{"total_repos":1,"root_repos":1,"fork_repos":1,"org_repos":1,"total_pushes":1,"total_wikis":1}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -458,62 +414,7 @@ func TestAdminStats_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"repos": {
-			"total_repos": 212,
-			"root_repos": 194,
-			"fork_repos": 18,
-			"org_repos": 51,
-			"total_pushes": 3082,
-			"total_wikis": 15
-		},
-		"hooks": {
-			"total_hooks": 27,
-			"active_hooks": 23,
-			"inactive_hooks": 4
-		},
-		"pages": {
-			"total_pages": 36
-		},
-		"orgs": {
-			"total_orgs": 33,
-			"disabled_orgs": 0,
-			"total_teams": 60,
-			"total_team_members": 314
-		},
-		"users": {
-			"total_users": 254,
-			"admin_users": 45,
-			"suspended_users": 21
-		},
-		"pulls": {
-			"total_pulls": 86,
-			"merged_pulls": 60,
-			"mergeable_pulls": 21,
-			"unmergeable_pulls": 3
-		},
-		"issues": {
-			"total_issues": 179,
-			"open_issues": 83,
-			"closed_issues": 96
-		},
-		"milestones": {
-			"total_milestones": 7,
-			"open_milestones": 6,
-			"closed_milestones": 1
-		},
-		"gists": {
-			"total_gists": 178,
-			"private_gists": 151,
-			"public_gists": 25
-		},
-		"comments": {
-			"total_commit_comments": 6,
-			"total_gist_comments": 28,
-			"total_issue_comments": 366,
-			"total_pull_request_comments": 30
-		}
-	}`
+	want := `{"issues":{"total_issues":179,"open_issues":83,"closed_issues":96},"hooks":{"total_hooks":27,"active_hooks":23,"inactive_hooks":4},"milestones":{"total_milestones":7,"open_milestones":6,"closed_milestones":1},"orgs":{"total_orgs":33,"disabled_orgs":0,"total_teams":60,"total_team_members":314},"comments":{"total_commit_comments":6,"total_gist_comments":28,"total_issue_comments":366,"total_pull_request_comments":30},"pages":{"total_pages":36},"users":{"total_users":254,"admin_users":45,"suspended_users":21},"gists":{"total_gists":178,"private_gists":151,"public_gists":25},"pulls":{"total_pulls":86,"merged_pulls":60,"mergeable_pulls":21,"unmergeable_pulls":3},"repos":{"total_repos":212,"root_repos":194,"fork_repos":18,"org_repos":51,"total_pushes":3082,"total_wikis":15}}`
 
 	testJSONMarshal(t, u, want)
 }

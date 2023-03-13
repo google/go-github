@@ -331,40 +331,7 @@ func TestIssueComment_Marshal(t *testing.T) {
 		IssueURL:          String("iurl"),
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"body": "body",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"reactions": {
-			"total_count": 1
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"author_association": "aa",
-		"url": "url",
-		"html_url": "hurl",
-		"issue_url": "iurl"
-	}`
+	want := `{"id":1,"node_id":"nid","body":"body","user":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"reactions":{"total_count":1},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"author_association":"aa","url":"url","html_url":"hurl","issue_url":"iurl"}`
 
 	testJSONMarshal(t, u, want)
 }

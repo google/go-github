@@ -102,11 +102,7 @@ func TestActionsPermissionsRepository_Marshal(t *testing.T) {
 		SelectedActionsURL: String("someURL"),
 	}
 
-	want := `{
-		"enabled": true,
-		"allowed_actions": "all",
-		"selected_actions_url": "someURL"
-	}`
+	want := `{"enabled":true,"allowed_actions":"all","selected_actions_url":"someURL"}`
 
 	testJSONMarshal(t, u, want)
 }

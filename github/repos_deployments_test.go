@@ -306,14 +306,7 @@ func TestDeploymentStatusRequest_Marshal(t *testing.T) {
 		AutoInactive:   Bool(false),
 	}
 
-	want := `{
-		"state": "state",
-		"log_url": "logurl",
-		"description": "desc",
-		"environment": "env",
-		"environment_url": "eurl",
-		"auto_inactive": false
-	}`
+	want := `{"state":"state","log_url":"logurl","description":"desc","environment":"env","environment_url":"eurl","auto_inactive":false}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -357,41 +350,7 @@ func TestDeploymentStatus_Marshal(t *testing.T) {
 		URL:            String("url"),
 	}
 
-	want := `{
-		"id": 1,
-		"state": "state",
-		"creator": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"description": "desc",
-		"environment": "env",
-		"node_id": "nid",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"target_url": "turl",
-		"deployment_url": "durl",
-		"repository_url": "rurl",
-		"environment_url": "eurl",
-		"log_url": "lurl",
-		"url": "url"
-	}`
+	want := `{"id":1,"state":"state","creator":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"description":"desc","environment":"env","node_id":"nid","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"target_url":"turl","deployment_url":"durl","repository_url":"rurl","environment_url":"eurl","log_url":"lurl","url":"url"}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -411,17 +370,7 @@ func TestDeploymentRequest_Marshal(t *testing.T) {
 		ProductionEnvironment: Bool(false),
 	}
 
-	want := `{
-		"ref": "ref",
-		"task": "task",
-		"auto_merge": false,
-		"required_contexts": ["s"],
-		"payload": "payload",
-		"environment": "environment",
-		"description": "description",
-		"transient_environment": false,
-		"production_environment": false
-	}`
+	want := `{"ref":"ref","task":"task","auto_merge":false,"required_contexts":["s"],"payload":"payload","environment":"environment","description":"description","transient_environment":false,"production_environment":false}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -468,41 +417,7 @@ func TestDeployment_Marshal(t *testing.T) {
 		NodeID:        String("nid"),
 	}
 
-	want := `{
-		"url": "url",
-		"id": 1,
-		"sha": "sha",
-		"ref": "ref",
-		"task": "task",
-		"payload": "s",
-		"environment": "env",
-		"description": "desc",
-		"creator": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"statuses_url": "surl",
-		"repository_url": "rurl",
-		"node_id": "nid"
-	}`
+	want := `{"url":"url","id":1,"sha":"sha","ref":"ref","task":"task","payload":"s","environment":"env","description":"desc","creator":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"statuses_url":"surl","repository_url":"rurl","node_id":"nid"}`
 
 	testJSONMarshal(t, r, want)
 }

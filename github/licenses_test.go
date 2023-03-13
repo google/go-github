@@ -44,33 +44,7 @@ func TestRepositoryLicense_Marshal(t *testing.T) {
 			Body:           String("b"),
 		},
 	}
-	want := `{
-		"name": "n",
-		"path": "p",
-		"sha": "s",
-		"size": 1,
-		"url": "u",
-		"html_url": "h",
-		"git_url": "g",
-		"download_url": "d",
-		"type": "t",
-		"content": "c",
-		"encoding": "e",
-		"license": {
-			"key": "k",
-			"name": "n",
-			"url": "u",
-			"spdx_id": "s",
-			"html_url": "h",
-			"featured": true,
-			"description": "d",
-			"implementation": "i",
-			"permissions": ["p"],
-			"conditions": ["c"],
-			"limitations": ["l"],
-			"body": "b"
-		}
-	}`
+	want := `{"name":"n","path":"p","sha":"s","size":1,"url":"u","html_url":"h","git_url":"g","download_url":"d","type":"t","content":"c","encoding":"e","license":{"key":"k","name":"n","url":"u","spdx_id":"s","html_url":"h","featured":true,"description":"d","implementation":"i","permissions":["p"],"conditions":["c"],"limitations":["l"],"body":"b"}}`
 	testJSONMarshal(t, rl, want)
 }
 
@@ -91,20 +65,8 @@ func TestLicense_Marshal(t *testing.T) {
 		Limitations:    &[]string{"l"},
 		Body:           String("b"),
 	}
-	want := `{
-		"key": "k",
-		"name": "n",
-		"url": "u",
-		"spdx_id": "s",
-		"html_url": "h",
-		"featured": true,
-		"description": "d",
-		"implementation": "i",
-		"permissions": ["p"],
-		"conditions": ["c"],
-		"limitations": ["l"],
-		"body": "b"
-	}`
+	want := `{"key":"k","name":"n","url":"u","spdx_id":"s","html_url":"h","featured":true,"description":"d","implementation":"i","permissions":["p"],"conditions":["c"],"limitations":["l"],"body":"b"}`
+
 	testJSONMarshal(t, l, want)
 }
 

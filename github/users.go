@@ -196,7 +196,7 @@ type UserListOptions struct {
 	// Note: Pagination is powered exclusively by the Since parameter,
 	// ListOptions.Page has no effect.
 	// ListOptions.PerPage controls an undocumented GitHub API parameter.
-	ListOptions
+	ListOptions `url:",omitempty"`
 }
 
 // ListAll lists all GitHub users.

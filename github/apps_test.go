@@ -609,11 +609,7 @@ func TestContentReference_Marshal(t *testing.T) {
 		Reference: String("r"),
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"reference": "r"
-	}`
+	want := `{"id":1,"node_id":"nid","reference":"r"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -627,11 +623,7 @@ func TestAttachment_Marshal(t *testing.T) {
 		Body:  String("b"),
 	}
 
-	want := `{
-		"id": 1,
-		"title": "t",
-		"body": "b"
-	}`
+	want := `{"id":1,"title":"t","body":"b"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -674,40 +666,7 @@ func TestInstallationPermissions_Marshal(t *testing.T) {
 		Workflows:                     String("w"),
 	}
 
-	want := `{
-		"actions": "a",
-		"administration": "ad",
-		"checks": "c",
-		"contents": "co",
-		"content_references": "cr",
-		"deployments": "d",
-		"environments": "e",
-		"issues": "i",
-		"metadata": "md",
-		"members": "m",
-		"organization_administration": "oa",
-		"organization_hooks": "oh",
-		"organization_plan": "op",
-		"organization_pre_receive_hooks": "opr",
-		"organization_projects": "op",
-		"organization_secrets": "os",
-		"organization_self_hosted_runners": "osh",
-		"organization_user_blocking": "oub",
-		"packages": "pkg",
-		"pages": "pg",
-		"pull_requests": "pr",
-		"repository_hooks": "rh",
-		"repository_projects": "rp",
-		"repository_pre_receive_hooks": "rprh",
-		"secrets": "s",
-		"secret_scanning_alerts": "ssa",
-		"security_events": "se",
-		"single_file": "sf",
-		"statuses": "s",
-		"team_discussions": "td",
-		"vulnerability_alerts":"va",
-		"workflows": "w"
-	}`
+	want := `{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -809,103 +768,7 @@ func TestInstallation_Marshal(t *testing.T) {
 		SuspendedAt: &Timestamp{referenceTime},
 	}
 
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"app_id": 1,
-		"app_slug": "as",
-		"target_id": 1,
-		"account": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"access_tokens_url": "atu",
-		"repositories_url": "ru",
-		"html_url": "hu",
-		"target_type": "tt",
-		"single_file_name": "sfn",
-		"repository_selection": "rs",
-		"events": [
-			"e"
-		],
-		"single_file_paths": [
-			"s"
-		],
-		"permissions": {
-			"actions": "a",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"has_multiple_single_files": false,
-		"suspended_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"suspended_at": ` + referenceTimeStr + `
-	}`
+	want := `{"id":1,"node_id":"nid","app_id":1,"app_slug":"as","target_id":1,"account":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"access_tokens_url":"atu","repositories_url":"ru","html_url":"hu","target_type":"tt","single_file_name":"sfn","repository_selection":"rs","events":["e"],"single_file_paths":["s"],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"has_multiple_single_files":false,"suspended_by":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"suspended_at":` + referenceTimeStr + `}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -951,43 +814,7 @@ func TestInstallationTokenOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"repository_ids": [1],
-		"permissions": {
-			"actions": "a",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		}
-	}`
+	want := `{"repository_ids":[1],"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"}}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1041,51 +868,7 @@ func TestInstallationToken_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `,
-		"permissions": {
-			"actions": "a",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
+	want := `{"token":"t","expires_at":` + referenceTimeStr + `,"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"repositories":[{"id":1,"name":"n","url":"u"}]}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -1160,72 +943,7 @@ func TestApp_Marshal(t *testing.T) {
 		Events: []string{"s"},
 	}
 
-	want := `{
-		"id": 1,
-		"slug": "s",
-		"node_id": "nid",
-		"owner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"name": "n",
-		"description": "d",
-		"external_url": "eu",
-		"html_url": "hu",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"permissions": {
-			"actions": "a",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"events": ["s"]
-	}`
+	want := `{"id":1,"slug":"s","node_id":"nid","owner":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"bio":"b","twitter_username":"t","public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"suspended_at":` + referenceTimeStr + `,"url":"u"},"name":"n","description":"d","external_url":"eu","html_url":"hu","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"permissions":{"actions":"a","administration":"ad","checks":"c","contents":"co","content_references":"cr","deployments":"d","environments":"e","issues":"i","metadata":"md","members":"m","organization_administration":"oa","organization_hooks":"oh","organization_plan":"op","organization_pre_receive_hooks":"opr","organization_projects":"op","organization_secrets":"os","organization_self_hosted_runners":"osh","organization_user_blocking":"oub","packages":"pkg","pages":"pg","pull_requests":"pr","repository_hooks":"rh","repository_projects":"rp","repository_pre_receive_hooks":"rprh","secrets":"s","secret_scanning_alerts":"ssa","security_events":"se","single_file":"sf","statuses":"s","team_discussions":"td","vulnerability_alerts":"va","workflows":"w"},"events":["s"]}`
 
 	testJSONMarshal(t, u, want)
 }

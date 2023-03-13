@@ -981,8 +981,8 @@ func (r *TwoFactorAuthError) Error() string { return (*ErrorResponse)(r).Error()
 // RateLimitError occurs when GitHub returns 403 Forbidden response with a rate limit
 // remaining value of 0.
 type RateLimitError struct {
-	Rate     Rate           // Rate specifies last known rate limit for the client
-	Response *http.Response // HTTP response that caused this error
+	Rate     Rate           `json:"rate"`    // Rate specifies last known rate limit for the client
+	Response *http.Response `json:"-"`       // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
 }
 
@@ -1031,13 +1031,13 @@ func (ae *AcceptedError) Is(target error) bool {
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
 // "documentation_url" field value equal to "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits".
 type AbuseRateLimitError struct {
-	Response *http.Response // HTTP response that caused this error
+	Response *http.Response `json:"-"`       // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
 
 	// RetryAfter is provided with some abuse rate limit errors. If present,
 	// it is the amount of time that the client should wait before retrying.
 	// Otherwise, the client should try again later (after an unspecified amount of time).
-	RetryAfter *time.Duration
+	RetryAfter *time.Duration `json:",omitempty"`
 }
 
 func (r *AbuseRateLimitError) Error() string {

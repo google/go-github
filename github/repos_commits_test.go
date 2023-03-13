@@ -718,56 +718,7 @@ func TestBranchCommit_Marshal(t *testing.T) {
 		Protected: Bool(false),
 	}
 
-	want := `{
-		"name": "n",
-		"commit": {
-			"sha": "s",
-			"author": {
-				"date": ` + referenceTimeStr + `,
-				"name": "n",
-				"email": "e",
-				"username": "u"
-			},
-			"committer": {
-				"date": ` + referenceTimeStr + `,
-				"name": "n",
-				"email": "e",
-				"username": "u"
-			},
-			"message": "m",
-			"tree": {
-				"sha": "s",
-				"tree": [
-					{
-						"sha": "s",
-						"path": "p",
-						"mode": "m",
-						"type": "t",
-						"size": 1,
-						"content": "c",
-						"url": "u"
-					}
-				],
-				"truncated": false
-			},
-			"stats": {
-				"additions": 1,
-				"deletions": 1,
-				"total": 1
-			},
-			"html_url": "h",
-			"url": "u",
-			"verification": {
-				"verified": false,
-				"reason": "r",
-				"signature": "s",
-				"payload": "p"
-			},
-			"node_id": "n",
-			"comment_count": 1
-		},
-		"protected": false
-	}`
+	want := `{"name":"n","commit":{"sha":"s","author":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"committer":{"date":` + referenceTimeStr + `,"name":"n","email":"e","username":"u"},"message":"m","tree":{"sha":"s","tree":[{"sha":"s","path":"p","mode":"m","type":"t","size":1,"content":"c","url":"u"}],"truncated":false},"stats":{"additions":1,"deletions":1,"total":1},"html_url":"h","url":"u","verification":{"verified":false,"reason":"r","signature":"s","payload":"p"},"node_id":"n","comment_count":1},"protected":false}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -799,33 +750,7 @@ func TestCommitsComparison_Marshal(t *testing.T) {
 		URL:          String("url"),
 	}
 
-	want := `{
-		"base_commit": {
-			"node_id": "nid"
-		},
-		"merge_base_commit": {
-			"node_id": "nid"
-		},
-		"status": "status",
-		"ahead_by": 1,
-		"behind_by": 1,
-		"total_commits": 1,
-		"commits": [
-			{
-				"node_id": "nid"
-			}
-		],
-		"files": [
-			{
-				"sha": "sha"
-			}
-		],
-		"html_url": "hurl",
-		"permalink_url": "purl",
-		"diff_url": "durl",
-		"patch_url": "purl",
-		"url": "url"
-	}`
+	want := `{"base_commit":{"node_id":"nid"},"merge_base_commit":{"node_id":"nid"},"status":"status","ahead_by":1,"behind_by":1,"total_commits":1,"commits":[{"node_id":"nid"}],"files":[{"sha":"sha"}],"html_url":"hurl","permalink_url":"purl","diff_url":"durl","patch_url":"purl","url":"url"}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -847,19 +772,7 @@ func TestCommitFile_Marshal(t *testing.T) {
 		PreviousFilename: String("pf"),
 	}
 
-	want := `{
-		"sha": "sha",
-		"filename": "fn",
-		"additions": 1,
-		"deletions": 1,
-		"changes": 1,
-		"status": "status",
-		"patch": "patch",
-		"blob_url": "burl",
-		"raw_url": "rurl",
-		"contents_url": "curl",
-		"previous_filename": "pf"
-	}`
+	want := `{"sha":"sha","filename":"fn","additions":1,"deletions":1,"changes":1,"status":"status","patch":"patch","blob_url":"burl","raw_url":"rurl","contents_url":"curl","previous_filename":"pf"}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -873,11 +786,7 @@ func TestCommitStats_Marshal(t *testing.T) {
 		Total:     Int(1),
 	}
 
-	want := `{
-		"additions": 1,
-		"deletions": 1,
-		"total": 1
-	}`
+	want := `{"additions":1,"deletions":1,"total":1}`
 
 	testJSONMarshal(t, r, want)
 }
@@ -925,45 +834,7 @@ func TestRepositoryCommit_Marshal(t *testing.T) {
 		},
 	}
 
-	want := `{
-		"node_id": "nid",
-		"sha": "sha",
-		"commit": {
-			"message": "m"
-		},
-		"author": {
-			"login": "l"
-		},
-		"committer": {
-			"login": "l"
-		},
-		"parents": [
-			{
-				"sha": "s"
-			}
-		],
-		"html_url": "hurl",
-		"url": "url",
-		"comments_url": "curl",
-		"stats": {
-			"additions": 104,
-			"deletions": 4,
-			"total": 108
-		},
-		"files": [
-			{
-				"filename": "f",
-				"additions": 10,
-				"deletions": 2,
-				"changes": 12,
-				"status": "s",
-				"patch": "p",
-				"blob_url": "b",
-				"raw_url": "r",
-				"contents_url": "c"
-			}
-		]
-	}`
+	want := `{"node_id":"nid","sha":"sha","commit":{"message":"m"},"author":{"login":"l"},"committer":{"login":"l"},"parents":[{"sha":"s"}],"html_url":"hurl","url":"url","comments_url":"curl","stats":{"additions":104,"deletions":4,"total":108},"files":[{"filename":"f","additions":10,"deletions":2,"changes":12,"status":"s","patch":"p","blob_url":"b","raw_url":"r","contents_url":"c"}]}`
 
 	testJSONMarshal(t, r, want)
 }
