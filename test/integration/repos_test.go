@@ -112,7 +112,10 @@ func TestRepositories_EditBranches(t *testing.T) {
 		// TODO: Only organization repositories can have users and team restrictions.
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
-		Restrictions: nil,
+		Restrictions:     nil,
+		BlockCreations:   github.Bool(false),
+		LockBranch:       github.Bool(false),
+		AllowForkSyncing: github.Bool(false),
 	}
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(context.Background(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
@@ -134,6 +137,15 @@ func TestRepositories_EditBranches(t *testing.T) {
 			Enabled: true,
 		},
 		Restrictions: nil,
+		BlockCreations: &github.BlockCreations{
+			Enabled: github.Bool(false),
+		},
+		LockBranch: &github.LockBranch{
+			Enabled: github.Bool(false),
+		},
+		AllowForkSyncing: &github.AllowForkSyncing{
+			Enabled: github.Bool(false),
+		},
 	}
 	if !cmp.Equal(protection, want) {
 		t.Errorf("Repositories.UpdateBranchProtection() returned %+v, want %+v", protection, want)
