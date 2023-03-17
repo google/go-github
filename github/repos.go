@@ -68,6 +68,7 @@ type Repository struct {
 	AllowMergeCommit          *bool           `json:"allow_merge_commit,omitempty"`
 	AllowAutoMerge            *bool           `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool           `json:"allow_forking,omitempty"`
+	WebCommitSignoffRequired  *bool           `json:"web_commit_signoff_required,omitempty"`
 	DeleteBranchOnMerge       *bool           `json:"delete_branch_on_merge,omitempty"`
 	UseSquashPRTitleAsDefault *bool           `json:"use_squash_pr_title_as_default,omitempty"`
 	SquashMergeCommitTitle    *string         `json:"squash_merge_commit_title,omitempty"`   // Can be one of: "PR_TITLE", "COMMIT_OR_PR_TITLE"
@@ -843,8 +844,16 @@ type Protection struct {
 	AllowForcePushes               *AllowForcePushes               `json:"allow_force_pushes"`
 	AllowDeletions                 *AllowDeletions                 `json:"allow_deletions"`
 	RequiredConversationResolution *RequiredConversationResolution `json:"required_conversation_resolution"`
+	BlockCreations                 *BlockCreations                 `json:"block_creations,omitempty"`
 	LockBranch                     *LockBranch                     `json:"lock_branch,omitempty"`
 	AllowForkSyncing               *AllowForkSyncing               `json:"allow_fork_syncing,omitempty"`
+}
+
+// BlockCreations represents whether users can push changes that create branches. If this is true, this
+// setting blocks pushes that create new branches, unless the push is initiated by a user, team, or app
+// which has the ability to push.
+type BlockCreations struct {
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // LockBranch represents if the branch is marked as read-only. If this is true, users will not be able to push to the branch.
@@ -994,6 +1003,14 @@ type ProtectionRequest struct {
 	// RequiredConversationResolution, if set to true, requires all comments
 	// on the pull request to be resolved before it can be merged to a protected branch.
 	RequiredConversationResolution *bool `json:"required_conversation_resolution,omitempty"`
+	// BlockCreations, if set to true, will cause the restrictions setting to also block pushes
+	// which create new branches, unless initiated by a user, team, app with the ability to push.
+	BlockCreations *bool `json:"block_creations,omitempty"`
+	// LockBranch, if set to true, will prevent users from pushing to the branch.
+	LockBranch *bool `json:"lock_branch,omitempty"`
+	// AllowForkSyncing, if set to true, will allow users to pull changes from upstream
+	// when the branch is locked.
+	AllowForkSyncing *bool `json:"allow_fork_syncing,omitempty"`
 }
 
 // RequiredStatusChecks represents the protection status of a individual branch.

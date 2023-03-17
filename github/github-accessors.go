@@ -1766,6 +1766,14 @@ func (b *Blob) GetURL() string {
 	return *b.URL
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (b *BlockCreations) GetEnabled() bool {
+	if b == nil || b.Enabled == nil {
+		return false
+	}
+	return *b.Enabled
+}
+
 // GetCommit returns the Commit field.
 func (b *Branch) GetCommit() *RepositoryCommit {
 	if b == nil {
@@ -12830,6 +12838,14 @@ func (p *Protection) GetAllowForkSyncing() *AllowForkSyncing {
 	return p.AllowForkSyncing
 }
 
+// GetBlockCreations returns the BlockCreations field.
+func (p *Protection) GetBlockCreations() *BlockCreations {
+	if p == nil {
+		return nil
+	}
+	return p.BlockCreations
+}
+
 // GetEnforceAdmins returns the EnforceAdmins field.
 func (p *Protection) GetEnforceAdmins() *AdminEnforcement {
 	if p == nil {
@@ -13020,6 +13036,30 @@ func (p *ProtectionRequest) GetAllowForcePushes() bool {
 		return false
 	}
 	return *p.AllowForcePushes
+}
+
+// GetAllowForkSyncing returns the AllowForkSyncing field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetAllowForkSyncing() bool {
+	if p == nil || p.AllowForkSyncing == nil {
+		return false
+	}
+	return *p.AllowForkSyncing
+}
+
+// GetBlockCreations returns the BlockCreations field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetBlockCreations() bool {
+	if p == nil || p.BlockCreations == nil {
+		return false
+	}
+	return *p.BlockCreations
+}
+
+// GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.
+func (p *ProtectionRequest) GetLockBranch() bool {
+	if p == nil || p.LockBranch == nil {
+		return false
+	}
+	return *p.LockBranch
 }
 
 // GetRequiredConversationResolution returns the RequiredConversationResolution field if it's non-nil, zero value otherwise.
@@ -16244,6 +16284,14 @@ func (r *Repository) GetWatchersCount() int {
 		return 0
 	}
 	return *r.WatchersCount
+}
+
+// GetWebCommitSignoffRequired returns the WebCommitSignoffRequired field if it's non-nil, zero value otherwise.
+func (r *Repository) GetWebCommitSignoffRequired() bool {
+	if r == nil || r.WebCommitSignoffRequired == nil {
+		return false
+	}
+	return *r.WebCommitSignoffRequired
 }
 
 // GetAccessLevel returns the AccessLevel field if it's non-nil, zero value otherwise.

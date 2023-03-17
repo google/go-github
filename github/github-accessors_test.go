@@ -2121,6 +2121,16 @@ func TestBlob_GetURL(tt *testing.T) {
 	b.GetURL()
 }
 
+func TestBlockCreations_GetEnabled(tt *testing.T) {
+	var zeroValue bool
+	b := &BlockCreations{Enabled: &zeroValue}
+	b.GetEnabled()
+	b = &BlockCreations{}
+	b.GetEnabled()
+	b = nil
+	b.GetEnabled()
+}
+
 func TestBranch_GetCommit(tt *testing.T) {
 	b := &Branch{}
 	b.GetCommit()
@@ -14988,6 +14998,13 @@ func TestProtection_GetAllowForkSyncing(tt *testing.T) {
 	p.GetAllowForkSyncing()
 }
 
+func TestProtection_GetBlockCreations(tt *testing.T) {
+	p := &Protection{}
+	p.GetBlockCreations()
+	p = nil
+	p.GetBlockCreations()
+}
+
 func TestProtection_GetEnforceAdmins(tt *testing.T) {
 	p := &Protection{}
 	p.GetEnforceAdmins()
@@ -15160,6 +15177,36 @@ func TestProtectionRequest_GetAllowForcePushes(tt *testing.T) {
 	p.GetAllowForcePushes()
 	p = nil
 	p.GetAllowForcePushes()
+}
+
+func TestProtectionRequest_GetAllowForkSyncing(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{AllowForkSyncing: &zeroValue}
+	p.GetAllowForkSyncing()
+	p = &ProtectionRequest{}
+	p.GetAllowForkSyncing()
+	p = nil
+	p.GetAllowForkSyncing()
+}
+
+func TestProtectionRequest_GetBlockCreations(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{BlockCreations: &zeroValue}
+	p.GetBlockCreations()
+	p = &ProtectionRequest{}
+	p.GetBlockCreations()
+	p = nil
+	p.GetBlockCreations()
+}
+
+func TestProtectionRequest_GetLockBranch(tt *testing.T) {
+	var zeroValue bool
+	p := &ProtectionRequest{LockBranch: &zeroValue}
+	p.GetLockBranch()
+	p = &ProtectionRequest{}
+	p.GetLockBranch()
+	p = nil
+	p.GetLockBranch()
 }
 
 func TestProtectionRequest_GetRequiredConversationResolution(tt *testing.T) {
@@ -18911,6 +18958,16 @@ func TestRepository_GetWatchersCount(tt *testing.T) {
 	r.GetWatchersCount()
 	r = nil
 	r.GetWatchersCount()
+}
+
+func TestRepository_GetWebCommitSignoffRequired(tt *testing.T) {
+	var zeroValue bool
+	r := &Repository{WebCommitSignoffRequired: &zeroValue}
+	r.GetWebCommitSignoffRequired()
+	r = &Repository{}
+	r.GetWebCommitSignoffRequired()
+	r = nil
+	r.GetWebCommitSignoffRequired()
 }
 
 func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
