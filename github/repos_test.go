@@ -1096,6 +1096,15 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					},
 					"required_conversation_resolution": {
 						"enabled": true
+					},
+					"block_creations": {
+						"enabled": false
+					},
+					"lock_branch": {
+						"enabled": false
+					},
+					"allow_fork_syncing": {
+						"enabled": false
 					}
 				}`)
 	})
@@ -1150,6 +1159,15 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 		},
 		RequiredConversationResolution: &RequiredConversationResolution{
 			Enabled: true,
+		},
+		BlockCreations: &BlockCreations{
+			Enabled: Bool(false),
+		},
+		LockBranch: &LockBranch{
+			Enabled: Bool(false),
+		},
+		AllowForkSyncing: &AllowForkSyncing{
+			Enabled: Bool(false),
 		},
 	}
 	if !cmp.Equal(protection, want) {
@@ -1299,6 +1317,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			Teams: []string{"t"},
 			Apps:  []string{"a"},
 		},
+		BlockCreations:   Bool(true),
+		LockBranch:       Bool(true),
+		AllowForkSyncing: Bool(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/branches/b/protection", func(w http.ResponseWriter, r *http.Request) {
@@ -1350,6 +1371,15 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 				"users":[{"id":1,"login":"u"}],
 				"teams":[{"id":2,"slug":"t"}],
 				"apps":[{"id":3,"slug":"a"}]
+			},
+			"block_creations": {
+				"enabled": true
+			},
+			"lock_branch": {
+				"enabled": true
+			},
+			"allow_fork_syncing": {
+				"enabled": true
 			}
 		}`)
 	})
@@ -1406,6 +1436,15 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			Apps: []*App{
 				{Slug: String("a"), ID: Int64(3)},
 			},
+		},
+		BlockCreations: &BlockCreations{
+			Enabled: Bool(true),
+		},
+		LockBranch: &LockBranch{
+			Enabled: Bool(true),
+		},
+		AllowForkSyncing: &AllowForkSyncing{
+			Enabled: Bool(true),
 		},
 	}
 	if !cmp.Equal(protection, want) {
