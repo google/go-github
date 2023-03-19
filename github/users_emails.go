@@ -71,7 +71,6 @@ func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Resp
 	return s.client.Do(ctx, req, nil)
 }
 
-
 // SetEmailVisibility sets the visibility for the primary email address of the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/en/rest/users/emails#set-primary-email-visibility-for-the-authenticated-user
@@ -90,5 +89,3 @@ func (s *UsersService) SetEmailVisibility(ctx context.Context, updateVisiblility
 
 	return e, resp, nil
 }
-
-
