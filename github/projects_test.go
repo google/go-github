@@ -50,7 +50,37 @@ func TestProject_Marshal(t *testing.T) {
 			URL:         String("u"),
 		},
 	}
-	want := `{"id":1,"url":"u","html_url":"h","columns_url":"c","owner_url":"o","name":"n","body":"b","number":1,"state":"s","created_at":` + referenceTimeStr + `,"updated_at":` + referenceTimeStr + `,"node_id":"n","creator":{"login":"l","id":1,"avatar_url":"a","gravatar_id":"g","name":"n","company":"c","blog":"b","location":"l","email":"e","hireable":true,"public_repos":1,"followers":1,"following":1,"created_at":` + referenceTimeStr + `,"url":"u"}}`
+	want := `{
+		"id":1,
+		"url":"u",
+		"html_url":"h",
+		"columns_url":"c",
+		"owner_url":"o",
+		"name":"n",
+		"body":"b",
+		"number":1,
+		"state":"s",
+		"created_at":` + referenceTimeStr + `,
+		"updated_at":` + referenceTimeStr + `,
+		"node_id":"n",
+		"creator":{
+			"login":"l",
+			"id":1,
+			"avatar_url":"a",
+			"gravatar_id":"g",
+			"name":"n",
+			"company":"c",
+			"blog":"b",
+			"location":"l",
+			"email":"e",
+			"hireable":true,
+			"public_repos":1,
+			"followers":1,
+			"following":1,
+			"created_at":` + referenceTimeStr + `,
+			"url":"u"
+		}
+	}`
 	testJSONMarshal(t, u, want)
 }
 

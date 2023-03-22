@@ -463,9 +463,7 @@ func TestDiscussionComment_Marshal(t *testing.T) {
 	}
 
 	want := `{
-		"author":{
-			
-		},
+		"author":{},
 		"body":"body",
 		"body_html":"body html",
 		"body_version":"body version",

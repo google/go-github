@@ -933,7 +933,10 @@ func TestMembership_Marshal(t *testing.T) {
 }
 
 func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CreateOrgInvitationOptions{}, `{"role":null,"team_ids":null}`)
+	testJSONMarshal(t, &CreateOrgInvitationOptions{}, `{
+		"role":null,
+		"team_ids":null
+	}`)
 
 	u := &CreateOrgInvitationOptions{
 		InviteeID: Int64(1),

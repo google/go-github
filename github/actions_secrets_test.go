@@ -812,14 +812,20 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 }
 
 func TestPublicKey_Marshal(t *testing.T) {
-	testJSONMarshal(t, &PublicKey{}, `{"key_id":null,"key":null}`)
+	testJSONMarshal(t, &PublicKey{}, `{
+		"key_id":null,
+		"key":null
+	}`)
 
 	u := &PublicKey{
 		KeyID: String("kid"),
 		Key:   String("k"),
 	}
 
-	want := `{"key_id":"kid","key":"k"}`
+	want := `{
+		"key_id":"kid",
+		"key":"k"
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -851,7 +857,10 @@ func TestSecret_Marshal(t *testing.T) {
 }
 
 func TestSecrets_Marshal(t *testing.T) {
-	testJSONMarshal(t, &Secrets{}, `{"total_count":0,"secrets":null}`)
+	testJSONMarshal(t, &Secrets{}, `{
+		"total_count":0,
+		"secrets":null
+	}`)
 
 	u := &Secrets{
 		TotalCount: 1,
@@ -882,7 +891,10 @@ func TestSecrets_Marshal(t *testing.T) {
 }
 
 func TestEncryptedSecret_Marshal(t *testing.T) {
-	testJSONMarshal(t, &EncryptedSecret{}, `{"key_id":"","encrypted_value":""}`)
+	testJSONMarshal(t, &EncryptedSecret{}, `{
+		"key_id":"",
+		"encrypted_value":""
+	}`)
 
 	u := &EncryptedSecret{
 		Name:                  "n",

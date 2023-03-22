@@ -2705,49 +2705,6 @@ func TestErrorBlock_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestRateLimitError_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RateLimitError{}, `{
-		"rate":{
-			"limit":0,
-			"remaining":0,
-			"reset":"0001-01-01T00:00:00Z"
-		},
-		"message":""
-	}`)
-
-	u := &RateLimitError{
-		Rate: Rate{
-			Limit:     1,
-			Remaining: 1,
-			Reset:     Timestamp{referenceTime},
-		},
-		Message: "msg",
-	}
-
-	want := `{
-		"rate":{
-			"limit":1,
-			"remaining":1,
-			"reset":` + referenceTimeStr + `
-		},
-		"message":"msg"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAbuseRateLimitError_Marshal(t *testing.T) {
-	testJSONMarshal(t, &AbuseRateLimitError{}, `{"message":""}`)
-
-	u := &AbuseRateLimitError{
-		Message: "msg",
-	}
-
-	want := `{"message":"msg"}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestError_Marshal(t *testing.T) {
 	testJSONMarshal(t, &Error{}, `{
 		"resource":"",

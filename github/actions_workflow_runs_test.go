@@ -990,7 +990,10 @@ func TestWorkflowRunBill_Marshal(t *testing.T) {
 		Jobs:    Int(1),
 	}
 
-	want := `{"total_ms":1,"jobs":1}`
+	want := `{
+		"total_ms":1,
+		"jobs":1
+	}`
 
 	testJSONMarshal(t, u, want)
 }

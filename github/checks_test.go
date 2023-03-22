@@ -1120,7 +1120,10 @@ func TestCheckRunOutput_Marshal(t *testing.T) {
 }
 
 func TestCreateCheckRunOptions_Marshal(t *testing.T) {
-	testJSONMarshal(t, &CreateCheckRunOptions{}, `{"name":"","head_sha":""}`)
+	testJSONMarshal(t, &CreateCheckRunOptions{}, `{
+		"name":"",
+		"head_sha":""
+	}`)
 
 	u := &CreateCheckRunOptions{
 		Name:        "n",

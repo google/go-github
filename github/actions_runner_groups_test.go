@@ -566,7 +566,10 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 }
 
 func TestRunnerGroups_Marshal(t *testing.T) {
-	testJSONMarshal(t, &RunnerGroups{}, `{"total_count":0,"runner_groups":null}`)
+	testJSONMarshal(t, &RunnerGroups{}, `{
+		"total_count":0,
+		"runner_groups":null
+	}`)
 
 	u := &RunnerGroups{
 		TotalCount: int(1),
@@ -653,11 +656,25 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 		SelectedWorkflows:        []string{},
 	}
 
-	want := `{"name":"n","visibility":"v","allows_public_repositories":true,"restricted_to_workflows":false}`
+	want := `{
+		"name":"n",
+		"visibility":"v",
+		"allows_public_repositories":true,
+		"restricted_to_workflows":false
+	}`
 
 	testJSONMarshal(t, u, want)
+
 	u.SelectedWorkflows = []string{"1"}
-	want = `{"name":"n","visibility":"v","allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":["1"]}`
+	want = `{
+		"name":"n",
+		"visibility":"v",
+		"allows_public_repositories":true,
+		"restricted_to_workflows":false,
+		"selected_workflows":[
+			"1"
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

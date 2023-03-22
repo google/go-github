@@ -40,7 +40,28 @@ func TestOrganization_Marshal(t *testing.T) {
 		MembersCanCreatePublicPages:          Bool(false),
 		MembersCanCreatePrivatePages:         Bool(true),
 	}
-	want := `{"name":"github","company":"GitHub","blog":"https://github.com/blog","location":"San Francisco","email":"support@github.com","twitter_username":"github","description":"GitHub, the company.","billing_email":"support@github.com","is_verified":true,"has_organization_projects":true,"has_repository_projects":true,"default_repository_permission":"read","members_can_create_repositories":true,"members_can_create_public_repositories":false,"members_can_create_private_repositories":true,"members_can_create_internal_repositories":true,"members_allowed_repository_creation_type":"all","members_can_create_pages":true,"members_can_create_public_pages":false,"members_can_create_private_pages":true}`
+	want := `{
+		"name":"github",
+		"company":"GitHub",
+		"blog":"https://github.com/blog",
+		"location":"San Francisco",
+		"email":"support@github.com",
+		"twitter_username":"github",
+		"description":"GitHub, the company.",
+		"billing_email":"support@github.com",
+		"is_verified":true,
+		"has_organization_projects":true,
+		"has_repository_projects":true,
+		"default_repository_permission":"read",
+		"members_can_create_repositories":true,
+		"members_can_create_public_repositories":false,
+		"members_can_create_private_repositories":true,
+		"members_can_create_internal_repositories":true,
+		"members_allowed_repository_creation_type":"all",
+		"members_can_create_pages":true,
+		"members_can_create_public_pages":false,
+		"members_can_create_private_pages":true
+	}`
 
 	testJSONMarshal(t, o, want)
 }
