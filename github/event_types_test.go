@@ -14868,7 +14868,6 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		},
 	}
 
-	// convert `>` into `\u003e`` and `<` into `\u003c``
 	part, _ := json.Marshal(">= 2.0.0, < 2.0.2")
 
 	want := `{

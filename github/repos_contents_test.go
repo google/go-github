@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -954,10 +955,11 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 		},
 	}
 
-	contentValue := `"AQ=="`
+	contentValue, _ := json.Marshal([]byte{1})
+
 	want := `{
 		"message":"type",
-		"content":` + contentValue + `,
+		"content":` + string(contentValue) + `,
 		"sha":"type",
 		"branch":"type",
 		"author":{
